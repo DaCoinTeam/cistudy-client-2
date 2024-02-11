@@ -87,9 +87,9 @@ export const verifyGoogleAccessToken = async (params: {
     try {
         let url = `${BASE_URL}/verify-google-access-token`
         url = appendClientIdToQuery(url)!
-        const urlInstance = new URL(url)
-        urlInstance.searchParams.append("token", params.token)
-        url = urlInstance.toString()
+        const urlObject = new URL(url)
+        urlObject.searchParams.append("token", params.token)
+        url = urlObject.toString()
 
         const response = await axios.get(url)
         const { data, tokens } = response.data as ApiResponse<UserEntity>
