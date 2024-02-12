@@ -2,7 +2,7 @@ import {
     ExtensionsWithOriginalError,
     CourseEntity,
     ErrorResponse, Structure, buildPayloadString
-} from "@services/shared"
+} from "@common"
 import { client } from "./client.graphql"
 import { ApolloError, gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"

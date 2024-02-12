@@ -5,9 +5,10 @@ import {
     ErrorResponse,
     ErrorStatusCode,
     buildBearerTokenHeader,
-    appendClientIdToQuery,
     saveTokens,
-} from "@services/shared"
+    getClientId,
+} from "@common"
+
 import axios, { AxiosError } from "axios"
 
 const BASE_URL = `${endpointConfig().api}/profile`
@@ -17,17 +18,16 @@ export const updateCoverPhoto = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string | ErrorResponse> => {
     try {
-        let url = `${BASE_URL}/update-cover-photo`
-        url = appendClientIdToQuery(url)!
+        const url = `${BASE_URL}/update-cover-photo`
 
         const formData = new FormData()
-
         formData.append("files", file)
 
         const response = await axios.patch(url, formData, {
             headers: {
                 Authorization: buildBearerTokenHeader(authTokenType),
                 "Content-Type": "multipart/form-data",
+                "Client-Id": getClientId()
             },
         })
 
@@ -43,9 +43,7 @@ export const updateCoverPhoto = async (
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
-        ) {
-            return await updateCoverPhoto(file, AuthTokenType.Refresh)
-        }
+        ) return await updateCoverPhoto(file, AuthTokenType.Refresh)  
         return _ex
     }
 }
@@ -55,9 +53,7 @@ export const updateAvatar = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string | ErrorResponse> => {
     try {
-        let url = `${BASE_URL}/update-avatar`
-        url = appendClientIdToQuery(url)!
-
+        const url = `${BASE_URL}/update-avatar`
         const formData = new FormData()
 
         formData.append("files", file)
@@ -66,6 +62,7 @@ export const updateAvatar = async (
             headers: {
                 Authorization: buildBearerTokenHeader(authTokenType),
                 "Content-Type": "multipart/form-data",
+                "Client-Id": getClientId()
             },
         })
 
@@ -81,9 +78,7 @@ export const updateAvatar = async (
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
-        ) {
-            return await updateAvatar(file, AuthTokenType.Refresh)
-        }
+        ) return await updateAvatar(file, AuthTokenType.Refresh)
         return _ex
     }
 }

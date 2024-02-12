@@ -1,6 +1,7 @@
 const ACCESS_TOKEN = "accessToken"
 const REFRESH_TOKEN = "refreshToken"
 const CLIENT_ID = "clientId"
+
 import {
     Atomic,
     AuthTokenType,
@@ -35,14 +36,6 @@ export const getAuthToken = (
 export const buildBearerTokenHeader = (
     type: AuthTokenType = AuthTokenType.Access
 ) => `Bearer ${getAuthToken(type)}`
-
-export const appendClientIdToQuery = (url: string): string | null => {
-    const clientId = getClientId()
-    if (!clientId) return null
-    const urlObject = new URL(url)
-    urlObject.searchParams.append("clientId", clientId)
-    return urlObject.toString()
-}
 
 export const buildPayloadString = <T extends object>(
     structure?: Structure<T>,

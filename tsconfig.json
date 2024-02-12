@@ -19,7 +19,7 @@
     ],
     "paths": {
       "@services": ["./src/services"],
-      "@services/shared": ["./src/services/shared"],
+      "@common": ["./src/common"],
       "@config": ["./src/config"],
       "@redux": ["./src/redux"]
     }
