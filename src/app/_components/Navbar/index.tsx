@@ -20,19 +20,29 @@ interface INavbarProps {
 }
 
 const WrappedNavbar = (props: INavbarProps) => {
-    const { isSignUpState, isAuthModalOpenState } = useContext(NavbarContext)!
-    const { setIsSignUp } = isSignUpState
-    const { setIsAuthModalOpen } = isAuthModalOpenState
+    const { dispatch } = useContext(NavbarContext)!
 
     const profile = useSelector((state: RootState) => state.auth.profile)
 
     const onClickSignIn = () => {
-        setIsAuthModalOpen(true)
-        setIsSignUp(false)
+        dispatch({
+            type: "SET_IS_AUTH_MODAL_OPEN",
+            payload: true
+        })
+        dispatch({
+            type: "SET_IS_SIGN_UP",
+            payload: false
+        })
     }
     const onClickSignUp = () => {
-        setIsAuthModalOpen(true)
-        setIsSignUp(true)
+        dispatch({
+            type: "SET_IS_AUTH_MODAL_OPEN",
+            payload: true
+        })
+        dispatch({
+            type: "SET_IS_SIGN_UP",
+            payload: true
+        })
     }
 
     return (

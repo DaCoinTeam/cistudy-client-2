@@ -16,10 +16,13 @@ import SignInByFacebookIcon from "./SignInByFacebookButton"
 
 const WrappedSignInTab = () => {
     const formik = useContext(FormikContext)!
-    const { isSignUpState } = useContext(NavbarContext)!
-    const { setIsSignUp } = isSignUpState
+    const { dispatch } = useContext(NavbarContext)!
 
-    const onClickToSignUp = () => setIsSignUp(true)
+    const onClickToSignUp = () => dispatch({
+        type: "SET_IS_SIGN_UP",
+        payload: true
+    })
+
     return (
         <>
             <ModalBody className="p-6">

@@ -1,33 +1,27 @@
-import { ReactNode, createContext, useState } from "react"
+import { ReactNode, createContext } from "react"
+import {
+    NavbarAction,
+    NavbarState,
+    useNavbarReducer,
+} from "./useNavbarReducer"
 
-interface INavbarContextValue {
-    isSignUpState: {
-        isSignUp: boolean,
-        setIsSignUp: React.Dispatch<React.SetStateAction<boolean>>
-    },
-    isAuthModalOpenState: {
-        isAuthModalOpen: boolean,
-        setIsAuthModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-    }
+export interface INavbarContextValue {
+  state: NavbarState;
+  dispatch: React.Dispatch<NavbarAction>;
 }
 
 export const NavbarContext = createContext<INavbarContextValue | null>(null)
 
 export const NavbarProviders = ({ children }: { children: ReactNode }) => {
-    const [isSignUp, setIsSignUp] = useState(false)
-    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
-
+    const [state, dispatch] = useNavbarReducer()
     return (
-        <NavbarContext.Provider value={{
-            isSignUpState: {
-                isSignUp,
-                setIsSignUp
-            },
-            isAuthModalOpenState: {
-                isAuthModalOpen,
-                setIsAuthModalOpen
-            }
-        }}> {children}
+        <NavbarContext.Provider
+            value={{
+                state,
+                dispatch,
+            }}
+        >
+            {children}
         </NavbarContext.Provider>
     )
 }

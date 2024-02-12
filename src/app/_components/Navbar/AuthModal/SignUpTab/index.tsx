@@ -14,10 +14,13 @@ import { NavbarContext } from "../../NavbarProviders"
 const WrappedSignUpTab = () => {
     const formik = useContext(FormikContext)!
 
-    const { isSignUpState } = useContext(NavbarContext)!
-    const { setIsSignUp } = isSignUpState
-    
-    const onClickToSignIn = () => setIsSignUp(false)
+    const { dispatch } = useContext(NavbarContext)!
+
+    const onClickToSignIn = () =>
+        dispatch({
+            type: "SET_IS_SIGN_UP",
+            payload: false,
+        })
     return (
         <>
             <ModalBody className="p-6">
@@ -98,7 +101,7 @@ const WrappedSignUpTab = () => {
                     <div className="text-center">
                         <span className="text-sm">Already have an account?</span>{" "}
                         <Link className="text-sm cursor-pointer" onClick={onClickToSignIn}>
-            Sign In
+              Sign In
                         </Link>
                     </div>
                 </div>

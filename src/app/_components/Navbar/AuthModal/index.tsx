@@ -17,14 +17,19 @@ interface IAuthModalProps {
 type Key = "signIn" | "signUp";
 
 export const AuthModal = (props: IAuthModalProps) => {
-    const { isSignUpState, isAuthModalOpenState } = useContext(NavbarContext)!
-    const { isSignUp, setIsSignUp } = isSignUpState
-    const { isAuthModalOpen, setIsAuthModalOpen } = isAuthModalOpenState
+    const { state, dispatch } = useContext(NavbarContext)!
+    const { isAuthModalOpen, isSignUp } = state
 
-    const onOpenChange = () => setIsAuthModalOpen(!isAuthModalOpen)
+    const onOpenChange = () => dispatch({
+        type: "SET_IS_AUTH_MODAL_OPEN",
+        payload: !isAuthModalOpen
+    })
     const onSelectionChange = (key: string | number) => {
         const _key = key as Key
-        setIsSignUp(_key === "signUp")
+        dispatch({
+            type: "SET_IS_SIGN_UP",
+            payload: _key === "signUp"
+        })
     }
     return (
         <Modal
