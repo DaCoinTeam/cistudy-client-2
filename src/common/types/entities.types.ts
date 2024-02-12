@@ -29,7 +29,7 @@ export type UserEntity = {
     userId: string;
     email: string;
     password?: string;
-    avatarUrl?: string;
+    avatarId?: string;
     phoneNumber?: string;
     balance: number;
     role: UserRole;
@@ -40,6 +40,7 @@ export type UserEntity = {
     verified: boolean;
     kind: UserKind;
     externalId?: string;
+    coverPhotoId: string;
     sessions: Array<SessionEntity>;
     postComments: Array<PostCommentEntity>;
     postReacts: Array<PostReactEntity>;

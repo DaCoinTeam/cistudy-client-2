@@ -35,7 +35,9 @@ export const UserDetailsProviders = ({ children }: { children: ReactNode }) => {
             },
             {
                 userId: true,
-                email: true
+                email: true,
+                avatarId: true,
+                coverPhotoId: true
             }
         )
         if (!isErrorResponse(response)) {
