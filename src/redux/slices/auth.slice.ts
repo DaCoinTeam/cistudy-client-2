@@ -1,23 +1,24 @@
+import { DeepPartial } from "@apollo/client/utilities"
 import { createSlice } from "@reduxjs/toolkit"
-import { UserEntity } from "@services"
+import { UserEntity } from "@common"
 
 export type AuthSlice = {
-  user: UserEntity | null;
-}
+  profile: DeepPartial<UserEntity> | null;
+};
 
 const initialState: AuthSlice = {
-    user: null,
+    profile: null,
 }
 
 export const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        setUser(state, action: { payload: UserEntity | null }) {
-            state.user = action.payload
+        setProfile(state, action: { payload: DeepPartial<UserEntity> | null }) {
+            state.profile = action.payload
         },
     },
 })
 
-export const { setUser } = authSlice.actions
+export const { setProfile } = authSlice.actions
 export const authReducer = authSlice.reducer

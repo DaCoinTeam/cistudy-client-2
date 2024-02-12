@@ -69,7 +69,6 @@ export const findOnePost = async (
 
         return data.findOnePost as Partial<PostEntity>
     } catch (ex) {
-        console.log(ex)
         const _ex = ex as ApolloError
         const error = (
       _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError

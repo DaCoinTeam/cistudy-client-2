@@ -1,12 +1,13 @@
 import { endpointConfig } from "@config"
 import {
-    ApiResponse,
+    BaseResponse,
     AuthTokenType,
     ErrorResponse,
     ErrorStatusCode,
     buildBearerTokenHeader,
     saveTokens,
     getClientId,
+    AuthTokens,
 } from "@common"
 
 import axios, { AxiosError } from "axios"
@@ -31,9 +32,9 @@ export const updateCoverPhoto = async (
             },
         })
 
-        const { data, tokens } = response.data as ApiResponse<string>
+        const { data, tokens } = response.data as BaseResponse<string>
 
-        if (authTokenType === AuthTokenType.Refresh) saveTokens(tokens)
+        if (authTokenType === AuthTokenType.Refresh) saveTokens(tokens as AuthTokens)
 
         return data
     } catch (ex) {
@@ -66,10 +67,9 @@ export const updateAvatar = async (
             },
         })
 
-        const { data, tokens } = response.data as ApiResponse<string>
+        const { data, tokens } = response.data as BaseResponse<string>
 
-        if (authTokenType === AuthTokenType.Refresh) saveTokens(tokens)
-
+        if (authTokenType === AuthTokenType.Refresh) saveTokens(tokens as AuthTokens)
         return data
     } catch (ex) {
         const _ex = (ex as AxiosError).response?.data as ErrorResponse

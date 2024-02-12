@@ -1,25 +1,48 @@
 "use client"
-import { ReactNode, useEffect } from "react"
+import { ReactNode, createContext, useCallback, useEffect } from "react"
 import React from "react"
 import { useDispatch } from "react-redux"
-import { AppDispatch, setUser } from "@redux"
+import { AppDispatch, setProfile } from "@redux"
 import { generateClientId, isErrorResponse } from "@common"
+import { findProfileByAuthToken } from "@services"
+
+interface IRootContextValue {
+    functions: {
+        fetchAndSetProfile: () => Promise<void>
+    }
+}
+
+export const RootContext = createContext<IRootContextValue | null>(null)
 
 export const RootProviders = (props: { children: ReactNode }) => {
     const dispath: AppDispatch = useDispatch()
-    
+
+    const fetchAndSetProfile = useCallback(async () => {
+        const response = await findProfileByAuthToken(
+            {
+                email: true
+            }
+        )
+        if (!isErrorResponse(response)) {
+            dispath(setProfile(response))
+        } else {
+            console.log(response)
+        }
+    }, [])
+
     useEffect(() => {
         generateClientId()
         const handleEffect = async () => {
-            const response = await findPr()
-            if (!isErrorResponse(response)) {
-                dispath(setUser(response))
-            } else {
-                console.log(response)
-            }
+            await fetchAndSetProfile()
         }
         handleEffect()
     }, [])
 
-    return <>{props.children}</>
+    return <RootContext.Provider value={{
+        functions: {
+            fetchAndSetProfile
+        }
+    }}>
+        {props.children}
+    </RootContext.Provider>
 }

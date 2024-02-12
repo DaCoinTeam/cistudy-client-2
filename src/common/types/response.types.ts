@@ -1,15 +1,14 @@
-export type ApiResponse<T> = {
-    data: T;
-    tokens: AuthTokens;
-  };
-  
+export type BaseResponse<T> = {
+  data: T;
+  tokens?: AuthTokens;
+};
+
 export type AuthTokens = {
-    accessToken: string;
-    refreshToken: string;
-  };
-  
+  accessToken: string;
+  refreshToken: string;
+};
+
 export enum AuthTokenType {
-    Access = "Access",
-    Refresh = "Refresh",
-  }
-  
+  Access = "Access",
+  Refresh = "Refresh",
+}

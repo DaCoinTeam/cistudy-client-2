@@ -4,8 +4,9 @@ import {
     UserEntity,
     ErrorResponse,
     saveTokens,
-    ApiResponse,
+    BaseResponse,
     getClientId,
+    AuthTokens,
 } from "@common"
 
 import axios, { AxiosError } from "axios"
@@ -24,9 +25,8 @@ export const signIn = async (params: {
                 "Client-Id": getClientId(),
             },
         })
-        const { data, tokens } = response.data as ApiResponse<UserEntity>
-
-        saveTokens(tokens)
+        const { data, tokens } = response.data as BaseResponse<UserEntity>
+        saveTokens(tokens as AuthTokens)
 
         return data
     } catch (ex) {
@@ -39,7 +39,7 @@ export const signUp = async (params: {
   password: string;
   firstName: string;
   lastName: string;
-  birthdate: Date;
+  birthdate: string;
 }): Promise<string | ErrorResponse> => {
     try {
         const url = `${BASE_URL}/sign-up`
@@ -68,9 +68,8 @@ export const verifyGoogleAccessToken = async (params: {
                 "Client-Id": getClientId(),
             },
         })
-        const { data, tokens } = response.data as ApiResponse<UserEntity>
-
-        saveTokens(tokens)
+        const { data, tokens } = response.data as BaseResponse<UserEntity>
+        saveTokens(tokens as AuthTokens)
 
         return data
     } catch (ex) {

@@ -74,10 +74,15 @@ export const buildPayloadString = <T extends object>(
 }
 
 export const buildTokenizedPayloadString = <T extends object>(
-    structure?: Structure<T>
+    structure?: Structure<T>,
+    authTokenType: AuthTokenType = AuthTokenType.Access
 ) => {
     const data = buildPayloadString(structure)
-    return `data { ${data} } tokens { accessToken, refreshToken }`
+    return `data { ${data} } ${
+        authTokenType === AuthTokenType.Refresh
+            ? "tokens { accessToken, refreshToken }"
+            : ""
+    }`
 }
 
 export const isErrorResponse = (
