@@ -8,7 +8,7 @@ import {
     ExtensionsWithOriginalError,
     Structure,
     UserEntity,
-    buildTokenizedPayloadString,
+    buildAuthPayloadString,
     saveTokens,
 } from "@common"
 import { client } from "./client.graphql"
@@ -19,7 +19,7 @@ export const findProfileByAuthToken = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<DeepPartial<UserEntity> | ErrorResponse> => {
     try {
-        const payload = buildTokenizedPayloadString(structure, authTokenType)
+        const payload = buildAuthPayloadString(structure, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
             query FindProfileByAuthToken {

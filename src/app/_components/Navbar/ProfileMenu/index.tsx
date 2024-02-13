@@ -6,8 +6,17 @@ import {
     Avatar,
 } from "@nextui-org/react"
 import React from "react"
+import { AppDispatch, setProfile } from "@redux"
+import { useDispatch } from "react-redux"
+import { removeTokens } from "@common"
 
 export const ProfileMenu = () => {
+    const dispatch : AppDispatch = useDispatch()
+    const onClickSignOut = () => { 
+        dispatch(setProfile(null))
+        removeTokens()
+    }
+
     return (
         <Dropdown placement="bottom-end">
             <DropdownTrigger>
@@ -29,8 +38,8 @@ export const ProfileMenu = () => {
                 <DropdownItem key="system">System</DropdownItem>
                 <DropdownItem key="configurations">Configurations</DropdownItem>
                 <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-                <DropdownItem key="logout" color="danger">
-          Log Out
+                <DropdownItem onClick={onClickSignOut} key="logout" color="danger">
+          Sign Out
                 </DropdownItem>
             </DropdownMenu>
         </Dropdown>

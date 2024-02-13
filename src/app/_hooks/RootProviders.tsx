@@ -19,8 +19,11 @@ export const RootProviders = (props: { children: ReactNode }) => {
 
     const fetchAndSetProfile = useCallback(async () => {
         const response = await findProfileByAuthToken(
-            {
-                email: true
+            {   
+                userId: true,
+                email: true,
+                avatarId: true,
+                coverPhotoId: true
             }
         )
         if (!isErrorResponse(response)) {

@@ -1,37 +1,11 @@
-const ACCESS_TOKEN = "accessToken"
-const REFRESH_TOKEN = "refreshToken"
-const CLIENT_ID = "clientId"
 
 import {
     Atomic,
     AuthTokenType,
-    AuthTokens,
     ErrorResponse,
     Structure,
 } from "../types"
-import { v4 as uuidv4 } from "uuid"
-
-export const generateClientId = () => {
-    const clientId = localStorage.getItem(CLIENT_ID)
-    if (clientId) return
-    localStorage.setItem(CLIENT_ID, uuidv4())
-}
-
-export const saveTokens = (tokens: AuthTokens) => {
-    localStorage.setItem("accessToken", tokens.accessToken)
-    localStorage.setItem("refreshToken", tokens.refreshToken)
-}
-
-export const getClientId = (): string | null => {
-    return localStorage.getItem(CLIENT_ID)
-}
-
-export const getAuthToken = (
-    type: AuthTokenType = AuthTokenType.Access
-): string | null =>
-    localStorage.getItem(
-        type == AuthTokenType.Access ? ACCESS_TOKEN : REFRESH_TOKEN
-    )
+import { getAuthToken } from "./storage.utils"
 
 export const buildBearerTokenHeader = (
     type: AuthTokenType = AuthTokenType.Access
@@ -39,7 +13,7 @@ export const buildBearerTokenHeader = (
 
 export const buildPayloadString = <T extends object>(
     structure?: Structure<T>,
-    currentPath: string[] = []
+    currentPath: Array<string> = []
 ): string => {
     if (!structure) {
         return ""
@@ -52,7 +26,7 @@ export const buildPayloadString = <T extends object>(
             if (structure[key]) {
                 currentPath.push(key)
                 if (index !== keys.length - 1) {
-                    currentPath.push("\n")
+                    currentPath.push(" ")
                 }
             }
         } else {
@@ -73,7 +47,7 @@ export const buildPayloadString = <T extends object>(
     return currentPath.join(" ")
 }
 
-export const buildTokenizedPayloadString = <T extends object>(
+export const buildAuthPayloadString = <T extends object>(
     structure?: Structure<T>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ) => {
