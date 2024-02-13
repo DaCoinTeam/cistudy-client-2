@@ -1,2 +1,2 @@
 export * from "./CourseDetailsProviders"
-export * from "./courseCourseDetails"
+export * from "./useCourseDetails"

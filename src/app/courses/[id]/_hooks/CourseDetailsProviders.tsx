@@ -11,7 +11,7 @@ import {
     CourseDetailsAction,
     CourseDetailsState,
     useCourseDetailsReducer,
-} from "./courseCourseDetails"
+} from "./useCourseDetails"
 import { findOneCourse } from "@services"
 import { useParams } from "next/navigation"
 import { isErrorResponse } from "@common"
