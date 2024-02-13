@@ -1,4 +1,4 @@
-import { getAssetUrl, updateAvatar } from "@services"
+import { getAssetUrl, updateProfile } from "@services"
 import { isErrorResponse } from "@common"
 import { useContext, useRef } from "react"
 import { useSelector } from "react-redux"
@@ -37,7 +37,13 @@ export const UserAvatar = (props: IUserAvatarProps) => {
         const file = files.item(0)
         if (file === null) return
 
-        const response = await updateAvatar(file)
+        const response = await updateProfile({
+            data: {
+                avatarIndex: 0
+            },
+            files: [file]
+        })
+        
         if (!isErrorResponse(response)) {
             await fetchAndSetUser()
             await fetchAndSetProfile()

@@ -3,7 +3,7 @@ import { UserDetailsContext } from "../../_hooks"
 import { useSelector } from "react-redux"
 import { RootState } from "@redux"
 import { Button, Image } from "@nextui-org/react"
-import { getAssetUrl, updateCoverPhoto } from "@services"
+import { getAssetUrl, updateProfile } from "@services"
 import { PhotoIcon } from "@heroicons/react/24/solid"
 import { RootContext } from "../../../../_hooks"
 import { isErrorResponse } from "@common"
@@ -36,7 +36,12 @@ export const CoverPhoto = (props: ICoverPhotoProps) => {
         const file = files.item(0)
         if (file === null) return
 
-        const response = await updateCoverPhoto(file)
+        const response = await updateProfile({
+            data: {
+                coverPhotoIndex: 0
+            },
+            files: [file]
+        })
         if (!isErrorResponse(response)) {
             await fetchAndSetUser()
             await fetchAndSetProfile()

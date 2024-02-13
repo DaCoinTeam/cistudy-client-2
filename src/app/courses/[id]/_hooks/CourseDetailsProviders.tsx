@@ -52,6 +52,10 @@ export const CourseDetailsProviders = ({
                 type: "SET_COURSE",
                 payload: response,
             })
+            dispatch({
+                type: "SET_FINISH_FETCH",
+                payload: true,
+            })
         } else {
             console.log(response)
         }

@@ -1,52 +1,57 @@
-import { endpointConfig } from "@config"
 import {
-    BaseResponse,
     AuthTokenType,
+    AuthTokens,
+    BaseResponse,
     ErrorResponse,
     ErrorStatusCode,
     buildBearerTokenHeader,
-    saveTokens,
     getClientId,
-    AuthTokens,
+    saveTokens,
 } from "@common"
-
 import axios, { AxiosError } from "axios"
+import { endpointConfig } from "@config"
 
-const BASE_URL = `${endpointConfig().api}/profile`
+const BASE_URL = `${endpointConfig().api}/courses`
 
-export const updateProfile = async (
+export const updateCourse = async (
     params: {
-        data: {
-            avatarIndex?: number,
-            coverPhotoIndex?: number
-        }
-        files?: Array<File>,
-    },
+    data: {
+      courseId?: string;
+      title?: string;
+      description?: string;
+      price?: number;
+      thumbnailIndex?: number;
+      previewVideoIndex?: number;
+    };
+    files?: Array<File>;
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string | ErrorResponse> => {
     try {
         const { data, files } = params
-        const url = `${BASE_URL}/update-profile`
+        const url = `${BASE_URL}/update-course`
         const formData = new FormData()
 
         formData.append("data", JSON.stringify(data))
-        if (files){
-            for (const file of files){
+        if (files) {
+            for (const file of files) {
                 formData.append("files", file)
             }
         }
-       
+
         const response = await axios.put(url, formData, {
             headers: {
                 Authorization: buildBearerTokenHeader(authTokenType),
                 "Content-Type": "multipart/form-data",
-                "Client-Id": getClientId()
+                "Client-Id": getClientId(),
             },
         })
 
-        const { data : responseData, tokens } = response.data as BaseResponse<string>
+        const { data: responseData, tokens } =
+      response.data as BaseResponse<string>
 
-        if (authTokenType === AuthTokenType.Refresh) saveTokens(tokens as AuthTokens)
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
         return responseData
     } catch (ex) {
         const _ex = (ex as AxiosError).response?.data as ErrorResponse
@@ -55,7 +60,8 @@ export const updateProfile = async (
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
-        ) return await updateProfile(params, AuthTokenType.Refresh)
+        )
+            return await updateCourse(params, AuthTokenType.Refresh)
         return _ex
     }
 }

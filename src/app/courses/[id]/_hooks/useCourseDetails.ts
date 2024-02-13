@@ -3,18 +3,25 @@ import { CourseEntity } from "@common"
 import { useReducer } from "react"
 
 export interface CourseDetailsState {
-    course: DeepPartial<CourseEntity> | null
+  course: DeepPartial<CourseEntity> | null;
+  finishFetch: boolean;
 }
 
 export interface SetCourseAction {
-  type: "SET_COURSE"
-  payload: DeepPartial<CourseEntity>
+  type: "SET_COURSE";
+  payload: DeepPartial<CourseEntity>;
 }
 
-export type CourseDetailsAction = SetCourseAction;
+export interface SetFinishFetchAction {
+  type: "SET_FINISH_FETCH";
+  payload: boolean;
+}
+
+export type CourseDetailsAction = SetCourseAction | SetFinishFetchAction;
 
 export const state: CourseDetailsState = {
     course: null,
+    finishFetch: false,
 }
 
 export const reducer = (
@@ -24,6 +31,8 @@ export const reducer = (
     switch (action.type) {
     case "SET_COURSE":
         return { ...state, course: action.payload }
+    case "SET_FINISH_FETCH":
+        return { ...state, finishFetch: action.payload }
     default:
         return state
     }
