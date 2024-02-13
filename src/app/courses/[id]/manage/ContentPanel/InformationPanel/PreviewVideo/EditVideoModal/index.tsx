@@ -9,12 +9,15 @@ import {
     ModalHeader,
     useDisclosure,
 } from "@nextui-org/react"
-import React from "react"
-
-const fileTypes = ["MP4", "MKV"]
+import React, { useCallback } from "react"
+import { useDropzone } from "react-dropzone"
 
 export const EditVideoModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
+    const onDrop = useCallback( files => {
+        // Do something with the files
+    }, [])
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
     return (
         <>
@@ -32,8 +35,15 @@ export const EditVideoModal = () => {
                             <ModalHeader className="p-6 pb-4">Edit Video</ModalHeader>
                             <Divider />
                             <ModalBody>
-                                <div>
-          
+                                <div className="container">
+                                    <div {...getRootProps({className: "dropzone"})}>
+                                        <input {...getInputProps()} />
+                                        {
+                                            isDragActive ?
+                                                <p>Drop the files here ...</p> :
+                                                <p>Drag 'n' drop some files here, or click to select files</p>
+                                        }
+                                    </div>
                                 </div>
                             </ModalBody>
                             <ModalFooter>

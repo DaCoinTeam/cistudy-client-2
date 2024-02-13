@@ -9,7 +9,7 @@ import React, {
 
 import {
     CourseDetailsAction,
-    CourseDetailsState,
+    ICourseDetailsState,
     useCourseDetailsReducer,
 } from "./useCourseDetails"
 import { findOneCourse } from "@services"
@@ -17,7 +17,7 @@ import { useParams } from "next/navigation"
 import { isErrorResponse } from "@common"
 
 export interface ICourseDetailsContextValue {
-  state: CourseDetailsState;
+  state: ICourseDetailsState;
   dispatch: React.Dispatch<CourseDetailsAction>;
   functions: {
     fetchAndSetCourse: () => Promise<void>;

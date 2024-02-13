@@ -1,6 +1,6 @@
 "use client"
 import { Open_Sans } from "next/font/google"
-import "./css/globals.css"
+import "./_css/globals.css"
 import { ReduxProviders } from "@redux"
 import { NextUIProvider } from "@nextui-org/react"
 import { RootProviders } from "./_hooks"

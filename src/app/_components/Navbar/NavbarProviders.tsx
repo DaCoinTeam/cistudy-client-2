@@ -1,12 +1,12 @@
 import { ReactNode, createContext, useMemo } from "react"
 import {
     NavbarAction,
-    NavbarState,
+    INavbarState,
     useNavbarReducer,
 } from "./useNavbarReducer"
 
 export interface INavbarContextValue {
-  state: NavbarState;
+  state: INavbarState;
   dispatch: React.Dispatch<NavbarAction>;
 }
 

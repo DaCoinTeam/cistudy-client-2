@@ -9,7 +9,7 @@ import React, {
 
 import {
     UserDetailsAction,
-    UserDetailsState,
+    IUserDetailsState,
     useUserDetailsReducer,
 } from "./useUserDetails"
 import { findOneUser } from "@services"
@@ -17,7 +17,7 @@ import { useParams } from "next/navigation"
 import { isErrorResponse } from "@common"
 
 export interface IUserDetailsContextValue {
-  state: UserDetailsState;
+  state: IUserDetailsState;
   dispatch: React.Dispatch<UserDetailsAction>;
   functions: {
     fetchAndSetUser: () => Promise<void>;
