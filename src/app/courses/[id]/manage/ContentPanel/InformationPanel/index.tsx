@@ -1,10 +1,11 @@
 "use client"
-import { CardBody, CardHeader, Divider } from "@nextui-org/react"
+import { CardBody, CardHeader, Divider, Spacer } from "@nextui-org/react"
 import React from "react"
 import { TitleInput } from "./TitleInput"
-import { FormikProviders } from "./FormikProviders"
+import { DescriptionInput } from "./DescriptionInput"
+import { PreviewVideo } from "./PreviewVideo"
 
-const WrappedInformationPanel = () => {
+export const InformationPanel = () => {
     return (
         <>
             <CardHeader className="text-xl p-6 pb-4 font-semibold">
@@ -12,16 +13,14 @@ const WrappedInformationPanel = () => {
             </CardHeader>
             <Divider/>
             <CardBody className="p-6">
-                <TitleInput/>
+                <div>
+                    <TitleInput/>
+                    <Spacer y={4}/>
+                    <DescriptionInput />
+                    <Spacer y={4}/>
+                    <PreviewVideo/>
+                </div>   
             </CardBody>
         </>
     )
-}
-
-export const InformationPanel = () => {
-    return (
-        <FormikProviders>
-            <WrappedInformationPanel/>
-        </FormikProviders>
-    )
-}
+} 
