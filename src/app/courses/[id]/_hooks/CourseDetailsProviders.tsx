@@ -1,6 +1,11 @@
 "use client"
-import { ReactNode, createContext, useCallback, useEffect } from "react"
-import React from "react"
+import React, {
+    ReactNode,
+    createContext,
+    useCallback,
+    useEffect,
+    useMemo,
+} from "react"
 
 import {
     CourseDetailsAction,
@@ -11,7 +16,7 @@ import { findOneCourse } from "@services"
 import { useParams } from "next/navigation"
 import { isErrorResponse } from "@common"
 
-export interface ICourseDetailsContextProps {
+export interface ICourseDetailsContextValue {
   state: CourseDetailsState;
   dispatch: React.Dispatch<CourseDetailsAction>;
   functions: {
@@ -20,9 +25,13 @@ export interface ICourseDetailsContextProps {
 }
 
 export const CourseDetailsContext =
-  createContext<ICourseDetailsContextProps | null>(null)
+  createContext<ICourseDetailsContextValue | null>(null)
 
-export const CourseDetailsProviders = ({ children }: { children: ReactNode }) => {
+export const CourseDetailsProviders = ({
+    children,
+}: {
+  children: ReactNode;
+}) => {
     const [state, dispatch] = useCourseDetailsReducer()
 
     const params = useParams()
@@ -35,10 +44,9 @@ export const CourseDetailsProviders = ({ children }: { children: ReactNode }) =>
             },
             {
                 courseId: true,
-                title: true
+                title: true,
             }
         )
-        console.log(response)
         if (!isErrorResponse(response)) {
             dispatch({
                 type: "SET_COURSE",
@@ -56,16 +64,19 @@ export const CourseDetailsProviders = ({ children }: { children: ReactNode }) =>
         handleEffect()
     }, [])
 
+    const courseDetailsContextValue: ICourseDetailsContextValue = useMemo(
+        () => ({
+            state,
+            dispatch,
+            functions: {
+                fetchAndSetCourse,
+            },
+        }),
+        [state, dispatch]
+    )
+
     return (
-        <CourseDetailsContext.Provider
-            value={{
-                state,
-                dispatch,
-                functions: {
-                    fetchAndSetCourse,
-                },
-            }}
-        >
+        <CourseDetailsContext.Provider value={courseDetailsContextValue}>
             {children}
         </CourseDetailsContext.Provider>
     )

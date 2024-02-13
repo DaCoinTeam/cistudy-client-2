@@ -1,6 +1,11 @@
 "use client"
-import { ReactNode, createContext, useCallback, useEffect } from "react"
-import React from "react"
+import React, {
+    ReactNode,
+    createContext,
+    useCallback,
+    useEffect,
+    useMemo,
+} from "react"
 
 import {
     UserDetailsAction,
@@ -11,7 +16,7 @@ import { findOneUser } from "@services"
 import { useParams } from "next/navigation"
 import { isErrorResponse } from "@common"
 
-export interface IUserDetailsContextProps {
+export interface IUserDetailsContextValue {
   state: UserDetailsState;
   dispatch: React.Dispatch<UserDetailsAction>;
   functions: {
@@ -20,7 +25,7 @@ export interface IUserDetailsContextProps {
 }
 
 export const UserDetailsContext =
-  createContext<IUserDetailsContextProps | null>(null)
+  createContext<IUserDetailsContextValue | null>(null)
 
 export const UserDetailsProviders = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useUserDetailsReducer()
@@ -37,7 +42,7 @@ export const UserDetailsProviders = ({ children }: { children: ReactNode }) => {
                 userId: true,
                 email: true,
                 avatarId: true,
-                coverPhotoId: true
+                coverPhotoId: true,
             }
         )
         if (!isErrorResponse(response)) {
@@ -57,16 +62,19 @@ export const UserDetailsProviders = ({ children }: { children: ReactNode }) => {
         handleEffect()
     }, [])
 
+    const userDetailsContextValue: IUserDetailsContextValue = useMemo(
+        () => ({
+            state,
+            dispatch,
+            functions: {
+                fetchAndSetUser,
+            },
+        }),
+        [state, dispatch]
+    )
+
     return (
-        <UserDetailsContext.Provider
-            value={{
-                state,
-                dispatch,
-                functions: {
-                    fetchAndSetUser,
-                },
-            }}
-        >
+        <UserDetailsContext.Provider value={userDetailsContextValue}>
             {children}
         </UserDetailsContext.Provider>
     )
