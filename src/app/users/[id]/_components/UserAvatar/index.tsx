@@ -5,9 +5,8 @@ import { useSelector } from "react-redux"
 import { RootState } from "@redux"
 import { UserDetailsContext } from "../../_hooks"
 import { RootContext } from "../../../../_hooks"
-import { Button } from "@nextui-org/react"
 import { CameraIcon } from "@heroicons/react/24/solid"
-import { Avatar } from "@nextui-org/react"
+import { Avatar, Button } from "@nextui-org/react"
 
 interface IUserAvatarProps {
   className?: string;
