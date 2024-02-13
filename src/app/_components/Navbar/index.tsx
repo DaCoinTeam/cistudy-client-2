@@ -15,11 +15,11 @@ import { useSelector } from "react-redux"
 import { RootState } from "@redux"
 import { ProfileMenu } from "./ProfileMenu"
 
-interface INavbarProps {
+interface NavbarProps {
   className?: string;
 }
 
-const WrappedNavbar = (props: INavbarProps) => {
+const WrappedNavbar = (props: NavbarProps) => {
     const { dispatch } = useContext(NavbarContext)!
 
     const profile = useSelector((state: RootState) => state.auth.profile)
@@ -93,7 +93,7 @@ const WrappedNavbar = (props: INavbarProps) => {
     )
 }
 
-export const Navbar = (props: INavbarProps) => (
+export const Navbar = (props: NavbarProps) => (
     <NavbarProviders>
         {" "}
         <WrappedNavbar {...props} />{" "}

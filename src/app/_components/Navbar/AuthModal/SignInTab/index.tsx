@@ -11,8 +11,8 @@ import {
 import { FormikContext, FormikProviders } from "./FormikProviders"
 import { useContext } from "react"
 import { NavbarContext } from "../../NavbarProviders"
-import SignInByGoogleIcon from "./SignInByGoogleButton"
-import SignInByFacebookIcon from "./SignInByFacebookButton"
+import { SignInByGoogleIcon } from "./SignInByGoogleButton"
+import { SignInByFacebookIcon } from "./SignInByFacebookButton"
 
 const WrappedSignInTab = () => {
     const formik = useContext(FormikContext)!

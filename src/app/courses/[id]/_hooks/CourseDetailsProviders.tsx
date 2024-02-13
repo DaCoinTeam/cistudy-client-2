@@ -9,15 +9,15 @@ import React, {
 
 import {
     CourseDetailsAction,
-    ICourseDetailsState,
+    CourseDetailsState,
     useCourseDetailsReducer,
 } from "./useCourseDetails"
 import { findOneCourse } from "@services"
 import { useParams } from "next/navigation"
 import { isErrorResponse } from "@common"
 
-export interface ICourseDetailsContextValue {
-  state: ICourseDetailsState;
+export interface CourseDetailsContextValue {
+  state: CourseDetailsState;
   dispatch: React.Dispatch<CourseDetailsAction>;
   functions: {
     fetchAndSetCourse: () => Promise<void>;
@@ -25,7 +25,7 @@ export interface ICourseDetailsContextValue {
 }
 
 export const CourseDetailsContext =
-  createContext<ICourseDetailsContextValue | null>(null)
+  createContext<CourseDetailsContextValue | null>(null)
 
 export const CourseDetailsProviders = ({
     children,
@@ -69,7 +69,7 @@ export const CourseDetailsProviders = ({
         handleEffect()
     }, [])
 
-    const courseDetailsContextValue: ICourseDetailsContextValue = useMemo(
+    const courseDetailsContextValue: CourseDetailsContextValue = useMemo(
         () => ({
             state,
             dispatch,

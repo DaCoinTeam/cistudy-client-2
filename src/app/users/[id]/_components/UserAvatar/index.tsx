@@ -8,11 +8,11 @@ import { RootContext } from "../../../../_hooks"
 import { CameraIcon } from "@heroicons/react/24/solid"
 import { Avatar, Button } from "@nextui-org/react"
 
-interface IUserAvatarProps {
+interface UserAvatarProps {
   className?: string;
 }
 
-export const UserAvatar = (props: IUserAvatarProps) => {
+export const UserAvatar = (props: UserAvatarProps) => {
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const { state, functions } = useContext(UserDetailsContext)!

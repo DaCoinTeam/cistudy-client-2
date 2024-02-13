@@ -14,7 +14,7 @@ import { useDropzone } from "react-dropzone"
 
 export const EditVideoModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
-    const onDrop = useCallback( files => {
+    const onDrop = useCallback( (files: Array<File>) => {
         // Do something with the files
     }, [])
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})

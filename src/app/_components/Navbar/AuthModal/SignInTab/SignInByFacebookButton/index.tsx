@@ -7,7 +7,7 @@ import { AppDispatch, setProfile } from "@redux"
 import { useDispatch } from "react-redux"
 import { isErrorResponse } from "@common"
 
-const SignInByFacebookIcon = () => {
+export const SignInByFacebookIcon = () => {
     const provider = new GoogleAuthProvider()
 
     const dispatch : AppDispatch = useDispatch()
@@ -29,4 +29,3 @@ const SignInByFacebookIcon = () => {
         </Button>
     )
 }
-export default SignInByFacebookIcon

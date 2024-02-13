@@ -1,27 +1,27 @@
 import { useReducer } from "react"
 
-export interface INavbarState {
+export interface NavbarState {
   isSignUp: boolean;
   isAuthModalOpen: boolean;
 }
 
-export interface ISetIsSignUpAction {
+export interface SetIsSignUpAction {
   type: "SET_IS_SIGN_UP";
   payload: boolean;
 }
-export interface ISetIsAuthModalOpenAction {
+export interface SetIsAuthModalOpenAction {
   type: "SET_IS_AUTH_MODAL_OPEN";
   payload: boolean;
 }
 
-export type NavbarAction = ISetIsSignUpAction | ISetIsAuthModalOpenAction;
+export type NavbarAction = SetIsSignUpAction | SetIsAuthModalOpenAction;
 
-export const state: INavbarState = {
+export const state: NavbarState = {
     isSignUp: false,
     isAuthModalOpen: false,
 }
 
-export const reducer = (state: INavbarState, action: NavbarAction) => {
+export const reducer = (state: NavbarState, action: NavbarAction) => {
     switch (action.type) {
     case "SET_IS_SIGN_UP":
         return { ...state, isSignUp: action.payload }

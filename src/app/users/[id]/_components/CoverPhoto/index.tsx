@@ -8,10 +8,10 @@ import { PhotoIcon } from "@heroicons/react/24/solid"
 import { RootContext } from "../../../../_hooks"
 import { isErrorResponse } from "@common"
 
-interface ICoverPhotoProps {
+interface CoverPhotoProps {
   className?: string;
 }
-export const CoverPhoto = (props: ICoverPhotoProps) => {
+export const CoverPhoto = (props: CoverPhotoProps) => {
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const { state, functions } = useContext(UserDetailsContext)!

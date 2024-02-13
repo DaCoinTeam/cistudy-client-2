@@ -1,11 +1,11 @@
 import React from "react"
 
-interface IFacebookIconProps {
+interface FacebookIconProps {
   size?: number
   [key: string]: string | number | undefined
 }
 
-export const FacebookIcon = (props: IFacebookIconProps) => {
+export const FacebookIcon = (props: FacebookIconProps) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

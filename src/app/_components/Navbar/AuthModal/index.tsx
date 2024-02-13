@@ -10,13 +10,13 @@ import { NavbarContext } from "../NavbarProviders"
 import { SignInTab } from "./SignInTab"
 import { SignUpTab } from "./SignUpTab"
 
-interface IAuthModalProps {
+interface AuthModalProps {
   className?: string;
 }
 
 type Key = "signIn" | "signUp";
 
-export const AuthModal = (props: IAuthModalProps) => {
+export const AuthModal = (props: AuthModalProps) => {
     const { state, dispatch } = useContext(NavbarContext)!
     const { isAuthModalOpen, isSignUp } = state
 

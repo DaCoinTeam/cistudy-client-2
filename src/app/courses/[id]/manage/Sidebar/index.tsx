@@ -1,11 +1,11 @@
 "use client"
 import React from "react"
 
-interface ISidebarProps {
+interface SidebarProps {
     className?: string
 }
 
-export const Sidebar = (props: ISidebarProps) => {
+export const Sidebar = (props: SidebarProps) => {
     return (
         <div className={`${props.className}`}>
             31232
