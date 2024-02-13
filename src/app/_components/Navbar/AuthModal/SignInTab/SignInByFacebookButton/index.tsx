@@ -24,7 +24,7 @@ export const SignInByFacebookIcon = () => {
     }
   
     return (
-        <Button onPress={onClick} isIconOnly variant="flat" className="w-12 h-12">
+        <Button pn={onClick} isIconOnly variant="flat" className="w-12 h-12">
             <FacebookIcon size={40} />
         </Button>
     )

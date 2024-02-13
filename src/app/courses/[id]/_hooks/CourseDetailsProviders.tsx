@@ -45,7 +45,9 @@ export const CourseDetailsProviders = ({
             {
                 courseId: true,
                 title: true,
-                description: true
+                description: true,
+                previewVideoId: true,
+                thumbnailId: true
             }
         )
         if (!isErrorResponse(response)) {

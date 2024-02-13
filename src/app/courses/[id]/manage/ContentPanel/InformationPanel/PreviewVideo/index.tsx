@@ -1,6 +1,6 @@
 import { Spacer, Input, Link, Button } from "@nextui-org/react"
 import React, { useContext, useState } from "react"
-import { updateCourse } from "@services"
+import { getAssetUrl, updateCourse } from "@services"
 import { CourseDetailsContext } from "../../../../_hooks"
 import { isErrorResponse } from "@common"
 import { VideoCameraIcon, PhotoIcon } from "@heroicons/react/24/solid"
@@ -9,6 +9,7 @@ import { EditVideoModal } from "./EditVideoModal"
 
 export const PreviewVideo = () => {
     const { state, functions } = useContext(CourseDetailsContext)!
+    const { course } = state
     const { fetchAndSetCourse } = functions
 
     // const onClick = async () => {
@@ -31,6 +32,7 @@ export const PreviewVideo = () => {
     //     }
     //     setIsEdited(!isEdited)
     // }
+    console.log(getAssetUrl(course?.previewVideoId))
     return (
         <div>
             <div className="font-semibold ml-3"> Preview Video </div>
@@ -38,9 +40,9 @@ export const PreviewVideo = () => {
             <NextVideo 
                 poster={"https://nextui.org/images/hero-card-complete.jpeg"}
                 className="rounded-[14px] overflow-hidden"
-                src="https://stream.mux.com/sxY31L6Opl02RWPpm3Gro9XTe7fRHBjs92x93kiB1vpc.m3u8?redundant_streams=true" />
+                src={getAssetUrl(course?.previewVideoId)} />
             
-            <Spacer y={4} />
+            <Spacer y={6} />
             <div className="flex gap-4">
                 <EditVideoModal/>
                 <Button startContent={<PhotoIcon className="w-6 h-6"/>} > Edit thumbnail </Button>
