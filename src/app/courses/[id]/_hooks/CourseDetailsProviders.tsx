@@ -51,7 +51,7 @@ export const CourseDetailsProviders = ({
                 courseTargets: {
                     courseTargetId: true,
                     content: true,
-                    index: true
+                    position: true
                 }
             }
         )

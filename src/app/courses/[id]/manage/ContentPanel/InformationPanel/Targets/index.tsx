@@ -29,7 +29,7 @@ export const Targets = () => {
     return (
         <div>
             <div className="font-semibold px-3"> Targets </div>
-            <Spacer y={4} />
+            <Spacer y={3} />
             <div className="gap-3 flex flex-col">
                 {renderTargetCards()}
                 <AddTargetItem />

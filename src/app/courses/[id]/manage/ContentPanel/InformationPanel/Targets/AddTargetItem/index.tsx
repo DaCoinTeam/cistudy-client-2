@@ -16,7 +16,6 @@ export const AddTargetItem = () => {
         const response = await createCourseTarget({
             data: {
                 courseId,
-                index: course.courseTargets?.length as number,
                 content: "Write something here",
             },
         })

@@ -86,7 +86,7 @@ export interface CourseTargetEntity {
   content: string;
   createdAt: Date;
   updatedAt: Date;
-  index: number;
+  position: number;
   courseId: string;
   course: CourseEntity;
 }

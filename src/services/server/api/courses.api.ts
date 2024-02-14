@@ -71,7 +71,6 @@ export const createCourseTarget = async (
     params: {
     data: {
       courseId: string;
-      index: number;
       content: string;
     };
   },
