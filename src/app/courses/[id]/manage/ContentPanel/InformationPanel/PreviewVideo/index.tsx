@@ -34,7 +34,7 @@ export const PreviewVideo = () => {
                     <div className="font-semibold"> Preview Video </div>
                     <Dropdown>
                         <DropdownTrigger>
-                            <Link className="cursor-pointer text-sm"> Edit </Link>
+                            <Link as="button" className="text-sm"> Edit </Link>
                         </DropdownTrigger>
                         <DropdownMenu>
                             <DropdownItem
@@ -63,8 +63,6 @@ export const PreviewVideo = () => {
                     className="rounded-[14px] overflow-hidden"
                     src={getAssetUrl(course?.previewVideoId)}
                 />
-
-                <Spacer y={4} />
             </div>
             <EditVideoRef ref={editVideoRef} />
             <EditThumbnailRef ref={editThumbnailRef} />

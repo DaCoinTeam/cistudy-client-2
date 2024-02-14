@@ -8,6 +8,7 @@ import { isErrorResponse } from "@common"
 
 export const DescriptionInput = () => {
     const { state, functions } = useContext(CourseDetailsContext)!
+    const { course } = state
     const { fetchAndSetCourse } = functions
 
     const [isEdited, setIsEdited] = useState(false)
@@ -21,7 +22,6 @@ export const DescriptionInput = () => {
         }),
         onSubmit: async () => {
             if (!state.finishFetch) return
-            const { course } = state
             const { courseId } = course!
             const response = await updateCourse({
                 data: {
@@ -70,7 +70,8 @@ export const DescriptionInput = () => {
                         <Link
                             color="primary"
                             onClick={onClick}
-                            className="text-sm cursor-pointer"
+                            className="text-sm"
+                            as="button"
                             type={isEdited ? "submit" : undefined}
                         >
                             {isEdited ? "Save" : "Edit"}

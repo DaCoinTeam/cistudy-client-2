@@ -75,8 +75,8 @@ const WrappedNavbar = (props: NavbarProps) => {
                     ) : (
                         <>
                             <NavbarItem className="hidden lg:flex">
-                                <Link onClick={onClickSignIn} className="cursor-pointer">
-                  Sign In
+                                <Link as="button" onClick={onClickSignIn}>
+                  Sign In       
                                 </Link>
                             </NavbarItem>
                             <NavbarItem>

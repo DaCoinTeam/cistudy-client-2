@@ -74,7 +74,7 @@ export interface CourseEntity {
     creator: UserEntity;
     isDeleted: boolean;
     previewVideoId: string;
-    targets: string;
+    targets: Array<string>;
     includes: string;
     posts: Array<PostEntity>;
     enrolledInfos: Array<EnrolledInfoEntity>;

@@ -22,6 +22,7 @@ export const updateCourse = async (
       price?: number;
       thumbnailIndex?: number;
       previewVideoIndex?: number;
+      targets?: Array<string>
     };
     files?: Array<File>;
   },

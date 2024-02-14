@@ -12,6 +12,7 @@ import { useFormik } from "formik"
 
 export const TitleInput = () => {
     const { state, functions } = useContext(CourseDetailsContext)!
+    const { course } = state
     const { fetchAndSetCourse } = functions
     const [isEdited, setIsEdited] = useState(false)
 
@@ -24,7 +25,6 @@ export const TitleInput = () => {
         }),
         onSubmit: async () => {
             if (!state.finishFetch) return
-            const { course } = state
             const { courseId } = course!
             const response = await updateCourse({
                 data: {
@@ -71,7 +71,8 @@ export const TitleInput = () => {
                         <Link
                             color="primary"
                             onClick={onClick}
-                            className="text-sm cursor-pointer"
+                            as="button"
+                            className="text-sm"
                         >
                             {isEdited ? "Save" : "Edit"}
                         </Link>

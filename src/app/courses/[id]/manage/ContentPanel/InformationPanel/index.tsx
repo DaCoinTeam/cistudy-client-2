@@ -4,6 +4,7 @@ import React from "react"
 import { TitleInput } from "./TitleInput"
 import { DescriptionInput } from "./DescriptionInput"
 import { PreviewVideo } from "./PreviewVideo"
+import { Targets } from "./Targets"
 
 export const InformationPanel = () => {
     return (
@@ -15,10 +16,12 @@ export const InformationPanel = () => {
             <CardBody className="p-6">
                 <div>
                     <TitleInput/>
-                    <Spacer y={4}/>
+                    <Spacer y={6}/>
                     <DescriptionInput />
-                    <Spacer y={4}/>
-                    <PreviewVideo/>
+                    <Spacer y={6}/>
+                    <PreviewVideo />
+                    <Spacer y={6}/>
+                    <Targets />
                 </div>   
             </CardBody>
         </>

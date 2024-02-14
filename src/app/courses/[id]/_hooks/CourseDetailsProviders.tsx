@@ -11,7 +11,7 @@ import {
     CourseDetailsAction,
     CourseDetailsState,
     useCourseDetailsReducer,
-} from "./useCourseDetails"
+} from "./useCourseDetailsReducer"
 import { findOneCourse } from "@services"
 import { useParams } from "next/navigation"
 import { isErrorResponse } from "@common"
@@ -47,7 +47,8 @@ export const CourseDetailsProviders = ({
                 title: true,
                 description: true,
                 previewVideoId: true,
-                thumbnailId: true
+                thumbnailId: true,
+                targets: true
             }
         )
         if (!isErrorResponse(response)) {
