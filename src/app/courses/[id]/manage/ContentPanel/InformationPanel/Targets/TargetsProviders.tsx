@@ -34,17 +34,13 @@ export const TargetsProviders = ({ children }: { children: ReactNode }) => {
     const { course } = courseDetailsState
     const { fetchAndSetCourse } = functions
 
-    console.log("Current")
-    console.log(state.keyTargets)
 
     const addTarget = useCallback(async (target: string) => {
         if (course === null) return
 
         const { courseId } = course
         const targets = state.keyTargets.map((keyTarget) => keyTarget.value)
-        console.log(targets)
         targets.push(target)
-        console.log(targets)
         const response = await updateCourse({
             data: {
                 courseId,
@@ -57,7 +53,7 @@ export const TargetsProviders = ({ children }: { children: ReactNode }) => {
         } else {
             console.log(response)
         }
-    }, [])
+    }, [state.keyTargets])
 
     useEffect(() => {
         const targets = courseDetailsState.course?.targets
