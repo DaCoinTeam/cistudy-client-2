@@ -10,7 +10,7 @@ export const Targets = () => {
     const { state } = useContext(CourseDetailsContext)!
     const { course } = state
 
-    const renderTargets = () => {
+    const renderTargetCards = () => {
         if (!course) return null
         const { courseTargets } = course
         if (!courseTargets) return null
@@ -32,7 +32,7 @@ export const Targets = () => {
             <div className="font-semibold px-3"> Targets </div>
             <Spacer y={4} />
             <div className="gap-2.5 flex flex-col">
-                {renderTargets()}
+                {renderTargetCards()}
                 <AddTargetCard />
             </div>
         </div>
