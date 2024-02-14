@@ -4,7 +4,7 @@ import React, { useContext } from "react"
 import { CourseDetailsContext } from "../../../../../_hooks"
 import { createCourseTarget } from "@services"
 import { isErrorResponse } from "@common"
-export const AddTargetCard = () => {
+export const AddTargetItem = () => {
     const { state, functions } = useContext(CourseDetailsContext)!
     const { course } = state
     const { fetchAndSetCourse } = functions

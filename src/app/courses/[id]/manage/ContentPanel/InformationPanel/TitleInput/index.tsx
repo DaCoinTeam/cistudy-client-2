@@ -26,6 +26,7 @@ export const TitleInput = () => {
         onSubmit: async () => {
             if (!state.finishFetch) return
             const { courseId } = course!
+            if (!courseId) return
             const response = await updateCourse({
                 data: {
                     courseId,
@@ -42,9 +43,9 @@ export const TitleInput = () => {
     })
 
     useEffect(() => {
-        if (!state.course?.title) return 
-        formik.setFieldValue("title", state.course?.title)
-    }, [state.course?.title])
+        if (!course?.title) return 
+        formik.setFieldValue("title", course?.title)
+    }, [course?.title])
 
     const onClick = async () => {
         if (isEdited) {
@@ -54,31 +55,29 @@ export const TitleInput = () => {
     }
     return (
         <div>
-            <form onSubmit={formik.handleSubmit}>
-                <div className="font-semibold ml-3"> Title </div>
-                <Spacer y={1} />
-                <Input
-                    labelPlacement="outside"
-                    label=""
-                    id="title"
-                    value={formik.values.title}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    isInvalid={!! (formik.touched.title && formik.errors.title)}
-                    errorMessage={formik.touched.title && formik.errors.title}
-                    readOnly={!isEdited}
-                    endContent={
-                        <Link
-                            color="primary"
-                            onClick={onClick}
-                            as="button"
-                            className="text-sm"
-                        >
-                            {isEdited ? "Save" : "Edit"}
-                        </Link>
-                    }
-                />
-            </form>
+            <div className="font-semibold ml-3"> Title </div>
+            <Spacer y={1} />
+            <Input
+                labelPlacement="outside"
+                label=""
+                id="title"
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                isInvalid={!! (formik.touched.title && formik.errors.title)}
+                errorMessage={formik.touched.title && formik.errors.title}
+                readOnly={!isEdited}
+                endContent={
+                    <Link
+                        color="primary"
+                        onClick={onClick}
+                        as="button"
+                        className="text-sm"
+                    >
+                        {isEdited ? "Save" : "Edit"}
+                    </Link>
+                }
+            />
         </div>
     )
 }

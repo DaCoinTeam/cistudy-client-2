@@ -145,3 +145,43 @@ export const updateCourseTarget = async (
         return _ex
     }
 }
+
+export const deleteCourseTarget = async (
+    params: {
+    data: {
+      courseTargetId: string;
+    };
+  },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string | ErrorResponse> => {
+    try {
+        const { data } = params
+        const { courseTargetId } = data
+        const url = `${BASE_URL}/delete-course-target/${courseTargetId}`
+        // 
+
+        const response = await axios.delete(url, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+      response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await deleteCourseTarget(params, AuthTokenType.Refresh)
+        return _ex
+    }
+}

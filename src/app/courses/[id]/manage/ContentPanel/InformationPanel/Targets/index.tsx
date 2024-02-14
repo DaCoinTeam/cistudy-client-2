@@ -1,9 +1,8 @@
 import React, { useContext } from "react"
-import { TargetCard } from "./TargetCard"
-import { AddTargetCard } from "./AddTargetCard"
+import { TargetItem } from "./TargetItem"
+import { AddTargetItem } from "./AddTargetItem"
 import { Spacer } from "@nextui-org/react"
 import { CourseDetailsContext } from "../../../../_hooks"
-import { DeepPartial } from "@apollo/client/utilities"
 import { CourseTargetEntity } from "@common"
 
 export const Targets = () => {
@@ -18,9 +17,9 @@ export const Targets = () => {
             <>
                 {courseTargets
                     .map((courseTarget) => (
-                        <TargetCard
+                        <TargetItem
                             key={courseTarget?.courseTargetId}
-                            courseTarget={courseTarget as DeepPartial<CourseTargetEntity>}
+                            courseTarget={courseTarget as CourseTargetEntity}
                         />
                     ))}
             </>
@@ -31,9 +30,9 @@ export const Targets = () => {
         <div>
             <div className="font-semibold px-3"> Targets </div>
             <Spacer y={4} />
-            <div className="gap-2.5 flex flex-col">
+            <div className="gap-3 flex flex-col">
                 {renderTargetCards()}
-                <AddTargetCard />
+                <AddTargetItem />
             </div>
         </div>
     )

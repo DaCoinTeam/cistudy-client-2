@@ -23,6 +23,7 @@ export const DescriptionInput = () => {
         onSubmit: async () => {
             if (!state.finishFetch) return
             const { courseId } = course!
+            if (!courseId) return
             const response = await updateCourse({
                 data: {
                     courseId,
@@ -39,9 +40,9 @@ export const DescriptionInput = () => {
     })
 
     useEffect(() => {
-        if (!state.course?.description) return
-        formik.setFieldValue("description", state.course?.description)
-    }, [state.course?.description])
+        if (!course?.description) return
+        formik.setFieldValue("description", course?.description)
+    }, [course?.description])
 
     const onClick = async () => {
         if (isEdited) {
@@ -51,34 +52,32 @@ export const DescriptionInput = () => {
     }
     return (
         <div>
-            <form onSubmit={formik.handleSubmit}>
-                <div className="font-semibold ml-3"> Description </div>
-                <Spacer y={1} />
-                <Textarea
-                    labelPlacement="outside"
-                    label=""
-                    id="description"
-                    value={formik.values.description}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    isInvalid={
-                        !!(formik.touched.description && formik.errors.description)
-                    }
-                    errorMessage={formik.touched.description && formik.errors.description}
-                    readOnly={!isEdited}
-                    endContent={
-                        <Link
-                            color="primary"
-                            onClick={onClick}
-                            className="text-sm"
-                            as="button"
-                            type={isEdited ? "submit" : undefined}
-                        >
-                            {isEdited ? "Save" : "Edit"}
-                        </Link>
-                    }
-                />
-            </form>
+            <div className="font-semibold ml-3"> Description </div>
+            <Spacer y={1} />
+            <Textarea
+                labelPlacement="outside"
+                label=""
+                id="description"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                isInvalid={
+                    !!(formik.touched.description && formik.errors.description)
+                }
+                errorMessage={formik.touched.description && formik.errors.description}
+                readOnly={!isEdited}
+                endContent={
+                    <Link
+                        color="primary"
+                        onClick={onClick}
+                        className="text-sm"
+                        as="button"
+                        type={isEdited ? "submit" : undefined}
+                    >
+                        {isEdited ? "Save" : "Edit"}
+                    </Link>
+                }
+            />
         </div>
     )
 }
