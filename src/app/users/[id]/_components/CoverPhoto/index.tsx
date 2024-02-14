@@ -25,9 +25,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
     const isOwnProfile = user?.userId === profile?.userId
 
     const onClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click()
-        }
+        if (fileInputRef.current) fileInputRef.current.click()
     }
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {

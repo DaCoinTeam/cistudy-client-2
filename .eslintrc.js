@@ -33,6 +33,7 @@ module.exports = {
         "react"
     ],
     "rules": {
+        "react/display-name": "off",
         "indent": [
             "error",
             4

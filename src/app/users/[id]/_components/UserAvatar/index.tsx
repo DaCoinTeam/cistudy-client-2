@@ -26,9 +26,7 @@ export const UserAvatar = (props: UserAvatarProps) => {
     const isOwnProfile = user?.userId === profile?.userId
 
     const onClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click()
-        }
+        if (fileInputRef.current) fileInputRef.current.click()
     }
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,52 +1,73 @@
-import { Spacer, Input, Link, Button } from "@nextui-org/react"
-import React, { useContext, useState } from "react"
-import { getAssetUrl, updateCourse } from "@services"
+import {
+    Spacer,
+    Link,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownTrigger,
+} from "@nextui-org/react"
+import React, { useContext, useRef } from "react"
+import { getAssetUrl } from "@services"
 import { CourseDetailsContext } from "../../../../_hooks"
-import { isErrorResponse } from "@common"
-import { VideoCameraIcon, PhotoIcon } from "@heroicons/react/24/solid"
 import NextVideo from "next-video"
-import { EditVideoModal } from "./EditVideoModal"
+import { EditVideoRef, EditVideoRefSelectors } from "./EditVideoRef"
+import {
+    EditThumbnailRef,
+    EditThumbnailRefSelectors,
+} from "./EditThumbnailRef"
+import { PhotoIcon, VideoCameraIcon } from "@heroicons/react/24/solid"
 
 export const PreviewVideo = () => {
-    const { state, functions } = useContext(CourseDetailsContext)!
+    const { state } = useContext(CourseDetailsContext)!
     const { course } = state
-    const { fetchAndSetCourse } = functions
 
-    // const onClick = async () => {
-    //     if (!state.finishFetch) return
-    //     const { course } = state
-    //     const { courseId } = course!
-    //     if (isEdited) {
-    //         const response = await updateCourse({
-    //             data: {
-    //                 courseId,
-    //                 title: formik.values.title
-    //             }
-    //         })
-    //         if (!isErrorResponse(response)) {
-    //             // do message
-    //             await fetchAndSetCourse()
-    //         } else {
-    //             console.log(response)
-    //         }
-    //     }
-    //     setIsEdited(!isEdited)
-    // }
-    console.log(getAssetUrl(course?.previewVideoId))
+    const editVideoRef = useRef<EditVideoRefSelectors>(null)
+    const onClickEditVideo = () => editVideoRef.current?.onClickOpenDirectory()
+
+    const editThumbnailRef = useRef<EditThumbnailRefSelectors>(null)
+    const onClickEditThumbnail = () =>
+        editThumbnailRef.current?.onClickOpenDirectory()
     return (
-        <div>
-            <div className="font-semibold ml-3"> Preview Video </div>
-            <Spacer y={1} />
-            <NextVideo 
-                poster={"https://nextui.org/images/hero-card-complete.jpeg"}
-                className="rounded-[14px] overflow-hidden"
-                src={getAssetUrl(course?.previewVideoId)} />
-            
-            <Spacer y={6} />
-            <div className="flex gap-4">
-                <EditVideoModal/>
-                <Button startContent={<PhotoIcon className="w-6 h-6"/>} > Edit thumbnail </Button>
+        <>
+            <div>
+                <div className="flex justify-between items-center mx-3">
+                    <div className="font-semibold"> Preview Video </div>
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Link className="cursor-pointer text-sm"> Edit </Link>
+                        </DropdownTrigger>
+                        <DropdownMenu>
+                            <DropdownItem
+                                key="editVideo"
+                                onPress={onClickEditVideo}
+                                startContent={<VideoCameraIcon className="w-6 h-6" />}
+                                color="primary"
+                            >
+                Edit video
+                            </DropdownItem>
+                            <DropdownItem
+                                key="editThumbnail"
+                                onPress={onClickEditThumbnail}
+                                startContent={<PhotoIcon className="w-6 h-6" />}
+                                color="primary"
+                            >
+                Edit thumbnail
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
+
+                <Spacer y={1} />
+                <NextVideo
+                    poster={getAssetUrl(course?.thumbnailId)}
+                    className="rounded-[14px] overflow-hidden"
+                    src={getAssetUrl(course?.previewVideoId)}
+                />
+
+                <Spacer y={4} />
             </div>
-        </div>
+            <EditVideoRef ref={editVideoRef} />
+            <EditThumbnailRef ref={editThumbnailRef} />
+        </>
     )
 }
