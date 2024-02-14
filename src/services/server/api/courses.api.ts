@@ -16,13 +16,13 @@ const BASE_URL = `${endpointConfig().api}/courses`
 export const updateCourse = async (
     params: {
     data: {
-      courseId?: string;
+      courseId: string;
       title?: string;
       description?: string;
       price?: number;
       thumbnailIndex?: number;
       previewVideoIndex?: number;
-      targets?: Array<string>
+      targets?: Array<string>;
     };
     files?: Array<File>;
   },
@@ -63,6 +63,85 @@ export const updateCourse = async (
       authTokenType === AuthTokenType.Access
         )
             return await updateCourse(params, AuthTokenType.Refresh)
+        return _ex
+    }
+}
+
+export const createCourseTarget = async (
+    params: {
+    data: {
+      courseId: string;
+      index: number;
+      content: string;
+    };
+  },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string | ErrorResponse> => {
+    try {
+        const { data } = params
+        const url = `${BASE_URL}/create-course-target`
+
+        const response = await axios.post(url, data, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+      response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await createCourseTarget(params, AuthTokenType.Refresh)
+        return _ex
+    }
+}
+
+export const updateCourseTarget = async (
+    params: {
+    data: {
+      courseTargetId: string;
+      content: string;
+    };
+  },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string | ErrorResponse> => {
+    try {
+        const { data } = params
+        const url = `${BASE_URL}/update-course-target`
+
+        const response = await axios.put(url, data, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+      response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await updateCourseTarget(params, AuthTokenType.Refresh)
         return _ex
     }
 }

@@ -1,15 +1,14 @@
 import { Card, CardBody, Link } from "@nextui-org/react"
 import React, { useContext, useState } from "react"
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable"
-import { Vector2, isErrorResponse } from "@common"
+import { CourseTargetEntity, Vector2, isErrorResponse } from "@common"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { CourseDetailsContext } from "../../../../../_hooks"
-import { updateCourse } from "@services"
-import { KeyTarget } from "../useTargetsReducer"
+import { DeepPartial } from "@apollo/client/utilities"
 
 interface TargetCardProps {
-  keyTarget: KeyTarget;
+   courseTarget: DeepPartial<CourseTargetEntity>
 }
 
 export const TargetCard = (props: TargetCardProps) => {
@@ -28,20 +27,20 @@ export const TargetCard = (props: TargetCardProps) => {
             target: Yup.string().required("Target is required"),
         }),
         onSubmit: async () => {
-            if (!state.finishFetch) return
-            const { courseId } = course!
-            const response = await updateCourse({
-                data: {
-                    courseId,
-                    //targets: formik.values.target,
-                },
-            })
-            if (!isErrorResponse(response)) {
-                // do message
-                await fetchAndSetCourse()
-            } else {
-                console.log(response)
-            }
+            // if (!state.finishFetch) return
+            // const { courseId } = course!
+            // const response = await updateCourse({
+            //     data: {
+            //         courseId,
+            //         targets: formik.values.target,
+            //     },
+            // })
+            // if (!isErrorResponse(response)) {
+            //     // do message
+            //     await fetchAndSetCourse()
+            // } else {
+            //     console.log(response)
+            // }
         },
     })
 
@@ -66,7 +65,7 @@ export const TargetCard = (props: TargetCardProps) => {
                 <CardBody>
                     {" "}
                     <div className="flex justify-between items-center">
-                        <div className="text-sm"> {props.keyTarget.value}</div>
+                        <div className="text-sm"> {props.courseTarget.content}</div>
                         <div className="flex gap-4">
                             <Link className="text-sm" as="button">
                 Edit

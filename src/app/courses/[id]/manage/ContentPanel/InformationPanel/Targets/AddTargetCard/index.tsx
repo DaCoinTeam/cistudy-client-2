@@ -1,12 +1,32 @@
 import { PlusIcon } from "@heroicons/react/16/solid"
 import { Card, CardBody } from "@nextui-org/react"
 import React, { useContext } from "react"
-import { TargetsContext } from "../TargetsProviders"
+import { CourseDetailsContext } from "../../../../../_hooks"
+import { createCourseTarget } from "@services"
+import { isErrorResponse } from "@common"
 export const AddTargetCard = () => {
-    const { functions } = useContext(TargetsContext)!
-    const { addTarget } = functions
+    const { state, functions } = useContext(CourseDetailsContext)!
+    const { course } = state
+    const { fetchAndSetCourse } = functions
 
-    const onClick = async () => addTarget("Write something here")
+    const onClick = async () => {
+        if (!course) return
+        const { courseId } = course
+        if (!courseId) return
+        const response = await createCourseTarget({
+            data: {
+                courseId,
+                index: course.courseTargets?.length as number,
+                content: "Write something here",
+            },
+        })
+        if (!isErrorResponse(response)) {
+            await fetchAndSetCourse()
+        } else {
+            console.log(response)
+        }
+    }
+
     return (
         <Card
             onClick={onClick}

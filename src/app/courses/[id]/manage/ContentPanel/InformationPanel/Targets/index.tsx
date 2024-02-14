@@ -3,24 +3,26 @@ import { TargetCard } from "./TargetCard"
 import { AddTargetCard } from "./AddTargetCard"
 import { Spacer } from "@nextui-org/react"
 import { CourseDetailsContext } from "../../../../_hooks"
-import { TargetsContext, TargetsProviders } from "./TargetsProviders"
+import { DeepPartial } from "@apollo/client/utilities"
+import { CourseTargetEntity } from "@common"
 
-const WrappedTargets = () => {
+export const Targets = () => {
     const { state } = useContext(CourseDetailsContext)!
     const { course } = state
 
-    const { state: targetsState } = useContext(TargetsContext)!
-    const { keyTargets } = targetsState
-
     const renderTargets = () => {
         if (!course) return null
-        const { targets } = course
-        if (!targets) return null
+        const { courseTargets } = course
+        if (!courseTargets) return null
         return (
             <>
-                {keyTargets.map((keyTarget) => (
-                    <TargetCard key={keyTarget.key} keyTarget={keyTarget} />
-                ))}
+                {courseTargets
+                    .map((courseTarget) => (
+                        <TargetCard
+                            key={courseTarget?.courseTargetId}
+                            courseTarget={courseTarget as DeepPartial<CourseTargetEntity>}
+                        />
+                    ))}
             </>
         )
     }
@@ -37,8 +39,8 @@ const WrappedTargets = () => {
     )
 }
 
-export const Targets = () => (
-    <TargetsProviders>
-        <WrappedTargets/>
-    </TargetsProviders>
-)
+// export const Targets = () => (
+//     <TargetsProviders>
+//         <WrappedTargets/>
+//     </TargetsProviders>
+// )
