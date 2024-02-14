@@ -20,9 +20,7 @@ export const TargetItem = (props: TargetItemProps) => {
     const [isEdited, setIsEdited] = useState(false)
 
     const onClick = () => {
-        if (isEdited) {
-            formik.handleSubmit()
-        }
+        if (isEdited) formik.handleSubmit()
         setIsEdited(!isEdited)
     }
 

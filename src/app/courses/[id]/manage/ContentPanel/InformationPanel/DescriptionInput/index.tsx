@@ -45,9 +45,7 @@ export const DescriptionInput = () => {
     }, [course?.description])
 
     const onClick = async () => {
-        if (isEdited) {
-            await formik.submitForm()
-        }
+        if (isEdited)  await formik.submitForm()
         setIsEdited(!isEdited)
     }
     return (
