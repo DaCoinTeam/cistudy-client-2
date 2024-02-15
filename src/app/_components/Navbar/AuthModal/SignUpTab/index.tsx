@@ -16,7 +16,7 @@ const WrappedSignUpTab = () => {
 
     const { dispatch } = useContext(NavbarContext)!
 
-    const onClickToSignIn = () =>
+    const onPressToSignIn = () =>
         dispatch({
             type: "SET_IS_SIGN_UP",
             payload: false,
@@ -100,7 +100,7 @@ const WrappedSignUpTab = () => {
                     <Spacer y={4} />
                     <div className="text-center">
                         <span className="text-sm">Already have an account?</span>{" "}
-                        <Link className="text-sm cursor-pointer" onClick={onClickToSignIn}>
+                        <Link className="text-sm cursor-pointer" onPress={onPressToSignIn}>
               Sign In
                         </Link>
                     </div>

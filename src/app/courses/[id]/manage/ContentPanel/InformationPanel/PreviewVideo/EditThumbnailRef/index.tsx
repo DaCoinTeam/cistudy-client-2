@@ -9,14 +9,14 @@ import { updateCourse } from "@services"
 import { CourseDetailsContext } from "../../../../../_hooks"
 
 export interface EditThumbnailRefSelectors {
-  onClickOpenDirectory: () => void;
+  onPressOpenDirectory: () => void;
 }
 export const EditThumbnailRef = forwardRef<EditThumbnailRefSelectors>(
     (_, ref) => {
         const fileInputRef = useRef<HTMLInputElement>(null)
 
         useImperativeHandle(ref, () => ({
-            onClickOpenDirectory() {
+            onPressOpenDirectory() {
                 if (fileInputRef.current) fileInputRef.current.click()
             },
         }))

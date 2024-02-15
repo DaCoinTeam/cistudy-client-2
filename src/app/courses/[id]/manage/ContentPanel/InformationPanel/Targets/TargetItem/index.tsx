@@ -19,7 +19,7 @@ export const TargetItem = (props: TargetItemProps) => {
     const [position, setPosition] = useState<Vector2>({ x: 0, y: 0 })
     const [isEdited, setIsEdited] = useState(false)
 
-    const onClick = () => {
+    const onPress = () => {
         if (isEdited) formik.handleSubmit()
         setIsEdited(!isEdited)
     }
@@ -74,7 +74,7 @@ export const TargetItem = (props: TargetItemProps) => {
         })
     }
 
-    const onClickRemove = async () => {
+    const onPressRemove = async () => {
         if (!state.finishFetch) return
         const { courseId } = course!
         if (!courseId) return
@@ -106,10 +106,10 @@ export const TargetItem = (props: TargetItemProps) => {
                     value={formik.values.content}
                     endContent={
                         <div className="flex gap-4">
-                            <Link className="text-sm" as="button" onClick={onClick}>
+                            <Link className="text-sm" as="button" onPress={onPress}>
                                 {isEdited ? "Save" : "Edit"}
                             </Link>
-                            <Link onClick={onClickRemove} className="text-sm" as="button">
+                            <Link onPress={onPressRemove} className="text-sm" as="button">
                 Remove
                             </Link>
                         </div>

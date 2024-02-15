@@ -6,7 +6,7 @@ import { useFormik } from "formik"
 import { updateCourse } from "@services"
 import { isErrorResponse } from "@common"
 
-export const DescriptionInput = () => {
+export const Description = () => {
     const { state, functions } = useContext(CourseDetailsContext)!
     const { course } = state
     const { fetchAndSetCourse } = functions
@@ -44,7 +44,7 @@ export const DescriptionInput = () => {
         formik.setFieldValue("description", course?.description)
     }, [course?.description])
 
-    const onClick = async () => {
+    const onPress = async () => {
         if (isEdited) await formik.submitForm()
         setIsEdited(!isEdited)
     }
@@ -67,7 +67,7 @@ export const DescriptionInput = () => {
                 endContent={
                     <Link
                         color="primary"
-                        onClick={onClick}
+                        onPress={onPress}
                         className="text-sm"
                         as="button"
                         type={isEdited ? "submit" : undefined}

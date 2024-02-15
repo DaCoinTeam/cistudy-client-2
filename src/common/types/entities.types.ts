@@ -78,7 +78,7 @@ export interface CourseEntity {
   posts: Array<PostEntity>;
   enrolledInfos: Array<EnrolledInfoEntity>;
   sections: Array<SectionEntity>;
-  courseTargets : Array<CourseTargetEntity>
+  courseTargets: Array<CourseTargetEntity>;
 }
 
 export interface CourseTargetEntity {
@@ -162,8 +162,11 @@ export interface SectionEntity {
 
 export interface ResourceEntity {
   resourceId: string;
-  resourceLink: string;
+  name: string;
+  resourceUrl: string;
   lectureId: string;
+  createdAt: Date;
+  updatedAt: Date;
   lecture: LectureEntity;
 }
 

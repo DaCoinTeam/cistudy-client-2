@@ -1,8 +1,8 @@
 "use client"
 import { CardBody, CardHeader, Divider, Spacer } from "@nextui-org/react"
 import React from "react"
-import { TitleInput } from "./TitleInput"
-import { DescriptionInput } from "./DescriptionInput"
+import { Title } from "./Title"
+import { Description } from "./Description"
 import { PreviewVideo } from "./PreviewVideo"
 import { Targets } from "./Targets"
 
@@ -15,9 +15,9 @@ export const InformationPanel = () => {
             <Divider/>
             <CardBody className="p-6">
                 <div>
-                    <TitleInput/>
+                    <Title/>
                     <Spacer y={6}/>
-                    <DescriptionInput />
+                    <Description />
                     <Spacer y={6}/>
                     <PreviewVideo />
                     <Spacer y={6}/>

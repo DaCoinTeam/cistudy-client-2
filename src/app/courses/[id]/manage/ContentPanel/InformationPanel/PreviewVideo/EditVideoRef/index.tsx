@@ -4,7 +4,7 @@ import { isErrorResponse } from "@common"
 import { CourseDetailsContext } from "../../../../../_hooks"
 
 export interface EditVideoRefSelectors {
-    onClickOpenDirectory : () => void
+    onPressOpenDirectory : () => void
 }
 
 export const EditVideoRef = forwardRef<EditVideoRefSelectors>((_, ref
@@ -12,7 +12,7 @@ export const EditVideoRef = forwardRef<EditVideoRefSelectors>((_, ref
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     useImperativeHandle(ref, () => ({ 
-        onClickOpenDirectory () {
+        onPressOpenDirectory () {
             if (fileInputRef.current) fileInputRef.current.click()
         }
     }))

@@ -9,7 +9,7 @@ export const AddTargetItem = () => {
     const { course } = state
     const { fetchAndSetCourse } = functions
 
-    const onClick = async () => {
+    const onPress = async () => {
         if (!course) return
         const { courseId } = course
         if (!courseId) return
@@ -28,7 +28,7 @@ export const AddTargetItem = () => {
 
     return (
         <Card
-            onClick={onClick}
+            onPress={onPress}
             shadow="none"
             className="bg-content2"
             isPressable

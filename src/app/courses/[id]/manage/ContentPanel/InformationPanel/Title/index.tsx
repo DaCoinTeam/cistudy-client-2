@@ -10,7 +10,7 @@ import { isErrorResponse } from "@common"
 import * as Yup from "yup"
 import { useFormik } from "formik"
 
-export const TitleInput = () => {
+export const Title = () => {
     const { state, functions } = useContext(CourseDetailsContext)!
     const { course } = state
     const { fetchAndSetCourse } = functions
@@ -47,7 +47,7 @@ export const TitleInput = () => {
         formik.setFieldValue("title", course?.title)
     }, [course?.title])
 
-    const onClick = async () => {
+    const onPress = async () => {
         if (isEdited) await formik.submitForm()
         setIsEdited(!isEdited)
     }
@@ -68,7 +68,7 @@ export const TitleInput = () => {
                 endContent={
                     <Link
                         color="primary"
-                        onClick={onClick}
+                        onPress={onPress}
                         as="button"
                         className="text-sm"
                     >

@@ -24,7 +24,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
 
     const isOwnProfile = user?.userId === profile?.userId
 
-    const onClick = () => {
+    const onPress = () => {
         if (fileInputRef.current) fileInputRef.current.click()
     }
 
@@ -65,7 +65,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
                 {
                     isOwnProfile ? (
                         <Button
-                            onClick={onClick}
+                            onPress={onPress}
                             className="z-10 w-fit"
                             startContent={<PhotoIcon className="w-6 h-6" />}
                         >

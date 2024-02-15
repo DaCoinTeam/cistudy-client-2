@@ -52,6 +52,19 @@ export const CourseDetailsProviders = ({
                     courseTargetId: true,
                     content: true,
                     position: true
+                },
+                sections: {
+                    sectionId: true,
+                    title: true,
+                    lectures: {
+                        lectureId: true,
+                        title: true,
+                        resource: {
+                            resourceId: true,
+                            name: true,
+                            resourceUrl: true
+                        }
+                    }
                 }
             }
         )

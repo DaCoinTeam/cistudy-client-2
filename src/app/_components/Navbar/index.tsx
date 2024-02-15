@@ -24,7 +24,7 @@ const WrappedNavbar = (props: NavbarProps) => {
 
     const profile = useSelector((state: RootState) => state.auth.profile)
 
-    const onClickSignIn = () => {
+    const onPressSignIn = () => {
         dispatch({
             type: "SET_IS_AUTH_MODAL_OPEN",
             payload: true
@@ -34,7 +34,7 @@ const WrappedNavbar = (props: NavbarProps) => {
             payload: false
         })
     }
-    const onClickSignUp = () => {
+    const onPressSignUp = () => {
         dispatch({
             type: "SET_IS_AUTH_MODAL_OPEN",
             payload: true
@@ -75,12 +75,12 @@ const WrappedNavbar = (props: NavbarProps) => {
                     ) : (
                         <>
                             <NavbarItem className="hidden lg:flex">
-                                <Link as="button" onClick={onClickSignIn}>
+                                <Link as="button" onPress={onPressSignIn}>
                   Sign In       
                                 </Link>
                             </NavbarItem>
                             <NavbarItem>
-                                <Button color="primary" onClick={onClickSignUp} variant="flat">
+                                <Button color="primary" onPress={onPressSignUp} variant="flat">
                   Sign Up
                                 </Button>
                             </NavbarItem>

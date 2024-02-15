@@ -12,16 +12,15 @@ export const Targets = () => {
     const renderTargetCards = () => {
         if (!course) return null
         const { courseTargets } = course
-        if (!courseTargets) return null
+        const _courseTargets = courseTargets as Array<CourseTargetEntity>
         return (
             <>
-                {courseTargets
-                    .map((courseTarget) => (
-                        <TargetItem
-                            key={courseTarget?.courseTargetId}
-                            courseTarget={courseTarget as CourseTargetEntity}
-                        />
-                    ))}
+                {_courseTargets.map((courseTarget) => (
+                    <TargetItem
+                        key={courseTarget?.courseTargetId}
+                        courseTarget={courseTarget as CourseTargetEntity}
+                    />
+                ))}
             </>
         )
     }

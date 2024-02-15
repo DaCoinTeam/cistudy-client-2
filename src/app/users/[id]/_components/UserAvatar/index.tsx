@@ -25,7 +25,7 @@ export const UserAvatar = (props: UserAvatarProps) => {
 
     const isOwnProfile = user?.userId === profile?.userId
 
-    const onClick = () => {
+    const onPress = () => {
         if (fileInputRef.current) fileInputRef.current.click()
     }
 
@@ -61,7 +61,7 @@ export const UserAvatar = (props: UserAvatarProps) => {
                     />
                     {isOwnProfile ? (
                         <Button
-                            onClick={onClick}
+                            onPress={onPress}
                             radius="full"
                             isIconOnly
                             className="absolute bottom-0 right-0"

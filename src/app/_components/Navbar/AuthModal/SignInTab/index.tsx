@@ -18,7 +18,7 @@ const WrappedSignInTab = () => {
     const formik = useContext(FormikContext)!
     const { dispatch } = useContext(NavbarContext)!
 
-    const onClickToSignUp = () => dispatch({
+    const onPressToSignUp = () => dispatch({
         type: "SET_IS_SIGN_UP",
         payload: true
     })
@@ -52,7 +52,7 @@ const WrappedSignInTab = () => {
                     <Spacer y={4} />
                     <div className="text-center">
                         <span className="text-sm">Do not have an account?</span>{" "}
-                        <Link className="text-sm cursor-pointer" onClick={onClickToSignUp}>
+                        <Link className="text-sm cursor-pointer" onPress={onPressToSignUp}>
               Sign Up
                         </Link>
                     </div>
