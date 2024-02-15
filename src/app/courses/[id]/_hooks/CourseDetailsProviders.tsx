@@ -58,6 +58,8 @@ export const CourseDetailsProviders = ({
                     title: true,
                     lectures: {
                         lectureId: true,
+                        thumbnailId: true,
+                        lectureVideoId: true,
                         title: true,
                         resources: {
                             resourceId: true,

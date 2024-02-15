@@ -185,6 +185,96 @@ export const deleteCourseTarget = async (
     }
 }
 
+export const createLecture = async (
+    params: {
+    data: {
+      sectionId: string;
+      title: string;
+    };
+  },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string | ErrorResponse> => {
+    try {
+        const { data } = params
+        const url = `${BASE_URL}/create-lecture`
+
+        const response = await axios.post(url, data, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+      response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await createLecture(params, AuthTokenType.Refresh)
+        return _ex
+    }
+}
+
+export const updateLecture = async (
+    params: {
+    data: {
+      lectureId: string;
+      title?: string;
+      thumbnailIndex?: number;
+      lectureVideoIndex?: number;
+    };
+    files?: Array<File>;
+  },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string | ErrorResponse> => {
+    try {
+        const { data, files } = params
+        const url = `${BASE_URL}/update-lecture`
+        const formData = new FormData()
+
+        formData.append("data", JSON.stringify(data))
+        if (files) {
+            for (const file of files) {
+                formData.append("files", file)
+            }
+        }
+
+        const response = await axios.put(url, formData, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Content-Type": "multipart/form-data",
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+      response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await updateLecture(params, AuthTokenType.Refresh)
+        return _ex
+    }
+}
+
 export const createResources = async (
     params: {
     data: {
@@ -229,6 +319,45 @@ export const createResources = async (
       authTokenType === AuthTokenType.Access
         )
             return await createResources(params, AuthTokenType.Refresh)
+        return _ex
+    }
+}
+
+export const createSection = async (
+    params: {
+    data: {
+      courseId: string;
+      title?: string;
+    };
+  },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string | ErrorResponse> => {
+    try {
+        const { data } = params
+        const url = `${BASE_URL}/create-section`
+
+        const response = await axios.post(url, data, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+      response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await createSection(params, AuthTokenType.Refresh)
         return _ex
     }
 }

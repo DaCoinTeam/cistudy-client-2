@@ -12,7 +12,7 @@ import { useFormik } from "formik"
 
 export const Title = () => {
     const { state, functions } = useContext(CourseDetailsContext)!
-    const { course } = state
+    const { course, finishFetch } = state
     const { fetchAndSetCourse } = functions
     const [isEdited, setIsEdited] = useState(false)
 
@@ -24,7 +24,7 @@ export const Title = () => {
             title: Yup.string().required("Title is required")
         }),
         onSubmit: async () => {
-            if (!state.finishFetch) return
+            if (!finishFetch) return
             const { courseId } = course!
             if (!courseId) return
             const response = await updateCourse({

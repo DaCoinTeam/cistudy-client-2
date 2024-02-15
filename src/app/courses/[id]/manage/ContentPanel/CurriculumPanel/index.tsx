@@ -1,9 +1,7 @@
 "use client"
-import { CardBody, CardHeader, Divider, Spacer } from "@nextui-org/react"
-import React, { useContext } from "react"
+import { CardBody, CardHeader, Divider } from "@nextui-org/react"
+import React from "react"
 import { Sections } from "./Sections"
-import { CourseDetailsContext } from "../../../_hooks"
-import { SectionEntity } from "@common"
 
 export const CurriculumPanel = () => {
     return (
@@ -13,9 +11,7 @@ export const CurriculumPanel = () => {
             </CardHeader>
             <Divider />
             <CardBody className="p-6">
-                <div>
-                    <Sections />
-                </div>
+                <Sections />
             </CardBody>
         </>
     )

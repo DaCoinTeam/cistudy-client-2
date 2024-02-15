@@ -103,9 +103,11 @@ export interface EnrolledInfoEntity {
 export interface LectureEntity {
   lectureId: string;
   title: string;
-  videoId: string;
+  thumbnailId: string;
+  lectureVideoId: string;
   sectionId: string;
   createdAt: Date;
+  updatedAt: Date;
   section: SectionEntity;
   resources: Array<ResourceEntity>;
 }
