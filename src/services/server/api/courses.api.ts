@@ -157,7 +157,7 @@ export const deleteCourseTarget = async (
         const { data } = params
         const { courseTargetId } = data
         const url = `${BASE_URL}/delete-course-target/${courseTargetId}`
-        // 
+        //
 
         const response = await axios.delete(url, {
             headers: {
@@ -181,6 +181,54 @@ export const deleteCourseTarget = async (
       authTokenType === AuthTokenType.Access
         )
             return await deleteCourseTarget(params, AuthTokenType.Refresh)
+        return _ex
+    }
+}
+
+export const createResources = async (
+    params: {
+    data: {
+      lectureId: string;
+    };
+    files: Array<File>;
+  },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string | ErrorResponse> => {
+    try {
+        const { data, files } = params
+        const url = `${BASE_URL}/create-resources`
+        const formData = new FormData()
+
+        formData.append("data", JSON.stringify(data))
+        if (files) {
+            for (const file of files) {
+                formData.append("files", file)
+            }
+        }
+
+        const response = await axios.post(url, formData, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Content-Type": "multipart/form-data",
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+      response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await createResources(params, AuthTokenType.Refresh)
         return _ex
     }
 }

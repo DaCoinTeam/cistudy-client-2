@@ -1,9 +1,9 @@
 "use client"
 import { SectionEntity } from "@common"
-import { Accordion, AccordionItem, Card, CardBody, Link } from "@nextui-org/react"
+import { Accordion, AccordionItem, Card, CardBody } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { CourseDetailsContext } from "../../../../_hooks"
-import { ClockIcon, FolderIcon } from "@heroicons/react/24/outline"
+import { ClockIcon } from "@heroicons/react/24/outline"
 import { ResourcesModal } from "./ResourcesModal"
 
 export const Sections = () => {
@@ -30,7 +30,7 @@ export const Sections = () => {
                                     <div className="flex items-center gap-1"> <ClockIcon className="w-3 h-3"/> <div className="text-xs text-foreground-500">15 min </div>  </div>
                                 </div>
                                 <div>
-                                    <ResourcesModal/>
+                                    <ResourcesModal lecture={section}/>
                                 </div>
                             </div>
                         </CardBody>

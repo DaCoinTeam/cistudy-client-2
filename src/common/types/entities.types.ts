@@ -107,7 +107,7 @@ export interface LectureEntity {
   sectionId: string;
   createdAt: Date;
   section: SectionEntity;
-  resource: Array<ResourceEntity>;
+  resources: Array<ResourceEntity>;
 }
 
 export interface PostCommentContentEntity {
@@ -163,7 +163,7 @@ export interface SectionEntity {
 export interface ResourceEntity {
   resourceId: string;
   name: string;
-  resourceUrl: string;
+  fileId: string;
   lectureId: string;
   createdAt: Date;
   updatedAt: Date;

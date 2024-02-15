@@ -59,10 +59,10 @@ export const CourseDetailsProviders = ({
                     lectures: {
                         lectureId: true,
                         title: true,
-                        resource: {
+                        resources: {
                             resourceId: true,
                             name: true,
-                            resourceUrl: true
+                            fileId: true
                         }
                     }
                 }
