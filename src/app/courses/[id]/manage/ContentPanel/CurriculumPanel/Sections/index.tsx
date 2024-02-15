@@ -10,12 +10,13 @@ import {
 } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { CourseDetailsContext } from "../../../../_hooks"
-import { ClockIcon } from "@heroicons/react/24/outline"
+import { ClockIcon, TrashIcon } from "@heroicons/react/24/outline"
 import { ResourcesModal } from "./ResourcesModal"
 import { LectureVideoModal } from "./LectureVideoModal"
 import { getAssetUrl } from "@services"
 import { AddSectionItem } from "./AddSectionItem"
 import { AddLectureItem } from "./AddLectureItem"
+import { DeleteLectureButton } from "./DeleteLectureButton"
 
 export const Sections = () => {
     const { state } = useContext(CourseDetailsContext)!
@@ -39,7 +40,7 @@ export const Sections = () => {
                 }
             >
                 {section.lectures.map((lecture) => (
-                    <Card shadow="none" className="bg-content1" isPressable fullWidth key={lecture.sectionId}>
+                    <Card shadow="none" className="bg-content1" fullWidth key={lecture.sectionId}>
                         <CardBody>
                             <div className="justify-between flex items-center w-full">
                                 <div className="flex gap-4 items-center">
@@ -60,6 +61,7 @@ export const Sections = () => {
                                 <div className="flex items-center gap-4">
                                     <LectureVideoModal lecture={lecture} />
                                     <ResourcesModal lecture={lecture} />
+                                    <DeleteLectureButton lectureId={lecture.lectureId}/>
                                 </div>
                             </div>
                         </CardBody>
