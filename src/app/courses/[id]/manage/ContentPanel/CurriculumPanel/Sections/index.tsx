@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { CourseDetailsContext } from "../../../../_hooks"
-import { ClockIcon, TrashIcon } from "@heroicons/react/24/outline"
+import { ClockIcon } from "@heroicons/react/24/outline"
 import { ResourcesModal } from "./ResourcesModal"
 import { LectureVideoModal } from "./LectureVideoModal"
 import { getAssetUrl } from "@services"
