@@ -1,1 +1,1 @@
-export * from "./DashVideoPlayer"
+export * from "./VideoPlayer"
