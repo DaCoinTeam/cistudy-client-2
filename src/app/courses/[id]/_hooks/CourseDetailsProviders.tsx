@@ -62,11 +62,6 @@ export const CourseDetailsProviders = ({
                         lectureVideoId: true,
                         processStatus: true,
                         title: true,
-                        resources: {
-                            resourceId: true,
-                            name: true,
-                            fileId: true
-                        }
                     }
                 }
             }

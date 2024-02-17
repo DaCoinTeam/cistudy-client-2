@@ -16,7 +16,7 @@ export const findManyPosts = async (
     skip: number;
   },
     structure?: Structure<DeepPartial<PostEntity>>
-): Promise<Partial<PostEntity[]> | ErrorResponse> => {
+): Promise<Array<PostEntity> | ErrorResponse> => {
     try {
         const payload = buildPayloadString(structure)
         const { data } = await client().query({
@@ -34,7 +34,7 @@ export const findManyPosts = async (
             },
         })
 
-        return data.findManyPosts as Partial<PostEntity[]>
+        return data.findManyPosts as Array<PostEntity>
     } catch (ex) {
         console.log(ex)
         const _ex = ex as ApolloError
@@ -51,7 +51,7 @@ export const findOnePost = async (
     postId: string;
   },
     structure?: Structure<DeepPartial<PostEntity>>
-): Promise<Partial<PostEntity> | ErrorResponse> => {
+): Promise<PostEntity | ErrorResponse> => {
     try {
         const payload = buildPayloadString(structure)
         const { data } = await client().query({
@@ -67,7 +67,7 @@ export const findOnePost = async (
             },
         })
 
-        return data.findOnePost as Partial<PostEntity>
+        return data.findOnePost as PostEntity
     } catch (ex) {
         const _ex = ex as ApolloError
         const error = (
@@ -76,9 +76,4 @@ export const findOnePost = async (
 
         return error
     }
-}
-
-export const post = {
-    findOnePost,
-    findManyPosts,
 }

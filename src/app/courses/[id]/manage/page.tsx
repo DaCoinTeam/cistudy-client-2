@@ -1,7 +1,6 @@
 "use client"
 import React from "react"
-import { Sidebar } from "./Sidebar"
-import { ContentPanel } from "./ContentPanel"
+import { Sidebar, ContentPanel } from "./_components"
 
 
 const Page = () => {
