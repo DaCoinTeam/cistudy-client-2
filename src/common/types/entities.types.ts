@@ -18,11 +18,10 @@ export enum VerifyStatus {
 
 export enum ContentType {
   Text = "Text",
-  Video = "Video",
   Code = "Code",
-  Image = "Image",
+  Images = "Image",
   Label = "Label",
-  Application = "Application",
+  Videos = "Videos",
 }
 
 export enum ProcessStatus {

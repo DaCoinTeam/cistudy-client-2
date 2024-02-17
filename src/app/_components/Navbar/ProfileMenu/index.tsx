@@ -12,7 +12,7 @@ import { removeTokens } from "@common"
 
 export const ProfileMenu = () => {
     const dispatch : AppDispatch = useDispatch()
-    const onPressSignOut = () => { 
+    const onSignOutPress = () => { 
         dispatch(setProfile(null))
         removeTokens()
     }
@@ -38,7 +38,7 @@ export const ProfileMenu = () => {
                 <DropdownItem key="system">System</DropdownItem>
                 <DropdownItem key="configurations">Configurations</DropdownItem>
                 <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-                <DropdownItem onPress={onPressSignOut} key="logout" color="danger">
+                <DropdownItem onPress={onSignOutPress} key="logout" color="danger">
           Sign Out
                 </DropdownItem>
             </DropdownMenu>

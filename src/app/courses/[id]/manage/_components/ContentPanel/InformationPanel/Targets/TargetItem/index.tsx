@@ -71,7 +71,7 @@ export const TargetItem = (props: TargetItemProps) => {
         })
     }
 
-    const onPressRemove = async () => {
+    const onRemovePress = async () => {
         if (!state.finishFetch) return
         const { courseId } = course!
         if (!courseId) return
@@ -106,7 +106,7 @@ export const TargetItem = (props: TargetItemProps) => {
                             <Link className="text-sm" as="button" onPress={onPress}>
                                 {isEdited ? "Save" : "Edit"}
                             </Link>
-                            <Link onPress={onPressRemove} className="text-sm" as="button">
+                            <Link onPress={onRemovePress} className="text-sm" as="button">
                 Remove
                             </Link>
                         </div>

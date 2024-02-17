@@ -1,9 +1,7 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, } from "react"
-import { PostContentEntity, isErrorResponse } from "@common"
-import { AppDispatch } from "@redux"
-import { useDispatch } from "react-redux"
+import { PostContentEntity } from "@common"
 import * as Yup from "yup"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
@@ -11,7 +9,7 @@ export const FormikContext = createContext<FormikProps<FormikValues> | null>(
 )
 
 interface FormikValues {
-    contents: Array<PostContentEntity>,
+    contents: Array<Partial<PostContentEntity>>,
 }
 
 const initialValues: FormikValues = {

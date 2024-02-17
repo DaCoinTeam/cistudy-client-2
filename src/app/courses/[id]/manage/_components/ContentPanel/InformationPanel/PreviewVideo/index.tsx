@@ -22,11 +22,11 @@ export const PreviewVideo = () => {
     const { course } = state
 
     const editVideoRef = useRef<EditVideoRefSelectors>(null)
-    const onPressEditVideo = () => editVideoRef.current?.onPressOpenDirectory()
+    const onEditVideoPress = () => editVideoRef.current?.onOpenDirectoryPress()
 
     const editThumbnailRef = useRef<EditThumbnailRefSelectors>(null)
-    const onPressEditThumbnail = () =>
-        editThumbnailRef.current?.onPressOpenDirectory()
+    const onEditThumbnailPress = () =>
+        editThumbnailRef.current?.onOpenDirectoryPress()
     return (
         <>
             <div>
@@ -39,7 +39,7 @@ export const PreviewVideo = () => {
                         <DropdownMenu>
                             <DropdownItem
                                 key="editVideo"
-                                onPress={onPressEditVideo}
+                                onPress={onEditVideoPress}
                                 startContent={<VideoCameraIcon className="w-6 h-6" />}
                                 color="primary"
                             >
@@ -47,7 +47,7 @@ export const PreviewVideo = () => {
                             </DropdownItem>
                             <DropdownItem
                                 key="editThumbnail"
-                                onPress={onPressEditThumbnail}
+                                onPress={onEditThumbnailPress}
                                 startContent={<PhotoIcon className="w-6 h-6" />}
                                 color="primary"
                             >
