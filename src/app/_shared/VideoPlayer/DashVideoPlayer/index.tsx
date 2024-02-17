@@ -25,6 +25,7 @@ import {
 } from "@nextui-org/react"
 import React, { useEffect, useRef } from "react"
 import { useDashVideoPlayerReducer } from "./useDashVideoPlayerReducer"
+import { parseDuration } from "@common"
 
 interface DashVideoPlayerProps {
   className?: string;
@@ -47,6 +48,7 @@ export const DashVideoPlayer = (props: DashVideoPlayerProps) => {
             mediaPlayer.initialize(player, props.src, true)
 
             mediaPlayer.on("streamInitialized", () => {
+                mediaPlayer.pause()
                 const bitrates = mediaPlayer.getBitrateInfoListFor("video")
                 dispatch({
                     type: "SET_BITRATE_INFOS",
@@ -216,7 +218,7 @@ export const DashVideoPlayer = (props: DashVideoPlayerProps) => {
 
     return (
         <div className="w-full aspect-video relative">
-            <video className="absolute" ref={playerRef} aria-label="Playback"/>
+            <video className="absolute h-full" ref={playerRef} aria-label="Playback"/>
             <div className="p-3 z-10 absolute bottom-0 w-full">
                 <Slider
                     hideThumb
@@ -257,6 +259,9 @@ export const DashVideoPlayer = (props: DashVideoPlayerProps) => {
                                 step={0.01}
                                 onChange={onVolumeChange}
                             />
+                        </div>
+                        <div className="text-primary">
+                            {parseDuration(playbackTime)} / {parseDuration(duration)}
                         </div>
                     </div>
                     <div className="flex gap-4 items-center">

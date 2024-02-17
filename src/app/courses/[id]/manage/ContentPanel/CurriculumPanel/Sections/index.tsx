@@ -25,9 +25,8 @@ export const Sections = () => {
     const renderSections = (): Array<JSX.Element> => {
         if (!course) return []
         const { sections } = course
-        const _sections = sections as Array<SectionEntity>
 
-        return _sections.map((section) => (
+        return sections.map((section) => (
             <AccordionItem
                 key={section.sectionId}
                 title={section.title}
@@ -71,7 +70,7 @@ export const Sections = () => {
             </AccordionItem>
         ))
     }
-    console.log("called")
+
     return (
         <div>
             <Accordion

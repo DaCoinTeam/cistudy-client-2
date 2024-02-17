@@ -11,14 +11,10 @@ interface AddLectureItemProps {
 }
 
 export const AddLectureItem = (props: AddLectureItemProps) => {
-    const { state, functions } = useContext(CourseDetailsContext)!
+    const { functions } = useContext(CourseDetailsContext)!
     const { fetchAndSetCourse } = functions
-    const { course } = state
 
     const onPress = async () => {
-        if (course === null) return
-        const { courseId } = course
-        if (!courseId) return
         const response = await createLecture({
             data: {
                 sectionId: props.sectionId,

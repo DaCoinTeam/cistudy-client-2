@@ -30,8 +30,9 @@ export const EditThumbnailRef = forwardRef<EditThumbnailRefSelectors>(
             if (files === null) return
             const file = files.item(0)
             if (file === null) return
-            const courseId = course?.courseId
-            if (!courseId) return
+            
+            if (course === null) return 
+            const { courseId } = course
 
             const response = await updateCourse({
                 data: {

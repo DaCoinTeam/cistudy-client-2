@@ -14,7 +14,7 @@ export const AddSectionItem = () => {
     const onPress = async () => {
         if (course === null) return
         const { courseId } = course
-        if (!courseId) return
+
         const response = await createSection({
             data: {
                 courseId,

@@ -10,9 +10,8 @@ export const AddTargetItem = () => {
     const { fetchAndSetCourse } = functions
 
     const onPress = async () => {
-        if (!course) return
+        if (course === null) return
         const { courseId } = course
-        if (!courseId) return
         const response = await createCourseTarget({
             data: {
                 courseId,

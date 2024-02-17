@@ -14,7 +14,7 @@ export const findOneUser = async (
     userId: string;
   },
     structure?: Structure<DeepPartial<UserEntity>>
-): Promise<DeepPartial<UserEntity> | ErrorResponse> => {
+): Promise<UserEntity | ErrorResponse> => {
     const { userId } = params
     try {
         const payload = buildPayloadString(structure)
@@ -32,7 +32,7 @@ export const findOneUser = async (
                 },
             },
         })
-        return graphqlData.findOneUser as DeepPartial<UserEntity>
+        return graphqlData.findOneUser as UserEntity
     } catch (ex) {
         const { graphQLErrors } = ex as ApolloError
         return (graphQLErrors[0].extensions as ExtensionsWithOriginalError)

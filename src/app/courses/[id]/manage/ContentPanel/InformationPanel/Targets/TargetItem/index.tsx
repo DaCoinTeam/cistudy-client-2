@@ -13,7 +13,7 @@ interface TargetItemProps {
 
 export const TargetItem = (props: TargetItemProps) => {
     const { state, functions } = useContext(CourseDetailsContext)!
-    const { course, finishFetch } = state
+    const { course } = state
     const { fetchAndSetCourse } = functions
 
     const [position, setPosition] = useState<Vector2>({ x: 0, y: 0 })
@@ -32,9 +32,6 @@ export const TargetItem = (props: TargetItemProps) => {
             content: Yup.string().required("Content is required"),
         }),
         onSubmit: async () => {
-            if (!finishFetch) return
-            const { courseId } = course!
-            if (!courseId) return
             const response = await updateCourseTarget({
                 data: {
                     courseTargetId: props.courseTarget.courseTargetId,

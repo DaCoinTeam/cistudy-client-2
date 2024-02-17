@@ -1,14 +1,13 @@
-import { DeepPartial } from "@apollo/client/utilities"
 import { UserEntity } from "@common"
 import { useReducer } from "react"
 
 export interface UserDetailsState {
-    user: DeepPartial<UserEntity> | null
+    user: UserEntity | null
 }
 
 export interface SetUserAction {
   type: "SET_USER"
-  payload: DeepPartial<UserEntity>
+  payload: UserEntity
 }
 
 export type UserDetailsAction = SetUserAction;

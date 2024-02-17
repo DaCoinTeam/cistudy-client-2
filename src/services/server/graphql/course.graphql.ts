@@ -14,7 +14,7 @@ export const findOneCourse = async (
     courseId: string;
   },
     structure?: Structure<DeepPartial<CourseEntity>>
-): Promise<Partial<CourseEntity> | ErrorResponse> => {
+): Promise<CourseEntity | ErrorResponse> => {
     try {
         const payload = buildPayloadString(structure)
         const { data } = await client().query({
@@ -32,7 +32,7 @@ export const findOneCourse = async (
             },
         })
 
-        return data.findOneCourse as Partial<CourseEntity>
+        return data.findOneCourse as CourseEntity
     } catch (ex) {
         console.log(ex)
         const _ex = ex as ApolloError
@@ -46,7 +46,7 @@ export const findOneCourse = async (
 
 export const findManyCourses = async (
     structure?: Structure<DeepPartial<CourseEntity>>
-): Promise<Partial<CourseEntity[]> | ErrorResponse> => {
+): Promise<Array<CourseEntity> | ErrorResponse> => {
     try {
         const payload = buildPayloadString(structure)
         const { data } = await client().query({
@@ -58,7 +58,7 @@ export const findManyCourses = async (
   }
           `,
         })
-        return data.findManyCourses as Partial<CourseEntity[]>
+        return data.findManyCourses as Array<CourseEntity>
     } catch (ex) {
         console.log(ex)
         const _ex = ex as ApolloError

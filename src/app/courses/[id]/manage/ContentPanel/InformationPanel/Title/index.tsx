@@ -1,9 +1,5 @@
 import { Spacer, Input, Link } from "@nextui-org/react"
-import React, {
-    useContext,
-    useEffect,
-    useState,
-} from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { updateCourse } from "@services"
 import { CourseDetailsContext } from "../../../../_hooks"
 import { isErrorResponse } from "@common"
@@ -21,12 +17,12 @@ export const Title = () => {
             title: "",
         },
         validationSchema: Yup.object({
-            title: Yup.string().required("Title is required")
+            title: Yup.string().required("Title is required"),
         }),
         onSubmit: async () => {
             if (!finishFetch) return
-            const { courseId } = course!
-            if (!courseId) return
+            if (course === null) return
+            const { courseId } = course
             const response = await updateCourse({
                 data: {
                     courseId,
@@ -39,12 +35,12 @@ export const Title = () => {
             } else {
                 console.log(response)
             }
-        }
+        },
     })
 
     useEffect(() => {
-        if (!course?.title) return 
-        formik.setFieldValue("title", course?.title)
+        if (course === null) return
+        formik.setFieldValue("title", course.title)
     }, [course?.title])
 
     const onPress = async () => {
@@ -62,7 +58,7 @@ export const Title = () => {
                 value={formik.values.title}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                isInvalid={!! (formik.touched.title && formik.errors.title)}
+                isInvalid={!!(formik.touched.title && formik.errors.title)}
                 errorMessage={formik.touched.title && formik.errors.title}
                 readOnly={!isEdited}
                 endContent={

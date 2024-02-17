@@ -35,7 +35,7 @@ export const Mp4VideoPlayer = (props: Mp4VideoPlayerProps) => {
             const player = playerRef.current
             if (player === null) return
             player.src = props.src
-
+            
             // player.ontimeupdate = () => (event) => {
             //     dispatch({
             //         type: "SET_PLAYBACK_TIME",

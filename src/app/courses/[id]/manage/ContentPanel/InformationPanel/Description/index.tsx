@@ -22,8 +22,10 @@ export const Description = () => {
         }),
         onSubmit: async () => {
             if (!finishFetch) return
-            const { courseId } = course!
-            if (!courseId) return
+
+            if (course === null) return
+            const { courseId } = course
+
             const response = await updateCourse({
                 data: {
                     courseId,

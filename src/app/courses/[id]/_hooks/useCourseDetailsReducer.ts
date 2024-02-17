@@ -1,15 +1,14 @@
-import { DeepPartial } from "@apollo/client/utilities"
 import { CourseEntity } from "@common"
 import { useReducer } from "react"
 
 export interface CourseDetailsState {
-  course: DeepPartial<CourseEntity> | null;
+  course: CourseEntity | null;
   finishFetch: boolean;
 }
 
 export interface SetCourseAction {
   type: "SET_COURSE";
-  payload: DeepPartial<CourseEntity>;
+  payload: CourseEntity;
 }
 
 export interface SetFinishFetchAction {
