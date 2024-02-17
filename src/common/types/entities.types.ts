@@ -10,7 +10,7 @@ export enum UserRole {
   Administrator = "Administrator",
 }
 
-export enum VerifiedStatus {
+export enum VerifyStatus {
   Pending = "Pending",
   Approved = "Approved",
   Rejected = "Rejected",
@@ -23,6 +23,12 @@ export enum ContentType {
   Image = "Image",
   Label = "Label",
   Application = "Application",
+}
+
+export enum ProcessStatus {
+  Pending = "Pending",
+  Processing = "Processing",
+  Completed = "Completed",
 }
 
 export interface UserEntity {
@@ -69,7 +75,7 @@ export interface CourseEntity {
   thumbnailId: string;
   description: string;
   price: number;
-  verifiedStatus: VerifiedStatus;
+  verifyStatus: VerifyStatus;
   isDraft: boolean;
   creator: UserEntity;
   isDeleted: boolean;
@@ -106,6 +112,7 @@ export interface LectureEntity {
   thumbnailId: string;
   lectureVideoId: string;
   sectionId: string;
+  processStatus: ProcessStatus;
   createdAt: Date;
   updatedAt: Date;
   section: SectionEntity;
