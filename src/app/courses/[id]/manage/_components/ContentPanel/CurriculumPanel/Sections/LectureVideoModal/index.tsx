@@ -35,7 +35,7 @@ export const LectureVideoModal = (props: LectureVideoModalProps) => {
             </Link>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
                 <ModalContent>
-                    <ModalHeader className="p-6 pb-0">Lecture video</ModalHeader>
+                    <ModalHeader className="p-6 pb-0">Lecture Video</ModalHeader>
                     <ModalBody className="p-6">
                         <div>
                             <div>

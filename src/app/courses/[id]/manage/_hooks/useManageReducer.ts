@@ -2,8 +2,8 @@ import { useReducer } from "react"
 import { CourseEntity } from "@common"
 
 export enum PanelSelected {
-    Information = "Information",
-    Curriculum = "Curriculum"
+    Information = "information",
+    Curriculum = "curriculum"
 }
 
 export interface ManageState {

@@ -2,8 +2,8 @@
 import React, { useContext } from "react"
 import { ManageContext } from "../../_hooks/ManageProviders"
 import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
-import { Key, getSetValues } from "@common"
-import { PanelSelected } from "../../_hooks/useManageReducer"
+import { getSetValues } from "@common"
+import { PanelSelected } from "../../_hooks"
 
 interface SidebarProps {
   className?: string;
@@ -13,26 +13,17 @@ export const Sidebar = (props: SidebarProps) => {
     const { state, dispatch } = useContext(ManageContext)!
     const { panelSelected } = state
 
-    const keyToPanelSelected: Record<Key, PanelSelected> = {
-        information: PanelSelected.Information,
-        curriculum: PanelSelected.Curriculum,
-    }
-    const panelSelectedToKey: Record<PanelSelected, Key> = {
-        [PanelSelected.Information]: "information",
-        [PanelSelected.Curriculum]: "curriculum",
-    }
-
-    const selectedKeys = new Set([panelSelectedToKey[panelSelected]])
+    const selectedKeys = new Set([panelSelected])
 
     const onSelectionChange = (selection: Selection) => {
         if (typeof selection === "string") return
         const value = getSetValues(selection).at(0)
         
         if (!value) return 
-        const panelSelected = keyToPanelSelected[value]
+        const panelSelected = value
         dispatch({
             type: "SET_PANEL_SELECTED",
-            payload: panelSelected,
+            payload: panelSelected as PanelSelected,
         })
     }
 
