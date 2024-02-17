@@ -55,6 +55,7 @@ export const ManageProviders = ({ children }: { children: ReactNode }) => {
                 }
             }
         )
+        
         if (!isErrorResponse(response)) {
             dispatch({
                 type: "SET_COURSE_MANAGED",

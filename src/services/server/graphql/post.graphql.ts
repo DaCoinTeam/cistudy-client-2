@@ -9,28 +9,34 @@ import { client } from "./client.graphql"
 import { ApolloError, gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 
+export type FindManyPostOptions = Partial<{
+  skip: number;
+      take: number;
+}>
+
 export const findManyPosts = async (
     params: {
     courseId: string;
-    take: number;
-    skip: number;
+    options?: FindManyPostOptions
   },
     structure?: Structure<DeepPartial<PostEntity>>
 ): Promise<Array<PostEntity> | ErrorResponse> => {
     try {
+        const { courseId, options } = params
         const payload = buildPayloadString(structure)
         const { data } = await client().query({
             query: gql`
-            query FindManyPosts($courseId: String!,$take: Int!,  $skip: Int!) {
-    findManyPosts(input: { courseId: $courseId, take: $take, skip: $skip}) {
+            query FindManyPosts($input: FindManyPostsInput!) {
+  findManyPosts(input: $input) {
       ${payload}
-    }
   }
+}
           `,
             variables: {
-                courseId: params.courseId,
-                take: params.take,
-                skip: params.skip,
+                input: {
+                    courseId,
+                    options,
+                },
             },
         })
 
@@ -49,6 +55,10 @@ export const findManyPosts = async (
 export const findOnePost = async (
     params: {
     postId: string;
+    options: Partial<{
+      skip: number;
+      take: number;
+    }>;
   },
     structure?: Structure<DeepPartial<PostEntity>>
 ): Promise<PostEntity | ErrorResponse> => {

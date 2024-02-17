@@ -60,7 +60,6 @@ export const CourseDetailsProviders = ({
                         lectureId: true,
                         thumbnailId: true,
                         lectureVideoId: true,
-                        processStatus: true,
                         title: true,
                     }
                 }

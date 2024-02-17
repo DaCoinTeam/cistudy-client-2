@@ -16,6 +16,7 @@ export const findOneCourse = async (
     structure?: Structure<DeepPartial<CourseEntity>>
 ): Promise<CourseEntity | ErrorResponse> => {
     try {
+        const { courseId } = params
         const payload = buildPayloadString(structure)
         const { data } = await client().query({
             query: gql`
@@ -27,7 +28,7 @@ export const findOneCourse = async (
           `,
             variables: {
                 input: {
-                    courseId: params.courseId,
+                    courseId,
                 },
             },
         })
