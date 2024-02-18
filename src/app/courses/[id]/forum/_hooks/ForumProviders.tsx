@@ -25,32 +25,33 @@ export const NUMBER_OF_POSTS = 5
 
 export const ForumContext = createContext<ForumContextValue | null>(null)
 
+export const findManyPostsSchema: Schema<PostEntity> = {
+    postId: true,
+    title: true,
+    postContents: {
+        postContentId: true,
+        contentType: true,
+        postContentMedias: {
+            mediaId: true,
+        },
+        text: true,
+    },
+    creator: {
+        avatarId: true
+    },
+    postReacts:{
+        userId: true,
+        liked: true
+    }
+}
+
+
 export const ForumProviders = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useForumReducer()
     const { posts } = state 
     const { state: courseDetailsState } = useContext(CourseDetailsContext)!
     const { course } = courseDetailsState
 
-    const schema: Schema<PostEntity> = {
-        postId: true,
-        title: true,
-        postContents: {
-            postContentId: true,
-            contentType: true,
-            postContentMedias: {
-                mediaId: true,
-            },
-            text: true,
-        },
-        creator: {
-            avatarId: true
-        },
-        postReacts:{
-            userId: true,
-            liked: true
-        }
-    }
-    
     const fetchAndSetPosts = useCallback(
         async () => {
             if (course === null) return
@@ -64,7 +65,7 @@ export const ForumProviders = ({ children }: { children: ReactNode }) => {
                         take: posts.length
                     }
                 },
-                schema
+                findManyPostsSchema
             )
             if (!isErrorResponse(response)) {
                 dispatch({
@@ -88,7 +89,7 @@ export const ForumProviders = ({ children }: { children: ReactNode }) => {
                     courseId,
                     options,
                 },
-                schema
+                findManyPostsSchema
             )
             if (!isErrorResponse(response)) {
                 if (!response.length) {

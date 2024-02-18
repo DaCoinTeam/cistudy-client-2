@@ -11,13 +11,13 @@ import { DeepPartial } from "@apollo/client/utilities"
 
 export type FindManyPostOptions = Partial<{
   skip: number;
-      take: number;
-}>
+  take: number;
+}>;
 
 export const findManyPosts = async (
     params: {
     courseId: string;
-    options?: FindManyPostOptions
+    options?: FindManyPostOptions;
   },
     schema?: Schema<DeepPartial<PostEntity>>
 ): Promise<Array<PostEntity> | ErrorResponse> => {
@@ -55,14 +55,11 @@ export const findManyPosts = async (
 export const findOnePost = async (
     params: {
     postId: string;
-    options: Partial<{
-      skip: number;
-      take: number;
-    }>;
   },
     schema?: Schema<DeepPartial<PostEntity>>
 ): Promise<PostEntity | ErrorResponse> => {
     try {
+        const { postId } = params
         const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
@@ -73,7 +70,9 @@ export const findOnePost = async (
   }
           `,
             variables: {
-                postId: params.postId,
+                input: {
+                    postId,
+                },
             },
         })
 

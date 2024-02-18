@@ -10,7 +10,6 @@ interface PostCardProps {
 }
 
 export const PostCard = (props: PostCardProps) => {
-
     const renderContents = () => (
         <div className="flex flex-col gap-4 overflow-auto">
             {props.post.postContents.map((content) => (
