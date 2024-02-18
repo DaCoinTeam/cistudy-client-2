@@ -1,9 +1,17 @@
+import { Spacer } from "@nextui-org/react"
 import { CreatePostCard } from "./CreatePostCard"
+import { InfinitePostsScroller } from "./InfinitePostsScroller"
 
-export const MiddleLayout = () => {
+interface MiddleLayoutProps {
+    className?: string
+}
+
+export const MiddleLayout = (props: MiddleLayoutProps) => {
     return (
-        <div>
+        <div className={`${props.className}`}>
             <CreatePostCard/>
+            <Spacer y={6}/>
+            <InfinitePostsScroller/>
         </div>
     )
 }

@@ -20,12 +20,12 @@ export const createPost = async (
       title: string;
       courseId: string;
       postContents: Array<{
-        contentType: ContentType,
-        text?: string,
+        contentType: ContentType;
+        text?: string;
         postContentMedias?: Array<{
-            mediaIndex: number
-        }>
-      }>
+          mediaIndex: number;
+        }>;
+      }>;
     };
     files?: Array<File>;
   },
@@ -67,6 +67,44 @@ export const createPost = async (
       authTokenType === AuthTokenType.Access
         )
             return await createPost(params, AuthTokenType.Refresh)
+        return _ex
+    }
+}
+
+export const reactPost = async (
+    params: {
+    data: {
+      postId: string;
+    };
+  },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string | ErrorResponse> => {
+    try {
+        const { data } = params
+        const url = `${BASE_URL}/react-post`
+
+        const response = await axios.patch(url, data, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+      response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await reactPost(params, AuthTokenType.Refresh)
         return _ex
     }
 }

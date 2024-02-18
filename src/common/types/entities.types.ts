@@ -63,7 +63,7 @@ export interface PostEntity {
   updatedAt: Date;
   course: CourseEntity;
   creator: UserEntity;
-  postContents: Array<Partial<PostContentEntity>>;
+  postContents: Array<PostContentEntity>;
   postComments: Array<PostCommentEntity>;
   postReacts: Array<PostReactEntity>;
 }

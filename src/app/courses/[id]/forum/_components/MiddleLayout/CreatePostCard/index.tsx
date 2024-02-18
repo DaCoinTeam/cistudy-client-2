@@ -8,10 +8,12 @@ export const CreatePostCard = () => {
     const profile = useSelector((state: RootState) => state.auth.profile)
     return (
         <Card>
-            <CardBody>
+            <CardBody className="p-6">
                 <div className="flex items-center gap-4">
-                    <Avatar src={getAssetUrl(profile?.avatarId)} />
-                    <CreatePostModal />
+                    <Avatar isBordered src={getAssetUrl(profile?.avatarId)} />
+                    <div className="flex-1">
+                        <CreatePostModal />
+                    </div>
                 </div>
             </CardBody>
         </Card>

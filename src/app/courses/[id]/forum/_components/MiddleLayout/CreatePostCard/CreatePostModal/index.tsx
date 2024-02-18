@@ -24,10 +24,7 @@ export const WrappedCreatePostModal = () => {
     const renderContents = () => (
         <div className="flex flex-col gap-4 overflow-auto max-h-[250px]">
             {formik.values.contents.map((content) => (
-                <ContentItem
-                    key={uuidv4()}
-                    content={content}
-                />
+                <ContentItem key={uuidv4()} content={content} />
             ))}
         </div>
     )
@@ -36,7 +33,11 @@ export const WrappedCreatePostModal = () => {
 
     return (
         <>
-            <Button onPress={onOpen} className="!justify-normal w-full bg-content2">
+            <Button
+                fullWidth
+                onPress={onOpen}
+                className="!justify-normal bg-content2"
+            >
         Do you need some help?
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
@@ -47,16 +48,22 @@ export const WrappedCreatePostModal = () => {
                     <ModalBody className="p-6">
                         <div>
                             <Title />
-                            <Spacer y={6}/>
+                            <Spacer y={6} />
                             {renderContents()}
-                            <Spacer y={6}/>
+                            <Spacer y={6} />
                             <AddContent />
                         </div>
                     </ModalBody>
                     <ModalFooter className="p-6 pt-0">
                         <div className="flex gap-4 items-center">
-                            <Button variant="light" color="danger"> Reset </Button>
-                            <Button onPress={onPress} color="primary"> Create </Button>
+                            <Button variant="light" color="danger">
+                                {" "}
+                Reset{" "}
+                            </Button>
+                            <Button onPress={onPress} color="primary">
+                                {" "}
+                Create{" "}
+                            </Button>
                         </div>
                     </ModalFooter>
                 </ModalContent>
