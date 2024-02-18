@@ -6,6 +6,7 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
+    Spacer,
     useDisclosure,
 } from "@nextui-org/react"
 import { FormikProviders } from "./FormikProviders"
@@ -13,6 +14,7 @@ import { AddContent } from "./AddContent"
 import { FormikContext } from "./FormikProviders"
 import { ContentItem } from "./ContentItem"
 import { v4 as uuidv4 } from "uuid"
+import { Title } from "./Title"
 
 export const WrappedCreatePostModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -20,7 +22,7 @@ export const WrappedCreatePostModal = () => {
     const formik = useContext(FormikContext)!
 
     const renderContents = () => (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2 overflow-auto max-h-[250px]">
             {formik.values.contents.map((content) => (
                 <ContentItem
                     key={uuidv4()}
@@ -33,19 +35,28 @@ export const WrappedCreatePostModal = () => {
     return (
         <>
             <Button onPress={onOpen} className="!justify-normal w-full bg-content2">
-                {" "}
-        Do you need some help?{" "}
+        Do you need some help?
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
                 <ModalContent>
-                    <ModalHeader className="flex flex-col gap-1 p-6 pb-0">
+                    <ModalHeader className="flex flex-col p-6 pb-0">
             Create Post
                     </ModalHeader>
                     <ModalBody className="p-6">
-                        {renderContents()}
+                        <div>
+                            <Title />
+                            <Spacer y={6}/>
+                            {renderContents()}
+                            <Spacer y={6}/>
+                            <AddContent />
+                        </div>
                     </ModalBody>
                     <ModalFooter className="p-6 pt-0">
-                        <AddContent />
+                        <div className="flex gap-4 items-center">
+                            <Button variant="light" color="danger"> Reset </Button>
+                            <Button color="primary"> Create </Button>
+                        </div>
+                      
                     </ModalFooter>
                 </ModalContent>
             </Modal>

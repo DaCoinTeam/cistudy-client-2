@@ -114,7 +114,8 @@ export const AddContent = () => {
             content: (
                 <div>
                     <FileDropzone onDrop={onImageDrop} />
-                    <Spacer y={6} />
+                    {images.length ? <Spacer y={6} /> : null}
+
                     <div className="grid grid-cols-4 gap-2 items-center">
                         {images.map((image, index) => (
                             <Badge
@@ -150,11 +151,7 @@ export const AddContent = () => {
         {
             key: "videos",
             icon: <VideoCameraIcon className="w-6 h-6" />,
-            content: (
-                <div>
-                    <FileDropzone onDrop={onVideoDrop} />,<Link></Link>
-                </div>
-            ),
+            content: <FileDropzone onDrop={onVideoDrop} />,
             data: {
                 value: videos,
                 contentType: ContentType.Videos,
@@ -176,7 +173,7 @@ export const AddContent = () => {
         }
         formik.setFieldValue("contents", [...contents, content])
         dispatch({
-            type: "RESET"
+            type: "RESET",
         })
     }
 
@@ -191,6 +188,9 @@ export const AddContent = () => {
                         aria-label="Options"
                         color="primary"
                         variant="light"
+                        classNames={{
+                            panel: "!pb-0",
+                        }}
                     >
                         {items.map((item) => (
                             <Tab key={item.key} title={item.icon}>
@@ -201,7 +201,7 @@ export const AddContent = () => {
                 </div>
             </CardBody>
             <CardFooter className="p-6 pt-0">
-                <Button fullWidth color="primary" onPress={onPress}>
+                <Button fullWidth onPress={onPress}>
           Add
                 </Button>
             </CardFooter>

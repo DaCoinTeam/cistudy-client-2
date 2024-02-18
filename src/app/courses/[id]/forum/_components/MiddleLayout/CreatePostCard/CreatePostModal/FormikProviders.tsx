@@ -15,10 +15,12 @@ export interface PostContent {
 }
 
 interface FormikValues {
+    title: string,
     contents: Array<PostContent>,
 }
 
 const initialValues: FormikValues = {
+    title: "",
     contents: [],
 }
 
@@ -35,9 +37,10 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
     return (
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({
+                title: Yup.string().required("Title is required")
             })
         }
-        onSubmit={async ({ contents }) => {
+        onSubmit={async ({ title, contents }) => {
             // const response = await signIn({
             //     email,
             //     password

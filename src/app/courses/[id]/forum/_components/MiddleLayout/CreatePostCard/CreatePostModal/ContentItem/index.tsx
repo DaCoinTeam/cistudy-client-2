@@ -10,36 +10,37 @@ interface ContentItemProps {
 }
 
 export const ContentItem = (props: ContentItemProps) => {
-    console.log(props)
-    const render = () => {
-        switch (props.content.contentType) {
-        case ContentType.Text:
+    const contentTypeToElement : Record<ContentType, () => JSX.Element> = {
+        [ContentType.Text]: () => (
+            <div className="whitespace-pre-line text-sm">
+                {props.content.value as string}
+            </div>
+        ),
+        [ContentType.Code]: () => (
+            <Code className="whitespace-break-spaces">
+                {props.content.value as string}
+            </Code>
+        ),
+        [ContentType.Images]: () => {
+            const images = props.content.value as Array<File>
             return (
-                <div className="whitespace-pre-line">
-                    {props.content.value as string}
-                </div>
-            )
-        case ContentType.Code:
-            return (
-                <Code className="whitespace-break-spaces">
-                    {props.content.value as string}
-                </Code>
-            )
-
-        case ContentType.Images:
-            return (
-                <div className="grid grid-cols-4 gap-2">
-                    {(props.content.value as Array<File>).map((image) => (
+                <div className={`grid grid-cols-${images.length} gap-2`}>
+                    {images.map((image) => (
                         <Image
                             key={uuidv4()}
                             alt="image"
                             className="aspect-video"
-                            src={URL.createObjectURL(image)}
-                        />
+                            src={URL.createObjectURL(image)} />
                     ))}
                 </div>
             )
+        },
+        [ContentType.Link]: function (): JSX.Element {
+            throw new Error("Function not implemented.")
+        },
+        [ContentType.Videos]: function (): JSX.Element {
+            throw new Error("Function not implemented.")
         }
     }
-    return <> {render()} </>
+    return <> {contentTypeToElement[props.content.contentType]()} </>
 }
