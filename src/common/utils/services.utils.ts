@@ -3,7 +3,7 @@ import {
     Atomic,
     AuthTokenType,
     ErrorResponse,
-    Structure,
+    Schema,
 } from "../types"
 import { getAuthToken } from "./storage.utils"
 
@@ -12,18 +12,18 @@ export const buildBearerTokenHeader = (
 ) => `Bearer ${getAuthToken(type)}`
 
 export const buildPayloadString = <T extends object>(
-    structure?: Structure<T>,
+    schema?: Schema<T>,
     currentPath: Array<string> = []
 ): string => {
-    if (!structure) {
+    if (!schema) {
         return ""
     }
 
-    const keys = Object.keys(structure)
+    const keys = Object.keys(schema)
     const trueKeys = keys.filter((key, index) => {
-        const value = structure[key]
+        const value = schema[key]
         if (typeof value === "boolean") {
-            if (structure[key]) {
+            if (schema[key]) {
                 currentPath.push(key)
                 if (index !== keys.length - 1) {
                     currentPath.push(" ")
@@ -48,10 +48,10 @@ export const buildPayloadString = <T extends object>(
 }
 
 export const buildAuthPayloadString = <T extends object>(
-    structure?: Structure<T>,
+    schema?: Schema<T>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ) => {
-    const data = buildPayloadString(structure)
+    const data = buildPayloadString(schema)
     return `data { ${data} } ${
         authTokenType === AuthTokenType.Refresh
             ? "tokens { accessToken, refreshToken }"

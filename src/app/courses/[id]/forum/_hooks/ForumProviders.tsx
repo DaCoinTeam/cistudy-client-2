@@ -10,7 +10,7 @@ import React, {
 import { ForumAction, ForumState, useForumReducer } from "./useForumReducer"
 import { CourseDetailsContext } from "../../_hooks"
 import { FindManyPostOptions, findManyPosts } from "@services"
-import { isErrorResponse } from "@common"
+import { PostEntity, Schema, isErrorResponse } from "@common"
 
 export interface ForumContextValue {
   state: ForumState;
@@ -31,6 +31,26 @@ export const ForumProviders = ({ children }: { children: ReactNode }) => {
     const { state: courseDetailsState } = useContext(CourseDetailsContext)!
     const { course } = courseDetailsState
 
+    const schema: Schema<PostEntity> = {
+        postId: true,
+        title: true,
+        postContents: {
+            postContentId: true,
+            contentType: true,
+            postContentMedias: {
+                mediaId: true,
+            },
+            text: true,
+        },
+        creator: {
+            avatarId: true
+        },
+        postReacts:{
+            userId: true,
+            liked: true
+        }
+    }
+    
     const fetchAndSetPosts = useCallback(
         async () => {
             if (course === null) return
@@ -44,25 +64,7 @@ export const ForumProviders = ({ children }: { children: ReactNode }) => {
                         take: posts.length
                     }
                 },
-                {
-                    postId: true,
-                    title: true,
-                    postContents: {
-                        postContentId: true,
-                        contentType: true,
-                        postContentMedias: {
-                            mediaId: true,
-                        },
-                        text: true,
-                    },
-                    creator: {
-                        avatarId: true
-                    },
-                    postReacts:{
-                        userId: true,
-                        liked: true
-                    }
-                }
+                schema
             )
             if (!isErrorResponse(response)) {
                 dispatch({
@@ -86,25 +88,7 @@ export const ForumProviders = ({ children }: { children: ReactNode }) => {
                     courseId,
                     options,
                 },
-                {
-                    postId: true,
-                    title: true,
-                    postContents: {
-                        postContentId: true,
-                        contentType: true,
-                        postContentMedias: {
-                            mediaId: true,
-                        },
-                        text: true,
-                    },
-                    creator: {
-                        avatarId: true
-                    },
-                    postReacts:{
-                        userId: true,
-                        liked: true
-                    }
-                }
+                schema
             )
             if (!isErrorResponse(response)) {
                 if (!response.length) {

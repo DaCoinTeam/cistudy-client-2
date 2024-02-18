@@ -6,7 +6,7 @@ import {
     ErrorResponse,
     ErrorStatusCode,
     ExtensionsWithOriginalError,
-    Structure,
+    Schema,
     UserEntity,
     buildAuthPayloadString,
     saveTokens,
@@ -15,11 +15,11 @@ import { client } from "./client.graphql"
 import { ApolloError, gql } from "@apollo/client"
 
 export const findProfile = async (
-    structure?: Structure<DeepPartial<UserEntity>>,
+    schema?: Schema<DeepPartial<UserEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<DeepPartial<UserEntity> | ErrorResponse> => {
     try {
-        const payload = buildAuthPayloadString(structure, authTokenType)
+        const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
             query FindProfile {
@@ -43,7 +43,7 @@ export const findProfile = async (
             error.statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await findProfile(structure, AuthTokenType.Refresh)
+            return await findProfile(schema, AuthTokenType.Refresh)
         return error
     }
 }

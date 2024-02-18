@@ -3,7 +3,7 @@ import { DeepPartial } from "@apollo/client/utilities"
 import {
     ErrorResponse,
     ExtensionsWithOriginalError,
-    Structure,
+    Schema,
     UserEntity,
     buildPayloadString,
 } from "@common"
@@ -13,11 +13,11 @@ export const findOneUser = async (
     params: {
     userId: string;
   },
-    structure?: Structure<DeepPartial<UserEntity>>
+    schema?: Schema<DeepPartial<UserEntity>>
 ): Promise<UserEntity | ErrorResponse> => {
     const { userId } = params
     try {
-        const payload = buildPayloadString(structure)
+        const payload = buildPayloadString(schema)
         const { data: graphqlData } = await client().query({
             query: gql`
             query FindOneUser($input: FindOneUserInput!) {

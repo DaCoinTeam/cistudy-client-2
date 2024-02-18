@@ -2,7 +2,7 @@ import {
     ExtensionsWithOriginalError,
     PostEntity,
     ErrorResponse,
-    Structure,
+    Schema,
     buildPayloadString,
 } from "@common"
 import { client } from "./client.graphql"
@@ -19,11 +19,11 @@ export const findManyPosts = async (
     courseId: string;
     options?: FindManyPostOptions
   },
-    structure?: Structure<DeepPartial<PostEntity>>
+    schema?: Schema<DeepPartial<PostEntity>>
 ): Promise<Array<PostEntity> | ErrorResponse> => {
     try {
         const { courseId, options } = params
-        const payload = buildPayloadString(structure)
+        const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
             query FindManyPosts($input: FindManyPostsInput!) {
@@ -60,10 +60,10 @@ export const findOnePost = async (
       take: number;
     }>;
   },
-    structure?: Structure<DeepPartial<PostEntity>>
+    schema?: Schema<DeepPartial<PostEntity>>
 ): Promise<PostEntity | ErrorResponse> => {
     try {
-        const payload = buildPayloadString(structure)
+        const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
             query FindOnePost($postId: ID!) {

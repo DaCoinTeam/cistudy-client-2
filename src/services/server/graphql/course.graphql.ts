@@ -2,7 +2,7 @@ import {
     ExtensionsWithOriginalError,
     CourseEntity,
     ErrorResponse,
-    Structure,
+    Schema,
     buildPayloadString,
 } from "@common"
 import { client } from "./client.graphql"
@@ -13,11 +13,11 @@ export const findOneCourse = async (
     params: {
     courseId: string;
   },
-    structure?: Structure<DeepPartial<CourseEntity>>
+    schema?: Schema<DeepPartial<CourseEntity>>
 ): Promise<CourseEntity | ErrorResponse> => {
     try {
         const { courseId } = params
-        const payload = buildPayloadString(structure)
+        const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
             query FindOneCourse($input: FindOneCourseInput!) {
@@ -46,10 +46,10 @@ export const findOneCourse = async (
 }
 
 export const findManyCourses = async (
-    structure?: Structure<DeepPartial<CourseEntity>>
+    schema?: Schema<DeepPartial<CourseEntity>>
 ): Promise<Array<CourseEntity> | ErrorResponse> => {
     try {
-        const payload = buildPayloadString(structure)
+        const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
             query FindManyCourses() {
