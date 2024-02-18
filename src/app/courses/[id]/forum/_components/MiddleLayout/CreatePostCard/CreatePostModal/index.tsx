@@ -39,7 +39,7 @@ export const WrappedCreatePostModal = () => {
             <Button onPress={onOpen} className="!justify-normal w-full bg-content2">
         Do you need some help?
             </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
                 <ModalContent>
                     <ModalHeader className="flex flex-col p-6 pb-0">
             Create Post

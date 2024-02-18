@@ -10,7 +10,7 @@ interface ContentItemProps {
 }
 
 export const ContentItem = (props: ContentItemProps) => {
-    const contentTypeToElement : Record<ContentType, () => JSX.Element> = {
+    const contentTypeToElement: Record<ContentType, () => JSX.Element> = {
         [ContentType.Text]: () => (
             <div className="whitespace-pre-line text-sm">
                 {props.content.value as string}
@@ -23,14 +23,22 @@ export const ContentItem = (props: ContentItemProps) => {
         ),
         [ContentType.Images]: () => {
             const images = props.content.value as Array<File>
+            const numberToGridCols: Record<number, string> = {
+                1: "grid-cols-1",
+                2: "grid-cols-2",
+                3: "grid-cols-3",
+                4: "grid-cols-4",
+            }
+
             return (
-                <div className={`grid grid-cols-${images.length} gap-2`}>
+                <div className={`grid ${numberToGridCols[images.length]} gap-2`}>
                     {images.map((image) => (
                         <Image
                             key={uuidv4()}
                             alt="image"
                             className="aspect-video"
-                            src={URL.createObjectURL(image)} />
+                            src={URL.createObjectURL(image)}
+                        />
                     ))}
                 </div>
             )
@@ -40,7 +48,7 @@ export const ContentItem = (props: ContentItemProps) => {
         },
         [ContentType.Videos]: function (): JSX.Element {
             throw new Error("Function not implemented.")
-        }
+        },
     }
     return <> {contentTypeToElement[props.content.contentType]()} </>
 }
