@@ -22,7 +22,7 @@ export const WrappedCreatePostModal = () => {
     const formik = useContext(FormikContext)!
 
     const renderContents = () => (
-        <div className="flex flex-col gap-3 overflow-auto max-h-[250px]">
+        <div className="flex flex-col gap-4 overflow-auto max-h-[250px]">
             {formik.values.contents.map((content) => (
                 <ContentItem
                     key={uuidv4()}
