@@ -114,7 +114,7 @@ export const AddContent = () => {
             content: (
                 <div>
                     <FileDropzone onDrop={onImageDrop} />
-                    {images.length ? <Spacer y={6} /> : null}
+                    {images.length ? <Spacer y={4} /> : null}
 
                     <div className="grid grid-cols-4 gap-2 items-center">
                         {images.map((image, index) => (
@@ -179,16 +179,16 @@ export const AddContent = () => {
 
     return (
         <Card className="bg-content2 w-full" shadow="none">
-            <CardBody className="w-full p-6">
+            <CardBody className="w-full p-4">
                 <div className="w-full">
                     <Tabs
                         selectedKey={contentSelected}
                         onSelectionChange={onSelectionChange}
                         fullWidth
                         aria-label="Options"
-                        color="primary"
                         variant="light"
                         classNames={{
+                            cursor: "bg-content3 shadow-none",
                             panel: "!pb-0",
                         }}
                     >
@@ -200,7 +200,7 @@ export const AddContent = () => {
                     </Tabs>
                 </div>
             </CardBody>
-            <CardFooter className="p-6 pt-0">
+            <CardFooter className="p-4 pt-0">
                 <Button fullWidth onPress={onPress}>
           Add
                 </Button>
