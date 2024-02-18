@@ -1,15 +1,8 @@
 import { useReducer } from "react"
-
-export enum ContentSelected {
-  Text = "text",
-  Code = "code",
-  Link = "link",
-  Images = "images",
-  Videos = "videos",
-}
+import { ContentType } from "@common"
 
 export interface AddContentState {
-  contentSelected: ContentSelected;
+  contentSelected: ContentType;
   text: string;
   code: string;
   link: string;
@@ -19,7 +12,7 @@ export interface AddContentState {
 
 export interface SetContentSelected {
   type: "SET_CONTENT_SELECTED";
-  payload: ContentSelected;
+  payload: ContentType;
 }
 
 export interface SetTextAction {
@@ -62,7 +55,7 @@ export type AddContentAction =
   | ResetAction;
 
 export const defaultState: AddContentState = {
-    contentSelected: ContentSelected.Text,
+    contentSelected: ContentType.Text,
     text: "",
     code: "",
     link: "",

@@ -20,7 +20,7 @@ import {
 } from "@heroicons/react/24/outline"
 import { ContentType, Key } from "@common"
 import { FileDropzone } from "../../../../../../../../_shared"
-import { ContentSelected, useAddContentReducer } from "./useAddContentReducer"
+import { useAddContentReducer } from "./useAddContentReducer"
 import { v4 as uuidv4 } from "uuid"
 import { XMarkIcon } from "@heroicons/react/24/solid"
 import { FormikContext, PostContent } from "../FormikProviders"
@@ -161,7 +161,7 @@ export const AddContent = () => {
     const onSelectionChange = (key: Key) =>
         dispatch({
             type: "SET_CONTENT_SELECTED",
-            payload: key as ContentSelected,
+            payload: key as ContentType,
         })
 
     const onPress = () => {
@@ -188,7 +188,8 @@ export const AddContent = () => {
                         variant="light"
                         classNames={{
                             cursor: "bg-content3 shadow-none",
-                            panel: "!pb-0",
+                            panel: "!px-0 !pb-0",
+                            
                         }}
                     >
                         {items.map((item) => (
