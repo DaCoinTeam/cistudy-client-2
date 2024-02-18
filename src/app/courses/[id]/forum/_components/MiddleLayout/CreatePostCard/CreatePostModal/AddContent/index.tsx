@@ -5,7 +5,6 @@ import {
     Tabs,
     Tab,
     Textarea,
-    Link,
     Image,
     Badge,
     Spacer,

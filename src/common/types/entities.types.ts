@@ -1,33 +1,33 @@
 export enum UserKind {
-  Local = "Local",
-  Google = "Google",
-  Facebook = "Facebook",
+  Local = "local",
+  Google = "google",
+  Facebook = "facebook",
 }
 
 export enum UserRole {
-  User = "User",
-  Moderator = "Moderator",
-  Administrator = "Administrator",
+  User = "user",
+  Moderator = "moderator",
+  Administrator = "administrator",
 }
 
 export enum VerifyStatus {
-  Pending = "Pending",
-  Approved = "Approved",
-  Rejected = "Rejected",
+  Pending = "pending",
+  Approved = "approved",
+  Rejected = "rejected",
 }
 
 export enum ContentType {
-  Text = "Text",
-  Code = "Code",
-  Link = "Link",
-  Images = "Images",
-  Videos = "Videos",
+  Text = "text",
+  Code = "code",
+  Link = "link",
+  Images = "images",
+  Videos = "videos",
 }
 
 export enum ProcessStatus {
-  Pending = "Pending",
-  Processing = "Processing",
-  Completed = "Completed",
+  Pending = "pending",
+  Processing = "processing",
+  Completed = "completed",
 }
 
 export interface UserEntity {
@@ -152,11 +152,12 @@ export interface PostCommentEntity {
 
 export interface PostContentEntity {
   postContentId: string;
-  index: number;
-  content: string;
+  position: number;
+  text: string;
   contentType: ContentType;
   postId: string;
   post: PostEntity;
+  postContentMedias: Array<PostContentMediaEntity>;
 }
 
 export interface SectionEntity {
@@ -196,4 +197,12 @@ export interface PostReactEntity {
   updatedAt: Date;
   user: UserEntity;
   post: PostEntity;
+}
+
+export interface PostContentMediaEntity {
+  postContentMediaId: string;
+  position: number;
+  mediaId: string;
+  postContentId: string;
+  postContent: PostContentEntity;
 }

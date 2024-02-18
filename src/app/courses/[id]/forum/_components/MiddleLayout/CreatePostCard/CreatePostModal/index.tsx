@@ -32,6 +32,8 @@ export const WrappedCreatePostModal = () => {
         </div>
     )
 
+    const onPress = () => formik.submitForm()
+
     return (
         <>
             <Button onPress={onOpen} className="!justify-normal w-full bg-content2">
@@ -54,9 +56,8 @@ export const WrappedCreatePostModal = () => {
                     <ModalFooter className="p-6 pt-0">
                         <div className="flex gap-4 items-center">
                             <Button variant="light" color="danger"> Reset </Button>
-                            <Button color="primary"> Create </Button>
+                            <Button onPress={onPress} color="primary"> Create </Button>
                         </div>
-                      
                     </ModalFooter>
                 </ModalContent>
             </Modal>

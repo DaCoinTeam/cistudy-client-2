@@ -43,7 +43,6 @@ export const ForumProviders = ({ children }: { children: ReactNode }) => {
                     postContents: {
                         postContentId: true,
                         contentType: true,
-                        content: true,
                     },
                 }
             )
