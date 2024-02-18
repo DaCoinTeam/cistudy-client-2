@@ -11,9 +11,8 @@ import {
 import { FormikProviders } from "./FormikProviders"
 import { AddContent } from "./AddContent"
 import { FormikContext } from "./FormikProviders"
-import { RenderContent } from "./RenderContent"
+import { ContentItem } from "./ContentItem"
 import { v4 as uuidv4 } from "uuid"
-import { ContentType } from "@common"
 
 export const WrappedCreatePostModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -23,10 +22,9 @@ export const WrappedCreatePostModal = () => {
     const renderContents = () => (
         <div className="flex flex-col gap-1">
             {formik.values.contents.map((content) => (
-                <RenderContent
+                <ContentItem
                     key={uuidv4()}
-                    value={content.content as string}
-                    contentType={content.contentType as ContentType}
+                    content={content}
                 />
             ))}
         </div>

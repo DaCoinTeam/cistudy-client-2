@@ -1,15 +1,21 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, } from "react"
-import { PostContentEntity } from "@common"
+import { ContentType } from "@common"
 import * as Yup from "yup"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
     null
 )
 
+export interface PostContent {
+    index: number,
+    value: string | Array<File>,
+    contentType: ContentType
+}
+
 interface FormikValues {
-    contents: Array<Partial<PostContentEntity>>,
+    contents: Array<PostContent>,
 }
 
 const initialValues: FormikValues = {
@@ -29,8 +35,6 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
     return (
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({
-                email: Yup.string().email("Invalid email").required("Email is required"),
-                password: Yup.string().required("Password is required"),
             })
         }
         onSubmit={async ({ contents }) => {

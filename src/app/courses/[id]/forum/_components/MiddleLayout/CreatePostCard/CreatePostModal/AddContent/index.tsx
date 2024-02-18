@@ -11,7 +11,6 @@ import {
     Spacer,
     CardBody,
     Button,
-    CardHeader,
 } from "@nextui-org/react"
 import {
     VariableIcon,
@@ -20,12 +19,12 @@ import {
     LinkIcon,
     CodeBracketIcon,
 } from "@heroicons/react/24/outline"
-import { ContentType, Key, PostContentEntity } from "@common"
+import { ContentType, Key } from "@common"
 import { FileDropzone } from "../../../../../../../../_shared"
 import { ContentSelected, useAddContentReducer } from "./useAddContentReducer"
 import { v4 as uuidv4 } from "uuid"
 import { XMarkIcon } from "@heroicons/react/24/solid"
-import { FormikContext } from "../FormikProviders"
+import { FormikContext, PostContent } from "../FormikProviders"
 
 export const AddContent = () => {
     const [state, dispatch] = useAddContentReducer()
@@ -62,7 +61,7 @@ export const AddContent = () => {
     //         payload: value,
     //     })
 
-    const items = [
+    const items: Array<Item> = [
         {
             key: "text",
             icon: <VariableIcon className="w-6 h-6" />,
@@ -76,6 +75,10 @@ export const AddContent = () => {
                     onValueChange={onTextChange}
                 />
             ),
+            data: {
+                value: text,
+                contentType: ContentType.Text,
+            },
         },
         {
             key: "code",
@@ -91,14 +94,22 @@ export const AddContent = () => {
                     onValueChange={onCodeChange}
                 />
             ),
+            data: {
+                value: code,
+                contentType: ContentType.Code,
+            },
         },
         {
             key: "link",
             icon: <LinkIcon className="w-6 h-6" />,
             content: <div />,
+            data: {
+                value: link,
+                contentType: ContentType.Link,
+            },
         },
         {
-            key: "image",
+            key: "images",
             icon: <PhotoIcon className="w-6 h-6" />,
             content: (
                 <div>
@@ -131,15 +142,23 @@ export const AddContent = () => {
                     </div>
                 </div>
             ),
+            data: {
+                value: images,
+                contentType: ContentType.Images,
+            },
         },
         {
-            key: "video",
+            key: "videos",
             icon: <VideoCameraIcon className="w-6 h-6" />,
             content: (
                 <div>
                     <FileDropzone onDrop={onVideoDrop} />,<Link></Link>
                 </div>
             ),
+            data: {
+                value: videos,
+                contentType: ContentType.Videos,
+            },
         },
     ]
 
@@ -150,35 +169,15 @@ export const AddContent = () => {
         })
 
     const onPress = () => {
-        const contentSelectedToContent: Record<
-      ContentSelected,
-      Partial<PostContentEntity>
-    > = {
-        [ContentSelected.Text]: {
-            content: text,
-            contentType: ContentType.Text,
-        },
-        [ContentSelected.Code]: {
-            content: code,
-            contentType: ContentType.Code,
-        },
-        [ContentSelected.Link]: {
-            content: text,
-            contentType: ContentType.Text,
-        },
-        [ContentSelected.Videos]: {
-            content: code,
-            contentType: ContentType.Code,
-        },
-        [ContentSelected.Images]: {
-            content: text,
-            contentType: ContentType.Text,
-        },
-    }
-
-        const content = contentSelectedToContent[contentSelected]
         const contents = formik.values.contents
+        const content: PostContent = {
+            index: contents.length,
+            ...(items.find((item) => item.key === contentSelected) as Item).data,
+        }
         formik.setFieldValue("contents", [...contents, content])
+        dispatch({
+            type: "RESET"
+        })
     }
 
     return (
@@ -203,10 +202,21 @@ export const AddContent = () => {
             </CardBody>
             <CardFooter className="p-6 pt-0">
                 <Button fullWidth color="primary" onPress={onPress}>
-                    {" "}
-          Add{" "}
+          Add
                 </Button>
             </CardFooter>
         </Card>
     )
+}
+
+interface Item {
+  key: string;
+  icon: React.JSX.Element;
+  content: React.JSX.Element;
+  data: ItemData;
+}
+
+interface ItemData {
+  value: string | Array<File>;
+  contentType: ContentType;
 }

@@ -47,15 +47,21 @@ export interface SetVideoAction {
   payload: Array<File>;
 }
 
+export interface ResetAction {
+  type: "RESET";
+}
+
+
 export type AddContentAction =
   | SetContentSelected
   | SetTextAction
   | SetCodeAction
   | SetLinkAction
   | SetImageAction
-  | SetVideoAction;
+  | SetVideoAction
+  | ResetAction;
 
-export const state: AddContentState = {
+export const defaultState: AddContentState = {
     contentSelected: ContentSelected.Text,
     text: "",
     code: "",
@@ -63,6 +69,8 @@ export const state: AddContentState = {
     images: [],
     videos: []
 }
+
+export const state = defaultState
 
 export const reducer = (state: AddContentState, action: AddContentAction) => {
     switch (action.type) {
@@ -78,6 +86,8 @@ export const reducer = (state: AddContentState, action: AddContentAction) => {
         return { ...state, images: action.payload}
     case "SET_VIDEOS":
         return { ...state, videos: action.payload}
+    case "RESET": 
+        return defaultState
     default:
         return state
     }
