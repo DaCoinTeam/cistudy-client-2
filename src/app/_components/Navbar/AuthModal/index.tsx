@@ -9,14 +9,13 @@ import {
 import { NavbarContext } from "../NavbarProviders"
 import { SignInTab } from "./SignInTab"
 import { SignUpTab } from "./SignUpTab"
+import { Key } from "@common"
 
-interface IAuthModalProps {
+interface AuthModalProps {
   className?: string;
 }
 
-type Key = "signIn" | "signUp";
-
-export const AuthModal = (props: IAuthModalProps) => {
+export const AuthModal = (props: AuthModalProps) => {
     const { state, dispatch } = useContext(NavbarContext)!
     const { isAuthModalOpen, isSignUp } = state
 
@@ -24,13 +23,11 @@ export const AuthModal = (props: IAuthModalProps) => {
         type: "SET_IS_AUTH_MODAL_OPEN",
         payload: !isAuthModalOpen
     })
-    const onSelectionChange = (key: string | number) => {
-        const _key = key as Key
-        dispatch({
-            type: "SET_IS_SIGN_UP",
-            payload: _key === "signUp"
-        })
-    }
+    const onSelectionChange = (key: Key) => dispatch({
+        type: "SET_IS_SIGN_UP",
+        payload: key === "signUp"
+    })
+    
     return (
         <Modal
             isOpen={isAuthModalOpen}

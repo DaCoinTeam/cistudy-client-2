@@ -15,16 +15,16 @@ import { useSelector } from "react-redux"
 import { RootState } from "@redux"
 import { ProfileMenu } from "./ProfileMenu"
 
-interface INavbarProps {
+interface NavbarProps {
   className?: string;
 }
 
-const WrappedNavbar = (props: INavbarProps) => {
+const WrappedNavbar = (props: NavbarProps) => {
     const { dispatch } = useContext(NavbarContext)!
 
     const profile = useSelector((state: RootState) => state.auth.profile)
 
-    const onClickSignIn = () => {
+    const onSignInPress = () => {
         dispatch({
             type: "SET_IS_AUTH_MODAL_OPEN",
             payload: true
@@ -34,7 +34,7 @@ const WrappedNavbar = (props: INavbarProps) => {
             payload: false
         })
     }
-    const onClickSignUp = () => {
+    const onSignUpPress = () => {
         dispatch({
             type: "SET_IS_AUTH_MODAL_OPEN",
             payload: true
@@ -75,12 +75,12 @@ const WrappedNavbar = (props: INavbarProps) => {
                     ) : (
                         <>
                             <NavbarItem className="hidden lg:flex">
-                                <Link onClick={onClickSignIn} className="cursor-pointer">
-                  Sign In
+                                <Link as="button" onPress={onSignInPress}>
+                  Sign In       
                                 </Link>
                             </NavbarItem>
                             <NavbarItem>
-                                <Button color="primary" onClick={onClickSignUp} variant="flat">
+                                <Button color="primary" onPress={onSignUpPress} variant="flat">
                   Sign Up
                                 </Button>
                             </NavbarItem>
@@ -93,7 +93,7 @@ const WrappedNavbar = (props: INavbarProps) => {
     )
 }
 
-export const Navbar = (props: INavbarProps) => (
+export const Navbar = (props: NavbarProps) => (
     <NavbarProviders>
         {" "}
         <WrappedNavbar {...props} />{" "}

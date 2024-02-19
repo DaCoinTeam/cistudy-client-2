@@ -1,4 +1,6 @@
 export * from "./entities.types"
 export * from "./errors.types"
 export * from "./response.types"
-export * from "./structure.types"
+export * from "./schema.types"
+export * from "./position.types"
+export * from "./base.types"

@@ -16,7 +16,7 @@ import { findOneUser } from "@services"
 import { useParams } from "next/navigation"
 import { isErrorResponse } from "@common"
 
-export interface IUserDetailsContextValue {
+export interface UserDetailsContextValue {
   state: UserDetailsState;
   dispatch: React.Dispatch<UserDetailsAction>;
   functions: {
@@ -25,7 +25,7 @@ export interface IUserDetailsContextValue {
 }
 
 export const UserDetailsContext =
-  createContext<IUserDetailsContextValue | null>(null)
+  createContext<UserDetailsContextValue | null>(null)
 
 export const UserDetailsProviders = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useUserDetailsReducer()
@@ -62,7 +62,7 @@ export const UserDetailsProviders = ({ children }: { children: ReactNode }) => {
         handleEffect()
     }, [])
 
-    const userDetailsContextValue: IUserDetailsContextValue = useMemo(
+    const userDetailsContextValue: UserDetailsContextValue = useMemo(
         () => ({
             state,
             dispatch,

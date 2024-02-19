@@ -8,10 +8,10 @@ import { PhotoIcon } from "@heroicons/react/24/solid"
 import { RootContext } from "../../../../_hooks"
 import { isErrorResponse } from "@common"
 
-interface ICoverPhotoProps {
+interface CoverPhotoProps {
   className?: string;
 }
-export const CoverPhoto = (props: ICoverPhotoProps) => {
+export const CoverPhoto = (props: CoverPhotoProps) => {
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const { state, functions } = useContext(UserDetailsContext)!
@@ -24,10 +24,8 @@ export const CoverPhoto = (props: ICoverPhotoProps) => {
 
     const isOwnProfile = user?.userId === profile?.userId
 
-    const onClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click()
-        }
+    const onPress = () => {
+        if (fileInputRef.current) fileInputRef.current.click()
     }
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +65,7 @@ export const CoverPhoto = (props: ICoverPhotoProps) => {
                 {
                     isOwnProfile ? (
                         <Button
-                            onClick={onClick}
+                            onPress={onPress}
                             className="z-10 w-fit"
                             startContent={<PhotoIcon className="w-6 h-6" />}
                         >

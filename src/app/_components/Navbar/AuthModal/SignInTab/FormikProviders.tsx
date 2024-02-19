@@ -7,22 +7,22 @@ import { AppDispatch, setProfile } from "@redux"
 import { useDispatch } from "react-redux"
 import * as Yup from "yup"
 
-export const FormikContext = createContext<FormikProps<IFormikValues> | null>(
+export const FormikContext = createContext<FormikProps<FormikValues> | null>(
     null
 )
 
-interface IFormikValues {
+interface FormikValues {
     email: string,
     password: string
 }
 
-const initialValues: IFormikValues = {
+const initialValues: FormikValues = {
     email: "",
     password: ""
 }
 
 const WrappedFormikProviders = ({ formik, children }: {
-    formik: FormikProps<IFormikValues> | null;
+    formik: FormikProps<FormikValues> | null;
     children: ReactNode;
 }) => (
     <FormikContext.Provider value={formik}>

@@ -7,12 +7,12 @@ import { AppDispatch, setProfile } from "@redux"
 import { useDispatch } from "react-redux"
 import { isErrorResponse } from "@common"
 
-const SignInByGoogleIcon = () => {
+export const SignInByGoogleIcon = () => {
     const provider = new GoogleAuthProvider()
 
     const dispatch : AppDispatch = useDispatch()
 
-    const onClick = async () => {
+    const onPress = async () => {
         const credential = await signInWithPopup(firebaseAuth, provider)
         const token = await credential.user.getIdToken()
         const response = await verifyGoogleAccessToken({ token })
@@ -24,9 +24,8 @@ const SignInByGoogleIcon = () => {
     }
   
     return (
-        <Button onPress={onClick} isIconOnly variant="flat" className="w-12 h-12">
+        <Button onPress={onPress} isIconOnly variant="flat" className="w-12 h-12">
             <GoogleIcon size={40} />
         </Button>
     )
 }
-export default SignInByGoogleIcon

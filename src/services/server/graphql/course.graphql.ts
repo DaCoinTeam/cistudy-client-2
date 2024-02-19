@@ -2,7 +2,7 @@ import {
     ExtensionsWithOriginalError,
     CourseEntity,
     ErrorResponse,
-    Structure,
+    Schema,
     buildPayloadString,
 } from "@common"
 import { client } from "./client.graphql"
@@ -13,10 +13,11 @@ export const findOneCourse = async (
     params: {
     courseId: string;
   },
-    structure?: Structure<DeepPartial<CourseEntity>>
-): Promise<Partial<CourseEntity> | ErrorResponse> => {
+    schema?: Schema<DeepPartial<CourseEntity>>
+): Promise<CourseEntity | ErrorResponse> => {
     try {
-        const payload = buildPayloadString(structure)
+        const { courseId } = params
+        const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
             query FindOneCourse($input: FindOneCourseInput!) {
@@ -27,12 +28,12 @@ export const findOneCourse = async (
           `,
             variables: {
                 input: {
-                    courseId: params.courseId,
+                    courseId,
                 },
             },
         })
 
-        return data.findOneCourse as Partial<CourseEntity>
+        return data.findOneCourse as CourseEntity
     } catch (ex) {
         console.log(ex)
         const _ex = ex as ApolloError
@@ -45,10 +46,10 @@ export const findOneCourse = async (
 }
 
 export const findManyCourses = async (
-    structure?: Structure<DeepPartial<CourseEntity>>
-): Promise<Partial<CourseEntity[]> | ErrorResponse> => {
+    schema?: Schema<DeepPartial<CourseEntity>>
+): Promise<Array<CourseEntity> | ErrorResponse> => {
     try {
-        const payload = buildPayloadString(structure)
+        const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
             query FindManyCourses() {
@@ -58,7 +59,7 @@ export const findManyCourses = async (
   }
           `,
         })
-        return data.findManyCourses as Partial<CourseEntity[]>
+        return data.findManyCourses as Array<CourseEntity>
     } catch (ex) {
         console.log(ex)
         const _ex = ex as ApolloError

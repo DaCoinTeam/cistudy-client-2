@@ -8,11 +8,11 @@ import { RootContext } from "../../../../_hooks"
 import { CameraIcon } from "@heroicons/react/24/solid"
 import { Avatar, Button } from "@nextui-org/react"
 
-interface IUserAvatarProps {
+interface UserAvatarProps {
   className?: string;
 }
 
-export const UserAvatar = (props: IUserAvatarProps) => {
+export const UserAvatar = (props: UserAvatarProps) => {
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const { state, functions } = useContext(UserDetailsContext)!
@@ -25,10 +25,8 @@ export const UserAvatar = (props: IUserAvatarProps) => {
 
     const isOwnProfile = user?.userId === profile?.userId
 
-    const onClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click()
-        }
+    const onPress = () => {
+        if (fileInputRef.current) fileInputRef.current.click()
     }
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +61,7 @@ export const UserAvatar = (props: IUserAvatarProps) => {
                     />
                     {isOwnProfile ? (
                         <Button
-                            onClick={onClick}
+                            onPress={onPress}
                             radius="full"
                             isIconOnly
                             className="absolute bottom-0 right-0"

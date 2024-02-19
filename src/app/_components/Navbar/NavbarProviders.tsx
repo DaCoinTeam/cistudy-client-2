@@ -5,17 +5,17 @@ import {
     useNavbarReducer,
 } from "./useNavbarReducer"
 
-export interface INavbarContextValue {
+export interface NavbarContextValue {
   state: NavbarState;
   dispatch: React.Dispatch<NavbarAction>;
 }
 
-export const NavbarContext = createContext<INavbarContextValue | null>(null)
+export const NavbarContext = createContext<NavbarContextValue | null>(null)
 
 export const NavbarProviders = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useNavbarReducer()
 
-    const navbarContextValue: INavbarContextValue = useMemo(() => ({
+    const navbarContextValue: NavbarContextValue = useMemo(() => ({
         state,
         dispatch,
     }), [state, dispatch])

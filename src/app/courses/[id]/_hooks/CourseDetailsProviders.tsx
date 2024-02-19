@@ -11,12 +11,12 @@ import {
     CourseDetailsAction,
     CourseDetailsState,
     useCourseDetailsReducer,
-} from "./useCourseDetails"
+} from "./useCourseDetailsReducer"
 import { findOneCourse } from "@services"
 import { useParams } from "next/navigation"
 import { isErrorResponse } from "@common"
 
-export interface ICourseDetailsContextValue {
+export interface CourseDetailsContextValue {
   state: CourseDetailsState;
   dispatch: React.Dispatch<CourseDetailsAction>;
   functions: {
@@ -25,7 +25,7 @@ export interface ICourseDetailsContextValue {
 }
 
 export const CourseDetailsContext =
-  createContext<ICourseDetailsContextValue | null>(null)
+  createContext<CourseDetailsContextValue | null>(null)
 
 export const CourseDetailsProviders = ({
     children,
@@ -47,6 +47,22 @@ export const CourseDetailsProviders = ({
                 title: true,
                 description: true,
                 previewVideoId: true,
+                thumbnailId: true,
+                courseTargets: {
+                    courseTargetId: true,
+                    content: true,
+                    position: true
+                },
+                sections: {
+                    sectionId: true,
+                    title: true,
+                    lectures: {
+                        lectureId: true,
+                        thumbnailId: true,
+                        lectureVideoId: true,
+                        title: true,
+                    }
+                }
             }
         )
         if (!isErrorResponse(response)) {
@@ -70,7 +86,7 @@ export const CourseDetailsProviders = ({
         handleEffect()
     }, [])
 
-    const courseDetailsContextValue: ICourseDetailsContextValue = useMemo(
+    const courseDetailsContextValue: CourseDetailsContextValue = useMemo(
         () => ({
             state,
             dispatch,

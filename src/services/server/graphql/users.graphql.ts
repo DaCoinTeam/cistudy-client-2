@@ -3,7 +3,7 @@ import { DeepPartial } from "@apollo/client/utilities"
 import {
     ErrorResponse,
     ExtensionsWithOriginalError,
-    Structure,
+    Schema,
     UserEntity,
     buildPayloadString,
 } from "@common"
@@ -13,11 +13,11 @@ export const findOneUser = async (
     params: {
     userId: string;
   },
-    structure?: Structure<DeepPartial<UserEntity>>
-): Promise<DeepPartial<UserEntity> | ErrorResponse> => {
+    schema?: Schema<DeepPartial<UserEntity>>
+): Promise<UserEntity | ErrorResponse> => {
     const { userId } = params
     try {
-        const payload = buildPayloadString(structure)
+        const payload = buildPayloadString(schema)
         const { data: graphqlData } = await client().query({
             query: gql`
             query FindOneUser($input: FindOneUserInput!) {
@@ -32,7 +32,7 @@ export const findOneUser = async (
                 },
             },
         })
-        return graphqlData.findOneUser as DeepPartial<UserEntity>
+        return graphqlData.findOneUser as UserEntity
     } catch (ex) {
         const { graphQLErrors } = ex as ApolloError
         return (graphQLErrors[0].extensions as ExtensionsWithOriginalError)

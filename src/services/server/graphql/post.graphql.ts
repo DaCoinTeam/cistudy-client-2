@@ -2,39 +2,45 @@ import {
     ExtensionsWithOriginalError,
     PostEntity,
     ErrorResponse,
-    Structure,
+    Schema,
     buildPayloadString,
 } from "@common"
 import { client } from "./client.graphql"
 import { ApolloError, gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 
+export type FindManyPostOptions = Partial<{
+  skip: number;
+  take: number;
+}>;
+
 export const findManyPosts = async (
     params: {
     courseId: string;
-    take: number;
-    skip: number;
+    options?: FindManyPostOptions;
   },
-    structure?: Structure<DeepPartial<PostEntity>>
-): Promise<Partial<PostEntity[]> | ErrorResponse> => {
+    schema?: Schema<DeepPartial<PostEntity>>
+): Promise<Array<PostEntity> | ErrorResponse> => {
     try {
-        const payload = buildPayloadString(structure)
+        const { courseId, options } = params
+        const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
-            query FindManyPosts($courseId: String!,$take: Int!,  $skip: Int!) {
-    findManyPosts(input: { courseId: $courseId, take: $take, skip: $skip}) {
+            query FindManyPosts($input: FindManyPostsInput!) {
+  findManyPosts(input: $input) {
       ${payload}
-    }
   }
+}
           `,
             variables: {
-                courseId: params.courseId,
-                take: params.take,
-                skip: params.skip,
+                input: {
+                    courseId,
+                    options,
+                },
             },
         })
 
-        return data.findManyPosts as Partial<PostEntity[]>
+        return data.findManyPosts as Array<PostEntity>
     } catch (ex) {
         console.log(ex)
         const _ex = ex as ApolloError
@@ -50,24 +56,27 @@ export const findOnePost = async (
     params: {
     postId: string;
   },
-    structure?: Structure<DeepPartial<PostEntity>>
-): Promise<Partial<PostEntity> | ErrorResponse> => {
+    schema?: Schema<DeepPartial<PostEntity>>
+): Promise<PostEntity | ErrorResponse> => {
     try {
-        const payload = buildPayloadString(structure)
+        const { postId } = params
+        const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
-            query FindOnePost($postId: ID!) {
-    findOnePost(input: { postId: $postId }) {
+            query FindOnePost($input: FindOnePostInput!) {
+    findOnePost(input: $input) {
       ${payload}
     }
   }
           `,
             variables: {
-                postId: params.postId,
+                input: {
+                    postId,
+                },
             },
         })
 
-        return data.findOnePost as Partial<PostEntity>
+        return data.findOnePost as PostEntity
     } catch (ex) {
         const _ex = ex as ApolloError
         const error = (
@@ -76,9 +85,4 @@ export const findOnePost = async (
 
         return error
     }
-}
-
-export const post = {
-    findOnePost,
-    findManyPosts,
 }

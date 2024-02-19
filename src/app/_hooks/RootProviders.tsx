@@ -6,13 +6,13 @@ import { AppDispatch, setProfile } from "@redux"
 import { generateClientId, isErrorResponse } from "@common"
 import { findProfile } from "@services"
 
-interface IRootContextValue {
+interface RootContextValue {
     functions: {
         fetchAndSetProfile: () => Promise<void>
     }
 }
 
-export const RootContext = createContext<IRootContextValue | null>(null)
+export const RootContext = createContext<RootContextValue | null>(null)
 
 export const RootProviders = (props: { children: ReactNode }) => {
     const dispath: AppDispatch = useDispatch()
