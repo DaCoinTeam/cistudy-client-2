@@ -16,12 +16,12 @@ export const Actions = () => {
     const profile = useSelector((state: RootState) => state.auth.profile)
 
     const { state, functions } = useContext(ContentUnderContext)!
-    const { reactPostPartial } = state
+    const { postPartial } = state
     const { fetchAndSetReactPostPartial } = functions
 
     const onPress = async () => {
-        if (reactPostPartial === null) return
-        const { postId } = reactPostPartial
+        if (postPartial === null) return
+        const { postId } = postPartial
         const response = await reactPost({
             data: {
                 postId,
@@ -35,9 +35,9 @@ export const Actions = () => {
     }
 
     const renderLikeIcon = () => {
-        const found = reactPostPartial?.postReacts.find(
-            (reactPostPartial) =>
-                reactPostPartial.liked && reactPostPartial.userId === profile?.userId
+        const found = postPartial?.postReacts.find(
+            (postPartial) =>
+                postPartial.liked && postPartial.userId === profile?.userId
         )
         return found ? (
             <SolidHeartIcon className="w-6 h-6" />

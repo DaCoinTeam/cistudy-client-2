@@ -2,24 +2,24 @@ import { useReducer } from "react"
 import { PostEntity } from "@common"
 
 export interface ContentUnderState {
-  reactPostPartial: PostEntity | null;
+  postPartial: PostEntity | null;
 }
 
 export interface SetReactPostPartialAction {
-  type: "SET_REACT_POST_PARTIAL";
+  type: "SET_POST_PARTIAL";
   payload: PostEntity;
 }
 
 export type ContentUnderAction = SetReactPostPartialAction;
 
 export const state: ContentUnderState = {
-    reactPostPartial: null,
+    postPartial: null,
 }
 
 export const reducer = (state: ContentUnderState, action: ContentUnderAction) => {
     switch (action.type) {
-    case "SET_REACT_POST_PARTIAL":
-        return { ...state, reactPostPartial: action.payload }
+    case "SET_POST_PARTIAL":
+        return { ...state, postPartial: action.payload }
     default:
         return state
     }

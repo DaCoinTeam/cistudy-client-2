@@ -42,7 +42,7 @@ export const ContentUnder = (props: ContentUnderProps) => {
         )
         if (!isErrorResponse(response)) {
             dispatch({
-                type: "SET_REACT_POST_PARTIAL",
+                type: "SET_POST_PARTIAL",
                 payload: response,
             })
         } else {

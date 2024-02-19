@@ -10,11 +10,11 @@ interface CreatorAndStatsProps {
 
 export const CreatorAndStats = (props: CreatorAndStatsProps) => {
     const { state } = useContext(ContentUnderContext)!
-    const { reactPostPartial } = state
+    const { postPartial } = state
 
     const renderNumberOfLikes = () =>
         `${
-            reactPostPartial?.postReacts.filter((postReact) => postReact.liked).length
+            postPartial?.postReacts.filter((postReact) => postReact.liked).length
         } `
     return (
         <div className="flex items-center justify-between">
