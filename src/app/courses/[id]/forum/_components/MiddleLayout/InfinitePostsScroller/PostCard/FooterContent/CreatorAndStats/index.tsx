@@ -2,14 +2,14 @@ import React, { useContext } from "react"
 import { PostEntity } from "@common"
 import { Avatar } from "@nextui-org/react"
 import { getAssetUrl } from "@services"
-import { ContentUnderContext } from "../index"
+import { FooterContentContext } from "../index"
 
 interface CreatorAndStatsProps {
   post: PostEntity;
 }
 
 export const CreatorAndStats = (props: CreatorAndStatsProps) => {
-    const { state } = useContext(ContentUnderContext)!
+    const { state } = useContext(FooterContentContext)!
     const { postPartial } = state
 
     const renderNumberOfLikes = () =>

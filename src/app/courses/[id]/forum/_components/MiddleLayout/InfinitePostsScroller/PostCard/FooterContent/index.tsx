@@ -2,30 +2,33 @@ import React, { createContext, useCallback, useEffect, useMemo } from "react"
 import { PostEntity, isErrorResponse } from "@common"
 import { findOnePost } from "@services"
 import {
-    ContentUnderAction,
-    ContentUnderState,
-    useContentUnderReducer,
-} from "./useContentUnderReducer"
+    FooterContentAction,
+    FooterContentState,
+    useFooterContentReducer,
+} from "./useFooterContentReducer"
 
-import { Spacer } from "@nextui-org/react"
+import { Divider, Spacer } from "@nextui-org/react"
 import { Actions } from "./Actions"
 import { CreatorAndStats } from "./CreatorAndStats"
+import { Comments } from "./Comments"
 
-interface ContentUnderProps {
+interface FooterProps {
   post: PostEntity;
 }
 
-interface ContentUnderContextValue {
-  state: ContentUnderState;
-  dispatch: React.Dispatch<ContentUnderAction>;
+interface FooterContentContextValue {
+  state: FooterContentState;
+  dispatch: React.Dispatch<FooterContentAction>;
   functions: {
     fetchAndSetReactPostPartial: () => Promise<void>;
   };
 }
-export const ContentUnderContext = createContext<ContentUnderContextValue | null>(null)
+export const FooterContentContext =
+  createContext<FooterContentContextValue | null>(null)
 
-export const ContentUnder = (props: ContentUnderProps) => {
-    const [state, dispatch] = useContentUnderReducer()
+export const FooterContent = (props: FooterProps) => {
+    const [state, dispatch] = useFooterContentReducer()
+    const { isCommentsOpen } = state
 
     const fetchAndSetReactPostPartial = useCallback(async () => {
         const response = await findOnePost(
@@ -57,7 +60,7 @@ export const ContentUnder = (props: ContentUnderProps) => {
         handleEffect()
     }, [])
 
-    const postCardContextValue: ContentUnderContextValue = useMemo(
+    const footerContentContextValue: FooterContentContextValue = useMemo(
         () => ({
             state,
             dispatch,
@@ -69,10 +72,20 @@ export const ContentUnder = (props: ContentUnderProps) => {
     )
 
     return (
-        <ContentUnderContext.Provider value={postCardContextValue}>
-            <CreatorAndStats post={props.post} />
-            <Spacer y={4}/>
-            <Actions />
-        </ContentUnderContext.Provider>
+        <FooterContentContext.Provider value={footerContentContextValue}>
+            <div className="w-full">
+                <CreatorAndStats post={props.post} />
+                <Spacer y={4} />
+                <Actions />
+                <Spacer y={2} />
+                {isCommentsOpen ? (
+                    <>
+                        <Spacer y={2} />
+                        <Divider/>
+                        <Comments />
+                    </>
+                ) : null}
+            </div>
+        </FooterContentContext.Provider>
     )
 }
