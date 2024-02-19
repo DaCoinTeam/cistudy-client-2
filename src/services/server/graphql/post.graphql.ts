@@ -63,8 +63,8 @@ export const findOnePost = async (
         const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
-            query FindOnePost($postId: ID!) {
-    findOnePost(input: { postId: $postId }) {
+            query FindOnePost($input: FindOnePostInput!) {
+    findOnePost(input: $input) {
       ${payload}
     }
   }

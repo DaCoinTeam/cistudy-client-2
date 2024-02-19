@@ -1,13 +1,21 @@
-import React from "react"
+import React, { useContext } from "react"
 import { PostEntity } from "@common"
 import { Avatar } from "@nextui-org/react"
 import { getAssetUrl } from "@services"
+import { ContentUnderContext } from "../index"
 
 interface CreatorAndStatsProps {
   post: PostEntity;
 }
 
 export const CreatorAndStats = (props: CreatorAndStatsProps) => {
+    const { state } = useContext(ContentUnderContext)!
+    const { reactPostPartial } = state
+
+    const renderNumberOfLikes = () =>
+        `${
+            reactPostPartial?.postReacts.filter((postReact) => postReact.liked).length
+        } `
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -19,9 +27,7 @@ export const CreatorAndStats = (props: CreatorAndStatsProps) => {
             </div>
             <div className="flex gap-6">
                 <div className="text-sm">
-                    <span className="font-bold">
-                        {props.post.postReacts.filter(postReact => postReact.liked).length}{" "}
-                    </span>
+                    <span className="font-bold">{renderNumberOfLikes()}</span>
                     <span>likes</span>
                 </div>
                 <div className="text-sm">

@@ -6,35 +6,44 @@ import {
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid"
 import { Link } from "@nextui-org/react"
 import React, { useContext } from "react"
-import { PostEntity, isErrorResponse } from "@common"
+import { isErrorResponse } from "@common"
 import { reactPost } from "@services"
-import { ForumContext } from "../../../../../_hooks"
 import { useSelector } from "react-redux"
 import { RootState } from "@redux"
+import { ContentUnderContext } from "../index"
 
-interface ActionProps {
-  post: PostEntity;
-}
-
-const Actions = (props: ActionProps) => {
+export const Actions = () => {
     const profile = useSelector((state: RootState) => state.auth.profile)
 
-    const { functions } = useContext(ForumContext)!
-    const { fetchAndSetPosts } = functions
+    const { state, functions } = useContext(ContentUnderContext)!
+    const { reactPostPartial } = state
+    const { fetchAndSetReactPostPartial } = functions
 
     const onPress = async () => {
-        const { post } = props
-        const { postId } = post
+        if (reactPostPartial === null) return
+        const { postId } = reactPostPartial
         const response = await reactPost({
             data: {
                 postId,
             },
         })
         if (!isErrorResponse(response)) {
-            fetchAndSetPosts()
+            await fetchAndSetReactPostPartial()
         } else {
             console.log(response)
         }
+    }
+
+    const renderLikeIcon = () => {
+        const found = reactPostPartial?.postReacts.find(
+            (reactPostPartial) =>
+                reactPostPartial.liked && reactPostPartial.userId === profile?.userId
+        )
+        return found ? (
+            <SolidHeartIcon className="w-6 h-6" />
+        ) : (
+            <HeartIcon className="w-6 h-6" />
+        )
     }
 
     return (
@@ -44,14 +53,7 @@ const Actions = (props: ActionProps) => {
             </Link>
             <div className="flex gap-6">
                 <Link onPress={onPress} as="button">
-                    {props.post.postReacts.find(
-                        (postReact) =>
-                            postReact.liked && (postReact.userId === profile?.userId)
-                    ) ? (
-                            <SolidHeartIcon className="w-6 h-6" />
-                        ) : (
-                            <HeartIcon className="w-6 h-6" />
-                        )}
+                    {renderLikeIcon()}
                 </Link>
                 <Link as="button">
                     <ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6" />
@@ -60,5 +62,3 @@ const Actions = (props: ActionProps) => {
         </div>
     )
 }
-
-export default Actions
