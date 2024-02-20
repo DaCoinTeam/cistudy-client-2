@@ -11,7 +11,6 @@ export const Title = () => {
     const { course, finishFetch } = state
     const { fetchAndSetCourse } = functions
     const [isEdited, setIsEdited] = useState(false)
-
     const formik = useFormik({
         initialValues: {
             title: "",

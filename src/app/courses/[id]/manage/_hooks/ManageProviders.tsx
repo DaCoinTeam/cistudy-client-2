@@ -44,7 +44,6 @@ export const ManageProviders = ({ children }: { children: ReactNode }) => {
                         lectureId: true,
                         thumbnailId: true,
                         lectureVideoId: true,
-                        processStatus: true,
                         title: true,
                         resources: {
                             resourceId: true,

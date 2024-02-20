@@ -24,7 +24,8 @@ export const PostCard = (props: PostCardProps) => {
             <CardBody className="p-6">
                 <BodyContent post={props.post} />
             </CardBody>
-            <CardFooter className="p-6 pt-0 overflow-visible">
+            <Divider/>
+            <CardFooter className="p-6 pt-6 overflow-visible">
                 <FooterContent post={props.post} />
             </CardFooter>
         </Card>

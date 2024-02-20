@@ -1,11 +1,9 @@
 import {
     BookmarkIcon,
-    ChatBubbleOvalLeftEllipsisIcon,
     HeartIcon,
 } from "@heroicons/react/24/outline"
 import {
     HeartIcon as SolidHeartIcon,
-    ChatBubbleOvalLeftEllipsisIcon as SolidChatBubbleOvalLeftEllipsisIcon,
 } from "@heroicons/react/24/solid"
 import { Link } from "@nextui-org/react"
 import React, { useContext } from "react"
@@ -14,12 +12,13 @@ import { reactPost } from "@services"
 import { useSelector } from "react-redux"
 import { RootState } from "@redux"
 import { FooterContentContext } from "../index"
+import { CommentsModal } from "./CommentsModal"
 
 export const Actions = () => {
     const profile = useSelector((state: RootState) => state.auth.profile)
 
-    const { state, functions, dispatch } = useContext(FooterContentContext)!
-    const { postPartial, isCommentsOpen } = state
+    const { state, functions } = useContext(FooterContentContext)!
+    const { postPartial } = state
     const { fetchAndSetReactPostPartial } = functions
 
     const onLikePress = async () => {
@@ -37,12 +36,6 @@ export const Actions = () => {
         }
     }
 
-    const onCommentPress = async () =>
-        dispatch({
-            type: "SET_IS_COMMENTS_OPEN",
-            payload: !isCommentsOpen,
-        })
-
     const renderLikeIcon = () => {
         const found = postPartial?.postReacts.find(
             (postPartial) =>
@@ -55,14 +48,6 @@ export const Actions = () => {
         )
     }
 
-    const renderCommentIcon = () => {
-        return isCommentsOpen ? (
-            <SolidChatBubbleOvalLeftEllipsisIcon className="w-6 h-6" />
-        ) : (
-            <ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6" />
-        )
-    }
-
     return (
         <div className="flex items-center justify-between">
             <Link as="button">
@@ -72,9 +57,7 @@ export const Actions = () => {
                 <Link onPress={onLikePress} as="button">
                     {renderLikeIcon()}
                 </Link>
-                <Link onPress={onCommentPress} as="button">
-                    {renderCommentIcon()}
-                </Link>
+                <CommentsModal />
             </div>
         </div>
     )

@@ -8,7 +8,7 @@ interface BodyContentProps {
 
 export const BodyContent = (props: BodyContentProps) => {
     return (
-        <div className="flex flex-col gap-3 overflow-auto">
+        <div className="flex flex-col gap-4 overflow-auto">
             {props.post.postContents.map((postContent) => (
                 <ContentItem
                     key={postContent.postContentId}

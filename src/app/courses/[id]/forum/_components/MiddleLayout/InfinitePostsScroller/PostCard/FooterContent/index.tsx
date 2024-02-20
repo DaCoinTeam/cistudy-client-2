@@ -7,10 +7,9 @@ import {
     useFooterContentReducer,
 } from "./useFooterContentReducer"
 
-import { Divider, Spacer } from "@nextui-org/react"
+import { Spacer } from "@nextui-org/react"
 import { Actions } from "./Actions"
 import { CreatorAndStats } from "./CreatorAndStats"
-import { Comments } from "./Comments"
 
 interface FooterProps {
   post: PostEntity;
@@ -28,7 +27,6 @@ export const FooterContentContext =
 
 export const FooterContent = (props: FooterProps) => {
     const [state, dispatch] = useFooterContentReducer()
-    const { isCommentsOpen } = state
 
     const fetchAndSetReactPostPartial = useCallback(async () => {
         const response = await findOnePost(
@@ -75,16 +73,8 @@ export const FooterContent = (props: FooterProps) => {
         <FooterContentContext.Provider value={footerContentContextValue}>
             <div className="w-full">
                 <CreatorAndStats post={props.post} />
-                <Spacer y={4} />
+                <Spacer y={6} />
                 <Actions />
-                <Spacer y={2} />
-                {isCommentsOpen ? (
-                    <>
-                        <Spacer y={2} />
-                        <Divider/>
-                        <Comments />
-                    </>
-                ) : null}
             </div>
         </FooterContentContext.Provider>
     )
