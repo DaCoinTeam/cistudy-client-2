@@ -17,9 +17,6 @@ export const TextTab = () => {
             id="text"
             value={formik.values.text}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            isInvalid={!!(formik.touched.text && formik.errors.text)}
-            errorMessage={formik.touched.text && formik.errors.text}
         />
     )
 }

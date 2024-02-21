@@ -1,5 +1,6 @@
 "use client"
 import { FolderIcon } from "@heroicons/react/24/outline"
+import { DocumentArrowUpIcon } from "@heroicons/react/24/solid"
 import {
     useDisclosure,
     Modal,
@@ -14,7 +15,7 @@ import { LectureEntity, isErrorResponse } from "@common"
 import { ResourceItem } from "./ResourceItem"
 import { ManageContext } from "../../../../../_hooks"
 import { createResources } from "@services"
-import { FileDropzone } from "../../../../../../../../_shared"
+import Dropzone from "react-dropzone"
 
 interface ResourcesModalProps {
   lecture: LectureEntity;
@@ -75,7 +76,23 @@ export const ResourcesModal = (props: ResourcesModalProps) => {
                     <ModalHeader className="p-6 pb-0">Resources</ModalHeader>
                     <ModalBody className="p-6">
                         <div>
-                            <FileDropzone onDrop={onDrop} />
+                            <Dropzone onDrop={onDrop}>
+                                {({ getRootProps, getInputProps }) => (
+                                    <section>
+                                        <div {...getRootProps()}>
+                                            <input {...getInputProps()} />   
+                                            <div className="cursor-pointer border-dashed rounded-large border-4 h-48 grid place-content-center">
+                                                <div className="grid place-content-center">
+                                                    <DocumentArrowUpIcon className="w-20 h-20 text-foreground-500" />
+                                                    <div className="text-sm text-foreground-500">
+                      Upload file(s)
+                                                    </div>
+                                                </div>
+                                            </div>                    
+                                        </div>
+                                    </section>
+                                )} 
+                            </Dropzone>
                             <Spacer y={6} />
                             <div>
                                 <div className="ml-3 font-semibold"> Uploaded </div>

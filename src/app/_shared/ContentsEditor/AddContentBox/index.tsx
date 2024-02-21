@@ -14,16 +14,17 @@ import {
     LinkIcon,
     CodeBracketIcon,
 } from "@heroicons/react/24/outline"
-import { Key } from "@common"
-import { FormikContext, FormikProviders } from "./FormikProviders"
+import { ContentType, Key } from "@common"
+import { FormikProviders } from "./FormikProviders"
 import { TextTab } from "./TextTab"
 import { CodeTab } from "./CodeTab"
 import { ImagesTab } from "./ImagesTab"
+import { AddContentBoxContext, AddContentBoxsProviders } from "./AddContentBoxProviders"
 
 export const WrappedAddContentBox = () => {
-    const formik = useContext(FormikContext)!
-    const { values } = formik
-    const { contentSelected } = values
+
+    const { state, dispatch } = useContext(AddContentBoxContext)!
+    const { contentSelected } = state 
 
     const items: Array<Item> = [
         {
@@ -54,7 +55,10 @@ export const WrappedAddContentBox = () => {
     ]
 
     const onSelectionChange = (key: Key) => {
-        formik.setFieldValue("contentSelected", key)
+        dispatch({
+            type: "SET_CONTENT_TYPE",
+            payload: key as ContentType
+        })
     }
 
     return (
@@ -96,7 +100,9 @@ interface Item {
 }
 
 export const AddContentBox = () => (
-    <FormikProviders>
-        <WrappedAddContentBox />
-    </FormikProviders>
+    <AddContentBoxsProviders>
+        <FormikProviders>
+            <WrappedAddContentBox />
+        </FormikProviders>
+    </AddContentBoxsProviders>
 )

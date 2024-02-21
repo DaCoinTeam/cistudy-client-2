@@ -1,38 +1,42 @@
 import React, { useContext } from "react"
 import { Link, Textarea } from "@nextui-org/react"
 import { ContentsEditorContext } from "../../../ContentsEditorProviders"
-import { TrashIcon } from "@heroicons/react/24/outline"
+import { MinusCircleIcon } from "@heroicons/react/24/outline"
+import { PostContent } from "../../../useContentsEditorReducer"
 
 interface TextContentProps {
-  postContentIndex: number;
+  postContent: PostContent;
 }
 
 export const TextContent = (props: TextContentProps) => {
-    const { state, dispatch } = useContext(ContentsEditorContext)!
-
-    const { postContentIndex } = props
-    const postContent = state.postContents[postContentIndex]
+    const { dispatch } = useContext(ContentsEditorContext)!
+    const { postContent } = props
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        postContent.text = event.target.value
         dispatch({
             type: "UPDATE_POST_CONTENT",
-            payload: {
-                ...postContent,
-                text: event.target.value,
-            },
+            payload: postContent,
+        })
+    }
+
+    const onDeletePress = () => {
+        dispatch({
+            type: "DELETE_POST_CONTENT",
+            payload: postContent,
         })
     }
 
     return (
         <div className="flex items-center gap-4">
-            <Link as="button" color="danger">
-                <TrashIcon className="w-6 h-6" />
+            <Link as="button" color="danger" onPress={onDeletePress}>
+                <MinusCircleIcon className="w-6 h-6" />
             </Link>
             <Textarea
                 className="flex-1"
-                labelPlacement="outside"
                 classNames={{
-                    inputWrapper: "!bg-transparent shadow-none p-0",
+                    inputWrapper: "!bg-transparent shadow-none",
+                    innerWrapper: "p-0",
                 }}
                 minRows={1}
                 value={postContent.text}

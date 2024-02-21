@@ -1,37 +1,42 @@
 import React, { useContext } from "react"
 import { Link, Textarea } from "@nextui-org/react"
 import { ContentsEditorContext } from "../../../ContentsEditorProviders"
-import { MinusIcon } from "@heroicons/react/24/outline"
+import { MinusCircleIcon } from "@heroicons/react/24/outline"
+import { PostContent } from "../../../useContentsEditorReducer"
 
 interface CodeContentProps {
-  postContentIndex: number;
+  postContent: PostContent;
 }
 
 export const CodeContent = (props: CodeContentProps) => {
-    const { state, dispatch } = useContext(ContentsEditorContext)!
-
-    const { postContentIndex } = props
-    const postContent = state.postContents[postContentIndex]
+    const { postContent } = props
+    const { dispatch } = useContext(ContentsEditorContext)!
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        postContent.text = event.target.value
         dispatch({
             type: "UPDATE_POST_CONTENT",
-            payload: {
-                ...postContent,
-                text: event.target.value,
-            },
+            payload: postContent,
+        })
+    }
+
+    const onDeletePress = () => {
+        dispatch({
+            type: "DELETE_POST_CONTENT",
+            payload: postContent,
         })
     }
 
     return (
         <div className="flex items-center gap-4">
-            <Link as="button" color="danger">
-                <MinusIcon className="w-6 h-6"/>
+            <Link as="button" color="danger" onPress={onDeletePress}>
+                <MinusCircleIcon className="w-6 h-6" />
             </Link>
             <Textarea
                 classNames={{
-                    inputWrapper: "!bg-content2 shadow-none px-2 py-1",
+                    inputWrapper: "!bg-content2 shadow-none",
                     input: "font-mono",
+                    innerWrapper: "p-0",
                 }}
                 className="flex-1"
                 minRows={1}
@@ -39,6 +44,5 @@ export const CodeContent = (props: CodeContentProps) => {
                 onChange={onChange}
             />
         </div>
-        
     )
 }

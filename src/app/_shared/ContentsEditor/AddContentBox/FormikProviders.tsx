@@ -1,25 +1,24 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext } from "react"
-import { ContentType } from "@common"
-import { PostContent } from "../useContentsEditorReducer"
+import { ContentType, WithKey } from "@common"
+import { PostContentData } from "../useContentsEditorReducer"
 import { ContentsEditorContext } from "../ContentsEditorProviders"
+import { AddContentBoxContext } from "./AddContentBoxProviders"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
     null
 )
 
 interface FormikValues {
-  contentSelected: ContentType;
   text: string;
   code: string;
   link: string;
-  images: Array<File>;
-  videos: Array<File>;
+  images: Array<WithKey<File>>;
+  videos: Array<WithKey<File>>;
 }
 
 const initialValues: FormikValues = {
-    contentSelected: ContentType.Text,
     text: "",
     code: "",
     link: "",
@@ -40,24 +39,27 @@ const WrappedFormikProviders = ({
 )
 
 export const FormikProviders = ({ children }: { children: ReactNode }) => {
-    const { dispatch: contentsEditorDispatch } = useContext(
+    const { dispatch } = useContext(
         ContentsEditorContext
     )!
+    const { state: addContentBoxState } = useContext(
+        AddContentBoxContext
+    )!
+    const { contentSelected } = addContentBoxState
 
     return (
         <Formik
             initialValues={initialValues}
             onSubmit={async ({
-                contentSelected,
                 text,
                 code,
                 link,
                 images,
                 videos,
-            }) => {
-                const contentSelectedToPostContent: Record<
+            }, helpers) => {
+                const contentSelectedToPostContentData: Record<
           ContentType,
-          Pick<PostContent, "contentType" | "text" | "postContentMedias">
+          PostContentData
         > = {
             [ContentType.Text]: {
                 text,
@@ -80,11 +82,12 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
                 contentType: ContentType.Videos,
             },
         }
-                const postContent = contentSelectedToPostContent[contentSelected]
-                contentsEditorDispatch({
+                const postContentData = contentSelectedToPostContentData[contentSelected]
+                dispatch({
                     type: "APPEND_POST_CONTENT",
-                    payload: postContent,
+                    payload: postContentData,
                 })
+                helpers.resetForm()
             }}
         >
             {(formik) => (
