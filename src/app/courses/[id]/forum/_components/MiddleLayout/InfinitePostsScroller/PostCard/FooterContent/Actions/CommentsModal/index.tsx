@@ -11,7 +11,7 @@ export const CommentsModal = () => {
             <Link as="button" onPress={onOpen}>
                 <ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6" />
             </Link>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl">
                 <ModalContent>
                     <ModalHeader className="p-6">Comments</ModalHeader>
                     <ModalBody>

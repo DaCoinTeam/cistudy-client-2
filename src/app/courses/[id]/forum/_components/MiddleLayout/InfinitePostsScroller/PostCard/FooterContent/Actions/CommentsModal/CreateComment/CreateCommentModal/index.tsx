@@ -75,9 +75,9 @@ export const CreateCommentModal = () => {
                 onPress={onOpen}
                 className="!justify-normal bg-content2"
             >
-        Do you need some help?
+        Create a comment...
             </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
                 <ModalContent>
                     <ModalHeader className="flex flex-col p-6 pb-0">
             Create Comment

@@ -19,7 +19,7 @@ export const CreatorAndStats = (props: CreatorAndStatsProps) => {
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-                <Avatar isBordered src={getAssetUrl(props.post.creator.avatarId)} />
+                <Avatar src={getAssetUrl(props.post.creator.avatarId)} />
                 <div>
                     <div className="font-bold text-sm"> StarCi</div>
                     <div className="text-xs"> Yesterday at 11:30</div>

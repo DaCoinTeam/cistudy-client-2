@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useRef } from "react"
 import {
     Button,
     Modal,
@@ -10,26 +10,80 @@ import {
     useDisclosure,
 } from "@nextui-org/react"
 import { FormikProviders } from "./FormikProviders"
-import { AddContent } from "./AddContent"
 import { FormikContext } from "./FormikProviders"
-import { ContentItem } from "./ContentItem"
-import { v4 as uuidv4 } from "uuid"
 import { Title } from "./Title"
+import {
+    ContentsEditorRef,
+    ContentsEditorRefSelectors,
+} from "../../../../../../../_shared"
+import { CourseDetailsContext } from "../../../../../_hooks"
+import { ContentType, isErrorResponse } from "@common"
+import { createPost } from "@services"
 
 export const WrappedCreatePostModal = () => {
+    const { state } = useContext(CourseDetailsContext)!
+    const { course } = state
+    
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     const formik = useContext(FormikContext)!
 
-    const renderContents = () => (
-        <div className="flex flex-col gap-4 overflow-auto max-h-[250px]">
-            {formik.values.contents.map((content) => (
-                <ContentItem key={uuidv4()} content={content} />
-            ))}
-        </div>
-    )
+    const ref = useRef<ContentsEditorRefSelectors | null>(null)
 
-    const onPress = () => formik.submitForm()
+    useEffect(() => {
+        console.log("called")
+    }, [ref.current])
+
+    const onPress = async () => {
+        if (course === null) return
+        const { courseId } = course
+        if (ref.current === null) return 
+        const contents = ref.current.contents
+        
+        let countIndex = 0
+        const files: Array<File> = []     
+        const postContents = contents.map((content) => {
+            const { contentType, text, contentMedias } = content
+            if (
+                contentType === ContentType.Text ||
+            contentType === ContentType.Code ||
+            contentType === ContentType.Link
+            ) {
+                return {
+                    text,
+                    contentType,
+                }
+            } else {
+                return {
+                    contentType: contentType,
+                    postContentMedias: contentMedias?.map(
+                        contentMedia => {
+                            const media = {
+                                mediaIndex: countIndex
+                            }
+                            files.push(contentMedia.data)
+                            countIndex++
+                            return media
+                        }   
+                    )
+                }
+            }
+        })
+        const response = await createPost({
+            data: {
+                courseId,
+                title: formik.values.title,
+                postContents
+            },
+            files
+        })
+
+        if (!isErrorResponse(response)) {
+            alert("Successfully")
+        } else {
+            console.log(response)
+        }
+    }
 
     return (
         <>
@@ -49,20 +103,16 @@ export const WrappedCreatePostModal = () => {
                         <div>
                             <Title />
                             <Spacer y={6} />
-                            {renderContents()}
-                            <Spacer y={6} />
-                            <AddContent />
+                            <ContentsEditorRef ref={ref} />
                         </div>
                     </ModalBody>
                     <ModalFooter className="p-6 pt-0">
                         <div className="flex gap-4 items-center">
                             <Button variant="light" color="danger">
-                                {" "}
-                Reset{" "}
+                Reset
                             </Button>
                             <Button onPress={onPress} color="primary">
-                                {" "}
-                Create{" "}
+                Create
                             </Button>
                         </div>
                     </ModalFooter>
