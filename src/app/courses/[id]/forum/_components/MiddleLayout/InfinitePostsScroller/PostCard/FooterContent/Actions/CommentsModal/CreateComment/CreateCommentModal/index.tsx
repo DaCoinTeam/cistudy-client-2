@@ -11,7 +11,7 @@ import {
 import { ContentsEditorRef, ContentsEditorRefSelectors } from "../../../../../../../../../../../../_shared"
 import { ContentType, isErrorResponse } from "@common"
 import { createComment } from "@services"
-import { PostCardPropsContext } from "../../../../.."
+import { PostCardPropsContext } from "../../../../../index"
 
 export const CreateCommentModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
