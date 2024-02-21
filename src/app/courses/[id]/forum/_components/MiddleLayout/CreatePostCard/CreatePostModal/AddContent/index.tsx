@@ -19,7 +19,6 @@ import {
     CodeBracketIcon,
 } from "@heroicons/react/24/outline"
 import { ContentType, Key } from "@common"
-import { FileDropzone } from "../../../../../../../../_shared"
 import { useAddContentReducer } from "./useAddContentReducer"
 import { v4 as uuidv4 } from "uuid"
 import { XMarkIcon } from "@heroicons/react/24/solid"

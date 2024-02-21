@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useRef } from "react"
 import {
     Button,
     Modal,
@@ -6,23 +6,21 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
-    Spacer,
     useDisclosure,
 } from "@nextui-org/react"
 import { FormikProviders } from "./FormikProviders"
-import { AddContent } from "./AddContent"
-import { FormikContext } from "./FormikProviders"
-import { ContentItem } from "./ContentItem"
-import { v4 as uuidv4 } from "uuid"
-import { Title } from "./Title"
-import { ContentsEditor } from "../../../../../../../../../../../../_shared"
+import { ContentsEditorRef, ContentsEditorRefSelectors } from "../../../../../../../../../../../../_shared"
 
 const WrappedCreateCommentModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
-    const formik = useContext(FormikContext)!
+    const ref = useRef<ContentsEditorRefSelectors|null>(null)
 
-    const onPress = () => formik.submitForm()
+    const onPress = () => {
+        console.log(ref.current)
+        //formik.submitForm()
+    }
+
 
     return (
         <>
@@ -39,17 +37,15 @@ const WrappedCreateCommentModal = () => {
             Create Post
                     </ModalHeader>
                     <ModalBody className="p-6">
-                        <ContentsEditor />
+                        <ContentsEditorRef ref={ref}/>
                     </ModalBody>
                     <ModalFooter className="p-6 pt-0">
                         <div className="flex gap-4 items-center">
                             <Button variant="light" color="danger">
-                                {" "}
-                Reset{" "}
+                Reset
                             </Button>
                             <Button onPress={onPress} color="primary">
-                                {" "}
-                Create{" "}
+                Create
                             </Button>
                         </div>
                     </ModalFooter>

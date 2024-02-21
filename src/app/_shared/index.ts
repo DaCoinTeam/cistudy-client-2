@@ -1,2 +1,2 @@
 export * from "./VideoPlayer"
-export * from "./ContentsEditor"
+export * from "./ContentsEditorRef"
