@@ -21,12 +21,8 @@ interface ResourcesModalProps {
   lecture: LectureEntity;
 }
 
-interface ResourcesModalPropsContextValue {
-  lectureId: string;
-}
-
 export const ResourcesModalPropsContext =
-  createContext<ResourcesModalPropsContextValue | null>(null)
+  createContext<ResourcesModalProps | null>(null)
 
 export const ResourcesModal = (props: ResourcesModalProps) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -34,12 +30,12 @@ export const ResourcesModal = (props: ResourcesModalProps) => {
     const { functions } = useContext(ManageContext)!
     const { fetchAndSetCourseManaged } = functions
 
-    const { lectureId } = useContext(ResourcesModalPropsContext)!
+    const { lecture } = useContext(ResourcesModalPropsContext)!
 
     const onDrop = useCallback(async (files: Array<File>) => {
         const response = await createResources({
             data: {
-                lectureId,
+                lectureId: lecture.lectureId,
             },
             files,
         })
@@ -64,9 +60,7 @@ export const ResourcesModal = (props: ResourcesModalProps) => {
 
     return (
         <ResourcesModalPropsContext.Provider
-            value={{
-                lectureId: props.lecture.lectureId,
-            }}
+            value={props}
         >
             <Link onPress={onOpen} as="button">
                 <FolderIcon className="w-6 h-6" />

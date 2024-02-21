@@ -2,28 +2,28 @@ import React, { useContext } from "react"
 import { Link, Textarea } from "@nextui-org/react"
 import { ContentsEditorContext } from "../../../ContentsEditorProviders"
 import { MinusCircleIcon } from "@heroicons/react/24/outline"
-import { PostContent } from "../../../useContentsEditorReducer"
+import { Content } from "../../../useContentsEditorReducer"
 
 interface CodeContentProps {
-  postContent: PostContent;
+    content: Content;
 }
 
 export const CodeContent = (props: CodeContentProps) => {
-    const { postContent } = props
+    const { content } = props
     const { dispatch } = useContext(ContentsEditorContext)!
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        postContent.text = event.target.value
+        content.text = event.target.value
         dispatch({
-            type: "UPDATE_POST_CONTENT",
-            payload: postContent,
+            type: "UPDATE_CONTENT",
+            payload: content,
         })
     }
 
     const onDeletePress = () => {
         dispatch({
-            type: "DELETE_POST_CONTENT",
-            payload: postContent,
+            type: "DELETE_CONTENT",
+            payload: content,
         })
     }
 
@@ -40,7 +40,7 @@ export const CodeContent = (props: CodeContentProps) => {
                 }}
                 className="flex-1"
                 minRows={1}
-                value={postContent.text}
+                value={content.text}
                 onChange={onChange}
             />
         </div>

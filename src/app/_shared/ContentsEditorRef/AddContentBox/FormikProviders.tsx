@@ -2,7 +2,7 @@
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext } from "react"
 import { ContentType, WithKey } from "@common"
-import { PostContentData } from "../useContentsEditorReducer"
+import { ContentData } from "../useContentsEditorReducer"
 import { ContentsEditorContext } from "../ContentsEditorProviders"
 import { AddContentBoxContext } from "./AddContentBoxProviders"
 
@@ -59,7 +59,7 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
             }, helpers) => {
                 const contentSelectedToPostContentData: Record<
           ContentType,
-          PostContentData
+          ContentData
         > = {
             [ContentType.Text]: {
                 text,
@@ -74,17 +74,17 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
                 contentType: ContentType.Link,
             },
             [ContentType.Images]: {
-                postContentMedias: images,
+                contentMedias: images,
                 contentType: ContentType.Images,
             },
             [ContentType.Videos]: {
-                postContentMedias: videos,
+                contentMedias: videos,
                 contentType: ContentType.Videos,
             },
         }
                 const postContentData = contentSelectedToPostContentData[contentSelected]
                 dispatch({
-                    type: "APPEND_POST_CONTENT",
+                    type: "APPEND_CONTENT",
                     payload: postContentData,
                 })
                 helpers.resetForm()

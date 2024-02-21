@@ -1,4 +1,4 @@
-import React from "react"
+import React, { createContext } from "react"
 import { PostEntity } from "@common"
 import {
     Card,
@@ -14,20 +14,24 @@ interface PostCardProps {
   post: PostEntity;
 }
 
+export const PostCardPropsContext = createContext<PostCardProps|null>(null)
+
 export const PostCard = (props: PostCardProps) => {
     return (
-        <Card>
-            <CardHeader className="p-6 pb-4 font-semibold">
-                {props.post.title}
-            </CardHeader>
-            <Divider />
-            <CardBody className="p-6">
-                <BodyContent post={props.post} />
-            </CardBody>
-            <Divider/>
-            <CardFooter className="p-6 pt-6 overflow-visible">
-                <FooterContent post={props.post} />
-            </CardFooter>
-        </Card>
+        <PostCardPropsContext.Provider value={props}>
+            <Card>
+                <CardHeader className="p-6 pb-4 font-semibold">
+                    {props.post.title}
+                </CardHeader>
+                <Divider />
+                <CardBody className="p-6">
+                    <BodyContent/>
+                </CardBody>
+                <Divider/>
+                <CardFooter className="p-6 pt-6 overflow-visible">
+                    <FooterContent />
+                </CardFooter>
+            </Card>
+        </PostCardPropsContext.Provider>
     )
 }

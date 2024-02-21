@@ -10,19 +10,19 @@ import {
     ContentsEditorsProviders,
 } from "./ContentsEditorProviders"
 import { Spacer } from "@nextui-org/react"
-import { PostContent } from "./useContentsEditorReducer"
+import { Content } from "./useContentsEditorReducer"
 
 export interface ContentsEditorRefSelectors {
-  postContents: Array<PostContent>;
+  contents: Array<Content>;
 }
 
 export const WrappedContentsEditorRef = forwardRef<ContentsEditorRefSelectors>(
     (_, ref) => {
         const { state } = useContext(ContentsEditorContext)!
-        const { postContents } = state
+        const { contents } = state
 
         useImperativeHandle(ref, () => ({
-            postContents,
+            contents,
         }))
 
         return (

@@ -18,18 +18,14 @@ interface LectureVideoModalProps {
   lecture: LectureEntity;
 }
 
-interface LectureVideoModalPropsContextValue {
-  lecture: LectureEntity;
-}
-
 export const LectureVideoModalPropsContext =
-  createContext<LectureVideoModalPropsContextValue | null>(null)
+  createContext<LectureVideoModalProps | null>(null)
 
 export const LectureVideoModal = (props: LectureVideoModalProps) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     return (
-        <LectureVideoModalPropsContext.Provider value={{ lecture: props.lecture }}>
+        <LectureVideoModalPropsContext.Provider value={props}>
             <Link onPress={onOpen} as="button">
                 <FilmIcon className="w-6 h-6" />
             </Link>

@@ -3,37 +3,37 @@ import { AppendKey, ContentType, WithKey } from "@common"
 import { v4 as uuidv4 } from "uuid"
 
 
-export interface PostContentData {
+export interface ContentData {
     contentType: ContentType;
     text?: string;
-    postContentMedias?: Array<WithKey<File>>;
+    contentMedias?: Array<WithKey<File>>;
 }
 
-export type PostContent = AppendKey<PostContentData>
+export type Content = AppendKey<ContentData>
 
 export interface ContentsEditorState {
-    postContents: Array<PostContent>;
+    contents: Array<Content>;
 }
 
 export interface AppendPostContentAction {
-    type: "APPEND_POST_CONTENT";
-    payload: PostContentData;
+    type: "APPEND_CONTENT";
+    payload: ContentData;
 }
 
 export interface UpdatePostContentAction {
-    type: "UPDATE_POST_CONTENT";
-    payload: PostContent;
+    type: "UPDATE_CONTENT";
+    payload: Content;
 }
 
 export interface DeletePostContentAction {
-    type: "DELETE_POST_CONTENT";
-    payload: PostContent;
+    type: "DELETE_CONTENT";
+    payload: Content;
 }
 
 export type ContentsEditorAction = AppendPostContentAction | UpdatePostContentAction | DeletePostContentAction;
 
 export const state: ContentsEditorState = {
-    postContents: [],
+    contents: [],
 }
 
 export const reducer = (
@@ -41,23 +41,23 @@ export const reducer = (
     action: ContentsEditorAction
 ) => {
     switch (action.type) {
-    case "APPEND_POST_CONTENT": {
-        const postContent: PostContent = {
+    case "APPEND_CONTENT": {
+        const postContent: Content = {
             key: uuidv4(),
             ...action.payload
         }
         return {
             ...state,
-            postContents: [...state.postContents, postContent],
+            contents: [...state.contents, postContent],
         }
     }
 
-    case "UPDATE_POST_CONTENT": {
-        const postContents = state.postContents.map(postContent => {
-            if (postContent.key === action.payload.key) {
+    case "UPDATE_CONTENT": {
+        const postContents = state.contents.map(content => {
+            if (content.key === action.payload.key) {
                 return action.payload
             }
-            return postContent
+            return content
         })
         return {
             ...state,
@@ -65,8 +65,8 @@ export const reducer = (
         }
     }
 
-    case "DELETE_POST_CONTENT": {
-        const postContents = state.postContents.filter(postContent => postContent.key !== action.payload.key)
+    case "DELETE_CONTENT": {
+        const postContents = state.contents.filter(content => content.key !== action.payload.key)
         return {
             ...state,
             postContents

@@ -1,24 +1,24 @@
 import React from "react"
 import { ContentType } from "@common"
-import { PostContent } from "../../useContentsEditorReducer"
+import { Content } from "../../useContentsEditorReducer"
 import { CodeContent } from "./CodeContent"
 import { ImagesContent } from "./ImagesContent"
 import { TextContent } from "./TextContent"
 
 interface ContentItemProps {
-  postContent: PostContent;
+  content: Content;
 }
 
 export const ContentItem = (props: ContentItemProps) => {  
-    const { postContent } = props
-    const { contentType } = postContent
+    const { content } = props
+    const { contentType } = content
 
     const contentTypeToElement: Record<ContentType, JSX.Element> = {
-        [ContentType.Text]: <TextContent postContent={postContent} />,
-        [ContentType.Code]: <CodeContent postContent={postContent} />,
-        [ContentType.Images]: <ImagesContent postContent={postContent} />,
-        [ContentType.Link]: <CodeContent postContent={postContent} />,
-        [ContentType.Videos]: <CodeContent postContent={postContent} />,
+        [ContentType.Text]: <TextContent content={content} />,
+        [ContentType.Code]: <CodeContent content={content} />,
+        [ContentType.Images]: <ImagesContent content={content} />,
+        [ContentType.Link]: <CodeContent content={content} />,
+        [ContentType.Videos]: <CodeContent content={content} />,
     }
 
     return <> {contentTypeToElement[contentType]} </>

@@ -6,35 +6,35 @@ import {
     PhotoIcon,
 } from "@heroicons/react/24/outline"
 import { v4 as uuidv4 } from "uuid"
-import { PostContent } from "../../../useContentsEditorReducer"
+import { Content } from "../../../useContentsEditorReducer"
 import { ContentsEditorContext } from "../../../ContentsEditorProviders"
 import Dropzone from "react-dropzone"
 
 interface ImagesContentProps {
-  postContent: PostContent;
+  content: Content;
 }
 
 export const ImagesContent = (props: ImagesContentProps) => {
     const { dispatch } = useContext(ContentsEditorContext)!
-    const { postContent } = props
+    const { content } = props
 
     const onDrop = (files: Array<File>) => {
-        postContent.postContentMedias?.push(
+        content.contentMedias?.push(
             ...files.map((file) => ({
                 key: uuidv4(),
                 data: file,
             }))
         )
         dispatch({
-            type: "UPDATE_POST_CONTENT",
-            payload: postContent,
+            type: "UPDATE_CONTENT",
+            payload: content,
         })
     }
 
     const onDeletePress = () => {
         dispatch({
-            type: "DELETE_POST_CONTENT",
-            payload: postContent,
+            type: "DELETE_CONTENT",
+            payload: content,
         })
     }
 
@@ -44,7 +44,7 @@ export const ImagesContent = (props: ImagesContentProps) => {
                 <MinusCircleIcon className="w-6 h-6" />
             </Link>
             <div className="grid grid-cols-4 gap-2 w-full">
-                {postContent.postContentMedias?.map((image) => (
+                {content.contentMedias?.map((image) => (
                     <Badge
                         isOneChar
                         key={image.key}
@@ -53,13 +53,13 @@ export const ImagesContent = (props: ImagesContentProps) => {
                         shape="circle"
                         color="danger"
                         onClick={() => {
-                            const postContentMedias = postContent.postContentMedias?.filter(
+                            const contentMedias = content.contentMedias?.filter(
                                 ({ key }) => image.key !== key
                             )
-                            postContent.postContentMedias = postContentMedias
+                            content.contentMedias = contentMedias
                             dispatch({
-                                type: "UPDATE_POST_CONTENT",
-                                payload: postContent,
+                                type: "UPDATE_CONTENT",
+                                payload: content,
                             })
                         }}
                     >

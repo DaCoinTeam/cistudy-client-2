@@ -1,15 +1,12 @@
-import React from "react"
-import { PostEntity } from "@common"
+import React, { useContext } from "react"
 import { ContentItem } from "./ContentItem"
+import { PostCardPropsContext } from "../index"
 
-interface BodyContentProps {
-  post: PostEntity;
-}
-
-export const BodyContent = (props: BodyContentProps) => {
+export const BodyContent = () => {
+    const { post } = useContext(PostCardPropsContext)!
     return (
         <div className="flex flex-col gap-4 overflow-auto">
-            {props.post.postContents.map((postContent) => (
+            {post.postContents.map((postContent) => (
                 <ContentItem
                     key={postContent.postContentId}
                     postContent={postContent}

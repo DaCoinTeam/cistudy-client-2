@@ -1,5 +1,11 @@
-import React, { createContext, useCallback, useEffect, useMemo } from "react"
-import { PostEntity, isErrorResponse } from "@common"
+import React, {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+} from "react"
+import { isErrorResponse } from "@common"
 import { findOnePost } from "@services"
 import {
     FooterContentAction,
@@ -10,10 +16,7 @@ import {
 import { Spacer } from "@nextui-org/react"
 import { Actions } from "./Actions"
 import { CreatorAndStats } from "./CreatorAndStats"
-
-interface FooterProps {
-  post: PostEntity;
-}
+import { PostCardPropsContext } from ".."
 
 interface FooterContentContextValue {
   state: FooterContentState;
@@ -25,13 +28,15 @@ interface FooterContentContextValue {
 export const FooterContentContext =
   createContext<FooterContentContextValue | null>(null)
 
-export const FooterContent = (props: FooterProps) => {
+export const FooterContent = () => {
     const [state, dispatch] = useFooterContentReducer()
+
+    const { post } = useContext(PostCardPropsContext)!
 
     const fetchAndSetReactPostPartial = useCallback(async () => {
         const response = await findOnePost(
             {
-                postId: props.post.postId,
+                postId: post.postId,
             },
             {
                 postId: true,
@@ -72,7 +77,7 @@ export const FooterContent = (props: FooterProps) => {
     return (
         <FooterContentContext.Provider value={footerContentContextValue}>
             <div className="w-full">
-                <CreatorAndStats post={props.post} />
+                <CreatorAndStats post={post} />
                 <Spacer y={6} />
                 <Actions />
             </div>
