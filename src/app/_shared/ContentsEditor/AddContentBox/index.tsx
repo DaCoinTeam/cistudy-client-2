@@ -4,10 +4,6 @@ import {
     CardFooter,
     Tabs,
     Tab,
-    Textarea,
-    Image,
-    Badge,
-    Spacer,
     CardBody,
     Button,
 } from "@nextui-org/react"
@@ -18,170 +14,48 @@ import {
     LinkIcon,
     CodeBracketIcon,
 } from "@heroicons/react/24/outline"
-import { ContentType, Key } from "@common"
-import { FileDropzone } from "../../FileDropzone"
-import { useAddContentBoxReducer } from "./useAddContentBoxReducer"
-import { v4 as uuidv4 } from "uuid"
-import { XMarkIcon } from "@heroicons/react/24/solid"
-import { ContentsEditorContext } from "../ContentsEditorProviders"
-import { PostContent } from "../useContentsEditorReducer"
+import { Key } from "@common"
+import { FormikContext, FormikProviders } from "./FormikProviders"
+import { TextTab } from "./TextTab"
+import { CodeTab } from "./CodeTab"
+import { ImagesTab } from "./ImagesTab"
 
-export const AddContentBox = () => {
-    const [state, dispatch] = useAddContentBoxReducer()
-    const { contentSelected, text, code, link, images, videos } = state
-
-    const { state: contentsEditorState, dispatch: contentsEditorDispatch } =
-    useContext(ContentsEditorContext)!
-
-    const onImageDrop = (files: Array<File>) =>
-        dispatch({
-            type: "SET_IMAGES",
-            payload: [...images, ...files],
-        })
-
-    const onVideoDrop = (files: Array<File>) =>
-        dispatch({
-            type: "SET_VIDEOS",
-            payload: files,
-        })
-
-    const onTextChange = (value: string) =>
-        dispatch({
-            type: "SET_TEXT",
-            payload: value,
-        })
-
-    const onCodeChange = (value: string) =>
-        dispatch({
-            type: "SET_CODE",
-            payload: value,
-        })
-
-    // const onLinkChange = (value: string) =>
-    //     dispatch({
-    //         type: "SET_LINK",
-    //         payload: value,
-    //     })
+export const WrappedAddContentBox = () => {
+    const formik = useContext(FormikContext)!
+    const { values } = formik
+    const { contentSelected } = values
 
     const items: Array<Item> = [
         {
             key: "text",
             icon: <VariableIcon className="w-6 h-6" />,
-            content: (
-                <Textarea
-                    fullWidth
-                    classNames={{
-                        inputWrapper: "!bg-content1",
-                    }}
-                    value={text}
-                    onValueChange={onTextChange}
-                />
-            ),
-            data: {
-                text,
-                contentType: ContentType.Text,
-            },
+            content: <TextTab />,
         },
         {
             key: "code",
             icon: <CodeBracketIcon className="w-6 h-6" />,
-            content: (
-                <Textarea
-                    fullWidth
-                    classNames={{
-                        inputWrapper: "!bg-content1",
-                        input: "font-mono",
-                    }}
-                    value={code}
-                    onValueChange={onCodeChange}
-                />
-            ),
-            data: {
-                text: code,
-                contentType: ContentType.Code,
-            },
+            content: <CodeTab />,
         },
         {
             key: "link",
             icon: <LinkIcon className="w-6 h-6" />,
             content: <div />,
-            data: {
-                text: link,
-                contentType: ContentType.Link,
-            },
         },
         {
             key: "images",
             icon: <PhotoIcon className="w-6 h-6" />,
-            content: (
-                <div>
-                    <FileDropzone onDrop={onImageDrop} />
-                    {images.length ? <Spacer y={4} /> : null}
-
-                    <div className="grid grid-cols-4 gap-2 items-center">
-                        {images.map((image, index) => (
-                            <Badge
-                                isOneChar
-                                key={`${uuidv4()}-${index}`}
-                                as="button"
-                                content={<XMarkIcon className="w-3 h-3" />}
-                                shape="circle"
-                                color="danger"
-                                onClick={() => {
-                                    images.splice(index, 1)
-                                    dispatch({
-                                        type: "SET_IMAGES",
-                                        payload: images,
-                                    })
-                                }}
-                            >
-                                <Image
-                                    className="span-col-1 aspect-video"
-                                    alt="image"
-                                    src={URL.createObjectURL(image)}
-                                />
-                            </Badge>
-                        ))}
-                    </div>
-                </div>
-            ),
-            data: {
-                postContentMedias: images,
-                contentType: ContentType.Images,
-            },
+            content: <ImagesTab />,
         },
         {
             key: "videos",
             icon: <VideoCameraIcon className="w-6 h-6" />,
-            content: <FileDropzone onDrop={onVideoDrop} />,
-            data: {
-                postContentMedias: videos,
-                contentType: ContentType.Videos,
-            },
+            content: <div />,
         },
     ]
 
-    const onSelectionChange = (key: Key) =>
-        dispatch({
-            type: "SET_CONTENT_SELECTED",
-            payload: key as ContentType,
-        })
-
-    const onPress = () => {
-        const content: PostContent = (
-      items.find((item) => item.key === contentSelected) as Item
-        ).data
-
-        contentsEditorDispatch({
-            type: "APPEND_POST_CONTENT",
-            payload: content,
-        })
-        dispatch({
-            type: "RESET",
-        })
+    const onSelectionChange = (key: Key) => {
+        formik.setFieldValue("contentSelected", key)
     }
-
-    console.log(contentsEditorState)
 
     return (
         <Card className="bg-content2 w-full" shadow="none">
@@ -207,7 +81,7 @@ export const AddContentBox = () => {
                 </div>
             </CardBody>
             <CardFooter className="p-4 pt-0">
-                <Button fullWidth onPress={onPress}>
+                <Button fullWidth type="submit">
           Add
                 </Button>
             </CardFooter>
@@ -219,5 +93,10 @@ interface Item {
   key: string;
   icon: React.JSX.Element;
   content: React.JSX.Element;
-  data: PostContent;
 }
+
+export const AddContentBox = () => (
+    <FormikProviders>
+        <WrappedAddContentBox />
+    </FormikProviders>
+)

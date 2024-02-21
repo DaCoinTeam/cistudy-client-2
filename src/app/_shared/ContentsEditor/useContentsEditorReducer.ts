@@ -2,21 +2,27 @@ import { useReducer } from "react"
 import { ContentType } from "@common"
 
 export interface PostContent {
-    contentType: ContentType,
-    text?: string, 
-    postContentMedias?: Array<File>
+    index: number;
+    contentType: ContentType;
+    text?: string;
+    postContentMedias?: Array<File>;
 }
 
 export interface ContentsEditorState {
-  postContents: Array<PostContent>;
+    postContents: Array<PostContent>;
 }
 
-export interface AppendPostContentsAction {
-  type: "APPEND_POST_CONTENT";
-  payload: PostContent;
+export interface AppendPostContentAction {
+    type: "APPEND_POST_CONTENT";
+    payload: Pick<PostContent, "contentType" | "postContentMedias" | "text">;
 }
 
-export type ContentsEditorAction = AppendPostContentsAction;
+export interface UpdatePostContentAction {
+    type: "UPDATE_POST_CONTENT";
+    payload: PostContent;
+}
+
+export type ContentsEditorAction = AppendPostContentAction | UpdatePostContentAction;
 
 export const defaultState: ContentsEditorState = {
     postContents: [],
@@ -29,11 +35,32 @@ export const reducer = (
     action: ContentsEditorAction
 ) => {
     switch (action.type) {
-    case "APPEND_POST_CONTENT":
+    case "APPEND_POST_CONTENT": {
+        const postContent: PostContent = {
+            index: state.postContents.length,
+            ...action.payload
+        }
         return {
             ...state,
-            postContents: [...state.postContents, action.payload],
+            postContents: [...state.postContents, postContent],
         }
+    }
+    case "UPDATE_POST_CONTENT": {
+        console.log(state.postContents)
+        const postContents = state.postContents.map(postContent => {
+            if (postContent.index === action.payload.index) {
+                console.log("2323")
+                return action.payload
+            }
+            console.log("false")
+            return postContent
+        })
+        console.log(postContents)
+        return {
+            ...state,
+            postContents
+        }
+    }
     default:
         return state
     }

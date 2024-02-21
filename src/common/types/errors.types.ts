@@ -20,4 +20,3 @@ export enum ErrorStatusCode {
     Conflict = 409,
     InternalServerError = 500,
   }
-  
