@@ -20,14 +20,14 @@ export const findOneUser = async (
         const payload = buildPayloadString(schema)
         const { data: graphqlData } = await client().query({
             query: gql`
-            query FindOneUser($input: FindOneUserInput!) {
-                findOneUser(input: $input)   {
+            query FindOneUser($data: FindOneUserData!) {
+                findOneUser(data: $data)   {
       ${payload}
     }
   }
           `,
             variables: {
-                input: {
+                data: {
                     userId,
                 },
             },

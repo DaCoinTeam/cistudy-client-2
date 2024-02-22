@@ -43,6 +43,12 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
             const response = await signIn({
                 email,
                 password
+            }, {
+                avatarId: true,
+                coverPhotoId: true,
+                email: true,
+                userId: true,
+                birthdate: true
             })
             if (!isErrorResponse(response)) {
                 dispatch(setProfile(response))

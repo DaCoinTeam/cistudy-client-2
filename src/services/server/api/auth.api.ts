@@ -13,27 +13,6 @@ import axios, { AxiosError } from "axios"
 
 const BASE_URL = `${endpointConfig().api}/auth`
 
-export const signIn = async (params: {
-  email: string;
-  password: string;
-}): Promise<UserEntity | ErrorResponse> => {
-    try {
-        const url = `${BASE_URL}/sign-in`
-
-        const response = await axios.post(url, params, {
-            headers: {
-                "Client-Id": getClientId(),
-            },
-        })
-        const { data, tokens } = response.data as BaseResponse<UserEntity>
-        saveTokens(tokens as AuthTokens)
-
-        return data
-    } catch (ex) {
-        return (ex as AxiosError).response?.data as ErrorResponse
-    }
-}
-
 export const signUp = async (params: {
   email: string;
   password: string;

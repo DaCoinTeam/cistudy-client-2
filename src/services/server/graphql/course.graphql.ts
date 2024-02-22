@@ -20,14 +20,14 @@ export const findOneCourse = async (
         const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
-            query FindOneCourse($input: FindOneCourseInput!) {
-    findOneCourse(input: $input) {
+            query FindOneCourse($data: FindOneCourseData!) {
+    findOneCourse(data: $data) {
       ${payload}
     }
   }
           `,
             variables: {
-                input: {
+                data: {
                     courseId,
                 },
             },

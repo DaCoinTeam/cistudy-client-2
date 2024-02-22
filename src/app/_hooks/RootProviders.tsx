@@ -4,7 +4,7 @@ import React from "react"
 import { useDispatch } from "react-redux"
 import { AppDispatch, setProfile } from "@redux"
 import { generateClientId, isErrorResponse } from "@common"
-import { findProfile } from "@services"
+import { init } from "@services"
 
 interface RootContextValue {
     functions: {
@@ -18,7 +18,7 @@ export const RootProviders = (props: { children: ReactNode }) => {
     const dispath: AppDispatch = useDispatch()
 
     const fetchAndSetProfile = useCallback(async () => {
-        const response = await findProfile(
+        const response = await init(
             {   
                 userId: true,
                 email: true,
