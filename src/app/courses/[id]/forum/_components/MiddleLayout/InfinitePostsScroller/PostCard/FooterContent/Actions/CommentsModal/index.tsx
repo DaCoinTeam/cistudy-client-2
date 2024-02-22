@@ -14,8 +14,8 @@ export const CommentsModal = () => {
             </Link>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl">
                 <ModalContent>
-                    <ModalHeader className="p-6">Comments</ModalHeader>
-                    <ModalBody>
+                    <ModalHeader className="p-6 pb-4">Comments</ModalHeader>
+                    <ModalBody className="p-6 overflow-auto">
                         <CommentsBody/>
                     </ModalBody>
                     <ModalFooter className="p-6">

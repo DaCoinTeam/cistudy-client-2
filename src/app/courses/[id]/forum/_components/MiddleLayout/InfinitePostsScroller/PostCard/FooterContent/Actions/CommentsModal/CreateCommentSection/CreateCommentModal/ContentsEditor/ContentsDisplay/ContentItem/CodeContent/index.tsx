@@ -29,7 +29,7 @@ export const CodeContent = (props: CodeContentProps) => {
             </Link>
             <Textarea
                 classNames={{
-                    inputWrapper: "!bg-content2 shadow-none",
+                    inputWrapper: "!bg-default/40 shadow-none",
                     input: "font-mono",
                     innerWrapper: "p-0",
                 }}

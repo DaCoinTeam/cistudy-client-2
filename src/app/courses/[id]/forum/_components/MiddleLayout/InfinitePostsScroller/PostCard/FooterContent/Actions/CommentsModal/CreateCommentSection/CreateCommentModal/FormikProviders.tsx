@@ -31,7 +31,8 @@ const WrappedFormikProviders = ({
 )
 
 export const FormikProviders = ({ children }: { children: ReactNode }) => {
-    const { state } = useContext(PostCardContext)!
+    const { state, functions } = useContext(PostCardContext)!
+    const { fetchAndSetPost } = functions
     const { post } = state
 
     return (
@@ -81,7 +82,7 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
                 })
 
                 if (!isErrorResponse(response)) {
-                    alert("Successfully")
+                    await fetchAndSetPost()
                 } else {
                     console.log(response)
                 }
