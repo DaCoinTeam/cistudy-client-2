@@ -49,9 +49,7 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
                 const postCommentContents = contents.map((content) => {
                     const { contentType, text, contentMedias } = content
                     if (
-                        contentType === ContentType.Text ||
-            contentType === ContentType.Code ||
-            contentType === ContentType.Link
+                        contentType === ContentType.Text
                     ) {
                         return {
                             text,

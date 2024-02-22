@@ -18,10 +18,7 @@ export enum VerifyStatus {
 
 export enum ContentType {
   Text = "text",
-  Code = "code",
-  Link = "link",
-  Images = "images",
-  Videos = "videos",
+  Medias  = "medias",
 }
 
 export enum ProcessStatus {

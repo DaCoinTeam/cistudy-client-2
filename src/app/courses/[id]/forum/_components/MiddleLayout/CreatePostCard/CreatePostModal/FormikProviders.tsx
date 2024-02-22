@@ -12,12 +12,12 @@ export const FormikContext = createContext<FormikProps<FormikValues> | null>(
 
 interface FormikValues {
   title: string;
-  contents: Array<Content>
+  content: string,
 }
 
 const initialValues: FormikValues = {
     title: "",
-    contents: []
+    content: ""
 }
 
 const WrappedFormikProviders = ({
@@ -42,51 +42,49 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
             validationSchema={Yup.object({
                 title: Yup.string().required("Title is required"),
             })}
-            onSubmit={async ({contents, title}, helpers) => {
+            onSubmit={async ({title, content}, helpers) => {
                 if (course === null) return 
                 const { courseId } = course
 
                 let countIndex = 0
                 const files: Array<File> = []
-                const postContents = contents.map((content) => {
-                    const { contentType, text, contentMedias } = content
-                    if (
-                        contentType === ContentType.Text ||
-        contentType === ContentType.Code ||
-        contentType === ContentType.Link
-                    ) {
-                        return {
-                            text,
-                            contentType,
-                        }
-                    } else {
-                        return {
-                            contentType: contentType,
-                            postContentMedias: contentMedias?.map((contentMedia) => {
-                                const media = {
-                                    mediaIndex: countIndex,
-                                }
-                                files.push(contentMedia.data)
-                                countIndex++
-                                return media
-                            }),
-                        }
-                    }
-                })
-                const response = await createPost({
-                    data: {
-                        courseId,
-                        title,
-                        postContents,
-                    },
-                    files,
-                })
+                // const postContents = contents.map((content) => {
+                //     const { contentType, text, contentMedias } = content
+                //     if (
+                //         contentType === ContentType.Text
+                //     ) {
+                //         return {
+                //             text,
+                //             contentType,
+                //         }
+                //     } else {
+                //         return {
+                //             contentType: contentType,
+                //             postContentMedias: contentMedias?.map((contentMedia) => {
+                //                 const media = {
+                //                     mediaIndex: countIndex,
+                //                 }
+                //                 files.push(contentMedia.data)
+                //                 countIndex++
+                //                 return media
+                //             }),
+                //         }
+                //     }
+                // })
+                // const response = await createPost({
+                //     data: {
+                //         courseId,
+                //         title,
+                //         postContents,
+                //     },
+                //     files,
+                // })
 
-                if (!isErrorResponse(response)) {
-                    alert("Successfully")
-                } else {
-                    console.log(response)
-                }
+                // if (!isErrorResponse(response)) {
+                //     alert("Successfully")
+                // } else {
+                //     console.log(response)
+                // }
                 helpers.resetForm()   
             }}
         >

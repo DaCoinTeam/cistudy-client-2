@@ -1,6 +1,5 @@
 import React, { useContext } from "react"
 import { PostCardContext } from "../../../../index"
-import { CommentItem } from "./CommentItem"
 import { ScrollShadow } from "@nextui-org/react"
 
 export const CommentsBody = () => {
@@ -9,12 +8,6 @@ export const CommentsBody = () => {
 
     const renderCommentBody = () => (
         <div className="flex flex-col gap-4">
-            {post?.postComments?.map((postComment) => (
-                <CommentItem
-                    key={postComment.postCommentId}
-                    postComment={postComment}
-                />
-            ))}
         </div>
     )
 

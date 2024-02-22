@@ -1,6 +1,6 @@
 import { Spacer, Input } from "@nextui-org/react"
 import React, { useContext } from "react"
-import { FormikContext } from "../FormikProviders"
+import { FormikContext } from "../../FormikProviders"
 
 export const Title = () => {
     const formik = useContext(FormikContext)!

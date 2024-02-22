@@ -11,9 +11,9 @@ import {
 } from "@nextui-org/react"
 import { FormikProviders } from "./FormikProviders"
 import { FormikContext } from "./FormikProviders"
-import { Title } from "./Title"
-import { CreatePostModalProviders } from "./CreatePostModalProviders"
-import { ContentsEditor } from "./ContentsEditor"
+import { Title } from "./EditSection/Title"
+import { EditSection } from "./EditSection"
+import { PreviewSection } from "./PreviewSection"
 
 export const WrappedCreatePostModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -33,28 +33,14 @@ export const WrappedCreatePostModal = () => {
             >
         Do you need some help?
             </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
                 <ModalContent>
-                    <ModalHeader className="flex flex-col p-6 pb-0">
-            Create Post
-                    </ModalHeader>
                     <ModalBody className="p-6">
-                        <div>
-                            <Title />
-                            <Spacer y={6} />
-                            <ContentsEditor />
+                        <div className="flex gap-4 items-center">
+                            <EditSection />
+                            <PreviewSection/>
                         </div>
                     </ModalBody>
-                    <ModalFooter className="p-6 pt-0">
-                        <div className="flex gap-4 items-center">
-                            <Button variant="light" color="danger">
-                Reset
-                            </Button>
-                            <Button onPress={onPress} color="primary">
-                Create
-                            </Button>
-                        </div>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>
@@ -64,9 +50,7 @@ export const WrappedCreatePostModal = () => {
 export const CreatePostModal = () => {
     return (
         <FormikProviders>
-            <CreatePostModalProviders>
-                <WrappedCreatePostModal />
-            </CreatePostModalProviders>
+            <WrappedCreatePostModal />
         </FormikProviders>
     )
 }
