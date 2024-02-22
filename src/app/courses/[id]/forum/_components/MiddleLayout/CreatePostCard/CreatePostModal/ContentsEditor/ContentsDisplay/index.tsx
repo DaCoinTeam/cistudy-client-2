@@ -1,11 +1,11 @@
 "use client"
 import React, { useContext } from "react"
-import { ContentsEditorContext } from "../ContentsEditorProviders"
 import { ContentItem } from "./ContentItem"
+import { FormikContext } from "../../FormikProviders"
 
 export const ContentsDisplay = () => {
-    const { state } = useContext(ContentsEditorContext)!
-    const { contents } = state
+    const { values } = useContext(FormikContext)!
+    const { contents } = values
 
     const renderContents = contents.map((content) => (
         <ContentItem key={content.key} content={content} />
