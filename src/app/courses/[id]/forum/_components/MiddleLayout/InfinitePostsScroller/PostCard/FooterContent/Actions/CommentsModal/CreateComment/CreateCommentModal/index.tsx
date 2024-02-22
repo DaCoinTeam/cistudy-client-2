@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react"
+import React, { useContext } from "react"
 import {
     Button,
     Modal,
@@ -8,64 +8,16 @@ import {
     ModalHeader,
     useDisclosure,
 } from "@nextui-org/react"
-import { ContentsEditorRef, ContentsEditorRefSelectors } from "../../../../../../../../../../../../_shared"
-import { ContentType, isErrorResponse } from "@common"
-import { createComment } from "@services"
-import { PostCardPropsContext } from "../../../../../index"
+import { FormikContext, FormikProviders } from "./FormikProviders"
+import { CreateCommentModalProviders } from "./CreateCommentModalProviders"
+import { ContentsEditor } from "./ContentsEditor"
 
-export const CreateCommentModal = () => {
+export const WrappedCreateCommentModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
-    const { post } = useContext(PostCardPropsContext)!
-
-    const ref = useRef<ContentsEditorRefSelectors|null>(null)
+    const formik = useContext(FormikContext)!
 
     const onPress = async () => {
-        if (ref.current === null) return
-        const contents = ref.current.contents
-
-        let countIndex = 0
-        const files: Array<File> = []     
-        const postCommentContents = contents.map((content) => {
-            const { contentType, text, contentMedias } = content
-            if (
-                contentType === ContentType.Text ||
-            contentType === ContentType.Code ||
-            contentType === ContentType.Link
-            ) {
-                return {
-                    text,
-                    contentType,
-                }
-            } else {
-                return {
-                    contentType: contentType,
-                    postCommentContentMedias: contentMedias?.map(
-                        contentMedia => {
-                            const media = {
-                                mediaIndex: countIndex
-                            }
-                            files.push(contentMedia.data)
-                            countIndex++
-                            return media
-                        }   
-                    )
-                }
-            }
-        })
-        const response = await createComment({
-            data: {
-                postId: post.postId,
-                postCommentContents
-            },
-            files
-        })
-
-        if (!isErrorResponse(response)) {
-            alert("Successfully")
-        } else {
-            console.log(response)
-        }
+        formik.handleSubmit()
     }
 
     return (
@@ -83,7 +35,7 @@ export const CreateCommentModal = () => {
             Create Comment
                     </ModalHeader>
                     <ModalBody className="p-6">
-                        <ContentsEditorRef ref={ref}/>
+                        <ContentsEditor />
                     </ModalBody>
                     <ModalFooter className="p-6 pt-0">
                         <div className="flex gap-4 items-center">
@@ -98,5 +50,15 @@ export const CreateCommentModal = () => {
                 </ModalContent>
             </Modal>
         </>
+    )
+}
+
+export const CreateCommentModal = () => {
+    return (
+        <FormikProviders>
+            <CreateCommentModalProviders>
+                <WrappedCreateCommentModal />
+            </CreateCommentModalProviders>
+        </FormikProviders>
     )
 }

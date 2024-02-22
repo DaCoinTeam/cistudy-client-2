@@ -6,16 +6,17 @@ import {
     PhotoIcon,
 } from "@heroicons/react/24/outline"
 import { v4 as uuidv4 } from "uuid"
-import { Content } from "../../../useContentsEditorReducer"
-import { ContentsEditorContext } from "../../../ContentsEditorProviders"
+import { Content } from "@common"
 import Dropzone from "react-dropzone"
+import { CreateCommentModalContext } from "../../../../CreateCommentModalProviders"
 
 interface ImagesContentProps {
   content: Content;
 }
 
 export const ImagesContent = (props: ImagesContentProps) => {
-    const { dispatch } = useContext(ContentsEditorContext)!
+    const { functions } = useContext(CreateCommentModalContext)!
+    const { updateContent, deleteContent } = functions
     const { content } = props
 
     const onDrop = (files: Array<File>) => {
@@ -25,17 +26,11 @@ export const ImagesContent = (props: ImagesContentProps) => {
                 data: file,
             }))
         )
-        dispatch({
-            type: "UPDATE_CONTENT",
-            payload: content,
-        })
+        updateContent(content)
     }
 
     const onDeletePress = () => {
-        dispatch({
-            type: "DELETE_CONTENT",
-            payload: content,
-        })
+        deleteContent(content.key)
     }
 
     return (
@@ -57,10 +52,7 @@ export const ImagesContent = (props: ImagesContentProps) => {
                                 ({ key }) => image.key !== key
                             )
                             content.contentMedias = contentMedias
-                            dispatch({
-                                type: "UPDATE_CONTENT",
-                                payload: content,
-                            })
+                            updateContent(content)
                         }}
                     >
                         <Image

@@ -3,20 +3,18 @@ import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext } from "react"
 import * as Yup from "yup"
 import { Content, ContentType, isErrorResponse } from "@common"
-import { createPost } from "@services"
-import { CourseDetailsContext } from "../../../../../_hooks"
+import { createComment } from "@services"
+import { PostCardPropsContext } from "../../../../../index"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
     null
 )
 
 interface FormikValues {
-  title: string;
   contents: Array<Content>
 }
 
 const initialValues: FormikValues = {
-    title: "",
     contents: []
 }
 
@@ -33,27 +31,24 @@ const WrappedFormikProviders = ({
 )
 
 export const FormikProviders = ({ children }: { children: ReactNode }) => {
-    const { state } = useContext(CourseDetailsContext)!
-    const { course } = state
+    const { post } = useContext(PostCardPropsContext)!
 
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={Yup.object({
-                title: Yup.string().required("Title is required"),
             })}
-            onSubmit={async ({contents, title}, helpers) => {
-                if (course === null) return 
-                const { courseId } = course
+            onSubmit={async ({contents}, helpers) => {
+                const { postId } = post
 
                 let countIndex = 0
-                const files: Array<File> = []
-                const postContents = contents.map((content) => {
+                const files: Array<File> = []     
+                const postCommentContents = contents.map((content) => {
                     const { contentType, text, contentMedias } = content
                     if (
                         contentType === ContentType.Text ||
-        contentType === ContentType.Code ||
-        contentType === ContentType.Link
+            contentType === ContentType.Code ||
+            contentType === ContentType.Link
                     ) {
                         return {
                             text,
@@ -62,24 +57,25 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
                     } else {
                         return {
                             contentType: contentType,
-                            postContentMedias: contentMedias?.map((contentMedia) => {
-                                const media = {
-                                    mediaIndex: countIndex,
-                                }
-                                files.push(contentMedia.data)
-                                countIndex++
-                                return media
-                            }),
+                            postCommentContentMedias: contentMedias?.map(
+                                contentMedia => {
+                                    const media = {
+                                        mediaIndex: countIndex
+                                    }
+                                    files.push(contentMedia.data)
+                                    countIndex++
+                                    return media
+                                }   
+                            )
                         }
                     }
                 })
-                const response = await createPost({
+                const response = await createComment({
                     data: {
-                        courseId,
-                        title,
-                        postContents,
+                        postId,
+                        postCommentContents
                     },
-                    files,
+                    files
                 })
 
                 if (!isErrorResponse(response)) {
@@ -87,7 +83,8 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
                 } else {
                     console.log(response)
                 }
-                helpers.resetForm()   
+
+                helpers.resetForm()
             }}
         >
             {(formik) => (

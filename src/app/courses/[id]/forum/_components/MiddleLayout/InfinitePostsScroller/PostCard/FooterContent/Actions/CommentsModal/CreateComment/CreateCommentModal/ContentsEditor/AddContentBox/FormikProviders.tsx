@@ -1,10 +1,9 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext } from "react"
-import { ContentType, WithKey } from "@common"
-import { ContentData } from "../useContentsEditorReducer"
-import { ContentsEditorContext } from "../ContentsEditorProviders"
+import { ContentType, WithKey, ContentData  } from "@common"
 import { AddContentBoxContext } from "./AddContentBoxProviders"
+import { CreateCommentModalContext } from "../../CreateCommentModalProviders"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
     null
@@ -39,13 +38,13 @@ const WrappedFormikProviders = ({
 )
 
 export const FormikProviders = ({ children }: { children: ReactNode }) => {
-    const { dispatch } = useContext(
-        ContentsEditorContext
-    )!
     const { state: addContentBoxState } = useContext(
         AddContentBoxContext
     )!
     const { contentSelected } = addContentBoxState
+
+    const { functions } = useContext(CreateCommentModalContext)!
+    const { addContent } = functions
 
     return (
         <Formik
@@ -83,10 +82,7 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
             },
         }
                 const postContentData = contentSelectedToPostContentData[contentSelected]
-                dispatch({
-                    type: "APPEND_CONTENT",
-                    payload: postContentData,
-                })
+                addContent(postContentData)
                 helpers.resetForm()
             }}
         >

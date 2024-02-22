@@ -1,6 +1,5 @@
 import React from "react"
-import { ContentType } from "@common"
-import { Content } from "../../useContentsEditorReducer"
+import { ContentType, Content } from "@common"
 import { CodeContent } from "./CodeContent"
 import { ImagesContent } from "./ImagesContent"
 import { TextContent } from "./TextContent"
