@@ -119,12 +119,21 @@ export interface LectureEntity {
 }
 
 export interface PostCommentContentEntity {
-  postCommentContentId: string;
-  postCommentId: string;
-  index: number;
-  contentType: ContentType;
-  content: string;
-  postComment: PostCommentEntity;
+  postCommentContentId: string
+  postCommentId: string
+  position: number
+  text: string
+  contentType: ContentType
+  postComment: PostCommentEntity
+  postCommentContentMedias: Array<PostCommentContentMediaEntity>
+}
+
+export interface PostCommentContentMediaEntity {
+  postCommentContentMediaId: string
+  position: number
+  mediaId: string
+  postCommentContentId: string
+  postCommentContent: PostCommentContentEntity
 }
 
 export interface PostCommentLikeEntity {
@@ -137,17 +146,17 @@ export interface PostCommentLikeEntity {
 }
 
 export interface PostCommentEntity {
-  postCommentId: string;
-  userId: string;
-  postId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  fatherCommentId: string | null;
-  post: PostEntity;
-  user: UserEntity;
-  postCommentContents: Array<Partial<PostCommentContentEntity>>;
-  postCommentLikes: Array<PostCommentLikeEntity>;
-  childComments: Array<PostCommentEntity>;
+  postCommentId: string
+  creatorId: string
+  postId: string
+  createdAt: Date
+  updatedAt: Date
+  fatherCommentId: string
+  post: PostEntity
+  creator: UserEntity
+  postCommentContents: Array<PostCommentContentEntity>
+  postCommentLikes: Array<PostCommentLikeEntity>
+  childComments: Array<PostCommentEntity>
 }
 
 export interface PostContentEntity {

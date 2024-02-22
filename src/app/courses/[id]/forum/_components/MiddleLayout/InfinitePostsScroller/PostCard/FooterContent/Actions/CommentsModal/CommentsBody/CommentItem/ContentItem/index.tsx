@@ -1,29 +1,29 @@
 import React from "react"
-import { ContentType, PostContentEntity } from "@common"
+import { ContentType, PostCommentContentEntity } from "@common"
 import { Code } from "@nextui-org/react"
 import { Image } from "@nextui-org/react"
 import { getAssetUrl } from "@services"
 
 interface ContentItemProps {
-  postContent: PostContentEntity;
+  postCommentContent: PostCommentContentEntity;
 }
 
 export const ContentItem = (props: ContentItemProps) => {
-    const { postContent } = props
+    const { postCommentContent } = props
 
     const contentTypeToElement: Record<ContentType, () => JSX.Element> = {
         [ContentType.Text]: () => (
             <div className="whitespace-pre-line text-sm">
-                {postContent.text}
+                {postCommentContent.text}
             </div>
         ),
         [ContentType.Code]: () => (
             <Code className="whitespace-break-spaces">
-                {postContent.text}
+                {postCommentContent.text}
             </Code>
         ),
         [ContentType.Images]: () => {
-            const images = postContent.postContentMedias
+            const images = postCommentContent.postCommentContentMedias
             const numberToGridCols: Record<number, string> = {
                 1: "grid-cols-1",
                 2: "grid-cols-2",
@@ -33,9 +33,9 @@ export const ContentItem = (props: ContentItemProps) => {
 
             return (
                 <div className={`grid ${numberToGridCols[images.length]} gap-2`}>
-                    {images.map(({postContentMediaId, mediaId}) => (
+                    {images.map(({postCommentContentMediaId, mediaId}) => (
                         <Image
-                            key={postContentMediaId}
+                            key={postCommentContentMediaId}
                             alt="image"
                             className="aspect-video"
                             src={getAssetUrl(mediaId)}
@@ -52,5 +52,5 @@ export const ContentItem = (props: ContentItemProps) => {
         },
     }
     
-    return <> {contentTypeToElement[props.postContent.contentType]()} </>
+    return <> {contentTypeToElement[props.postCommentContent.contentType]()} </>
 }

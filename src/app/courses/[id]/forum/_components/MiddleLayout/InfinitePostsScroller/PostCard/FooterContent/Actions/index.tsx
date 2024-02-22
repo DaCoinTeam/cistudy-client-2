@@ -11,35 +11,35 @@ import { isErrorResponse } from "@common"
 import { reactPost } from "@services"
 import { useSelector } from "react-redux"
 import { RootState } from "@redux"
-import { FooterContentContext } from "../index"
 import { CommentsModal } from "./CommentsModal"
+import { PostCardContext } from "../../index"
 
 export const Actions = () => {
     const profile = useSelector((state: RootState) => state.auth.profile)
 
-    const { state, functions } = useContext(FooterContentContext)!
-    const { postPartial } = state
-    const { fetchAndSetReactPostPartial } = functions
+    const { state, functions } = useContext(PostCardContext)!
+    const { post } = state
+    const { fetchAndSetPost } = functions
 
     const onLikePress = async () => {
-        if (postPartial === null) return
-        const { postId } = postPartial
+        if (post === null) return
+        const { postId } = post
         const response = await reactPost({
             data: {
                 postId,
             },
         })
         if (!isErrorResponse(response)) {
-            await fetchAndSetReactPostPartial()
+            await fetchAndSetPost()
         } else {
             console.log(response)
         }
     }
 
     const renderLikeIcon = () => {
-        const found = postPartial?.postReacts.find(
-            (postPartial) =>
-                postPartial.liked && postPartial.userId === profile?.userId
+        const found = post?.postReacts.find(
+            (post) =>
+                post.liked && post.userId === profile?.userId
         )
         return found ? (
             <SolidHeartIcon className="w-6 h-6" />

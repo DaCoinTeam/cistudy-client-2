@@ -4,6 +4,7 @@ import {
     ErrorResponse,
     Schema,
     buildPayloadString,
+    PostCommentEntity,
 } from "@common"
 import { client } from "./client.graphql"
 import { ApolloError, gql } from "@apollo/client"
@@ -81,6 +82,41 @@ export const findOnePost = async (
         const _ex = ex as ApolloError
         const error = (
       _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+        ).originalError
+
+        return error
+    }
+}
+
+export const findOnePostComment = async (
+    params: {
+  postCommentId: string;
+},
+    schema?: Schema<DeepPartial<PostCommentEntity>>
+): Promise<PostCommentEntity | ErrorResponse> => {
+    try {
+        const { postCommentId } = params
+        const payload = buildPayloadString(schema)
+        const { data } = await client().query({
+            query: gql`
+          query FindOnePostComment($input: FindOnePostCommentInput!) {
+  findOnePostComment(input: $input) {
+    ${payload}
+  }
+}
+        `,
+            variables: {
+                input: {
+                    postCommentId,
+                },
+            },
+        })
+
+        return data.findOnePostComment as PostCommentEntity
+    } catch (ex) {
+        const _ex = ex as ApolloError
+        const error = (
+    _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         return error

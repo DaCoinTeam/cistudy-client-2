@@ -27,22 +27,6 @@ export const ForumContext = createContext<ForumContextValue | null>(null)
 
 export const findManyPostsSchema: Schema<PostEntity> = {
     postId: true,
-    title: true,
-    postContents: {
-        postContentId: true,
-        contentType: true,
-        postContentMedias: {
-            mediaId: true,
-        },
-        text: true,
-    },
-    creator: {
-        avatarId: true
-    },
-    postReacts:{
-        userId: true,
-        liked: true
-    }
 }
 
 

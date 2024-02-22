@@ -4,7 +4,7 @@ import React, { ReactNode, createContext, useContext } from "react"
 import * as Yup from "yup"
 import { Content, ContentType, isErrorResponse } from "@common"
 import { createComment } from "@services"
-import { PostCardPropsContext } from "../../../../../index"
+import { PostCardContext } from "../../../../../index"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
     null
@@ -31,7 +31,8 @@ const WrappedFormikProviders = ({
 )
 
 export const FormikProviders = ({ children }: { children: ReactNode }) => {
-    const { post } = useContext(PostCardPropsContext)!
+    const { state } = useContext(PostCardContext)!
+    const { post } = state
 
     return (
         <Formik
@@ -39,6 +40,7 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
             validationSchema={Yup.object({
             })}
             onSubmit={async ({contents}, helpers) => {
+                if (post === null) return 
                 const { postId } = post
 
                 let countIndex = 0
