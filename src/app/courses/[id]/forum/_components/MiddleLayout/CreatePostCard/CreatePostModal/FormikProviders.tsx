@@ -2,6 +2,7 @@
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext } from "react"
 import * as Yup from "yup"
+import { Content } from "@common"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
     null
@@ -9,10 +10,12 @@ export const FormikContext = createContext<FormikProps<FormikValues> | null>(
 
 interface FormikValues {
   title: string;
+  contents: Array<Content>
 }
 
 const initialValues: FormikValues = {
     title: "",
+    contents: []
 }
 
 const WrappedFormikProviders = ({
