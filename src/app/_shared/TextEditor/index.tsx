@@ -36,43 +36,43 @@ export const WrappedTextEditor = () => {
 export const TextEditor = (props: TextEditorProps) => {
     const { html, setHtml } = props
 
-    const extensions = [
-        StarterKit,
-        ImageResize.configure({
-            inline: true,
-        }),
-        TextStyle,
-        Color.configure({ types: [TextStyle.name, ListItem.name] }),
-        Code.configure({
-            HTMLAttributes: {
-                class:
-          "px-2 py-1 h-fit font-mono font-normal inline-block whitespace-nowrap bg-default/40 text-default-foreground text-small rounded-small",
-            },
-        }),
-        CodeBlock.configure({
-            HTMLAttributes: {
-                class:
-          "px-2 py-1 h-fit font-mono font-normal inline-block whitespace-nowrap bg-default/40 text-default-foreground text-small rounded-small w-full",
-            },
-        }),
-        Paragraph.configure({
-            HTMLAttributes: {
-                class: "text-sm",
-            },
-        }),
-    ]
-
     return (
-        <div className="bg-content2 p-4 rounded-large">
+        <div className="bg-content2 p-3 rounded-large">
             <EditorProvider
                 extensions={extensions}
                 content={html}
                 editable={true}
                 onUpdate={({ editor }) => setHtml(editor.getHTML())}
-                slotBefore={<Toolbar className="mb-4"/>}
+                slotBefore={<Toolbar className="mb-3"/>}
             >
                 <WrappedTextEditor />
             </EditorProvider>     
         </div>
     )
 }
+
+export const extensions = [
+    StarterKit,
+    ImageResize.configure({
+        inline: true,
+    }),
+    TextStyle,
+    Color.configure({ types: [TextStyle.name, ListItem.name] }),
+    Code.configure({
+        HTMLAttributes: {
+            class:
+      "px-2 py-1 h-fit font-mono font-normal inline-block whitespace-nowrap bg-default/40 text-default-foreground text-small rounded-small",
+        },
+    }),
+    CodeBlock.configure({
+        HTMLAttributes: {
+            class:
+      "px-2 py-1 h-fit font-mono font-normal inline-block whitespace-nowrap bg-default/40 text-default-foreground text-small rounded-small w-full",
+        },
+    }),
+    Paragraph.configure({
+        HTMLAttributes: {
+            class: "text-sm",
+        },
+    }),
+]

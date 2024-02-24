@@ -1,6 +1,6 @@
 import React from "react"
 import { PostCommentEntity } from "@common"
-import { Avatar, Spacer } from "@nextui-org/react"
+import { Avatar } from "@nextui-org/react"
 import { getAssetUrl } from "@services"
 import {
     HTMLRenderer,
@@ -17,11 +17,11 @@ export const CommentItem = (props: CommentItemProps) => {
     const { avatarId } = creator
     return (
         <div className="flex gap-4">
-            <Avatar src={getAssetUrl(avatarId)}/>
+            <Avatar src={getAssetUrl(avatarId)} />
             <div className="p-3 rounded-large bg-content2 flex-1">
                 <HTMLRenderer html={html} />
-                <Spacer y={3}/>
                 <MediaGroup
+                    className="mt-3"
                     medias={postCommentMedias.map(
                         ({ postCommentMediaId, mediaId, mediaType }) => ({
                             key: postCommentMediaId,

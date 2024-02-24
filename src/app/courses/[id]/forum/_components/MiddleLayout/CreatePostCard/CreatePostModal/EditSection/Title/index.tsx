@@ -9,9 +9,6 @@ export const Title = () => {
         <div>
             <Spacer y={1} />
             <Input
-                classNames={{
-                    inputWrapper: "px-4"
-                }}
                 label="Title"
                 id="title"
                 size="lg"

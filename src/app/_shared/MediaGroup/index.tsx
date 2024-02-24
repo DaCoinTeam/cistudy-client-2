@@ -2,19 +2,16 @@ import React from "react"
 import { AppendKey, FetchedMedia } from "@common"
 import { MediaItem } from "./MediaItem"
 import { MediaStack } from "./MediaStack"
-import { Skeleton } from "@nextui-org/react"
 
 interface MediaGroupProps {
   medias?: Array<AppendKey<FetchedMedia>>;
+  className?: string;
 }
 
 export const MediaGroup = (props: MediaGroupProps) => {
-    const { medias } = props
+    const { className, medias } = props
 
-    const renderSkeleton = () => <Skeleton className="aspect-video" />
-
-    const renderLessEqual4 = () => {
-        if (!medias) return null
+    const renderLessEqual4 = (medias: Array<AppendKey<FetchedMedia>>) => {
         return (
             <>
                 {medias.map((media) => (
@@ -23,9 +20,7 @@ export const MediaGroup = (props: MediaGroupProps) => {
             </>
         )
     }
-    const renderGreater4 = () => {
-        if (!medias) return null
-
+    const renderGreater4 = (medias: Array<AppendKey<FetchedMedia>>) => {
         const items: Array<JSX.Element> = []
 
         const first3 = medias.filter((_, index) => index < 3)
@@ -40,13 +35,17 @@ export const MediaGroup = (props: MediaGroupProps) => {
     }
 
     const renderContent = () => {
-        if (!medias) return null
-        return medias.length <= 4 ? renderLessEqual4() : renderGreater4()
+        if (!medias || !medias.length) return null
+        return (
+            <div className={className}>
+                <div className="gap-4 grid grid-cols-4">
+                    {medias.length <= 4
+                        ? renderLessEqual4(medias)
+                        : renderGreater4(medias)}
+                </div>
+            </div>
+        )
     }
 
-    return (
-        <div className="gap-4 grid grid-cols-4">
-            {medias ? renderContent() : renderSkeleton()}
-        </div>
-    )
+    return <> {renderContent()} </>
 }
