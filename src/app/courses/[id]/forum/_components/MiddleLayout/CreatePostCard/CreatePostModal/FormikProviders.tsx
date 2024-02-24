@@ -2,9 +2,8 @@
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext } from "react"
 import * as Yup from "yup"
-import { Content, ContentType, isErrorResponse } from "@common"
-import { createPost } from "@services"
 import { CourseDetailsContext } from "../../../../../_hooks"
+import { EditorState } from "draft-js"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
     null

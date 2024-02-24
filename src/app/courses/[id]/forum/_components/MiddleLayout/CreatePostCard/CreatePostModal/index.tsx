@@ -13,7 +13,6 @@ import { FormikProviders } from "./FormikProviders"
 import { FormikContext } from "./FormikProviders"
 import { Title } from "./EditSection/Title"
 import { EditSection } from "./EditSection"
-import { PreviewSection } from "./PreviewSection"
 
 export const WrappedCreatePostModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -38,7 +37,6 @@ export const WrappedCreatePostModal = () => {
                     <ModalBody className="p-6">
                         <div className="flex gap-4 items-center">
                             <EditSection />
-                            <PreviewSection/>
                         </div>
                     </ModalBody>
                 </ModalContent>
