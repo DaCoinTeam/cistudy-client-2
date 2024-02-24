@@ -11,7 +11,6 @@ export const Title = () => {
             <Input
                 label="Title"
                 id="title"
-                size="lg"
                 value={formik.values.title}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
