@@ -7,13 +7,13 @@ import TextStyle from "@tiptap/extension-text-style"
 import ListItem from "@tiptap/extension-list-item"
 import ImageResize from "tiptap-extension-resize-image"
 import Code from "@tiptap/extension-code"
+import CodeBlock from "@tiptap/extension-code-block"
 import Paragraph from "@tiptap/extension-paragraph"
-import { Card, CardBody } from "@nextui-org/react"
 
 interface TextEditorProps {
   className?: string;
-  content: string;
-  setContent: (content: string) => void;
+  html: string;
+  setHtml: (html: string) => void;
 }
 
 interface TextEditorContextValue {
@@ -29,14 +29,12 @@ export const WrappedTextEditor = () => {
     if (editor === null) return null
 
     return (
-        <div>
-            <EditorContent editor={editor} />
-        </div>
+        <EditorContent editor={editor} />
     )
 }
 
 export const TextEditor = (props: TextEditorProps) => {
-    const { content, setContent } = props
+    const { html, setHtml } = props
 
     const extensions = [
         StarterKit,
@@ -51,30 +49,30 @@ export const TextEditor = (props: TextEditorProps) => {
           "px-2 py-1 h-fit font-mono font-normal inline-block whitespace-nowrap bg-default/40 text-default-foreground text-small rounded-small",
             },
         }),
+        CodeBlock.configure({
+            HTMLAttributes: {
+                class:
+          "px-2 py-1 h-fit font-mono font-normal inline-block whitespace-nowrap bg-default/40 text-default-foreground text-small rounded-small w-full",
+            },
+        }),
         Paragraph.configure({
             HTMLAttributes: {
-                class: "text-sm mb-0",
+                class: "text-sm",
             },
         }),
     ]
 
     return (
-        <Card shadow="none" className="bg-content2">
-            <CardBody className="p-4">
-                <EditorProvider
-                    extensions={extensions}
-                    content={content}
-                    editable={true}
-                    onUpdate={({ editor }) => setContent(editor.getHTML())}
-                    slotBefore={
-                        <div className="mb-6">
-                            <Toolbar />
-                        </div>
-                    }
-                >
-                    <WrappedTextEditor />
-                </EditorProvider>
-            </CardBody>
-        </Card>
+        <div className="bg-content2 p-4 rounded-large">
+            <EditorProvider
+                extensions={extensions}
+                content={html}
+                editable={true}
+                onUpdate={({ editor }) => setHtml(editor.getHTML())}
+                slotBefore={<Toolbar className="mb-4"/>}
+            >
+                <WrappedTextEditor />
+            </EditorProvider>     
+        </div>
     )
 }

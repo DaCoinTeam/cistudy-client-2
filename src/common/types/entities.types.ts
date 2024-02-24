@@ -16,15 +16,15 @@ export enum VerifyStatus {
   Rejected = "rejected",
 }
 
-export enum ContentType {
-  Text = "text",
-  Medias  = "medias",
-}
-
 export enum ProcessStatus {
   Pending = "pending",
   Processing = "processing",
   Completed = "completed",
+}
+
+export enum MediaType {
+  Image = "image",
+  Video = "video",
 }
 
 export interface UserEntity {
@@ -60,7 +60,8 @@ export interface PostEntity {
   updatedAt: Date;
   course: CourseEntity;
   creator: UserEntity;
-  postContents: Array<PostContentEntity>;
+  html: string;
+  postMedias: Array<PostMediaEntity>;
   postComments: Array<PostCommentEntity>;
   postReacts: Array<PostReactEntity>;
 }
@@ -115,24 +116,6 @@ export interface LectureEntity {
   resources: Array<ResourceEntity>;
 }
 
-export interface PostCommentContentEntity {
-  postCommentContentId: string
-  postCommentId: string
-  position: number
-  text: string
-  contentType: ContentType
-  postComment: PostCommentEntity
-  postCommentContentMedias: Array<PostCommentContentMediaEntity>
-}
-
-export interface PostCommentContentMediaEntity {
-  postCommentContentMediaId: string
-  position: number
-  mediaId: string
-  postCommentContentId: string
-  postCommentContent: PostCommentContentEntity
-}
-
 export interface PostCommentLikeEntity {
   postCommentLikeId: string;
   userId: string;
@@ -151,20 +134,12 @@ export interface PostCommentEntity {
   fatherCommentId: string
   post: PostEntity
   creator: UserEntity
-  postCommentContents: Array<PostCommentContentEntity>
+  html: string
+  postCommentMedias: Array<PostCommentMediaEntity>
   postCommentLikes: Array<PostCommentLikeEntity>
   childComments: Array<PostCommentEntity>
 }
 
-export interface PostContentEntity {
-  postContentId: string;
-  position: number;
-  text: string;
-  contentType: ContentType;
-  postId: string;
-  post: PostEntity;
-  postContentMedias: Array<PostContentMediaEntity>;
-}
 
 export interface SectionEntity {
   sectionId: string;
@@ -205,10 +180,20 @@ export interface PostReactEntity {
   post: PostEntity;
 }
 
-export interface PostContentMediaEntity {
-  postContentMediaId: string;
-  position: number;
-  mediaId: string;
-  postContentId: string;
-  postContent: PostContentEntity;
+export interface PostMediaEntity {
+      postMediaId: string
+      position: number
+      mediaId: string
+      postId: string
+      mediaType: MediaType
+      post: PostEntity
+}
+
+export interface PostCommentMediaEntity {
+postCommentMediaId: string
+    position: number
+    mediaId: string
+    postCommentId: string
+    mediaType: MediaType
+    postComment: PostCommentEntity
 }

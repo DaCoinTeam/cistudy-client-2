@@ -42,15 +42,12 @@ export const PostCard = (props: PostCardProps) => {
             {
                 postId: true,
                 title: true,
-                postContents: {
-                    postContentId: true,
-                    contentType: true,
-                    postContentMedias: {
-                        postContentMediaId: true,
-                        mediaId: true,
-                    },
-                    text: true,
+                postMedias: {
+                    postMediaId: true,
+                    mediaId: true,
+                    mediaType: true
                 },
+                html: true,
                 creator: {
                     avatarId: true,
                 },

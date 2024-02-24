@@ -21,3 +21,11 @@
 }
 @tailwind components;
 @tailwind utilities;
+
+.ProseMirror-focused {
+  @apply outline-none;
+}
+
+.ProseMirror {
+  @apply bg-content1 p-3 rounded-large min-h-[100px];
+}

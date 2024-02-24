@@ -2,9 +2,9 @@ import {
     AuthTokenType,
     AuthTokens,
     BaseResponse,
-    ContentType,
     ErrorResponse,
     ErrorStatusCode,
+    MediaType,
     buildBearerTokenHeader,
     getClientId,
     saveTokens,
@@ -16,19 +16,17 @@ const BASE_URL = `${endpointConfig().api}/posts`
 
 export const createPost = async (
     params: {
-    data: {
-      title: string;
-      courseId: string;
-      postContents: Array<{
-        contentType: ContentType;
-        text?: string;
-        postContentMedias?: Array<{
-          mediaIndex: number;
-        }>;
-      }>;
-    };
-    files?: Array<File>;
-  },
+        data: {
+            title: string;
+            courseId: string;
+            html: string;
+            postMedias: Array<{
+                mediaType: MediaType;
+                mediaIndex: number;
+            }>;
+        };
+        files?: Array<File>;
+    },
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string | ErrorResponse> => {
     console.log(params)
@@ -53,7 +51,7 @@ export const createPost = async (
         })
 
         const { data: responseData, tokens } =
-      response.data as BaseResponse<string>
+            response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -64,7 +62,7 @@ export const createPost = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
+            authTokenType === AuthTokenType.Access
         )
             return await createPost(params, AuthTokenType.Refresh)
         return _ex
@@ -73,18 +71,16 @@ export const createPost = async (
 
 export const createComment = async (
     params: {
-    data: {
-      postId: string;
-      postCommentContents: Array<{
-        contentType: ContentType;
-        text?: string;
-        postCommentContentMedias?: Array<{
-          mediaIndex: number;
-        }>;
-      }>;
-    };
-    files?: Array<File>;
-  },
+        data: {
+            postId: string;
+            html: string;
+            postCommentMedias: Array<{
+                mediaType: MediaType;
+                mediaIndex: number;
+            }>;
+        };
+        files?: Array<File>;
+    },
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string | ErrorResponse> => {
     console.log(params)
@@ -109,7 +105,7 @@ export const createComment = async (
         })
 
         const { data: responseData, tokens } =
-      response.data as BaseResponse<string>
+            response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -120,7 +116,7 @@ export const createComment = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
+            authTokenType === AuthTokenType.Access
         )
             return await createComment(params, AuthTokenType.Refresh)
         return _ex
@@ -129,10 +125,10 @@ export const createComment = async (
 
 export const reactPost = async (
     params: {
-    data: {
-      postId: string;
-    };
-  },
+        data: {
+            postId: string;
+        };
+    },
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string | ErrorResponse> => {
     try {
@@ -147,7 +143,7 @@ export const reactPost = async (
         })
 
         const { data: responseData, tokens } =
-      response.data as BaseResponse<string>
+            response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -158,7 +154,7 @@ export const reactPost = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
+            authTokenType === AuthTokenType.Access
         )
             return await reactPost(params, AuthTokenType.Refresh)
         return _ex

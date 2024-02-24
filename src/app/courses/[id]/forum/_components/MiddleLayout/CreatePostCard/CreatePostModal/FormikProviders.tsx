@@ -3,7 +3,8 @@ import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext } from "react"
 import * as Yup from "yup"
 import { CourseDetailsContext } from "../../../../../_hooks"
-import { EditorState } from "draft-js"
+import { AppendKey, Media, isErrorResponse } from "@common"
+import { createPost } from "@services"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
     null
@@ -11,12 +12,14 @@ export const FormikContext = createContext<FormikProps<FormikValues> | null>(
 
 interface FormikValues {
   title: string;
-  content: string,
+  html: string,
+  postMedias: Array<AppendKey<Media>>
 }
 
 const initialValues: FormikValues = {
     title: "",
-    content: ""
+    html: "",
+    postMedias: []
 }
 
 const WrappedFormikProviders = ({
@@ -41,49 +44,40 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
             validationSchema={Yup.object({
                 title: Yup.string().required("Title is required"),
             })}
-            onSubmit={async ({title, content}, helpers) => {
+            onSubmit={async ({title, html, postMedias : postMediasRaw}, helpers) => {
                 if (course === null) return 
                 const { courseId } = course
 
                 let countIndex = 0
                 const files: Array<File> = []
-                // const postContents = contents.map((content) => {
-                //     const { contentType, text, contentMedias } = content
-                //     if (
-                //         contentType === ContentType.Text
-                //     ) {
-                //         return {
-                //             text,
-                //             contentType,
-                //         }
-                //     } else {
-                //         return {
-                //             contentType: contentType,
-                //             postContentMedias: contentMedias?.map((contentMedia) => {
-                //                 const media = {
-                //                     mediaIndex: countIndex,
-                //                 }
-                //                 files.push(contentMedia.data)
-                //                 countIndex++
-                //                 return media
-                //             }),
-                //         }
-                //     }
-                // })
-                // const response = await createPost({
-                //     data: {
-                //         courseId,
-                //         title,
-                //         postContents,
-                //     },
-                //     files,
-                // })
 
-                // if (!isErrorResponse(response)) {
-                //     alert("Successfully")
-                // } else {
-                //     console.log(response)
-                // }
+                const postMedias = postMediasRaw.map(({mediaType, file}) => {
+                    const result = {
+                        mediaIndex: countIndex,
+                        mediaType
+                    }
+
+                    countIndex ++
+                    files.push(file)
+
+                    return result
+                }
+                )
+                const response = await createPost({
+                    data: {
+                        courseId,
+                        title,
+                        html,
+                        postMedias
+                    },
+                    files,
+                })
+
+                if (!isErrorResponse(response)) {
+                    alert("Successfully")
+                } else {
+                    console.log(response)
+                }
                 helpers.resetForm()   
             }}
         >

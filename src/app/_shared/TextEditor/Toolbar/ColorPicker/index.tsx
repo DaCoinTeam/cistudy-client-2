@@ -2,11 +2,8 @@ import { Button } from "@nextui-org/react"
 import { useCurrentEditor } from "@tiptap/react"
 import React, { useRef } from "react"
 
-import {
-    PaintBucketIcon
-} from "lucide-react"
+import { BsPaintBucket } from "react-icons/bs"
     
-
 export const ColorPicker = () => {
     const { editor } = useCurrentEditor()
     const ref = useRef<HTMLInputElement | null>(null)
@@ -29,7 +26,7 @@ export const ColorPicker = () => {
                 variant="light"
             >   
                 <div className="relative w-full h-full grid place-content-center">
-                    <PaintBucketIcon className="w-4 h-4"/>
+                    <BsPaintBucket className="w-4 h-4"/>
                     <div className="w-5 h-1 absolute bottom-1.5 left-2.5" style={{backgroundColor: ref.current?.value}}/>
                 </div>
                

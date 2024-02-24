@@ -9,17 +9,12 @@ export const Title = () => {
         <div>
             <Spacer y={1} />
             <Input
-                label=""
-                labelPlacement="outside"
-                id="title"
-                color="primary"
-                size="lg"
                 classNames={{
-                    inputWrapper: "!px-0 !h-8 !min-h-8",
-                    innerWrapper: "!pb-0 !h-8",
-                    input: "h-8"
+                    inputWrapper: "px-4"
                 }}
-                variant="underlined"
+                label="Title"
+                id="title"
+                size="lg"
                 value={formik.values.title}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}

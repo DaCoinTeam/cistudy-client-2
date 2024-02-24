@@ -6,12 +6,10 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
-    Spacer,
     useDisclosure,
 } from "@nextui-org/react"
 import { FormikProviders } from "./FormikProviders"
 import { FormikContext } from "./FormikProviders"
-import { Title } from "./EditSection/Title"
 import { EditSection } from "./EditSection"
 
 export const WrappedCreatePostModal = () => {
@@ -32,13 +30,29 @@ export const WrappedCreatePostModal = () => {
             >
         Do you need some help?
             </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                size="5xl"
+                classNames={{
+                    closeButton: "top-3 right-3",
+                }}
+            >
                 <ModalContent>
+                    <ModalHeader className="p-6 pb-0"> Create Post</ModalHeader>
                     <ModalBody className="p-6">
-                        <div className="flex gap-4 items-center">
-                            <EditSection />
-                        </div>
+                        <EditSection />
                     </ModalBody>
+                    <ModalFooter className="p-6 pt-0">
+                        <div className="flex gap-4 items-center">
+                            <Button variant="light" color="danger">
+                Reset
+                            </Button>
+                            <Button onPress={onPress} color="primary">
+                Create
+                            </Button>
+                        </div>
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>
