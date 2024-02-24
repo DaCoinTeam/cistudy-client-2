@@ -1,8 +1,15 @@
 import { Skeleton } from "@nextui-org/react"
 import React from "react"
-import { extensions } from "../TextEditor"
 import { EditorContent, useEditor } from "@tiptap/react"
 import style from "./style.module.css"
+import CodeBlock from "@tiptap/extension-code-block"
+import Color from "@tiptap/extension-color"
+import ListItem from "@tiptap/extension-list-item"
+import Paragraph from "@tiptap/extension-paragraph"
+import TextStyle from "@tiptap/extension-text-style"
+import StarterKit from "@tiptap/starter-kit"
+import ImageResize from "tiptap-extension-resize-image"
+import Code from "@tiptap/extension-code"
 
 interface TextRendererProps {
   className?: string;
@@ -37,3 +44,29 @@ export const TextRenderer = (props: TextRendererProps) => {
         </div>
     )
 }
+
+const extensions = [
+    StarterKit,
+    ImageResize.configure({
+        inline: true,
+    }),
+    TextStyle,
+    Color.configure({ types: [TextStyle.name, ListItem.name] }),
+    Code.configure({
+        HTMLAttributes: {
+            class:
+      "px-2 py-1 h-fit font-mono font-normal inline-block whitespace-nowrap bg-default/40 text-default-foreground text-small rounded-small",
+        },
+    }),
+    CodeBlock.configure({
+        HTMLAttributes: {
+            class:
+      "px-2 py-1 h-fit font-mono font-normal inline-block whitespace-nowrap bg-default/40 text-default-foreground text-small rounded-small w-full",
+        },
+    }),
+    Paragraph.configure({
+        HTMLAttributes: {
+            class: "text-sm",
+        },
+    }),
+]

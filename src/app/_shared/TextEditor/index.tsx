@@ -51,7 +51,7 @@ export const TextEditor = (props: TextEditorProps) => {
     )
 }
 
-export const extensions = [
+const extensions = [
     StarterKit,
     ImageResize.configure({
         inline: true,
