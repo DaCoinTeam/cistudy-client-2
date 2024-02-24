@@ -13,3 +13,8 @@ export interface Media {
     mediaType: MediaType,
     file: File,
 }
+
+export interface FetchedMedia {
+    mediaType: MediaType,
+    mediaId: string,
+}

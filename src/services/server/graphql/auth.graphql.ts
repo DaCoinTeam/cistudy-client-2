@@ -15,7 +15,7 @@ import { client } from "./client.graphql"
 import { ApolloError, gql } from "@apollo/client"
 
 export const init = async (
-    schema?: Schema<DeepPartial<UserEntity>>,
+    schema: Schema<DeepPartial<UserEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<DeepPartial<UserEntity> | ErrorResponse> => {
     try {
@@ -53,7 +53,7 @@ export const signIn = async (
     email: string;
     password: string;
   },
-    schema?: Schema<DeepPartial<UserEntity>>
+    schema: Schema<DeepPartial<UserEntity>>
 ): Promise<DeepPartial<UserEntity> | ErrorResponse> => {
     const { email, password } = params
     try {

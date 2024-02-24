@@ -2,20 +2,23 @@
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext } from "react"
 import * as Yup from "yup"
-import { Content, ContentType, isErrorResponse } from "@common"
+import { AppendKey, Media, isErrorResponse } from "@common"
 import { createComment } from "@services"
 import { PostCardContext } from "../../../../../index"
+import { CommentsModalContext } from "../../CommentsModalProviders"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
     null
 )
 
 interface FormikValues {
-  contents: Array<Content>
+    html: string
+    postCommentMedias: Array<AppendKey<Media>>
 }
 
 const initialValues: FormikValues = {
-    contents: []
+    html: "",
+    postCommentMedias: []
 }
 
 const WrappedFormikProviders = ({
@@ -31,56 +34,47 @@ const WrappedFormikProviders = ({
 )
 
 export const FormikProviders = ({ children }: { children: ReactNode }) => {
-    const { state, functions } = useContext(PostCardContext)!
-    const { fetchAndSetPost } = functions
+    const { state } = useContext(PostCardContext)!
     const { post } = state
+
+    const { functions } = useContext(CommentsModalContext)!
+    const { fetchAndSetPostComments } = functions
 
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={Yup.object({
             })}
-            onSubmit={async ({contents}, helpers) => {
+            onSubmit={async ({ html, postCommentMedias: postCommentMediasRaw }, helpers) => {
                 if (post === null) return 
                 const { postId } = post
 
                 let countIndex = 0
                 const files: Array<File> = []     
-                const postCommentContents = contents.map((content) => {
-                    const { contentType, text, contentMedias } = content
-                    if (
-                        contentType === ContentType.Text
-                    ) {
-                        return {
-                            text,
-                            contentType,
-                        }
-                    } else {
-                        return {
-                            contentType: contentType,
-                            postCommentContentMedias: contentMedias?.map(
-                                contentMedia => {
-                                    const media = {
-                                        mediaIndex: countIndex
-                                    }
-                                    files.push(contentMedia.data)
-                                    countIndex++
-                                    return media
-                                }   
-                            )
-                        }
+                
+                const postCommentMedias = postCommentMediasRaw.map(({mediaType, file}) => {
+                    const result = {
+                        mediaIndex: countIndex,
+                        mediaType
                     }
+
+                    countIndex ++
+                    files.push(file)
+
+                    return result
                 })
+
                 const response = await createComment({
                     data: {
                         postId,
-                        postCommentContents
+                        html,
+                        postCommentMedias
                     },
                     files
                 })
 
                 if (!isErrorResponse(response)) {
-                    await fetchAndSetPost()
+                    await fetchAndSetPostComments()
                 } else {
                     console.log(response)
                 }

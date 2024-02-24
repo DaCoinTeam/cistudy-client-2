@@ -35,12 +35,18 @@ const WrappedMediaUploader = () => {
                         key={key}
                         content={<XMarkIcon />}
                         className="cursor-pointer"
+                        classNames={{
+                            base: "aspect-video grid place-items-stretch"
+                        }}
                         isOneChar
                         onClick={() => deleteMedia(key)}
                         color="danger"
                     >
                         <Image
-                            className="w-full aspect-video"
+                            className="w-full"
+                            classNames={{
+                                wrapper: "!max-w-none grid place-items-stretch"
+                            }}
                             alt="media"
                             src={URL.createObjectURL(file)}
                         />

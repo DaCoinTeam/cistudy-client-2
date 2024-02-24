@@ -13,7 +13,7 @@ export const findOneCourse = async (
     params: {
     courseId: string;
   },
-    schema?: Schema<DeepPartial<CourseEntity>>
+    schema: Schema<DeepPartial<CourseEntity>>
 ): Promise<CourseEntity | ErrorResponse> => {
     try {
         const { courseId } = params
@@ -46,7 +46,7 @@ export const findOneCourse = async (
 }
 
 export const findManyCourses = async (
-    schema?: Schema<DeepPartial<CourseEntity>>
+    schema: Schema<DeepPartial<CourseEntity>>
 ): Promise<Array<CourseEntity> | ErrorResponse> => {
     try {
         const payload = buildPayloadString(schema)

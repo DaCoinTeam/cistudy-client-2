@@ -33,7 +33,7 @@ export const WrappedCreatePostModal = () => {
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
-                size="5xl"
+                size="4xl"
                 classNames={{
                     closeButton: "top-3 right-3",
                 }}

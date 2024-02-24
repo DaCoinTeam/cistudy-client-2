@@ -1,0 +1,22 @@
+import { Image } from "@nextui-org/react"
+import React from "react"
+import { AppendKey, FetchedMedia, MediaType } from "@common"
+import { getAssetUrl } from "@services"
+
+interface MediaItemProps {
+    media: AppendKey<FetchedMedia>
+}
+
+export const MediaItem = (props: MediaItemProps) => {
+    const { media } = props
+    const { mediaType, mediaId } = media
+    return (
+        <>
+            {
+                mediaType == MediaType.Image ? 
+                    <Image alt="image" src={getAssetUrl(mediaId)} />
+                    : <div/>
+            }
+        </>
+    )
+}

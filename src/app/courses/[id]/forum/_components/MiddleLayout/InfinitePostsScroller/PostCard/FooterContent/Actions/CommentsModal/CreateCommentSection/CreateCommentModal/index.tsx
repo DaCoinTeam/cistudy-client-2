@@ -9,8 +9,8 @@ import {
     useDisclosure,
 } from "@nextui-org/react"
 import { FormikContext, FormikProviders } from "./FormikProviders"
-import { CreateCommentModalProviders } from "./CreateCommentModalProviders"
-import { ContentsEditor } from "./ContentsEditor"
+import { EditSection } from "./EditSection"
+
 
 export const WrappedCreateCommentModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -29,13 +29,13 @@ export const WrappedCreateCommentModal = () => {
             >
         Create a comment...
             </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl">
                 <ModalContent>
                     <ModalHeader className="flex flex-col p-6 pb-0">
             Create Comment
                     </ModalHeader>
                     <ModalBody className="p-6">
-                        <ContentsEditor />
+                        <EditSection />
                     </ModalBody>
                     <ModalFooter className="p-6 pt-0">
                         <div className="flex gap-4 items-center">
@@ -56,9 +56,7 @@ export const WrappedCreateCommentModal = () => {
 export const CreateCommentModal = () => {
     return (
         <FormikProviders>
-            <CreateCommentModalProviders>
-                <WrappedCreateCommentModal />
-            </CreateCommentModalProviders>
+            <WrappedCreateCommentModal />
         </FormikProviders>
     )
 }

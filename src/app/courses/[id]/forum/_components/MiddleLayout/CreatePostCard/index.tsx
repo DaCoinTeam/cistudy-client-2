@@ -10,7 +10,7 @@ export const CreatePostCard = () => {
         <Card>
             <CardBody className="p-6">
                 <div className="flex items-center gap-4">
-                    <Avatar isBordered src={getAssetUrl(profile?.avatarId)} />
+                    <Avatar src={getAssetUrl(profile?.avatarId)} />
                     <div className="flex-1">
                         <CreatePostModal />
                     </div>

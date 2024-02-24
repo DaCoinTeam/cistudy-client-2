@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { PostCardContext } from "../index"
-import { HTMLRenderer } from "../../../../../../../../_shared"
+import { HTMLRenderer, MediaGroup } from "../../../../../../../../_shared"
 
 export const BodyContent = () => {
     const { state } = useContext(PostCardContext)!
@@ -9,6 +9,13 @@ export const BodyContent = () => {
     return (
         <div className="flex flex-col gap-4 overflow-auto">
             <HTMLRenderer html={post?.html} />
+            <MediaGroup
+                medias={post?.postMedias.map(({ mediaId, mediaType, postMediaId }) => ({
+                    key: postMediaId,
+                    mediaId,
+                    mediaType,
+                }))}
+            />
         </div>
     )
 }

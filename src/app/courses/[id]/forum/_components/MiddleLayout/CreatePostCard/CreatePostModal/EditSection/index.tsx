@@ -17,7 +17,7 @@ export const EditSection = () => {
     , [postMedias])
 
     return (
-        <div className="flex-1">
+        <div>
             <Title />
             <Spacer y={6}/>
             <TextEditor html={html} setHtml={setHtml} />
