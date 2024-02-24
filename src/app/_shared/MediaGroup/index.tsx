@@ -38,7 +38,7 @@ export const MediaGroup = (props: MediaGroupProps) => {
         if (!medias || !medias.length) return null
         return (
             <div className={className}>
-                <div className="gap-4 grid grid-cols-4">
+                <div className="gap-3 grid grid-cols-4">
                     {medias.length <= 4
                         ? renderLessEqual4(medias)
                         : renderGreater4(medias)}

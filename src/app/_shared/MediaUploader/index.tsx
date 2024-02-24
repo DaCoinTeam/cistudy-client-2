@@ -27,63 +27,57 @@ const WrappedMediaUploader = () => {
     const { medias } = props
     const { deleteMedia } = functions
 
-    const renderLessEqual3 = () => {
-        return (
-            <div className="grid grid-cols-4 gap-4">
-                {medias.map(({ key, file }) => (
-                    <Badge
-                        key={key}
-                        content={<XMarkIcon />}
-                        className="cursor-pointer"
-                        classNames={{
-                            base: "aspect-video grid place-items-stretch"
-                        }}
-                        isOneChar
-                        onClick={() => deleteMedia(key)}
-                        color="danger"
-                    >
-                        <Image
-                            className="w-full"
-                            classNames={{
-                                wrapper: "!max-w-none grid place-items-stretch"
-                            }}
-                            alt="media"
-                            src={URL.createObjectURL(file)}
-                        />
-                    </Badge>
-                ))}
-                <UploadCard />
-            </div>
-        )
-    }
-
-    const renderGreater3 = () => {
+    const renderLessEqual3 = () => (
         <>
-            {
-                <div className="grid grid-cols-4 gap-4">
-                    {medias.map(({ key, file }) => (
-                        <Badge
-                            key={key}
-                            content={<XMarkIcon />}
-                            className="cursor-pointer"
-                            isOneChar
-                            onClick={() => deleteMedia(key)}
-                            color="danger"
-                        >
-                            <Image
-                                className="w-full aspect-video"
-                                alt="media"
-                                src={URL.createObjectURL(file)}
-                            />
-                        </Badge>
-                    ))}
-                    <UploadCard />
-                </div>
-            }
+            {medias.map(({ key, file }) => (
+                <Badge
+                    key={key}
+                    content={<XMarkIcon />}
+                    className="cursor-pointer"
+                    classNames={{
+                        base: "aspect-video grid place-items-stretch"
+                    }}
+                    isOneChar
+                    onClick={() => deleteMedia(key)}
+                    color="danger"
+                >
+                    <Image
+                        className="w-full"
+                        classNames={{
+                            wrapper: "!max-w-none grid place-items-stretch"
+                        }}
+                        alt="media"
+                        src={URL.createObjectURL(file)}
+                    />
+                </Badge>
+            ))}
+            <UploadCard />
         </>
-    }
+    )
 
-    return <>{medias.length > 3 ? renderGreater3() : renderLessEqual3()}</>
+    const renderGreater3 = () => (
+        <>
+            {medias.map(({ key, file }) => (
+                <Badge
+                    key={key}
+                    content={<XMarkIcon />}
+                    className="cursor-pointer"
+                    isOneChar
+                    onClick={() => deleteMedia(key)}
+                    color="danger"
+                >
+                    <Image
+                        className="w-full aspect-video"
+                        alt="media"
+                        src={URL.createObjectURL(file)}
+                    />
+                </Badge>
+            ))}
+            <UploadCard />
+        </>
+    )
+
+    return  (<div className="grid grid-cols-4 gap-3"> {medias.length > 3 ? renderGreater3() : renderLessEqual3()} </div>)
 }
 
 export const MediaUploader = memo((props: MediaUploaderProps) => {
