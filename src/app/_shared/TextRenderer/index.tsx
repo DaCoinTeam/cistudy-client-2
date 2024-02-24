@@ -4,12 +4,12 @@ import { extensions } from "../TextEditor"
 import { EditorContent, useEditor } from "@tiptap/react"
 import style from "./style.module.css"
 
-interface HTMLRendererProps {
+interface TextRendererProps {
   className?: string;
   html?: string;
 }
 
-export const HTMLRenderer = (props: HTMLRendererProps) => {
+export const TextRenderer = (props: TextRendererProps) => {
     const { className, html } = props
     
     const editor = useEditor({

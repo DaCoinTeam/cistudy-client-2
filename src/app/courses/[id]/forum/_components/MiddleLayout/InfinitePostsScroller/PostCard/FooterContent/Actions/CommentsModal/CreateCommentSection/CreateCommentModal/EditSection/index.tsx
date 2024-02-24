@@ -26,7 +26,7 @@ export const EditSection = () => {
     return (
         <div>
             <TextEditor html={html} setHtml={setHtml} />
-            <Spacer y={6} />
+            <Spacer y={4} />
             <MediaUploader
                 medias={postCommentMedias}
                 setMedias={setPostCommentMedias}

@@ -7,7 +7,7 @@ export const FooterContent = () => {
     return (
         <div className="w-full">
             <CreatorAndStats />
-            <Spacer y={6} />
+            <Spacer y={4} />
             <Actions />
         </div>
     )

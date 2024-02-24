@@ -19,9 +19,9 @@ export const EditSection = () => {
     return (
         <div>
             <Title />
-            <Spacer y={6}/>
+            <Spacer y={4}/>
             <TextEditor html={html} setHtml={setHtml} />
-            <Spacer y={6}/>
+            <Spacer y={4}/>
             <MediaUploader medias={postMedias} setMedias={setPostMedias} />
         </div>
     )
