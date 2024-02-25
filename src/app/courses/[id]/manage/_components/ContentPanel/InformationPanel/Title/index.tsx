@@ -1,52 +1,73 @@
-import { Spacer, Input, Link } from "@nextui-org/react"
-import React, { useContext, useEffect, useState } from "react"
+import { Input, Link, Spacer } from "@nextui-org/react"
+import React, { useContext, useState } from "react"
 import { updateCourse } from "@services"
 import { CourseDetailsContext } from "../../../../../_hooks"
 import { isErrorResponse } from "@common"
 import * as Yup from "yup"
-import { useFormik } from "formik"
+import { ValidationError } from "yup"
+
+interface ValidationShape {
+    title: string
+}
 
 export const Title = () => {
-    const { state, functions } = useContext(CourseDetailsContext)!
+    const { state, dispatch, functions } = useContext(CourseDetailsContext)!
     const { course, finishFetch } = state
     const { fetchAndSetCourse } = functions
+
     const [isEdited, setIsEdited] = useState(false)
 
-    const formik = useFormik({
-        initialValues: {
-            title: "",
-        },
-        validationSchema: Yup.object({
-            title: Yup.string().required("Title is required"),
-        }),
-        onSubmit: async () => {
+    const schema =  Yup.object().shape({
+        title: Yup.string().required("Title is required"),
+    })
+
+    const shape: ValidationShape = {
+        title: course?.title ?? "",
+    }
+
+    const isValid = schema.isValidSync(shape)
+
+    const errors: Partial<ValidationShape> = {}
+    try{
+        schema.validateSync(shape, {abortEarly: false})
+    } catch(ex) {
+        const inner = (ex as ValidationError).inner
+        for (const { path,  message } of inner) {
+            errors[path as "title"] = message
+        }
+    }
+
+    const onPress = async () => {
+        if (isEdited) {
             if (!finishFetch) return
             if (course === null) return
-            const { courseId } = course
+            const { courseId, title } = course
             const response = await updateCourse({
                 data: {
                     courseId,
-                    title: formik.values.title,
+                    title,
                 },
             })
             if (!isErrorResponse(response)) {
-                // do message
                 await fetchAndSetCourse()
             } else {
                 console.log(response)
             }
-        },
-    })
-
-    useEffect(() => {
-        if (course === null) return
-        formik.setFieldValue("title", course.title)
-    }, [course?.title])
-
-    const onPress = async () => {
-        if (isEdited) await formik.submitForm()
+        }
         setIsEdited(!isEdited)
     }
+
+    const onValueChange = (value: string) => {
+        if (course === null) return
+        dispatch({
+            type: "SET_COURSE",
+            payload: {
+                ...course,
+                title: value
+            }
+        })
+    }
+
     return (
         <div>
             <div className="font-semibold ml-3"> Title </div>
@@ -55,11 +76,10 @@ export const Title = () => {
                 labelPlacement="outside"
                 label=""
                 id="title"
-                value={formik.values.title}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                isInvalid={!!(formik.touched.title && formik.errors.title)}
-                errorMessage={formik.touched.title && formik.errors.title}
+                value={course?.title}
+                onValueChange={onValueChange}
+                isInvalid={!isValid}
+                errorMessage={errors.title}
                 readOnly={!isEdited}
                 endContent={
                     <Link

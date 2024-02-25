@@ -6,30 +6,20 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
-    Spacer,
     useDisclosure,
 } from "@nextui-org/react"
 import { FormikProviders } from "./FormikProviders"
-import { AddContent } from "./AddContent"
 import { FormikContext } from "./FormikProviders"
-import { ContentItem } from "./ContentItem"
-import { v4 as uuidv4 } from "uuid"
-import { Title } from "./Title"
+import { EditSection } from "./EditSection"
 
 export const WrappedCreatePostModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     const formik = useContext(FormikContext)!
 
-    const renderContents = () => (
-        <div className="flex flex-col gap-4 overflow-auto max-h-[250px]">
-            {formik.values.contents.map((content) => (
-                <ContentItem key={uuidv4()} content={content} />
-            ))}
-        </div>
-    )
-
-    const onPress = () => formik.submitForm()
+    const onPress = async () => {
+        formik.handleSubmit()
+    }
 
     return (
         <>
@@ -40,29 +30,26 @@ export const WrappedCreatePostModal = () => {
             >
         Do you need some help?
             </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                size="4xl"
+                classNames={{
+                    closeButton: "top-3 right-3",
+                }}
+            >
                 <ModalContent>
-                    <ModalHeader className="flex flex-col p-6 pb-0">
-            Create Post
-                    </ModalHeader>
+                    <ModalHeader className="p-6 pb-0"> Create Post</ModalHeader>
                     <ModalBody className="p-6">
-                        <div>
-                            <Title />
-                            <Spacer y={6} />
-                            {renderContents()}
-                            <Spacer y={6} />
-                            <AddContent />
-                        </div>
+                        <EditSection />
                     </ModalBody>
                     <ModalFooter className="p-6 pt-0">
                         <div className="flex gap-4 items-center">
                             <Button variant="light" color="danger">
-                                {" "}
-                Reset{" "}
+                Reset
                             </Button>
                             <Button onPress={onPress} color="primary">
-                                {" "}
-                Create{" "}
+                Create
                             </Button>
                         </div>
                     </ModalFooter>

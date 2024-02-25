@@ -1,20 +1,21 @@
-import React from "react"
-import { PostEntity } from "@common"
-import { ContentItem } from "./ContentItem"
+import React, { useContext } from "react"
+import { PostCardContext } from "../index"
+import { TextRenderer, MediaGroup } from "../../../../../../../../_shared"
 
-interface BodyContentProps {
-  post: PostEntity;
-}
+export const BodyContent = () => {
+    const { state } = useContext(PostCardContext)!
+    const { post } = state
 
-export const BodyContent = (props: BodyContentProps) => {
     return (
-        <div className="flex flex-col gap-3 overflow-auto">
-            {props.post.postContents.map((postContent) => (
-                <ContentItem
-                    key={postContent.postContentId}
-                    postContent={postContent}
-                />
-            ))}
+        <div className="flex flex-col gap-4 overflow-auto">
+            <TextRenderer html={post?.html} />
+            <MediaGroup
+                medias={post?.postMedias.map(({ mediaId, mediaType, postMediaId }) => ({
+                    key: postMediaId,
+                    mediaId,
+                    mediaType,
+                }))}
+            />
         </div>
     )
 }

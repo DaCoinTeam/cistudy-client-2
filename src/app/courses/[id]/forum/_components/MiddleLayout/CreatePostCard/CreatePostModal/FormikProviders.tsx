@@ -1,29 +1,25 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext } from "react"
-import { ContentType, isErrorResponse } from "@common"
 import * as Yup from "yup"
-import { createPost } from "@services"
 import { CourseDetailsContext } from "../../../../../_hooks"
+import { AppendKey, Media, isErrorResponse } from "@common"
+import { createPost } from "@services"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
     null
 )
 
-export interface PostContent {
-  index: number;
-  value: string | Array<File>;
-  contentType: ContentType;
-}
-
 interface FormikValues {
   title: string;
-  contents: Array<PostContent>;
+  html: string,
+  postMedias: Array<AppendKey<Media>>
 }
 
 const initialValues: FormikValues = {
     title: "",
-    contents: [],
+    html: "",
+    postMedias: []
 }
 
 const WrappedFormikProviders = ({
@@ -48,54 +44,41 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
             validationSchema={Yup.object({
                 title: Yup.string().required("Title is required"),
             })}
-            onSubmit={async ({ title, contents }) => {
-                if (course === null) return
+            onSubmit={async ({title, html, postMedias : postMediasRaw}, helpers) => {
+                if (course === null) return 
                 const { courseId } = course
 
                 let countIndex = 0
                 const files: Array<File> = []
-                
-                const postContents = contents.map((content) => {
-                    const { contentType, value } = content
-                    if (
-                        contentType === ContentType.Text ||
-            contentType === ContentType.Code ||
-            contentType === ContentType.Link
-                    ) {
-                        return {
-                            text: value as string,
-                            contentType: content.contentType,
-                        }
-                    } else {
-                        const mediaFiles = value as Array<File>
-                        return {
-                            contentType: content.contentType,
-                            postContentMedias: mediaFiles.map((mediaFile) => {
-                                const media = {
-                                    mediaIndex: countIndex,
-                                }
-                                files.push(mediaFile)
-                                countIndex++
-                                return media
-                            }),
-                        }
-                    }
-                })
 
+                const postMedias = postMediasRaw.map(({mediaType, file}) => {
+                    const result = {
+                        mediaIndex: countIndex,
+                        mediaType
+                    }
+
+                    countIndex ++
+                    files.push(file)
+
+                    return result
+                }
+                )
                 const response = await createPost({
                     data: {
-                        title,
                         courseId,
-                        postContents,
+                        title,
+                        html,
+                        postMedias
                     },
                     files,
                 })
 
                 if (!isErrorResponse(response)) {
-                    // do later
+                    alert("Successfully")
                 } else {
                     console.log(response)
                 }
+                helpers.resetForm()   
             }}
         >
             {(formik) => (

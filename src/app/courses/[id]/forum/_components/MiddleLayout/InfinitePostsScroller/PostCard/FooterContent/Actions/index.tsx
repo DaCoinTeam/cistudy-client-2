@@ -1,11 +1,9 @@
 import {
     BookmarkIcon,
-    ChatBubbleOvalLeftEllipsisIcon,
     HeartIcon,
 } from "@heroicons/react/24/outline"
 import {
     HeartIcon as SolidHeartIcon,
-    ChatBubbleOvalLeftEllipsisIcon as SolidChatBubbleOvalLeftEllipsisIcon,
 } from "@heroicons/react/24/solid"
 import { Link } from "@nextui-org/react"
 import React, { useContext } from "react"
@@ -13,53 +11,40 @@ import { isErrorResponse } from "@common"
 import { reactPost } from "@services"
 import { useSelector } from "react-redux"
 import { RootState } from "@redux"
-import { FooterContentContext } from "../index"
+import { CommentsModal } from "./CommentsModal"
+import { PostCardContext } from "../../index"
 
 export const Actions = () => {
     const profile = useSelector((state: RootState) => state.auth.profile)
 
-    const { state, functions, dispatch } = useContext(FooterContentContext)!
-    const { postPartial, isCommentsOpen } = state
-    const { fetchAndSetReactPostPartial } = functions
+    const { state, functions } = useContext(PostCardContext)!
+    const { post } = state
+    const { fetchAndSetPost } = functions
 
     const onLikePress = async () => {
-        if (postPartial === null) return
-        const { postId } = postPartial
+        if (post === null) return
+        const { postId } = post
         const response = await reactPost({
             data: {
                 postId,
             },
         })
         if (!isErrorResponse(response)) {
-            await fetchAndSetReactPostPartial()
+            await fetchAndSetPost()
         } else {
             console.log(response)
         }
     }
 
-    const onCommentPress = async () =>
-        dispatch({
-            type: "SET_IS_COMMENTS_OPEN",
-            payload: !isCommentsOpen,
-        })
-
     const renderLikeIcon = () => {
-        const found = postPartial?.postReacts.find(
-            (postPartial) =>
-                postPartial.liked && postPartial.userId === profile?.userId
+        const found = post?.postReacts.find(
+            (post) =>
+                post.liked && post.userId === profile?.userId
         )
         return found ? (
             <SolidHeartIcon className="w-6 h-6" />
         ) : (
             <HeartIcon className="w-6 h-6" />
-        )
-    }
-
-    const renderCommentIcon = () => {
-        return isCommentsOpen ? (
-            <SolidChatBubbleOvalLeftEllipsisIcon className="w-6 h-6" />
-        ) : (
-            <ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6" />
         )
     }
 
@@ -72,9 +57,7 @@ export const Actions = () => {
                 <Link onPress={onLikePress} as="button">
                     {renderLikeIcon()}
                 </Link>
-                <Link onPress={onCommentPress} as="button">
-                    {renderCommentIcon()}
-                </Link>
+                <CommentsModal />
             </div>
         </div>
     )
