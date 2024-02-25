@@ -1,7 +1,6 @@
 import { Skeleton } from "@nextui-org/react"
 import React from "react"
 import { EditorContent, useEditor } from "@tiptap/react"
-import style from "./style.module.css"
 import CodeBlock from "@tiptap/extension-code-block"
 import Color from "@tiptap/extension-color"
 import ListItem from "@tiptap/extension-list-item"
@@ -25,7 +24,7 @@ export const TextRenderer = (props: TextRendererProps) => {
         content: html,
         editorProps: {
             attributes: {
-                class: style.prose,
+                class: "bg-transparent p-0 min-h-0",
             }
         }
     })
