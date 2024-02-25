@@ -52,7 +52,7 @@ export const VideoWrapper = () => {
         <>
             <div>
                 <VideoPlayer src={videoSource} videoType={videoType} />
-                <Spacer y={2} />
+                <Spacer y={1} />
                 <div className="mx-3 flex justify-between items-center">
                     {renderStreaming()}
                     <Dropdown placement="left-end">
