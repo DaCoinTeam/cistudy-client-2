@@ -26,7 +26,7 @@ import {
     ResourcesModalState,
     useResourcesModalReducer,
 } from "./useResourcesModalReducer"
-import { LectureItemContext } from "../index"
+import { LectureItemContext } from ".."
 
 interface ResourceModalContextValue {
   state: ResourcesModalState;

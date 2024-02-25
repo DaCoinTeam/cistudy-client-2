@@ -14,7 +14,7 @@ import {
 } from "./useCommentsModalReducer"
 import { findManyPostComments } from "@services"
 import { isErrorResponse } from "@common"
-import { PostCardContext } from "../../../index"
+import { PostCardContext } from "../../.."
 
 export interface CommentsModalContextValue {
   state: CommentsModalState;

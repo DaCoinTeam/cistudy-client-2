@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { Avatar } from "@nextui-org/react"
 import { getAssetUrl } from "@services"
-import { PostCardContext } from "../../index"
+import { PostCardContext } from "../.."
 
 export const CreatorAndStats = () => {
     const { props } = useContext(PostCardContext)!

@@ -28,7 +28,7 @@ export const LectureVideoModal = () => {
                         <div>
                             <div>
                                 <VideoWrapper />
-                                <Spacer y={6} />
+                                <Spacer y={4} />
                                 <Title />
                             </div>
                         </div>

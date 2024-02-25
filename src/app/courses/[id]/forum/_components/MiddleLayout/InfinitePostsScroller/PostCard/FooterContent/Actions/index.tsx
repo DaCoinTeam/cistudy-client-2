@@ -12,7 +12,7 @@ import { reactPost } from "@services"
 import { useSelector } from "react-redux"
 import { RootState } from "@redux"
 import { CommentsModal } from "./CommentsModal"
-import { PostCardContext } from "../../index"
+import { PostCardContext } from "../.."
 import { ForumContext } from "../../../../../../_hooks"
 
 export const Actions = () => {

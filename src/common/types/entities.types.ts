@@ -27,6 +27,11 @@ export enum MediaType {
   Video = "video",
 }
 
+export enum VideoType {
+  MP4 = "mp4",
+  DASH = "dash",
+}
+
 export interface UserEntity {
   userId: string;
   email: string;
@@ -104,17 +109,19 @@ export interface EnrolledInfoEntity {
 }
 
 export interface LectureEntity {
-  lectureId: string;
-  title: string;
-  thumbnailId: string;
-  lectureVideoId: string;
-  sectionId: string;
-  processStatus: ProcessStatus;
-  createdAt: Date;
-  updatedAt: Date;
-  section: SectionEntity;
-  resources: Array<ResourceEntity>;
+  lectureId: string
+  title: string
+  thumbnailId?: string
+  lectureVideoId?: string
+  sectionId: string
+  processStatus: ProcessStatus
+  videoType: VideoType
+  createdAt: Date
+  updatedAt: Date
+  section: SectionEntity
+  resources: Array<ResourceEntity>
 }
+
 
 export interface PostCommentLikeEntity {
   postCommentLikeId: string;
@@ -181,19 +188,19 @@ export interface PostReactEntity {
 }
 
 export interface PostMediaEntity {
-      postMediaId: string
-      position: number
-      mediaId: string
-      postId: string
-      mediaType: MediaType
-      post: PostEntity
+  postMediaId: string
+  position: number
+  mediaId: string
+  postId: string
+  mediaType: MediaType
+  post: PostEntity
 }
 
 export interface PostCommentMediaEntity {
-postCommentMediaId: string
-    position: number
-    mediaId: string
-    postCommentId: string
-    mediaType: MediaType
-    postComment: PostCommentEntity
+  postCommentMediaId: string
+  position: number
+  mediaId: string
+  postCommentId: string
+  mediaType: MediaType
+  postComment: PostCommentEntity
 }

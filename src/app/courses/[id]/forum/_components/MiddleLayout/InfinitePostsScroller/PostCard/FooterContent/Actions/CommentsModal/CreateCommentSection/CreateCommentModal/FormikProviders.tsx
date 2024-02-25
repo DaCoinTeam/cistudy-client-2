@@ -4,7 +4,7 @@ import React, { ReactNode, createContext, useContext } from "react"
 import * as Yup from "yup"
 import { AppendKey, Media, isErrorResponse } from "@common"
 import { createComment } from "@services"
-import { PostCardContext } from "../../../../../index"
+import { PostCardContext } from "../../../../.."
 import { CommentsModalContext } from "../../CommentsModalProviders"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(

@@ -2,7 +2,7 @@ import { DocumentArrowUpIcon } from "@heroicons/react/16/solid"
 import React, { useContext } from "react"
 import Dropzone from "react-dropzone"
 import { Media, getMediaType } from "@common"
-import { MediaUploaderContext } from "../../index"
+import { MediaUploaderContext } from "../.."
 
 export const UploadCard = () => {
     const { functions } = useContext(MediaUploaderContext)!

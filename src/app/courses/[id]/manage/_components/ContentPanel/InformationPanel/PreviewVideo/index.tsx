@@ -9,13 +9,13 @@ import {
 import React, { useContext, useRef } from "react"
 import { getAssetUrl } from "@services"
 import { ManageContext } from "../../../../_hooks"
-import NextVideo from "next-video"
 import { EditVideoRef, EditVideoRefSelectors } from "./EditVideoRef"
 import {
     EditThumbnailRef,
     EditThumbnailRefSelectors,
 } from "./EditThumbnailRef"
 import { PhotoIcon, VideoCameraIcon } from "@heroicons/react/24/solid"
+import { VideoPlayer } from "../../../../../../../_shared"
 
 export const PreviewVideo = () => {
     const { state } = useContext(ManageContext)!
@@ -58,9 +58,8 @@ export const PreviewVideo = () => {
                 </div>
 
                 <Spacer y={1} />
-                <NextVideo
-                    poster={getAssetUrl(courseManaged?.thumbnailId)}
-                    className="rounded-[14px] overflow-hidden"
+                <VideoPlayer
+                    // poster={getAssetUrl(courseManaged?.thumbnailId)}
                     src={getAssetUrl(courseManaged?.previewVideoId)}
                 />
             </div>

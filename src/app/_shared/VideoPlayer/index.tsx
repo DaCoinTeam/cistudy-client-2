@@ -1,23 +1,26 @@
+import { VideoType } from "@common"
 import { DashVideoPlayer } from "./DashVideoPlayer"
 import { Mp4VideoPlayer } from "./Mp4VideoPlayer"
 
 interface VideoPlayerProps {
   className?: string;
   src?: string;
+  videoType?: VideoType;
 }
 
 export const VideoPlayer = (props: VideoPlayerProps) => {
+    const { src, className, videoType: videoTypeProps } = props
+    const videoType = videoTypeProps ?? VideoType.MP4
+
+    if (!src) return null
+
     const renderPlayer = () => {
-        const _src = props.src as string
-        const lastCharacters = _src.substring(_src.length - 12)
-        const _props = {
-            className: props.className,
-            src: _src,
+        const videoTypeToPlayer: Record<VideoType, JSX.Element> = {
+            mp4: <Mp4VideoPlayer src={src} className={className} />,
+            dash: <DashVideoPlayer src={src} className={className} />,
         }
-        if (lastCharacters === "manifest.mpd")
-            return <DashVideoPlayer {..._props} />
-        return <Mp4VideoPlayer {..._props} />
+        return (videoTypeToPlayer[videoType])
     }
 
-    return <>{props.src ? <>{renderPlayer()}</> : <div />}</>
+    return <>{renderPlayer()}</>
 }

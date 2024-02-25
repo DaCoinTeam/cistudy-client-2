@@ -3,8 +3,8 @@ import { Link } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { deleteLecture } from "@services"
 import { isErrorResponse } from "@common"
-import { LectureItemContext } from "../index"
-import { SectionItemContext } from "../../index"
+import { LectureItemContext } from ".."
+import { SectionItemContext } from "../.."
 
 export const DeleteLectureButton = () => {
     const { props } = useContext(LectureItemContext)!

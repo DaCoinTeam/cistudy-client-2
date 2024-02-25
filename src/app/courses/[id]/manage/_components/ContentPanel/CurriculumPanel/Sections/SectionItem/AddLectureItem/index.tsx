@@ -4,7 +4,7 @@ import { Button, } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { createLecture } from "@services"
 import { isErrorResponse } from "@common"
-import { SectionItemContext } from "../index"
+import { SectionItemContext } from ".."
 
 export const AddLectureItem = () => {
     const { functions, props } = useContext(SectionItemContext)!

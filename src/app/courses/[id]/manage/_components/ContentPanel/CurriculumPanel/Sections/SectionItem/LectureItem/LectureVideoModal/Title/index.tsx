@@ -1,11 +1,11 @@
-import { Spacer, Input, Link } from "@nextui-org/react"
+import { Input, Link } from "@nextui-org/react"
 import React, { useContext, useState } from "react"
 import { isErrorResponse } from "@common"
-import { LectureItemContext } from "../../index"
+import { LectureItemContext } from "../.."
 import * as Yup from "yup"
 import { ValidationError } from "yup"
 import { updateLecture } from "@services"
-import { SectionItemContext } from "../../../index"
+import { SectionItemContext } from "../../.."
 
 interface ValidationShape {
   title: string;
@@ -69,29 +69,24 @@ export const Title = () => {
     }
 
     return (
-        <div>
-            <div className="font-semibold ml-3"> Title </div>
-            <Spacer y={1} />
-            <Input
-                labelPlacement="outside"
-                label=""
-                id="title"
-                value={lecture.title}
-                onValueChange={onValueChange}
-                isInvalid={!isValid}
-                errorMessage={errors.title}
-                readOnly={!isEdited}
-                endContent={
-                    <Link
-                        color="primary"
-                        onPress={onPress}
-                        as="button"
-                        className="text-sm"
-                    >
-                        {isEdited ? "Save" : "Edit"}
-                    </Link>
-                }
-            />
-        </div>
+        <Input
+            label="Title"
+            id="title"
+            value={lecture.title}
+            onValueChange={onValueChange}
+            isInvalid={!isValid}
+            errorMessage={errors.title}
+            readOnly={!isEdited}
+            endContent={
+                <Link
+                    color="primary"
+                    onPress={onPress}
+                    as="button"
+                    className="text-sm"
+                >
+                    {isEdited ? "Save" : "Edit"}
+                </Link>
+            }
+        />
     )
 }

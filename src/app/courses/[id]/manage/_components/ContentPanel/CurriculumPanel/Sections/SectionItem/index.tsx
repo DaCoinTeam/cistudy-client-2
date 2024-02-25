@@ -43,11 +43,12 @@ export const SectionItem = (props: SectionItemProps) => {
                 lectureVideoId: true,
                 title: true,
                 thumbnailId: true,
+                videoType: true,
                 resources: {
                     resourceId: true,
                     name: true,
                     fileId: true,
-                },
+                }
             }
         )
         if (!isErrorResponse(response)) {

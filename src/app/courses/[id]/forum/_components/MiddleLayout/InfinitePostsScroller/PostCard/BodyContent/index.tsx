@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { PostCardContext } from "../index"
+import { PostCardContext } from ".."
 import { TextRenderer, MediaGroup } from "../../../../../../../../_shared"
 
 export const BodyContent = () => {
