@@ -39,37 +39,13 @@ interface ResourceModalContextValue {
 export const ResourceModalContext =
   createContext<ResourceModalContextValue | null>(null)
 
-export const ResourcesModal = () => {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
+export const WrappedResourcesModal = () => {
     const { props } = useContext(LectureItemContext)!
     const { lecture } = props
     const { lectureId } = lecture
 
-    const onDrop = useCallback(async (files: Array<File>) => {
-        const response = await createResources({
-            data: {
-                lectureId,
-            },
-            files,
-        })
-        if (!isErrorResponse(response)) {
-            await fetchAndSetResources()
-        } else {
-            console.log(response)
-        }
-    }, [])
-
     const [state, dispatch] = useResourcesModalReducer()
     const { resources } = state
-
-    const renderResourceItems = () => (
-        <div className="flex flex-col gap-3">
-            {resources.map((resource) => (
-                <ResourceItem key={resource.resourceId} resource={resource} />
-            ))}
-        </div>
-    )
 
     const fetchAndSetResources = useCallback(async () => {
         const response = await findManyResources(
@@ -93,12 +69,11 @@ export const ResourcesModal = () => {
     }, [props, state, dispatch])
 
     useEffect(() => {
-        if (!isOpen) return 
         const handleEffect = async () => {
             await fetchAndSetResources()
         }
         handleEffect()
-    }, [isOpen])
+    }, [])
 
     const resourceModalContextValue: ResourceModalContextValue = useMemo(
         () => ({
@@ -111,43 +86,75 @@ export const ResourcesModal = () => {
         [props, state]
     )
 
+    const onDrop = useCallback(async (files: Array<File>) => {
+        const response = await createResources({
+            data: {
+                lectureId,
+            },
+            files,
+        })
+        if (!isErrorResponse(response)) {
+            await fetchAndSetResources()
+        } else {
+            console.log(response)
+        }
+    }, [])
+
+    const renderResourceItems = () => (
+        <div className="flex flex-col gap-3">
+            {resources.map((resource) => (
+                <ResourceItem key={resource.resourceId} resource={resource} />
+            ))}
+        </div>
+    )
+
     return (
         <ResourceModalContext.Provider value={resourceModalContextValue}>
+            <ModalContent>
+                <ModalHeader className="p-6 pb-0">Resources</ModalHeader>
+                <ModalBody className="p-6">
+                    <div>
+                        <Dropzone onDrop={onDrop}>
+                            {({ getRootProps, getInputProps }) => (
+                                <section>
+                                    <div {...getRootProps()}>
+                                        <input {...getInputProps()} />
+                                        <div className="cursor-pointer border-dashed rounded-large border-4 h-48 grid place-content-center">
+                                            <div className="grid place-content-center">
+                                                <DocumentArrowUpIcon className="w-20 h-20 text-foreground-500" />
+                                                <div className="text-sm text-foreground-500">
+                          Upload file(s)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            )}
+                        </Dropzone>
+                        <Spacer y={6} />
+                        <div>
+                            <div className="ml-3 font-semibold"> Uploaded </div>
+                            <Spacer y={3} />
+                            {renderResourceItems()}
+                        </div>
+                    </div>
+                </ModalBody>
+            </ModalContent>
+        </ResourceModalContext.Provider>
+    )
+}
+
+export const ResourcesModal = () => {
+    const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
+    return (
+        <>
             <Link onPress={onOpen} as="button">
                 <FolderIcon className="w-6 h-6" />
             </Link>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
-                <ModalContent>
-                    <ModalHeader className="p-6 pb-0">Resources</ModalHeader>
-                    <ModalBody className="p-6">
-                        <div>
-                            <Dropzone onDrop={onDrop}>
-                                {({ getRootProps, getInputProps }) => (
-                                    <section>
-                                        <div {...getRootProps()}>
-                                            <input {...getInputProps()} />
-                                            <div className="cursor-pointer border-dashed rounded-large border-4 h-48 grid place-content-center">
-                                                <div className="grid place-content-center">
-                                                    <DocumentArrowUpIcon className="w-20 h-20 text-foreground-500" />
-                                                    <div className="text-sm text-foreground-500">
-                              Upload file(s)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-                                )}
-                            </Dropzone>
-                            <Spacer y={6} />
-                            <div>
-                                <div className="ml-3 font-semibold"> Uploaded </div>
-                                <Spacer y={3} />
-                                {renderResourceItems()}
-                            </div>
-                        </div>
-                    </ModalBody>
-                </ModalContent>
+                <WrappedResourcesModal />
             </Modal>
-        </ResourceModalContext.Provider>
+        </>
     )
 }
