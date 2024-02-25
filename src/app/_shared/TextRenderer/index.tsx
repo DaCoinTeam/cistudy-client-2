@@ -9,6 +9,7 @@ import TextStyle from "@tiptap/extension-text-style"
 import StarterKit from "@tiptap/starter-kit"
 import ImageResize from "tiptap-extension-resize-image"
 import Code from "@tiptap/extension-code"
+import style from "./style.module.css"
 
 interface TextRendererProps {
   className?: string;
@@ -24,7 +25,7 @@ export const TextRenderer = (props: TextRendererProps) => {
         content: html,
         editorProps: {
             attributes: {
-                class: "bg-transparent p-0 min-h-0",
+                class: style.probe,
             }
         }
     })
