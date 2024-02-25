@@ -34,8 +34,8 @@ export const CommentsModalProviders = ({
 }) => {
     const [state, dispatch] = useCommentsModalReducer()
     const { postComments } = state
-    const { state: postCardState } = useContext(PostCardContext)!
-    const { post } = postCardState
+    const { props } = useContext(PostCardContext)!
+    const { post } = props
 
     const fetchAndSetPostComments = useCallback(async () => {
         if (post === null) return
@@ -57,7 +57,7 @@ export const CommentsModalProviders = ({
         })
         if (!isErrorResponse(response)) {
             dispatch({
-                type: "SET_COMMENTS",
+                type: "SET_POST_COMMENTS",
                 payload: response,
             })
         } else {

@@ -1,19 +1,20 @@
 import { Spacer, Link, Textarea } from "@nextui-org/react"
 import React, { useContext, useState } from "react"
-import { CourseDetailsContext } from "../../../../../_hooks"
 import * as Yup from "yup"
 import { ValidationError } from "yup"
 import { updateCourse } from "@services"
 import { isErrorResponse } from "@common"
+import { ManageContext } from "../../../../_hooks"
 
 interface ValidationShape {
   description: string;
 }
 
 export const Description = () => {
-    const { state, dispatch, functions } = useContext(CourseDetailsContext)!
-    const { course, finishFetch } = state
-    const { fetchAndSetCourse } = functions
+    const { state, dispatch, functions } = useContext(ManageContext)!
+    const { courseManaged } = state
+    const { fetchAndSetCourseManaged } = functions
+
 
     const [isEdited, setIsEdited] = useState(false)
 
@@ -22,7 +23,7 @@ export const Description = () => {
     })
 
     const shape: ValidationShape = {
-        description: course?.description ?? "",
+        description: courseManaged?.description ?? "",
     }
 
     const isValid = schema.isValidSync(shape)
@@ -38,11 +39,11 @@ export const Description = () => {
     }
 
     const onValueChange = (value: string) => {
-        if (course === null) return
+        if (courseManaged === null) return
         dispatch({
-            type: "SET_COURSE",
+            type: "SET_COURSE_MANAGED",
             payload: {
-                ...course,
+                ...courseManaged,
                 description: value,
             },
         })
@@ -50,9 +51,8 @@ export const Description = () => {
 
     const onPress = async () => {
         if (isEdited) {
-            if (!finishFetch) return
-            if (course === null) return
-            const { courseId, description } = course
+            if (courseManaged === null) return
+            const { courseId, description } = courseManaged
             const response = await updateCourse({
                 data: {
                     courseId,
@@ -60,7 +60,7 @@ export const Description = () => {
                 },
             })
             if (!isErrorResponse(response)) {
-                await fetchAndSetCourse()
+                await fetchAndSetCourseManaged()
             } else {
                 console.log(response)
             }
@@ -76,7 +76,7 @@ export const Description = () => {
                 label=""
                 labelPlacement="outside"
                 id="description"
-                value={course?.description}
+                value={courseManaged?.description}
                 onValueChange={onValueChange}
                 isInvalid={!isValid}
                 errorMessage={errors.description}

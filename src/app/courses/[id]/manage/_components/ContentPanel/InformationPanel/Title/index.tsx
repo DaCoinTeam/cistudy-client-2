@@ -1,19 +1,19 @@
 import { Input, Link, Spacer } from "@nextui-org/react"
 import React, { useContext, useState } from "react"
 import { updateCourse } from "@services"
-import { CourseDetailsContext } from "../../../../../_hooks"
 import { isErrorResponse } from "@common"
 import * as Yup from "yup"
 import { ValidationError } from "yup"
+import { ManageContext } from "../../../../_hooks"
 
 interface ValidationShape {
     title: string
 }
 
 export const Title = () => {
-    const { state, dispatch, functions } = useContext(CourseDetailsContext)!
-    const { course, finishFetch } = state
-    const { fetchAndSetCourse } = functions
+    const { state, dispatch, functions } = useContext(ManageContext)!
+    const { courseManaged } = state
+    const { fetchAndSetCourseManaged } = functions
 
     const [isEdited, setIsEdited] = useState(false)
 
@@ -22,7 +22,7 @@ export const Title = () => {
     })
 
     const shape: ValidationShape = {
-        title: course?.title ?? "",
+        title: courseManaged?.title ?? "",
     }
 
     const isValid = schema.isValidSync(shape)
@@ -39,9 +39,8 @@ export const Title = () => {
 
     const onPress = async () => {
         if (isEdited) {
-            if (!finishFetch) return
-            if (course === null) return
-            const { courseId, title } = course
+            if (courseManaged === null) return
+            const { courseId, title } = courseManaged
             const response = await updateCourse({
                 data: {
                     courseId,
@@ -49,7 +48,7 @@ export const Title = () => {
                 },
             })
             if (!isErrorResponse(response)) {
-                await fetchAndSetCourse()
+                await fetchAndSetCourseManaged()
             } else {
                 console.log(response)
             }
@@ -58,11 +57,11 @@ export const Title = () => {
     }
 
     const onValueChange = (value: string) => {
-        if (course === null) return
+        if (courseManaged === null) return
         dispatch({
-            type: "SET_COURSE",
+            type: "SET_COURSE_MANAGED",
             payload: {
-                ...course,
+                ...courseManaged,
                 title: value
             }
         })
@@ -76,7 +75,7 @@ export const Title = () => {
                 labelPlacement="outside"
                 label=""
                 id="title"
-                value={course?.title}
+                value={courseManaged?.title}
                 onValueChange={onValueChange}
                 isInvalid={!isValid}
                 errorMessage={errors.title}

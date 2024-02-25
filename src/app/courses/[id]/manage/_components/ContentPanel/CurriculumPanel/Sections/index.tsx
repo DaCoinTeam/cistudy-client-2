@@ -1,14 +1,9 @@
 "use client"
-import {
-    Accordion,
-    AccordionItem,
-    Spacer,
-} from "@nextui-org/react"
+import { Accordion, AccordionItem, Spacer } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { AddSectionItem } from "./AddSectionItem"
-import { AddLectureItem } from "./AddLectureItem"
 import { ManageContext } from "../../../../_hooks"
-import { LectureItem } from "./LectureItem"
+import { SectionItem } from "./SectionItem"
 
 export const Sections = () => {
     const { state } = useContext(ManageContext)!
@@ -23,21 +18,16 @@ export const Sections = () => {
                 key={section.sectionId}
                 title={section.title}
                 subtitle={"3 lesson"}
-                classNames={
-                    {   
-                        title: "text-base",
-                        content: "flex flex-col gap-3 py-3"
-                    }
-                }
+                classNames={{
+                    title: "text-base",
+                    content: "flex flex-col gap-3 py-3",
+                }}
             >
-                {section.lectures.map((lecture) => (
-                    <LectureItem key={lecture.lectureId} lecture={lecture} />
-                ))}
-                <AddLectureItem sectionId={section.sectionId}/>
+                <SectionItem key={section.sectionId} section={section} />
             </AccordionItem>
         ))
     }
-
+    
     return (
         <div>
             <Accordion
@@ -46,13 +36,13 @@ export const Sections = () => {
                 className="!px-0 gap-4"
                 itemClasses={{
                     trigger: "!py-3",
-                    base: "!shadow-none !bg-content2"
+                    base: "!shadow-none !bg-content2",
                 }}
             >
                 {renderSections()}
             </Accordion>
-            <Spacer y={4}/>
-            <AddSectionItem/>
+            <Spacer y={4} />
+            <AddSectionItem />
         </div>
     )
 }

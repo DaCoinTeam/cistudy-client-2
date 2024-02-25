@@ -3,26 +3,25 @@ import { PlusIcon } from "@heroicons/react/16/solid"
 import { Button, } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { createLecture } from "@services"
-import { CourseDetailsContext } from "../../../../../../_hooks"
 import { isErrorResponse } from "@common"
+import { SectionItemContext } from "../index"
 
-interface AddLectureItemProps {
-    sectionId: string
-}
+export const AddLectureItem = () => {
+    const { functions, props } = useContext(SectionItemContext)!
+    const { section } = props 
+    const { sectionId } = section
 
-export const AddLectureItem = (props: AddLectureItemProps) => {
-    const { functions } = useContext(CourseDetailsContext)!
-    const { fetchAndSetCourse } = functions
+    const { fetchAndSetLectures } = functions
 
     const onPress = async () => {
         const response = await createLecture({
             data: {
-                sectionId: props.sectionId,
+                sectionId,
                 title: "Nguyen Van Tu Cuong",
             },
         })
         if (!isErrorResponse(response)) {
-            await fetchAndSetCourse()
+            await fetchAndSetLectures()
         } else {
             console.log(response)
         }

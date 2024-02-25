@@ -5,6 +5,13 @@ import {
     Schema,
     buildPayloadString,
     LectureEntity,
+    ResourceEntity,
+    AuthTokenType,
+    buildAuthPayloadString,
+    BaseResponse,
+    saveTokens,
+    AuthTokens,
+    ErrorStatusCode,
 } from "@common"
 import { client } from "./client.graphql"
 import { ApolloError, gql } from "@apollo/client"
@@ -12,8 +19,8 @@ import { DeepPartial } from "@apollo/client/utilities"
 
 export const findOneCourse = async (
     params: {
-    courseId: string;
-  },
+        courseId: string;
+    },
     schema: Schema<DeepPartial<CourseEntity>>
 ): Promise<CourseEntity | ErrorResponse> => {
     try {
@@ -39,7 +46,7 @@ export const findOneCourse = async (
         console.log(ex)
         const _ex = ex as ApolloError
         const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         return error
@@ -65,30 +72,67 @@ export const findManyCourses = async (
         console.log(ex)
         const _ex = ex as ApolloError
         const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         return error
     }
 }
 
-export const findOneLecture = async (
+export const findManyLectures = async (
     params: {
-  lectureId: string;
-},
+        sectionId: string;
+    },
     schema: Schema<DeepPartial<LectureEntity>>
-): Promise<LectureEntity | ErrorResponse> => {
+): Promise<Array<LectureEntity> | ErrorResponse> => {
     try {
-        const { lectureId } = params
+        const { sectionId } = params
         const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
-          query FindOneLecture($data: FindOneLectureData!) {
-            findOneLecture(data: $data) {
+            query FindManyLectures($data: FindManyLecturesData!) {
+                findManyLectures(data: $data) {
     ${payload}
   }
 }
         `,
+            variables: {
+                data: {
+                    sectionId,
+                },
+            },
+        })
+
+        return data.findManyLectures as Array<LectureEntity>
+    } catch (ex) {
+        console.log(ex)
+        const _ex = ex as ApolloError
+        const error = (
+            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+        ).originalError
+
+        return error
+    }
+}
+
+export const findManyResources = async (
+    params: {
+        lectureId: string;
+    },
+    schema: Schema<DeepPartial<ResourceEntity>>,
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<Array<ResourceEntity> | ErrorResponse> => {
+    try {
+        const { lectureId } = params
+        const payload = buildAuthPayloadString(schema, authTokenType)
+        const { data: graphqlData } = await client(authTokenType).query({
+            query: gql`
+            query FindManyResources($data: FindManyResourcesData!) {
+                findManyResources(data: $data) {              
+      ${payload}
+    }
+  }
+          `,
             variables: {
                 data: {
                     lectureId,
@@ -96,13 +140,24 @@ export const findOneLecture = async (
             },
         })
 
-        return data.findOneLecture as LectureEntity
+        const { data, tokens } = graphqlData.findManyResources as BaseResponse<
+            Array<ResourceEntity>
+        >
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+
+        return data
     } catch (ex) {
-        console.log(ex)
         const _ex = ex as ApolloError
         const error = (
-    _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
+
+        if (
+            error.statusCode === ErrorStatusCode.Unauthorized &&
+            authTokenType === AuthTokenType.Access
+        )
+            return await findManyResources(params, schema, AuthTokenType.Refresh)
 
         return error
     }

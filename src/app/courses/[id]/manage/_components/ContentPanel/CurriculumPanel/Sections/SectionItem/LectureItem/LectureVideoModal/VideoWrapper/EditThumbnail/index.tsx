@@ -1,15 +1,19 @@
 import React, { useContext, useRef } from "react"
 import { isErrorResponse } from "@common"
 import { updateLecture } from "@services"
-import { VideoCameraIcon } from "@heroicons/react/24/outline"
+import { PhotoIcon } from "@heroicons/react/24/outline"
 import { Link } from "@nextui-org/react"
 import { LectureItemContext } from "../../../index"
+import { SectionItemContext } from "../../../../index"
 
-export const EditVideo = () => {
+export const EditThumbnail = () => {
     const fileInputRef = useRef<HTMLInputElement>(null)
-    const { state, functions } = useContext(LectureItemContext)!
-    const { lecture } = state
-    const { fetchAndSetLecture } = functions
+    const { props } = useContext(LectureItemContext)!
+    const { lecture } = props
+    const { lectureId } = lecture
+
+    const { functions } = useContext(SectionItemContext)!
+    const { fetchAndSetLectures } = functions
 
     const onPress = () => {
         if (fileInputRef.current) fileInputRef.current.click()
@@ -20,20 +24,16 @@ export const EditVideo = () => {
         if (files === null) return
         const file = files.item(0)
         if (file === null) return
-        
-        if (lecture === null) return
-        const { lectureId } = lecture
 
         const response = await updateLecture({
             data: {
                 lectureId,
-                lectureVideoIndex: 0,
+                thumbnailIndex: 0,
             },
             files: [file],
         })
-        
         if (!isErrorResponse(response)) {
-            await fetchAndSetLecture()
+            await fetchAndSetLectures()
         } else {
             console.log(response)
         }
@@ -42,11 +42,11 @@ export const EditVideo = () => {
     return (
         <>
             <Link as="button" onPress={onPress}>
-                <VideoCameraIcon className="w-6 h-6" />
+                <PhotoIcon className="w-6 h-6" />
             </Link>
             <input
                 type="file"
-                accept="video/*"
+                accept="image/*"
                 ref={fileInputRef}
                 onChange={onFileChange}
                 className="hidden"

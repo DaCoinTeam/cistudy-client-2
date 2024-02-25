@@ -37,6 +37,11 @@ export const ManageProviders = ({ children }: { children: ReactNode }) => {
                 courseId,
             },
             {
+                courseId: true,
+                description: true,
+                title: true,
+                previewVideoId: true,
+                thumbnailId: true,
                 sections: {
                     sectionId: true,
                     title: true,

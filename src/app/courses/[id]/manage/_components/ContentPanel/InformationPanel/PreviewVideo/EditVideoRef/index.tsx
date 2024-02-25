@@ -1,7 +1,7 @@
 import React, { forwardRef, useContext, useImperativeHandle, useRef } from "react"
 import { updateCourse } from "@services"
 import { isErrorResponse } from "@common"
-import { CourseDetailsContext } from "../../../../../../_hooks"
+import { ManageContext } from "../../../../../_hooks"
 
 export interface EditVideoRefSelectors {
     onOpenDirectoryPress : () => void
@@ -17,9 +17,9 @@ export const EditVideoRef = forwardRef<EditVideoRefSelectors>((_, ref
         }
     }))
 
-    const { state, functions } = useContext(CourseDetailsContext)!
-    const { course } = state
-    const { fetchAndSetCourse } = functions
+    const { state, functions } = useContext(ManageContext)!
+    const { courseManaged } = state
+    const { fetchAndSetCourseManaged } = functions
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files
@@ -27,8 +27,8 @@ export const EditVideoRef = forwardRef<EditVideoRefSelectors>((_, ref
         const file = files.item(0)
         if (file === null) return
         
-        if (course === null) return 
-        const { courseId } = course
+        if (courseManaged === null) return 
+        const { courseId } = courseManaged
 
         const response = await updateCourse({
             data: {
@@ -38,7 +38,7 @@ export const EditVideoRef = forwardRef<EditVideoRefSelectors>((_, ref
             files: [file],
         })
         if (!isErrorResponse(response)) {
-            await fetchAndSetCourse()
+            await fetchAndSetCourseManaged()
         } else {
             console.log(response)
         }

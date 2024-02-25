@@ -5,16 +5,19 @@ import { LectureItemContext } from "../../index"
 import * as Yup from "yup"
 import { ValidationError } from "yup"
 import { updateLecture } from "@services"
+import { SectionItemContext } from "../../../index"
 
 interface ValidationShape {
   title: string;
 }
 
 export const Title = () => {
-    const { state, dispatch, functions } = useContext(LectureItemContext)!
-    const { lecture } = state
+    const { props } = useContext(LectureItemContext)!
+    const { lecture } = props
+    const { lectureId, title } = lecture
 
-    const { fetchAndSetLecture } = functions
+    const { state, dispatch } = useContext(SectionItemContext)!
+    console.log(state)
 
     const [isEdited, setIsEdited] = useState(false)
 
@@ -39,8 +42,6 @@ export const Title = () => {
     }
 
     const onPress = async () => {
-        if (lecture === null) return
-        const { lectureId, title } = lecture
         if (isEdited) {
             const response = await updateLecture({
                 data: {
@@ -49,7 +50,7 @@ export const Title = () => {
                 },
             })
             if (!isErrorResponse(response)) {
-                await fetchAndSetLecture()
+                //
             } else {
                 console.log(response)
             }
@@ -61,6 +62,7 @@ export const Title = () => {
         dispatch({
             type: "UPDATE_LECTURE",
             payload: {
+                ...lecture,
                 title: value
             }
         })
@@ -74,7 +76,7 @@ export const Title = () => {
                 labelPlacement="outside"
                 label=""
                 id="title"
-                value={lecture?.title}
+                value={lecture.title}
                 onValueChange={onValueChange}
                 isInvalid={!isValid}
                 errorMessage={errors.title}

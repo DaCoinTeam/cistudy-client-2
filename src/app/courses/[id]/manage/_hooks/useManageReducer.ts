@@ -7,18 +7,18 @@ export enum PanelSelected {
 }
 
 export interface ManageState {
-  courseManaged: CourseEntity | null
-  panelSelected : PanelSelected
+    courseManaged: CourseEntity | null
+    panelSelected: PanelSelected
 }
 
 export interface SetCourseManagedAction {
     type: "SET_COURSE_MANAGED";
-  payload: CourseEntity
+    payload: CourseEntity
 }
 
 export interface SetPanelSelectedAction {
-  type: "SET_PANEL_SELECTED";
-  payload: PanelSelected
+    type: "SET_PANEL_SELECTED";
+    payload: PanelSelected
 }
 
 export type ManageAction = SetCourseManagedAction | SetPanelSelectedAction;

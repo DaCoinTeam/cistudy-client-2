@@ -10,31 +10,41 @@ import {
     Link,
     Spacer,
 } from "@nextui-org/react"
-import React, { createContext, useCallback, useContext, useMemo } from "react"
-import { LectureEntity, isErrorResponse } from "@common"
+import React, {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+} from "react"
+import { isErrorResponse } from "@common"
 import { ResourceItem } from "./ResourceItem"
-import { createResources } from "@services"
+import { createResources, findManyResources } from "@services"
 import Dropzone from "react-dropzone"
+import {
+    ResourcesModalAction,
+    ResourcesModalState,
+    useResourcesModalReducer,
+} from "./useResourcesModalReducer"
+import { LectureItemContext } from "../index"
 
-interface ResourcesModalProps {
-  lecture: LectureEntity;
+interface ResourceModalContextValue {
+  state: ResourcesModalState;
+  dispatch: React.Dispatch<ResourcesModalAction>;
+  functions: {
+    fetchAndSetResources: () => Promise<void>;
+  };
 }
 
-interface ResourcesModalContextValue {
-    props: ResourcesModalProps
-}
+export const ResourceModalContext =
+  createContext<ResourceModalContextValue | null>(null)
 
-export const ResourcesModalContext =
-  createContext<ResourcesModalContextValue | null>(null)
-
-export const ResourcesModal = (props: ResourcesModalProps) => {
-    const { lecture } = props
-    const { lectureId } = lecture
-
+export const ResourcesModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
-    const { functions } = useContext(ManageContext)!
-    const { fetchAndSetCourseManaged } = functions
+    const { props } = useContext(LectureItemContext)!
+    const { lecture } = props
+    const { lectureId } = lecture
 
     const onDrop = useCallback(async (files: Array<File>) => {
         const response = await createResources({
@@ -44,32 +54,65 @@ export const ResourcesModal = (props: ResourcesModalProps) => {
             files,
         })
         if (!isErrorResponse(response)) {
-            await fetchAndSetCourseManaged()
+            await fetchAndSetResources()
         } else {
             console.log(response)
         }
     }, [])
 
+    const [state, dispatch] = useResourcesModalReducer()
+    const { resources } = state
+
     const renderResourceItems = () => (
         <div className="flex flex-col gap-3">
-            {props.lecture.resources ? (
-                props.lecture.resources.map((resource) => (
-                    <ResourceItem key={resource.resourceId} resource={resource} />
-                ))
-            ) : (
-                <div />
-            )}
+            {resources.map((resource) => (
+                <ResourceItem key={resource.resourceId} resource={resource} />
+            ))}
         </div>
     )
 
-    const resourcesModalContextValue : ResourcesModalContextValue = useMemo(() => ({
-        props
-    }), [props])
+    const fetchAndSetResources = useCallback(async () => {
+        const response = await findManyResources(
+            {
+                lectureId,
+            },
+            {
+                resourceId: true,
+                name: true,
+                fileId: true,
+            }
+        )
+        if (!isErrorResponse(response)) {
+            dispatch({
+                type: "SET_RESOURCES",
+                payload: response,
+            })
+        } else {
+            console.log(response)
+        }
+    }, [props, state, dispatch])
+
+    useEffect(() => {
+        if (!isOpen) return 
+        const handleEffect = async () => {
+            await fetchAndSetResources()
+        }
+        handleEffect()
+    }, [isOpen])
+
+    const resourceModalContextValue: ResourceModalContextValue = useMemo(
+        () => ({
+            state,
+            dispatch,
+            functions: {
+                fetchAndSetResources,
+            },
+        }),
+        [props, state]
+    )
 
     return (
-        <ResourcesModalContext.Provider
-            value={resourcesModalContextValue}
-        >
+        <ResourceModalContext.Provider value={resourceModalContextValue}>
             <Link onPress={onOpen} as="button">
                 <FolderIcon className="w-6 h-6" />
             </Link>
@@ -82,18 +125,18 @@ export const ResourcesModal = (props: ResourcesModalProps) => {
                                 {({ getRootProps, getInputProps }) => (
                                     <section>
                                         <div {...getRootProps()}>
-                                            <input {...getInputProps()} />   
+                                            <input {...getInputProps()} />
                                             <div className="cursor-pointer border-dashed rounded-large border-4 h-48 grid place-content-center">
                                                 <div className="grid place-content-center">
                                                     <DocumentArrowUpIcon className="w-20 h-20 text-foreground-500" />
                                                     <div className="text-sm text-foreground-500">
-                      Upload file(s)
+                              Upload file(s)
                                                     </div>
                                                 </div>
-                                            </div>                    
+                                            </div>
                                         </div>
                                     </section>
-                                )} 
+                                )}
                             </Dropzone>
                             <Spacer y={6} />
                             <div>
@@ -105,6 +148,6 @@ export const ResourcesModal = (props: ResourcesModalProps) => {
                     </ModalBody>
                 </ModalContent>
             </Modal>
-        </ResourcesModalContext.Provider>
+        </ResourceModalContext.Provider>
     )
 }

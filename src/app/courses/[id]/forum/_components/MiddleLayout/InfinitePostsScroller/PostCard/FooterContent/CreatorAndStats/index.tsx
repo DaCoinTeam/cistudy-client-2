@@ -4,8 +4,8 @@ import { getAssetUrl } from "@services"
 import { PostCardContext } from "../../index"
 
 export const CreatorAndStats = () => {
-    const { state } = useContext(PostCardContext)!
-    const { post } = state
+    const { props } = useContext(PostCardContext)!
+    const { post } = props
 
     const renderNumberOfLikes = () =>
         `${

@@ -6,7 +6,7 @@ export interface CommentsModalState {
 }
 
 export interface SetCommentsAction {
-  type: "SET_COMMENTS";
+  type: "SET_POST_COMMENTS";
   payload: Array<PostCommentEntity>;
 }
 
@@ -21,7 +21,7 @@ export const reducer = (
     action: CommentsModalAction
 ) => {
     switch (action.type) {
-    case "SET_COMMENTS":
+    case "SET_POST_COMMENTS":
         return { ...state, postComments: action.payload }
     default:
         return state

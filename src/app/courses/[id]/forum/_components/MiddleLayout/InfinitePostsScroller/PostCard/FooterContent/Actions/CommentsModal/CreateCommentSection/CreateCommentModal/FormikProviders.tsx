@@ -34,8 +34,8 @@ const WrappedFormikProviders = ({
 )
 
 export const FormikProviders = ({ children }: { children: ReactNode }) => {
-    const { state } = useContext(PostCardContext)!
-    const { post } = state
+    const { props } = useContext(PostCardContext)!
+    const { post } = props
 
     const { functions } = useContext(CommentsModalContext)!
     const { fetchAndSetPostComments } = functions

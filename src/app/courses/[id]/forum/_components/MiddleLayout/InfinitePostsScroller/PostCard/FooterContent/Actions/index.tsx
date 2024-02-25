@@ -13,13 +13,16 @@ import { useSelector } from "react-redux"
 import { RootState } from "@redux"
 import { CommentsModal } from "./CommentsModal"
 import { PostCardContext } from "../../index"
+import { ForumContext } from "../../../../../../_hooks"
 
 export const Actions = () => {
     const profile = useSelector((state: RootState) => state.auth.profile)
 
-    const { state, functions } = useContext(PostCardContext)!
-    const { post } = state
-    const { fetchAndSetPost } = functions
+    const { props } = useContext(PostCardContext)!
+    const { post } = props
+
+    const { functions } = useContext(ForumContext)!
+    const { fetchAndSetPosts } = functions
 
     const onLikePress = async () => {
         if (post === null) return
@@ -30,7 +33,7 @@ export const Actions = () => {
             },
         })
         if (!isErrorResponse(response)) {
-            await fetchAndSetPost()
+            await fetchAndSetPosts()
         } else {
             console.log(response)
         }

@@ -27,8 +27,19 @@ export const ForumContext = createContext<ForumContextValue | null>(null)
 
 export const findManyPostsSchema: Schema<PostEntity> = {
     postId: true,
+    title: true,
+    html: true,
+    postMedias: {
+        postMediaId: true,
+        mediaId: true,
+        mediaType: true
+    },
+    postReacts: {
+        postReactId: true,
+        userId: true,
+        liked: true
+    }
 }
-
 
 export const ForumProviders = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useForumReducer()

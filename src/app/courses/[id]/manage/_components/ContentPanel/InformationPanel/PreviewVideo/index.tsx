@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/react"
 import React, { useContext, useRef } from "react"
 import { getAssetUrl } from "@services"
-import { CourseDetailsContext } from "../../../../../_hooks"
+import { ManageContext } from "../../../../_hooks"
 import NextVideo from "next-video"
 import { EditVideoRef, EditVideoRefSelectors } from "./EditVideoRef"
 import {
@@ -18,8 +18,8 @@ import {
 import { PhotoIcon, VideoCameraIcon } from "@heroicons/react/24/solid"
 
 export const PreviewVideo = () => {
-    const { state } = useContext(CourseDetailsContext)!
-    const { course } = state
+    const { state } = useContext(ManageContext)!
+    const { courseManaged } = state
 
     const editVideoRef = useRef<EditVideoRefSelectors>(null)
     const onEditVideoPress = () => editVideoRef.current?.onOpenDirectoryPress()
@@ -59,9 +59,9 @@ export const PreviewVideo = () => {
 
                 <Spacer y={1} />
                 <NextVideo
-                    poster={getAssetUrl(course?.thumbnailId)}
+                    poster={getAssetUrl(courseManaged?.thumbnailId)}
                     className="rounded-[14px] overflow-hidden"
-                    src={getAssetUrl(course?.previewVideoId)}
+                    src={getAssetUrl(courseManaged?.previewVideoId)}
                 />
             </div>
             <EditVideoRef ref={editVideoRef} />

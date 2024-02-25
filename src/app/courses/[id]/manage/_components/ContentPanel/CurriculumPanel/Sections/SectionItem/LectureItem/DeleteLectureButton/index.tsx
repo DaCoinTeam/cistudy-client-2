@@ -4,23 +4,24 @@ import React, { useContext } from "react"
 import { deleteLecture } from "@services"
 import { isErrorResponse } from "@common"
 import { LectureItemContext } from "../index"
+import { SectionItemContext } from "../../index"
 
 export const DeleteLectureButton = () => {
-    const { state, functions } = useContext(LectureItemContext)!
-    const { lecture } = state
-    const { fetchAndSetLecture } = functions
+    const { props } = useContext(LectureItemContext)!
+    const { lecture } = props
+    const { lectureId } = lecture
+
+    const { functions } = useContext(SectionItemContext)!
+    const { fetchAndSetLectures } = functions
 
     const onPress = async () => {
-        if (lecture === null) return 
-        const { lectureId } = lecture
-
         const response = await deleteLecture({
             data: {
                 lectureId
             }
         })
         if (!isErrorResponse(response)) {
-            await fetchAndSetLecture()
+            await fetchAndSetLectures()
         } else {
             console.log(response)
         }

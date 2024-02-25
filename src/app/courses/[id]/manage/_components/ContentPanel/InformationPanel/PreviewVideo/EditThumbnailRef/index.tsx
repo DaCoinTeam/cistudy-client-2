@@ -6,7 +6,7 @@ import React, {
 } from "react"
 import { isErrorResponse } from "@common"
 import { updateCourse } from "@services"
-import { CourseDetailsContext } from "../../../../../../_hooks"
+import { ManageContext } from "../../../../../_hooks"
 
 export interface EditThumbnailRefSelectors {
     onOpenDirectoryPress: () => void;
@@ -21,9 +21,9 @@ export const EditThumbnailRef = forwardRef<EditThumbnailRefSelectors>(
             },
         }))
 
-        const { state, functions } = useContext(CourseDetailsContext)!
-        const { course } = state
-        const { fetchAndSetCourse } = functions
+        const { state, functions } = useContext(ManageContext)!
+        const { courseManaged } = state
+        const { fetchAndSetCourseManaged } = functions
 
         const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
             const files = event.target.files
@@ -31,8 +31,8 @@ export const EditThumbnailRef = forwardRef<EditThumbnailRefSelectors>(
             const file = files.item(0)
             if (file === null) return
             
-            if (course === null) return 
-            const { courseId } = course
+            if (courseManaged === null) return 
+            const { courseId } = courseManaged
 
             const response = await updateCourse({
                 data: {
@@ -42,7 +42,7 @@ export const EditThumbnailRef = forwardRef<EditThumbnailRefSelectors>(
                 files: [file],
             })
             if (!isErrorResponse(response)) {
-                await fetchAndSetCourse()
+                await fetchAndSetCourseManaged()
             } else {
                 console.log(response)
             }

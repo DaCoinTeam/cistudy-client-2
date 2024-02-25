@@ -1,26 +1,19 @@
-import React, { createContext, useCallback, useEffect, useMemo } from "react"
-import { LectureEntity, isErrorResponse } from "@common"
+import React, { createContext, useMemo } from "react"
+import { LectureEntity } from "@common"
 import { Card, CardBody, Image } from "@nextui-org/react"
 import { ClockIcon } from "@heroicons/react/24/outline"
-import { findOneLecture, getAssetUrl } from "@services"
-import {
-    LectureItemAction,
-    LectureItemState,
-    useLectureItemReducer,
-} from "./useLectureItemReducer"
+
 import { LectureVideoModal } from "./LectureVideoModal"
 import { DeleteLectureButton } from "./DeleteLectureButton"
+import { ResourcesModal } from "./ResourcesModal"
+import { getAssetUrl } from "@services"
 
 interface LectureItemProps {
   lecture: LectureEntity;
 }
 
 interface LectureItemContextValue {
-  state: LectureItemState;
-  dispatch: React.Dispatch<LectureItemAction>;
-  functions: {
-    fetchAndSetLecture: () => Promise<void>;
-  };
+  props: LectureItemProps;
 }
 
 export const LectureItemContext = createContext<LectureItemContextValue | null>(
@@ -28,59 +21,19 @@ export const LectureItemContext = createContext<LectureItemContextValue | null>(
 )
 
 export const LectureItem = (props: LectureItemProps) => {
-    const { lectureId } = props.lecture
-
-    const [state, dispatch] = useLectureItemReducer()
-    const { lecture } = state
-
-    const fetchAndSetLecture = useCallback(async () => {
-        const response = await findOneLecture(
-            {
-                lectureId,
-            },
-            {
-                lectureId: true,
-                lectureVideoId: true,
-                title: true,
-                thumbnailId: true,
-                resources: {
-                    resourceId: true,
-                    name: true,
-                    fileId: true,
-                },
-            }
-        )
-        if (!isErrorResponse(response)) {
-            dispatch({
-                type: "SET_LECTURE",
-                payload: response,
-            })
-        } else {
-            console.log(response)
-        }
-    }, [props])
-
-    useEffect(() => {
-        const handleEffect = async () => {
-            await fetchAndSetLecture()
-        }
-        handleEffect()
-    }, [props])
+    const { lecture } = props
+    const { lectureId } = lecture
 
     const LectureItemContextValue: LectureItemContextValue = useMemo(
         () => ({
-            state,
-            dispatch,
-            functions: {
-                fetchAndSetLecture,
-            },
+            props,
         }),
-        [props, state]
+        [props]
     )
 
     return (
         <LectureItemContext.Provider value={LectureItemContextValue}>
-            <Card shadow="none" className="bg-content1" fullWidth key={lecture?.sectionId}>
+            <Card shadow="none" className="bg-content1" fullWidth>
                 <CardBody>
                     <div className="justify-between flex items-center w-full">
                         <div className="flex gap-4 items-center">
@@ -100,7 +53,7 @@ export const LectureItem = (props: LectureItemProps) => {
                         </div>
                         <div className="flex items-center gap-4">
                             <LectureVideoModal />
-                            {/* <ResourcesModal /> */}
+                            <ResourcesModal />
                             <DeleteLectureButton />
                         </div>
                     </div>
