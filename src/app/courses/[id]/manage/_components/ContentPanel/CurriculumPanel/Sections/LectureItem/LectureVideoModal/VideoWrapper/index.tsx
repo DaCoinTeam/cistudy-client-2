@@ -1,18 +1,18 @@
 import { Spacer } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { EditVideo } from "./EditVideo"
-import { EditThumbnail } from "./EditThumbnail"
-import { LectureVideoModalPropsContext } from "../index"
 import { getAssetManifestUrl } from "@services"
-import { VideoPlayer } from "../../../../../../../../../_shared"
+import { VideoPlayer } from "../../../../../../../../../../_shared"
+import { LectureItemContext } from "../../index"
+import { EditThumbnail } from "./EditThumbnail"
 
 export const VideoWrapper = () => {
-    const { lecture } = useContext(LectureVideoModalPropsContext)!
-    const { thumbnailId, lectureVideoId } = lecture
+    const { state } = useContext(LectureItemContext)!
+    const { lecture } = state
 
     return (
         <div>
-            <VideoPlayer src={getAssetManifestUrl(lectureVideoId)}/>
+            <VideoPlayer src={getAssetManifestUrl(lecture?.lectureVideoId)}/>
             <Spacer y={3} />
             <div className="ml-3 flex gap-4 items-center">
                 <EditVideo />

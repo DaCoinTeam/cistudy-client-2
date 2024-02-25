@@ -1,55 +1,55 @@
-import { Input, Link, Spacer } from "@nextui-org/react"
+import { Spacer, Input, Link } from "@nextui-org/react"
 import React, { useContext, useState } from "react"
-import { updateCourse } from "@services"
-import { CourseDetailsContext } from "../../../../../_hooks"
 import { isErrorResponse } from "@common"
+import { LectureItemContext } from "../../index"
 import * as Yup from "yup"
 import { ValidationError } from "yup"
+import { updateLecture } from "@services"
 
 interface ValidationShape {
-    title: string
+  title: string;
 }
 
 export const Title = () => {
-    const { state, dispatch, functions } = useContext(CourseDetailsContext)!
-    const { course, finishFetch } = state
-    const { fetchAndSetCourse } = functions
+    const { state, dispatch, functions } = useContext(LectureItemContext)!
+    const { lecture } = state
+
+    const { fetchAndSetLecture } = functions
 
     const [isEdited, setIsEdited] = useState(false)
 
-    const schema =  Yup.object().shape({
+    const schema = Yup.object().shape({
         title: Yup.string().required("Title is required"),
     })
 
     const shape: ValidationShape = {
-        title: course?.title ?? "",
+        title: lecture?.title ?? "",
     }
 
     const isValid = schema.isValidSync(shape)
 
     const errors: Partial<ValidationShape> = {}
-    try{
-        schema.validateSync(shape, {abortEarly: false})
-    } catch(ex) {
+    try {
+        schema.validateSync(shape, { abortEarly: false })
+    } catch (ex) {
         const inner = (ex as ValidationError).inner
-        for (const { path,  message } of inner) {
+        for (const { path, message } of inner) {
             errors[path as "title"] = message
         }
     }
 
     const onPress = async () => {
+        if (lecture === null) return
+        const { lectureId, title } = lecture
         if (isEdited) {
-            if (!finishFetch) return
-            if (course === null) return
-            const { courseId, title } = course
-            const response = await updateCourse({
+            const response = await updateLecture({
                 data: {
-                    courseId,
+                    lectureId,
                     title,
                 },
             })
             if (!isErrorResponse(response)) {
-                await fetchAndSetCourse()
+                await fetchAndSetLecture()
             } else {
                 console.log(response)
             }
@@ -58,11 +58,9 @@ export const Title = () => {
     }
 
     const onValueChange = (value: string) => {
-        if (course === null) return
         dispatch({
-            type: "SET_COURSE",
+            type: "UPDATE_LECTURE",
             payload: {
-                ...course,
                 title: value
             }
         })
@@ -76,7 +74,7 @@ export const Title = () => {
                 labelPlacement="outside"
                 label=""
                 id="title"
-                value={course?.title}
+                value={lecture?.title}
                 onValueChange={onValueChange}
                 isInvalid={!isValid}
                 errorMessage={errors.title}

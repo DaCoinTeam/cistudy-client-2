@@ -1,41 +1,38 @@
 import React, { useContext, useRef } from "react"
 import { isErrorResponse } from "@common"
 import { updateLecture } from "@services"
-import { CourseDetailsContext } from "../../../../../../../../_hooks"
-import { LectureVideoModalPropsContext } from "../../index"
-import { VideoCameraIcon } from "@heroicons/react/24/outline"
+import { PhotoIcon } from "@heroicons/react/24/outline"
 import { Link } from "@nextui-org/react"
+import { LectureItemContext } from "../../../index"
 
-export const EditVideo = () => {
+export const EditThumbnail = () => {
     const fileInputRef = useRef<HTMLInputElement>(null)
-    const { lecture } = useContext(LectureVideoModalPropsContext)!
-    const { lectureId } = lecture
+    const { state, functions } = useContext(LectureItemContext)!
+    const { lecture } = state
+    const { fetchAndSetLecture } = functions
 
     const onPress = () => {
         if (fileInputRef.current) fileInputRef.current.click()
     }
 
-    const { state, functions } = useContext(CourseDetailsContext)!
-    const { course } = state
-    const { fetchAndSetCourse } = functions
-
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (lecture === null) return
+        const { lectureId } = lecture
+
         const files = event.target.files
         if (files === null) return
         const file = files.item(0)
         if (file === null) return
-        const courseId = course?.courseId
-        if (!courseId) return
 
         const response = await updateLecture({
             data: {
                 lectureId,
-                lectureVideoIndex: 0,
+                thumbnailIndex: 0,
             },
             files: [file],
         })
         if (!isErrorResponse(response)) {
-            await fetchAndSetCourse()
+            await fetchAndSetLecture()
         } else {
             console.log(response)
         }
@@ -44,11 +41,11 @@ export const EditVideo = () => {
     return (
         <>
             <Link as="button" onPress={onPress}>
-                <VideoCameraIcon className="w-6 h-6" />
+                <PhotoIcon className="w-6 h-6" />
             </Link>
             <input
                 type="file"
-                accept="video/*"
+                accept="image/*"
                 ref={fileInputRef}
                 onChange={onFileChange}
                 className="hidden"

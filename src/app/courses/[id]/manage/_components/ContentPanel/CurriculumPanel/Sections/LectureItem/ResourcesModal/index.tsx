@@ -10,10 +10,9 @@ import {
     Link,
     Spacer,
 } from "@nextui-org/react"
-import React, { createContext, useCallback, useContext } from "react"
+import React, { createContext, useCallback, useContext, useMemo } from "react"
 import { LectureEntity, isErrorResponse } from "@common"
 import { ResourceItem } from "./ResourceItem"
-import { ManageContext } from "../../../../../_hooks"
 import { createResources } from "@services"
 import Dropzone from "react-dropzone"
 
@@ -21,21 +20,26 @@ interface ResourcesModalProps {
   lecture: LectureEntity;
 }
 
-export const ResourcesModalPropsContext =
-  createContext<ResourcesModalProps | null>(null)
+interface ResourcesModalContextValue {
+    props: ResourcesModalProps
+}
+
+export const ResourcesModalContext =
+  createContext<ResourcesModalContextValue | null>(null)
 
 export const ResourcesModal = (props: ResourcesModalProps) => {
+    const { lecture } = props
+    const { lectureId } = lecture
+
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     const { functions } = useContext(ManageContext)!
     const { fetchAndSetCourseManaged } = functions
 
-    const { lecture } = useContext(ResourcesModalPropsContext)!
-
     const onDrop = useCallback(async (files: Array<File>) => {
         const response = await createResources({
             data: {
-                lectureId: lecture.lectureId,
+                lectureId,
             },
             files,
         })
@@ -58,9 +62,13 @@ export const ResourcesModal = (props: ResourcesModalProps) => {
         </div>
     )
 
+    const resourcesModalContextValue : ResourcesModalContextValue = useMemo(() => ({
+        props
+    }), [props])
+
     return (
-        <ResourcesModalPropsContext.Provider
-            value={props}
+        <ResourcesModalContext.Provider
+            value={resourcesModalContextValue}
         >
             <Link onPress={onOpen} as="button">
                 <FolderIcon className="w-6 h-6" />
@@ -97,6 +105,6 @@ export const ResourcesModal = (props: ResourcesModalProps) => {
                     </ModalBody>
                 </ModalContent>
             </Modal>
-        </ResourcesModalPropsContext.Provider>
+        </ResourcesModalContext.Provider>
     )
 }

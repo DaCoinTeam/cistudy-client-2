@@ -3,23 +3,24 @@ import { Link } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { deleteLecture } from "@services"
 import { isErrorResponse } from "@common"
-import { CourseDetailsContext } from "../../../../../../_hooks"
-interface DeleteLectureButtonProps {
-    lectureId: string
-}
+import { LectureItemContext } from "../index"
 
-export const DeleteLectureButton = (props: DeleteLectureButtonProps) => {
-    const { functions } = useContext(CourseDetailsContext)!
-    const { fetchAndSetCourse } = functions
+export const DeleteLectureButton = () => {
+    const { state, functions } = useContext(LectureItemContext)!
+    const { lecture } = state
+    const { fetchAndSetLecture } = functions
 
     const onPress = async () => {
+        if (lecture === null) return 
+        const { lectureId } = lecture
+
         const response = await deleteLecture({
             data: {
-                lectureId: props.lectureId
+                lectureId
             }
         })
         if (!isErrorResponse(response)) {
-            await fetchAndSetCourse()
+            await fetchAndSetLecture()
         } else {
             console.log(response)
         }

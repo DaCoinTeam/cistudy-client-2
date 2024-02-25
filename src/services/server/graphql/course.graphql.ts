@@ -4,6 +4,7 @@ import {
     ErrorResponse,
     Schema,
     buildPayloadString,
+    LectureEntity,
 } from "@common"
 import { client } from "./client.graphql"
 import { ApolloError, gql } from "@apollo/client"
@@ -65,6 +66,42 @@ export const findManyCourses = async (
         const _ex = ex as ApolloError
         const error = (
       _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+        ).originalError
+
+        return error
+    }
+}
+
+export const findOneLecture = async (
+    params: {
+  lectureId: string;
+},
+    schema: Schema<DeepPartial<LectureEntity>>
+): Promise<LectureEntity | ErrorResponse> => {
+    try {
+        const { lectureId } = params
+        const payload = buildPayloadString(schema)
+        const { data } = await client().query({
+            query: gql`
+          query FindOneLecture($data: FindOneLectureData!) {
+            findOneLecture(data: $data) {
+    ${payload}
+  }
+}
+        `,
+            variables: {
+                data: {
+                    lectureId,
+                },
+            },
+        })
+
+        return data.findOneLecture as LectureEntity
+    } catch (ex) {
+        console.log(ex)
+        const _ex = ex as ApolloError
+        const error = (
+    _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         return error
