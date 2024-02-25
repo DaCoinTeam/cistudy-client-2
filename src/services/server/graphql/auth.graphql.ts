@@ -17,7 +17,7 @@ import { ApolloError, gql } from "@apollo/client"
 export const init = async (
     schema: Schema<DeepPartial<UserEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<DeepPartial<UserEntity> | ErrorResponse> => {
+): Promise<UserEntity | ErrorResponse> => {
     try {
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
@@ -30,8 +30,8 @@ export const init = async (
           `,
         })
         const { data, tokens } = graphqlData.init as BaseResponse<
-      DeepPartial<UserEntity>
-    >
+            UserEntity
+        >
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
         return data
@@ -41,7 +41,7 @@ export const init = async (
             .originalError
         if (
             error.statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
+            authTokenType === AuthTokenType.Access
         )
             return await init(schema, AuthTokenType.Refresh)
         return error
@@ -50,11 +50,11 @@ export const init = async (
 
 export const signIn = async (
     params: {
-    email: string;
-    password: string;
-  },
+        email: string;
+        password: string;
+    },
     schema: Schema<DeepPartial<UserEntity>>
-): Promise<DeepPartial<UserEntity> | ErrorResponse> => {
+): Promise<UserEntity | ErrorResponse> => {
     const { email, password } = params
     try {
         const payload = buildAuthPayloadString(schema, AuthTokenType.Refresh)
@@ -74,8 +74,8 @@ export const signIn = async (
             },
         })
         const { data, tokens } = graphqlData.signIn as BaseResponse<
-      DeepPartial<UserEntity>
-    >
+            UserEntity
+        >
         saveTokens(tokens as AuthTokens)
         return data
     } catch (ex) {
