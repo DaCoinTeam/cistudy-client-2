@@ -51,7 +51,7 @@ export const findManyPosts = async (
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
 
-        return data as Array<PostEntity>
+        return data
     } catch (ex) {
         console.log(ex)
         const _ex = ex as ApolloError
