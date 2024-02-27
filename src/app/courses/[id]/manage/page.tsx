@@ -5,9 +5,9 @@ import { Sidebar, ContentPanel } from "./_components"
 
 const Page = () => {
     return (
-        <div className="grid grid-cols-4 gap-6 px-12 m-auto my-12">
-            <Sidebar className="col-span-1"/>
-            <ContentPanel  className="col-span-3"/>
+        <div className="grid grid-cols-5 gap-6 px-12 my-12">
+            <Sidebar className="col-span-1 max-h-screen"/>
+            <ContentPanel className="col-span-4"/>
         </div>
     )
 }

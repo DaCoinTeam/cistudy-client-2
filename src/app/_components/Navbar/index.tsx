@@ -20,6 +20,8 @@ interface NavbarProps {
 }
 
 const WrappedNavbar = (props: NavbarProps) => {
+    const { className } = props 
+
     const { dispatch } = useContext(NavbarContext)!
 
     const profile = useSelector((state: RootState) => state.auth.profile)
@@ -47,7 +49,9 @@ const WrappedNavbar = (props: NavbarProps) => {
 
     return (
         <>
-            <NextUINavbar isBordered shouldHideOnScroll className={props.className}>
+            <NextUINavbar isBordered shouldHideOnScroll className={className} classNames={{
+                wrapper: "!max-w-full px-12"
+            }}>
                 <NavbarBrand>
                     <PencilIcon className="w-6 h-6" />
                     <p className="font-bold text-inherit">ACME</p>
@@ -95,7 +99,6 @@ const WrappedNavbar = (props: NavbarProps) => {
 
 export const Navbar = (props: NavbarProps) => (
     <NavbarProviders>
-        {" "}
         <WrappedNavbar {...props} />{" "}
     </NavbarProviders>
 )

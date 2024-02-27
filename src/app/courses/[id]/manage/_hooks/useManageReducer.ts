@@ -2,7 +2,7 @@ import { useReducer } from "react"
 import { CourseEntity } from "@common"
 
 export enum PanelSelected {
-    Information = "information",
+    Details = "details",
     Curriculum = "curriculum"
 }
 
@@ -25,7 +25,7 @@ export type ManageAction = SetCourseManagedAction | SetPanelSelectedAction;
 
 export const state: ManageState = {
     courseManaged: null,
-    panelSelected: PanelSelected.Information,
+    panelSelected: PanelSelected.Details,
 }
 
 export const reducer = (

@@ -1,8 +1,7 @@
 "use client"
 import React, { useContext } from "react"
-import { Card } from "@nextui-org/react"
 import { CurriculumPanel } from "./CurriculumPanel"
-import { InformationPanel } from "./InformationPanel"
+import { DetailsPanel } from "./DetailsPanel"
 import { PanelSelected, ManageContext } from "../../_hooks"
 
 interface ContentPanelProps {
@@ -10,17 +9,18 @@ interface ContentPanelProps {
 }
 
 export const ContentPanel = (props: ContentPanelProps) => {
+    const { className } = props 
     const { state } = useContext(ManageContext)!
     const { panelSelected } = state
 
     const panelSelectedToPanelComponent: Record<PanelSelected, JSX.Element> = {
-        [PanelSelected.Information]: <InformationPanel />,
+        [PanelSelected.Details]: <DetailsPanel />,
         [PanelSelected.Curriculum]: <CurriculumPanel />,
     }
 
     return (
-        <div className={`${props.className}`}>
-            <Card>{panelSelectedToPanelComponent[panelSelected]}</Card>
+        <div className={`${className}`}>
+            {panelSelectedToPanelComponent[panelSelected]}
         </div>
     )
 }

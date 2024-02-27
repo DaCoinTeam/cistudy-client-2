@@ -24,6 +24,7 @@ const config: Config = {
         themes: {
             light:  {
                 colors: {
+                    primary: "rgb(20 184 166)"
                 },
             }
         }

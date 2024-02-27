@@ -56,6 +56,10 @@ export const ManageProviders = ({ children }: { children: ReactNode }) => {
                             fileId: true
                         }
                     }
+                },
+                courseTargets: {
+                    courseTargetId: true,
+                    content: true
                 }
             }
         )

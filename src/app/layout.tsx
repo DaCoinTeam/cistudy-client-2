@@ -12,8 +12,8 @@ const RootLayout = ({children} : {children: ReactNode}) => {
     return (
         <ReduxProviders>
             <html lang="en">
-                <body className={font.className}>
-                    <NextUIProvider>
+                <body className={`${font.className} min-h-screen`}>
+                    <NextUIProvider className="min-h-screen flex flex-col">
                         <RootProviders>
                             <Navbar/>
                             {children}
