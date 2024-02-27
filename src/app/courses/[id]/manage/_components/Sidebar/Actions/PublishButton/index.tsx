@@ -4,6 +4,6 @@ import React from "react"
 
 export const PublishButton = () => {
     return (
-        <Button size="lg" color="primary" fullWidth startContent={<ArrowBigUpDashIcon size={16}/>}> Publish </Button>
+        <Button color="primary" fullWidth startContent={<ArrowBigUpDashIcon size={14}/>}> Publish </Button>
     )
 }

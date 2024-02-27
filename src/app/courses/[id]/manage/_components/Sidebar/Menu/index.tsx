@@ -55,20 +55,20 @@ export const Menu = (props: MenuProps) => {
                 >
                     <ListboxItem
                         classNames={{
-                            title: "text-lg",
+                            title: "text-base",
                         }}
                         className="gap-3"
-                        startContent={<InfoIcon size={18} />}
+                        startContent={<InfoIcon size={16} />}
                         key="details"
                     >
           Details
                     </ListboxItem>
                     <ListboxItem
                         classNames={{
-                            title: "text-lg",
+                            title: "text-base",
                         }}
                         className="gap-3"
-                        startContent={<ListChecksIcon size={18} />}
+                        startContent={<ListChecksIcon size={16} />}
                         key="curriculum"
                     >
           Curriculum

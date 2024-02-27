@@ -6,11 +6,11 @@ import { MoreButton } from "./MoreButton"
 import { VideoPlayer } from "../../../../../../../_shared"
 import { EditPreviewVideoButton } from "./EditPreviewVideoButton"
 
-interface PreviewVideoCardProps {
+interface PreviewCardProps {
   className?: string;
 }
 
-export const PreviewVideoCard = (props: PreviewVideoCardProps) => {
+export const PreviewCard = (props: PreviewCardProps) => {
     const { className } = props
 
     const { state } = useContext(ManageContext)!
@@ -18,7 +18,7 @@ export const PreviewVideoCard = (props: PreviewVideoCardProps) => {
 
     return (
         <Card className={`${className}`}>
-            <CardHeader className="p-4 pb-0 text-xl font-semibold"> Preview Video </CardHeader>
+            <CardHeader className="p-4 pb-0 text-xl font-semibold"> Preview </CardHeader>
             <CardBody className="gap-4">
                 <VideoPlayer src={getAssetUrl(courseManaged?.previewVideoId)} />
                 <div className="flex gap-3">
