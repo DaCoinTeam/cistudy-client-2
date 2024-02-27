@@ -112,8 +112,8 @@ export const WrappedResourcesModal = () => {
     return (
         <ResourceModalContext.Provider value={resourceModalContextValue}>
             <ModalContent>
-                <ModalHeader className="p-4 pt-3 pb-0 text-xl">Resources</ModalHeader>
-                <ModalBody className="p-4 gap-4 pt-3 pb-0">
+                <ModalHeader className="p-4 pb-0 text-xl">Resources</ModalHeader>
+                <ModalBody className="p-4 gap-4">
                     <Dropzone onDrop={onDrop}>
                         {({ getRootProps, getInputProps }) => (
                             <section>
@@ -145,7 +145,7 @@ export const ResourcesModal = () => {
 
     return (
         <>
-            <Button onPress={onOpen} startContent={<FolderIcon size={14}/>} variant="flat">
+            <Button onPress={onOpen} startContent={<FolderIcon size={21} strokeWidth={1.333}/>} variant="flat">
                 Resources
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">

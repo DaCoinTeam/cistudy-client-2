@@ -1,10 +1,10 @@
 import React, { createContext, useMemo } from "react"
 import { LectureEntity } from "@common"
 import { Image } from "@nextui-org/react"
-import { ClockIcon } from "@heroicons/react/24/outline"
 import { ResourcesModal } from "./ResourcesModal"
 import { getAssetUrl } from "@services"
 import { MoreButton } from "./MoreButton"
+import { Clock1 } from "lucide-react"
 
 interface LectureItemProps {
   lecture: LectureEntity;
@@ -43,7 +43,7 @@ export const LectureItem = (props: LectureItemProps) => {
                         <div>
                             <div className="text-sm"> {lecture?.title} </div>
                             <div className="flex items-center gap-1">
-                                <ClockIcon className="w-3 h-3 text-foreground-500" />
+                                <Clock1 className="w-3 h-3 text-foreground-500" />
                                 <div className="text-xs text-foreground-500">15 min </div>
                             </div>
                         </div>
