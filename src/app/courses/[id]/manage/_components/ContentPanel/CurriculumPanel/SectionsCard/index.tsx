@@ -41,7 +41,7 @@ export const SectionsCard = () => {
     }
 
     return (
-        <Card shadow="none">
+        <Card shadow="none" className="border-divider border">
             <CardHeader className="p-4 pb-0 text-xl font-semibold">
                 Sections
             </CardHeader>

@@ -49,8 +49,8 @@ const WrappedNavbar = (props: NavbarProps) => {
 
     return (
         <>
-            <NextUINavbar isBordered shouldHideOnScroll className={className} classNames={{
-                wrapper: "!max-w-full px-12"
+            <NextUINavbar isBordered className={className} classNames={{
+                wrapper: "!max-w-full px-6"
             }}>
                 <NavbarBrand>
                     <PencilIcon className="w-6 h-6" />

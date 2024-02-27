@@ -1,6 +1,5 @@
 import React from "react"
 import { Menu } from "./Menu"
-import { Actions } from "./Actions"
 import { Spacer } from "@nextui-org/react"
 
 interface SidebarProps {
@@ -10,10 +9,12 @@ interface SidebarProps {
 export const Sidebar = (props: SidebarProps) => {
     const { className } = props
     return (
-        <div className={`${className}`}>
-            <Menu />
-            <Spacer y={6}/>
-            <Actions />
+        <div className={`${className} border-r border-divider p-6 h-screen sticky top-0`}>
+            <Spacer y={16}/>
+            <Menu/>
+           
+            {/* <Spacer y={6}/>
+            <Actions /> */}
         </div>
     )
 }

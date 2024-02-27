@@ -37,12 +37,17 @@ export const UserDetailsProviders = ({ children }: { children: ReactNode }) => {
         const response = await findOneUser(
             {
                 userId,
+                options: {
+                    followerId: "8563a37f-17dc-4576-a0b8-a91bf3743e79"
+                }
             },
             {
                 userId: true,
+                username: true,
                 email: true,
                 avatarId: true,
                 coverPhotoId: true,
+                followed: true
             }
         )
         if (!isErrorResponse(response)) {

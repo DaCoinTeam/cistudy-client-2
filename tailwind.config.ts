@@ -25,7 +25,7 @@ const config: Config = {
             light:  {
                 colors: {
                     primary: "rgb(20 184 166)",
-                    background: "rgb(244 244 245)"
+                    content2: "rgb(226 232 240)"
                 },
             }
         }

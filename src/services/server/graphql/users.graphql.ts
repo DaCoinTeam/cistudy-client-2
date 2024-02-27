@@ -12,10 +12,13 @@ import { client } from "./client.graphql"
 export const findOneUser = async (
     params: {
     userId: string;
+    options?: Partial<{
+        followerId: string
+    }>
   },
     schema?: Schema<DeepPartial<UserEntity>>
 ): Promise<UserEntity | ErrorResponse> => {
-    const { userId } = params
+    const { userId, options } = params
     try {
         const payload = buildPayloadString(schema)
         const { data: graphqlData } = await client().query({
@@ -29,6 +32,7 @@ export const findOneUser = async (
             variables: {
                 data: {
                     userId,
+                    options
                 },
             },
         })

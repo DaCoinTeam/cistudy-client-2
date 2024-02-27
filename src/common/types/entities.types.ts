@@ -44,6 +44,7 @@ export interface UserEntity {
   firstName?: string;
   lastName?: string;
   birthdate?: Date;
+  username?: string
   verified: boolean;
   kind: UserKind;
   externalId?: string;
@@ -54,6 +55,8 @@ export interface UserEntity {
   enrolledInfos: Array<EnrolledInfoEntity>;
   posts: Array<PostEntity>;
   courses: Array<CourseEntity>;
+  //graphql
+  followed?: boolean
 }
 
 export interface PostEntity {

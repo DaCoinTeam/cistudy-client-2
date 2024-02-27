@@ -21,6 +21,7 @@ export const RootProviders = (props: { children: ReactNode }) => {
         const response = await init(
             {   
                 userId: true,
+                username: true,
                 email: true,
                 avatarId: true,
                 coverPhotoId: true

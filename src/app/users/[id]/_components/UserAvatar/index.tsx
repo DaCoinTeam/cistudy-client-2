@@ -13,6 +13,8 @@ interface UserAvatarProps {
 }
 
 export const UserAvatar = (props: UserAvatarProps) => {
+    const { className } = props
+
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const { state, functions } = useContext(UserDetailsContext)!
@@ -52,7 +54,7 @@ export const UserAvatar = (props: UserAvatarProps) => {
 
     return (
         <>
-            <div className={`${props.className} flex gap-6 items-end`}>
+            <div className={`${className} flex gap-6 items-end`}>
                 <div className="relative">
                     <Avatar
                         isBordered

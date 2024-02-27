@@ -71,7 +71,6 @@ export const Title = () => {
     return (
         <Input
             label="Title"
-            id="title"
             value={lecture.title}
             onValueChange={onValueChange}
             isInvalid={!isValid}

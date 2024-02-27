@@ -1,20 +1,14 @@
-import React, { useRef } from "react"
+import React from "react"
 
 import {
     Button,
     Dropdown,
-    DropdownItem,
     DropdownMenu,
     DropdownTrigger,
 } from "@nextui-org/react"
 import {
     MoreHorizontal,
-    PictureInPicture2Icon,
 } from "lucide-react"
-import {
-    EditThumbnailRef,
-    EditThumbnailRefSelectors,
-} from "./EditThumbnailRef"
 
 interface ManageThumbnailButtonProps {
   className?: string;
@@ -22,13 +16,6 @@ interface ManageThumbnailButtonProps {
 
 export const MoreButton = (props: ManageThumbnailButtonProps) => {
     const { className } = props
-
-    const editThumbnailRef = useRef<EditThumbnailRefSelectors | null>(null)
-
-    const onPress = () => {
-        if (!editThumbnailRef.current) return
-        editThumbnailRef.current.onOpenDirectoryPress()
-    }
 
     return (
         <>
@@ -45,16 +32,9 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem
-                        startContent={<PictureInPicture2Icon size={21} strokeWidth={4/3} />}
-                        onPress={onPress}
-                        key="editThumbnail"
-                    >
-            Edit Thumbnail
-                    </DropdownItem>
+                    <div/>
                 </DropdownMenu>
             </Dropdown>
-            <EditThumbnailRef ref={editThumbnailRef} />
         </>
     )
 }

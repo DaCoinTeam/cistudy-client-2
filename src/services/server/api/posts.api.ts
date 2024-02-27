@@ -123,10 +123,11 @@ export const createComment = async (
     }
 }
 
-export const reactPost = async (
+export const upsertReactPost = async (
     params: {
         data: {
             postId: string;
+            liked: boolean
         };
     },
     authTokenType: AuthTokenType = AuthTokenType.Access
@@ -156,7 +157,7 @@ export const reactPost = async (
             statusCode === ErrorStatusCode.Unauthorized &&
             authTokenType === AuthTokenType.Access
         )
-            return await reactPost(params, AuthTokenType.Refresh)
+            return await upsertReactPost(params, AuthTokenType.Refresh)
         return _ex
     }
 }

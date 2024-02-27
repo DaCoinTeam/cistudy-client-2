@@ -71,7 +71,6 @@ export const Description = () => {
     return (
         <Textarea
             label="Description"
-            id="description"
             value={courseManaged?.description}
             onValueChange={onValueChange}
             isInvalid={!isValid}

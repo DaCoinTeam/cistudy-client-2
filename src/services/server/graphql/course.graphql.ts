@@ -19,8 +19,8 @@ import { DeepPartial } from "@apollo/client/utilities"
 
 export const findOneCourse = async (
     params: {
-        courseId: string;
-    },
+    courseId: string;
+  },
     schema: Schema<DeepPartial<CourseEntity>>
 ): Promise<CourseEntity | ErrorResponse> => {
     try {
@@ -46,7 +46,7 @@ export const findOneCourse = async (
         console.log(ex)
         const _ex = ex as ApolloError
         const error = (
-            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         return error
@@ -72,7 +72,7 @@ export const findManyCourses = async (
         console.log(ex)
         const _ex = ex as ApolloError
         const error = (
-            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         return error
@@ -81,8 +81,8 @@ export const findManyCourses = async (
 
 export const findManyLectures = async (
     params: {
-        sectionId: string;
-    },
+    sectionId: string;
+  },
     schema: Schema<DeepPartial<LectureEntity>>
 ): Promise<Array<LectureEntity> | ErrorResponse> => {
     try {
@@ -108,8 +108,55 @@ export const findManyLectures = async (
         console.log(ex)
         const _ex = ex as ApolloError
         const error = (
-            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
+
+        return error
+    }
+}
+
+export const findOneLecture = async (
+    params: {
+    lectureId: string;
+  },
+    schema: Schema<DeepPartial<LectureEntity>>,
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<LectureEntity | ErrorResponse> => {
+    try {
+        const { lectureId } = params
+        const payload = buildAuthPayloadString(schema, authTokenType)
+        const { data: graphqlData } = await client(authTokenType).query({
+            query: gql`
+            query FindOneLecture($data: FindOneLectureData!) {
+                findOneLecture(data: $data) {              
+      ${payload}
+    }
+  }
+          `,
+            variables: {
+                data: {
+                    lectureId,
+                },
+            },
+        })
+
+        const { data, tokens } =
+      graphqlData.findOneLecture as BaseResponse<LectureEntity>
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+
+        return data
+    } catch (ex) {
+        const _ex = ex as ApolloError
+        const error = (
+      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+        ).originalError
+
+        if (
+            error.statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await findOneLecture(params, schema, AuthTokenType.Refresh)
 
         return error
     }
@@ -117,8 +164,8 @@ export const findManyLectures = async (
 
 export const findManyResources = async (
     params: {
-        lectureId: string;
-    },
+    lectureId: string;
+  },
     schema: Schema<DeepPartial<ResourceEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<Array<ResourceEntity> | ErrorResponse> => {
@@ -141,8 +188,8 @@ export const findManyResources = async (
         })
 
         const { data, tokens } = graphqlData.findManyResources as BaseResponse<
-            Array<ResourceEntity>
-        >
+      Array<ResourceEntity>
+    >
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
 
@@ -150,12 +197,12 @@ export const findManyResources = async (
     } catch (ex) {
         const _ex = ex as ApolloError
         const error = (
-            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         if (
             error.statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await findManyResources(params, schema, AuthTokenType.Refresh)
 

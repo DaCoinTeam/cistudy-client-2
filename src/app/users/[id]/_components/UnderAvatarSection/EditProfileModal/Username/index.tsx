@@ -1,28 +1,36 @@
 import { Input, Link } from "@nextui-org/react"
 import React, { useContext, useState } from "react"
-import { updateCourse } from "@services"
+import { updateProfile } from "@services"
 import { isErrorResponse } from "@common"
 import * as Yup from "yup"
 import { ValidationError } from "yup"
-import { ManageContext } from "../../../../../_hooks"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState, setProfile } from "@redux"
+import { RootContext } from "../../../../../../_hooks"
+import { UserDetailsContext } from "../../../../_hooks"
 
 interface ValidationShape {
-    title: string
+    username: string
 }
 
-export const Title = () => {
-    const { state, dispatch, functions } = useContext(ManageContext)!
-    const { courseManaged } = state
-    const { fetchAndSetCourseManaged } = functions
+export const Username = () => {
+    const profile = useSelector((state: RootState) => state.auth.profile)
+
+    const dispatch: AppDispatch = useDispatch()
+
+    const { functions } = useContext(UserDetailsContext)!
+    const { fetchAndSetUser } = functions
+    const { functions: rootFunctions } = useContext(RootContext)!
+    const { fetchAndSetProfile } = rootFunctions
 
     const [isEdited, setIsEdited] = useState(false)
 
     const schema =  Yup.object().shape({
-        title: Yup.string().required("Title is required"),
+        username: Yup.string().required("Username is required"),
     })
 
     const shape: ValidationShape = {
-        title: courseManaged?.title ?? "",
+        username: profile?.username ?? "",
     }
 
     const isValid = schema.isValidSync(shape)
@@ -33,22 +41,22 @@ export const Title = () => {
     } catch(ex) {
         const inner = (ex as ValidationError).inner
         for (const { path,  message } of inner) {
-            errors[path as "title"] = message
+            errors[path as "username"] = message
         }
     }
 
     const onPress = async () => {
         if (isEdited) {
-            if (courseManaged === null) return
-            const { courseId, title } = courseManaged
-            const response = await updateCourse({
+            if (profile === null) return
+            const { username } = profile
+            const response = await updateProfile({
                 data: {
-                    courseId,
-                    title,
+                    username
                 },
             })
             if (!isErrorResponse(response)) {
-                await fetchAndSetCourseManaged()
+                await fetchAndSetUser()
+                await fetchAndSetProfile()
             } else {
                 console.log(response)
             }
@@ -57,23 +65,20 @@ export const Title = () => {
     }
 
     const onValueChange = (value: string) => {
-        if (courseManaged === null) return
-        dispatch({
-            type: "SET_COURSE_MANAGED",
-            payload: {
-                ...courseManaged,
-                title: value
-            }
-        })
+        if (profile === null) return
+        dispatch(setProfile({
+            ...profile,
+            username: value
+        }))
     }
 
     return (
         <Input
-            label="Title"
-            value={courseManaged?.title}
+            label="Username"
+            value={profile?.username}
             onValueChange={onValueChange}
             isInvalid={!isValid}
-            errorMessage={errors.title}
+            errorMessage={errors.username}
             readOnly={!isEdited}
             endContent={
                 <Link

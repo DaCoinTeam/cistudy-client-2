@@ -145,7 +145,7 @@ export const ResourcesModal = () => {
 
     return (
         <>
-            <Button onPress={onOpen} startContent={<FolderIcon size={21} strokeWidth={1.333}/>} variant="flat">
+            <Button onPress={onOpen} className="bg-content2" startContent={<FolderIcon size={21} strokeWidth={4/3}/>}>
                 Resources
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">

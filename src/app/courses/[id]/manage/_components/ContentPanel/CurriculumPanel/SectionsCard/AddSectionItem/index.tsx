@@ -29,7 +29,7 @@ export const AddSectionItem = () => {
     }
 
     return (
-        <Button onPress={onPress} fullWidth startContent={<PlusIcon size={21} strokeWidth={1.333}/>} className="bg-content2 h-[4.25rem]">
+        <Button onPress={onPress} fullWidth startContent={<PlusIcon size={21} strokeWidth={4/3}/>} className="bg-content2 h-[4.25rem]">
             Add Section
         </Button>
     )

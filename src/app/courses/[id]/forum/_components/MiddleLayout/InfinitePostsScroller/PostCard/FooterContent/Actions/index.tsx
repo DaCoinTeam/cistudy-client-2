@@ -8,7 +8,7 @@ import {
 import { Link } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { isErrorResponse } from "@common"
-import { reactPost } from "@services"
+import { upsertReactPost } from "@services"
 import { useSelector } from "react-redux"
 import { RootState } from "@redux"
 import { CommentsModal } from "./CommentsModal"
@@ -27,9 +27,26 @@ export const Actions = () => {
     const onLikePress = async () => {
         if (post === null) return
         const { postId } = post
-        const response = await reactPost({
+        const response = await upsertReactPost({
             data: {
                 postId,
+                liked: true
+            },
+        })
+        if (!isErrorResponse(response)) {
+            await fetchAndSetPosts()
+        } else {
+            console.log(response)
+        }
+    }
+
+    const onUnlikePress = async () => {
+        if (post === null) return
+        const { postId } = post
+        const response = await upsertReactPost({
+            data: {
+                postId,
+                liked: false
             },
         })
         if (!isErrorResponse(response)) {

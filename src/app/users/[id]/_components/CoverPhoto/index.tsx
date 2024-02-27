@@ -4,14 +4,16 @@ import { useSelector } from "react-redux"
 import { RootState } from "@redux"
 import { Button, Image } from "@nextui-org/react"
 import { getAssetUrl, updateProfile } from "@services"
-import { PhotoIcon } from "@heroicons/react/24/solid"
 import { RootContext } from "../../../../_hooks"
 import { isErrorResponse } from "@common"
+import { ImageUpIcon } from "lucide-react"
 
 interface CoverPhotoProps {
   className?: string;
 }
 export const CoverPhoto = (props: CoverPhotoProps) => {
+    const { className } = props
+
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const { state, functions } = useContext(UserDetailsContext)!
@@ -51,7 +53,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
     return (
         <>
             <div
-                className={`${props.className} absolute grid content-center overflow-hidden`}
+                className={`${className} absolute grid content-center overflow-hidden`}
             >
                 <Image
                     alt="coverPhoto"
@@ -66,8 +68,8 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
                     isOwnProfile ? (
                         <Button
                             onPress={onPress}
-                            className="z-10 w-fit"
-                            startContent={<PhotoIcon className="w-6 h-6" />}
+                            className="z-10 w-fit bg-content2"
+                            startContent={<ImageUpIcon size={24} strokeWidth={4/3} />}
                         >
             Upload cover photo
                         </Button>

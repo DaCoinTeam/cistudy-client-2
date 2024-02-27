@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext } from "react"
 import { ManageContext } from "../../../_hooks/ManageProviders"
-import { Card, CardBody, CardHeader, Listbox, ListboxItem, Selection } from "@nextui-org/react"
+import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
 import { PanelSelected } from "../../../_hooks"
 import { InfoIcon, ListChecksIcon } from "lucide-react"
@@ -18,7 +18,7 @@ export const Menu = (props: MenuProps) => {
 
     const selectedKeys = new Set([panelSelected])
 
-    const isSelected = (panelSelected: PanelSelected) => Array.from(selectedKeys).includes(panelSelected) ? "border-primary !text-primary border-l-5" : ""
+    const isSelected = (panelSelected: PanelSelected) => Array.from(selectedKeys).includes(panelSelected) ? "!text-primary !bg-primary/20 rounded-large" : ""
 
     const onSelectionChange = (selection: Selection) => {
         if (typeof selection === "string") return
@@ -33,51 +33,41 @@ export const Menu = (props: MenuProps) => {
     }
 
     return (
-        <Card shadow="none" className={`${className}`}>
-            <CardHeader className="p-4 pb-0 text-xl font-semibold">
-                Menu
-            </CardHeader>
-            <CardBody className="p-4">
-                <Listbox
-                    hideSelectedIcon
-                    aria-label="Menu"
-                    variant="flat"
-                    disallowEmptySelection
-                    selectionMode="single"
-                    selectedKeys={selectedKeys}
-                    onSelectionChange={onSelectionChange}
-                    autoFocus={true}
-                    className="p-0"
-                    classNames={
-                        {
-                            list: "gap-4",
-                        }
-                    }
+        <div className={`${className}`}>
+            <Listbox
+                hideSelectedIcon
+                aria-label="Menu"
+                variant="flat"
+                disallowEmptySelection
+                selectionMode="single"
+                selectedKeys={selectedKeys}
+                onSelectionChange={onSelectionChange}
+                autoFocus={true}
+                className="p-0"
+            >
+                <ListboxItem
+                    classNames={{
+                        title: "text-base",
+                        base: `!py-2 items-center rounded-none !bg-transparent ${isSelected(PanelSelected.Details)}`
+                    }}
+                    className="gap-4"
+                    startContent={<InfoIcon size={24} strokeWidth={4/3}/>}
+                    key="details"
                 >
-                    <ListboxItem
-                        classNames={{
-                            title: "text-base",
-                            base: `!py-2 rounded-none !bg-transparent ${isSelected(PanelSelected.Details)}`
-                        }}
-                        className="gap-3"
-                        startContent={<InfoIcon size={24} strokeWidth={1.333}/>}
-                        key="details"
-                    >
           Details
-                    </ListboxItem>
-                    <ListboxItem
-                        classNames={{
-                            title: "text-base",
-                            base: `!py-2 rounded-none !bg-transparent ${isSelected(PanelSelected.Curriculum)}`,
-                        }}
-                        className="gap-4"
-                        startContent={<ListChecksIcon size={24} strokeWidth={1.333} />}
-                        key="curriculum"
-                    >
+                </ListboxItem>
+                <ListboxItem
+                    classNames={{
+                        title: "text-base",
+                        base: `!py-2 rounded-none !bg-transparent ${isSelected(PanelSelected.Curriculum)}`,
+                    }}
+                    className="gap-4"
+                    startContent={<ListChecksIcon size={24} strokeWidth={4/3} />}
+                    key="curriculum"
+                >
           Curriculum
-                    </ListboxItem>
-                </Listbox>            
-            </CardBody>
-        </Card>
+                </ListboxItem>
+            </Listbox>    
+        </div>        
     )
 }
