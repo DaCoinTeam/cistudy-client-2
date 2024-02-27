@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { PreviewVideoCard } from "./PreviewVideoCard"
+import { PreviewCard } from "./PreviewCard"
 import { InfoCard } from "./InfoCard"
 import { TargetsCard } from "./TargetsCard"
 import { Spacer } from "@nextui-org/react"
@@ -15,7 +15,7 @@ export const DetailsPanel = () => {
                 <TargetsCard />
             </div>    
             <div className="col-span-2 h-fit">
-                <PreviewVideoCard />
+                <PreviewCard />
                 <Spacer y={6}/>
                 <PriceCard />
             </div>
