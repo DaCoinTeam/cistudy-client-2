@@ -8,7 +8,8 @@ export const DetailsTabs = () => {
     return (
         <div className="flex w-full flex-col">
             <Tabs aria-label="Options" color="primary" classNames={{
-                panel: "!px-0 !pt-6"
+                panel: "!px-0 !pt-6",
+                tabContent: "group-data-[selected=true]:text-secondary-foreground"
             }}>
                 <Tab key="followers"  title={
                     <div className="flex items-center gap-2">
@@ -21,7 +22,7 @@ export const DetailsTabs = () => {
                 <Tab key="courses" title={
                     <div className="flex items-center gap-2">
                         <BookOpenIcon size={20} strokeWidth={4/3}/>
-                        <div> Course </div>
+                        <div> Courses </div>
                     </div>
                 }>
                     <CoursesTabContent/>
