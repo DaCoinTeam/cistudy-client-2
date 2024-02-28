@@ -73,7 +73,7 @@ export const TargetItem = (props: TargetItemProps) => {
         <Draggable disabled position={position} onDrag={onDrag} onStop={onStop}>
             <div>
                 <Input
-                    startContent={<CheckCheckIcon size={21} strokeWidth={4/3}/>}
+                    startContent={<CheckCheckIcon size={20} strokeWidth={4/3}/>}
                     labelPlacement="outside"
                     label=""
                     id="content"

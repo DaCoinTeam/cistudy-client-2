@@ -1,5 +1,5 @@
 import { Input, Link } from "@nextui-org/react"
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { updateCourse } from "@services"
 import { isErrorResponse } from "@common"
 import * as Yup from "yup"
@@ -16,13 +16,20 @@ export const Title = () => {
     const { fetchAndSetCourseManaged } = functions
 
     const [isEdited, setIsEdited] = useState(false)
+    const [title, setTitle] = useState("")
+
+    useEffect(() => { 
+        if (!courseManaged) return
+        const { title } = courseManaged
+        setTitle(title)
+    }, [courseManaged?.title])
 
     const schema =  Yup.object().shape({
         title: Yup.string().required("Title is required"),
     })
 
     const shape: ValidationShape = {
-        title: courseManaged?.title ?? "",
+        title,
     }
 
     const isValid = schema.isValidSync(shape)
@@ -40,7 +47,7 @@ export const Title = () => {
     const onPress = async () => {
         if (isEdited) {
             if (courseManaged === null) return
-            const { courseId, title } = courseManaged
+            const { courseId } = courseManaged
             const response = await updateCourse({
                 data: {
                     courseId,
@@ -70,7 +77,7 @@ export const Title = () => {
     return (
         <Input
             label="Title"
-            value={courseManaged?.title}
+            value={title}
             onValueChange={onValueChange}
             isInvalid={!isValid}
             errorMessage={errors.title}

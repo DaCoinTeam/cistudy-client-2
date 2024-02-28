@@ -18,10 +18,10 @@ export const PreviewCard = (props: PreviewCardProps) => {
 
     return (
         <Card shadow="none" className={`${className} border border-divider`}>
-            <CardHeader className="p-4 pb-0 text-xl font-semibold"> Preview </CardHeader>
-            <CardBody className="gap-4 p-4">
+            <CardHeader className="p-4 pb-2 text-xl font-semibold leading-none"> Preview </CardHeader>
+            <CardBody className="gap-3 p-4">
                 <VideoPlayer src={getAssetUrl(courseManaged?.previewVideoId)} />
-                <div className="flex gap-4">
+                <div className="flex gap-3">
                     <EditPreviewVideoButton className="flex-1"/>
                     <MoreButton />
                 </div>

@@ -4,7 +4,6 @@ import { PreviewCard } from "./PreviewCard"
 import { InfoCard } from "./InfoCard"
 import { TargetsCard } from "./TargetsCard"
 import { Spacer } from "@nextui-org/react"
-import { PriceCard } from "./PriceCard"
 
 export const DetailsPanel = () => {
     return (

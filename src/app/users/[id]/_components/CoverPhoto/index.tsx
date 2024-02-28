@@ -12,6 +12,7 @@ interface CoverPhotoProps {
   className?: string;
 }
 export const CoverPhoto = (props: CoverPhotoProps) => {
+    console.log("Recalled")
     const { className } = props
 
     const fileInputRef = useRef<HTMLInputElement>(null)
@@ -58,7 +59,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
                 <Image
                     alt="coverPhoto"
                     radius="none"
-                    src={getAssetUrl(user?.coverPhotoId)}
+                    src={getAssetUrl(user?.coverPhotoId, { forceUpdate: true })}
                     className="w-full"
                     classNames={{
                         wrapper: "w-full !max-w-full absolute",

@@ -11,7 +11,7 @@ export const EditProfileModal = () => {
             <Button
                 className="bg-content2"
                 onPress={onOpen}
-                startContent={<PenIcon className="21" strokeWidth={4/3} />}
+                startContent={<PenIcon size={20} strokeWidth={4/3} />}
             >
           Edit
             </Button>
@@ -19,11 +19,11 @@ export const EditProfileModal = () => {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="px-4 py-3 text-xl font-semibold">Edit</ModalHeader>
-                            <ModalBody className="p-4 pt-0">
+                            <ModalHeader className="p-6 pb-2 text-xl font-semibold leading-none">Edit</ModalHeader>
+                            <ModalBody className="p-6">
                                 <Username />
                             </ModalBody>
-                            <ModalFooter className="p-4 pt-0">
+                            <ModalFooter className="p-6 gap-4 pt-2">
                                 <Button color="danger" variant="light" onPress={onClose}>
                     Close
                                 </Button>

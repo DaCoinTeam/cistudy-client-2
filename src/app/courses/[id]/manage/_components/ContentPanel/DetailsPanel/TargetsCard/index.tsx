@@ -31,8 +31,8 @@ export const TargetsCard = (props: TargetsCardProps) => {
 
     return (
         <Card shadow="none" className={`${className} border border-divider`}>
-            <CardHeader className="p-4 pb-0 text-xl font-semibold"> Targets </CardHeader>
-            <CardBody className="p-4 gap-4">
+            <CardHeader className="p-4 pb-2 text-xl font-semibold leading-none"> Targets </CardHeader>
+            <CardBody className="p-4 gap-3">
                 {renderTargetCards()}
                 <AddTargetItem key="addTarget"/>
             </CardBody>

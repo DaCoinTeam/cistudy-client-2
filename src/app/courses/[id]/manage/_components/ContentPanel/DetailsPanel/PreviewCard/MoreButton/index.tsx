@@ -41,12 +41,12 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
             >
                 <DropdownTrigger>
                     <Button className={`${className} bg-content2`} isIconOnly>
-                        <MoreHorizontal size={21} strokeWidth={4/3} />
+                        <MoreHorizontal size={20} strokeWidth={4/3} />
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
                     <DropdownItem
-                        startContent={<PictureInPicture2Icon size={21} strokeWidth={4/3} />}
+                        startContent={<PictureInPicture2Icon size={20} strokeWidth={4/3} />}
                         onPress={onPress}
                         key="editThumbnail"
                     >

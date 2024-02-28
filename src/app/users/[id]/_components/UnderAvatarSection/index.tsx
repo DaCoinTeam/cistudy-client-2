@@ -5,7 +5,7 @@ import { UserDetailsContext } from "../../_hooks"
 import { useSelector } from "react-redux"
 import { RootState } from "@redux"
 import { EditProfileModal } from "./EditProfileModal"
-import { FollowOrUnfollowButton } from "./EditProfileModal/FollowOrUnfollowButton"
+import { FollowOrUnfollowButton } from "./FollowOrUnfollowButton"
 
 interface UnderAvatarSectionProps {
   className?: string;
@@ -33,7 +33,7 @@ export const UnderAvatarSection = (props: UnderAvatarSectionProps) => {
         <div className={`${className} flex justify-between items-center`}>
             <div>
                 <div className="text-3xl font-semibold">
-                    {user?.username ?? "Unnamed"}{" "}
+                    {user?.username ?? "Unnamed"}
                 </div>
                 <Spacer y={0.5} />
                 <div className="text-sm">{user?.numberOfFollowers} followers</div>

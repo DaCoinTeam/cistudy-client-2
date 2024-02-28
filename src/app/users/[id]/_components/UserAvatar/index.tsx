@@ -59,7 +59,7 @@ export const UserAvatar = (props: UserAvatarProps) => {
                     <Avatar
                         isBordered
                         className="w-44 h-44"
-                        src={getAssetUrl(user?.avatarId)}
+                        src={getAssetUrl(user?.avatarId, { forceUpdate: true })}
                     />
                     {isOwnProfile ? (
                         <Button

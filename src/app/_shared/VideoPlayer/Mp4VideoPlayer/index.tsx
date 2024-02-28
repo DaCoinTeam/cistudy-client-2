@@ -26,6 +26,8 @@ export const Mp4VideoPlayerContext =
   createContext<Mp4VideoPlayerContextValue | null>(null)
 
 export const Mp4VideoPlayer = (props: Mp4VideoPlayerProps) => {
+    const { src, className } = props
+
     const playerRef = useRef<HTMLVideoElement | null>(null)
     const [state, dispatch] = useMp4VideoPlayerReducer()
 
@@ -33,7 +35,7 @@ export const Mp4VideoPlayer = (props: Mp4VideoPlayerProps) => {
         const handleEffect = async () => {
             const player = playerRef.current
             if (player === null) return
-            player.src = props.src
+            player.src = src
 
             player.addEventListener("loadedmetadata", () => {
                 dispatch({
@@ -102,7 +104,7 @@ export const Mp4VideoPlayer = (props: Mp4VideoPlayerProps) => {
     return (
         <Mp4VideoPlayerContext.Provider value={mp4VideoPlayerContextValue}>
             <div
-                className="w-full h-fit relative bg-content2 rounded-large overflow-hidden"
+                className={`w-full h-fit relative bg-content2 rounded-large overflow-hidden ${className ?? ""}`}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >

@@ -28,7 +28,7 @@ export const AddLectureItem = () => {
     }
 
     return (
-        <Button onPress={onPress} fullWidth startContent={<PlusIcon size={21} strokeWidth={4/3}/>} className="bg-content1 h-[4rem]">
+        <Button onPress={onPress} fullWidth startContent={<PlusIcon size={20} strokeWidth={4/3}/>} className="bg-content1 h-[4rem]">
             Add Lecture
         </Button>
     )

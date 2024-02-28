@@ -17,7 +17,7 @@ export const SectionsCard = () => {
             <Accordion
                 selectionMode="multiple"
                 variant="splitted"
-                className="!px-0 gap-4"
+                className="!px-0 gap-3"
                 itemClasses={{
                     trigger: "!py-3",
                     base: "!shadow-none !bg-content2",
@@ -31,6 +31,7 @@ export const SectionsCard = () => {
                         classNames={{
                             title: "text-base",
                             content: "flex flex-col gap-3 py-3",
+
                         }}
                     >
                         <SectionItem key={section.sectionId} section={section} />
@@ -42,10 +43,10 @@ export const SectionsCard = () => {
 
     return (
         <Card shadow="none" className="border-divider border">
-            <CardHeader className="p-4 pb-0 text-xl font-semibold">
+            <CardHeader className="p-4 pb-2 text-xl font-semibold leading-none">
                 Sections
             </CardHeader>
-            <CardBody className="p-4 gap-4 pt-4">
+            <CardBody className="p-4 gap-3">
                 {renderSections()}
                 <AddSectionItem />
             </CardBody>

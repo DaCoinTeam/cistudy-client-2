@@ -11,10 +11,12 @@ import {
     UserDetailsAction,
     UserDetailsState,
     useUserDetailsReducer,
-} from "./useUserDetails"
+} from "./useUserDetailsReducer"
 import { findOneUser } from "@services"
 import { useParams } from "next/navigation"
 import { isErrorResponse } from "@common"
+import { useSelector } from "react-redux"
+import { RootState } from "@redux"
 
 export interface UserDetailsContextValue {
   state: UserDetailsState;
@@ -33,12 +35,16 @@ export const UserDetailsProviders = ({ children }: { children: ReactNode }) => {
     const params = useParams()
     const userId = params.id as string
 
+    const profile = useSelector((state: RootState) => state.auth.profile)
+
     const fetchAndSetUser = useCallback(async () => {
+        if (profile === null) return
+
         const response = await findOneUser(
             {
                 userId,
                 options: {
-                    followerId: "8563a37f-17dc-4576-a0b8-a91bf3743e79"
+                    followerId: profile.userId
                 }
             },
             {
@@ -48,7 +54,7 @@ export const UserDetailsProviders = ({ children }: { children: ReactNode }) => {
                 avatarId: true,
                 coverPhotoId: true,
                 followed: true,
-                numberOfFollowers: true
+                numberOfFollowers: true,
             }
         )
         if (!isErrorResponse(response)) {
@@ -59,14 +65,14 @@ export const UserDetailsProviders = ({ children }: { children: ReactNode }) => {
         } else {
             console.log(response)
         }
-    }, [])
+    }, [profile])
 
     useEffect(() => {
         const handleEffect = async () => {
             await fetchAndSetUser()
         }
         handleEffect()
-    }, [])
+    }, [profile])
 
     const userDetailsContextValue: UserDetailsContextValue = useMemo(
         () => ({

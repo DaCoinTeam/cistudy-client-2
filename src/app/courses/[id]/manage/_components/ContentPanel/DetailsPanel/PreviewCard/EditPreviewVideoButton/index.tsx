@@ -50,7 +50,7 @@ export const EditPreviewVideoButton = (props: EditPreviewVideoButtonProps) => {
             <Button
                 className={`${className} bg-content2`}
                 onPress={onPress}
-                startContent={<PlaySquare  size={21} strokeWidth={4/3} />}
+                startContent={<PlaySquare  size={20} strokeWidth={4/3} />}
             >
                Edit Video
             </Button>

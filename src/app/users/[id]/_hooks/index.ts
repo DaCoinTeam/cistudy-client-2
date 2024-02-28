@@ -1,2 +1,2 @@
 export * from "./UserDetailsProviders"
-export * from "./useUserDetails"
+export * from "./useUserDetailsReducer"

@@ -1,5 +1,5 @@
 import { Link, Textarea } from "@nextui-org/react"
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import * as Yup from "yup"
 import { ValidationError } from "yup"
 import { updateCourse } from "@services"
@@ -11,19 +11,26 @@ interface ValidationShape {
 }
 
 export const Description = () => {
-    const { state, dispatch, functions } = useContext(ManageContext)!
+    const { state, functions } = useContext(ManageContext)!
     const { courseManaged } = state
     const { fetchAndSetCourseManaged } = functions
 
-
     const [isEdited, setIsEdited] = useState(false)
+    const [description, setDescription] = useState("")
+
+    useEffect(() => {
+        if (!courseManaged) return
+        const { description } = courseManaged
+        setDescription(description)
+
+    }, [courseManaged?.description])
 
     const schema = Yup.object().shape({
         description: Yup.string().required("Description is required"),
     })
 
     const shape: ValidationShape = {
-        description: courseManaged?.description ?? "",
+        description,
     }
 
     const isValid = schema.isValidSync(shape)
@@ -38,16 +45,7 @@ export const Description = () => {
         }
     }
 
-    const onValueChange = (value: string) => {
-        if (courseManaged === null) return
-        dispatch({
-            type: "SET_COURSE_MANAGED",
-            payload: {
-                ...courseManaged,
-                description: value,
-            },
-        })
-    }
+    const onValueChange = (value: string) => setDescription(value)
 
     const onPress = async () => {
         if (isEdited) {
@@ -71,7 +69,7 @@ export const Description = () => {
     return (
         <Textarea
             label="Description"
-            value={courseManaged?.description}
+            value={description}
             onValueChange={onValueChange}
             isInvalid={!isValid}
             errorMessage={errors.description}
