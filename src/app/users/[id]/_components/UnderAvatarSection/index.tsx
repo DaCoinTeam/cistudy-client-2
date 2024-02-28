@@ -36,7 +36,7 @@ export const UnderAvatarSection = (props: UnderAvatarSectionProps) => {
                     {user?.username ?? "Unnamed"}{" "}
                 </div>
                 <Spacer y={0.5} />
-                <div className="text-sm">123 followers</div>
+                <div className="text-sm">{user?.numberOfFollowers} followers</div>
             </div>
             <div className="gap-4 items-center flex">
                 {renderButton()}

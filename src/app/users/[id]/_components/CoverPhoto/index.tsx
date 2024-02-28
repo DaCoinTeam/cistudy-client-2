@@ -53,7 +53,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
     return (
         <>
             <div
-                className={`${className} absolute grid content-center overflow-hidden`}
+                className={`${className} absolute overflow-hidden`}
             >
                 <Image
                     alt="coverPhoto"
@@ -66,13 +66,15 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
                 />
                 {
                     isOwnProfile ? (
-                        <Button
-                            onPress={onPress}
-                            className="z-10 w-fit bg-content2"
-                            startContent={<ImageUpIcon size={24} strokeWidth={4/3} />}
-                        >
+                        <div className="w-full h-full max-w-[1280px] m-auto relative">
+                            <Button
+                                onPress={onPress}
+                                className="z-10 w-fit bg-content2 absolute bottom-6 right-6"
+                                startContent={<ImageUpIcon size={24} strokeWidth={4/3} />}
+                            >
             Upload cover photo
-                        </Button>
+                            </Button>
+                        </div>
                     ) : null
                 }
             </div>

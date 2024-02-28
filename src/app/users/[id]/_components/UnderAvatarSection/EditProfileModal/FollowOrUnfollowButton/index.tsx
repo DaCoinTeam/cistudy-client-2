@@ -10,14 +10,14 @@ export const FollowOrUnfollowButton = () => {
     const { user } = state
     const { fetchAndSetUser } = functions
 
-    const onFollowPress = async () => {
+    const _upsertFollow = async (followed: boolean) => {
         if (user === null) return
         const { userId } = user
 
         const response = await upsertFollow({
             data: {
                 followedUserId: userId,
-                followed: true,
+                followed,
             },
         })
         if (!isErrorResponse(response)) {
@@ -27,22 +27,8 @@ export const FollowOrUnfollowButton = () => {
         }
     }
 
-    const onUnfollowPress = async () => {
-        if (user === null) return
-        const { userId } = user
-
-        const response = await upsertFollow({
-            data: {
-                followedUserId: userId,
-                followed: false,
-            },
-        })
-        if (!isErrorResponse(response)) {
-            fetchAndSetUser()
-        } else {
-            console.log(response)
-        }
-    }
+    const onFollowPress = async () => await _upsertFollow(true)
+    const onUnfollowPress = async () => await _upsertFollow(false)
 
     return (
         <>
@@ -50,7 +36,7 @@ export const FollowOrUnfollowButton = () => {
                 <Button
                     onPress={onUnfollowPress}
                     className="bg-content2"
-                    startContent={<UserMinus2Icon className="21" strokeWidth={4 / 3} />}
+                    startContent={<UserMinus2Icon className="21" strokeWidth={4/3} />}
                 >
           Unfollow
                 </Button>
@@ -58,7 +44,7 @@ export const FollowOrUnfollowButton = () => {
                 <Button
                     onPress={onFollowPress}
                     className="bg-content2"
-                    startContent={<UserPlus2Icon className="21" strokeWidth={4 / 3} />}
+                    startContent={<UserPlus2Icon className="21" strokeWidth={4/3} />}
                 >
           Follow
                 </Button>

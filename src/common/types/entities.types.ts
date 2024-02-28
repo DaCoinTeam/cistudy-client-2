@@ -57,6 +57,7 @@ export interface UserEntity {
   courses: Array<CourseEntity>;
   //graphql
   followed?: boolean
+  numberOfFollowers?: number
 }
 
 export interface PostEntity {
