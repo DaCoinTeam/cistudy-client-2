@@ -2,7 +2,7 @@ import { Button } from "@nextui-org/react"
 import { UserMinus2Icon, UserPlus2Icon } from "lucide-react"
 import React, { useContext } from "react"
 import { UserDetailsContext } from "../../../../_hooks"
-import { upsertFollow } from "@services"
+import { followOrUnfollow } from "@services"
 import { isErrorResponse } from "@common"
 
 export const FollowOrUnfollowButton = () => {
@@ -10,14 +10,13 @@ export const FollowOrUnfollowButton = () => {
     const { user } = state
     const { fetchAndSetUser } = functions
 
-    const _upsertFollow = async (followed: boolean) => {
+    const onPress = async () => {
         if (user === null) return
         const { userId } = user
 
-        const response = await upsertFollow({
+        const response = await followOrUnfollow({
             data: {
                 followedUserId: userId,
-                followed,
             },
         })
         if (!isErrorResponse(response)) {
@@ -27,28 +26,19 @@ export const FollowOrUnfollowButton = () => {
         }
     }
 
-    const onFollowPress = async () => await _upsertFollow(true)
-    const onUnfollowPress = async () => await _upsertFollow(false)
-
     return (
-        <>
-            {user?.followed ? (
-                <Button
-                    onPress={onUnfollowPress}
-                    className="bg-content2"
-                    startContent={<UserMinus2Icon className="21" strokeWidth={4/3} />}
-                >
-          Unfollow
-                </Button>
-            ) : (
-                <Button
-                    onPress={onFollowPress}
-                    className="bg-content2"
-                    startContent={<UserPlus2Icon className="21" strokeWidth={4/3} />}
-                >
-          Follow
-                </Button>
-            )}
-        </>
+        <Button
+            onPress={onPress}
+            className="bg-content2"
+            startContent={
+                user?.followed ? (
+                    <UserMinus2Icon className="21" strokeWidth={4 / 3} />
+                ) : (
+                    <UserPlus2Icon className="21" strokeWidth={4 / 3} />
+                )
+            }
+        >
+            {user?.followed ? "Unfollow" : "Follow"}
+        </Button>
     )
 }

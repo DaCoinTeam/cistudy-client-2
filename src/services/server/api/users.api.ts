@@ -15,18 +15,17 @@ import axios, { AxiosError } from "axios"
 
 const BASE_URL = `${endpointConfig().api}/users`
 
-export const upsertFollow = async (
+export const followOrUnfollow = async (
     params: {
     data: {
       followedUserId: string;
-      followed: boolean;
     };
   },
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string | ErrorResponse> => {
     try {
         const { data } = params
-        const url = `${BASE_URL}/upsert-follow`
+        const url = `${BASE_URL}/follow-or-unfollow`
 
         const response = await axios.patch(url, data, {
             headers: {
@@ -49,7 +48,7 @@ export const upsertFollow = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await upsertFollow(params, AuthTokenType.Refresh)
+            return await followOrUnfollow(params, AuthTokenType.Refresh)
         return _ex
     }
 }
