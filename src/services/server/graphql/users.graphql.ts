@@ -79,10 +79,14 @@ export const findManyFollowers = async (
 export const findManyCreatedCourses = async (
     params: {
     userId: string;
+    options?: Partial<{
+        skip: number;
+        take: number;    
+    }>
   },
     schema?: Schema<DeepPartial<CourseEntity>>
 ): Promise<Array<CourseEntity> | ErrorResponse> => {
-    const { userId } = params
+    const { userId, options } = params
     try {
         const payload = buildPayloadString(schema)
         const { data: graphqlData } = await client().query({
@@ -96,6 +100,7 @@ export const findManyCreatedCourses = async (
             variables: {
                 data: {
                     userId,
+                    options
                 },
             },
         })

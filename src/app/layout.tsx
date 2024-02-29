@@ -8,7 +8,7 @@ import { Navbar } from "./_components"
 import { ReactNode } from "react"
 const font = Open_Sans({ subsets: ["latin"] })
 
-const RootLayout = ({children} : {children: ReactNode}) => {
+const Layout = ({children} : {children: ReactNode}) => {
     return (
         <ReduxProviders>
             <html lang="en">
@@ -25,4 +25,4 @@ const RootLayout = ({children} : {children: ReactNode}) => {
     )
 }
 
-export default RootLayout
+export default Layout

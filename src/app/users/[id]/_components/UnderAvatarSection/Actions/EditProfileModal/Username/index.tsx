@@ -6,8 +6,8 @@ import * as Yup from "yup"
 import { ValidationError } from "yup"
 import { useSelector } from "react-redux"
 import { RootState } from "@redux"
-import { RootContext } from "../../../../../../_hooks"
-import { UserDetailsContext } from "../../../../_hooks"
+import { RootContext } from "../../../../../../../_hooks"
+import { UserDetailsContext } from "../../../../../_hooks"
 
 interface ValidationShape {
     username: string

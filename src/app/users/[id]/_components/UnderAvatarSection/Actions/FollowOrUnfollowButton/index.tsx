@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/react"
 import { UserMinus2Icon, UserPlus2Icon } from "lucide-react"
 import React, { useContext } from "react"
-import { UserDetailsContext } from "../../../_hooks"
+import { UserDetailsContext } from "../../../../_hooks"
 import { followOrUnfollow } from "@services"
 import { isErrorResponse } from "@common"
 

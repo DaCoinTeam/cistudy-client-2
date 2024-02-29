@@ -1,10 +1,11 @@
-import { Card, CardBody } from "@nextui-org/react"
+import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import React, { useContext } from "react"
 import {
     CoursesTabContentContext,
     CoursesTabContentProviders,
 } from "./CoursesTabContentProviders"
 import { CourseCard } from "./CourseCard"
+import { Actions } from "./Actions"
 
 const WrappedCoursesTabContent = () => {
     const { state } = useContext(CoursesTabContentContext)!
@@ -20,6 +21,10 @@ const WrappedCoursesTabContent = () => {
 
     return (
         <Card shadow="none" className="border border-divider">
+            <CardHeader className="p-6 pb-2 justify-between flex items-center"> 
+                <div className="text-xl font-semibold"> Courses </div>
+                <Actions />
+            </CardHeader>
             <CardBody className="p-6">{renderCourses()}</CardBody>
         </Card>
     )
