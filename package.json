@@ -15,6 +15,7 @@
     "@heroicons/react": "^2.1.1",
     "@nextui-org/react": "^2.2.9",
     "@reduxjs/toolkit": "^2.1.0",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@tiptap/extension-code": "^2.2.4",
     "@tiptap/extension-code-block": "^2.2.4",
     "@tiptap/extension-color": "^2.2.4",

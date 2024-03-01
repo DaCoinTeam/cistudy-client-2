@@ -5,13 +5,14 @@ import { isErrorResponse } from "@common"
 import * as Yup from "yup"
 import { ValidationError } from "yup"
 import { ManageContext } from "../../../../../_hooks"
+import { SaveIcon, PencilIcon } from "lucide-react"
 
 interface ValidationShape {
     title: string
 }
 
 export const Title = () => {
-    const { state, dispatch, functions } = useContext(ManageContext)!
+    const { state, functions } = useContext(ManageContext)!
     const { courseManaged } = state
     const { fetchAndSetCourseManaged } = functions
 
@@ -25,7 +26,7 @@ export const Title = () => {
     }, [courseManaged?.title])
 
     const schema =  Yup.object().shape({
-        title: Yup.string().required("Title is required"),
+        //title: Yup.string().required("Title is required"),
     })
 
     const shape: ValidationShape = {
@@ -63,16 +64,7 @@ export const Title = () => {
         setIsEdited(!isEdited)
     }
 
-    const onValueChange = (value: string) => {
-        if (courseManaged === null) return
-        dispatch({
-            type: "SET_COURSE_MANAGED",
-            payload: {
-                ...courseManaged,
-                title: value
-            }
-        })
-    }
+    const onValueChange = (value: string) => setTitle(value)
 
     return (
         <Input
@@ -89,7 +81,7 @@ export const Title = () => {
                     as="button"
                     className="text-sm"
                 >
-                    {isEdited ? "Save" : "Edit"}
+                    {isEdited ? <SaveIcon size={20} strokeWidth={4/3}/> : <PencilIcon size={20} strokeWidth={4/3}/>}
                 </Link>
             }
         />

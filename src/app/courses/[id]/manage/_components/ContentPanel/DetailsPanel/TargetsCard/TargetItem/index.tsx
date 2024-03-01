@@ -4,7 +4,7 @@ import Draggable, { DraggableData, DraggableEvent } from "react-draggable"
 import { CourseTargetEntity, Vector2, isErrorResponse } from "@common"
 import { deleteCourseTarget, updateCourseTarget } from "@services"
 import { ManageContext } from "../../../../../_hooks"
-import { CheckCheckIcon } from "lucide-react"
+import { CheckCheckIcon, PencilIcon, SaveIcon, TrashIcon } from "lucide-react"
 
 interface TargetItemProps {
   courseTarget: CourseTargetEntity;
@@ -82,10 +82,10 @@ export const TargetItem = (props: TargetItemProps) => {
                     endContent={
                         <div className="flex gap-4">
                             <Link className="text-sm" as="button" onPress={onPress}>
-                                {isEdited ? "Save" : "Edit"}
+                                {isEdited ? <SaveIcon size={20} strokeWidth={4/3}/> : <PencilIcon size={20} strokeWidth={4/3}/>}
                             </Link>
                             <Link onPress={onRemovePress} className="text-sm" as="button">
-                Remove
+                                <TrashIcon size={20} strokeWidth={4/3}/>
                             </Link>
                         </div>
                     }

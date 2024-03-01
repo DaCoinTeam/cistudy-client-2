@@ -1,11 +1,12 @@
 import { Input, Link } from "@nextui-org/react"
 import React, { useContext, useState } from "react"
 import { isErrorResponse } from "@common"
-import { LectureItemContext } from "../../.."
+import { LectureItemContext } from "../../../.."
 import * as Yup from "yup"
 import { ValidationError } from "yup"
 import { updateLecture } from "@services"
-import { SectionItemContext } from "../../../.."
+import { SectionItemContext } from "../../../../.."
+import { PencilIcon, SaveIcon } from "lucide-react"
 
 interface ValidationShape {
   title: string;
@@ -83,7 +84,7 @@ export const Title = () => {
                     as="button"
                     className="text-sm"
                 >
-                    {isEdited ? "Save" : "Edit"}
+                    {isEdited ? <SaveIcon size={20} strokeWidth={4/3}/> : <PencilIcon size={20} strokeWidth={4/3}/>}
                 </Link>
             }
         />

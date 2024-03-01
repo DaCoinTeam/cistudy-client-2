@@ -1,10 +1,9 @@
 import React, { createContext, useMemo } from "react"
 import { LectureEntity } from "@common"
 import { Image } from "@nextui-org/react"
-import { ResourcesModal } from "./ResourcesModal"
 import { getAssetUrl } from "@services"
-import { MoreButton } from "./MoreButton"
 import { Clock1 } from "lucide-react"
+import { Actions } from "./Actions"
 
 interface LectureItemProps {
   lecture: LectureEntity;
@@ -31,7 +30,7 @@ export const LectureItem = (props: LectureItemProps) => {
 
     return (
         <LectureItemContext.Provider value={LectureItemContextValue}>
-            <div className="bg-content1 rounded-large p-2">
+            <div className="bg-content1 rounded-large p-3">
                 <div className="justify-between flex items-center w-full">
                     <div className="flex gap-4 items-center">
                         <Image
@@ -48,10 +47,7 @@ export const LectureItem = (props: LectureItemProps) => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <ResourcesModal />
-                        <MoreButton />
-                    </div>
+                    <Actions />
                 </div>
             </div>
         </LectureItemContext.Provider>

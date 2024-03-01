@@ -8,7 +8,7 @@ import {
     ModalBody,
     Spacer,
     Button,
-    Divider,
+    ModalFooter,
 } from "@nextui-org/react"
 import React, {
     createContext,
@@ -26,8 +26,8 @@ import {
     ResourcesModalState,
     useResourcesModalReducer,
 } from "./useResourcesModalReducer"
-import { LectureItemContext } from ".."
-import { FolderIcon } from "lucide-react"
+import { LectureItemContext } from "../.."
+import { FolderIcon, UploadCloudIcon } from "lucide-react"
 
 interface ResourceModalContextValue {
   state: ResourcesModalState;
@@ -102,39 +102,57 @@ export const WrappedResourcesModal = () => {
     }, [])
 
     const renderResources = () => (
-        <div className="flex flex-col gap-3">
-            {resources.map((resource) => (
-                <ResourceItem key={resource.resourceId} resource={resource} />
-            ))}
+        <div>
+            <div className="gap-2 items-center flex mt-2">
+                <UploadCloudIcon size={28} strokeWidth={4 / 3} />
+                <div className="text-lg font-semibold"> Uploaded </div>
+            </div>
+            <Spacer y={4} />
+            <div className="flex flex-col gap-4">
+                {resources.map((resource) => (
+                    <ResourceItem key={resource.resourceId} resource={resource} />
+                ))}
+            </div>
         </div>
     )
 
     return (
         <ResourceModalContext.Provider value={resourceModalContextValue}>
             <ModalContent>
-                <ModalHeader className="p-4 pb-0 text-xl">Resources</ModalHeader>
-                <ModalBody className="p-4 gap-4">
-                    <Dropzone onDrop={onDrop}>
-                        {({ getRootProps, getInputProps }) => (
-                            <section>
-                                <div {...getRootProps()}>
-                                    <input {...getInputProps()} />
-                                    <div className="cursor-pointer border-dashed rounded-large border-4 h-48 grid place-items-center">
-                                        <div>
-                                            <DocumentArrowUpIcon className="w-20 h-20 text-foreground-500" />
-                                            <Spacer y={1}/>
-                                            <div className="text-sm text-foreground-500">
-                          Upload file(s)
+                {(onClose) => (
+                    <>
+                        <ModalHeader className="p-6 pb-0 text-xl">Resources</ModalHeader>
+                        <ModalBody className="p-6 pb-0 gap-4">
+                            <Dropzone onDrop={onDrop}>
+                                {({ getRootProps, getInputProps }) => (
+                                    <section>
+                                        <div {...getRootProps()}>
+                                            <input {...getInputProps()} />
+                                            <div className="cursor-pointer border-dashed rounded-large border-4 h-48 grid place-items-center">
+                                                <div>
+                                                    <DocumentArrowUpIcon className="w-20 h-20 text-foreground-500" />
+                                                    <Spacer y={1} />
+                                                    <div className="text-sm text-foreground-500">
+                            Upload file(s)
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>  
-                                    </div>
-                                </div>
-                            </section>
-                        )}
-                    </Dropzone>
-                    <Divider/>
-                    {renderResources()}
-                </ModalBody>
+                                        </div>
+                                    </section>
+                                )}
+                            </Dropzone>
+                        </ModalBody>
+                        <ModalBody className="p-6 gap-4">{renderResources()}</ModalBody>
+                        <ModalFooter className="p-6 gap-4 pt-0">
+                            <Button color="danger" variant="light" onPress={onClose}>
+                Close
+                            </Button>
+                            <Button color="primary" onPress={onClose}>
+                Action
+                            </Button>
+                        </ModalFooter>
+                    </>
+                )}
             </ModalContent>
         </ResourceModalContext.Provider>
     )
@@ -145,8 +163,12 @@ export const ResourcesModal = () => {
 
     return (
         <>
-            <Button onPress={onOpen} className="bg-content2" startContent={<FolderIcon size={20} strokeWidth={4/3}/>}>
-                Resources
+            <Button
+                onPress={onOpen}
+                className="bg-content2"
+                startContent={<FolderIcon size={20} strokeWidth={4 / 3} />}
+            >
+        Resources
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
                 <WrappedResourcesModal />

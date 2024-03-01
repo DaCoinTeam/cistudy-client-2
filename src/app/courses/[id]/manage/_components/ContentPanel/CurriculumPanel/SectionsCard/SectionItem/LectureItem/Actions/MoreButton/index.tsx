@@ -9,8 +9,8 @@ import {
 } from "@nextui-org/react"
 import { MoreHorizontal, PenIcon, TrashIcon } from "lucide-react"
 import { deleteLecture } from "@services"
-import { LectureItemContext } from ".."
-import { SectionItemContext } from "../.."
+import { LectureItemContext } from "../.."
+import { SectionItemContext } from "../../.."
 import { isErrorResponse } from "@common"
 import { EditModalRef, EditModalRefSelectors } from "./EditModalRef"
 

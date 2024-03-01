@@ -5,6 +5,7 @@ import { ValidationError } from "yup"
 import { updateCourse } from "@services"
 import { isErrorResponse } from "@common"
 import { ManageContext } from "../../../../../_hooks"
+import { SaveIcon, PencilIcon } from "lucide-react"
 
 interface ValidationShape {
   description: string;
@@ -26,7 +27,7 @@ export const Description = () => {
     }, [courseManaged?.description])
 
     const schema = Yup.object().shape({
-        description: Yup.string().required("Description is required"),
+        //description: Yup.string().required("Description is required"),
     })
 
     const shape: ValidationShape = {
@@ -82,7 +83,7 @@ export const Description = () => {
                     as="button"
                     type={isEdited ? "submit" : undefined}
                 >
-                    {isEdited ? "Save" : "Edit"}
+                    {isEdited ? <SaveIcon size={20} strokeWidth={4/3}/> : <PencilIcon size={20} strokeWidth={4/3}/>}
                 </Link>
             }
         />

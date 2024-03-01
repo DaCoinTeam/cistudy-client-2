@@ -13,17 +13,16 @@ import {
     useManageCoursesPanelReducer,
 } from "./useManageCoursesPanelReducer"
 import { findManyCreatedCourses } from "@services"
-import { CourseEntity, ErrorResponse } from "@common"
+import { CourseEntity, ErrorResponse, } from "@common"
 import { UserDetailsContext } from "../../../../_hooks"
-import useSWR from "swr"
+import useSWR, { SWRResponse } from "swr"
 
 export interface ManageCoursesPanelContextValue {
   state: ManageCoursesPanelState;
   dispatch: React.Dispatch<ManageCoursesPanelAction>;
   swr: {
-    data: Array<CourseEntity> | ErrorResponse | undefined,
-    isLoading: boolean
-  },
+    courses: SWRResponse<Array<CourseEntity> | ErrorResponse | undefined>;
+  };
 }
 
 export const ROWS_PER_PAGE = 5
@@ -59,11 +58,12 @@ export const ManageCoursesPanelProviders = ({
                 thumbnailId: true,
                 previewVideoId: true,
                 title: true,
+                description: true
             }
         )
     }, [user, page])
 
-    const { data, isLoading } = useSWR<
+    const coursesSwr = useSWR<
     Array<CourseEntity> | ErrorResponse | undefined
   >([page, user], fetchAndSetCreatedCourses, {
       keepPreviousData: true,
@@ -75,11 +75,10 @@ export const ManageCoursesPanelProviders = ({
             state,
             dispatch,
             swr: {
-                data,
-                isLoading
+                courses: coursesSwr
             },
         }),
-        [state, dispatch, data, isLoading]
+        [state, dispatch, coursesSwr]
     )
 
     return (

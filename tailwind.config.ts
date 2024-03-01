@@ -15,19 +15,21 @@ const config: Config = {
             backgroundImage: {
                 "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
                 "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+                    "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
             },
         },
     },
     darkMode: "class",
     plugins: [nextui({
         themes: {
-            light:  {
+            light: {
                 colors: {
-                    primary: "rgb(20 184 166)",     
+                    primary: "rgb(20 184 166)",
                 },
             }
         }
-    })]
+    }),
+    require("@tailwindcss/line-clamp"),
+    ]
 }
 export default config

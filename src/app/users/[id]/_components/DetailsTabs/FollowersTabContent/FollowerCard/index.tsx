@@ -23,7 +23,6 @@ export const FollowerCard = (props: FollowerCardProps) => {
                     className="w-fit"
                     classNames={{
                         base: "gap-3",
-                        name: "text-base font-semibold",
                     }}
                     name={username}
                     description="Product Designer"

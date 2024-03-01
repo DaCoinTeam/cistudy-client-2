@@ -3,8 +3,8 @@ import { ManageCoursesPanel } from "./ManageCoursesPanel"
 
 export const ContentPanel = () => {
     return (
-        <>
-            <ManageCoursesPanel />
-        </>
+        <div className="grid grid-cols-6">
+            <ManageCoursesPanel className="col-span-6"/>
+        </div>
     )
 }

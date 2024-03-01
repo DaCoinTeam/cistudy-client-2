@@ -19,22 +19,14 @@ export const Actions = (props: ActionsProps) => {
     const profile = useSelector((state: RootState) => state.auth.profile)
 
     const renderButton = () => (
-        <>
-            {user?.userId === profile?.userId ? (
-                <ManageButton />
-            ) : (
-                null
-            )}
-        </>
+        <>{user?.userId === profile?.userId ? <ManageButton /> : null}</>
     )
 
-    return (    
-        <div className="flex items-center gap-6">
-            <SearchBar/>
-            <div className={`${className ?? ""} gap-4 flex items-center`}>
-                {renderButton()}
-                <MoreButton />
-            </div>
-        </div>   
+    return (
+        <div className={`${className ?? ""} gap-4 flex items-center`}>
+            <SearchBar />
+            {renderButton()}
+            <MoreButton />
+        </div>
     )
 }

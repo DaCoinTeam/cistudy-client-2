@@ -4,16 +4,21 @@ import { Settings2Icon } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import React from "react"
 
-export const ManageButton = () => {
+interface ManageButtonProps {
+    className?: string
+}
+export const ManageButton = (props: ManageButtonProps) => {
+    const { className } = props 
+
     const router = useRouter()
     const path = usePathname()
 
     const onPress = () => router.push(`${path}/manage`)
     return (
         <Button
-            className="bg-content2"
+            className={`${className} bg-content2`}
             onPress={onPress}
-            startContent={<Settings2Icon size={21} strokeWidth={4 / 3} />}
+            startContent={<Settings2Icon size={20} strokeWidth={4 / 3} />}
         >
       Manage
         </Button>

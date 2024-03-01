@@ -87,7 +87,7 @@ export const Username = () => {
                     as="button"
                     className="text-sm"
                 >
-                    {isEdited ? "Save" : "Edit"}
+                    {isEdited ? <SaveIcon size={20} strokeWidth={4/3}/> : <PencilIcon size={20} strokeWidth={4/3}/>}
                 </Link>
             }
         />

@@ -16,7 +16,6 @@ export const DetailsPanel = () => {
             <div className="col-span-2 h-fit">
                 <PreviewCard />
             </div>
-          
         </div>
     )
 } 

@@ -12,9 +12,6 @@ export const Sidebar = (props: SidebarProps) => {
         <div className={`${className} border-r border-divider p-6 h-screen sticky top-0`}>
             <Spacer y={16}/>
             <Menu/>
-           
-            {/* <Spacer y={6}/>
-            <Actions /> */}
         </div>
     )
 }

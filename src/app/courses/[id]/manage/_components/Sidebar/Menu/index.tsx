@@ -4,7 +4,7 @@ import { ManageContext } from "../../../_hooks/ManageProviders"
 import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
 import { PanelSelected } from "../../../_hooks"
-import { InfoIcon, ListChecksIcon } from "lucide-react"
+import { BookOpenIcon, ListCollapseIcon } from "lucide-react"
 
 interface MenuProps {
   className?: string;
@@ -47,22 +47,22 @@ export const Menu = (props: MenuProps) => {
             >
                 <ListboxItem
                     classNames={{
-                        title: "text-base",
-                        base: `!py-2 items-center rounded-none !bg-transparent ${isSelected(PanelSelected.Details)}`
+                        title: "text-lg",
+                        base: `!p-4 items-center rounded-none !bg-transparent ${isSelected(PanelSelected.Details)}`
                     }}
                     className="gap-4"
-                    startContent={<InfoIcon size={24} strokeWidth={4/3}/>}
+                    startContent={<ListCollapseIcon size={28} strokeWidth={4/3}/>}
                     key="details"
                 >
           Details
                 </ListboxItem>
                 <ListboxItem
                     classNames={{
-                        title: "text-base",
-                        base: `!py-2 rounded-none !bg-transparent ${isSelected(PanelSelected.Curriculum)}`,
+                        title: "text-lg",
+                        base: `!p-4 rounded-none !bg-transparent ${isSelected(PanelSelected.Curriculum)}`,
                     }}
                     className="gap-4"
-                    startContent={<ListChecksIcon size={24} strokeWidth={4/3} />}
+                    startContent={<BookOpenIcon size={28} strokeWidth={4/3} />}
                     key="curriculum"
                 >
           Curriculum

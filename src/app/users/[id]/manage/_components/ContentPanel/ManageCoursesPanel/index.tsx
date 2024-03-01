@@ -4,24 +4,34 @@ import { Actions } from "./Actions"
 import { CoursesTable } from "./CoursesTable"
 import { ManageCoursesPanelProviders } from "./ManageCoursesPanelProviders"
 
-const WrappedManageCoursesPanel = () => {
+interface ManageCoursesPanelProps {
+    className?: string
+}
+
+const WrappedManageCoursesPanel = (props: ManageCoursesPanelProps) => {
+    const { className } = props
     return (
-        <Card>
-            <CardHeader className="p-6 pb-2 justify-between flex items-center">
-                <div className="text-xl font-semibold"> Courses </div>
-                <Actions />
+        <Card className={`${className ?? ""} border border-divider`} shadow="none">
+            <CardHeader className="p-6 pb-0 inline">
+                <div className="justify-between flex items-center">
+                    <div className="text-xl font-semibold"> Courses </div>
+                    <Actions />
+                </div>
             </CardHeader>
             <CardBody className="p-6">
-                <CoursesTable />
+                <div className="border rounded-large border-divider">
+                    <CoursesTable/>
+                </div>
+
             </CardBody>
         </Card>
     )
 }
 
-export const ManageCoursesPanel = () => {
+export const ManageCoursesPanel = (props: ManageCoursesPanelProps) => {
     return (
         <ManageCoursesPanelProviders>
-            <WrappedManageCoursesPanel/>
+            <WrappedManageCoursesPanel {...props} />
         </ManageCoursesPanelProviders>
     )
 }

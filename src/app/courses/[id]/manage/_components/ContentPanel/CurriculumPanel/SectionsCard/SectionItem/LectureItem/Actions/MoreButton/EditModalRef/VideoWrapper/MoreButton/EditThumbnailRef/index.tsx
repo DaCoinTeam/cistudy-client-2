@@ -1,8 +1,8 @@
 import React, { forwardRef, useContext, useImperativeHandle, useRef } from "react"
 import { isErrorResponse } from "@common"
 import { updateLecture } from "@services"
-import { LectureItemContext } from "../../../.."
-import { SectionItemContext } from "../../../../.."
+import { LectureItemContext } from "../../../../../.."
+import { SectionItemContext } from "../../../../../../.."
 
 
 export interface EditThumbnailRefSelectors {

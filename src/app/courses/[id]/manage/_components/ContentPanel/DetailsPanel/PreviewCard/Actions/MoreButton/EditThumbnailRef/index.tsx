@@ -6,7 +6,7 @@ import React, {
 } from "react"
 import { isErrorResponse } from "@common"
 import { updateCourse } from "@services"
-import { ManageContext } from "../../../../../../_hooks"
+import { ManageContext } from "../../../../../../../_hooks"
 
 export interface EditThumbnailRefSelectors {
     onOpenDirectoryPress: () => void;

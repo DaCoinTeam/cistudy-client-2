@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from "react"
 import { updateCourse } from "@services"
 import { isErrorResponse } from "@common"
-import { ManageContext } from "../../../../../_hooks"
+import { ManageContext } from "../../../../../../_hooks"
 import { Button } from "@nextui-org/react"
 import { PlaySquare } from "lucide-react"
 
