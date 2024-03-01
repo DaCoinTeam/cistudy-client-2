@@ -28,11 +28,11 @@ export const AddTargetItem = () => {
 
     return (
         <Button
-            className="bg-content2"
             onClick={onPress}
+            className="bg-content2"
             startContent={<PlusIcon className="w-4 h-4"/>}
         >
-            Create Target
+            Add Target
         </Button>
     )
 }

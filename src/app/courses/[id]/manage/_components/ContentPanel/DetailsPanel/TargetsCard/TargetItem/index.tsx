@@ -1,10 +1,10 @@
 import { Input, Link } from "@nextui-org/react"
-import React, { useContext, useState } from "react"
-import Draggable, { DraggableData, DraggableEvent } from "react-draggable"
-import { CourseTargetEntity, Vector2, isErrorResponse } from "@common"
+import React, { useContext, useEffect, useState } from "react"
+import { CourseTargetEntity, isErrorResponse } from "@common"
 import { deleteCourseTarget, updateCourseTarget } from "@services"
-import { ManageContext } from "../../../../../_hooks"
-import { CheckCheckIcon, PencilIcon, SaveIcon, TrashIcon } from "lucide-react"
+import { XIcon } from "lucide-react"
+import { DELAY_TIME } from "@config"
+import { TargetsCardContext } from "../TargetsCardProviders"
 
 interface TargetItemProps {
   courseTarget: CourseTargetEntity;
@@ -12,85 +12,81 @@ interface TargetItemProps {
 
 export const TargetItem = (props: TargetItemProps) => {
     const { courseTarget } = props
-    const { courseTargetId, content } = courseTarget 
+    const { courseTargetId, content } = courseTarget
 
-    const { state, functions } = useContext(ManageContext)!
-    const { courseManaged } = state
-    const { fetchAndSetCourseManaged } = functions
+    const { functions } = useContext(TargetsCardContext)!
+    const { fetchAndSetCourseTargets } = functions
 
-    const [position, setPosition] = useState<Vector2>({ x: 0, y: 0 })
-    const [isEdited, setIsEdited] = useState(false)
+    const [value, setValue] = useState("")
 
-    const onPress = async () => {
-        if (isEdited) {
+    useEffect(() => {
+        if (content === null) return
+        setValue(content)
+    }, [content])
+
+    useEffect(() => {
+        const abortController = new AbortController()
+        const handleEffect = async () => {
             const response = await updateCourseTarget({
                 data: {
                     courseTargetId,
-                    content,
+                    content: value
                 },
+                signal: abortController.signal
             })
             if (!isErrorResponse(response)) {
-                await fetchAndSetCourseManaged()
+                await fetchAndSetCourseTargets()
             } else {
                 console.log(response)
             }
         }
-        setIsEdited(!isEdited)
-    }
+        const delayedHandleEffect = setTimeout(handleEffect, DELAY_TIME)
+        return () => {
+            abortController.abort()
+            clearTimeout(delayedHandleEffect)
+        }
+    }, [value])
 
-    const onDrag = (_: DraggableEvent, ui: DraggableData) => {
-        setPosition({
-            x: position.x + ui.deltaX,
-            y: position.y + ui.deltaY,
-        })
-        console.log(ui)
-    }
-
-    const onStop = () => {
-        setPosition({
-            x: 0,
-            y: 0,
-        })
-    }
+    const onValueChange = (value: string) => setValue(value)
 
     const onRemovePress = async () => {
-        if (courseManaged === null) return
-        const { courseId } = courseManaged
-        if (!courseId) return
         const response = await deleteCourseTarget({
             data: {
-                courseTargetId: props.courseTarget.courseTargetId,
+                courseTargetId,
             },
         })
         if (!isErrorResponse(response)) {
-            await fetchAndSetCourseManaged()
+            await fetchAndSetCourseTargets()
         } else {
             console.log(response)
         }
     }
 
     return (
-        <Draggable disabled position={position} onDrag={onDrag} onStop={onStop}>
-            <div>
-                <Input
-                    startContent={<CheckCheckIcon size={20} strokeWidth={4/3}/>}
-                    labelPlacement="outside"
-                    label=""
-                    id="content"
-                    isReadOnly={!isEdited}
-                    value={content}
-                    endContent={
-                        <div className="flex gap-4">
-                            <Link className="text-sm" as="button" onPress={onPress}>
-                                {isEdited ? <SaveIcon size={20} strokeWidth={4/3}/> : <PencilIcon size={20} strokeWidth={4/3}/>}
-                            </Link>
-                            <Link onPress={onRemovePress} className="text-sm" as="button">
-                                <TrashIcon size={20} strokeWidth={4/3}/>
-                            </Link>
-                        </div>
-                    }
-                />
-            </div>
-        </Draggable>
+        <div>
+            <Input
+                labelPlacement="outside"
+                label=""
+                variant="bordered"
+                classNames={{
+                    inputWrapper: "border shadow-none",
+                }}
+                onValueChange={onValueChange}
+                id="content"
+                value={value}
+                endContent={
+                    <div className="flex gap-4">
+                        <Link
+                            color="foreground"
+                            onPress={onRemovePress}
+                            className="text-sm"
+                            as="button"
+                        >
+                            <XIcon size={20} strokeWidth={4 / 3} />
+                        </Link>
+                    </div>
+                }
+            />
+        </div>
     )
 }

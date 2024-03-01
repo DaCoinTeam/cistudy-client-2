@@ -8,8 +8,8 @@ import {
     getClientId,
     saveTokens,
 } from "@common"
-import axios, { AxiosError } from "axios"
-import { endpointConfig } from "@config"
+import axios, { AxiosError, CanceledError } from "axios"
+import { ABORTED_MESSAGE, endpointConfig } from "@config"
 
 const BASE_URL = `${endpointConfig().api}/courses`
 
@@ -150,11 +150,12 @@ export const updateCourseTarget = async (
             courseTargetId: string;
             content: string;
         };
+        signal?: AbortSignal 
     },
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string | ErrorResponse> => {
     try {
-        const { data } = params
+        const { data, signal } = params
         const url = `${BASE_URL}/update-course-target`
 
         const response = await axios.put(url, data, {
@@ -162,6 +163,7 @@ export const updateCourseTarget = async (
                 Authorization: buildBearerTokenHeader(authTokenType),
                 "Client-Id": getClientId(),
             },
+            signal
         })
 
         const { data: responseData, tokens } =
@@ -171,6 +173,7 @@ export const updateCourseTarget = async (
             saveTokens(tokens as AuthTokens)
         return responseData
     } catch (ex) {
+        if (ex instanceof CanceledError) return ABORTED_MESSAGE
         const _ex = (ex as AxiosError).response?.data as ErrorResponse
         const { statusCode } = _ex
         console.log(statusCode)

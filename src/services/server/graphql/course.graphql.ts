@@ -12,6 +12,7 @@ import {
     saveTokens,
     AuthTokens,
     ErrorStatusCode,
+    CourseTargetEntity,
 } from "@common"
 import { client } from "./client.graphql"
 import { ApolloError, gql } from "@apollo/client"
@@ -205,6 +206,54 @@ export const findManyResources = async (
       authTokenType === AuthTokenType.Access
         )
             return await findManyResources(params, schema, AuthTokenType.Refresh)
+
+        return error
+    }
+}
+
+export const findManyCourseTargets = async (
+    params: {
+    courseId: string;
+  },
+    schema: Schema<DeepPartial<CourseTargetEntity>>,
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<Array<CourseTargetEntity> | ErrorResponse> => {
+    try {
+        const { courseId } = params
+        const payload = buildAuthPayloadString(schema, authTokenType)
+        const { data: graphqlData } = await client(authTokenType).query({
+            query: gql`
+            query FindManyCourseTargets($data: FindManyCourseTargetsData!) {
+                findManyCourseTargets(data: $data) {       
+      ${payload}
+    }
+  }
+          `,
+            variables: {
+                data: {
+                    courseId,
+                },
+            },
+        })
+
+        const { data, tokens } = graphqlData.findManyCourseTargets as BaseResponse<
+      Array<CourseTargetEntity>
+    >
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+
+        return data
+    } catch (ex) {
+        const _ex = ex as ApolloError
+        const error = (
+      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+        ).originalError
+
+        if (
+            error.statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await findManyCourseTargets(params, schema, AuthTokenType.Refresh)
 
         return error
     }

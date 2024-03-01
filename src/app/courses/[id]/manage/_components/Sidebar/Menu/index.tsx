@@ -4,7 +4,7 @@ import { ManageContext } from "../../../_hooks/ManageProviders"
 import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
 import { PanelSelected } from "../../../_hooks"
-import { BookOpenIcon, ListCollapseIcon } from "lucide-react"
+import { BookAIcon, ListCollapseIcon } from "lucide-react"
 
 interface MenuProps {
   className?: string;
@@ -18,7 +18,7 @@ export const Menu = (props: MenuProps) => {
 
     const selectedKeys = new Set([panelSelected])
 
-    const isSelected = (panelSelected: PanelSelected) => Array.from(selectedKeys).includes(panelSelected) ? "!text-primary !bg-primary/20 rounded-large" : ""
+    const isSelected = (panelSelected: PanelSelected) => Array.from(selectedKeys).includes(panelSelected) ? "!text-primary rounded-large" : ""
 
     const onSelectionChange = (selection: Selection) => {
         if (typeof selection === "string") return
@@ -47,22 +47,20 @@ export const Menu = (props: MenuProps) => {
             >
                 <ListboxItem
                     classNames={{
-                        title: "text-lg",
-                        base: `!p-4 items-center rounded-none !bg-transparent ${isSelected(PanelSelected.Details)}`
+                        title: "text-base",
+                        base: `items-center px-0 rounded-none text-foreground-500 !bg-transparent ${isSelected(PanelSelected.Details)}`
                     }}
-                    className="gap-4"
-                    startContent={<ListCollapseIcon size={28} strokeWidth={4/3}/>}
+                    startContent={<ListCollapseIcon size={24} strokeWidth={4/3}/>}
                     key="details"
                 >
           Details
                 </ListboxItem>
                 <ListboxItem
                     classNames={{
-                        title: "text-lg",
-                        base: `!p-4 rounded-none !bg-transparent ${isSelected(PanelSelected.Curriculum)}`,
+                        title: "text-base",
+                        base: `rounded-none px-0 !bg-transparent text-foreground-500 ${isSelected(PanelSelected.Curriculum)}`,
                     }}
-                    className="gap-4"
-                    startContent={<BookOpenIcon size={28} strokeWidth={4/3} />}
+                    startContent={<BookAIcon size={24} strokeWidth={4/3} />}
                     key="curriculum"
                 >
           Curriculum

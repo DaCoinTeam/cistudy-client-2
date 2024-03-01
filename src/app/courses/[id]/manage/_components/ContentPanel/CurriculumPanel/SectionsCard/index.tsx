@@ -12,6 +12,7 @@ import { ManageContext } from "../../../../_hooks"
 import { SectionItem } from "./SectionItem"
 import { SectionItemMoreButton } from "./SectionItemMoreButton"
 import { Actions } from "./Actions"
+import { LayoutGridIcon, MoreVerticalIcon, PencilLineIcon } from "lucide-react"
 
 export const SectionsCard = () => {
     const { state } = useContext(ManageContext)!
@@ -28,14 +29,14 @@ export const SectionsCard = () => {
                 className="!px-0 gap-4"
                 itemClasses={{
                     trigger: "!py-3",
-                    base: "!shadow-none !bg-content2 gap-4",
+                    base: "!shadow-none border border-divider gap-4",
                 }}
             >
                 {sections.map((section) => (
                     <AccordionItem
                         key={section.sectionId}
                         title={section.title}
-                        startContent={<SectionItemMoreButton/>}
+                        startContent={<MoreVerticalIcon size={20} strokeWidth={4/3}/>}
                         subtitle={"3 lesson"}
                         classNames={{
                             title: "text-base",
@@ -50,12 +51,11 @@ export const SectionsCard = () => {
     }
 
     return (
-        <Card shadow="none" className="border-divider border">
-            <CardHeader className="p-6 pb-0 justify-between items-center">
-                <div className="text-xl font-semibold leading-none">Sections</div>
-                <Actions />
+        <Card shadow="none">
+            <CardHeader className="p-4 pb-2">
+                <div className="text-xl font-bold leading-none">Sections</div>
             </CardHeader>
-            <CardBody className="p-6 gap-4">
+            <CardBody className="p-4 gap-4">
                 {renderSections()}
                 <AddSectionItem />
             </CardBody>

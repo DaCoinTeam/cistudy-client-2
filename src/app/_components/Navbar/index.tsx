@@ -49,8 +49,8 @@ const WrappedNavbar = (props: NavbarProps) => {
 
     return (
         <>
-            <NextUINavbar isBordered className={className} classNames={{
-                wrapper: "!max-w-full px-6"
+            <NextUINavbar className={className} classNames={{
+                wrapper: "!max-w-full px-6 !bg-content1"
             }}>
                 <NavbarBrand>
                     <PencilIcon className="w-6 h-6" />
