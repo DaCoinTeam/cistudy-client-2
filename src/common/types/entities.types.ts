@@ -73,6 +73,8 @@ export interface PostEntity {
   postMedias: Array<PostMediaEntity>;
   postComments: Array<PostCommentEntity>;
   postReacts: Array<PostReactEntity>;
+  numberOfLikes?: number;
+  numberOfComments?: number;
 }
 
 export interface CourseEntity {

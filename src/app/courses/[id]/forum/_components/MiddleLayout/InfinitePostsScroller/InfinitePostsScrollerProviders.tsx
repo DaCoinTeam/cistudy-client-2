@@ -52,6 +52,18 @@ export const InfinitePostsScrollerProviders = ({
                 postId: true,
                 title: true,
                 html: true,
+                postMedias : {
+                    mediaId: true,
+                    postMediaId: true,
+                    mediaType: true,
+                },
+                numberOfLikes: true,
+                numberOfComments: true,
+                creator: {
+                    avatarId: true,
+                    username: true
+                },
+                updatedAt: true
             }
         )
 
