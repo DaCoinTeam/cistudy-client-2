@@ -122,15 +122,17 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
                     </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
-            <ResourcesModalRef ref={resourcesModalRef} />
-            <LectureModalRef ref={lectureModalRef} />
-            <EditModalRef ref={editModalRef} />
-            <ConfirmDeleteModalRef
-                ref={confirmDeleteModalRef}
-                onDeletePress={onDeletePress}
-                title="Delete Lecture"
-                content="Are you sure you want to delete this lecture? All references will be lost, and you cannot undo this action."
-            />
+            <div className="hidden">
+                <ResourcesModalRef ref={resourcesModalRef} />
+                <LectureModalRef ref={lectureModalRef} />
+                <EditModalRef ref={editModalRef} />
+                <ConfirmDeleteModalRef
+                    ref={confirmDeleteModalRef}
+                    onDeletePress={onDeletePress}
+                    title="Delete Lecture"
+                    content="Are you sure you want to delete this lecture? All references will be lost, and you cannot undo this action."
+                />
+            </div>       
         </>
     )
 }

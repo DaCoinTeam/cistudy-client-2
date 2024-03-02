@@ -1,12 +1,12 @@
 "use client"
-import { Nunito } from "next/font/google"
+import { Open_Sans } from "next/font/google"
 import "./_css/globals.css"
 import { ReduxProviders } from "@redux"
 import { NextUIProvider } from "@nextui-org/react"
 import { RootProviders } from "./_hooks"
 import { Navbar } from "./_components"
 import { ReactNode } from "react"
-const font = Nunito({ subsets: ["latin"] })
+const font = Open_Sans({ subsets: ["latin"] })
 
 const Layout = ({children} : {children: ReactNode}) => {
     return (
