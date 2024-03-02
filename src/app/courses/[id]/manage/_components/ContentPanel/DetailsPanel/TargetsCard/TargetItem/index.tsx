@@ -49,7 +49,7 @@ export const TargetItem = (props: TargetItemProps) => {
 
     const onValueChange = (value: string) => setValue(value)
 
-    const onRemovePress = async () => {
+    const onDeletePress = async () => {
         const response = await deleteCourseTarget({
             data: {
                 courseTargetId,
@@ -78,7 +78,7 @@ export const TargetItem = (props: TargetItemProps) => {
                     <div className="flex gap-4">
                         <Link
                             color="foreground"
-                            onPress={onRemovePress}
+                            onPress={onDeletePress}
                             className="text-sm"
                             as="button"
                         >

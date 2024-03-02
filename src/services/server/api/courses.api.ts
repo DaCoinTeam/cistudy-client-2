@@ -442,3 +442,122 @@ export const createSection = async (
         return _ex
     }
 }
+
+export const updateSection = async (
+    params: {
+        data: {
+            sectionId: string;
+            title?: string;
+        };
+    },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string | ErrorResponse> => {
+    try {
+        const { data } = params
+        const url = `${BASE_URL}/update-section`
+
+        const response = await axios.put(url, data, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+            response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+            authTokenType === AuthTokenType.Access
+        )
+            return await updateSection(params, AuthTokenType.Refresh)
+        return _ex
+    }
+}
+
+export const deleteSection = async (
+    params: {
+        data: {
+            sectionId: string;
+        };
+    },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string | ErrorResponse> => {
+    try {
+        const { data } = params
+        const { sectionId } = data
+        const url = `${BASE_URL}/delete-section/${sectionId}`
+        //
+
+        const response = await axios.delete(url, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+            response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+            authTokenType === AuthTokenType.Access
+        )
+            return await deleteSection(params, AuthTokenType.Refresh)
+        return _ex
+    }
+}
+
+export const deleteResource = async (
+    params: {
+        data: {
+            resourceId: string;
+        };
+    },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string | ErrorResponse> => {
+    try {
+        const { data } = params
+        const { resourceId } = data
+        const url = `${BASE_URL}/delete-resource/${resourceId}`
+        //
+
+        const response = await axios.delete(url, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+            response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+            authTokenType === AuthTokenType.Access
+        )
+            return await deleteResource(params, AuthTokenType.Refresh)
+        return _ex
+    }
+}

@@ -10,10 +10,7 @@ import React, { useContext } from "react"
 import { AddSectionItem } from "./AddSectionItem"
 import { ManageContext } from "../../../../_hooks"
 import { SectionItem } from "./SectionItem"
-import { SectionItemMoreButton } from "./SectionItemMoreButton"
-import { Actions } from "./Actions"
-import { LayoutGridIcon, MoreVerticalIcon, PencilLineIcon } from "lucide-react"
-
+import { MoreButton } from "./MoreButton"
 export const SectionsCard = () => {
     const { state } = useContext(ManageContext)!
     const { courseManaged } = state
@@ -36,7 +33,7 @@ export const SectionsCard = () => {
                     <AccordionItem
                         key={section.sectionId}
                         title={section.title}
-                        startContent={<MoreVerticalIcon size={20} strokeWidth={4/3}/>}
+                        startContent={<MoreButton section={section} />}
                         subtitle={"3 lesson"}
                         classNames={{
                             title: "text-base",

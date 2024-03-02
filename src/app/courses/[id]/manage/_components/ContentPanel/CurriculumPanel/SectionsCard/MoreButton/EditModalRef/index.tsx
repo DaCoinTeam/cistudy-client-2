@@ -6,8 +6,8 @@ import {
     ModalBody,
     useDisclosure,
     Input,
-    Button,
     ModalFooter,
+    Button,
 } from "@nextui-org/react"
 import { forwardRef, useContext, useImperativeHandle } from "react"
 import {
@@ -20,7 +20,7 @@ export interface EditModalRefSelectors {
   onOpen: () => void;
 }
 
-const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
+export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
     (_, ref) => {
         const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -53,25 +53,28 @@ const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                             placeholder="Input title here"
                         />
                     </ModalBody>
-                    {hasChanged() ? (
-                        <ModalFooter className="gap-2">
-                            <Button
-                                onPress={onDiscardChangesPress}
-                                variant="bordered"
-                                className="border"
-                                startContent={<ClipboardXIcon size={20} strokeWidth={4 / 3} />}
-                            >
-                Discard Changes
-                            </Button>
-                            <Button
-                                onPress={onSubmit}
-                                className="bg-content2"
-                                startContent={<SaveIcon size={20} strokeWidth={4 / 3} />}
-                            >
-                Save
-                            </Button>
-                        </ModalFooter>
-                    ) : null}
+                    {
+                        hasChanged() ? (
+                            <ModalFooter className="gap-2">
+                                <Button
+                                    onPress={onDiscardChangesPress}
+                                    variant="bordered"
+                                    className="border"
+                                    startContent={<ClipboardXIcon size={20} strokeWidth={4 / 3} />}
+                                >
+              Discard Changes
+                                </Button>
+                                <Button
+                                    onPress={onSubmit}
+                                    className="bg-content2"
+                                    startContent={<SaveIcon size={20} strokeWidth={4 / 3} />}
+                                >
+              Save
+                                </Button>
+                               
+                            </ModalFooter>
+                        ) : null
+                    }
                 </ModalContent>
             </Modal>
         )
@@ -79,9 +82,11 @@ const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
 )
 
 export const EditModalRef = forwardRef<EditModalRefSelectors | null>(
-    (_, ref) => (
-        <EditModalRefProviders>
-            <WrappedEditModalRef ref={ref} />
-        </EditModalRefProviders>
-    )
+    (_, ref) => {
+        return (
+            <EditModalRefProviders>
+                <WrappedEditModalRef ref={ref} />
+            </EditModalRefProviders>
+        )
+    }
 )

@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useContext, useRef } from "react"
 
 import {
     Button,
@@ -7,16 +7,53 @@ import {
     DropdownMenu,
     DropdownTrigger,
 } from "@nextui-org/react"
-import { FolderIcon, MoreVertical, PenLineIcon, PlaySquare, XIcon } from "lucide-react"
+import {
+    FolderIcon,
+    MoreVertical,
+    PenLineIcon,
+    PlaySquare,
+    XIcon,
+} from "lucide-react"
 import { EditModalRef, EditModalRefSelectors } from "./EditModalRef"
-import { ResourcesModalRef, ResourcesModalRefSelectors } from "./ResourcesModalRef"
-import { LectureModalRef, LectureModalRefSelectors, } from "./LectureModalRef"
+import {
+    ResourcesModalRef,
+    ResourcesModalRefSelectors,
+} from "./ResourcesModalRef"
+import { LectureModalRef, LectureModalRefSelectors } from "./LectureModalRef"
+import { LectureItemContext } from ".."
+import { deleteLecture } from "@services"
+import { isErrorResponse } from "@common"
+import { SectionItemContext } from "../.."
+import {
+    ConfirmDeleteModalRef,
+    ConfirmDeleteModalRefSelectors,
+} from "../../../../../../../../../../_shared"
 
 interface ManageThumbnailButtonProps {
   className?: string;
 }
 
 export const MoreButton = (props: ManageThumbnailButtonProps) => {
+    const { props: lectureItemProps } = useContext(LectureItemContext)!
+    const { lecture } = lectureItemProps
+    const { lectureId } = lecture
+
+    const { functions } = useContext(SectionItemContext)!
+    const { fetchAndSetLectures } = functions
+
+    const onDeletePress = async () => {
+        const response = await deleteLecture({
+            data: {
+                lectureId,
+            },
+        })
+        if (!isErrorResponse(response)) {
+            await fetchAndSetLectures()
+        } else {
+            console.log(response)
+        }
+    }
+
     const { className } = props
 
     const editModalRef = useRef<EditModalRefSelectors | null>(null)
@@ -27,6 +64,12 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
 
     const resourcesModalRef = useRef<ResourcesModalRefSelectors | null>(null)
     const onResourcesModalOpen = () => resourcesModalRef.current?.onOpen()
+
+    const confirmDeleteModalRef = useRef<ConfirmDeleteModalRefSelectors | null>(
+        null
+    )
+    const onConfirmDeleteModalOpen = () =>
+        confirmDeleteModalRef.current?.onOpen()
 
     return (
         <>
@@ -72,15 +115,22 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
                         color="danger"
                         startContent={<XIcon size={20} strokeWidth={4 / 3} />}
                         key="delete"
+                        onPress={onConfirmDeleteModalOpen}
                         className="text-danger"
                     >
             Delete
                     </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
-            <ResourcesModalRef ref={resourcesModalRef}/>
-            <LectureModalRef ref={lectureModalRef}/>
-            <EditModalRef ref={editModalRef}/>
+            <ResourcesModalRef ref={resourcesModalRef} />
+            <LectureModalRef ref={lectureModalRef} />
+            <EditModalRef ref={editModalRef} />
+            <ConfirmDeleteModalRef
+                ref={confirmDeleteModalRef}
+                onDeletePress={onDeletePress}
+                title="Delete Lecture"
+                content="Are you sure you want to delete this lecture? All references will be lost, and you cannot undo this action."
+            />
         </>
     )
 }

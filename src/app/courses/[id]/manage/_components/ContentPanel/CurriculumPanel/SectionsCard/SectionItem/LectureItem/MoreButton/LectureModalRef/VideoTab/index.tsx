@@ -27,10 +27,11 @@ export const VideoTab = () => {
             <div className="gap-2 flex items-center flex-row-reverse">
                 <UploadButton />
                 <Button
-                    className="bg-content2"
+                    variant="bordered"
+                    className="border"
                     startContent={<XIcon size={20} strokeWidth={4 / 3} />}
                 >
-          Remove
+          Delete
                 </Button>
             </div>
         </div>

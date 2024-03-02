@@ -70,7 +70,8 @@ export const WrappedInformationCard = (props: InformationCardProps) => {
                         </Button>
                         <Button
                             onPress={onDiscardChangesPress}
-                            className="bg-content2"
+                            variant="bordered"
+                            className="border"
                             startContent={<ClipboardXIcon size={20} strokeWidth={4 / 3} />}
                         >
               Discard Changes

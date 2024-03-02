@@ -11,11 +11,25 @@ export const ThumbnailTab = () => {
 
     return (
         <div>
-            <Image classNames={{wrapper: "w-full !max-w-full aspect-video grid content-center overflow-hidden"}} alt="thumbnail" src={getAssetUrl(courseManaged?.thumbnailId)} className="w-full"/>
-            <Spacer y={6}/>
+            <Image
+                classNames={{
+                    wrapper:
+            "w-full !max-w-full aspect-video grid content-center overflow-hidden",
+                }}
+                alt="thumbnail"
+                src={getAssetUrl(courseManaged?.thumbnailId)}
+                className="w-full"
+            />
+            <Spacer y={6} />
             <div className="gap-2 flex items-center flex-row-reverse">
-                <UploadButton/>
-                <Button className="bg-content2" startContent={<XIcon size={20} strokeWidth={4/3} />}> Remove </Button>
+                <UploadButton />
+                <Button
+                    variant="bordered"
+                    className="border"
+                    startContent={<XIcon size={20} strokeWidth={4 / 3} />}
+                >
+          Delete
+                </Button>
             </div>
         </div>
     )
