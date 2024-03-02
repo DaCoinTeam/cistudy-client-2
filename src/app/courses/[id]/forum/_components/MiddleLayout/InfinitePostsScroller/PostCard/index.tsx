@@ -35,7 +35,7 @@ export const PostCard = (props: PostCardProps) => {
     return (
         <PostCardContext.Provider value={postCardContextValue}>
             <Card>
-                <CardHeader className="p-6 pb-4 font-bold">{title}</CardHeader>
+                <CardHeader className="p-6 pb-4 font-semibold">{title}</CardHeader>
                 <Divider />
                 <CardBody className="p-6">
                     <BodyContent />

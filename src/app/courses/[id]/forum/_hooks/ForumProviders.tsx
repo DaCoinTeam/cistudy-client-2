@@ -10,7 +10,7 @@ import React, {
 import { ForumAction, ForumState, useForumReducer } from "./useForumReducer"
 import { CourseDetailsContext } from "../../_hooks"
 import { FindManyPostOptions, findManyPosts } from "@services"
-import { PostEntity, Schema, isErrorResponse } from "@common"
+import { CourseEntity, PostEntity, Schema, isErrorResponse } from "@common"
 
 export interface ForumContextValue {
   state: ForumState;
@@ -21,7 +21,7 @@ export interface ForumContextValue {
   };
 }
 
-export const NUMBER_OF_POSTS = 5
+export const COLUMNS_PER_PAGE = 5
 
 export const ForumContext = createContext<ForumContextValue | null>(null)
 
@@ -42,78 +42,33 @@ export const findManyPostsSchema: Schema<PostEntity> = {
 }
 
 export const ForumProviders = ({ children }: { children: ReactNode }) => {
-    const [state, dispatch] = useForumReducer()
-    const { posts } = state 
+    const [ state, dispatch ] = useForumReducer()
+    const { page } = state 
     const { state: courseDetailsState } = useContext(CourseDetailsContext)!
     const { course } = courseDetailsState
 
-    const fetchAndSetPosts = useCallback(
+    const fetchPosts = useCallback(
         async () => {
-            if (course === null) return
+            if (course === null) return []
             const { courseId } = course
 
-            const response = await findManyPosts(
+            return await findManyPosts(
                 {
                     courseId,
                     options: {
-                        skip: 0,
-                        take: posts.length
+                        skip: COLUMNS_PER_PAGE * (page - 1),
+                        take: COLUMNS_PER_PAGE
                     }
                 },
                 findManyPostsSchema
             )
-            if (!isErrorResponse(response)) {
-                dispatch({
-                    type: "SET_POSTS",
-                    payload: response,
-                })
-            } else {
-                console.log(response)
-            }
         },
         [course]
     )
 
-    const fetchAndAppendPosts = useCallback(
-        async (options?: FindManyPostOptions) => {
-            if (course === null) return
-            const { courseId } = course
-
-            const response = await findManyPosts(
-                {
-                    courseId,
-                    options,
-                },
-                findManyPostsSchema
-            )
-            if (!isErrorResponse(response)) {
-                if (!response.length) {
-                    dispatch({
-                        type: "SET_END_OF_POSTS_ACTION",
-                        payload: true,
-                    })
-                    return
-                }
-                dispatch({
-                    type: "APPEND_POSTS",
-                    payload: response,
-                })
-            } else {
-                console.log(response)
-            }
-        },
-        [course]
-    )
-
-    useEffect(() => {
-        const handleEffect = async () => {
-            await fetchAndAppendPosts({
-                skip: 0,
-                take: NUMBER_OF_POSTS
-            })
-        }
-        handleEffect()
-    }, [course])
+    const { data, error, isLoading, isValidating, mutate, size, setSize } = useSWRInfinite<Array<CourseEntity>>(
+        (index) => `/api/comment?postId=${postId}&currentPage=${index + 1}`,
+      )
 
     const forumContextValue: ForumContextValue = useMemo(
         () => ({
@@ -133,3 +88,7 @@ export const ForumProviders = ({ children }: { children: ReactNode }) => {
         </ForumContext.Provider>
     )
 }
+function useSWRInfinite(getKey: any, arg1: any, arg2: any): { data: any; error: any; isLoading: any; isValidating: any; mutate: any; size: any; setSize: any } {
+    throw new Error("Function not implemented.")
+}
+

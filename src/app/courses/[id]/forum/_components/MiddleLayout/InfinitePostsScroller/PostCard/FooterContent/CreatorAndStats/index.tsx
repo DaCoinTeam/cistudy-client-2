@@ -16,17 +16,17 @@ export const CreatorAndStats = () => {
             <div className="flex items-center gap-3">
                 <Avatar key={post?.postId} src={getAssetUrl(post?.creator?.avatarId)} />
                 <div>
-                    <div className="font-bold text-sm"> StarCi</div>
+                    <div className="font-semibold text-sm"> StarCi</div>
                     <div className="text-xs"> Yesterday at 11:30</div>
                 </div>
             </div>
             <div className="flex gap-6">
                 <div className="text-sm">
-                    <span className="font-bold">{renderNumberOfLikes()}</span>
+                    <span className="font-semibold">{renderNumberOfLikes()}</span>
                     <span>likes</span>
                 </div>
                 <div className="text-sm">
-                    <span className="font-bold"> {`${234}`} </span> <span>comments</span>
+                    <span className="font-semibold"> {`${234}`} </span> <span>comments</span>
                 </div>
             </div>
         </div>
