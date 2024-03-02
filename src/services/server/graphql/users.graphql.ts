@@ -24,7 +24,7 @@ export const findOneUser = async (
         const payload = buildPayloadString(schema)
         const { data: graphqlData } = await client().query({
             query: gql`
-            query FindOneUser($data: FindOneUserData!) {
+            query FindOneUser($data: FindOneUserInputData!) {
                 findOneUser(data: $data)   {
       ${payload}
     }
@@ -56,7 +56,7 @@ export const findManyFollowers = async (
         const payload = buildPayloadString(schema)
         const { data: graphqlData } = await client().query({
             query: gql`
-            query FindManyFollowers($data: FindManyFollowersData!) {
+            query FindManyFollowers($data: FindManyFollowersInputData!) {
                 findManyFollowers(data: $data)   {
       ${payload}
     }
@@ -91,7 +91,7 @@ export const findManyCreatedCourses = async (
         const payload = buildPayloadString(schema)
         const { data: graphqlData } = await client().query({
             query: gql`
-            query FindManyCreatedCourses($data: FindManyCreatedCoursesData!) {
+            query FindManyCreatedCourses($data: FindManyCreatedCoursesInputData!) {
                 findManyCreatedCourses(data: $data)   {
       ${payload}
     }

@@ -60,7 +60,7 @@ export const signIn = async (
         const payload = buildAuthPayloadString(schema, AuthTokenType.Refresh)
         const { data: graphqlData } = await client(AuthTokenType.Refresh).query({
             query: gql`
-            query SignIn($data: SignInData!) {
+            query SignIn($data: SignInInputData!) {
                 signIn(data: $data) {
       ${payload}
     }

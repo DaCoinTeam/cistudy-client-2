@@ -1,3 +1,4 @@
+"use client"
 import React, {
     createContext,
     useMemo,
@@ -6,13 +7,8 @@ import { PostEntity } from "@common"
 import {
     Card,
     CardBody,
-    CardFooter,
     CardHeader,
-    Divider,
 } from "@nextui-org/react"
-import { BodyContent } from "./BodyContent"
-import { FooterContent } from "./FooterContent"
-
 interface PostCardProps {
   post: PostEntity;
 }
@@ -36,14 +32,17 @@ export const PostCard = (props: PostCardProps) => {
         <PostCardContext.Provider value={postCardContextValue}>
             <Card>
                 <CardHeader className="p-6 pb-4 font-semibold">{title}</CardHeader>
-                <Divider />
+                <CardBody className="p-6">
+                    <div/>
+                </CardBody>
+                {/* <Divider />
                 <CardBody className="p-6">
                     <BodyContent />
                 </CardBody>
                 <Divider />
                 <CardFooter className="p-6 pt-6 overflow-visible">
                     <FooterContent />
-                </CardFooter>
+                </CardFooter> */}
             </Card>
         </PostCardContext.Provider>
     )

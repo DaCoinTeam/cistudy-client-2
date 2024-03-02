@@ -29,7 +29,7 @@ export const findOneCourse = async (
         const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
-            query FindOneCourse($data: FindOneCourseData!) {
+            query FindOneCourse($data: FindOneCourseInputData!) {
     findOneCourse(data: $data) {
       ${payload}
     }
@@ -91,7 +91,7 @@ export const findManyLectures = async (
         const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
-            query FindManyLectures($data: FindManyLecturesData!) {
+            query FindManyLectures($data: FindManyLecturesInputData!) {
                 findManyLectures(data: $data) {
     ${payload}
   }
@@ -128,7 +128,7 @@ export const findOneLecture = async (
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
-            query FindOneLecture($data: FindOneLectureData!) {
+            query FindOneLecture($data: FindOneLectureInputData!) {
                 findOneLecture(data: $data) {              
       ${payload}
     }
@@ -175,7 +175,7 @@ export const findManyResources = async (
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
-            query FindManyResources($data: FindManyResourcesData!) {
+            query FindManyResources($data: FindManyResourcesInputData!) {
                 findManyResources(data: $data) {              
       ${payload}
     }
@@ -223,7 +223,7 @@ export const findManyCourseTargets = async (
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
-            query FindManyCourseTargets($data: FindManyCourseTargetsData!) {
+            query FindManyCourseTargets($data: FindManyCourseTargetsInputData!) {
                 findManyCourseTargets(data: $data) {       
       ${payload}
     }

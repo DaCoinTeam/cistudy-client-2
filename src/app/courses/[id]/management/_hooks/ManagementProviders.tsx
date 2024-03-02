@@ -72,14 +72,14 @@ export const ManagementProviders = ({ children }: { children: ReactNode }) => {
         } else {
             console.log(response)
         }
-    }, [course])
+    }, [course?.courseId])
 
     useEffect(() => {
         const handleEffect = async () => {
             await fetchAndSetCourseManaged()
         }
         handleEffect()
-    }, [course])
+    }, [course?.courseId])
 
     const manageContextValue: ManagementContextValue = useMemo(
         () => ({

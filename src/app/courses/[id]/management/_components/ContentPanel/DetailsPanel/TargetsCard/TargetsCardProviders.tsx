@@ -1,4 +1,4 @@
-"use client"
+e"use client"
 import React, {
     ReactNode,
     createContext,
@@ -55,14 +55,14 @@ export const TargetsCardProviders = ({ children }: { children: ReactNode }) => {
         } else {
             console.log(response)
         }
-    }, [courseManagement])
+    }, [courseManagement?.courseId])
 
     useEffect(() => {
         const handleEffect = async () => {
             await fetchAndSetCourseTargets()
         }
         handleEffect()
-    }, [courseManagement])
+    }, [courseManagement?.courseId])
 
     const targetsCardContextValue: TargetsCardContextValue = useMemo(
         () => ({

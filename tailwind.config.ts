@@ -35,7 +35,6 @@ const config: Config = {
             }
         }
     }),
-    require("@tailwindcss/line-clamp"),
     ]
 }
 export default config

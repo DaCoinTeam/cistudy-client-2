@@ -1,20 +1,31 @@
+"use client"
 import React, { useContext } from "react"
 import InfiniteScroll from "react-infinite-scroller"
-import { ForumContext, NUMBER_OF_POSTS } from "../../../_hooks"
 import { CircularProgress } from "@nextui-org/react"
 import { PostCard } from "./PostCard"
+import {
+    COLUMNS_PER_PAGE,
+    InfinitePostsScrollerContext,
+    InfinitePostsScrollerProviders,
+} from "./InfinitePostsScrollerProviders"
+import { concatArrays } from "@common"
 
-export const InfinitePostsScroller = () => {
-    const { state, functions } = useContext(ForumContext)!
-    const { posts, endOfPosts } = state
-    const { fetchAndAppendPosts } = functions
+const WrappedInfinitePostsScroller = () => {
+    const { swr } = useContext(InfinitePostsScrollerContext)!
+    const { postsSwr, postsMetadataSwr } = swr
+    const { data, size, setSize } = postsSwr
+    const { data: postsMetadataSwrData } = postsMetadataSwr
 
-    const onLoadMore = async () => {
-        await fetchAndAppendPosts({
-            take: NUMBER_OF_POSTS,
-            skip: posts.length,
-        })
+    const onLoadMore = () => {
+        setSize(size + 1)
     }
+
+    // play anim
+    if (!postsMetadataSwrData) return null
+
+    const posts = concatArrays(data)
+    const { numberOfPosts } = postsMetadataSwrData
+    const numberOfPages = Math.ceil(numberOfPosts / COLUMNS_PER_PAGE)
 
     return (
         <InfiniteScroll
@@ -22,12 +33,20 @@ export const InfinitePostsScroller = () => {
             pageStart={0}
             initialLoad={false}
             loadMore={onLoadMore}
-            hasMore={!endOfPosts}
+            hasMore={size < numberOfPages}
             loader={<CircularProgress key={0} aria-label="Loading..." />}
         >
             {posts.map((post) => (
                 <PostCard key={post.postId} post={post} />
-            ))}
+            ))} 
         </InfiniteScroll>
+    )
+}
+
+export const InfinitePostsScroller = () => {
+    return (
+        <InfinitePostsScrollerProviders>
+            <WrappedInfinitePostsScroller />
+        </InfinitePostsScrollerProviders>
     )
 }
