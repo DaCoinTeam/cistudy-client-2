@@ -1,6 +1,8 @@
-import React, { useContext } from "react"
+"use client"
+import React, { useCallback, useContext } from "react"
 import {
     Button,
+    Input,
     Modal,
     ModalBody,
     ModalContent,
@@ -8,18 +10,31 @@ import {
     ModalHeader,
     useDisclosure,
 } from "@nextui-org/react"
-import { FormikProviders } from "./FormikProviders"
-import { FormikContext } from "./FormikProviders"
-import { EditSection } from "./EditSection"
+import {
+    CreatePostModalContext,
+    CreatePostModalProviders,
+} from "./CreatePostModalProviders"
+import { RotateCcw, PlusIcon } from "lucide-react"
+import { AppendKey, Media } from "@common"
+import { MediaUploader, TextEditor } from "../../../../../../../_shared"
 
 export const WrappedCreatePostModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
-    const formik = useContext(FormikContext)!
+    const { formik } = useContext(CreatePostModalContext)!
 
-    const onPress = async () => {
-        formik.handleSubmit()
-    }
+    const onPress = () => formik.handleSubmit()
+
+    const setHtml = useCallback(
+        (html: string) => formik.setFieldValue("html", html),
+        [formik.values.html]
+    )
+
+    const setPostMedias = useCallback(
+        (postMedias: Array<AppendKey<Media>>) =>
+            formik.setFieldValue("postMedias", postMedias),
+        [formik.values.postMedias]
+    )
 
     return (
         <>
@@ -39,16 +54,44 @@ export const WrappedCreatePostModal = () => {
                 }}
             >
                 <ModalContent>
-                    <ModalHeader className="p-6 pb-0"> Create Post</ModalHeader>
-                    <ModalBody className="p-6">
-                        <EditSection />
+                    <ModalHeader className="p-4 pb-2 text-xl font-bold leading-none"> Create Post</ModalHeader>
+                    <ModalBody className="p-4 gap-4">
+                        <Input
+                            label="Title"
+                            id="title"
+                            variant="bordered"
+                            classNames={{
+                                inputWrapper: "border shadow-none"
+                            }}
+                            labelPlacement="outside"
+                            placeholder="Input title here"
+                            value={formik.values.title}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            isInvalid={!!(formik.touched.title && formik.errors.title)}
+                            errorMessage={formik.touched.title && formik.errors.title}
+                        />
+                        <TextEditor html={formik.values.html} setHtml={setHtml} />
+                        <MediaUploader
+                            medias={formik.values.postMedias}
+                            setMedias={setPostMedias}
+                        />
                     </ModalBody>
-                    <ModalFooter className="p-6 pt-0">
-                        <div className="flex gap-4 items-center">
-                            <Button variant="light" color="danger">
+                    <ModalFooter className="p-4 pt-2">
+                        <div className="flex gap-2 items-center">
+                            <Button
+                                variant="bordered"
+                                className="border shadow-none"
+                                startContent={<RotateCcw size={20} strokeWidth={4 / 3} />}
+                            >
                 Reset
                             </Button>
-                            <Button onPress={onPress} color="primary">
+                            <Button
+                                onPress={onPress}
+                                color="primary"
+                                className="text-secondary-foreground"
+                                startContent={<PlusIcon size={20} strokeWidth={4 / 3} />}
+                            >
                 Create
                             </Button>
                         </div>
@@ -61,8 +104,8 @@ export const WrappedCreatePostModal = () => {
 
 export const CreatePostModal = () => {
     return (
-        <FormikProviders>
+        <CreatePostModalProviders>
             <WrappedCreatePostModal />
-        </FormikProviders>
+        </CreatePostModalProviders>
     )
 }

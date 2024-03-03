@@ -1,3 +1,4 @@
+"use client"
 import { Avatar, Card, CardBody } from "@nextui-org/react"
 import React from "react"
 import { useSelector } from "react-redux"
@@ -7,8 +8,8 @@ import { CreatePostModal } from "./CreatePostModal"
 export const CreatePostCard = () => {
     const profile = useSelector((state: RootState) => state.auth.profile)
     return (
-        <Card>
-            <CardBody className="p-6">
+        <Card shadow="none">
+            <CardBody className="p-4">
                 <div className="flex items-center gap-4">
                     <Avatar src={getAssetUrl(profile?.avatarId)} />
                     <div className="flex-1">

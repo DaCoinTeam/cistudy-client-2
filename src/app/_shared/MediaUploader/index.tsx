@@ -1,3 +1,4 @@
+"use client"
 import { AppendKey, Media } from "@common"
 import React, { createContext, memo, useContext, useMemo } from "react"
 import { v4 as uuidv4 } from "uuid"

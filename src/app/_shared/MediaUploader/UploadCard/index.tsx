@@ -1,3 +1,4 @@
+"use client"
 import React, { useContext } from "react"
 import Dropzone from "react-dropzone"
 import { Media, getMediaType } from "@common"
