@@ -12,14 +12,14 @@ import {
     findManyPosts,
     findManyPostsMetadata,
 } from "@services"
-import { PostEntity } from "@common"
+import { ErrorResponse, PostEntity } from "@common"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
-import useSWR, { Fetcher, SWRConfig, SWRResponse } from "swr"
+import useSWR, { SWRConfig, SWRResponse } from "swr"
 
 export interface InfinitePostsScrollerContextValue {
   swr: {
-    postsSwr: SWRInfiniteResponse<Array<PostEntity> | null>;
-    postsMetadataSwr: SWRResponse<FindManyPostsMetadataOutputData>;
+    postsSwr: SWRInfiniteResponse<Array<PostEntity> | null, ErrorResponse>;
+    postsMetadataSwr: SWRResponse<FindManyPostsMetadataOutputData, ErrorResponse>;
   };
 }
 
@@ -36,8 +36,8 @@ const WrappedInfinitePostsScrollerProviders = ({
     const { state: courseDetailsState } = useContext(CourseDetailsContext)!
     const { course } = courseDetailsState
 
-    const fetchPosts: Fetcher<Array<PostEntity> | null, string> = useCallback(
-        async (key: string) => {
+    const fetchPosts = useCallback(
+        async (key: number) => {
             if (course === null) return null
             const { courseId } = course
 
@@ -45,7 +45,7 @@ const WrappedInfinitePostsScrollerProviders = ({
                 {
                     courseId,
                     options: {
-                        skip: COLUMNS_PER_PAGE * Number.parseInt(key),
+                        skip: COLUMNS_PER_PAGE * key,
                         take: COLUMNS_PER_PAGE,
                     },
                 },
@@ -81,7 +81,7 @@ const WrappedInfinitePostsScrollerProviders = ({
     const postsSwr = useSWRInfinite(
         (key) =>
             course?.courseId
-                ? [key.toString(), "FETCH_POSTS"]
+                ? [key, "FETCH_POSTS"]
                 : null,
         fetchPosts,
         {

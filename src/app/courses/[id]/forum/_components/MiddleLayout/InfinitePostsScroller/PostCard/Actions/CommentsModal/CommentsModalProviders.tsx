@@ -13,7 +13,7 @@ import {
 } from "@services"
 import { ErrorResponse, PostCommentEntity } from "@common"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
-import useSWR, { Fetcher, SWRConfig, SWRResponse } from "swr"
+import useSWR, { SWRConfig, SWRResponse } from "swr"
 import { PostCardContext } from "../.."
 
 export interface CommentsModalContextValue {
@@ -43,36 +43,33 @@ const WrappedCommentsModalProviders = ({
     const { post } = props
     const { postId } = post
 
-    const fetchPostComments: Fetcher<
-    Array<PostCommentEntity>,
-    string
-  > = useCallback(async (key: string) => {
-      return await findManyPostComments(
-          {
-              postId,
-              options: {
-                  skip: COLUMNS_PER_PAGE * Number.parseInt(key),
-                  take: COLUMNS_PER_PAGE,
-              },
-          },
-          {
-              postCommentId: true,
-              html: true,
-              postCommentMedias: {
-                  mediaId: true,
-                  postCommentMediaId: true,
-                  mediaType: true,
-              },
-              numberOfLikes: true,
-              creator: {
-                  avatarId: true,
-                  username: true,
-              },
-              updatedAt: true,
-              liked: true,
-          }
-      )
-  }, [])
+    const fetchPostComments = useCallback(async (key: number) => {
+        return await findManyPostComments(
+            {
+                postId,
+                options: {
+                    skip: COLUMNS_PER_PAGE * key,
+                    take: COLUMNS_PER_PAGE,
+                },
+            },
+            {
+                postCommentId: true,
+                html: true,
+                postCommentMedias: {
+                    mediaId: true,
+                    postCommentMediaId: true,
+                    mediaType: true,
+                },
+                numberOfLikes: true,
+                creator: {
+                    avatarId: true,
+                    username: true,
+                },
+                updatedAt: true,
+                liked: true,
+            }
+        )
+    }, [])
 
     const fetchPostCommentsMetadata = useCallback(async () => {
         return await findManyPostCommentsMetadata(
@@ -84,7 +81,7 @@ const WrappedCommentsModalProviders = ({
     }, [])
 
     const postCommentsSwr = useSWRInfinite(
-        (key) => [key.toString(), "FETCH_POST_COMMENTS"],
+        (key) => [key, "FETCH_POST_COMMENTS"],
         fetchPostComments,
         {
             revalidateFirstPage: false,
