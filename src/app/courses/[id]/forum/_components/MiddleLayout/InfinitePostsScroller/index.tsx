@@ -11,8 +11,8 @@ import {
 import { concatArrays } from "@common"
 
 const WrappedInfinitePostsScroller = () => {
-    const { swr } = useContext(InfinitePostsScrollerContext)!
-    const { postsSwr, postsMetadataSwr } = swr
+    const { swrs } = useContext(InfinitePostsScrollerContext)!
+    const { postsSwr, postsMetadataSwr } = swrs
     const { data, size, setSize, isValidating } = postsSwr
     const { data: postsMetadataSwrData } = postsMetadataSwr
 

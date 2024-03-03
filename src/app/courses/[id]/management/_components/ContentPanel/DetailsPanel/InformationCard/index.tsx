@@ -63,7 +63,8 @@ export const WrappedInformationCard = (props: InformationCardProps) => {
                     <CardFooter className="gap-2 flex-row-reverse">
                         <Button
                             type="submit"
-                            className="bg-content2"
+                            color="primary"
+                            className="text-secondary-foreground"
                             startContent={<SaveIcon size={20} strokeWidth={4 / 3} />}
                         >
               Save

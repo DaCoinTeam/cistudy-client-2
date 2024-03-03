@@ -22,7 +22,6 @@ import {
 import { LectureModalRef, LectureModalRefSelectors } from "./LectureModalRef"
 import { LectureItemContext } from ".."
 import { deleteLecture } from "@services"
-import { isErrorResponse } from "@common"
 import { SectionItemContext } from "../.."
 import {
     ConfirmDeleteModalRef,
@@ -38,20 +37,17 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
     const { lecture } = lectureItemProps
     const { lectureId } = lecture
 
-    const { functions } = useContext(SectionItemContext)!
-    const { fetchAndSetLectures } = functions
+    const { swrs } = useContext(SectionItemContext)!
+    const { lecturesSwr } = swrs
+    const { mutate } = lecturesSwr
 
     const onDeletePress = async () => {
-        const response = await deleteLecture({
+        await deleteLecture({
             data: {
                 lectureId,
             },
         })
-        if (!isErrorResponse(response)) {
-            await fetchAndSetLectures()
-        } else {
-            console.log(response)
-        }
+        await mutate()
     }
 
     const { className } = props

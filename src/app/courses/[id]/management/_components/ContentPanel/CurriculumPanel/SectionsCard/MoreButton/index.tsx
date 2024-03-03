@@ -1,5 +1,3 @@
-import React, { createContext, useContext, useMemo, useRef } from "react"
-
 import {
     Button,
     Dropdown,
@@ -9,13 +7,14 @@ import {
 } from "@nextui-org/react"
 import { MoreVertical, PenLineIcon, XIcon } from "lucide-react"
 import { EditModalRef, EditModalRefSelectors } from "./EditModalRef"
-import { SectionEntity, isErrorResponse } from "@common"
+import { SectionEntity } from "@common"
 import { deleteSection } from "@services"
 import { ManagementContext } from "../../../../../_hooks"
 import {
     ConfirmDeleteModalRef,
     ConfirmDeleteModalRefSelectors,
 } from "../../../../../../../../_shared"
+import { createContext, useContext, useMemo, useRef } from "react"
 
 interface MoreButtonProps {
   className?: string;
@@ -41,20 +40,17 @@ export const MoreButton = (props: MoreButtonProps) => {
     const onConfirmDeleteModalOpen = () =>
         confirmDeleteModalRef.current?.onOpen()
 
-    const { functions } = useContext(ManagementContext)!
-    const { fetchAndSetCourseManaged } = functions
+    const { swrs } = useContext(ManagementContext)!
+    const { courseManagementSwr } = swrs
+    const { mutate } = courseManagementSwr
 
     const onDeletePress = async () => {
-        const response = await deleteSection({
+        await deleteSection({
             data: {
                 sectionId,
             },
         })
-        if (!isErrorResponse(response)) {
-            await fetchAndSetCourseManaged()
-        } else {
-            console.log(response)
-        }
+        await mutate()
     }
 
     const moreButtonContextValue : MoreButtonContextValue = useMemo(() => ({

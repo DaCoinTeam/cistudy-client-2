@@ -17,7 +17,7 @@ import useSWR, { SWRConfig, SWRResponse } from "swr"
 import { PostCardContext } from "../.."
 
 export interface CommentsModalContextValue {
-  swr: {
+  swrs: {
     postCommentsSwr: SWRInfiniteResponse<
       Array<PostCommentEntity>,
       ErrorResponse
@@ -29,7 +29,7 @@ export interface CommentsModalContextValue {
   };
 }
 
-export const COLUMNS_PER_PAGE = 5
+export const COLUMNS_PER_PAGE = 3
 
 export const CommentsModalContext =
   createContext<CommentsModalContextValue | null>(null)
@@ -95,7 +95,7 @@ const WrappedCommentsModalProviders = ({
 
     const commentsModalContextValue: CommentsModalContextValue = useMemo(
         () => ({
-            swr: {
+            swrs: {
                 postCommentsSwr,
                 postCommentsMetadataSwr,
             },

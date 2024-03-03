@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useCallback, useContext } from "react"
 import {
     Button,
     Modal,
@@ -6,19 +6,36 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
+    Spacer,
     useDisclosure,
 } from "@nextui-org/react"
-import { FormikContext, FormikProviders } from "./FormikProviders"
-import { EditSection } from "./EditSection"
-
+import {
+    CreateCommentModalContext,
+    CreateCommentModalProviders,
+} from "./CreateCommentModalProviders"
+import { AppendKey, Media } from "@common"
+import {
+    TextEditor,
+    MediaUploader,
+} from "../../../../../../../../../../../_shared"
+import { PlusIcon, RotateCcw } from "lucide-react"
 
 export const WrappedCreateCommentModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
-    const formik = useContext(FormikContext)!
+    const { formik } = useContext(CreateCommentModalContext)!
 
-    const onPress = async () => {
-        formik.handleSubmit()
-    }
+    const setHtml = useCallback(
+        (html: string) => formik.setFieldValue("html", html),
+        [formik.values.html]
+    )
+
+    const setPostCommentMedias = useCallback(
+        (postMedias: Array<AppendKey<Media>>) =>
+            formik.setFieldValue("postCommentMedias", postMedias),
+        [formik.values.postCommentMedias]
+    )
+
+    const onPress = () => formik.handleSubmit()
 
     return (
         <>
@@ -31,18 +48,34 @@ export const WrappedCreateCommentModal = () => {
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl">
                 <ModalContent>
-                    <ModalHeader className="flex flex-col p-6 pb-0">
+                    <ModalHeader className="flex flex-col p-4 font-bold leading-none pb-2">
             Create Comment
                     </ModalHeader>
-                    <ModalBody className="p-6">
-                        <EditSection />
+                    <ModalBody className="p-4">
+                        <div>
+                            <TextEditor html={formik.values.html} setHtml={setHtml} />
+                            <Spacer y={4} />
+                            <MediaUploader
+                                medias={formik.values.postCommentMedias}
+                                setMedias={setPostCommentMedias}
+                            />
+                        </div>
                     </ModalBody>
-                    <ModalFooter className="p-6 pt-0">
-                        <div className="flex gap-4 items-center">
-                            <Button variant="light" color="danger">
+                    <ModalFooter className="p-4 pt-2">
+                        <div className="flex gap-2 items-center">
+                            <Button
+                                variant="bordered"
+                                className="border shadow-none"
+                                startContent={<RotateCcw size={20} strokeWidth={4 / 3} />}
+                            >
                 Reset
                             </Button>
-                            <Button onPress={onPress} color="primary">
+                            <Button
+                                onPress={onPress}
+                                color="primary"
+                                className="text-secondary-foreground"
+                                startContent={<PlusIcon size={20} strokeWidth={4 / 3} />}
+                            >
                 Create
                             </Button>
                         </div>
@@ -55,8 +88,8 @@ export const WrappedCreateCommentModal = () => {
 
 export const CreateCommentModal = () => {
     return (
-        <FormikProviders>
+        <CreateCommentModalProviders>
             <WrappedCreateCommentModal />
-        </FormikProviders>
+        </CreateCommentModalProviders>
     )
 }

@@ -1,54 +1,54 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext } from "react"
-import * as Yup from "yup"
-import { AppendKey, Media, isErrorResponse } from "@common"
+import { AppendKey, Media } from "@common"
 import { createComment } from "@services"
-import { PostCardContext } from "../../../../.."
+import { PostCardContext } from "../../../.."
 import { CommentsModalContext } from "../../CommentsModalProviders"
-
-export const FormikContext = createContext<FormikProps<FormikValues> | null>(
-    null
-)
 
 interface FormikValues {
     html: string
     postCommentMedias: Array<AppendKey<Media>>
 }
 
+interface CreateCommentModalContextValue {
+    formik: FormikProps<FormikValues>
+}
+
+export const CreateCommentModalContext = createContext<CreateCommentModalContextValue | null>(
+    null
+)
+
 const initialValues: FormikValues = {
     html: "",
     postCommentMedias: []
 }
 
-const WrappedFormikProviders = ({
+const WrappedCreateCommentModalProviders = ({
     formik,
     children,
 }: {
-  formik: FormikProps<FormikValues> | null;
+  formik: FormikProps<FormikValues>;
   children: ReactNode;
 }) => (
-    <FormikContext.Provider value={formik}>
+    <CreateCommentModalContext.Provider value={{formik}}>
         <Form onSubmit={formik?.handleSubmit}>{children}</Form>
-    </FormikContext.Provider>
+    </CreateCommentModalContext.Provider>
 )
 
-export const FormikProviders = ({ children }: { children: ReactNode }) => {
+export const CreateCommentModalProviders = ({ children }: { children: ReactNode }) => {
     const { props } = useContext(PostCardContext)!
     const { post } = props
+    const { postId } = post
 
-    const { functions } = useContext(CommentsModalContext)!
-    const { fetchAndSetPostComments } = functions
+    const { swrs } = useContext(CommentsModalContext)!
+    const { postCommentsSwr } = swrs
+    const { mutate } = postCommentsSwr
 
     return (
         <Formik
             initialValues={initialValues}
-            validationSchema={Yup.object({
-            })}
             onSubmit={async ({ html, postCommentMedias: postCommentMediasRaw }, helpers) => {
-                if (post === null) return 
-                const { postId } = post
-
                 let countIndex = 0
                 const files: Array<File> = []     
                 
@@ -64,7 +64,7 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
                     return result
                 })
 
-                const response = await createComment({
+                await createComment({
                     data: {
                         postId,
                         html,
@@ -73,19 +73,15 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
                     files
                 })
 
-                if (!isErrorResponse(response)) {
-                    await fetchAndSetPostComments()
-                } else {
-                    console.log(response)
-                }
+                await mutate()
 
                 helpers.resetForm()
             }}
         >
             {(formik) => (
-                <WrappedFormikProviders formik={formik}>
+                <WrappedCreateCommentModalProviders formik={formik}>
                     {children}
-                </WrappedFormikProviders>
+                </WrappedCreateCommentModalProviders>
             )}
         </Formik>
     )

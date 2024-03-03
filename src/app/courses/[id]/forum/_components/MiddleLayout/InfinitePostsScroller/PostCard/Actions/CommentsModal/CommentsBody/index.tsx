@@ -5,8 +5,8 @@ import { CommentItem } from "./CommentItem"
 import { concatArrays } from "@common"
 
 export const CommentsBody = () => {
-    const { swr } = useContext(CommentsModalContext)!
-    const { postCommentsSwr } = swr
+    const { swrs } = useContext(CommentsModalContext)!
+    const { postCommentsSwr } = swrs
     const { data } = postCommentsSwr
 
     const postComments = concatArrays(data)
@@ -23,7 +23,7 @@ export const CommentsBody = () => {
     )
 
     return (
-        <ScrollShadow className="h-[350px]">
+        <ScrollShadow size={20} className="h-[500px]">
             <div className="flex flex-col gap-4">{renderCommentBody()}</div>
         </ScrollShadow>
     )

@@ -17,9 +17,12 @@ import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
 import useSWR, { SWRConfig, SWRResponse } from "swr"
 
 export interface InfinitePostsScrollerContextValue {
-  swr: {
+  swrs: {
     postsSwr: SWRInfiniteResponse<Array<PostEntity> | undefined, ErrorResponse>;
-    postsMetadataSwr: SWRResponse<FindManyPostsMetadataOutputData, ErrorResponse>;
+    postsMetadataSwr: SWRResponse<
+      FindManyPostsMetadataOutputData,
+      ErrorResponse
+    >;
   };
 }
 
@@ -36,7 +39,6 @@ const WrappedInfinitePostsScrollerProviders = ({
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
-
 
     const fetchPosts = useCallback(
         async (key: number) => {
@@ -81,10 +83,7 @@ const WrappedInfinitePostsScrollerProviders = ({
     }, [])
 
     const postsSwr = useSWRInfinite(
-        (key) =>
-            course?.courseId
-                ? [key, "FETCH_POSTS"]
-                : null,
+        (key) => (course?.courseId ? [key, "FETCH_POSTS"] : null),
         fetchPosts,
         {
             revalidateFirstPage: false,
@@ -99,7 +98,7 @@ const WrappedInfinitePostsScrollerProviders = ({
     const infinitePostsScrollerContextValue: InfinitePostsScrollerContextValue =
     useMemo(
         () => ({
-            swr: {
+            swrs: {
                 postsSwr,
                 postsMetadataSwr,
             },

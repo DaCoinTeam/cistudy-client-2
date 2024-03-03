@@ -1,8 +1,9 @@
-import { DocumentArrowUpIcon } from "@heroicons/react/16/solid"
 import React, { useContext } from "react"
 import Dropzone from "react-dropzone"
 import { Media, getMediaType } from "@common"
 import { MediaUploaderContext } from "../.."
+import { FilePlus2Icon } from "lucide-react"
+import { Spacer } from "@nextui-org/react"
 
 export const UploadCard = () => {
     const { functions } = useContext(MediaUploaderContext)!
@@ -28,10 +29,11 @@ export const UploadCard = () => {
                 <section>
                     <div {...getRootProps()}>
                         <input {...getInputProps()} />   
-                        <div className="cursor-pointer border-dashed rounded-large border-4 grid place-content-center aspect-video w-full">
+                        <div className="cursor-pointer border-dashed rounded-large border-2 grid place-content-center aspect-video w-full">
                             <div className="grid place-items-center">
-                                <DocumentArrowUpIcon className="w-20 h-16 text-foreground-500" />
-                                <div className="text-sm text-foreground-500">
+                                <FilePlus2Icon strokeWidth={4/3} size={40} className="text-foreground-500" />
+                                <Spacer y={1}/>
+                                <div className="text-xs text-foreground-500">
                       Upload image/video(s)
                                 </div>
                             </div>

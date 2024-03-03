@@ -9,7 +9,6 @@ import React, {
     useRef,
 } from "react"
 import { updateSection } from "@services"
-import { isErrorResponse } from "@common"
 import { ManagementContext } from "../../../../../../_hooks"
 import { MoreButtonContext } from ".."
 
@@ -58,8 +57,7 @@ const WrappedEditModalRefProviders = ({
     const hasChanged = () =>
         formik?.values.title !== formik?.values.titlePrevious
 
-    const discardChanges = () =>
-    {
+    const discardChanges = () => {
         formik.setFieldValue("title", formik?.values.titlePrevious)
     }
 
@@ -68,7 +66,7 @@ const WrappedEditModalRefProviders = ({
             formik,
             functions: {
                 hasChanged,
-                discardChanges
+                discardChanges,
             },
         }),
         [formik]
@@ -86,30 +84,26 @@ export const EditModalRefProviders = ({
 }: {
   children: ReactNode;
 }) => {
-
     const { props } = useContext(MoreButtonContext)!
     const { section } = props
     const { sectionId } = section
 
-    const { functions } = useContext(ManagementContext)!
-    const { fetchAndSetCourseManaged } = functions
+    const { swrs } = useContext(ManagementContext)!
+    const { courseManagementSwr } = swrs
+    const { mutate } = courseManagementSwr
 
     return (
         <Formik
             initialValues={initialValues}
             onSubmit={async ({ title }, { setFieldValue }) => {
-                const response = await updateSection({
+                await updateSection({
                     data: {
                         sectionId,
-                        title
+                        title,
                     },
                 })
-                if (!isErrorResponse(response)) {
-                    setFieldValue("titlePrevious", title)
-                    await fetchAndSetCourseManaged()
-                } else {
-                    console.log(response)
-                }
+                setFieldValue("titlePrevious", title)
+                await mutate()
             }}
         >
             {(formik) => (
