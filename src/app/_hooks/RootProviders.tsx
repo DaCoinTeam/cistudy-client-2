@@ -7,7 +7,7 @@ import useSWR, { SWRResponse } from "swr"
 
 interface RootContextValue {
   swrs: {
-    profileSwr: SWRResponse<UserEntity | undefined, ErrorResponse>;
+    profileSwr: SWRResponse<UserEntity | null, ErrorResponse>;
   };
 }
 
@@ -25,6 +25,7 @@ export const RootProviders = (props: { children: ReactNode }) => {
             })
         } catch (ex) {
             console.log(ex)
+            return null
         }
     }, [])
 
