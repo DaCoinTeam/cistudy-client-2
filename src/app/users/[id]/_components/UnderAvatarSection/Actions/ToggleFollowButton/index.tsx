@@ -3,27 +3,23 @@ import { UserMinus2Icon, UserPlus2Icon } from "lucide-react"
 import React, { useContext } from "react"
 import { UserDetailsContext } from "../../../../_hooks"
 import { toggleFollow } from "@services"
-import { isErrorResponse } from "@common"
 
-export const FollowOrUnfollowButton = () => {
-    const { state, functions } = useContext(UserDetailsContext)!
-    const { user } = state
-    const { fetchAndSetUser } = functions
+export const ToggleFollowButton = () => {
+    const { swrs } = useContext(UserDetailsContext)!
+    const { userSwr } = swrs
+    const { data: user , mutate } = userSwr
 
     const onPress = async () => {
-        if (user === null) return
+        if (!user) return
         const { userId } = user
 
-        const response = await toggleFollow({
+        await toggleFollow({
             data: {
                 followedUserId: userId,
             },
         })
-        if (!isErrorResponse(response)) {
-            fetchAndSetUser()
-        } else {
-            console.log(response)
-        }
+        
+        await mutate()
     }
 
     return (

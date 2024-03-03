@@ -3,7 +3,6 @@ import {
     AuthTokenType,
     AuthTokens,
     BaseResponse,
-    ErrorResponse,
     ErrorStatusCode,
     ExtensionsWithOriginalError,
     Schema,
@@ -17,7 +16,7 @@ import { ApolloError, gql } from "@apollo/client"
 export const init = async (
     schema: Schema<DeepPartial<UserEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<UserEntity | ErrorResponse> => {
+): Promise<UserEntity> => {
     try {
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
@@ -44,7 +43,7 @@ export const init = async (
             authTokenType === AuthTokenType.Access
         )
             return await init(schema, AuthTokenType.Refresh)
-        return error
+        throw error
     }
 }
 
@@ -54,7 +53,7 @@ export const signIn = async (
         password: string;
     },
     schema: Schema<DeepPartial<UserEntity>>
-): Promise<UserEntity | ErrorResponse> => {
+): Promise<UserEntity> => {
     const { email, password } = params
     try {
         const payload = buildAuthPayloadString(schema, AuthTokenType.Refresh)
@@ -82,6 +81,6 @@ export const signIn = async (
         const { graphQLErrors } = ex as ApolloError
         const error = (graphQLErrors[0].extensions as ExtensionsWithOriginalError)
             .originalError
-        return error
+        throw error
     }
 }

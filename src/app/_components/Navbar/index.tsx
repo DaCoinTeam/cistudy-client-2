@@ -11,9 +11,8 @@ import {
 import { PencilIcon } from "@heroicons/react/16/solid"
 import { AuthModal } from "./AuthModal"
 import { NavbarContext, NavbarProviders } from "./NavbarProviders"
-import { useSelector } from "react-redux"
-import { RootState } from "@redux"
 import { ProfileMenu } from "./ProfileMenu"
+import { RootContext } from "../../_hooks"
 
 interface NavbarProps {
   className?: string;
@@ -24,7 +23,9 @@ const WrappedNavbar = (props: NavbarProps) => {
 
     const { dispatch } = useContext(NavbarContext)!
 
-    const profile = useSelector((state: RootState) => state.auth.profile)
+    const { swrs } = useContext(RootContext)!
+    const { profileSwr } = swrs
+    const { data: profile } = profileSwr
 
     const onSignInPress = () => {
         dispatch({

@@ -1,8 +1,5 @@
 import { getAssetUrl, updateProfile } from "@services"
-import { isErrorResponse } from "@common"
 import { useContext, useRef } from "react"
-import { useSelector } from "react-redux"
-import { RootState } from "@redux"
 import { UserDetailsContext } from "../../_hooks"
 import { RootContext } from "../../../../_hooks"
 import { CameraIcon } from "@heroicons/react/24/solid"
@@ -17,13 +14,13 @@ export const UserAvatar = (props: UserAvatarProps) => {
 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
-    const { state, functions } = useContext(UserDetailsContext)!
-    const { fetchAndSetUser } = functions
-    const { user } = state
-    const { functions: rootFunctions } = useContext(RootContext)!
-    const { fetchAndSetProfile } = rootFunctions
+    const { swrs } = useContext(UserDetailsContext)!
+    const { userSwr } = swrs
+    const { data: user, mutate } = userSwr
 
-    const profile = useSelector((state: RootState) => state.auth.profile)
+    const { swrs: rootSwrs } = useContext(RootContext)!
+    const { profileSwr } = rootSwrs
+    const { data: profile } = profileSwr
 
     const isOwnProfile = user?.userId === profile?.userId
 
@@ -37,19 +34,14 @@ export const UserAvatar = (props: UserAvatarProps) => {
         const file = files.item(0)
         if (file === null) return
 
-        const response = await updateProfile({
+        await updateProfile({
             data: {
                 avatarIndex: 0
             },
             files: [file]
         })
-        
-        if (!isErrorResponse(response)) {
-            await fetchAndSetUser()
-            await fetchAndSetProfile()
-        } else {
-            console.log(response)
-        }
+
+        await mutate()
     }
 
     return (
@@ -58,6 +50,9 @@ export const UserAvatar = (props: UserAvatarProps) => {
                 <div className="relative">
                     <Avatar
                         isBordered
+                        classNames={{
+                            base: "ring-0"
+                        }}
                         className="w-44 h-44"
                         src={getAssetUrl(user?.avatarId, { forceUpdate: true })}
                     />
@@ -66,7 +61,7 @@ export const UserAvatar = (props: UserAvatarProps) => {
                             onPress={onPress}
                             radius="full"
                             isIconOnly
-                            className="bg-content2 absolute bottom-0 right-0"
+                            className="bg-content1 absolute bottom-0 right-0"
                         >
                             <CameraIcon className="w-6 h-6" />
                         </Button>

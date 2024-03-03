@@ -1,11 +1,8 @@
 import React, { useContext, useRef } from "react"
 import { UserDetailsContext } from "../../_hooks"
-import { useSelector } from "react-redux"
-import { RootState } from "@redux"
 import { Button, Image } from "@nextui-org/react"
 import { getAssetUrl, updateProfile } from "@services"
 import { RootContext } from "../../../../_hooks"
-import { isErrorResponse } from "@common"
 import { ImageUpIcon } from "lucide-react"
 
 interface CoverPhotoProps {
@@ -17,13 +14,13 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
-    const { state, functions } = useContext(UserDetailsContext)!
-    const { fetchAndSetUser } = functions
-    const { user } = state
-    const { functions: rootFunctions } = useContext(RootContext)!
-    const { fetchAndSetProfile } = rootFunctions
+    const { swrs } = useContext(UserDetailsContext)!
+    const { userSwr } = swrs
+    const { data: user, mutate } = userSwr
 
-    const profile = useSelector((state: RootState) => state.auth.profile)
+    const { swrs: rootSwrs } = useContext(RootContext)!
+    const { profileSwr } = rootSwrs
+    const { data: profile, mutate: rootMutate } = profileSwr
 
     const isOwnProfile = user?.userId === profile?.userId
 
@@ -37,18 +34,14 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
         const file = files.item(0)
         if (file === null) return
 
-        const response = await updateProfile({
+        await updateProfile({
             data: {
                 coverPhotoIndex: 0
             },
             files: [file]
         })
-        if (!isErrorResponse(response)) {
-            await fetchAndSetUser()
-            await fetchAndSetProfile()
-        } else {
-            console.log(response)
-        }
+        await mutate()
+        await rootMutate()
     }
 
     return (
@@ -70,7 +63,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
                         <div className="w-full h-full max-w-[1280px] m-auto relative">
                             <Button
                                 onPress={onPress}
-                                className="z-10 w-fit bg-content2 absolute bottom-6 right-6"
+                                className="bg-content1 z-10 w-fit absolute bottom-6 right-6 border shadow-none"
                                 startContent={<ImageUpIcon size={24} strokeWidth={4/3} />}
                             >
             Upload cover photo

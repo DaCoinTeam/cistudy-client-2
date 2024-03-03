@@ -1,10 +1,9 @@
 import React, { useContext } from "react"
-import { useSelector } from "react-redux"
-import { RootState } from "../../../../../../redux/store"
 import { UserDetailsContext } from "../../../_hooks"
 import { EditProfileModal } from "./EditProfileModal"
-import { FollowOrUnfollowButton } from "./FollowOrUnfollowButton"
+import { ToggleFollowButton } from "./ToggleFollowButton"
 import { MoreButton } from "./MoreButton"
+import { RootContext } from "../../../../../_hooks"
 
 interface ActionsProps {
   className?: string;
@@ -13,17 +12,20 @@ interface ActionsProps {
 export const Actions = (props: ActionsProps) => {
     const { className } = props
 
-    const { state } = useContext(UserDetailsContext)!
-    const { user } = state
+    const { swrs } = useContext(UserDetailsContext)!
+    const { userSwr } = swrs
+    const { data: user } = userSwr
 
-    const profile = useSelector((state: RootState) => state.auth.profile)
+    const { swrs: rootSwrs } = useContext(RootContext)!
+    const { profileSwr } = rootSwrs
+    const { data: profile } = profileSwr
 
     const renderButton = () => (
         <>
             {user?.userId === profile?.userId ? (
                 <EditProfileModal />
             ) : (
-                <FollowOrUnfollowButton />
+                <ToggleFollowButton />
             )}
         </>
     )

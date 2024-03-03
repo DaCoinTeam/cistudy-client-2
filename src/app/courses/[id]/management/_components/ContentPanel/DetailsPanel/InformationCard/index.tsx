@@ -63,16 +63,14 @@ export const WrappedInformationCard = (props: InformationCardProps) => {
                     <CardFooter className="gap-2 flex-row-reverse">
                         <Button
                             type="submit"
-                            color="primary"
-                            className="text-secondary-foreground"
+                            className="bg-content2"
                             startContent={<SaveIcon size={20} strokeWidth={4 / 3} />}
                         >
               Save
                         </Button>
                         <Button
                             onPress={onDiscardChangesPress}
-                            variant="bordered"
-                            className="border"
+                            className="bg-content2"
                             startContent={<ClipboardXIcon size={20} strokeWidth={4 / 3} />}
                         >
               Discard Changes

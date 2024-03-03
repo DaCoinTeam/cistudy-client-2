@@ -1,12 +1,14 @@
 "use client"
 import { Avatar, Card, CardBody } from "@nextui-org/react"
-import React from "react"
-import { useSelector } from "react-redux"
-import { RootState } from "@redux"
+import React, { useContext } from "react"
 import { getAssetUrl } from "@services"
 import { CreatePostModal } from "./CreatePostModal"
+import { RootContext } from "../../../../../../_hooks"
 export const CreatePostCard = () => {
-    const profile = useSelector((state: RootState) => state.auth.profile)
+    const { swrs } = useContext(RootContext)!
+    const { profileSwr } = swrs
+    const { data: profile } = profileSwr
+
     return (
         <Card shadow="none">
             <CardBody className="p-4">

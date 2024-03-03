@@ -10,8 +10,9 @@ interface UnderAvatarSectionProps {
 export const UnderAvatarSection = (props: UnderAvatarSectionProps) => {
     const { className } = props
 
-    const { state } = useContext(UserDetailsContext)!
-    const { user } = state
+    const { swrs } = useContext(UserDetailsContext)!
+    const { userSwr } = swrs
+    const { data: user } = userSwr
 
     return (
         <div className={`${className} flex justify-between items-center`}>

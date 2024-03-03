@@ -27,7 +27,7 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
                 }}
             >
                 <DropdownTrigger>
-                    <Button className={`${className} bg-content2`} isIconOnly>
+                    <Button className={`${className} bg-content1 shadow-none`} isIconOnly>
                         <MoreHorizontal size={20} strokeWidth={4/3} />
                     </Button>
                 </DropdownTrigger>
