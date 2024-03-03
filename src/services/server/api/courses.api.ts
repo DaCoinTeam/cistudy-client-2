@@ -65,7 +65,7 @@ export const updateCourse = async (
         files?: Array<File>;
     },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data, files } = params
         const url = `${BASE_URL}/update-course`
@@ -95,13 +95,12 @@ export const updateCourse = async (
     } catch (ex) {
         const _ex = (ex as AxiosError).response?.data as ErrorResponse
         const { statusCode } = _ex
-        console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
             authTokenType === AuthTokenType.Access
         )
             return await updateCourse(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 

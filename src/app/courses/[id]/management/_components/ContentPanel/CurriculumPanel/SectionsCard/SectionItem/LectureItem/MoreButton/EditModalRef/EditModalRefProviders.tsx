@@ -9,10 +9,8 @@ import React, {
     useRef,
 } from "react"
 import { updateLecture } from "@services"
-import { isErrorResponse } from "@common"
 import { LectureItemContext } from "../.."
 import { SectionItemContext } from "../../.."
-
 
 interface EditModalRefContextValue {
   formik: FormikProps<FormikValues>;
@@ -91,25 +89,22 @@ export const EditModalRefProviders = ({
     const { lecture } = props
     const { lectureId } = lecture
 
-    const { functions } = useContext(SectionItemContext)!
-    const { fetchAndSetLectures } = functions
+    const { swrs } = useContext(SectionItemContext)!
+    const { lecturesSwr } = swrs
+    const { mutate } = lecturesSwr
 
     return (
         <Formik
             initialValues={initialValues}
             onSubmit={async ({ title }, { setFieldValue }) => {
-                const response = await updateLecture({
+                await updateLecture({
                     data: {
                         lectureId,
                         title
                     },
                 })
-                if (!isErrorResponse(response)) {
-                    setFieldValue("titlePrevious", title)
-                    await fetchAndSetLectures()
-                } else {
-                    console.log(response)
-                }
+                setFieldValue("titlePrevious", title)
+                await mutate()
             }}
         >
             {(formik) => (

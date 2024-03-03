@@ -1,5 +1,4 @@
 import { useReducer } from "react"
-import { CourseEntity } from "@common"
 
 export enum PanelSelected {
     Details = "details",
@@ -7,13 +6,7 @@ export enum PanelSelected {
 }
 
 export interface ManagementState {
-    courseManagement: CourseEntity | null
     panelSelected: PanelSelected
-}
-
-export interface SetCourseManagedAction {
-    type: "SET_COURSE_MANAGEMENT";
-    payload: CourseEntity
 }
 
 export interface SetPanelSelectedAction {
@@ -21,10 +14,9 @@ export interface SetPanelSelectedAction {
     payload: PanelSelected
 }
 
-export type ManagementAction = SetCourseManagedAction | SetPanelSelectedAction;
+export type ManagementAction = SetPanelSelectedAction;
 
 export const state: ManagementState = {
-    courseManagement: null,
     panelSelected: PanelSelected.Details,
 }
 
@@ -33,8 +25,6 @@ export const reducer = (
     action: ManagementAction
 ) => {
     switch (action.type) {
-    case "SET_COURSE_MANAGEMENT":
-        return { ...state, courseManagement: action.payload }
     case "SET_PANEL_SELECTED":
         return { ...state, panelSelected: action.payload }
     default:

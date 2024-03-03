@@ -1,6 +1,6 @@
 import { Card, CardBody, Link } from "@nextui-org/react"
 import React, { useContext, useRef } from "react"
-import { ResourceEntity, isErrorResponse } from "@common"
+import { ResourceEntity } from "@common"
 import { deleteResource, getAssetUrl } from "@services"
 import { DownloadIcon, XIcon } from "lucide-react"
 import { ResourceModalContext } from ".."
@@ -15,22 +15,19 @@ interface ResourceItemProps {
 
 export const ResourceItem = (props: ResourceItemProps) => {
     const { resource } = props
-    const { resourceId } = resource
+    const { resourceId, fileId, name } = resource
 
-    const { functions } = useContext(ResourceModalContext)!
-    const { fetchAndSetResources } = functions
+    const { swrs } = useContext(ResourceModalContext)!
+    const { resourcesSwr } = swrs
+    const { mutate } = resourcesSwr
 
     const onDeletePress = async () => {
-        const response = await deleteResource({
+        await deleteResource({
             data: {
                 resourceId,
             },
         })
-        if (!isErrorResponse(response)) {
-            await fetchAndSetResources()
-        } else {
-            console.log(response)
-        }
+        await mutate()
     }
 
     const confirmDeleteModalRef = useRef<ConfirmDeleteModalRefSelectors | null>(
@@ -45,10 +42,10 @@ export const ResourceItem = (props: ResourceItemProps) => {
                 <CardBody>
                     <div className="w-full justify-between items-center flex">
                         <Link as="button" color="foreground" size="sm" underline="always">
-                            {props.resource.name}
+                            {name}
                         </Link>
                         <div className="flex gap-4 items-center">
-                            <Link href={getAssetUrl(props.resource.fileId)}>
+                            <Link href={getAssetUrl(fileId)}>
                                 <DownloadIcon size={20} strokeWidth={4 / 3} />
                             </Link>
                             <Link as="button" onPress={onConfirmDeleteModalOpen}>

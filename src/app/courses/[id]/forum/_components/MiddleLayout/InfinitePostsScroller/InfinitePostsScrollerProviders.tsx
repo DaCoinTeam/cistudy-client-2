@@ -18,7 +18,7 @@ import useSWR, { SWRConfig, SWRResponse } from "swr"
 
 export interface InfinitePostsScrollerContextValue {
   swr: {
-    postsSwr: SWRInfiniteResponse<Array<PostEntity> | null, ErrorResponse>;
+    postsSwr: SWRInfiniteResponse<Array<PostEntity> | undefined, ErrorResponse>;
     postsMetadataSwr: SWRResponse<FindManyPostsMetadataOutputData, ErrorResponse>;
   };
 }
@@ -33,12 +33,14 @@ const WrappedInfinitePostsScrollerProviders = ({
 }: {
   children: ReactNode;
 }) => {
-    const { state: courseDetailsState } = useContext(CourseDetailsContext)!
-    const { course } = courseDetailsState
+    const { swrs } = useContext(CourseDetailsContext)!
+    const { courseSwr } = swrs
+    const { data: course } = courseSwr
+
 
     const fetchPosts = useCallback(
         async (key: number) => {
-            if (course === null) return null
+            if (!course) return
             const { courseId } = course
 
             return await findManyPosts(

@@ -44,13 +44,14 @@ const WrappedDetailsPanelProviders = ({
   formik: FormikProps<FormikValues>;
   children: ReactNode;
 }) => {
-    const { state } = useContext(ManagementContext)!
-    const { courseManagement } = state
+    const { swrs } = useContext(ManagementContext)!
+    const { courseManagementSwr } = swrs
+    const { data : courseManagement } = courseManagementSwr
 
     const titlePreviousRef = useRef(false)
 
     useEffect(() => {
-        if (courseManagement === null) return
+        if (!courseManagement) return
         const { title } = courseManagement
 
         if (!titlePreviousRef.current) {
@@ -63,7 +64,7 @@ const WrappedDetailsPanelProviders = ({
     const descriptionPreviousRef = useRef(false)
 
     useEffect(() => {
-        if (courseManagement === null) return
+        if (!courseManagement) return
         const { description } = courseManagement
 
         if (!descriptionPreviousRef.current) {
@@ -106,15 +107,15 @@ export const DetailsPanelProviders = ({
 }: {
   children: ReactNode;
 }) => {
-    const { state, functions } = useContext(ManagementContext)!
-    const { courseManagement } = state
-    const { fetchAndSetCourseManaged } = functions
+    const { swrs } = useContext(ManagementContext)!
+    const { courseManagementSwr } = swrs
+    const { data: courseManagement, mutate } = courseManagementSwr
 
     return (
         <Formik
             initialValues={initialValues}
             onSubmit={async ({ title, description }, { setFieldValue }) => {
-                if (courseManagement === null) return
+                if (!courseManagement) return
                 const { courseId } = courseManagement
                 const response = await updateCourse({
                     data: {
@@ -126,7 +127,7 @@ export const DetailsPanelProviders = ({
                 if (!isErrorResponse(response)) {
                     setFieldValue("titlePrevious", title)
                     setFieldValue("descriptionPrevious", description)
-                    await fetchAndSetCourseManaged()
+                    await mutate()
                 } else {
                     console.log(response)
                 }

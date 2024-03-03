@@ -1,6 +1,5 @@
 import React, { useContext, useRef } from "react"
 import { updateLecture } from "@services"
-import { isErrorResponse } from "@common"
 import { Button } from "@nextui-org/react"
 import { UploadIcon } from "lucide-react"
 import { LectureItemContext } from "../../../.."
@@ -19,8 +18,9 @@ export const UploadButton = (props: UploadButtonProps) => {
     const { lecture } = lectureItemProps
     const { lectureId } = lecture
 
-    const { functions } = useContext(SectionItemContext)!
-    const { fetchAndSetLectures } = functions
+    const { swrs } = useContext(SectionItemContext)!
+    const { lecturesSwr } = swrs
+    const { mutate } = lecturesSwr
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files
@@ -28,18 +28,15 @@ export const UploadButton = (props: UploadButtonProps) => {
         const file = files.item(0)
         if (file === null) return
 
-        const response = await updateLecture({
+        await updateLecture({
             data: {
                 lectureId,
                 lectureVideoIndex: 0,
             },
             files: [file],
         })
-        if (!isErrorResponse(response)) {
-            await fetchAndSetLectures()
-        } else {
-            console.log(response)
-        }
+
+        await mutate()
     }
 
     const onPress = () => {

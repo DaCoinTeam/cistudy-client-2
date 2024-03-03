@@ -23,7 +23,7 @@ export const findOneCourse = async (
     courseId: string;
   },
     schema: Schema<DeepPartial<CourseEntity>>
-): Promise<CourseEntity | ErrorResponse> => {
+): Promise<CourseEntity> => {
     try {
         const { courseId } = params
         const payload = buildPayloadString(schema)
@@ -50,7 +50,7 @@ export const findOneCourse = async (
       _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
-        return error
+        throw error
     }
 }
 
@@ -85,7 +85,7 @@ export const findManyLectures = async (
     sectionId: string;
   },
     schema: Schema<DeepPartial<LectureEntity>>
-): Promise<Array<LectureEntity> | ErrorResponse> => {
+): Promise<Array<LectureEntity>> => {
     try {
         const { sectionId } = params
         const payload = buildPayloadString(schema)
@@ -112,7 +112,7 @@ export const findManyLectures = async (
       _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
-        return error
+        throw error
     }
 }
 
@@ -169,7 +169,7 @@ export const findManyResources = async (
   },
     schema: Schema<DeepPartial<ResourceEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<Array<ResourceEntity> | ErrorResponse> => {
+): Promise<Array<ResourceEntity>> => {
     try {
         const { lectureId } = params
         const payload = buildAuthPayloadString(schema, authTokenType)
@@ -207,7 +207,7 @@ export const findManyResources = async (
         )
             return await findManyResources(params, schema, AuthTokenType.Refresh)
 
-        return error
+        throw error
     }
 }
 
@@ -217,7 +217,7 @@ export const findManyCourseTargets = async (
   },
     schema: Schema<DeepPartial<CourseTargetEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<Array<CourseTargetEntity> | ErrorResponse> => {
+): Promise<Array<CourseTargetEntity>> => {
     try {
         const { courseId } = params
         const payload = buildAuthPayloadString(schema, authTokenType)
@@ -255,6 +255,6 @@ export const findManyCourseTargets = async (
         )
             return await findManyCourseTargets(params, schema, AuthTokenType.Refresh)
 
-        return error
+        throw error
     }
 }

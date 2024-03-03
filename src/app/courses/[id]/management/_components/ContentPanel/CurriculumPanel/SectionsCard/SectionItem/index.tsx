@@ -1,13 +1,9 @@
-import React, { createContext, useCallback, useEffect, useMemo } from "react"
-import { SectionEntity, isErrorResponse } from "@common"
+import React, { createContext, useCallback, useMemo } from "react"
+import { ErrorResponse, LectureEntity, SectionEntity } from "@common"
 import { findManyLectures } from "@services"
-import {
-    SectionItemAction,
-    SectionItemState,
-    useSectionItemReducer,
-} from "./useSectionItemReducer"
 import { AddLectureItem } from "./AddLectureItem"
 import { LectureItem } from "./LectureItem"
+import useSWR, { SWRConfig, SWRResponse } from "swr"
 
 interface SectionItemProps {
   section: SectionEntity;
@@ -15,10 +11,8 @@ interface SectionItemProps {
 
 interface SectionItemContextValue {
   props: SectionItemProps;
-  state: SectionItemState;
-  dispatch: React.Dispatch<SectionItemAction>;
-  functions: {
-    fetchAndSetLectures: () => Promise<void>;
+  swrs: {
+    lecturesSwr: SWRResponse<Array<LectureEntity>, ErrorResponse>;
   };
 }
 
@@ -26,15 +20,12 @@ export const SectionItemContext = createContext<SectionItemContextValue | null>(
     null
 )
 
-export const SectionItem = (props: SectionItemProps) => {
+const WrappedSectionItem = (props: SectionItemProps) => {
     const { section } = props
     const { sectionId } = section
 
-    const [state, dispatch] = useSectionItemReducer()
-    const { lectures } = state
-
-    const fetchAndSetLectures = useCallback(async () => {
-        const response = await findManyLectures(
+    const fetchLectures = useCallback(async () => {
+        return await findManyLectures(
             {
                 sectionId,
             },
@@ -48,46 +39,37 @@ export const SectionItem = (props: SectionItemProps) => {
                     resourceId: true,
                     name: true,
                     fileId: true,
-                }
+                },
             }
         )
-        if (!isErrorResponse(response)) {
-            dispatch({
-                type: "SET_LECTURES",
-                payload: response,
-            })
-        } else {
-            console.log(response)
-        }
     }, [props])
 
-    useEffect(() => {
-        const handleEffect = async () => {
-            await fetchAndSetLectures()
-        }
-        handleEffect()
-    }, [props])
+    const lecturesSwr = useSWR("FETCH_LECTURES", fetchLectures)
 
     const sectionItemContextValue: SectionItemContextValue = useMemo(
         () => ({
             props,
-            state,
-            dispatch,
-            functions: {
-                fetchAndSetLectures,
+            swrs: {
+                lecturesSwr,
             },
         }),
-        [props, state, dispatch]
+        [props, lecturesSwr]
     )
 
     return (
         <SectionItemContext.Provider value={sectionItemContextValue}>
             <>
-                {lectures.map((lecture) => (
+                {lecturesSwr.data?.map((lecture) => (
                     <LectureItem key={lecture.lectureId} lecture={lecture} />
                 ))}
-                <AddLectureItem key="addLecture"/>
+                <AddLectureItem key="addLecture" />
             </>
         </SectionItemContext.Provider>
     )
 }
+
+export const SectionItem = (props: SectionItemProps) => (
+    <SWRConfig value={{ provider: () => new Map() }}>
+        <WrappedSectionItem {...props} />
+    </SWRConfig>
+)

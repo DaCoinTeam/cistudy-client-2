@@ -13,32 +13,25 @@ import React, {
     forwardRef,
     useCallback,
     useContext,
-    useEffect,
     useImperativeHandle,
     useMemo,
 } from "react"
-import { isErrorResponse } from "@common"
+import { ErrorResponse, ResourceEntity } from "@common"
 import { ResourceItem } from "./ResourceItem"
 import { createResources, findManyResources } from "@services"
 import Dropzone from "react-dropzone"
-import {
-    ResourcesModalAction,
-    ResourcesModalState,
-    useResourcesModalReducer,
-} from "./useResourcesModalReducer"
 import { LectureItemContext } from "../.."
+import useSWR, { SWRResponse } from "swr"
 
 interface ResourceModalContextValue {
-  state: ResourcesModalState;
-  dispatch: React.Dispatch<ResourcesModalAction>;
-  functions: {
-    fetchAndSetResources: () => Promise<void>;
+  swrs: {
+    resourcesSwr: SWRResponse<Array<ResourceEntity>, ErrorResponse>;
   };
 }
 
 export interface ResourceModalRefSelectors {
-    onOpen: () => void;
-  }
+  onOpen: () => void;
+}
 
 export const ResourceModalContext =
   createContext<ResourceModalContextValue | null>(null)
@@ -48,11 +41,8 @@ const WrappedResourcesModalRef = () => {
     const { lecture } = props
     const { lectureId } = lecture
 
-    const [state, dispatch] = useResourcesModalReducer()
-    const { resources } = state
-
-    const fetchAndSetResources = useCallback(async () => {
-        const response = await findManyResources(
+    const fetchResources = useCallback(async () => {
+        return await findManyResources(
             {
                 lectureId,
             },
@@ -62,52 +52,33 @@ const WrappedResourcesModalRef = () => {
                 fileId: true,
             }
         )
-        if (!isErrorResponse(response)) {
-            dispatch({
-                type: "SET_RESOURCES",
-                payload: response,
-            })
-        } else {
-            console.log(response)
-        }
-    }, [props, state, dispatch])
-
-    useEffect(() => {
-        const handleEffect = async () => {
-            await fetchAndSetResources()
-        }
-        handleEffect()
     }, [])
+
+    const resourcesSwr = useSWR(["RESOURCES"], fetchResources)
 
     const resourceModalContextValue: ResourceModalContextValue = useMemo(
         () => ({
-            state,
-            dispatch,
-            functions: {
-                fetchAndSetResources,
+            swrs: {
+                resourcesSwr,
             },
         }),
-        [props, state]
+        [resourcesSwr]
     )
 
     const onDrop = useCallback(async (files: Array<File>) => {
-        const response = await createResources({
+        await createResources({
             data: {
                 lectureId,
             },
             files,
         })
-        if (!isErrorResponse(response)) {
-            await fetchAndSetResources()
-        } else {
-            console.log(response)
-        }
+        await resourcesSwr.mutate()
     }, [])
 
     const renderResources = () => (
         <div>
             <div className="flex flex-col gap-4">
-                {resources.map((resource) => (
+                {resourcesSwr.data?.map((resource) => (
                     <ResourceItem key={resource.resourceId} resource={resource} />
                 ))}
             </div>
@@ -117,7 +88,9 @@ const WrappedResourcesModalRef = () => {
     return (
         <ResourceModalContext.Provider value={resourceModalContextValue}>
             <ModalContent>
-                <ModalHeader className="p-4 pb-2 text-xl font-bold leading-none">Resources</ModalHeader>
+                <ModalHeader className="p-4 pb-2 text-xl font-bold leading-none">
+          Resources
+                </ModalHeader>
                 <ModalBody className="p-4 pb-0 gap-4">
                     <Dropzone onDrop={onDrop}>
                         {({ getRootProps, getInputProps }) => (
@@ -129,7 +102,7 @@ const WrappedResourcesModalRef = () => {
                                             <DocumentArrowUpIcon className="w-20 h-20 text-foreground-500" />
                                             <Spacer y={1} />
                                             <div className="text-sm text-foreground-500">
-                            Upload file(s)
+                        Upload file(s)
                                             </div>
                                         </div>
                                     </div>
@@ -145,19 +118,21 @@ const WrappedResourcesModalRef = () => {
 }
 
 export interface ResourcesModalRefSelectors {
-    onOpen: () => void;
-  }
-  
-export const ResourcesModalRef = forwardRef<ResourcesModalRefSelectors>((_, ref) => {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  onOpen: () => void;
+}
 
-    useImperativeHandle(ref, () => ({
-        onOpen,
-    }))
+export const ResourcesModalRef = forwardRef<ResourcesModalRefSelectors>(
+    (_, ref) => {
+        const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
-    return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
-            <WrappedResourcesModalRef />
-        </Modal>
-    )
-})
+        useImperativeHandle(ref, () => ({
+            onOpen,
+        }))
+
+        return (
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
+                <WrappedResourcesModalRef />
+            </Modal>
+        )
+    }
+)

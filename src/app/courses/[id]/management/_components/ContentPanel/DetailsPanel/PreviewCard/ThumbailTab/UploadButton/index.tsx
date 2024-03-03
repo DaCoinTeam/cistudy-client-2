@@ -1,6 +1,5 @@
 import React, { useContext, useRef } from "react"
 import { updateCourse } from "@services"
-import { isErrorResponse } from "@common"
 import { ManagementContext } from "../../../../../../_hooks"
 import { Button } from "@nextui-org/react"
 import { UploadIcon } from "lucide-react"
@@ -14,9 +13,9 @@ export const UploadButton = (props: UploadButtonProps) => {
 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
-    const { state, functions } = useContext(ManagementContext)!
-    const { courseManagement } = state
-    const { fetchAndSetCourseManaged } = functions
+    const { swrs } = useContext(ManagementContext)!
+    const { courseManagementSwr } = swrs
+    const { data : courseManagement, mutate } = courseManagementSwr
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files
@@ -24,21 +23,18 @@ export const UploadButton = (props: UploadButtonProps) => {
         const file = files.item(0)
         if (file === null) return
 
-        if (courseManagement === null) return
+        if (!courseManagement) return
         const { courseId } = courseManagement
 
-        const response = await updateCourse({
+        await updateCourse({
             data: {
                 courseId,
                 thumbnailIndex: 0,
             },
             files: [file],
         })
-        if (!isErrorResponse(response)) {
-            await fetchAndSetCourseManaged()
-        } else {
-            console.log(response)
-        }
+
+        await mutate()
     }
 
     const onPress = () => {

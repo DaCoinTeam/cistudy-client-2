@@ -1,5 +1,11 @@
 "use client"
-import React, { ReactNode, createContext, useCallback, useContext, useEffect, useMemo } from "react"
+import React, {
+    ReactNode,
+    createContext,
+    useCallback,
+    useContext,
+    useMemo,
+} from "react"
 
 import {
     ManagementAction,
@@ -8,31 +14,34 @@ import {
 } from "./useManagementReducer"
 import { CourseDetailsContext } from "../../_hooks"
 import { findOneCourse } from "@services"
-import { isErrorResponse } from "@common"
+import { CourseEntity, ErrorResponse } from "@common"
+import useSWR, { SWRConfig, SWRResponse } from "swr"
 
 export interface ManagementContextValue {
-  state: ManagementState;
-  dispatch: React.Dispatch<ManagementAction>;
-  functions: {
-    fetchAndSetCourseManaged: () => Promise<void>
-  }
+  reducers: {
+    manageReducer: [ManagementState, React.Dispatch<ManagementAction>];
+  };
+  swrs: {
+    courseManagementSwr: SWRResponse<CourseEntity | undefined, ErrorResponse>;
+  };
 }
 
-export const ManagementContext = createContext<ManagementContextValue | null>(null)
+export const ManagementContext = createContext<ManagementContextValue | null>(
+    null
+)
 
-export const ManagementProviders = ({ children }: { children: ReactNode }) => {
-    const [state, dispatch] = useManagementReducer()
+const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
+    const manageReducer = useManagementReducer()
 
-    const { state: courseDetailsState } =
-    useContext(CourseDetailsContext)!
+    const { swrs } = useContext(CourseDetailsContext)!
+    const { courseSwr } = swrs
+    const { data: course } = courseSwr
 
-    const { course } = courseDetailsState
-
-    const fetchAndSetCourseManaged = useCallback(async () => {
-        if (course === null) return
+    const fetchCourseManagement = useCallback(async () => {
+        if (!course) return
         const { courseId } = course
-        
-        const response = await findOneCourse(
+
+        return await findOneCourse(
             {
                 courseId,
             },
@@ -53,43 +62,33 @@ export const ManagementProviders = ({ children }: { children: ReactNode }) => {
                         resources: {
                             resourceId: true,
                             name: true,
-                            fileId: true
-                        }
-                    }
+                            fileId: true,
+                        },
+                    },
                 },
                 courseTargets: {
                     courseTargetId: true,
-                    content: true
-                }
+                    content: true,
+                },
             }
         )
-        
-        if (!isErrorResponse(response)) {
-            dispatch({
-                type: "SET_COURSE_MANAGEMENT",
-                payload: response,
-            })
-        } else {
-            console.log(response)
-        }
     }, [course?.courseId])
 
-    useEffect(() => {
-        const handleEffect = async () => {
-            await fetchAndSetCourseManaged()
-        }
-        handleEffect()
-    }, [course?.courseId])
+    const courseManagementSwr = useSWR(
+        course?.courseId ? ["COURSE_MANAGEMENT"] : null,
+        fetchCourseManagement
+    )
 
     const manageContextValue: ManagementContextValue = useMemo(
         () => ({
-            state,
-            dispatch,
-            functions: {
-                fetchAndSetCourseManaged
-            }
+            reducers: {
+                manageReducer,
+            },
+            swrs: {
+                courseManagementSwr,
+            },
         }),
-        [state, dispatch]
+        [manageReducer, courseManagementSwr]
     )
 
     return (
@@ -98,3 +97,9 @@ export const ManagementProviders = ({ children }: { children: ReactNode }) => {
         </ManagementContext.Provider>
     )
 }
+
+export const ManagementProviders = ({ children }: { children: ReactNode }) => (
+    <SWRConfig value={{ provider: () => new Map() }}>
+        <WrappedManagementProviders>{children}</WrappedManagementProviders>
+    </SWRConfig>
+)

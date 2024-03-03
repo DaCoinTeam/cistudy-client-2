@@ -4,41 +4,37 @@ import React, {
     createContext,
     useCallback,
     useContext,
-    useEffect,
     useMemo,
 } from "react"
 
-import {
-    TargetsCardAction,
-    TargetsCardState,
-    useTargetsCardReducer,
-} from "./useTargetsCardReducer"
 import { findManyCourseTargets } from "@services"
-import { isErrorResponse } from "@common"
 import { ManagementContext } from "../../../../_hooks"
+import useSWR, { SWRConfig, SWRResponse } from "swr"
+import { CourseTargetEntity, ErrorResponse } from "@common"
 
 export interface TargetsCardContextValue {
-  state: TargetsCardState;
-  dispatch: React.Dispatch<TargetsCardAction>;
-  functions: {
-    fetchAndSetCourseTargets: () => Promise<void>;
+  swrs: {
+    courseTargetsSwr: SWRResponse<
+      Array<CourseTargetEntity> | undefined,
+      ErrorResponse
+    >;
   };
 }
 
-export const TargetsCardContext =
-  createContext<TargetsCardContextValue | null>(null)
+export const TargetsCardContext = createContext<TargetsCardContextValue | null>(
+    null
+)
 
-export const TargetsCardProviders = ({ children }: { children: ReactNode }) => {
-    const [state, dispatch] = useTargetsCardReducer()
+const WrappedTargetsCardProviders = ({ children }: { children: ReactNode }) => {
+    const { swrs } = useContext(ManagementContext)!
+    const { courseManagementSwr } = swrs
+    const { data: courseManagement } = courseManagementSwr
 
-    const { state: manageState } = useContext(ManagementContext)!
-    const { courseManagement } = manageState
-
-    const fetchAndSetCourseTargets = useCallback(async () => {
-        if (courseManagement === null) return
+    const fetchCourseTargets = useCallback(async () => {
+        if (!courseManagement) return
         const { courseId } = courseManagement
 
-        const response = await findManyCourseTargets(
+        return await findManyCourseTargets(
             {
                 courseId,
             },
@@ -47,32 +43,17 @@ export const TargetsCardProviders = ({ children }: { children: ReactNode }) => {
                 content: true,
             }
         )
-        if (!isErrorResponse(response)) {
-            dispatch({
-                type: "SET_COURSE_TARGETS",
-                payload: response,
-            })
-        } else {
-            console.log(response)
-        }
     }, [courseManagement?.courseId])
 
-    useEffect(() => {
-        const handleEffect = async () => {
-            await fetchAndSetCourseTargets()
-        }
-        handleEffect()
-    }, [courseManagement?.courseId])
+    const courseTargetsSwr = useSWR(["FETCH_COURSE_TARGETS"], fetchCourseTargets)
 
     const targetsCardContextValue: TargetsCardContextValue = useMemo(
         () => ({
-            state,
-            dispatch,
-            functions: {
-                fetchAndSetCourseTargets,
+            swrs: {
+                courseTargetsSwr,
             },
         }),
-        [state, dispatch]
+        [courseTargetsSwr]
     )
 
     return (
@@ -81,3 +62,9 @@ export const TargetsCardProviders = ({ children }: { children: ReactNode }) => {
         </TargetsCardContext.Provider>
     )
 }
+
+export const TargetsCardProviders = ({ children }: { children: ReactNode }) => (
+    <SWRConfig value={{ provider: () => new Map() }}>
+        <WrappedTargetsCardProviders>{children}</WrappedTargetsCardProviders>
+    </SWRConfig>
+)

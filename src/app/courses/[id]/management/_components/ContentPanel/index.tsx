@@ -9,8 +9,10 @@ interface ContentPanelProps {
 }
 
 export const ContentPanel = (props: ContentPanelProps) => {
-    const { className } = props 
-    const { state } = useContext(ManagementContext)!
+    const { className } = props
+    const { reducers } = useContext(ManagementContext)!
+    const { manageReducer } = reducers
+    const [state] = manageReducer
     const { panelSelected } = state
 
     const panelSelectedToPanelComponent: Record<PanelSelected, JSX.Element> = {

@@ -1,6 +1,6 @@
 import { Input, Link } from "@nextui-org/react"
 import React, { useContext, useEffect, useState } from "react"
-import { CourseTargetEntity, isErrorResponse } from "@common"
+import { CourseTargetEntity } from "@common"
 import { deleteCourseTarget, updateCourseTarget } from "@services"
 import { XIcon } from "lucide-react"
 import { DELAY_TIME } from "@config"
@@ -14,8 +14,9 @@ export const TargetItem = (props: TargetItemProps) => {
     const { courseTarget } = props
     const { courseTargetId, content } = courseTarget
 
-    const { functions } = useContext(TargetsCardContext)!
-    const { fetchAndSetCourseTargets } = functions
+    const { swrs } = useContext(TargetsCardContext)!
+    const { courseTargetsSwr } = swrs
+    const { mutate } = courseTargetsSwr
 
     const [value, setValue] = useState("")
 
@@ -27,18 +28,14 @@ export const TargetItem = (props: TargetItemProps) => {
     useEffect(() => {
         const abortController = new AbortController()
         const handleEffect = async () => {
-            const response = await updateCourseTarget({
+            await updateCourseTarget({
                 data: {
                     courseTargetId,
                     content: value
                 },
                 signal: abortController.signal
             })
-            if (!isErrorResponse(response)) {
-                await fetchAndSetCourseTargets()
-            } else {
-                console.log(response)
-            }
+            await mutate()
         }
         const delayedHandleEffect = setTimeout(handleEffect, DELAY_TIME)
         return () => {
@@ -50,16 +47,12 @@ export const TargetItem = (props: TargetItemProps) => {
     const onValueChange = (value: string) => setValue(value)
 
     const onDeletePress = async () => {
-        const response = await deleteCourseTarget({
+        await deleteCourseTarget({
             data: {
                 courseTargetId,
             },
         })
-        if (!isErrorResponse(response)) {
-            await fetchAndSetCourseTargets()
-        } else {
-            console.log(response)
-        }
+        await mutate()
     }
 
     return (

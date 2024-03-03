@@ -12,8 +12,9 @@ import { ManagementContext } from "../../../../_hooks"
 import { SectionItem } from "./SectionItem"
 import { MoreButton } from "./MoreButton"
 export const SectionsCard = () => {
-    const { state } = useContext(ManagementContext)!
-    const { courseManagement } = state
+    const { swrs } = useContext(ManagementContext)!
+    const { courseManagementSwr } = swrs
+    const { data: courseManagement } = courseManagementSwr
 
     const renderSections = () => {
         if (!courseManagement) return []

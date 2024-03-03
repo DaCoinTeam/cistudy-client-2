@@ -3,6 +3,7 @@ import { TargetItem } from "./TargetItem"
 import { AddTargetItem } from "./AddTargetItem"
 import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import { TargetsCardContext, TargetsCardProviders } from "./TargetsCardProviders"
+
 interface TargetsCardProps {
     className?: string
 }
@@ -10,13 +11,14 @@ interface TargetsCardProps {
 export const WrappedTargetsCard = (props: TargetsCardProps) => {
     const { className } = props
 
-    const { state } = useContext(TargetsCardContext)!
-    const { courseTargets } = state
+    const { swrs } = useContext(TargetsCardContext)!
+    const { courseTargetsSwr } = swrs
+    const { data : targetsCard } = courseTargetsSwr
 
     const renderTargetCards = () => {
         return (
             <>
-                {courseTargets.map((courseTarget) => (
+                {targetsCard?.map((courseTarget) => (
                     <TargetItem
                         key={courseTarget.courseTargetId}
                         courseTarget={courseTarget}
@@ -37,10 +39,6 @@ export const WrappedTargetsCard = (props: TargetsCardProps) => {
             </CardBody>
         </Card>
     )
-}
-
-interface TargetsCardProps {
-    className?: string
 }
 
 export const TargetsCard = (props: TargetsCardProps) => (

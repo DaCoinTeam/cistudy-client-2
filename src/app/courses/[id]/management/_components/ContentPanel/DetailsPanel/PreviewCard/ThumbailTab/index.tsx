@@ -6,8 +6,9 @@ import { getAssetUrl } from "@services"
 import { UploadButton } from "./UploadButton"
 
 export const ThumbnailTab = () => {
-    const { state } = useContext(ManagementContext)!
-    const { courseManagement } = state
+    const { swrs } = useContext(ManagementContext)!
+    const { courseManagementSwr } = swrs
+    const { data : courseManagement } = courseManagementSwr
 
     return (
         <div>

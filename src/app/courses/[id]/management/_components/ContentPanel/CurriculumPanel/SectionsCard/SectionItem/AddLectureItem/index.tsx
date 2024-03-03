@@ -2,29 +2,25 @@
 import { Button } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { createLecture } from "@services"
-import { isErrorResponse } from "@common"
 import { SectionItemContext } from ".."
 import { PlusIcon } from "lucide-react"
 
 export const AddLectureItem = () => {
-    const { functions, props } = useContext(SectionItemContext)!
+    const { swrs, props } = useContext(SectionItemContext)!
+    const { lecturesSwr } = swrs
+    const { mutate } = lecturesSwr
+
     const { section } = props
     const { sectionId } = section
 
-    const { fetchAndSetLectures } = functions
-
     const onPress = async () => {
-        const response = await createLecture({
+        await createLecture({
             data: {
                 sectionId,
                 title: "Nguyen Van Tu Cuong",
             },
         })
-        if (!isErrorResponse(response)) {
-            await fetchAndSetLectures()
-        } else {
-            console.log(response)
-        }
+        await mutate()
     }
 
     return (
