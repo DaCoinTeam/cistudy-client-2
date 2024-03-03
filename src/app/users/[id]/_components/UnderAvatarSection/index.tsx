@@ -16,7 +16,7 @@ export const UnderAvatarSection = (props: UnderAvatarSectionProps) => {
     return (
         <div className={`${className} flex justify-between items-center`}>
             <div>
-                <div className="text-3xl font-semibold">
+                <div className="text-3xl font-bold">
                     {user?.username ?? "Unnamed"}
                 </div>
                 <Spacer y={0.5} />

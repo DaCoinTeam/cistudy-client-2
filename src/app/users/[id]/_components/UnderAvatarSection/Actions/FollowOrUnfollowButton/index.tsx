@@ -2,7 +2,7 @@ import { Button } from "@nextui-org/react"
 import { UserMinus2Icon, UserPlus2Icon } from "lucide-react"
 import React, { useContext } from "react"
 import { UserDetailsContext } from "../../../../_hooks"
-import { followOrUnfollow } from "@services"
+import { toggleFollow } from "@services"
 import { isErrorResponse } from "@common"
 
 export const FollowOrUnfollowButton = () => {
@@ -14,7 +14,7 @@ export const FollowOrUnfollowButton = () => {
         if (user === null) return
         const { userId } = user
 
-        const response = await followOrUnfollow({
+        const response = await toggleFollow({
             data: {
                 followedUserId: userId,
             },

@@ -21,7 +21,7 @@ export const VideoSection = (props: VideoSectionProps) => {
         <div className={className}>
             <VideoPlayer src={getAssetManifestUrl(lecture?.lectureVideoId)} videoType={lecture?.videoType}/>
             <Spacer y={2}/>
-            <div className="text-xl font-semibold">
+            <div className="text-xl font-bold">
                 {lecture?.title}
             </div>
             <Spacer y={4}/>
@@ -30,7 +30,7 @@ export const VideoSection = (props: VideoSectionProps) => {
                     <div className="flex items-center gap-3">
                         <Avatar />
                         <div>
-                            <div className="font-semibold"> Rhyder </div>
+                            <div className="font-bold"> Rhyder </div>
                             <div className="text-sm"> 12323 </div>
                         </div>
                     </div>

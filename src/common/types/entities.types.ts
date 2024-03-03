@@ -73,8 +73,10 @@ export interface PostEntity {
   postMedias: Array<PostMediaEntity>;
   postComments: Array<PostCommentEntity>;
   postReacts: Array<PostReactEntity>;
+  //graphql
   numberOfLikes?: number;
   numberOfComments?: number;
+  liked?: number;
 }
 
 export interface CourseEntity {
@@ -151,6 +153,10 @@ export interface PostCommentEntity {
   postCommentMedias: Array<PostCommentMediaEntity>
   postCommentLikes: Array<PostCommentLikeEntity>
   childComments: Array<PostCommentEntity>
+
+  //graphql
+  numberOfLikes?: number;
+  liked?: number;
 }
 
 

@@ -13,7 +13,7 @@ import { concatArrays } from "@common"
 const WrappedInfinitePostsScroller = () => {
     const { swr } = useContext(InfinitePostsScrollerContext)!
     const { postsSwr, postsMetadataSwr } = swr
-    const { data, size, setSize } = postsSwr
+    const { data, size, setSize, isValidating } = postsSwr
     const { data: postsMetadataSwrData } = postsMetadataSwr
 
     const onLoadMore = () => {
@@ -33,7 +33,7 @@ const WrappedInfinitePostsScroller = () => {
             pageStart={0}
             initialLoad={false}
             loadMore={onLoadMore}
-            hasMore={size < numberOfPages}
+            hasMore={size < numberOfPages && !isValidating}
             loader={<CircularProgress key={0} aria-label="Loading..." />}
         >
             {posts.map((post) => (

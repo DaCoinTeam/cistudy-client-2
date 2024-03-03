@@ -15,7 +15,7 @@ import axios, { AxiosError } from "axios"
 
 const BASE_URL = `${endpointConfig().api}/users`
 
-export const followOrUnfollow = async (
+export const toggleFollow = async (
     params: {
     data: {
       followedUserId: string;
@@ -25,7 +25,7 @@ export const followOrUnfollow = async (
 ): Promise<string | ErrorResponse> => {
     try {
         const { data } = params
-        const url = `${BASE_URL}/follow-or-unfollow`
+        const url = `${BASE_URL}/toggle-follow`
 
         const response = await axios.patch(url, data, {
             headers: {
@@ -48,7 +48,7 @@ export const followOrUnfollow = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await followOrUnfollow(params, AuthTokenType.Refresh)
+            return await toggleFollow(params, AuthTokenType.Refresh)
         return _ex
     }
 }

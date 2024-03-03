@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from "react"
 import {
     MediaUploader,
     TextEditor,
-} from "../../../../../../../../../../../../../_shared"
+} from "../../../../../../../../../../../../_shared"
 import { FormikContext } from "../FormikProviders"
 import { AppendKey, Media } from "@common"
 import { Spacer } from "@nextui-org/react"

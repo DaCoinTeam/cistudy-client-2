@@ -1,17 +1,10 @@
 "use client"
-import React, {
-    createContext,
-    useMemo,
-} from "react"
+import React, { createContext, useMemo } from "react"
 import { PostEntity } from "@common"
-import {
-    Card,
-    CardBody,
-    CardHeader,
-    Divider,
-} from "@nextui-org/react"
+import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react"
 import { MediaGroup, TextRenderer } from "../../../../../../../_shared"
 import { CreatorAndStats } from "./CreatorAndStats"
+import { Actions } from "./Actions"
 interface PostCardProps {
   post: PostEntity;
 }
@@ -34,7 +27,7 @@ export const PostCard = (props: PostCardProps) => {
     return (
         <PostCardContext.Provider value={postCardContextValue}>
             <Card shadow="none">
-                <CardHeader className="p-4 pb-2 font-semibold text-lg">{title}</CardHeader>
+                <CardHeader className="p-4 pb-2 font-bold text-lg">{title}</CardHeader>
                 <CardBody className="p-4 gap-4">
                     <TextRenderer html={html} />
                     <MediaGroup
@@ -46,8 +39,9 @@ export const PostCard = (props: PostCardProps) => {
                     />
                 </CardBody>
                 <CardBody className="p-4 pt-0 gap-4">
-                    <Divider/>
-                    <CreatorAndStats className="w-full"/>
+                    <Divider />
+                    <CreatorAndStats className="w-full" />
+                    <Actions />
                 </CardBody>
             </Card>
         </PostCardContext.Provider>

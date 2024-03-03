@@ -123,18 +123,17 @@ export const createComment = async (
     }
 }
 
-export const upsertReactPost = async (
+export const toggleLikePost = async (
     params: {
         data: {
             postId: string;
-            liked: boolean
         };
     },
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string | ErrorResponse> => {
     try {
         const { data } = params
-        const url = `${BASE_URL}/react-post`
+        const url = `${BASE_URL}/toggle-like-post`
 
         const response = await axios.patch(url, data, {
             headers: {
@@ -157,7 +156,7 @@ export const upsertReactPost = async (
             statusCode === ErrorStatusCode.Unauthorized &&
             authTokenType === AuthTokenType.Access
         )
-            return await upsertReactPost(params, AuthTokenType.Refresh)
+            return await toggleLikePost(params, AuthTokenType.Refresh)
         return _ex
     }
 }

@@ -10,7 +10,7 @@ export const MediaStack = (props: MediaStackProps) => {
     const { medias } = props
     return (
         <Button className="h-full video-aspect rounded-large bg-content4 grid place-items-center">
-            <div className="text-xl font-semibold">
+            <div className="text-xl font-bold">
                 +{
                     medias.length
                 }

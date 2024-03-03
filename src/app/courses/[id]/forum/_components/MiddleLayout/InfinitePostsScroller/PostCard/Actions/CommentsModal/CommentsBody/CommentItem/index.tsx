@@ -5,7 +5,7 @@ import { getAssetUrl } from "@services"
 import {
     TextRenderer,
     MediaGroup,
-} from "../../../../../../../../../../../../_shared"
+} from "../../../../../../../../../../../_shared"
 
 interface CommentItemProps {
   postComment: PostCommentEntity;
@@ -22,7 +22,7 @@ export const CommentItem = (props: CommentItemProps) => {
                 <TextRenderer html={html} />
                 <MediaGroup
                     className="mt-3"
-                    medias={postCommentMedias.map(
+                    medias={postCommentMedias?.map(
                         ({ postCommentMediaId, mediaId, mediaType }) => ({
                             key: postCommentMediaId,
                             mediaId,

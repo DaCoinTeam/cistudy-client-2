@@ -27,7 +27,7 @@ export const WrappedInformationCard = (props: InformationCardProps) => {
     return (
         <Card shadow="none" className={`${className}`}>
             <CardHeader className="p-4 pb-2 justify-between items-center">
-                <div className="text-xl font-semibold leading-none">Information</div>
+                <div className="text-xl font-bold leading-none">Information</div>
             </CardHeader>
             <CardBody className="p-4 gap-4">
                 <Input

@@ -12,14 +12,14 @@ import {
     findManyPosts,
     findManyPostsMetadata,
 } from "@services"
-import { PostEntity, isErrorResponse } from "@common"
+import { PostEntity } from "@common"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
-import useSWR, { SWRResponse } from "swr"
+import useSWR, { Fetcher, SWRConfig, SWRResponse } from "swr"
 
 export interface InfinitePostsScrollerContextValue {
   swr: {
     postsSwr: SWRInfiniteResponse<Array<PostEntity> | null>;
-    postsMetadataSwr: SWRResponse<FindManyPostsMetadataOutputData | null>;
+    postsMetadataSwr: SWRResponse<FindManyPostsMetadataOutputData>;
   };
 }
 
@@ -28,7 +28,7 @@ export const COLUMNS_PER_PAGE = 5
 export const InfinitePostsScrollerContext =
   createContext<InfinitePostsScrollerContextValue | null>(null)
 
-export const InfinitePostsScrollerProviders = ({
+const WrappedInfinitePostsScrollerProviders = ({
     children,
 }: {
   children: ReactNode;
@@ -36,59 +36,63 @@ export const InfinitePostsScrollerProviders = ({
     const { state: courseDetailsState } = useContext(CourseDetailsContext)!
     const { course } = courseDetailsState
 
-    const fetchPosts = useCallback(async (key: number) => {
-        if (course === null) return null
-        const { courseId } = course
+    const fetchPosts: Fetcher<Array<PostEntity> | null, string> = useCallback(
+        async (key: string) => {
+            if (course === null) return null
+            const { courseId } = course
 
-        const response = await findManyPosts(
-            {
-                courseId,
-                options: {
-                    skip: COLUMNS_PER_PAGE * key,
-                    take: COLUMNS_PER_PAGE,
+            return await findManyPosts(
+                {
+                    courseId,
+                    options: {
+                        skip: COLUMNS_PER_PAGE * Number.parseInt(key),
+                        take: COLUMNS_PER_PAGE,
+                    },
                 },
-            },
-            {
-                postId: true,
-                title: true,
-                html: true,
-                postMedias : {
-                    mediaId: true,
-                    postMediaId: true,
-                    mediaType: true,
-                },
-                numberOfLikes: true,
-                numberOfComments: true,
-                creator: {
-                    avatarId: true,
-                    username: true
-                },
-                updatedAt: true
-            }
-        )
-
-        if (!isErrorResponse(response)) return response
-
-        //process error
-        console.log(response)
-        return null
-    }, [course?.courseId])
+                {
+                    postId: true,
+                    title: true,
+                    html: true,
+                    postMedias: {
+                        mediaId: true,
+                        postMediaId: true,
+                        mediaType: true,
+                    },
+                    numberOfLikes: true,
+                    numberOfComments: true,
+                    creator: {
+                        avatarId: true,
+                        username: true,
+                    },
+                    updatedAt: true,
+                    liked: true,
+                }
+            )
+        },
+        [course?.courseId]
+    )
 
     const fetchPostsMetadata = useCallback(async () => {
-        const response = await findManyPostsMetadata({
+        return await findManyPostsMetadata({
             numberOfPosts: true,
         })
-
-        if (!isErrorResponse(response)) return response
-
-        //process error
-        console.log(response)
-        return null
     }, [])
 
-    const postsSwr = useSWRInfinite((key) => [course?.courseId ? key : null], fetchPosts)
+    const postsSwr = useSWRInfinite(
+        (key) =>
+            course?.courseId
+                ? [key.toString(), "FETCH_POSTS"]
+                : null,
+        fetchPosts,
+        {
+            revalidateFirstPage: false,
+        }
+    )
 
-    const postsMetadataSwr = useSWR([postsSwr], fetchPostsMetadata)
+    const postsMetadataSwr = useSWR(
+        course?.courseId ? ["FETCH_POSTS_METADATA"] : null,
+        fetchPostsMetadata
+    )
 
     const infinitePostsScrollerContextValue: InfinitePostsScrollerContextValue =
     useMemo(
@@ -98,7 +102,7 @@ export const InfinitePostsScrollerProviders = ({
                 postsMetadataSwr,
             },
         }),
-        [ postsSwr, postsMetadataSwr ]
+        [postsSwr, postsMetadataSwr]
     )
 
     return (
@@ -109,3 +113,15 @@ export const InfinitePostsScrollerProviders = ({
         </InfinitePostsScrollerContext.Provider>
     )
 }
+
+export const InfinitePostsScrollerProviders = ({
+    children,
+}: {
+  children: ReactNode;
+}) => (
+    <SWRConfig value={{ provider: () => new Map() }}>
+        <WrappedInfinitePostsScrollerProviders>
+            {children}
+        </WrappedInfinitePostsScrollerProviders>
+    </SWRConfig>
+)

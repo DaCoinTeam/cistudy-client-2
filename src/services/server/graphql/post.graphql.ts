@@ -1,7 +1,6 @@
 import {
     ExtensionsWithOriginalError,
     PostEntity,
-    ErrorResponse,
     Schema,
     PostCommentEntity,
     BaseResponse,
@@ -15,19 +14,19 @@ import { client } from "./client.graphql"
 import { ApolloError, gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 
-export type FindManyPostOptions = Partial<{
+export interface FindManyPostsOptions {
   skip: number;
   take: number;
-}>;
+}
 
 export const findManyPosts = async (
     params: {
     courseId: string;
-    options?: FindManyPostOptions;
+    options?: Partial<FindManyPostsOptions>;
   },
     schema: Schema<DeepPartial<PostEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<Array<PostEntity> | ErrorResponse> => {
+): Promise<Array<PostEntity>> => {
     try {
         const { courseId, options } = params
         const payload = buildAuthPayloadString(schema, authTokenType)
@@ -55,7 +54,6 @@ export const findManyPosts = async (
 
         return data
     } catch (ex) {
-        console.log(ex)
         const _ex = ex as ApolloError
         const error = (
       _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
@@ -66,7 +64,7 @@ export const findManyPosts = async (
       authTokenType === AuthTokenType.Access
         )
             return await findManyPosts(params, schema, AuthTokenType.Refresh)
-        return error
+        throw error
     }
 }
 
@@ -77,7 +75,7 @@ export interface FindManyPostsMetadataOutputData {
 export const findManyPostsMetadata = async (
     schema: Schema<DeepPartial<FindManyPostsMetadataOutputData>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<FindManyPostsMetadataOutputData | ErrorResponse> => {
+): Promise<FindManyPostsMetadataOutputData> => {
     try {
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
@@ -108,19 +106,25 @@ export const findManyPostsMetadata = async (
       authTokenType === AuthTokenType.Access
         )
             return await findManyPostsMetadata(schema, AuthTokenType.Refresh)
-        return error
+        throw error
     }
+}
+
+export interface FindManyPostCommentsOptions {
+  skip: number;
+  take: number;
 }
 
 export const findManyPostComments = async (
     params: {
     postId: string;
+    options?: Partial<FindManyPostCommentsOptions>;
   },
     schema: Schema<DeepPartial<PostCommentEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<Array<PostCommentEntity> | ErrorResponse> => {
+): Promise<Array<PostCommentEntity>> => {
     try {
-        const { postId } = params
+        const { postId, options  } = params
         const payload = buildAuthPayloadString(schema, authTokenType)
 
         const { data: graphqlData } = await client(authTokenType).query({
@@ -134,6 +138,7 @@ export const findManyPostComments = async (
             variables: {
                 data: {
                     postId,
+                    options
                 },
             },
         })
@@ -157,6 +162,57 @@ export const findManyPostComments = async (
         )
             return await findManyPostComments(params, schema, AuthTokenType.Refresh)
 
-        return error
+        throw error
+    }
+}
+
+export interface FindManyPostCommentsMetadataOutputData {
+  numberOfPostComments: number;
+}
+
+export const findManyPostCommentsMetadata = async (
+    params: {
+        postId: string
+    },
+    schema: Schema<DeepPartial<FindManyPostCommentsMetadataOutputData>>,
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<FindManyPostCommentsMetadataOutputData> => {
+    try {
+        const { postId } = params
+
+        const payload = buildAuthPayloadString(schema, authTokenType)
+        const { data: graphqlData } = await client(authTokenType).query({
+            query: gql`
+            query FindManyPostCommentsMetadata($data: FindManyPostCommentsMetadataInputData!) {
+                findManyPostCommentsMetadata(data: $data) {              
+      ${payload}
+  }
+}
+          `,  variables: {
+                data: {
+                    postId,
+                },
+            },
+        })
+        const { data, tokens } =
+      graphqlData.findManyPostCommentsMetadata as BaseResponse<FindManyPostCommentsMetadataOutputData>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+
+        return data
+    } catch (ex) {
+        console.log(ex)
+        const _ex = ex as ApolloError
+        const error = (
+      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+        ).originalError
+
+        if (
+            error.statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await findManyPostCommentsMetadata(params, schema, AuthTokenType.Refresh)
+        throw error
     }
 }
