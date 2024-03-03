@@ -15,12 +15,9 @@ const BASE_URL = `${endpointConfig().api}/courses`
 
 export const createCourse = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<
-    | {
-        courseId: string;
-    }
-    | ErrorResponse
-> => {
+): Promise<{
+  courseId: string;
+}> => {
     try {
         const url = `${BASE_URL}/create-course`
 
@@ -32,8 +29,8 @@ export const createCourse = async (
         })
 
         const { data: responseData, tokens } = response.data as BaseResponse<{
-            courseId: string;
-        }>
+      courseId: string;
+    }>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -44,26 +41,26 @@ export const createCourse = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await createCourse(AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
 export const updateCourse = async (
     params: {
-        data: {
-            courseId: string;
-            title?: string;
-            description?: string;
-            price?: number;
-            thumbnailIndex?: number;
-            previewVideoIndex?: number;
-            targets?: Array<string>;
-        };
-        files?: Array<File>;
-    },
+    data: {
+      courseId: string;
+      title?: string;
+      description?: string;
+      price?: number;
+      thumbnailIndex?: number;
+      previewVideoIndex?: number;
+      targets?: Array<string>;
+    };
+    files?: Array<File>;
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
@@ -87,7 +84,7 @@ export const updateCourse = async (
         })
 
         const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
+      response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -97,7 +94,7 @@ export const updateCourse = async (
         const { statusCode } = _ex
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await updateCourse(params, AuthTokenType.Refresh)
         throw _ex
@@ -106,13 +103,13 @@ export const updateCourse = async (
 
 export const createCourseTarget = async (
     params: {
-        data: {
-            courseId: string;
-            content: string;
-        };
-    },
+    data: {
+      courseId: string;
+      content: string;
+    };
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const url = `${BASE_URL}/create-course-target`
@@ -125,7 +122,7 @@ export const createCourseTarget = async (
         })
 
         const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
+      response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -136,23 +133,23 @@ export const createCourseTarget = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await createCourseTarget(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
 export const updateCourseTarget = async (
     params: {
-        data: {
-            courseTargetId: string;
-            content: string;
-        };
-        signal?: AbortSignal 
-    },
+    data: {
+      courseTargetId: string;
+      content: string;
+    };
+    signal?: AbortSignal;
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data, signal } = params
         const url = `${BASE_URL}/update-course-target`
@@ -162,11 +159,11 @@ export const updateCourseTarget = async (
                 Authorization: buildBearerTokenHeader(authTokenType),
                 "Client-Id": getClientId(),
             },
-            signal
+            signal,
         })
 
         const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
+      response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -178,21 +175,21 @@ export const updateCourseTarget = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await updateCourseTarget(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
 export const deleteCourseTarget = async (
     params: {
-        data: {
-            courseTargetId: string;
-        };
-    },
+    data: {
+      courseTargetId: string;
+    };
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const { courseTargetId } = data
@@ -207,7 +204,7 @@ export const deleteCourseTarget = async (
         })
 
         const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
+      response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -218,22 +215,22 @@ export const deleteCourseTarget = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await deleteCourseTarget(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
 export const createLecture = async (
     params: {
-        data: {
-            sectionId: string;
-            title: string;
-        };
-    },
+    data: {
+      sectionId: string;
+      title: string;
+    };
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const url = `${BASE_URL}/create-lecture`
@@ -246,7 +243,7 @@ export const createLecture = async (
         })
 
         const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
+      response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -257,25 +254,25 @@ export const createLecture = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await createLecture(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
 export const updateLecture = async (
     params: {
-        data: {
-            lectureId: string;
-            title?: string;
-            thumbnailIndex?: number;
-            lectureVideoIndex?: number;
-        };
-        files?: Array<File>;
-    },
+    data: {
+      lectureId: string;
+      title?: string;
+      thumbnailIndex?: number;
+      lectureVideoIndex?: number;
+    };
+    files?: Array<File>;
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data, files } = params
         const url = `${BASE_URL}/update-lecture`
@@ -297,7 +294,7 @@ export const updateLecture = async (
         })
 
         const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
+      response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -308,21 +305,21 @@ export const updateLecture = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await updateLecture(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
 export const deleteLecture = async (
     params: {
-        data: {
-            lectureId: string;
-        };
-    },
+    data: {
+      lectureId: string;
+    };
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const { lectureId } = data
@@ -337,7 +334,7 @@ export const deleteLecture = async (
         })
 
         const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
+      response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -348,22 +345,22 @@ export const deleteLecture = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await deleteLecture(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
 export const createResources = async (
     params: {
-        data: {
-            lectureId: string;
-        };
-        files: Array<File>;
-    },
+    data: {
+      lectureId: string;
+    };
+    files: Array<File>;
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data, files } = params
         const url = `${BASE_URL}/create-resources`
@@ -385,7 +382,7 @@ export const createResources = async (
         })
 
         const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
+      response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -396,22 +393,22 @@ export const createResources = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await createResources(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
 export const createSection = async (
     params: {
-        data: {
-            courseId: string;
-            title?: string;
-        };
-    },
+    data: {
+      courseId: string;
+      title?: string;
+    };
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const url = `${BASE_URL}/create-section`
@@ -424,7 +421,7 @@ export const createSection = async (
         })
 
         const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
+      response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -435,22 +432,22 @@ export const createSection = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await createSection(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
 export const updateSection = async (
     params: {
-        data: {
-            sectionId: string;
-            title?: string;
-        };
-    },
+    data: {
+      sectionId: string;
+      title?: string;
+    };
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const url = `${BASE_URL}/update-section`
@@ -463,7 +460,7 @@ export const updateSection = async (
         })
 
         const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
+      response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -474,21 +471,21 @@ export const updateSection = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await updateSection(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
 export const deleteSection = async (
     params: {
-        data: {
-            sectionId: string;
-        };
-    },
+    data: {
+      sectionId: string;
+    };
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const { sectionId } = data
@@ -503,7 +500,7 @@ export const deleteSection = async (
         })
 
         const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
+      response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -514,21 +511,21 @@ export const deleteSection = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await deleteSection(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
 export const deleteResource = async (
     params: {
-        data: {
-            resourceId: string;
-        };
-    },
+    data: {
+      resourceId: string;
+    };
+  },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const { resourceId } = data
@@ -543,7 +540,7 @@ export const deleteResource = async (
         })
 
         const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
+      response.data as BaseResponse<string>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -554,9 +551,9 @@ export const deleteResource = async (
         console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await deleteResource(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }

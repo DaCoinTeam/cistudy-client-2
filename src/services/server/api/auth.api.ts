@@ -19,7 +19,7 @@ export const signUp = async (params: {
   firstName: string;
   lastName: string;
   birthdate: string;
-}): Promise<string | ErrorResponse> => {
+}): Promise<string> => {
     try {
         const url = `${BASE_URL}/sign-up`
         const response = await axios.post(url, params, {
@@ -29,13 +29,13 @@ export const signUp = async (params: {
         })
         return response.data as string
     } catch (ex) {
-        return (ex as AxiosError).response?.data as ErrorResponse
+        throw (ex as AxiosError).response?.data as ErrorResponse
     }
 }
 
 export const verifyGoogleAccessToken = async (params: {
   token: string;
-}): Promise<UserEntity | ErrorResponse> => {
+}): Promise<UserEntity> => {
     try {
         let url = `${BASE_URL}/verify-google-access-token`
         const urlObject = new URL(url)
@@ -52,6 +52,6 @@ export const verifyGoogleAccessToken = async (params: {
 
         return data
     } catch (ex) {
-        return (ex as AxiosError).response?.data as ErrorResponse
+        throw (ex as AxiosError).response?.data as ErrorResponse
     }
 }

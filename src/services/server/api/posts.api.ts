@@ -28,8 +28,7 @@ export const createPost = async (
         files?: Array<File>;
     },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
-    console.log(params)
+): Promise<string> => {
     try {
         const { data, files } = params
         const url = `${BASE_URL}/create-post`
@@ -65,7 +64,7 @@ export const createPost = async (
             authTokenType === AuthTokenType.Access
         )
             return await createPost(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
@@ -82,7 +81,7 @@ export const createComment = async (
         files?: Array<File>;
     },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     console.log(params)
     try {
         const { data, files } = params
@@ -119,7 +118,7 @@ export const createComment = async (
             authTokenType === AuthTokenType.Access
         )
             return await createComment(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
@@ -130,7 +129,7 @@ export const toggleLikePost = async (
         };
     },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const url = `${BASE_URL}/toggle-like-post`
@@ -157,6 +156,6 @@ export const toggleLikePost = async (
             authTokenType === AuthTokenType.Access
         )
             return await toggleLikePost(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
