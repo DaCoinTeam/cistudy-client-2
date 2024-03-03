@@ -13,9 +13,8 @@ interface MenuProps {
 export const Menu = (props: MenuProps) => {
     const { className } = props
 
-    const { reducers } = useContext(ManagementContext)!
-    const { manageReducer } = reducers
-    const [ state, dispatch ] =  manageReducer
+    const { reducer } = useContext(ManagementContext)!
+    const [ state, dispatch ] = reducer
     const { panelSelected } = state
 
     const selectedKeys = new Set([panelSelected])

@@ -45,7 +45,7 @@ const WrappedTargetsCardProviders = ({ children }: { children: ReactNode }) => {
         )
     }, [courseManagement?.courseId])
 
-    const courseTargetsSwr = useSWR(["FETCH_COURSE_TARGETS"], fetchCourseTargets)
+    const courseTargetsSwr = useSWR(["COURSE_TARGETS"], fetchCourseTargets)
 
     const targetsCardContextValue: TargetsCardContextValue = useMemo(
         () => ({

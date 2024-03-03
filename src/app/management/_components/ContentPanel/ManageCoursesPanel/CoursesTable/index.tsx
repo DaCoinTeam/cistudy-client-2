@@ -10,30 +10,26 @@ import {
     Pagination,
     Spinner,
 } from "@nextui-org/react"
-import { ManageCoursesPanelContext } from "../ManageCoursesPanelProviders"
-import { isErrorResponse } from "@common"
-import { VideoThumbnail } from "../../../../../../../_shared"
+import { ManageCoursesPanelContext, ROWS_PER_PAGE } from "../ManageCoursesPanelProviders"
 import { getAssetUrl } from "@services"
 import { useRouter } from "next/navigation"
+import { VideoThumbnail } from "../../../../../_shared"
 
 export const CoursesTable = () => {
     const router = useRouter()
-    const { state, swr, dispatch } = useContext(ManageCoursesPanelContext)!
+    const { reducer, swrs } = useContext(ManageCoursesPanelContext)!
+    const [state, dispatch] = reducer
     const { page } = state
-    const { courses } = swr
-    const { data, isLoading } = courses
+    const { selfCreatedCoursesSwr, selfCreatedCoursesMetadataSwr } = swrs
+    const { data: selfCreatedCourses, isLoading } = selfCreatedCoursesSwr
+    const { data: selfCreatedCoursesMetadata } = selfCreatedCoursesMetadataSwr
 
-    console.log(data)
-
-    if (!data || isErrorResponse(data)) return null
+    if (!selfCreatedCourses || !selfCreatedCoursesMetadata) return null
 
     const loadingState = () => {
         if (isLoading) return "loading"
-        if (isErrorResponse(data)) return "loading"
         return "idle"
     }
-
-    const pages = 5
 
     const onPageChange = (page: number) =>
         dispatch({
@@ -41,6 +37,9 @@ export const CoursesTable = () => {
             payload: page,
         })
 
+    const { numberOfCourses } = selfCreatedCoursesMetadata
+
+    const pages = Math.ceil(numberOfCourses / ROWS_PER_PAGE )
     return (
         <Table
             aria-label="Example table with client async pagination"
@@ -59,7 +58,7 @@ export const CoursesTable = () => {
                     "text-default-500",
                     "border-b",
                     "border-divider",
-                    "py-4"
+                    "py-4",
                 ],
             }}
             bottomContent={
@@ -87,12 +86,18 @@ export const CoursesTable = () => {
                 <TableColumn key="video" width={"55%"}>
           Video
                 </TableColumn>
-                <TableColumn width={"15%"} key="title">Enrollments</TableColumn>
-                <TableColumn width={"15%"} key="mass">Mass</TableColumn>
-                <TableColumn width={"15%"} key="birth_year">Birth year</TableColumn>
+                <TableColumn width={"15%"} key="title">
+          Enrollments
+                </TableColumn>
+                <TableColumn width={"15%"} key="mass">
+          Mass
+                </TableColumn>
+                <TableColumn width={"15%"} key="birth_year">
+          Birth year
+                </TableColumn>
             </TableHeader>
             <TableBody
-                items={data}
+                items={selfCreatedCourses}
                 loadingContent={<Spinner />}
                 loadingState={loadingState()}
             >

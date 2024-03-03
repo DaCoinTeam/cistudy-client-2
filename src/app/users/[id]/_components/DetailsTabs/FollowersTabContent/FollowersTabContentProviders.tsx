@@ -47,7 +47,7 @@ export const WrappedFollowersTabContentProviders = ({
         )
     }, [user?.userId])
 
-    const followersSwr = useSWR(["FETCH_FOLLOWERS"], fetchFollowers)
+    const followersSwr = useSWR(["FOLLOWERS"], fetchFollowers)
 
     const followersTabContentContextValue: FollowersTabContentContextValue =
     useMemo(

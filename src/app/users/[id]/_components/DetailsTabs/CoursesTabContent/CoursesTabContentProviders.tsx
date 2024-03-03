@@ -51,7 +51,7 @@ export const CoursesTabContentProviders = ({
     }, [user?.userId])
 
     const createdCoursesSwr = useSWR(
-        ["FETCH_CREATED_COURSES"],
+        ["CREATED_COURSES"],
         fetchCreatedCourses
     )
 

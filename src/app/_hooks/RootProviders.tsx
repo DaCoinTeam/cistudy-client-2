@@ -29,7 +29,7 @@ export const RootProviders = (props: { children: ReactNode }) => {
         }
     }, [])
 
-    const profileSwr = useSWR(["FETCH_PROFILE"], fetchProfile)
+    const profileSwr = useSWR(["PROFILE"], fetchProfile)
 
     useEffect(() => {
         generateClientId()

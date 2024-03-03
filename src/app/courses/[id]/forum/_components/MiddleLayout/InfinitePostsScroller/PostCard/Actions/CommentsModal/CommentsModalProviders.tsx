@@ -81,7 +81,7 @@ const WrappedCommentsModalProviders = ({
     }, [])
 
     const postCommentsSwr = useSWRInfinite(
-        (key) => [key, "FETCH_POST_COMMENTS"],
+        (key) => [key, "POST_COMMENTS"],
         fetchPostComments,
         {
             revalidateFirstPage: false,
@@ -89,7 +89,7 @@ const WrappedCommentsModalProviders = ({
     )
 
     const postCommentsMetadataSwr = useSWR(
-        ["FETCH_POST_COMMENTS_METADATA"],
+        ["POST_COMMENTS_METADATA"],
         fetchPostCommentsMetadata
     )
 

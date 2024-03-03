@@ -18,9 +18,7 @@ import { CourseEntity, ErrorResponse } from "@common"
 import useSWR, { SWRConfig, SWRResponse } from "swr"
 
 export interface ManagementContextValue {
-  reducers: {
-    manageReducer: [ManagementState, React.Dispatch<ManagementAction>];
-  };
+  reducer: [ManagementState, React.Dispatch<ManagementAction>];
   swrs: {
     courseManagementSwr: SWRResponse<CourseEntity | undefined, ErrorResponse>;
   };
@@ -31,7 +29,7 @@ export const ManagementContext = createContext<ManagementContextValue | null>(
 )
 
 const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
-    const manageReducer = useManagementReducer()
+    const reducer = useManagementReducer()
 
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
@@ -81,14 +79,12 @@ const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
 
     const manageContextValue: ManagementContextValue = useMemo(
         () => ({
-            reducers: {
-                manageReducer,
-            },
+            reducer,
             swrs: {
                 courseManagementSwr,
             },
         }),
-        [manageReducer, courseManagementSwr]
+        [reducer, courseManagementSwr]
     )
 
     return (

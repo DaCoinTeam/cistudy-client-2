@@ -83,7 +83,7 @@ const WrappedInfinitePostsScrollerProviders = ({
     }, [])
 
     const postsSwr = useSWRInfinite(
-        (key) => (course?.courseId ? [key, "FETCH_POSTS"] : null),
+        (key) => (course?.courseId ? [key, "POSTS"] : null),
         fetchPosts,
         {
             revalidateFirstPage: false,
@@ -91,7 +91,7 @@ const WrappedInfinitePostsScrollerProviders = ({
     )
 
     const postsMetadataSwr = useSWR(
-        course?.courseId ? ["FETCH_POSTS_METADATA"] : null,
+        course?.courseId ? ["POSTS_METADATA"] : null,
         fetchPostsMetadata
     )
 

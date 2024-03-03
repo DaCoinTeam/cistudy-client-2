@@ -52,7 +52,7 @@ const WrappedUserDetailsProviders = ({ children }: { children: ReactNode }) => {
         )
     }, [profile])
 
-    const userSwr = useSWR(profile?.userId ? ["FETCH_USER"] : null, fetchUser)
+    const userSwr = useSWR(profile?.userId ? ["USER"] : null, fetchUser)
 
     const userDetailsContextValue: UserDetailsContextValue = useMemo(
         () => ({

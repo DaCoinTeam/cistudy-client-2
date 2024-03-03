@@ -44,7 +44,7 @@ const WrappedSectionItem = (props: SectionItemProps) => {
         )
     }, [props])
 
-    const lecturesSwr = useSWR("FETCH_LECTURES", fetchLectures)
+    const lecturesSwr = useSWR("LECTURES", fetchLectures)
 
     const sectionItemContextValue: SectionItemContextValue = useMemo(
         () => ({
