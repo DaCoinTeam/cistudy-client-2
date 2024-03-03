@@ -58,7 +58,7 @@ export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                             <ModalFooter className="gap-2">
                                 <Button
                                     onPress={onDiscardChangesPress}
-                                    className="bg-content2"
+                                    variant="light"
                                     startContent={<ClipboardXIcon size={20} strokeWidth={4 / 3} />}
                                 >
               Discard Changes

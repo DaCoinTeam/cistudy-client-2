@@ -4,7 +4,13 @@ import React from "react"
 
 export const RemoveButton = () => {
     return (
-        <Button size="lg" color="danger" variant="flat" fullWidth startContent={<XOctagonIcon size={16} />}>
+        <Button
+            size="lg"
+            color="danger"
+            variant="flat"
+            fullWidth
+            startContent={<XOctagonIcon size={16} />}
+        >
       Delete
         </Button>
     )

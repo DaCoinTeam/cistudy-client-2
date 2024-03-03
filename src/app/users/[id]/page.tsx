@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { CoverPhoto, UnderAvatarSection, UserAvatar } from "./_components"
+import { CoverPhoto, DetailsTabs, UnderAvatarSection, UserAvatar } from "./_components"
 import { Spacer } from "@nextui-org/react"
 
 const Page = () => {
@@ -13,10 +13,10 @@ const Page = () => {
                 </div>
             </div>
             <Spacer y={3}/>
-            <div className="max-w-[1280px] px-6 mx-auto">
+            <div className="max-w-[1280px] px-4 mx-auto">
                 <UnderAvatarSection />
                 <Spacer y={12}/>
-                {/* <DetailsTabs/> */}
+                <DetailsTabs />
             </div>   
         </div>
     )

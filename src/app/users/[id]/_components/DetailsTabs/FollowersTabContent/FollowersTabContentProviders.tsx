@@ -4,41 +4,37 @@ import React, {
     createContext,
     useCallback,
     useContext,
-    useEffect,
     useMemo,
 } from "react"
 
-import {
-    FollowersTabContentAction,
-    FollowersTabContentState,
-    useFollowersTabContentReducer,
-} from "./useFollowersTabContentReducer"
 import { findManyFollowers } from "@services"
-import { isErrorResponse } from "@common"
 import { UserDetailsContext } from "../../../_hooks"
+import useSWR, { SWRConfig, SWRResponse } from "swr"
+import { ErrorResponse, UserEntity } from "@common"
 
 export interface FollowersTabContentContextValue {
-  state: FollowersTabContentState;
-  dispatch: React.Dispatch<FollowersTabContentAction>;
-  functions: {
-    fetchAndSetFollowers: () => Promise<void>;
-  };
+  swrs: {
+    followersSwr: SWRResponse<Array<UserEntity> | undefined, ErrorResponse>
+  }
 }
 
 export const FollowersTabContentContext =
   createContext<FollowersTabContentContextValue | null>(null)
 
-export const FollowersTabContentProviders = ({ children }: { children: ReactNode }) => {
-    const [state, dispatch] = useFollowersTabContentReducer()
+export const WrappedFollowersTabContentProviders = ({
+    children,
+}: {
+  children: ReactNode;
+}) => {
+    const { swrs } = useContext(UserDetailsContext)!
+    const { userSwr } = swrs
+    const { data: user } = userSwr
 
-    const { state: userDetailsState } = useContext(UserDetailsContext)!
-    const { user } = userDetailsState
-
-    const fetchAndSetFollowers = useCallback(async () => {
-        if (user === null) return
+    const fetchFollowers = useCallback(async () => {
+        if (!user) return
         const { userId } = user
 
-        const response = await findManyFollowers(
+        return await findManyFollowers(
             {
                 userId,
             },
@@ -49,37 +45,37 @@ export const FollowersTabContentProviders = ({ children }: { children: ReactNode
                 coverPhotoId: true,
             }
         )
-        if (!isErrorResponse(response)) {
-            dispatch({
-                type: "SET_FOLLOWERS",
-                payload: response,
-            })
-        } else {
-            console.log(response)
-        }
-    }, [user])
+    }, [user?.userId])
 
-    useEffect(() => {
-        const handleEffect = async () => {
-            await fetchAndSetFollowers()
-        }
-        handleEffect()
-    }, [user])
+    const followersSwr = useSWR(["FETCH_FOLLOWERS"], fetchFollowers)
 
-    const followersTabContentContextValue: FollowersTabContentContextValue = useMemo(
+    const followersTabContentContextValue: FollowersTabContentContextValue =
+    useMemo(
         () => ({
-            state,
-            dispatch,
-            functions: {
-                fetchAndSetFollowers,
-            },
+            swrs: {
+                followersSwr
+            }
         }),
-        [state, dispatch]
+        [followersSwr]
     )
 
     return (
-        <FollowersTabContentContext.Provider value={followersTabContentContextValue}>
+        <FollowersTabContentContext.Provider
+            value={followersTabContentContextValue}
+        >
             {children}
         </FollowersTabContentContext.Provider>
     )
 }
+
+export const FollowersTabContentProviders = ({
+    children,
+}: {
+  children: ReactNode;
+}) => (
+    <SWRConfig value={{ provider: () => new Map() }}>
+        <WrappedFollowersTabContentProviders>
+            {children}
+        </WrappedFollowersTabContentProviders>
+    </SWRConfig>
+)

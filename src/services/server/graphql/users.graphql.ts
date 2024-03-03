@@ -2,7 +2,6 @@ import { gql, ApolloError } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 import {
     CourseEntity,
-    ErrorResponse,
     ExtensionsWithOriginalError,
     Schema,
     UserEntity,
@@ -50,7 +49,7 @@ export const findManyFollowers = async (
     userId: string;
   },
     schema?: Schema<DeepPartial<UserEntity>>
-): Promise<Array<UserEntity> | ErrorResponse> => {
+): Promise<Array<UserEntity>> => {
     const { userId } = params
     try {
         const payload = buildPayloadString(schema)
@@ -71,7 +70,7 @@ export const findManyFollowers = async (
         return graphqlData.findManyFollowers as Array<UserEntity>
     } catch (ex) {
         const { graphQLErrors } = ex as ApolloError
-        return (graphQLErrors[0].extensions as ExtensionsWithOriginalError)
+        throw (graphQLErrors[0].extensions as ExtensionsWithOriginalError)
             .originalError
     }
 }
@@ -85,7 +84,7 @@ export const findManyCreatedCourses = async (
     }>
   },
     schema?: Schema<DeepPartial<CourseEntity>>
-): Promise<Array<CourseEntity> | ErrorResponse> => {
+): Promise<Array<CourseEntity>> => {
     const { userId, options } = params
     try {
         const payload = buildPayloadString(schema)
@@ -107,7 +106,7 @@ export const findManyCreatedCourses = async (
         return graphqlData.findManyCreatedCourses as Array<CourseEntity>
     } catch (ex) {
         const { graphQLErrors } = ex as ApolloError
-        return (graphQLErrors[0].extensions as ExtensionsWithOriginalError)
+        throw (graphQLErrors[0].extensions as ExtensionsWithOriginalError)
             .originalError
     }
 }

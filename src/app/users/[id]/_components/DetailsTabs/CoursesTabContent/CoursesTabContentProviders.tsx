@@ -4,41 +4,40 @@ import React, {
     createContext,
     useCallback,
     useContext,
-    useEffect,
     useMemo,
 } from "react"
 
-import {
-    CoursesTabContentAction,
-    CoursesTabContentState,
-    useCoursesTabContentReducer,
-} from "./useCoursesTabContentReducer"
 import { findManyCreatedCourses } from "@services"
-import { isErrorResponse } from "@common"
 import { UserDetailsContext } from "../../../_hooks"
+import useSWR, { SWRResponse } from "swr"
+import { CourseEntity, ErrorResponse } from "@common"
 
 export interface CoursesTabContentContextValue {
-  state: CoursesTabContentState;
-  dispatch: React.Dispatch<CoursesTabContentAction>;
-  functions: {
-    fetchAndSetCreatedCourses: () => Promise<void>;
+  swrs: {
+    createdCoursesSwr: SWRResponse<
+      Array<CourseEntity> | undefined,
+      ErrorResponse
+    >;
   };
 }
 
 export const CoursesTabContentContext =
   createContext<CoursesTabContentContextValue | null>(null)
 
-export const CoursesTabContentProviders = ({ children }: { children: ReactNode }) => {
-    const [state, dispatch] = useCoursesTabContentReducer()
+export const CoursesTabContentProviders = ({
+    children,
+}: {
+  children: ReactNode;
+}) => {
+    const { swrs } = useContext(UserDetailsContext)!
+    const { userSwr } = swrs
+    const { data: user } = userSwr
 
-    const { state: userDetailsState } = useContext(UserDetailsContext)!
-    const { user } = userDetailsState
-
-    const fetchAndSetCreatedCourses = useCallback(async () => {
-        if (user === null) return
+    const fetchCreatedCourses = useCallback(async () => {
+        if (!user) return
         const { userId } = user
 
-        const response = await findManyCreatedCourses(
+        return findManyCreatedCourses(
             {
                 userId,
             },
@@ -46,35 +45,23 @@ export const CoursesTabContentProviders = ({ children }: { children: ReactNode }
                 courseId: true,
                 thumbnailId: true,
                 previewVideoId: true,
-                title: true
+                title: true,
             }
         )
-        if (!isErrorResponse(response)) {
-            dispatch({
-                type: "SET_COURSES",
-                payload: response,
-            })
-        } else {
-            console.log(response)
-        }
-    }, [user])
+    }, [user?.userId])
 
-    useEffect(() => {
-        const handleEffect = async () => {
-            await fetchAndSetCreatedCourses()
-        }
-        handleEffect()
-    }, [user])
+    const createdCoursesSwr = useSWR(
+        ["FETCH_CREATED_COURSES"],
+        fetchCreatedCourses
+    )
 
     const coursesTabContentContextValue: CoursesTabContentContextValue = useMemo(
         () => ({
-            state,
-            dispatch,
-            functions: {
-                fetchAndSetCreatedCourses,
+            swrs: {
+                createdCoursesSwr,
             },
         }),
-        [state, dispatch]
+        [createdCoursesSwr]
     )
 
     return (
