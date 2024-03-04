@@ -37,8 +37,9 @@ export const SectionsCard = () => {
                         startContent={<MoreButton section={section} />}
                         subtitle={"3 lesson"}
                         classNames={{
-                            title: "text-base",
+                            title: "text-base font-semibold",
                             content: "flex flex-col gap-4 py-3",
+                            subtitle: "text-xs"
                         }}
                     >
                         <SectionItem key={section.sectionId} section={section} />

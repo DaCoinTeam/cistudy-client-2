@@ -22,13 +22,14 @@ export const FollowerCard = (props: FollowerCardProps) => {
                 <User
                     className="w-fit"
                     classNames={{
-                        base: "gap-3",
+                        name: "font-semibold text-base",
+                        base: "gap-3"
                     }}
                     name={username}
                     description="Product Designer"
                     avatarProps={{
                         src: getAssetUrl(avatarId),
-                        className: "w-16 h-16",
+                        size: "lg"
                     }}
                 ></User>
             </CardBody>

@@ -111,8 +111,8 @@ export const CoursesTable = () => {
                                     onPress={() => router.push(`/courses/${courseId}/manage`)}
                                 />
                                 <div className="col-span-3 text-base grid content-center">
-                                    <div>{title}</div>
-                                    <div className="text-sm text-foreground-500 line-clamp-3">
+                                    <div className="font-semibold">{title}</div>
+                                    <div className="text-xs text-foreground-500 line-clamp-3">
                                         {description}
                                     </div>
                                 </div>

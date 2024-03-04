@@ -21,7 +21,7 @@ export const CreatorAndStats = (props: CreatorAndStatsProps) => {
             <User
                 name={username}
                 classNames={{
-                    name: "font-semibold"
+                    name: "font-semibold text-base"
                 }}
                 description={calculateTimeAgo(updatedAt)}
                 avatarProps={{ src: getAssetUrl(avatarId) }}

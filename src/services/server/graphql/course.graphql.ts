@@ -126,13 +126,16 @@ export const findManyLectures = async (
 
 export const findOneLecture = async (
     input: {
-    lectureId: string;
+        params: {
+            lectureId: string;
+        }
   },
     schema: Schema<DeepPartial<LectureEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<LectureEntity | ErrorResponse> => {
+): Promise<LectureEntity> => {
     try {
-        const { lectureId } = input
+        const { params } = input
+        const { lectureId } = params
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
@@ -144,7 +147,9 @@ export const findOneLecture = async (
           `,
             variables: {
                 data: {
-                    lectureId,
+                    params: {
+                        lectureId,
+                    }
                 },
             },
         })
@@ -167,7 +172,7 @@ export const findOneLecture = async (
         )
             return await findOneLecture(input, schema, AuthTokenType.Refresh)
 
-        return error
+        throw error
     }
 }
 

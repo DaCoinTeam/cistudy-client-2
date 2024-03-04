@@ -23,8 +23,8 @@ export const UserDetailsContext = createContext<UserDetailsContextValue | null>(
 )
 
 const WrappedUserDetailsProviders = ({ children }: { children: ReactNode }) => {
-    const input = useParams()
-    const userId = input.id as string
+    const params = useParams()
+    const userId = params.id as string
 
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs

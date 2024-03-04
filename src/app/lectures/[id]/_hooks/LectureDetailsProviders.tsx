@@ -3,24 +3,17 @@ import React, {
     ReactNode,
     createContext,
     useCallback,
-    useEffect,
     useMemo,
 } from "react"
 
-import {
-    LectureDetailsAction,
-    LectureDetailsState,
-    useLectureDetailsReducer,
-} from "./useLectureDetailsReducer"
 import { findOneLecture } from "@services"
 import { useParams } from "next/navigation"
-import { isErrorResponse } from "@common"
+import { ErrorResponse, LectureEntity } from "@common"
+import useSWR, { SWRResponse } from "swr"
 
 export interface LectureDetailsContextValue {
-  state: LectureDetailsState;
-  dispatch: React.Dispatch<LectureDetailsAction>;
-  functions: {
-    fetchAndSetLecture: () => Promise<void>;
+  swrs: {
+    lecturesSwr: SWRResponse<LectureEntity, ErrorResponse>;
   };
 }
 
@@ -32,15 +25,15 @@ export const LectureDetailsProviders = ({
 }: {
   children: ReactNode;
 }) => {
-    const [state, dispatch] = useLectureDetailsReducer()
+    const params = useParams()
+    const lectureId = params.id as string
 
-    const input = useParams()
-    const lectureId = input.id as string
-
-    const fetchAndSetLecture = useCallback(async () => {
-        const response = await findOneLecture(
+    const fetchLecture = useCallback(async () => {
+        return await findOneLecture(
             {
-                lectureId,
+                params: {
+                    lectureId,
+                }
             },
             {
                 lectureId: true,
@@ -48,42 +41,35 @@ export const LectureDetailsProviders = ({
                 lectureVideoId: true,
                 thumbnailId: true,
                 videoType: true,
+                description: true,
+                numberOfViews: true,
+                createdAt: true,
                 resources: {
                     resourceId: true,
                     fileId: true,
                 },
+                section: {
+                    course: {
+                        creator: {
+                            avatarId: true,
+                            username: true,
+                            numberOfFollowers: true
+                        }
+                    }
+                }
             }
         )
-        if (!isErrorResponse(response)) {
-            dispatch({
-                type: "SET_LECTURE",
-                payload: response,
-            })
-            dispatch({
-                type: "SET_FINISH_FETCH",
-                payload: true,
-            })
-        } else {
-            console.log(response)
-        }
     }, [])
 
-    useEffect(() => {
-        const handleEffect = async () => {
-            await fetchAndSetLecture()
-        }
-        handleEffect()
-    }, [])
+    const lecturesSwr = useSWR(["LECTURE"], fetchLecture)
 
     const lectureDetailsContextValue: LectureDetailsContextValue = useMemo(
         () => ({
-            state,
-            dispatch,
-            functions: {
-                fetchAndSetLecture,
-            },
+            swrs: {
+                lecturesSwr
+            }
         }),
-        [state, dispatch]
+        [lecturesSwr]
     )
 
     return (

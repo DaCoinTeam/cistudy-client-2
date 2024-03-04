@@ -19,7 +19,7 @@ export const CommentsModal = () => {
     return (
         <>
             <Link as="button" onPress={onOpen}>
-                <ChatBubbleOvalLeftEllipsisIcon height={24} width={24} strokeWidth={4/3} />
+                <ChatBubbleOvalLeftEllipsisIcon height={24} width={24} />
             </Link>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
                 <CommentsModalProviders>
