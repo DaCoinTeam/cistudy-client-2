@@ -48,13 +48,13 @@ export const init = async (
 }
 
 export const signIn = async (
-    params: {
+    input: {
         email: string;
         password: string;
     },
     schema: Schema<DeepPartial<UserEntity>>
 ): Promise<UserEntity> => {
-    const { email, password } = params
+    const { email, password } = input
     try {
         const payload = buildAuthPayloadString(schema, AuthTokenType.Refresh)
         const { data: graphqlData } = await client(AuthTokenType.Refresh).query({

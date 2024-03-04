@@ -39,7 +39,9 @@ export const CoursesTabContentProviders = ({
 
         return findManyCreatedCourses(
             {
-                userId,
+                params: {
+                    userId,
+                }
             },
             {
                 courseId: true,

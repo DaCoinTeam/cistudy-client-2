@@ -13,7 +13,7 @@ import axios, { AxiosError } from "axios"
 
 const BASE_URL = `${endpointConfig().api}/auth`
 
-export const signUp = async (params: {
+export const signUp = async (input: {
   email: string;
   password: string;
   firstName: string;
@@ -22,7 +22,7 @@ export const signUp = async (params: {
 }): Promise<string> => {
     try {
         const url = `${BASE_URL}/sign-up`
-        const response = await axios.post(url, params, {
+        const response = await axios.post(url, input, {
             headers: {
                 "Client-Id": getClientId(),
             },
@@ -33,13 +33,13 @@ export const signUp = async (params: {
     }
 }
 
-export const verifyGoogleAccessToken = async (params: {
+export const verifyGoogleAccessToken = async (input: {
   token: string;
 }): Promise<UserEntity> => {
     try {
         let url = `${BASE_URL}/verify-google-access-token`
         const urlObject = new URL(url)
-        urlObject.searchParams.append("token", params.token)
+        urlObject.searchParams.append("token", input.token)
         url = urlObject.toString()
 
         const response = await axios.get(url, {

@@ -26,14 +26,14 @@ export interface FindManySelfCreatedCoursesOutputData {
 }
 
 export const findManySelfCreatedCourses = async (
-    params: {
+    input: {
     options?: Partial<FindManySelfCreatedCoursesInputOptions>;
   },
     schema: Schema<DeepPartial<FindManySelfCreatedCoursesOutputData>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<FindManySelfCreatedCoursesOutputData> => {
     try {
-        const { options } = params
+        const { options } = input
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
@@ -67,7 +67,7 @@ export const findManySelfCreatedCourses = async (
       authTokenType === AuthTokenType.Access
         )
             return await findManySelfCreatedCourses(
-                params,
+                input,
                 schema,
                 AuthTokenType.Refresh
             )

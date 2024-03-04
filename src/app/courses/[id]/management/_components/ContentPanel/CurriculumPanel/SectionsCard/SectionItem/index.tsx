@@ -27,7 +27,9 @@ const WrappedSectionItem = (props: SectionItemProps) => {
     const fetchLectures = useCallback(async () => {
         return await findManyLectures(
             {
-                sectionId,
+                params: {
+                    sectionId,
+                }
             },
             {
                 lectureId: true,

@@ -10,15 +10,19 @@ import {
 import { client } from "./client.graphql"
 
 export const findOneUser = async (
+    input: {
     params: {
-    userId: string;
+        userId: string;
+    },
     options?: Partial<{
       followerId: string;
     }>;
   },
     schema?: Schema<DeepPartial<UserEntity>>
 ): Promise<UserEntity> => {
-    const { userId, options } = params
+    const { params, options } = input
+    const { userId } = params
+
     try {
         const payload = buildPayloadString(schema)
         const { data: graphqlData } = await client().query({
@@ -45,12 +49,12 @@ export const findOneUser = async (
 }
 
 export const findManyFollowers = async (
-    params: {
+    input: {
     userId: string;
   },
     schema?: Schema<DeepPartial<UserEntity>>
 ): Promise<Array<UserEntity>> => {
-    const { userId } = params
+    const { userId } = input
     try {
         const payload = buildPayloadString(schema)
         const { data: graphqlData } = await client().query({
@@ -76,8 +80,10 @@ export const findManyFollowers = async (
 }
 
 export const findManyCreatedCourses = async (
+    input: {
     params: {
-    userId: string;
+        userId: string;
+    },
     options?: Partial<{
         skip: number;
         take: number;    
@@ -85,7 +91,9 @@ export const findManyCreatedCourses = async (
   },
     schema?: Schema<DeepPartial<CourseEntity>>
 ): Promise<Array<CourseEntity>> => {
-    const { userId, options } = params
+    const { params, options } = input
+    const { userId } = params
+
     try {
         const payload = buildPayloadString(schema)
         const { data: graphqlData } = await client().query({

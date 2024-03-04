@@ -42,7 +42,9 @@ const WrappedInfinitePostsScrollerProviders = ({
 
             return await findManyPosts(
                 {
-                    courseId,
+                    params: {
+                        courseId
+                    },
                     options: {
                         skip: COLUMNS_PER_PAGE * key,
                         take: COLUMNS_PER_PAGE,

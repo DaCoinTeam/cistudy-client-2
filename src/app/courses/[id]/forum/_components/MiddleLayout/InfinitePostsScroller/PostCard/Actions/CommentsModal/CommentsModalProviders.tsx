@@ -41,7 +41,9 @@ const WrappedCommentsModalProviders = ({
     const fetchPostComments = useCallback(async (key: number) => {
         return await findManyPostComments(
             {
-                postId,
+                params: {
+                    postId
+                },
                 options: {
                     skip: COLUMNS_PER_PAGE * key,
                     take: COLUMNS_PER_PAGE,

@@ -14,28 +14,31 @@ import { client } from "./client.graphql"
 import { ApolloError, gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 
-export interface FindManyPostsOptions {
-    skip: number;
-    take: number;
-}
 
 export interface FindManyPostsOutputData {
-    results: Array<PostEntity>
+    results: Array<PostEntity>;
     metadata: {
-        count: number
-    }
+        count: number;
+    };
 }
 
 export const findManyPosts = async (
-    params: {
-        courseId: string;
-        options?: Partial<FindManyPostsOptions>;
+    input: {
+        params: {
+            courseId: string;
+        },
+        options?: Partial<{
+            take: number,
+            skip: number
+        }>;
     },
     schema: Schema<DeepPartial<FindManyPostsOutputData>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<FindManyPostsOutputData> => {
     try {
-        const { courseId, options } = params
+        const { params, options } = input
+        const { courseId } = params
+
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
@@ -52,9 +55,8 @@ export const findManyPosts = async (
                 },
             },
         })
-        const { data, tokens } = graphqlData.findManyPosts as BaseResponse<
-            FindManyPostsOutputData
-        >
+        const { data, tokens } =
+            graphqlData.findManyPosts as BaseResponse<FindManyPostsOutputData>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -70,33 +72,35 @@ export const findManyPosts = async (
             error.statusCode === ErrorStatusCode.Unauthorized &&
             authTokenType === AuthTokenType.Access
         )
-            return await findManyPosts(params, schema, AuthTokenType.Refresh)
+            return await findManyPosts(input, schema, AuthTokenType.Refresh)
         throw error
     }
 }
 
-export interface FindManyPostCommentsOptions {
-    skip: number;
-    take: number;
-}
-
 export interface FindManyPostCommentsOutputData {
-    results: Array<PostCommentEntity>
+    results: Array<PostCommentEntity>;
     metadata: {
-        count: number
-    }
+        count: number;
+    };
 }
 
 export const findManyPostComments = async (
-    params: {
-        postId: string;
-        options?: Partial<FindManyPostCommentsOptions>;
+    input: {
+        params: {
+            postId: string;
+        };
+        options?: Partial<{
+            take: number;
+            skip: number;
+        }>;
     },
     schema: Schema<DeepPartial<FindManyPostCommentsOutputData>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<FindManyPostCommentsOutputData> => {
     try {
-        const { postId, options } = params
+        const { params, options } = input
+        const { postId } = params
+
         const payload = buildAuthPayloadString(schema, authTokenType)
 
         const { data: graphqlData } = await client(authTokenType).query({
@@ -110,13 +114,12 @@ export const findManyPostComments = async (
             variables: {
                 data: {
                     postId,
-                    options
+                    options,
                 },
             },
         })
-        const { data, tokens } = graphqlData.findManyPostComments as BaseResponse<
-            FindManyPostCommentsOutputData
-        >
+        const { data, tokens } =
+            graphqlData.findManyPostComments as BaseResponse<FindManyPostCommentsOutputData>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -132,7 +135,7 @@ export const findManyPostComments = async (
             error.statusCode === ErrorStatusCode.Unauthorized &&
             authTokenType === AuthTokenType.Access
         )
-            return await findManyPostComments(params, schema, AuthTokenType.Refresh)
+            return await findManyPostComments(input, schema, AuthTokenType.Refresh)
 
         throw error
     }

@@ -34,8 +34,8 @@ export const LectureDetailsProviders = ({
 }) => {
     const [state, dispatch] = useLectureDetailsReducer()
 
-    const params = useParams()
-    const lectureId = params.id as string
+    const input = useParams()
+    const lectureId = input.id as string
 
     const fetchAndSetLecture = useCallback(async () => {
         const response = await findOneLecture(

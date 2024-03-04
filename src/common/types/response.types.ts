@@ -12,7 +12,3 @@ export enum AuthTokenType {
   Access = "Access",
   Refresh = "Refresh",
 }
-
-export type Metadata = {
-  count: number
-}

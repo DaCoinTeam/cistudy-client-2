@@ -49,7 +49,7 @@ export const createCourse = async (
 }
 
 export const updateCourse = async (
-    params: {
+    input: {
     data: {
       courseId: string;
       title?: string;
@@ -64,7 +64,7 @@ export const updateCourse = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data, files } = params
+        const { data, files } = input
         const url = `${BASE_URL}/update-course`
         const formData = new FormData()
 
@@ -96,13 +96,13 @@ export const updateCourse = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await updateCourse(params, AuthTokenType.Refresh)
+            return await updateCourse(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const createCourseTarget = async (
-    params: {
+    input: {
     data: {
       courseId: string;
       content: string;
@@ -111,7 +111,7 @@ export const createCourseTarget = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data } = params
+        const { data } = input
         const url = `${BASE_URL}/create-course-target`
 
         const response = await axios.post(url, data, {
@@ -135,13 +135,13 @@ export const createCourseTarget = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await createCourseTarget(params, AuthTokenType.Refresh)
+            return await createCourseTarget(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const updateCourseTarget = async (
-    params: {
+    input: {
     data: {
       courseTargetId: string;
       content: string;
@@ -151,7 +151,7 @@ export const updateCourseTarget = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data, signal } = params
+        const { data, signal } = input
         const url = `${BASE_URL}/update-course-target`
 
         const response = await axios.put(url, data, {
@@ -177,13 +177,13 @@ export const updateCourseTarget = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await updateCourseTarget(params, AuthTokenType.Refresh)
+            return await updateCourseTarget(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const deleteCourseTarget = async (
-    params: {
+    input: {
     data: {
       courseTargetId: string;
     };
@@ -191,7 +191,7 @@ export const deleteCourseTarget = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data } = params
+        const { data } = input
         const { courseTargetId } = data
         const url = `${BASE_URL}/delete-course-target/${courseTargetId}`
         //
@@ -217,13 +217,13 @@ export const deleteCourseTarget = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await deleteCourseTarget(params, AuthTokenType.Refresh)
+            return await deleteCourseTarget(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const createLecture = async (
-    params: {
+    input: {
     data: {
       sectionId: string;
       title: string;
@@ -232,7 +232,7 @@ export const createLecture = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data } = params
+        const { data } = input
         const url = `${BASE_URL}/create-lecture`
 
         const response = await axios.post(url, data, {
@@ -256,13 +256,13 @@ export const createLecture = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await createLecture(params, AuthTokenType.Refresh)
+            return await createLecture(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const updateLecture = async (
-    params: {
+    input: {
     data: {
       lectureId: string;
       title?: string;
@@ -274,7 +274,7 @@ export const updateLecture = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data, files } = params
+        const { data, files } = input
         const url = `${BASE_URL}/update-lecture`
         const formData = new FormData()
 
@@ -307,13 +307,13 @@ export const updateLecture = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await updateLecture(params, AuthTokenType.Refresh)
+            return await updateLecture(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const deleteLecture = async (
-    params: {
+    input: {
     data: {
       lectureId: string;
     };
@@ -321,7 +321,7 @@ export const deleteLecture = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data } = params
+        const { data } = input
         const { lectureId } = data
         const url = `${BASE_URL}/delete-lecture/${lectureId}`
         //
@@ -347,13 +347,13 @@ export const deleteLecture = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await deleteLecture(params, AuthTokenType.Refresh)
+            return await deleteLecture(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const createResources = async (
-    params: {
+    input: {
     data: {
       lectureId: string;
     };
@@ -362,7 +362,7 @@ export const createResources = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data, files } = params
+        const { data, files } = input
         const url = `${BASE_URL}/create-resources`
         const formData = new FormData()
 
@@ -395,13 +395,13 @@ export const createResources = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await createResources(params, AuthTokenType.Refresh)
+            return await createResources(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const createSection = async (
-    params: {
+    input: {
     data: {
       courseId: string;
       title?: string;
@@ -410,7 +410,7 @@ export const createSection = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data } = params
+        const { data } = input
         const url = `${BASE_URL}/create-section`
 
         const response = await axios.post(url, data, {
@@ -434,13 +434,13 @@ export const createSection = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await createSection(params, AuthTokenType.Refresh)
+            return await createSection(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const updateSection = async (
-    params: {
+    input: {
     data: {
       sectionId: string;
       title?: string;
@@ -449,7 +449,7 @@ export const updateSection = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data } = params
+        const { data } = input
         const url = `${BASE_URL}/update-section`
 
         const response = await axios.put(url, data, {
@@ -473,13 +473,13 @@ export const updateSection = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await updateSection(params, AuthTokenType.Refresh)
+            return await updateSection(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const deleteSection = async (
-    params: {
+    input: {
     data: {
       sectionId: string;
     };
@@ -487,7 +487,7 @@ export const deleteSection = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data } = params
+        const { data } = input
         const { sectionId } = data
         const url = `${BASE_URL}/delete-section/${sectionId}`
         //
@@ -513,13 +513,13 @@ export const deleteSection = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await deleteSection(params, AuthTokenType.Refresh)
+            return await deleteSection(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const deleteResource = async (
-    params: {
+    input: {
     data: {
       resourceId: string;
     };
@@ -527,7 +527,7 @@ export const deleteResource = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data } = params
+        const { data } = input
         const { resourceId } = data
         const url = `${BASE_URL}/delete-resource/${resourceId}`
         //
@@ -553,7 +553,7 @@ export const deleteResource = async (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await deleteResource(params, AuthTokenType.Refresh)
+            return await deleteResource(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
