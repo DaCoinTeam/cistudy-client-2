@@ -2,14 +2,15 @@ import { PlayCircleIcon } from "@heroicons/react/24/solid"
 import { Button, Image } from "@nextui-org/react"
 import React from "react"
 
-interface VideoThumbnailProps {
+interface InteractiveThumbnailProps {
   className?: string;
   src?: string;
   onPress?: () => void;
+  size?: number
 }
 
-export const VideoThumbnail = (props: VideoThumbnailProps) => {
-    const { src, className, onPress } = props
+export const InteractiveThumbnail = (props: InteractiveThumbnailProps) => {
+    const { src, className, onPress, size } = props
     return (
         <Button
             onPress={onPress}
@@ -17,7 +18,7 @@ export const VideoThumbnail = (props: VideoThumbnailProps) => {
         >
             <Image alt="thumbnail" src={src} className="w-full" />
             <div className="opacity-0 hover:opacity-100 transition-opacity z-10 grid place-items-center absolute top-0 left-0 w-full h-full bg-foreground-900/60">
-                <PlayCircleIcon className="text-primary" height={60} width={60} />
+                <PlayCircleIcon className="text-primary" height={size ?? 60} width={size ?? 60} />
             </div>
         </Button>
     )

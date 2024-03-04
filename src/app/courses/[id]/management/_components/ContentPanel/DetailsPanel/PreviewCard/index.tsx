@@ -13,9 +13,9 @@ export const PreviewCard = (props: PreviewCardProps) => {
 
     return (
         <Card shadow="none" className={`${className}`}>
-            <CardHeader className=" p-4 pb-2 text-xl font-bold ">
-        Preview
-            </CardHeader>
+            <CardHeader className="p-4 pb-2 justify-between text-xl leading-none font-bold items-center">
+                Preview
+            </CardHeader> 
             <CardBody className="p-4 pt-2">
                 <Tabs
                     classNames={{

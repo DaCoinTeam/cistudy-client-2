@@ -22,7 +22,7 @@ const WrappedCoursesTabContent = () => {
 
     return (
         <Card shadow="none">
-            <CardHeader className="p-4 pb-2 justify-between flex items-center"> 
+            <CardHeader className="p-4 pb-2 leading-none justify-between flex items-center"> 
                 <div className="text-2xl font-bold"> Courses </div>
                 <Actions />
             </CardHeader>

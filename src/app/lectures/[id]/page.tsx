@@ -1,10 +1,11 @@
 import React from "react"
-import { VideoSection } from "./_components/VideoSection"
+import { SectionsCard, VideoSection } from "./_components"
 
 const Page = () => {
     return (
-        <div className="grid grid-cols-5 m-6 max-w-[1280px] p-6 mx-auto">
-            <VideoSection className="col-span-4"/>
+        <div className="grid grid-cols-7 m-6 max-w-[1280px] gap-6 p-6 mx-auto">
+            <VideoSection className="col-span-5"/>
+            <SectionsCard className="col-span-2 h-fit"/>
         </div>
     )
 }

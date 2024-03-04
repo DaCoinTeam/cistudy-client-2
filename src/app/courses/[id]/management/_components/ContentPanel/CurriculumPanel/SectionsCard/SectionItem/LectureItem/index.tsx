@@ -3,7 +3,7 @@ import { LectureEntity } from "@common"
 import { getAssetUrl } from "@services"
 import { Clock1 } from "lucide-react"
 import { MoreButton } from "./MoreButton"
-import { VideoThumbnail } from "../../../../../../../../../_shared"
+import { InteractiveThumbnail } from "../../../../../../../../../_shared"
 import { useRouter } from "next/navigation"
 
 interface LectureItemProps {
@@ -37,7 +37,7 @@ export const LectureItem = (props: LectureItemProps) => {
         <LectureItemContext.Provider value={lectureItemContextValue}>
             <div className="justify-between flex items-center w-full">
                 <div className="grid grid-cols-6 gap-2 items-center w-full">
-                    <VideoThumbnail src={getAssetUrl(lecture?.thumbnailId)} onPress={onPress}/>
+                    <InteractiveThumbnail src={getAssetUrl(lecture?.thumbnailId)} onPress={onPress}/>
                     <div className="col-span-5">
                         <div className="text-sm"> {lecture?.title} </div>
                         <div className="flex items-center gap-1">

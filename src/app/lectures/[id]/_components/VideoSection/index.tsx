@@ -30,7 +30,7 @@ export const VideoSection = (props: VideoSectionProps) => {
                 src={getAssetManifestUrl(lecture?.lectureVideoId)}
                 videoType={lecture?.videoType}
             />
-            <Spacer y={2} />
+            <Spacer y={4} />
             <div className="text-xl font-bold">{title}</div>
             <Spacer y={4} />
             <div className="justify-between flex items-center">

@@ -30,9 +30,9 @@ export const WrappedTargetsCard = (props: TargetsCardProps) => {
 
     return (
         <Card shadow="none" className={`${className}`}>
-            <CardHeader className="p-4 pb-2"> 
-                <div className="text-xl font-bold ">Targets</div>
-            </CardHeader>
+            <CardHeader className="p-4 pb-2 justify-between text-xl leading-none font-bold items-center">
+                Targets
+            </CardHeader> 
             <CardBody className="p-4 gap-4">
                 {renderTargetCards()}
                 <AddTargetItem key="addTarget"/>

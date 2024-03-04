@@ -61,7 +61,7 @@ export const UserAvatar = (props: UserAvatarProps) => {
                             onPress={onPress}
                             radius="full"
                             isIconOnly
-                            className="bg-content1 absolute bottom-0 right-0"
+                            className="bg-content2 absolute bottom-0 right-0"
                         >
                             <CameraIcon height={24} width={24} />
                         </Button>

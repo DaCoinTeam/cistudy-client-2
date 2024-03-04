@@ -61,6 +61,7 @@ export const LectureDetailsProviders = ({
                     fileId: true,
                 },
                 section: {
+                    sectionId: true,
                     course: {
                         creator: {
                             avatarId: true,
@@ -69,6 +70,15 @@ export const LectureDetailsProviders = ({
                             userId: true,
                             followed: true,
                         },
+                        sections: {
+                            sectionId: true,
+                            title: true,
+                            lectures: {
+                                lectureId: true,
+                                thumbnailId: true,
+                                title: true
+                            }
+                        }
                     },
                 },
             }

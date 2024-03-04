@@ -26,7 +26,6 @@ export const SectionsCard = () => {
                 variant="splitted"
                 className="!px-0 gap-4"
                 itemClasses={{
-                    trigger: "!py-3",
                     base: "!shadow-none border border-divider gap-4",
                 }}
             >
@@ -38,8 +37,8 @@ export const SectionsCard = () => {
                         subtitle={"3 lesson"}
                         classNames={{
                             title: "text-base font-semibold",
-                            content: "flex flex-col gap-4 py-3",
-                            subtitle: "text-xs"
+                            content: "flex flex-col gap-4 pb-4 pt-2",
+                            subtitle: "text-xs",
                         }}
                     >
                         <SectionItem key={section.sectionId} section={section} />
@@ -51,9 +50,9 @@ export const SectionsCard = () => {
 
     return (
         <Card shadow="none">
-            <CardHeader className="p-4 pb-2">
-                <div className="text-xl font-bold ">Sections</div>
-            </CardHeader>
+            <CardHeader className="p-4 pb-2 justify-between text-xl leading-none font-bold items-center">
+                Sections
+            </CardHeader> 
             <CardBody className="p-4 gap-4">
                 {renderSections()}
                 <AddSectionItem />

@@ -13,7 +13,7 @@ import {
 import { CoursesManagementPanelContext, ROWS_PER_PAGE } from "../CoursesManagementPanelProviders"
 import { getAssetUrl } from "@services"
 import { useRouter } from "next/navigation"
-import { VideoThumbnail } from "../../../../../_shared"
+import { InteractiveThumbnail } from "../../../../../_shared"
 
 export const CoursesTable = () => {
     const router = useRouter()
@@ -105,7 +105,7 @@ export const CoursesTable = () => {
                     <TableRow key={courseId}>
                         <TableCell>
                             <div className="grid grid-cols-4 gap-3 py-2">
-                                <VideoThumbnail
+                                <InteractiveThumbnail
                                     className="col-span-1"
                                     src={getAssetUrl(thumbnailId)}
                                     onPress={() => router.push(`/courses/${courseId}/manage`)}
