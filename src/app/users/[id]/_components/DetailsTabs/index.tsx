@@ -14,7 +14,7 @@ export const DetailsTabs = () => {
             }}>
                 <Tab key="followers"  title={
                     <div className="flex items-center gap-2">
-                        <RssIcon size={20} strokeWidth={4/3}/>
+                        <RssIcon size={20} strokeWidth={3/2}/>
                         <div> Followers </div>
                     </div>
                 }>
@@ -22,7 +22,7 @@ export const DetailsTabs = () => {
                 </Tab>
                 <Tab key="courses" title={
                     <div className="flex items-center gap-2">
-                        <BookOpenIcon size={20} strokeWidth={4/3}/>
+                        <BookOpenIcon size={20} strokeWidth={3/2}/>
                         <div> Courses </div>
                     </div>
                 }>
@@ -31,7 +31,7 @@ export const DetailsTabs = () => {
                 </Tab>
                 <Tab key="feedback" title={
                     <div className="flex items-center gap-2">
-                        <MessagesSquareIcon size={20} strokeWidth={4/3}/>
+                        <MessagesSquareIcon size={20} strokeWidth={3/2}/>
                         <div> Feedback </div>
                     </div>
                 }>

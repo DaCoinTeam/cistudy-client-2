@@ -26,7 +26,7 @@ export const ThumbnailTab = () => {
                 <UploadButton />
                 <Button
                     variant="light"
-                    startContent={<XIcon size={20} strokeWidth={4 / 3} />}
+                    startContent={<XIcon size={20} strokeWidth={3/2} />}
                 >
           Delete
                 </Button>

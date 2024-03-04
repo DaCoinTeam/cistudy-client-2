@@ -35,7 +35,7 @@ export const Actions = () => {
             <Link onPress={onPress} as="button">
                 {
                     liked ?
-                        <HeartIcon height={24} width={24} strokeWidth={4/3}/>
+                        <HeartIcon height={24} width={24} strokeWidth={3/2}/>
                         : <SolidHeartIcon height={24} width={24} />
                 }
                
@@ -46,7 +46,7 @@ export const Actions = () => {
     return (
         <div className="flex items-center justify-between">
             <Link as="button">
-                <BookmarkIcon height={24} width={24} strokeWidth={4/3} />
+                <BookmarkIcon height={24} width={24} strokeWidth={3/2} />
             </Link>
             <div className="flex gap-4 items-center">
                 {renderLikeButton()}

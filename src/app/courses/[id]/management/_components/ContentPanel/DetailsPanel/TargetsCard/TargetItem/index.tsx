@@ -75,7 +75,7 @@ export const TargetItem = (props: TargetItemProps) => {
                             className="text-sm"
                             as="button"
                         >
-                            <XIcon size={20} strokeWidth={4 / 3} />
+                            <XIcon size={20} strokeWidth={3/2} />
                         </Link>
                     </div>
                 }

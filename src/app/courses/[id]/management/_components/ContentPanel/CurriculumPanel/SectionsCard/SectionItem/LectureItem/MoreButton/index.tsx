@@ -82,26 +82,26 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
                         isIconOnly
                         variant="flat"
                     >
-                        <MoreVertical size={20} strokeWidth={4 / 3} />
+                        <MoreVertical size={20} strokeWidth={3/2} />
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
                     <DropdownItem
-                        startContent={<FolderIcon size={20} strokeWidth={4 / 3} />}
+                        startContent={<FolderIcon size={20} strokeWidth={3/2} />}
                         onPress={onResourcesModalOpen}
                         key="resources"
                     >
             Resources
                     </DropdownItem>
                     <DropdownItem
-                        startContent={<PlaySquare size={20} strokeWidth={4 / 3} />}
+                        startContent={<PlaySquare size={20} strokeWidth={3/2} />}
                         onPress={onLectureModalOpen}
                         key="lecture"
                     >
             Lecture
                     </DropdownItem>
                     <DropdownItem
-                        startContent={<PenLineIcon size={20} strokeWidth={4 / 3} />}
+                        startContent={<PenLineIcon size={20} strokeWidth={3/2} />}
                         onPress={onEditModalOpen}
                         key="edit"
                     >
@@ -109,7 +109,7 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
                     </DropdownItem>
                     <DropdownItem
                         color="danger"
-                        startContent={<XIcon size={20} strokeWidth={4 / 3} />}
+                        startContent={<XIcon size={20} strokeWidth={3/2} />}
                         key="delete"
                         onPress={onConfirmDeleteModalOpen}
                         className="text-danger"

@@ -12,7 +12,7 @@ export const FilterPopover = () => {
     return (
         <Popover placement="right">
             <PopoverTrigger>
-                <Button className="bg-content2" startContent={<FilterIcon size={20} strokeWidth={4 / 3} />}>
+                <Button className="bg-content2" startContent={<FilterIcon size={20} strokeWidth={3/2} />}>
           Filter
                 </Button>
             </PopoverTrigger>

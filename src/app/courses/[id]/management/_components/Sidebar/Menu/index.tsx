@@ -51,7 +51,7 @@ export const Menu = (props: MenuProps) => {
                         title: "text-base",
                         base: `items-center px-0 rounded-none text-foreground-500 !bg-transparent ${isSelected(PanelSelected.Details)}`
                     }}
-                    startContent={<ListCollapseIcon size={24} strokeWidth={4/3}/>}
+                    startContent={<ListCollapseIcon size={24} strokeWidth={3/2}/>}
                     key="details"
                 >
           Details
@@ -61,7 +61,7 @@ export const Menu = (props: MenuProps) => {
                         title: "text-base",
                         base: `rounded-none px-0 !bg-transparent text-foreground-500 ${isSelected(PanelSelected.Curriculum)}`,
                     }}
-                    startContent={<BookAIcon size={24} strokeWidth={4/3} />}
+                    startContent={<BookAIcon size={24} strokeWidth={3/2} />}
                     key="curriculum"
                 >
           Curriculum

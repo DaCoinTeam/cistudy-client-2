@@ -46,10 +46,10 @@ export const ResourceItem = (props: ResourceItemProps) => {
                         </Link>
                         <div className="flex gap-4 items-center">
                             <Link href={getAssetUrl(fileId)}>
-                                <DownloadIcon size={20} strokeWidth={4 / 3} />
+                                <DownloadIcon size={20} strokeWidth={3/2} />
                             </Link>
                             <Link as="button" onPress={onConfirmDeleteModalOpen}>
-                                <XIcon size={20} strokeWidth={4 / 3} />{" "}
+                                <XIcon size={20} strokeWidth={3/2} />{" "}
                             </Link>
                         </div>
                     </div>

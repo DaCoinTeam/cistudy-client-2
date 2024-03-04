@@ -64,14 +64,14 @@ export const WrappedInformationCard = (props: InformationCardProps) => {
                         <Button
                             type="submit"
                             className="bg-content2"
-                            startContent={<SaveIcon size={20} strokeWidth={4 / 3} />}
+                            startContent={<SaveIcon size={20} strokeWidth={3/2} />}
                         >
               Save
                         </Button>
                         <Button
                             onPress={onDiscardChangesPress}
                             variant="light"
-                            startContent={<ClipboardXIcon size={20} strokeWidth={4 / 3} />}
+                            startContent={<ClipboardXIcon size={20} strokeWidth={3/2} />}
                         >
               Discard Changes
                         </Button>

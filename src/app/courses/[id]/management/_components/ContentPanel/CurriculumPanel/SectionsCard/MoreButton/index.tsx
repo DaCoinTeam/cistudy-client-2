@@ -72,12 +72,12 @@ export const MoreButton = (props: MoreButtonProps) => {
                         isIconOnly
                         variant="flat"
                     >
-                        <MoreVertical size={20} strokeWidth={4 / 3} />
+                        <MoreVertical size={20} strokeWidth={3/2} />
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
                     <DropdownItem
-                        startContent={<PenLineIcon size={20} strokeWidth={4 / 3} />}
+                        startContent={<PenLineIcon size={20} strokeWidth={3/2} />}
                         onPress={onEditModalOpen}
                         key="edit"
                     >
@@ -85,7 +85,7 @@ export const MoreButton = (props: MoreButtonProps) => {
                     </DropdownItem>
                     <DropdownItem
                         color="danger"
-                        startContent={<XIcon size={20} strokeWidth={4 / 3} />}
+                        startContent={<XIcon size={20} strokeWidth={3/2} />}
                         onPress={onConfirmDeleteModalOpen}
                         key="delete"
                         className="text-danger"

@@ -63,8 +63,8 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
                         <div className="w-full h-full max-w-[1280px] m-auto relative">
                             <Button
                                 onPress={onPress}
-                                className="bg-content1 z-10 w-fit absolute bottom-6 right-6 border shadow-none"
-                                startContent={<ImageUpIcon size={24} strokeWidth={4/3} />}
+                                className="bg-content3 z-10 w-fit absolute bottom-6 right-6 border shadow-none"
+                                startContent={<ImageUpIcon size={24} strokeWidth={3/2} />}
                             >
             Upload cover photo
                             </Button>

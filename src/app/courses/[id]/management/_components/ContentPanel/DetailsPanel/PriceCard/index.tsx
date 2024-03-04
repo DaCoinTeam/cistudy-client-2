@@ -35,7 +35,7 @@ export const PriceCard = (props: PriceCardProps) => {
                         Fee
                         </div>    
                         <Tooltip content={"Cuong dep trai"}>
-                            <HelpCircleIcon size={20} strokeWidth={4/3} />
+                            <HelpCircleIcon size={20} strokeWidth={3/2} />
                         </Tooltip>
                     </div>
                     <div className="flex items-center gap-1">
@@ -53,7 +53,7 @@ export const PriceCard = (props: PriceCardProps) => {
                         Actual
                         </div>    
                         <Tooltip content={"Cuong dep trai"}>
-                            <HelpCircleIcon size={20} strokeWidth={4/3} />
+                            <HelpCircleIcon size={20} strokeWidth={3/2} />
                         </Tooltip>
                     </div>
                     <div className="flex items-center gap-1">

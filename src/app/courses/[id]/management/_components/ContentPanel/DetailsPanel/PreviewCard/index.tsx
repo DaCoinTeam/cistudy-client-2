@@ -28,7 +28,7 @@ export const PreviewCard = (props: PreviewCardProps) => {
                         key="video"
                         title={
                             <div className="flex gap-2 items-center">
-                                <ClapperboardIcon size={20} strokeWidth={4 / 3} />
+                                <ClapperboardIcon size={20} strokeWidth={3/2} />
                                 <div>Video</div>
                             </div>
                         }
@@ -39,7 +39,7 @@ export const PreviewCard = (props: PreviewCardProps) => {
                         key="thumbnail"
                         title={
                             <div className="flex gap-2 items-center">
-                                <ImageIcon size={20} strokeWidth={4 / 3} /> <div>Thumbnail</div>{" "}
+                                <ImageIcon size={20} strokeWidth={3/2} /> <div>Thumbnail</div>{" "}
                             </div>
                         }
                     >

@@ -43,7 +43,7 @@ export const LectureModalRef = forwardRef<LectureModalRefSelectors | null>(
                                 key="video"
                                 title={
                                     <div className="flex gap-2 items-center">
-                                        <ClapperboardIcon size={20} strokeWidth={4 / 3} />
+                                        <ClapperboardIcon size={20} strokeWidth={3/2} />
                                         <div>Video</div>
                                     </div>
                                 }
@@ -54,7 +54,7 @@ export const LectureModalRef = forwardRef<LectureModalRefSelectors | null>(
                                 key="thumbnail"
                                 title={
                                     <div className="flex gap-2 items-center">
-                                        <ImageIcon size={20} strokeWidth={4 / 3} />{" "}
+                                        <ImageIcon size={20} strokeWidth={3/2} />{" "}
                                         <div>Thumbnail</div>
                                     </div>
                                 }

@@ -32,7 +32,7 @@ export const UploadCard = () => {
                         <input {...getInputProps()} />   
                         <div className="cursor-pointer border-dashed rounded-large border-2 grid place-content-center aspect-video w-full">
                             <div className="grid place-items-center">
-                                <FilePlus2Icon strokeWidth={4/3} size={40} className="text-foreground-500" />
+                                <FilePlus2Icon strokeWidth={3/2} size={40} className="text-foreground-500" />
                                 <Spacer y={1}/>
                                 <div className="text-xs text-foreground-500">
                       Upload image/video(s)

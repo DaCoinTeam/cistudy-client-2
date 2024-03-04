@@ -82,7 +82,7 @@ export const WrappedCreatePostModal = () => {
                             <Button
                                 variant="bordered"
                                 className="border shadow-none"
-                                startContent={<RotateCcw size={20} strokeWidth={4 / 3} />}
+                                startContent={<RotateCcw size={20} strokeWidth={3/2} />}
                             >
                 Reset
                             </Button>
@@ -90,7 +90,7 @@ export const WrappedCreatePostModal = () => {
                                 onPress={onPress}
                                 color="primary"
                                 className="text-secondary-foreground"
-                                startContent={<PlusIcon size={20} strokeWidth={4 / 3} />}
+                                startContent={<PlusIcon size={20} strokeWidth={3/2} />}
                             >
                 Create
                             </Button>

@@ -38,7 +38,7 @@ export const CourseCard = (props: CourseCardProps) => {
                 <div className="flex items-center gap-1">
                     <FilePenLineIcon
                         size={16}
-                        strokeWidth={4 / 3}
+                        strokeWidth={3/2}
                         className="text-foreground-500"
                     />
                     <div className="text-xs text-foreground-500"> 2133 enrolls</div>
@@ -47,7 +47,7 @@ export const CourseCard = (props: CourseCardProps) => {
                 <div className="flex items-center gap-1">
                     <MessagesSquareIcon
                         size={16}
-                        strokeWidth={4 / 3}
+                        strokeWidth={3/2}
                         className="text-foreground-500"
                     />
                     <div className="text-xs text-foreground-500"> 2133 feedbacks</div>

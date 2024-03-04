@@ -13,7 +13,7 @@ export const Sidebar = (props: SidebarProps) => {
             <div className="text-xl leading-none font-bold"> Course Management </div>
             <Spacer y={6}/>
             {/* <div className="gap-2 flex items-center text-foreground-500">
-                <KeyRoundIcon size={16} strokeWidth={4/3}/>
+                <KeyRoundIcon size={16} strokeWidth={3/2}/>
                 <div className="text-xs truncate">12323</div>
             </div> */}
             <Menu/>

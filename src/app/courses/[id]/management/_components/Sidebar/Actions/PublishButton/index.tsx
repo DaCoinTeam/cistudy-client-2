@@ -9,7 +9,7 @@ export const PublishButton = () => {
             className="text-secondary-foreground"
             size="lg"
             fullWidth
-            startContent={<ArrowUpFromLineIcon size={24} strokeWidth={4 / 3} />}
+            startContent={<ArrowUpFromLineIcon size={24} strokeWidth={3/2} />}
         >
       Publish
         </Button>

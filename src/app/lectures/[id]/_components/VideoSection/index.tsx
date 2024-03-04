@@ -34,7 +34,7 @@ export const VideoSection = (props: VideoSectionProps) => {
                             <div className="text-sm"> 12323 </div>
                         </div>
                     </div>
-                    <Button className="bg-content2" startContent={<UserPlus2Icon size={20} strokeWidth={4/3}/>}> Follow </Button>
+                    <Button color="primary" className="text-secondary-foreground" startContent={<UserPlus2Icon size={20} strokeWidth={3/2}/>}> Follow </Button>
                 </div>    
                 <MoreButton />
             </div> 

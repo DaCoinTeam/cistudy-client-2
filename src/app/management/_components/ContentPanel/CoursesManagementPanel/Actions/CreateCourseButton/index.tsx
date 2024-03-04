@@ -17,7 +17,7 @@ export const CreateCourseButton = () => {
         <Button
             onPress={onPress}
             className="bg-content2"
-            startContent={<PlusIcon size={20} strokeWidth={4 / 3} />}
+            startContent={<PlusIcon size={20} strokeWidth={3/2} />}
         >
       Create
         </Button>
