@@ -50,7 +50,9 @@ export const findManyPosts = async (
           `,
             variables: {
                 data: {
-                    courseId,
+                    params: {
+                        courseId,
+                    },
                     options,
                 },
             },
@@ -113,8 +115,10 @@ export const findManyPostComments = async (
         `,
             variables: {
                 data: {
-                    postId,
-                    options,
+                    params: {
+                        postId,
+                    },
+                    options
                 },
             },
         })
