@@ -3,8 +3,9 @@ import { FaCheck } from "react-icons/fa6"
 import { CourseDetailsContext } from "../../../../_hooks"
 
 const CourseTarget = () => {
-    const { state } = useContext(CourseDetailsContext)!
-    const { course } = state
+    const { swrs } = useContext(CourseDetailsContext)!
+    const { courseSwr } = swrs
+    const { data: course } = courseSwr
     return (
         <>
             <div className='p-5 border border-indigo-600 '>

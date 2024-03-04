@@ -4,8 +4,10 @@ import { Avatar } from "@nextui-org/react"
 import { CourseDetailsContext } from "../../_hooks"
 
 export const CourseBanner = () => {
-    const { state } = useContext(CourseDetailsContext)!
-    const { course } = state
+    const { swrs } = useContext(CourseDetailsContext)!
+    const { courseSwr } = swrs
+    const { data: course } = courseSwr
+    
     return (
         <div className='w-full h-72 object-cover bg-gray-200	px-[5em] py-[2em]'>
             <div className='w-2/3'>

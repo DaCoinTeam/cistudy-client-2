@@ -9,8 +9,10 @@ import React, { useContext } from "react"
 import { CourseDetailsContext } from "../../_hooks"
 import { getAssetUrl } from "@services"
 export const CourseSideBar = () => {
-    const { state } = useContext(CourseDetailsContext)!
-    const { course } = state
+    const { swrs } = useContext(CourseDetailsContext)!
+    const { courseSwr } = swrs
+    const { data: course } = courseSwr
+    
     return (
         <Card shadow="sm"  radius="sm"  className="w-80"  >
             <CardBody className="overflow-visible p-0" >
