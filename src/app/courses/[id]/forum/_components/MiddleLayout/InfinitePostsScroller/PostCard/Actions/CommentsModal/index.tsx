@@ -11,7 +11,7 @@ import React from "react"
 import { CommentsModalProviders } from "./CommentsModalProviders"
 import { CommentsBody } from "./CommentsBody"
 import { CreateCommentSection } from "./CreateCommentSection"
-import { MessageSquareMore } from "lucide-react"
+import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline"
 
 export const CommentsModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -19,7 +19,7 @@ export const CommentsModal = () => {
     return (
         <>
             <Link as="button" onPress={onOpen}>
-                <MessageSquareMore size={24} strokeWidth={4/3} />
+                <ChatBubbleOvalLeftEllipsisIcon height={24} width={24} strokeWidth={4/3} />
             </Link>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
                 <CommentsModalProviders>

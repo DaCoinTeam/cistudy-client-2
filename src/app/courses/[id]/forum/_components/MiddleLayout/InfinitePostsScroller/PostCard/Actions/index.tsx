@@ -5,7 +5,8 @@ import { toggleLikePost } from "@services"
 import { PostCardContext } from ".."
 import { InfinitePostsScrollerContext } from "../../InfinitePostsScrollerProviders"
 import { CommentsModal } from "./CommentsModal"
-import { BookmarkIcon, HeartIcon } from "lucide-react"
+import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline"
+import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid"
 
 export const Actions = () => {
     const { props } = useContext(PostCardContext)!
@@ -32,7 +33,12 @@ export const Actions = () => {
     const renderLikeButton = () => {
         return (
             <Link onPress={onPress} as="button">
-                <HeartIcon size={24} strokeWidth={4/3} fill={liked ? "currentColor" : "none"}/>
+                {
+                    liked ?
+                        <HeartIcon height={24} width={24} strokeWidth={4/3}/>
+                        : <SolidHeartIcon height={24} width={24} />
+                }
+               
             </Link>
         )
     }
@@ -40,7 +46,7 @@ export const Actions = () => {
     return (
         <div className="flex items-center justify-between">
             <Link as="button">
-                <BookmarkIcon size={24} strokeWidth={4/3} />
+                <BookmarkIcon height={24} width={24} strokeWidth={4/3} />
             </Link>
             <div className="flex gap-4 items-center">
                 {renderLikeButton()}

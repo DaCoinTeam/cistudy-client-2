@@ -48,7 +48,7 @@ export const WrappedCreateCommentModal = () => {
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl">
                 <ModalContent>
-                    <ModalHeader className="flex flex-col p-4 font-bold leading-none pb-2">
+                    <ModalHeader className="flex flex-col p-4 font-bold text-xl leading-none pb-2">
             Create Comment
                     </ModalHeader>
                     <ModalBody className="p-4">

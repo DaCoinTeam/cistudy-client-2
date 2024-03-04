@@ -60,7 +60,6 @@ export const WrappedCourseDetailsProviders = ({
 
     const courseSwr = useSWR(["COURSE"], fetchCourse)
 
-
     const courseDetailsContextValue: CourseDetailsContextValue = useMemo(
         () => ({
             swrs: {
