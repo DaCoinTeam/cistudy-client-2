@@ -15,7 +15,7 @@ import axios, { AxiosError } from "axios"
 const BASE_URL = `${endpointConfig().api}/profile`
 
 export const updateProfile = async (
-    params: {
+    input: {
         data: {
             username?: string,
             avatarIndex?: number,
@@ -26,7 +26,7 @@ export const updateProfile = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string | ErrorResponse> => {
     try {
-        const { data, files } = params
+        const { data, files } = input
         const url = `${BASE_URL}/update-profile`
         const formData = new FormData()
 
@@ -56,7 +56,7 @@ export const updateProfile = async (
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
-        ) return await updateProfile(params, AuthTokenType.Refresh)
+        ) return await updateProfile(input, AuthTokenType.Refresh)
         return _ex
     }
 }

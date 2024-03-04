@@ -7,23 +7,18 @@ import React, {
     useMemo,
 } from "react"
 import {
-    FindManyPostCommentsMetadataOutputData,
     findManyPostComments,
-    findManyPostCommentsMetadata,
+    FindManyPostCommentsOutputData,
 } from "@services"
-import { ErrorResponse, PostCommentEntity } from "@common"
+import { ErrorResponse } from "@common"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
-import useSWR, { SWRConfig, SWRResponse } from "swr"
+import { SWRConfig } from "swr"
 import { PostCardContext } from "../.."
 
 export interface CommentsModalContextValue {
   swrs: {
     postCommentsSwr: SWRInfiniteResponse<
-      Array<PostCommentEntity>,
-      ErrorResponse
-    >;
-    postCommentsMetadataSwr: SWRResponse<
-      FindManyPostCommentsMetadataOutputData,
+      FindManyPostCommentsOutputData,
       ErrorResponse
     >;
   };
@@ -46,37 +41,35 @@ const WrappedCommentsModalProviders = ({
     const fetchPostComments = useCallback(async (key: number) => {
         return await findManyPostComments(
             {
-                postId,
+                params: {
+                    postId
+                },
                 options: {
                     skip: COLUMNS_PER_PAGE * key,
                     take: COLUMNS_PER_PAGE,
                 },
             },
             {
-                postCommentId: true,
-                html: true,
-                postCommentMedias: {
-                    mediaId: true,
-                    postCommentMediaId: true,
-                    mediaType: true,
+                results: {
+                    postCommentId: true,
+                    html: true,
+                    postCommentMedias: {
+                        mediaId: true,
+                        postCommentMediaId: true,
+                        mediaType: true,
+                    },
+                    numberOfLikes: true,
+                    creator: {
+                        avatarId: true,
+                        username: true,
+                    },
+                    updatedAt: true,
+                    liked: true,
                 },
-                numberOfLikes: true,
-                creator: {
-                    avatarId: true,
-                    username: true,
+                metadata: {
+                    count: true,
                 },
-                updatedAt: true,
-                liked: true,
             }
-        )
-    }, [])
-
-    const fetchPostCommentsMetadata = useCallback(async () => {
-        return await findManyPostCommentsMetadata(
-            {
-                postId,
-            },
-            { numberOfPostComments: true }
         )
     }, [])
 
@@ -88,19 +81,13 @@ const WrappedCommentsModalProviders = ({
         }
     )
 
-    const postCommentsMetadataSwr = useSWR(
-        ["POST_COMMENTS_METADATA"],
-        fetchPostCommentsMetadata
-    )
-
     const commentsModalContextValue: CommentsModalContextValue = useMemo(
         () => ({
             swrs: {
                 postCommentsSwr,
-                postCommentsMetadataSwr,
             },
         }),
-        [postCommentsSwr, postCommentsMetadataSwr]
+        [postCommentsSwr]
     )
 
     return (

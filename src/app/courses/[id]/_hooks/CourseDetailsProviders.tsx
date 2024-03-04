@@ -25,8 +25,8 @@ export const WrappedCourseDetailsProviders = ({
 }: {
   children: ReactNode;
 }) => {
-    const params = useParams()
-    const courseId = params.id as string
+    const input = useParams()
+    const courseId = input.id as string
 
     const fetchCourse = useCallback(async () => {
         return await findOneCourse(

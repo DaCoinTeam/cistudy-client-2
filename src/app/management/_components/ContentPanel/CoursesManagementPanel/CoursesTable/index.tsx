@@ -20,11 +20,10 @@ export const CoursesTable = () => {
     const { reducer, swrs } = useContext(CoursesManagementPanelContext)!
     const [state, dispatch] = reducer
     const { page } = state
-    const { selfCreatedCoursesSwr, selfCreatedCoursesMetadataSwr } = swrs
+    const { selfCreatedCoursesSwr } = swrs
     const { data: selfCreatedCourses, isLoading } = selfCreatedCoursesSwr
-    const { data: selfCreatedCoursesMetadata } = selfCreatedCoursesMetadataSwr
 
-    if (!selfCreatedCourses || !selfCreatedCoursesMetadata) return null
+    if (!selfCreatedCourses) return null
 
     const loadingState = () => {
         if (isLoading) return "loading"
@@ -37,9 +36,10 @@ export const CoursesTable = () => {
             payload: page,
         })
 
-    const { numberOfCourses } = selfCreatedCoursesMetadata
+    const { results, metadata } = selfCreatedCourses
+    const { count } = metadata
 
-    const pages = Math.ceil(numberOfCourses / ROWS_PER_PAGE )
+    const pages = Math.ceil(count / ROWS_PER_PAGE )
     return (
         <Table
             aria-label="Example table with client async pagination"
@@ -97,7 +97,7 @@ export const CoursesTable = () => {
                 </TableColumn>
             </TableHeader>
             <TableBody
-                items={selfCreatedCourses}
+                items={results}
                 loadingContent={<Spinner />}
                 loadingState={loadingState()}
             >

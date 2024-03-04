@@ -15,7 +15,7 @@ import { endpointConfig } from "@config"
 const BASE_URL = `${endpointConfig().api}/posts`
 
 export const createPost = async (
-    params: {
+    input: {
         data: {
             title: string;
             courseId: string;
@@ -30,7 +30,7 @@ export const createPost = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data, files } = params
+        const { data, files } = input
         const url = `${BASE_URL}/create-post`
         const formData = new FormData()
 
@@ -63,13 +63,13 @@ export const createPost = async (
             statusCode === ErrorStatusCode.Unauthorized &&
             authTokenType === AuthTokenType.Access
         )
-            return await createPost(params, AuthTokenType.Refresh)
+            return await createPost(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const createComment = async (
-    params: {
+    input: {
         data: {
             postId: string;
             html: string;
@@ -82,9 +82,9 @@ export const createComment = async (
     },
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
-    console.log(params)
+    console.log(input)
     try {
-        const { data, files } = params
+        const { data, files } = input
         const url = `${BASE_URL}/create-comment`
         const formData = new FormData()
 
@@ -117,13 +117,13 @@ export const createComment = async (
             statusCode === ErrorStatusCode.Unauthorized &&
             authTokenType === AuthTokenType.Access
         )
-            return await createComment(params, AuthTokenType.Refresh)
+            return await createComment(input, AuthTokenType.Refresh)
         throw _ex
     }
 }
 
 export const toggleLikePost = async (
-    params: {
+    input: {
         data: {
             postId: string;
         };
@@ -131,7 +131,7 @@ export const toggleLikePost = async (
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<string> => {
     try {
-        const { data } = params
+        const { data } = input
         const url = `${BASE_URL}/toggle-like-post`
 
         const response = await axios.patch(url, data, {
@@ -155,7 +155,7 @@ export const toggleLikePost = async (
             statusCode === ErrorStatusCode.Unauthorized &&
             authTokenType === AuthTokenType.Access
         )
-            return await toggleLikePost(params, AuthTokenType.Refresh)
+            return await toggleLikePost(input, AuthTokenType.Refresh)
         throw _ex
     }
 }

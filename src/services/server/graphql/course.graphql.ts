@@ -19,13 +19,13 @@ import { ApolloError, gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 
 export const findOneCourse = async (
-    params: {
+    input: {
     courseId: string;
   },
     schema: Schema<DeepPartial<CourseEntity>>
 ): Promise<CourseEntity> => {
     try {
-        const { courseId } = params
+        const { courseId } = input
         const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
@@ -81,13 +81,21 @@ export const findManyCourses = async (
 }
 
 export const findManyLectures = async (
-    params: {
-    sectionId: string;
+    input: {
+        params: {
+            sectionId: string;
+        },
+        options?: Partial<{
+            take: number,
+            skip: number
+        }>
   },
     schema: Schema<DeepPartial<LectureEntity>>
 ): Promise<Array<LectureEntity>> => {
     try {
+        const { params } = input
         const { sectionId } = params
+
         const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
@@ -117,14 +125,14 @@ export const findManyLectures = async (
 }
 
 export const findOneLecture = async (
-    params: {
+    input: {
     lectureId: string;
   },
     schema: Schema<DeepPartial<LectureEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<LectureEntity | ErrorResponse> => {
     try {
-        const { lectureId } = params
+        const { lectureId } = input
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
@@ -157,21 +165,21 @@ export const findOneLecture = async (
             error.statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await findOneLecture(params, schema, AuthTokenType.Refresh)
+            return await findOneLecture(input, schema, AuthTokenType.Refresh)
 
         return error
     }
 }
 
 export const findManyResources = async (
-    params: {
+    input: {
     lectureId: string;
   },
     schema: Schema<DeepPartial<ResourceEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<Array<ResourceEntity>> => {
     try {
-        const { lectureId } = params
+        const { lectureId } = input
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
@@ -205,21 +213,21 @@ export const findManyResources = async (
             error.statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await findManyResources(params, schema, AuthTokenType.Refresh)
+            return await findManyResources(input, schema, AuthTokenType.Refresh)
 
         throw error
     }
 }
 
 export const findManyCourseTargets = async (
-    params: {
+    input: {
     courseId: string;
   },
     schema: Schema<DeepPartial<CourseTargetEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<Array<CourseTargetEntity>> => {
     try {
-        const { courseId } = params
+        const { courseId } = input
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
@@ -253,7 +261,7 @@ export const findManyCourseTargets = async (
             error.statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
-            return await findManyCourseTargets(params, schema, AuthTokenType.Refresh)
+            return await findManyCourseTargets(input, schema, AuthTokenType.Refresh)
 
         throw error
     }
