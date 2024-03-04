@@ -9,13 +9,16 @@ import {
 import { CourseEntity, ErrorResponse } from "@common"
 import useSWR, { SWRConfig, SWRResponse } from "swr"
 import {
-    ManageCoursesPanelAction,
-    ManageCoursesPanelState,
-    useManageCoursesPanelReducer,
-} from "./useManageCoursesPanelReducer"
+    CoursesManagementPanelAction,
+    CoursesManagementPanelState,
+    useCoursesManagementPanelReducer,
+} from "./useCoursesManagementPanelReducer"
 
-export interface ManageCoursesPanelContextValue {
-  reducer: [ManageCoursesPanelState, React.Dispatch<ManageCoursesPanelAction>];
+export interface CoursesManagementPanelContextValue {
+  reducer: [
+    CoursesManagementPanelState,
+    React.Dispatch<CoursesManagementPanelAction>
+  ];
   swrs: {
     selfCreatedCoursesSwr: SWRResponse<Array<CourseEntity>, ErrorResponse>;
     selfCreatedCoursesMetadataSwr: SWRResponse<
@@ -27,15 +30,15 @@ export interface ManageCoursesPanelContextValue {
 
 export const ROWS_PER_PAGE = 5
 
-export const ManageCoursesPanelContext =
-  createContext<ManageCoursesPanelContextValue | null>(null)
+export const CoursesManagementPanelContext =
+  createContext<CoursesManagementPanelContextValue | null>(null)
 
-const WrappedManageCoursesPanelProviders = ({
+const WrappedcoursesManagementPanelProviders = ({
     children,
 }: {
   children: ReactNode;
 }) => {
-    const reducer = useManageCoursesPanelReducer()
+    const reducer = useCoursesManagementPanelReducer()
 
     const fetchSelfCreatedCourses = useCallback(
         async ([key]: [number, string]) => {
@@ -80,7 +83,7 @@ const WrappedManageCoursesPanelProviders = ({
         fetchSelfCreatedCoursesMetadata
     )
 
-    const manageCoursesPanelContextValue: ManageCoursesPanelContextValue =
+    const manageCoursesPanelContextValue: CoursesManagementPanelContextValue =
     useMemo(
         () => ({
             reducer,
@@ -93,20 +96,22 @@ const WrappedManageCoursesPanelProviders = ({
     )
 
     return (
-        <ManageCoursesPanelContext.Provider value={manageCoursesPanelContextValue}>
+        <CoursesManagementPanelContext.Provider
+            value={manageCoursesPanelContextValue}
+        >
             {children}
-        </ManageCoursesPanelContext.Provider>
+        </CoursesManagementPanelContext.Provider>
     )
 }
 
-export const ManageCoursesPanelProviders = ({
+export const CoursesManagementPanelProviders = ({
     children,
 }: {
   children: ReactNode;
 }) => (
     <SWRConfig value={{ provider: () => new Map() }}>
-        <WrappedManageCoursesPanelProviders>
+        <WrappedcoursesManagementPanelProviders>
             {children}
-        </WrappedManageCoursesPanelProviders>
+        </WrappedcoursesManagementPanelProviders>
     </SWRConfig>
 )

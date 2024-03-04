@@ -1,6 +1,6 @@
 import { useReducer } from "react"
 
-export interface ManageCoursesPanelState {
+export interface coursesManagementPanelState {
     page: number
 }
 
@@ -9,15 +9,15 @@ export interface SetPageAction {
     payload: number
   }
 
-export type ManageCoursesPanelAction = SetPageAction;
+export type coursesManagementPanelAction = SetPageAction;
 
-export const state: ManageCoursesPanelState = {
+export const state: coursesManagementPanelState = {
     page: 1
 }
 
 export const reducer = (
-    state: ManageCoursesPanelState,
-    action: ManageCoursesPanelAction
+    state: coursesManagementPanelState,
+    action: coursesManagementPanelAction
 ) => {
     switch (action.type) {
     case "SET_PAGE":
@@ -27,6 +27,6 @@ export const reducer = (
     }
 }
 
-export const useManageCoursesPanelReducer = () => {
+export const usecoursesManagementPanelReducer = () => {
     return useReducer(reducer, state)
 }

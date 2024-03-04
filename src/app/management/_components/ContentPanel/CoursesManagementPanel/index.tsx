@@ -2,13 +2,13 @@ import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import React from "react"
 import { Actions } from "./Actions"
 import { CoursesTable } from "./CoursesTable"
-import { ManageCoursesPanelProviders } from "./ManageCoursesPanelProviders"
+import { CoursesManagementPanelProviders } from "./CoursesManagementPanelProviders"
 
-interface ManageCoursesPanelProps {
-    className?: string
+interface CoursesManagementPanelProps {
+  className?: string;
 }
 
-const WrappedManageCoursesPanel = (props: ManageCoursesPanelProps) => {
+const WrappedCoursesManagementPanel = (props: CoursesManagementPanelProps) => {
     const { className } = props
     return (
         <Card className={`${className ?? ""} border border-divider`} shadow="none">
@@ -20,18 +20,17 @@ const WrappedManageCoursesPanel = (props: ManageCoursesPanelProps) => {
             </CardHeader>
             <CardBody className="p-6">
                 <div className="border rounded-large border-divider">
-                    <CoursesTable/>
+                    <CoursesTable />
                 </div>
-
             </CardBody>
         </Card>
     )
 }
 
-export const ManageCoursesPanel = (props: ManageCoursesPanelProps) => {
+export const CoursesManagementPanel = (props: CoursesManagementPanelProps) => {
     return (
-        <ManageCoursesPanelProviders>
-            <WrappedManageCoursesPanel {...props} />
-        </ManageCoursesPanelProviders>
+        <CoursesManagementPanelProviders>
+            <WrappedCoursesManagementPanel {...props} />
+        </CoursesManagementPanelProviders>
     )
 }

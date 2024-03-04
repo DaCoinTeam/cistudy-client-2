@@ -10,14 +10,14 @@ import {
     Pagination,
     Spinner,
 } from "@nextui-org/react"
-import { ManageCoursesPanelContext, ROWS_PER_PAGE } from "../ManageCoursesPanelProviders"
+import { CoursesManagementPanelContext, ROWS_PER_PAGE } from "../CoursesManagementPanelProviders"
 import { getAssetUrl } from "@services"
 import { useRouter } from "next/navigation"
 import { VideoThumbnail } from "../../../../../_shared"
 
 export const CoursesTable = () => {
     const router = useRouter()
-    const { reducer, swrs } = useContext(ManageCoursesPanelContext)!
+    const { reducer, swrs } = useContext(CoursesManagementPanelContext)!
     const [state, dispatch] = reducer
     const { page } = state
     const { selfCreatedCoursesSwr, selfCreatedCoursesMetadataSwr } = swrs
