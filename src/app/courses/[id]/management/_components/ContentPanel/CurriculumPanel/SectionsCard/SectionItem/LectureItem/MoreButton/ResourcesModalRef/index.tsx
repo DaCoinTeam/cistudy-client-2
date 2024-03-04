@@ -88,7 +88,7 @@ const WrappedResourcesModalRef = () => {
     return (
         <ResourceModalContext.Provider value={resourceModalContextValue}>
             <ModalContent>
-                <ModalHeader className="p-4 pb-2 text-xl font-bold leading-none">
+                <ModalHeader className="p-4 pb-2 text-xl font-bold ">
           Resources
                 </ModalHeader>
                 <ModalBody className="p-4 pb-0 gap-4">

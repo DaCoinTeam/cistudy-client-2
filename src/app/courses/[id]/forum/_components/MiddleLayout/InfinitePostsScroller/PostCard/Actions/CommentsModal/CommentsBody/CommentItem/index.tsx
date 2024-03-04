@@ -19,7 +19,7 @@ export const CommentItem = (props: CommentItemProps) => {
         <div className="flex gap-4">
             <Avatar src={getAssetUrl(avatarId)} />
             <div className="p-3 rounded-large bg-content2 flex-1">
-                <div className="font-semibold leading-none"> {username} </div>
+                <div className="font-semibold "> {username} </div>
                 <Spacer y={3} />
                 <TextRenderer html={html} />
                 {postCommentMedias.length ? <>

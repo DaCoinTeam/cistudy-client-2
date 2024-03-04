@@ -54,7 +54,7 @@ export const WrappedCreatePostModal = () => {
                 }}
             >
                 <ModalContent>
-                    <ModalHeader className="p-4 pb-2 text-xl font-bold leading-none"> Create Post</ModalHeader>
+                    <ModalHeader className="p-4 pb-2 text-xl font-bold "> Create Post</ModalHeader>
                     <ModalBody className="p-4 gap-4">
                         <Input
                             label="Title"

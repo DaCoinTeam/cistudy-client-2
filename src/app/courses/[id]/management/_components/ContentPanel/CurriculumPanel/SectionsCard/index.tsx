@@ -52,7 +52,7 @@ export const SectionsCard = () => {
     return (
         <Card shadow="none">
             <CardHeader className="p-4 pb-2">
-                <div className="text-xl font-bold leading-none">Sections</div>
+                <div className="text-xl font-bold ">Sections</div>
             </CardHeader>
             <CardBody className="p-4 gap-4">
                 {renderSections()}

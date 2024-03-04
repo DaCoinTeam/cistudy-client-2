@@ -3,10 +3,10 @@ import React, { useContext } from "react"
 import { VideoPlayer } from "../../../../_shared"
 import { LectureDetailsContext } from "../../_hooks"
 import { getAssetManifestUrl, getAssetUrl } from "@services"
-import { Button, Spacer, User } from "@nextui-org/react"
-import { UserPlus2Icon } from "lucide-react"
+import { Spacer, User } from "@nextui-org/react"
 import { MoreButton } from "./MoreButton"
 import { parseDateStringFrom } from "@common"
+import { ToggleFollowButton } from "./ToggleFollowButton"
 
 interface VideoSectionProps {
   className?: string;
@@ -45,13 +45,7 @@ export const VideoSection = (props: VideoSectionProps) => {
                             src: getAssetUrl(avatarId),
                         }}
                     />
-                    <Button
-                        color="primary"
-                        className="text-secondary-foreground"
-                        startContent={<UserPlus2Icon size={20} strokeWidth={3 / 2} />}
-                    >
-            Follow
-                    </Button>
+                    <ToggleFollowButton />
                 </div>
                 <MoreButton />
             </div>

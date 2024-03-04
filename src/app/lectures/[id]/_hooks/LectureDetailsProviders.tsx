@@ -3,6 +3,7 @@ import React, {
     ReactNode,
     createContext,
     useCallback,
+    useContext,
     useMemo,
 } from "react"
 
@@ -10,10 +11,11 @@ import { findOneLecture } from "@services"
 import { useParams } from "next/navigation"
 import { ErrorResponse, LectureEntity } from "@common"
 import useSWR, { SWRResponse } from "swr"
+import { RootContext } from "../../../_hooks"
 
 export interface LectureDetailsContextValue {
   swrs: {
-    lecturesSwr: SWRResponse<LectureEntity, ErrorResponse>;
+    lecturesSwr: SWRResponse<LectureEntity | undefined, ErrorResponse>;
   };
 }
 
@@ -28,12 +30,22 @@ export const LectureDetailsProviders = ({
     const params = useParams()
     const lectureId = params.id as string
 
+    const { swrs: rootSwrs } = useContext(RootContext)!
+    const { profileSwr } = rootSwrs
+    const { data: profile } = profileSwr
+
     const fetchLecture = useCallback(async () => {
+        if (!profile) return
+        const { userId } = profile
+
         return await findOneLecture(
             {
                 params: {
                     lectureId,
-                }
+                },
+                options: {
+                    followerId: userId,
+                },
             },
             {
                 lectureId: true,
@@ -53,21 +65,23 @@ export const LectureDetailsProviders = ({
                         creator: {
                             avatarId: true,
                             username: true,
-                            numberOfFollowers: true
-                        }
-                    }
-                }
+                            numberOfFollowers: true,
+                            userId: true,
+                            followed: true,
+                        },
+                    },
+                },
             }
         )
-    }, [])
+    }, [profile?.userId])
 
-    const lecturesSwr = useSWR(["LECTURE"], fetchLecture)
+    const lecturesSwr = useSWR(profile?.userId ? ["LECTURE"] : null, fetchLecture)
 
     const lectureDetailsContextValue: LectureDetailsContextValue = useMemo(
         () => ({
             swrs: {
-                lecturesSwr
-            }
+                lecturesSwr,
+            },
         }),
         [lecturesSwr]
     )

@@ -30,7 +30,7 @@ export const CourseCard = (props: CourseCardProps) => {
                 />
             </CardHeader>
             <CardBody className="p-3 pb-0">
-                <div className="leading-none">{title}</div>
+                <div className="">{title}</div>
                 <Spacer y={3}/>
                 <Divider />
             </CardBody>

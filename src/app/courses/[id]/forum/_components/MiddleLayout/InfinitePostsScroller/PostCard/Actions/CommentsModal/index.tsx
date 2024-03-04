@@ -24,7 +24,7 @@ export const CommentsModal = () => {
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
                 <CommentsModalProviders>
                     <ModalContent>
-                        <ModalHeader className="p-4 pb-2 text-xl leading-none font-bold">
+                        <ModalHeader className="p-4 pb-2 text-xl  font-bold">
               Comments
                         </ModalHeader>
                         <ModalBody className="p-4 overflow-auto">

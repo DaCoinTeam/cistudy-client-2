@@ -128,13 +128,16 @@ export const findOneLecture = async (
     input: {
         params: {
             lectureId: string;
-        }
+        },
+        options?: Partial<{
+            followerId: string
+        }>
   },
     schema: Schema<DeepPartial<LectureEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<LectureEntity> => {
     try {
-        const { params } = input
+        const { params, options } = input
         const { lectureId } = params
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
@@ -149,7 +152,8 @@ export const findOneLecture = async (
                 data: {
                     params: {
                         lectureId,
-                    }
+                    },
+                    options
                 },
             },
         })
