@@ -14,4 +14,4 @@ export const parseDuration = (seconds: number) => {
 
 export const calculateTimeAgo = (date: Date) => dayjs().from(date)
 
-export const parseDateStringFrom = (date?: Date) => dayjs(date).format("h:mm:ss A, D MMM YYYY")
+export const parseDateStringFrom = (date?: Date) => date ? dayjs(date).format("h:mm:ss A, D MMM YYYY") : null
