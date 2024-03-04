@@ -61,8 +61,8 @@ export const findManyCourses = async (
         const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
-            query FindManyCourses() {
-    findManyCourses {
+          query FindManyCourses {
+  findManyCourses {
       ${payload}
     }
   }
