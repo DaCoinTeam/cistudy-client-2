@@ -1,19 +1,17 @@
 "use client"
 import React, { useContext } from "react"
 import { CourseDetailsContext } from "./_hooks"
-// import { getAssetUrl } from "@services"
 import {CourseBanner, CourseMain, CourseSideBar} from "./_components"
-// const CourseData = {
-
-// }
+import { Image } from "@nextui-org/react"
+import { getAssetUrl } from "@services"
 
 const Page = () => {
-    const { state } = useContext(CourseDetailsContext)!
-    const { course } = state
+    const { swrs } = useContext(CourseDetailsContext)!
+    const { courseSwr } = swrs
+    const { data: course } = courseSwr
     return (
         <div className="relative h-fit pb-12">
-            {/* {JSON.stringify(course)}
-            <img src={getAssetUrl(course?.previewVideoId)} /> */}
+            <Image alt="preivewVideo" src={getAssetUrl(course?.previewVideoId)} />
             <div >
                 <div className="mb-5">
                     <CourseBanner/>
