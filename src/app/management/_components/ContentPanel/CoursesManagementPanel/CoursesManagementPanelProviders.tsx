@@ -2,11 +2,10 @@
 import React, { ReactNode, createContext, useCallback, useMemo } from "react"
 
 import {
-    FindManySelfCreatedCoursesMetadataOutput,
+    FindManySelfCreatedCoursesOutputData,
     findManySelfCreatedCourses,
-    findManySelfCreatedCoursesMetadata,
 } from "@services"
-import { CourseEntity, ErrorResponse } from "@common"
+import { ErrorResponse } from "@common"
 import useSWR, { SWRConfig, SWRResponse } from "swr"
 import {
     CoursesManagementPanelAction,
@@ -20,11 +19,7 @@ export interface CoursesManagementPanelContextValue {
     React.Dispatch<CoursesManagementPanelAction>
   ];
   swrs: {
-    selfCreatedCoursesSwr: SWRResponse<Array<CourseEntity>, ErrorResponse>;
-    selfCreatedCoursesMetadataSwr: SWRResponse<
-      FindManySelfCreatedCoursesMetadataOutput,
-      ErrorResponse
-    >;
+    selfCreatedCoursesSwr: SWRResponse<FindManySelfCreatedCoursesOutputData, ErrorResponse>;
   };
 }
 
@@ -50,11 +45,16 @@ const WrappedcoursesManagementPanelProviders = ({
                     },
                 },
                 {
-                    courseId: true,
-                    thumbnailId: true,
-                    previewVideoId: true,
-                    title: true,
-                    description: true,
+                    results: {
+                        courseId: true,
+                        thumbnailId: true,
+                        previewVideoId: true,
+                        title: true,
+                        description: true,
+                    },
+                    metadata: {
+                        count: true
+                    }   
                 }
             )
         },
@@ -72,24 +72,12 @@ const WrappedcoursesManagementPanelProviders = ({
         }
     )
 
-    const fetchSelfCreatedCoursesMetadata = useCallback(async () => {
-        return await findManySelfCreatedCoursesMetadata({
-            numberOfCourses: true,
-        })
-    }, [])
-
-    const selfCreatedCoursesMetadataSwr = useSWR(
-        ["SELF_CREATED_COURSES_METADATA"],
-        fetchSelfCreatedCoursesMetadata
-    )
-
     const manageCoursesPanelContextValue: CoursesManagementPanelContextValue =
     useMemo(
         () => ({
             reducer,
             swrs: {
                 selfCreatedCoursesSwr,
-                selfCreatedCoursesMetadataSwr,
             },
         }),
         [reducer, selfCreatedCoursesSwr]

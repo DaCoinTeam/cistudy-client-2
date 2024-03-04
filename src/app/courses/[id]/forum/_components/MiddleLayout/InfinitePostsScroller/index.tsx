@@ -8,24 +8,37 @@ import {
     InfinitePostsScrollerContext,
     InfinitePostsScrollerProviders,
 } from "./InfinitePostsScrollerProviders"
-import { concatArrays } from "@common"
+import { PostEntity } from "@common"
 
 const WrappedInfinitePostsScroller = () => {
     const { swrs } = useContext(InfinitePostsScrollerContext)!
-    const { postsSwr, postsMetadataSwr } = swrs
+    const { postsSwr } = swrs
     const { data, size, setSize, isValidating } = postsSwr
-    const { data: postsMetadataSwrData } = postsMetadataSwr
 
     const onLoadMore = () => {
         setSize(size + 1)
     }
 
     // play anim
-    if (!postsMetadataSwrData) return null
+    if (!data) return null
 
-    const posts = concatArrays(data)
-    const { numberOfPosts } = postsMetadataSwrData
-    const numberOfPages = Math.ceil(numberOfPosts / COLUMNS_PER_PAGE)
+    const getPosts = () => {
+        if (!data) return []
+        const postsReturn: Array<PostEntity> = []
+        data.forEach((element) => {
+            if (!element) return
+            const { results } = element
+            postsReturn.push(...results)
+        })
+        return postsReturn
+    }
+
+    const getPages = () => {
+        if (!data) return 0
+        const last = data.at(-1)
+        if (!last) return 0
+        return Math.ceil(last.metadata.count / COLUMNS_PER_PAGE)
+    }
 
     return (
         <InfiniteScroll
@@ -33,12 +46,12 @@ const WrappedInfinitePostsScroller = () => {
             pageStart={0}
             initialLoad={false}
             loadMore={onLoadMore}
-            hasMore={size < numberOfPages && !isValidating}
+            hasMore={size < getPages() && !isValidating}
             loader={<CircularProgress key={0} aria-label="Loading..." />}
         >
-            {posts.map((post) => (
+            {getPosts().map((post) => (
                 <PostCard key={post.postId} post={post} />
-            ))} 
+            ))}
         </InfiniteScroll>
     )
 }

@@ -18,13 +18,20 @@ export interface FindManySelfCreatedCoursesInputOptions {
   take: number;
 }
 
+export interface FindManySelfCreatedCoursesOutputData {
+  results: Array<CourseEntity>;
+  metadata: {
+    count: number;
+  };
+}
+
 export const findManySelfCreatedCourses = async (
     params: {
     options?: Partial<FindManySelfCreatedCoursesInputOptions>;
   },
-    schema: Schema<DeepPartial<CourseEntity>>,
+    schema: Schema<DeepPartial<FindManySelfCreatedCoursesOutputData>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<Array<CourseEntity>> => {
+): Promise<FindManySelfCreatedCoursesOutputData> => {
     try {
         const { options } = params
         const payload = buildAuthPayloadString(schema, authTokenType)
@@ -43,9 +50,7 @@ export const findManySelfCreatedCourses = async (
             },
         })
         const { data, tokens } =
-      graphqlData.findManySelfCreatedCourses as BaseResponse<
-        Array<CourseEntity>
-      >
+      graphqlData.findManySelfCreatedCourses as BaseResponse<FindManySelfCreatedCoursesOutputData>
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -63,50 +68,6 @@ export const findManySelfCreatedCourses = async (
         )
             return await findManySelfCreatedCourses(
                 params,
-                schema,
-                AuthTokenType.Refresh
-            )
-        throw error
-    }
-}
-
-export interface FindManySelfCreatedCoursesMetadataOutput {
-  numberOfCourses: number;
-}
-
-export const findManySelfCreatedCoursesMetadata = async (
-    schema: Schema<DeepPartial<FindManySelfCreatedCoursesMetadataOutput>>,
-    authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<FindManySelfCreatedCoursesMetadataOutput> => {
-    try {
-        const payload = buildAuthPayloadString(schema, authTokenType)
-        const { data: graphqlData } = await client(authTokenType).query({
-            query: gql`
-            query FindManySelfCreatedCoursesMetadata {
-                findManySelfCreatedCoursesMetadata {
-        ${payload}
-    }
-  }
-            `,
-        })
-        const { data, tokens } =
-      graphqlData.findManySelfCreatedCoursesMetadata as BaseResponse<FindManySelfCreatedCoursesMetadataOutput>
-
-        if (authTokenType === AuthTokenType.Refresh)
-            saveTokens(tokens as AuthTokens)
-
-        return data
-    } catch (ex) {
-        const _ex = ex as ApolloError
-        const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
-        ).originalError
-
-        if (
-            error.statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
-        )
-            return await findManySelfCreatedCoursesMetadata(
                 schema,
                 AuthTokenType.Refresh
             )

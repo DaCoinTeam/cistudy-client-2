@@ -8,21 +8,16 @@ import React, {
 } from "react"
 import { CourseDetailsContext } from "../../../../_hooks"
 import {
-    FindManyPostsMetadataOutputData,
+    FindManyPostsOutputData,
     findManyPosts,
-    findManyPostsMetadata,
 } from "@services"
-import { ErrorResponse, PostEntity } from "@common"
+import { ErrorResponse } from "@common"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
-import useSWR, { SWRConfig, SWRResponse } from "swr"
+import { SWRConfig } from "swr"
 
 export interface InfinitePostsScrollerContextValue {
   swrs: {
-    postsSwr: SWRInfiniteResponse<Array<PostEntity> | undefined, ErrorResponse>;
-    postsMetadataSwr: SWRResponse<
-      FindManyPostsMetadataOutputData,
-      ErrorResponse
-    >;
+    postsSwr: SWRInfiniteResponse<FindManyPostsOutputData | undefined, ErrorResponse>;
   };
 }
 
@@ -54,33 +49,32 @@ const WrappedInfinitePostsScrollerProviders = ({
                     },
                 },
                 {
-                    postId: true,
-                    title: true,
-                    html: true,
-                    postMedias: {
-                        mediaId: true,
-                        postMediaId: true,
-                        mediaType: true,
+                    results: {
+                        postId: true,
+                        title: true,
+                        html: true,
+                        postMedias: {
+                            mediaId: true,
+                            postMediaId: true,
+                            mediaType: true,
+                        },
+                        numberOfLikes: true,
+                        numberOfComments: true,
+                        creator: {
+                            avatarId: true,
+                            username: true,
+                        },
+                        updatedAt: true,
+                        liked: true,
                     },
-                    numberOfLikes: true,
-                    numberOfComments: true,
-                    creator: {
-                        avatarId: true,
-                        username: true,
-                    },
-                    updatedAt: true,
-                    liked: true,
+                    metadata: {
+                        count: true
+                    }          
                 }
             )
         },
         [course?.courseId]
     )
-
-    const fetchPostsMetadata = useCallback(async () => {
-        return await findManyPostsMetadata({
-            numberOfPosts: true,
-        })
-    }, [])
 
     const postsSwr = useSWRInfinite(
         (key) => (course?.courseId ? [key, "POSTS"] : null),
@@ -90,20 +84,14 @@ const WrappedInfinitePostsScrollerProviders = ({
         }
     )
 
-    const postsMetadataSwr = useSWR(
-        course?.courseId ? ["POSTS_METADATA"] : null,
-        fetchPostsMetadata
-    )
-
     const infinitePostsScrollerContextValue: InfinitePostsScrollerContextValue =
     useMemo(
         () => ({
             swrs: {
                 postsSwr,
-                postsMetadataSwr,
             },
         }),
-        [postsSwr, postsMetadataSwr]
+        [postsSwr]
     )
 
     return (
