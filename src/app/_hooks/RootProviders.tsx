@@ -1,51 +1,49 @@
 "use client"
 import { ReactNode, createContext, useCallback, useEffect } from "react"
 import React from "react"
-import { useDispatch } from "react-redux"
-import { AppDispatch, setProfile } from "@redux"
-import { generateClientId, isErrorResponse } from "@common"
+import { ErrorResponse, UserEntity, generateClientId } from "@common"
 import { init } from "@services"
+import useSWR, { SWRResponse } from "swr"
 
 interface RootContextValue {
-    functions: {
-        fetchAndSetProfile: () => Promise<void>
-    }
+  swrs: {
+    profileSwr: SWRResponse<UserEntity | null, ErrorResponse>;
+  };
 }
 
 export const RootContext = createContext<RootContextValue | null>(null)
 
 export const RootProviders = (props: { children: ReactNode }) => {
-    const dispath: AppDispatch = useDispatch()
-
-    const fetchAndSetProfile = useCallback(async () => {
-        const response = await init(
-            {   
+    const fetchProfile = useCallback(async () => {
+        try {
+            return await init({
                 userId: true,
+                username: true,
                 email: true,
                 avatarId: true,
-                coverPhotoId: true
-            }
-        )
-        if (!isErrorResponse(response)) {
-            dispath(setProfile(response))
-        } else {
-            console.log(response)
+                coverPhotoId: true,
+            })
+        } catch (ex) {
+            console.log(ex)
+            return null
         }
     }, [])
+
+    const profileSwr = useSWR(["PROFILE"], fetchProfile)
 
     useEffect(() => {
         generateClientId()
-        const handleEffect = async () => {
-            await fetchAndSetProfile()
-        }
-        handleEffect()
     }, [])
 
-    return <RootContext.Provider value={{
-        functions: {
-            fetchAndSetProfile
-        }
-    }}>
-        {props.children}
-    </RootContext.Provider>
+    return (
+        <RootContext.Provider
+            value={{
+                swrs: {
+                    profileSwr,
+                },
+            }}
+        >
+            {props.children}
+        </RootContext.Provider>
+    )
 }

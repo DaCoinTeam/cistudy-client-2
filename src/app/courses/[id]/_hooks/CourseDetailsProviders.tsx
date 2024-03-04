@@ -3,42 +3,33 @@ import React, {
     ReactNode,
     createContext,
     useCallback,
-    useEffect,
     useMemo,
 } from "react"
 
-import {
-    CourseDetailsAction,
-    CourseDetailsState,
-    useCourseDetailsReducer,
-} from "./useCourseDetailsReducer"
 import { findOneCourse } from "@services"
 import { useParams } from "next/navigation"
-import { isErrorResponse } from "@common"
+import useSWR, { SWRConfig, SWRResponse } from "swr"
+import { CourseEntity, ErrorResponse } from "@common"
 
 export interface CourseDetailsContextValue {
-  state: CourseDetailsState;
-  dispatch: React.Dispatch<CourseDetailsAction>;
-  functions: {
-    fetchAndSetCourse: () => Promise<void>;
+  swrs: {
+    courseSwr:  SWRResponse<CourseEntity, ErrorResponse>;
   };
 }
 
 export const CourseDetailsContext =
   createContext<CourseDetailsContextValue | null>(null)
 
-export const CourseDetailsProviders = ({
+export const WrappedCourseDetailsProviders = ({
     children,
 }: {
   children: ReactNode;
 }) => {
-    const [state, dispatch] = useCourseDetailsReducer()
-
     const params = useParams()
     const courseId = params.id as string
 
-    const fetchAndSetCourse = useCallback(async () => {
-        const response = await findOneCourse(
+    const fetchCourse = useCallback(async () => {
+        return await findOneCourse(
             {
                 courseId,
             },
@@ -51,7 +42,7 @@ export const CourseDetailsProviders = ({
                 courseTargets: {
                     courseTargetId: true,
                     content: true,
-                    position: true
+                    position: true,
                 },
                 sections: {
                     sectionId: true,
@@ -61,40 +52,22 @@ export const CourseDetailsProviders = ({
                         thumbnailId: true,
                         lectureVideoId: true,
                         title: true,
-                    }
-                }
+                    },
+                },
             }
         )
-        if (!isErrorResponse(response)) {
-            dispatch({
-                type: "SET_COURSE",
-                payload: response,
-            })
-            dispatch({
-                type: "SET_FINISH_FETCH",
-                payload: true,
-            })
-        } else {
-            console.log(response)
-        }
     }, [])
 
-    useEffect(() => {
-        const handleEffect = async () => {
-            await fetchAndSetCourse()
-        }
-        handleEffect()
-    }, [])
+    const courseSwr = useSWR(["COURSE"], fetchCourse)
+
 
     const courseDetailsContextValue: CourseDetailsContextValue = useMemo(
         () => ({
-            state,
-            dispatch,
-            functions: {
-                fetchAndSetCourse,
-            },
+            swrs: {
+                courseSwr
+            }
         }),
-        [state, dispatch]
+        [courseSwr]
     )
 
     return (
@@ -103,3 +76,15 @@ export const CourseDetailsProviders = ({
         </CourseDetailsContext.Provider>
     )
 }
+
+export const CourseDetailsProviders = ({
+    children,
+}: {
+  children: ReactNode;
+}) => (
+    <SWRConfig value={{ provider: () => new Map() }}>
+        <WrappedCourseDetailsProviders>
+            {children}
+        </WrappedCourseDetailsProviders>
+    </SWRConfig>
+)

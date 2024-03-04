@@ -11,18 +11,21 @@ import {
 import { PencilIcon } from "@heroicons/react/16/solid"
 import { AuthModal } from "./AuthModal"
 import { NavbarContext, NavbarProviders } from "./NavbarProviders"
-import { useSelector } from "react-redux"
-import { RootState } from "@redux"
 import { ProfileMenu } from "./ProfileMenu"
+import { RootContext } from "../../_hooks"
 
 interface NavbarProps {
   className?: string;
 }
 
 const WrappedNavbar = (props: NavbarProps) => {
+    const { className } = props 
+
     const { dispatch } = useContext(NavbarContext)!
 
-    const profile = useSelector((state: RootState) => state.auth.profile)
+    const { swrs } = useContext(RootContext)!
+    const { profileSwr } = swrs
+    const { data: profile } = profileSwr
 
     const onSignInPress = () => {
         dispatch({
@@ -47,7 +50,9 @@ const WrappedNavbar = (props: NavbarProps) => {
 
     return (
         <>
-            <NextUINavbar isBordered shouldHideOnScroll className={props.className}>
+            <NextUINavbar className={className} classNames={{
+                wrapper: "!max-w-full px-6 !bg-content1"
+            }}>
                 <NavbarBrand>
                     <PencilIcon className="w-6 h-6" />
                     <p className="font-bold text-inherit">ACME</p>
@@ -95,7 +100,6 @@ const WrappedNavbar = (props: NavbarProps) => {
 
 export const Navbar = (props: NavbarProps) => (
     <NavbarProviders>
-        {" "}
         <WrappedNavbar {...props} />{" "}
     </NavbarProviders>
 )

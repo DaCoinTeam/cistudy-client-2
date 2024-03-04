@@ -1,7 +1,6 @@
 import {
     ExtensionsWithOriginalError,
     PostEntity,
-    ErrorResponse,
     Schema,
     PostCommentEntity,
     BaseResponse,
@@ -15,25 +14,25 @@ import { client } from "./client.graphql"
 import { ApolloError, gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 
-export type FindManyPostOptions = Partial<{
-    skip: number;
-    take: number;
-}>;
+export interface FindManyPostsOptions {
+  skip: number;
+  take: number;
+}
 
 export const findManyPosts = async (
     params: {
-        courseId: string;
-        options?: FindManyPostOptions;
-    },
+    courseId: string;
+    options?: Partial<FindManyPostsOptions>;
+  },
     schema: Schema<DeepPartial<PostEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<Array<PostEntity> | ErrorResponse> => {
+): Promise<Array<PostEntity>> => {
     try {
         const { courseId, options } = params
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
-            query FindManyPosts($data: FindManyPostsData!) {
+            query FindManyPosts($data: FindManyPostsInputData!) {
   findManyPosts(data: $data) {
       ${payload}
   }
@@ -46,104 +45,10 @@ export const findManyPosts = async (
                 },
             },
         })
-        const { data, tokens } = graphqlData.findManyPosts as BaseResponse<Array<PostEntity>>
+        const { data, tokens } = graphqlData.findManyPosts as BaseResponse<
+      Array<PostEntity>
+    >
 
-        if (authTokenType === AuthTokenType.Refresh)
-            saveTokens(tokens as AuthTokens)
-
-        return data as Array<PostEntity>
-    } catch (ex) {
-        console.log(ex)
-        const _ex = ex as ApolloError
-        const error = (
-            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
-        ).originalError
-
-        if (
-            error.statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
-        )
-            return await findManyPosts(params, schema, AuthTokenType.Refresh)
-        return error
-    }
-}
-
-export const findOnePost = async (
-    params: {
-        postId: string;
-    },
-    schema: Schema<DeepPartial<PostEntity>>,
-    authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<PostEntity | ErrorResponse> => {
-    try {
-        const { postId } = params
-        const payload = buildAuthPayloadString(schema, authTokenType)
-        const { data: graphqlData } = await client(authTokenType).query({
-            query: gql`
-            query FindOnePost($data: FindOnePostData!) {
-    findOnePost(data: $data) {
-      ${payload}
-    }
-  }
-          `,
-            variables: {
-                data: {
-                    postId,
-                },
-            },
-        })
-
-        const { data, tokens } = graphqlData.findOnePost as BaseResponse<
-            PostEntity
-        >
-        if (authTokenType === AuthTokenType.Refresh)
-            saveTokens(tokens as AuthTokens)
-
-        return data as PostEntity
-    } catch (ex) {
-        const _ex = ex as ApolloError
-        const error = (
-            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
-        ).originalError
-
-        if (
-            error.statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
-        )
-            return await findOnePost(params, schema, AuthTokenType.Refresh)
-
-        return error
-    }
-}
-
-export const findOnePostComment = async (
-    params: {
-        postCommentId: string;
-    },
-    schema: Schema<DeepPartial<PostCommentEntity>>,
-    authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<PostCommentEntity | ErrorResponse> => {
-    try {
-        const { postCommentId } = params
-        const payload = buildAuthPayloadString(schema, authTokenType)
-        const { data: graphqlData } = await client(authTokenType).query({
-            query: gql`
-          query FindOnePostComment($data: FindOnePostCommentData!) {
-  findOnePostComment(data: $data) {
-    ${payload}
-  }
-}
-        `,
-            variables: {
-                data: {
-                    postCommentId,
-                },
-            },
-        })
-
-        const { data, tokens } = graphqlData.findOnePostComment as BaseResponse<
-            PostCommentEntity
-        >
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
 
@@ -151,33 +56,80 @@ export const findOnePostComment = async (
     } catch (ex) {
         const _ex = ex as ApolloError
         const error = (
-            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         if (
             error.statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
-            return await findOnePostComment(params, schema, AuthTokenType.Refresh)
-
-        return error
+            return await findManyPosts(params, schema, AuthTokenType.Refresh)
+        throw error
     }
+}
+
+export interface FindManyPostsMetadataOutputData {
+  numberOfPosts: number;
+}
+
+export const findManyPostsMetadata = async (
+    schema: Schema<DeepPartial<FindManyPostsMetadataOutputData>>,
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<FindManyPostsMetadataOutputData> => {
+    try {
+        const payload = buildAuthPayloadString(schema, authTokenType)
+        const { data: graphqlData } = await client(authTokenType).query({
+            query: gql`
+            query FindManyPostsMetadata {
+                findManyPostsMetadata {
+      ${payload}
+  }
+}
+          `,
+        })
+        const { data, tokens } =
+      graphqlData.findManyPostsMetadata as BaseResponse<FindManyPostsMetadataOutputData>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+
+        return data
+    } catch (ex) {
+        console.log(ex)
+        const _ex = ex as ApolloError
+        const error = (
+      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+        ).originalError
+
+        if (
+            error.statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await findManyPostsMetadata(schema, AuthTokenType.Refresh)
+        throw error
+    }
+}
+
+export interface FindManyPostCommentsOptions {
+  skip: number;
+  take: number;
 }
 
 export const findManyPostComments = async (
     params: {
-        postId: string;
-    },
+    postId: string;
+    options?: Partial<FindManyPostCommentsOptions>;
+  },
     schema: Schema<DeepPartial<PostCommentEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<Array<PostCommentEntity> | ErrorResponse> => {
+): Promise<Array<PostCommentEntity>> => {
     try {
-        const { postId } = params
+        const { postId, options  } = params
         const payload = buildAuthPayloadString(schema, authTokenType)
-        console.log(payload)
+
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
-            query FindManyPostComments($data: FindManyPostCommentsData!) {
+            query FindManyPostComments($data: FindManyPostCommentsInputData!) {
                 findManyPostComments(data: $data) {
     ${payload}
   }
@@ -186,10 +138,13 @@ export const findManyPostComments = async (
             variables: {
                 data: {
                     postId,
+                    options
                 },
             },
         })
-        const { data, tokens } = graphqlData.findManyPostComments as BaseResponse<Array<PostCommentEntity>>
+        const { data, tokens } = graphqlData.findManyPostComments as BaseResponse<
+      Array<PostCommentEntity>
+    >
 
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
@@ -198,15 +153,66 @@ export const findManyPostComments = async (
     } catch (ex) {
         const _ex = ex as ApolloError
         const error = (
-            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         if (
             error.statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await findManyPostComments(params, schema, AuthTokenType.Refresh)
 
-        return error
+        throw error
+    }
+}
+
+export interface FindManyPostCommentsMetadataOutputData {
+  numberOfPostComments: number;
+}
+
+export const findManyPostCommentsMetadata = async (
+    params: {
+        postId: string
+    },
+    schema: Schema<DeepPartial<FindManyPostCommentsMetadataOutputData>>,
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<FindManyPostCommentsMetadataOutputData> => {
+    try {
+        const { postId } = params
+
+        const payload = buildAuthPayloadString(schema, authTokenType)
+        const { data: graphqlData } = await client(authTokenType).query({
+            query: gql`
+            query FindManyPostCommentsMetadata($data: FindManyPostCommentsMetadataInputData!) {
+                findManyPostCommentsMetadata(data: $data) {              
+      ${payload}
+  }
+}
+          `,  variables: {
+                data: {
+                    postId,
+                },
+            },
+        })
+        const { data, tokens } =
+      graphqlData.findManyPostCommentsMetadata as BaseResponse<FindManyPostCommentsMetadataOutputData>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+
+        return data
+    } catch (ex) {
+        console.log(ex)
+        const _ex = ex as ApolloError
+        const error = (
+      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+        ).originalError
+
+        if (
+            error.statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await findManyPostCommentsMetadata(params, schema, AuthTokenType.Refresh)
+        throw error
     }
 }

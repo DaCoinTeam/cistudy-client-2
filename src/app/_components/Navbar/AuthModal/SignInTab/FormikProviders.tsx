@@ -1,11 +1,9 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
-import React, { ReactNode, createContext, } from "react"
+import React, { ReactNode, createContext, useContext, } from "react"
 import { signIn } from "@services"
-import { isErrorResponse } from "@common"
-import { AppDispatch, setProfile } from "@redux"
-import { useDispatch } from "react-redux"
 import * as Yup from "yup"
+import { RootContext } from "../../../../_hooks"
 
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
     null
@@ -31,7 +29,10 @@ const WrappedFormikProviders = ({ formik, children }: {
 )
 
 export const FormikProviders = ({ children }: { children: ReactNode }) => {
-    const dispatch: AppDispatch = useDispatch()
+    const { swrs } = useContext(RootContext)!
+    const { profileSwr } = swrs
+    const { mutate } = profileSwr
+
     return (
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({
@@ -50,11 +51,7 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
                 userId: true,
                 birthdate: true
             })
-            if (!isErrorResponse(response)) {
-                dispatch(setProfile(response))
-            } else {
-                console.log(response)
-            }
+            await mutate(response)
         }}
         >
             {(formik) => (

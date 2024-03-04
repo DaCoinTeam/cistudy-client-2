@@ -1,7 +1,6 @@
 import { Skeleton } from "@nextui-org/react"
 import React from "react"
 import { EditorContent, useEditor } from "@tiptap/react"
-import style from "./style.module.css"
 import CodeBlock from "@tiptap/extension-code-block"
 import Color from "@tiptap/extension-color"
 import ListItem from "@tiptap/extension-list-item"
@@ -10,6 +9,7 @@ import TextStyle from "@tiptap/extension-text-style"
 import StarterKit from "@tiptap/starter-kit"
 import ImageResize from "tiptap-extension-resize-image"
 import Code from "@tiptap/extension-code"
+import style from "./style.module.css"
 
 interface TextRendererProps {
   className?: string;
@@ -25,7 +25,7 @@ export const TextRenderer = (props: TextRendererProps) => {
         content: html,
         editorProps: {
             attributes: {
-                class: style.prose,
+                class: style.probe,
             }
         }
     })

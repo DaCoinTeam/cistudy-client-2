@@ -1,3 +1,4 @@
+"use client"
 import { AppendKey, Media } from "@common"
 import React, { createContext, memo, useContext, useMemo } from "react"
 import { v4 as uuidv4 } from "uuid"
@@ -35,19 +36,20 @@ const WrappedMediaUploader = () => {
                     content={<XMarkIcon />}
                     className="cursor-pointer"
                     classNames={{
-                        base: "aspect-video grid place-items-stretch"
+                        base: "grid place-items-stretch",
                     }}
                     isOneChar
                     onClick={() => deleteMedia(key)}
                     color="danger"
                 >
                     <Image
-                        className="w-full"
                         classNames={{
-                            wrapper: "!max-w-none grid place-items-stretch"
+                            wrapper:
+                "w-full !max-w-full aspect-video grid content-center overflow-hidden",
                         }}
-                        alt="media"
+                        alt="preview"
                         src={URL.createObjectURL(file)}
+                        className="w-full"
                     />
                 </Badge>
             ))}
@@ -77,7 +79,12 @@ const WrappedMediaUploader = () => {
         </>
     )
 
-    return  (<div className="grid grid-cols-4 gap-3"> {medias.length > 3 ? renderGreater3() : renderLessEqual3()} </div>)
+    return (
+        <div className="grid grid-cols-4 gap-3">
+            {" "}
+            {medias.length > 3 ? renderGreater3() : renderLessEqual3()}{" "}
+        </div>
+    )
 }
 
 export const MediaUploader = memo((props: MediaUploaderProps) => {

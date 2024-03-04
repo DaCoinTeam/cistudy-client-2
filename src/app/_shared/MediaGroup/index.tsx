@@ -35,7 +35,7 @@ export const MediaGroup = (props: MediaGroupProps) => {
     }
 
     const renderContent = () => {
-        if (!medias || !medias.length) return null
+        if (!medias?.length) return null
         return (
             <div className={className}>
                 <div className="gap-3 grid grid-cols-4">

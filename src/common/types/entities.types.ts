@@ -27,6 +27,11 @@ export enum MediaType {
   Video = "video",
 }
 
+export enum VideoType {
+  MP4 = "mp4",
+  DASH = "dash",
+}
+
 export interface UserEntity {
   userId: string;
   email: string;
@@ -39,6 +44,7 @@ export interface UserEntity {
   firstName?: string;
   lastName?: string;
   birthdate?: Date;
+  username: string
   verified: boolean;
   kind: UserKind;
   externalId?: string;
@@ -49,6 +55,9 @@ export interface UserEntity {
   enrolledInfos: Array<EnrolledInfoEntity>;
   posts: Array<PostEntity>;
   courses: Array<CourseEntity>;
+  //graphql
+  followed?: boolean
+  numberOfFollowers?: number
 }
 
 export interface PostEntity {
@@ -64,6 +73,10 @@ export interface PostEntity {
   postMedias: Array<PostMediaEntity>;
   postComments: Array<PostCommentEntity>;
   postReacts: Array<PostReactEntity>;
+  //graphql
+  numberOfLikes?: number;
+  numberOfComments?: number;
+  liked?: number;
 }
 
 export interface CourseEntity {
@@ -104,17 +117,19 @@ export interface EnrolledInfoEntity {
 }
 
 export interface LectureEntity {
-  lectureId: string;
-  title: string;
-  thumbnailId: string;
-  lectureVideoId: string;
-  sectionId: string;
-  processStatus: ProcessStatus;
-  createdAt: Date;
-  updatedAt: Date;
-  section: SectionEntity;
-  resources: Array<ResourceEntity>;
+  lectureId: string
+  title: string
+  thumbnailId?: string
+  lectureVideoId?: string
+  sectionId: string
+  processStatus: ProcessStatus
+  videoType: VideoType
+  createdAt: Date
+  updatedAt: Date
+  section: SectionEntity
+  resources: Array<ResourceEntity>
 }
+
 
 export interface PostCommentLikeEntity {
   postCommentLikeId: string;
@@ -138,6 +153,10 @@ export interface PostCommentEntity {
   postCommentMedias: Array<PostCommentMediaEntity>
   postCommentLikes: Array<PostCommentLikeEntity>
   childComments: Array<PostCommentEntity>
+
+  //graphql
+  numberOfLikes?: number;
+  liked?: number;
 }
 
 
@@ -181,19 +200,19 @@ export interface PostReactEntity {
 }
 
 export interface PostMediaEntity {
-      postMediaId: string
-      position: number
-      mediaId: string
-      postId: string
-      mediaType: MediaType
-      post: PostEntity
+  postMediaId: string
+  position: number
+  mediaId: string
+  postId: string
+  mediaType: MediaType
+  post: PostEntity
 }
 
 export interface PostCommentMediaEntity {
-postCommentMediaId: string
-    position: number
-    mediaId: string
-    postCommentId: string
-    mediaType: MediaType
-    postComment: PostCommentEntity
+  postCommentMediaId: string
+  position: number
+  mediaId: string
+  postCommentId: string
+  mediaType: MediaType
+  postComment: PostCommentEntity
 }

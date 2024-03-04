@@ -8,10 +8,45 @@ import {
     getClientId,
     saveTokens,
 } from "@common"
-import axios, { AxiosError } from "axios"
-import { endpointConfig } from "@config"
+import axios, { AxiosError, CanceledError } from "axios"
+import { ABORTED_MESSAGE, endpointConfig } from "@config"
 
 const BASE_URL = `${endpointConfig().api}/courses`
+
+export const createCourse = async (
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<{
+  courseId: string;
+}> => {
+    try {
+        const url = `${BASE_URL}/create-course`
+
+        const response = await axios.post(url, undefined, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } = response.data as BaseResponse<{
+      courseId: string;
+    }>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await createCourse(AuthTokenType.Refresh)
+        throw _ex
+    }
+}
 
 export const updateCourse = async (
     params: {
@@ -27,7 +62,7 @@ export const updateCourse = async (
     files?: Array<File>;
   },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data, files } = params
         const url = `${BASE_URL}/update-course`
@@ -57,13 +92,12 @@ export const updateCourse = async (
     } catch (ex) {
         const _ex = (ex as AxiosError).response?.data as ErrorResponse
         const { statusCode } = _ex
-        console.log(statusCode)
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         )
             return await updateCourse(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
@@ -75,7 +109,7 @@ export const createCourseTarget = async (
     };
   },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const url = `${BASE_URL}/create-course-target`
@@ -102,7 +136,7 @@ export const createCourseTarget = async (
       authTokenType === AuthTokenType.Access
         )
             return await createCourseTarget(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
@@ -112,11 +146,12 @@ export const updateCourseTarget = async (
       courseTargetId: string;
       content: string;
     };
+    signal?: AbortSignal;
   },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
-        const { data } = params
+        const { data, signal } = params
         const url = `${BASE_URL}/update-course-target`
 
         const response = await axios.put(url, data, {
@@ -124,6 +159,7 @@ export const updateCourseTarget = async (
                 Authorization: buildBearerTokenHeader(authTokenType),
                 "Client-Id": getClientId(),
             },
+            signal,
         })
 
         const { data: responseData, tokens } =
@@ -133,6 +169,7 @@ export const updateCourseTarget = async (
             saveTokens(tokens as AuthTokens)
         return responseData
     } catch (ex) {
+        if (ex instanceof CanceledError) return ABORTED_MESSAGE
         const _ex = (ex as AxiosError).response?.data as ErrorResponse
         const { statusCode } = _ex
         console.log(statusCode)
@@ -141,7 +178,7 @@ export const updateCourseTarget = async (
       authTokenType === AuthTokenType.Access
         )
             return await updateCourseTarget(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
@@ -152,7 +189,7 @@ export const deleteCourseTarget = async (
     };
   },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const { courseTargetId } = data
@@ -181,7 +218,7 @@ export const deleteCourseTarget = async (
       authTokenType === AuthTokenType.Access
         )
             return await deleteCourseTarget(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
@@ -193,7 +230,7 @@ export const createLecture = async (
     };
   },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const url = `${BASE_URL}/create-lecture`
@@ -220,7 +257,7 @@ export const createLecture = async (
       authTokenType === AuthTokenType.Access
         )
             return await createLecture(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
@@ -235,7 +272,7 @@ export const updateLecture = async (
     files?: Array<File>;
   },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data, files } = params
         const url = `${BASE_URL}/update-lecture`
@@ -271,7 +308,7 @@ export const updateLecture = async (
       authTokenType === AuthTokenType.Access
         )
             return await updateLecture(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
@@ -282,7 +319,7 @@ export const deleteLecture = async (
     };
   },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const { lectureId } = data
@@ -311,7 +348,7 @@ export const deleteLecture = async (
       authTokenType === AuthTokenType.Access
         )
             return await deleteLecture(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
@@ -323,7 +360,7 @@ export const createResources = async (
     files: Array<File>;
   },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data, files } = params
         const url = `${BASE_URL}/create-resources`
@@ -359,7 +396,7 @@ export const createResources = async (
       authTokenType === AuthTokenType.Access
         )
             return await createResources(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
     }
 }
 
@@ -371,7 +408,7 @@ export const createSection = async (
     };
   },
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
+): Promise<string> => {
     try {
         const { data } = params
         const url = `${BASE_URL}/create-section`
@@ -398,6 +435,125 @@ export const createSection = async (
       authTokenType === AuthTokenType.Access
         )
             return await createSection(params, AuthTokenType.Refresh)
-        return _ex
+        throw _ex
+    }
+}
+
+export const updateSection = async (
+    params: {
+    data: {
+      sectionId: string;
+      title?: string;
+    };
+  },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string> => {
+    try {
+        const { data } = params
+        const url = `${BASE_URL}/update-section`
+
+        const response = await axios.put(url, data, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+      response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await updateSection(params, AuthTokenType.Refresh)
+        throw _ex
+    }
+}
+
+export const deleteSection = async (
+    params: {
+    data: {
+      sectionId: string;
+    };
+  },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string> => {
+    try {
+        const { data } = params
+        const { sectionId } = data
+        const url = `${BASE_URL}/delete-section/${sectionId}`
+        //
+
+        const response = await axios.delete(url, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+      response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await deleteSection(params, AuthTokenType.Refresh)
+        throw _ex
+    }
+}
+
+export const deleteResource = async (
+    params: {
+    data: {
+      resourceId: string;
+    };
+  },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string> => {
+    try {
+        const { data } = params
+        const { resourceId } = data
+        const url = `${BASE_URL}/delete-resource/${resourceId}`
+        //
+
+        const response = await axios.delete(url, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+      response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+      authTokenType === AuthTokenType.Access
+        )
+            return await deleteResource(params, AuthTokenType.Refresh)
+        throw _ex
     }
 }

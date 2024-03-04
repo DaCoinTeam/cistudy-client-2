@@ -9,6 +9,7 @@ export interface DashVideoPlayerState {
   duration: number;
   bitrateInfos: Array<BitrateInfo>,
   autoSwitchBitrate: boolean
+  hideController: boolean
 }
 
 export interface SetIsPlayAction {
@@ -37,14 +38,20 @@ export interface SetDurationAction {
 }
 
 export interface SetBitrateInfosAction {
-    type: "SET_BITRATE_INFOS",
-    payload: Array<BitrateInfo>
+  type: "SET_BITRATE_INFOS",
+  payload: Array<BitrateInfo>
 }
 
 export interface SetAutoSwitchBitrateAction {
   type: "SET_AUTO_SWITCH_BITRATE_ACTION";
   payload: boolean;
 }
+
+export interface SetHideController {
+  type: "SET_HIDE_CONTROLLER";
+  payload: boolean;
+}
+
 
 export type DashVideoPlayerAction =
   | SetIsPlayAction
@@ -54,6 +61,7 @@ export type DashVideoPlayerAction =
   | SetDurationAction
   | SetBitrateInfosAction
   | SetAutoSwitchBitrateAction
+  | SetHideController
   ;
 
 export const state: DashVideoPlayerState = {
@@ -63,7 +71,8 @@ export const state: DashVideoPlayerState = {
     playbackTime: 0,
     duration: 0,
     bitrateInfos: [],
-    autoSwitchBitrate: true
+    autoSwitchBitrate: true,
+    hideController: true,
 }
 
 export const reducer = (
@@ -82,9 +91,11 @@ export const reducer = (
     case "SET_DURATION":
         return { ...state, duration: action.payload }
     case "SET_BITRATE_INFOS":
-        return { ...state, bitrateInfos: action.payload}
+        return { ...state, bitrateInfos: action.payload }
     case "SET_AUTO_SWITCH_BITRATE_ACTION":
         return { ...state, autoSwitchBitrate: action.payload }
+    case "SET_HIDE_CONTROLLER":
+        return { ...state, hideController: action.payload }
     default:
         return state
     }

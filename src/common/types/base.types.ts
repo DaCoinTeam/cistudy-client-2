@@ -18,3 +18,8 @@ export interface FetchedMedia {
     mediaType: MediaType,
     mediaId: string,
 }
+
+export interface Swr<T> {
+    data: T,
+    isLoading: boolean
+}

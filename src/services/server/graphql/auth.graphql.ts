@@ -3,7 +3,6 @@ import {
     AuthTokenType,
     AuthTokens,
     BaseResponse,
-    ErrorResponse,
     ErrorStatusCode,
     ExtensionsWithOriginalError,
     Schema,
@@ -17,7 +16,7 @@ import { ApolloError, gql } from "@apollo/client"
 export const init = async (
     schema: Schema<DeepPartial<UserEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<DeepPartial<UserEntity> | ErrorResponse> => {
+): Promise<UserEntity> => {
     try {
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
@@ -30,8 +29,8 @@ export const init = async (
           `,
         })
         const { data, tokens } = graphqlData.init as BaseResponse<
-      DeepPartial<UserEntity>
-    >
+            UserEntity
+        >
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
         return data
@@ -41,26 +40,26 @@ export const init = async (
             .originalError
         if (
             error.statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
+            authTokenType === AuthTokenType.Access
         )
             return await init(schema, AuthTokenType.Refresh)
-        return error
+        throw error
     }
 }
 
 export const signIn = async (
     params: {
-    email: string;
-    password: string;
-  },
+        email: string;
+        password: string;
+    },
     schema: Schema<DeepPartial<UserEntity>>
-): Promise<DeepPartial<UserEntity> | ErrorResponse> => {
+): Promise<UserEntity> => {
     const { email, password } = params
     try {
         const payload = buildAuthPayloadString(schema, AuthTokenType.Refresh)
         const { data: graphqlData } = await client(AuthTokenType.Refresh).query({
             query: gql`
-            query SignIn($data: SignInData!) {
+            query SignIn($data: SignInInputData!) {
                 signIn(data: $data) {
       ${payload}
     }
@@ -74,14 +73,14 @@ export const signIn = async (
             },
         })
         const { data, tokens } = graphqlData.signIn as BaseResponse<
-      DeepPartial<UserEntity>
-    >
+            UserEntity
+        >
         saveTokens(tokens as AuthTokens)
         return data
     } catch (ex) {
         const { graphQLErrors } = ex as ApolloError
         const error = (graphQLErrors[0].extensions as ExtensionsWithOriginalError)
             .originalError
-        return error
+        throw error
     }
 }

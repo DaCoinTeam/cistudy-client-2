@@ -1,8 +1,8 @@
 "use client"
 import { ReactNode } from "react"
 import { CourseDetailsProviders } from "./_hooks"
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const Layout = ({ children }: { children: ReactNode }) => {
     return <CourseDetailsProviders>{children}</CourseDetailsProviders>
 }
 
-export default RootLayout
+export default Layout

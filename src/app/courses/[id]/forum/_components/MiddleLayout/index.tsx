@@ -10,7 +10,7 @@ export const MiddleLayout = (props: MiddleLayoutProps) => {
     return (
         <div className={`${props.className}`}>
             <CreatePostCard/>
-            <Spacer y={6}/>
+            <Spacer y={4}/>
             <InfinitePostsScroller/>
         </div>
     )

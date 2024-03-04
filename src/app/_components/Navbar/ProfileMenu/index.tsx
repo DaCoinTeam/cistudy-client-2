@@ -5,17 +5,23 @@ import {
     DropdownItem,
     Avatar,
 } from "@nextui-org/react"
-import React from "react"
-import { AppDispatch, setProfile } from "@redux"
-import { useDispatch } from "react-redux"
+import React, { useContext } from "react"
 import { removeTokens } from "@common"
+import { RootContext } from "../../../_hooks"
 
 export const ProfileMenu = () => {
-    const dispatch : AppDispatch = useDispatch()
-    const onSignOutPress = () => { 
-        dispatch(setProfile(null))
+    const { swrs } = useContext(RootContext)!
+    const { profileSwr } = swrs
+    const { mutate } = profileSwr
+
+    const onSignOutPress = async () => { 
+        await mutate(null, {
+            revalidate: false,
+        })
         removeTokens()
     }
+
+    console.log(profileSwr.data)
 
     return (
         <Dropdown placement="bottom-end">

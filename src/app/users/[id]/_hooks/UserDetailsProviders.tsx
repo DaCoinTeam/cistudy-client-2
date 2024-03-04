@@ -3,74 +3,64 @@ import React, {
     ReactNode,
     createContext,
     useCallback,
-    useEffect,
+    useContext,
     useMemo,
 } from "react"
-
-import {
-    UserDetailsAction,
-    UserDetailsState,
-    useUserDetailsReducer,
-} from "./useUserDetails"
 import { findOneUser } from "@services"
 import { useParams } from "next/navigation"
-import { isErrorResponse } from "@common"
+import { ErrorResponse, UserEntity } from "@common"
+import useSWR, { SWRConfig, SWRResponse } from "swr"
+import { RootContext } from "../../../_hooks"
 
 export interface UserDetailsContextValue {
-  state: UserDetailsState;
-  dispatch: React.Dispatch<UserDetailsAction>;
-  functions: {
-    fetchAndSetUser: () => Promise<void>;
+  swrs: {
+    userSwr: SWRResponse<UserEntity | undefined, ErrorResponse>;
   };
 }
 
-export const UserDetailsContext =
-  createContext<UserDetailsContextValue | null>(null)
+export const UserDetailsContext = createContext<UserDetailsContextValue | null>(
+    null
+)
 
-export const UserDetailsProviders = ({ children }: { children: ReactNode }) => {
-    const [state, dispatch] = useUserDetailsReducer()
-
+const WrappedUserDetailsProviders = ({ children }: { children: ReactNode }) => {
     const params = useParams()
     const userId = params.id as string
 
-    const fetchAndSetUser = useCallback(async () => {
-        const response = await findOneUser(
+    const { swrs } = useContext(RootContext)!
+    const { profileSwr } = swrs
+    const { data: profile } = profileSwr
+
+    const fetchUser = useCallback(async () => {
+        if (!profile) return
+
+        return await findOneUser(
             {
                 userId,
+                options: {
+                    followerId: profile.userId,
+                },
             },
             {
                 userId: true,
+                username: true,
                 email: true,
                 avatarId: true,
                 coverPhotoId: true,
+                followed: true,
+                numberOfFollowers: true,
             }
         )
-        if (!isErrorResponse(response)) {
-            dispatch({
-                type: "SET_USER",
-                payload: response,
-            })
-        } else {
-            console.log(response)
-        }
-    }, [])
+    }, [profile])
 
-    useEffect(() => {
-        const handleEffect = async () => {
-            await fetchAndSetUser()
-        }
-        handleEffect()
-    }, [])
+    const userSwr = useSWR(profile?.userId ? ["USER"] : null, fetchUser)
 
     const userDetailsContextValue: UserDetailsContextValue = useMemo(
         () => ({
-            state,
-            dispatch,
-            functions: {
-                fetchAndSetUser,
+            swrs: {
+                userSwr,
             },
         }),
-        [state, dispatch]
+        [userSwr]
     )
 
     return (
@@ -79,3 +69,9 @@ export const UserDetailsProviders = ({ children }: { children: ReactNode }) => {
         </UserDetailsContext.Provider>
     )
 }
+
+export const UserDetailsProviders = ({ children }: { children: ReactNode }) => (
+    <SWRConfig value={{ provider: () => new Map() }}>
+        <WrappedUserDetailsProviders>{children}</WrappedUserDetailsProviders>
+    </SWRConfig>
+)

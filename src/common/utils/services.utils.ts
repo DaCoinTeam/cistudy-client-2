@@ -6,6 +6,7 @@ import {
     Schema,
 } from "../types"
 import { getAuthToken } from "./storage.utils"
+import { ABORTED_MESSAGE } from "@config"
 
 export const buildBearerTokenHeader = (
     type: AuthTokenType = AuthTokenType.Access
@@ -62,6 +63,7 @@ export const buildAuthPayloadString = <T extends object>(
 export const isErrorResponse = (
     response: unknown
 ): response is ErrorResponse => {
+    if (response === ABORTED_MESSAGE) return true
     const { statusCode, error, message } = response as ErrorResponse
     return !!statusCode && !!error && !!message && statusCode >= 400
 }

@@ -2,7 +2,7 @@
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, } from "react"
 import { signUp } from "@services"
-import { isErrorResponse, parseISODateString } from "@common"
+import { parseISODateString } from "@common"
 
 import * as Yup from "yup"
 export const FormikContext = createContext<FormikProps<FormikValues> | null>(
@@ -49,19 +49,13 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
             })
         }
         onSubmit={async ({ email, password, firstName, lastName, birthdate }) => {
-            const response = await signUp({
+            await signUp({
                 email,
                 password,
                 firstName,
                 lastName,
                 birthdate
             })
-            if (!isErrorResponse(response)) {
-                console.log(response)
-                // thông báo thành công
-            } else {
-                console.log(response)
-            }
         }}
         >
             {(formik) => (

@@ -17,6 +17,7 @@ const BASE_URL = `${endpointConfig().api}/profile`
 export const updateProfile = async (
     params: {
         data: {
+            username?: string,
             avatarIndex?: number,
             coverPhotoIndex?: number
         }

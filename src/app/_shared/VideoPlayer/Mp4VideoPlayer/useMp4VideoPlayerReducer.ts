@@ -6,6 +6,7 @@ export interface Mp4VideoPlayerState {
   isMuted: boolean;
   playbackTime: number;
   duration: number;
+  hideController: boolean;
 }
 
 export interface SetIsPlayAction {
@@ -33,12 +34,18 @@ export interface SetDurationAction {
   payload: number;
 }
 
+export interface SetHideController {
+  type: "SET_HIDE_CONTROLLER";
+  payload: boolean;
+}
+
 export type Mp4VideoPlayerAction =
   | SetIsPlayAction
   | SetVolumeAction
   | SetIsMutedAction
   | SetPlaybackTimeAction
   | SetDurationAction
+  | SetHideController
   ;
 
 export const state: Mp4VideoPlayerState = {
@@ -47,6 +54,7 @@ export const state: Mp4VideoPlayerState = {
     isMuted: false,
     playbackTime: 0,
     duration: 0,
+    hideController: true
 }
 
 export const reducer = (
@@ -64,6 +72,8 @@ export const reducer = (
         return { ...state, playbackTime: action.payload }
     case "SET_DURATION":
         return { ...state, duration: action.payload }
+    case "SET_HIDE_CONTROLLER":
+        return { ...state, hideController: action.payload }
     default:
         return state
     }

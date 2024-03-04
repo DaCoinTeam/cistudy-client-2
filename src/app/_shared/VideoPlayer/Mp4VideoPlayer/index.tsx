@@ -1,60 +1,60 @@
 "use client"
+import React, { createContext, useEffect, useMemo, useRef } from "react"
 import {
-    SpeakerWaveIcon,
-    Cog6ToothIcon,
-    PauseIcon,
-    PlayIcon,
-    SpeakerXMarkIcon,
-} from "@heroicons/react/24/solid"
-import {
-    ChatBubbleBottomCenterTextIcon,
-    PlayCircleIcon,
-} from "@heroicons/react/24/outline"
-import {
-    Slider,
-    Link,
-    Spacer,
-    DropdownItem,
-    Dropdown,
-    DropdownMenu,
-    DropdownTrigger,
-} from "@nextui-org/react"
-import React, { useEffect, useRef } from "react"
-import { useMp4VideoPlayerReducer } from "./useMp4VideoPlayerReducer"
+    Mp4VideoPlayerAction,
+    Mp4VideoPlayerState,
+    useMp4VideoPlayerReducer,
+} from "./useMp4VideoPlayerReducer"
+import { ControlBottom } from "./ControlBottom"
 
 interface Mp4VideoPlayerProps {
   className?: string;
   src: string;
 }
 
+interface Mp4VideoPlayerContextValue {
+  player: HTMLVideoElement | null;
+  state: Mp4VideoPlayerState;
+  dispatch: React.Dispatch<Mp4VideoPlayerAction>;
+  functions: {
+    onPlay: () => void;
+    onPause: () => void;
+  };
+}
+
+export const Mp4VideoPlayerContext =
+  createContext<Mp4VideoPlayerContextValue | null>(null)
+
 export const Mp4VideoPlayer = (props: Mp4VideoPlayerProps) => {
+    const { src, className } = props
+
     const playerRef = useRef<HTMLVideoElement | null>(null)
-    
+    const [state, dispatch] = useMp4VideoPlayerReducer()
+
     useEffect(() => {
         const handleEffect = async () => {
             const player = playerRef.current
             if (player === null) return
-            player.src = props.src
-            
-            // player.ontimeupdate = () => (event) => {
-            //     dispatch({
-            //         type: "SET_PLAYBACK_TIME",
-            //         payload: Number(event.time),
-            //     })
-            //     if (event.timeToEnd === 0) onPause()
-            // }
+            player.src = src
+
+            player.addEventListener("loadedmetadata", () => {
+                dispatch({
+                    type: "SET_DURATION",
+                    payload: player.duration,
+                })
+            })
+
+            player.addEventListener("timeupdate", (event) => {
+                const target = event.target as HTMLMediaElement
+                dispatch({
+                    type: "SET_PLAYBACK_TIME",
+                    payload: target.currentTime,
+                })
+                if (target.ended) onPause()
+            })
         }
         handleEffect()
     }, [])
-
-    const [state, dispatch] = useMp4VideoPlayerReducer()
-    const {
-        isMuted,
-        isPlay,
-        volume,
-        playbackTime,
-        duration,
-    } = state
 
     const onPlay = () => {
         const player = playerRef.current
@@ -76,128 +76,41 @@ export const Mp4VideoPlayer = (props: Mp4VideoPlayerProps) => {
         })
     }
 
-    const onMute = () => {
-        const player = playerRef.current
-        if (player === null) return
-        player.muted = true
-        dispatch({
-            type: "SET_IS_MUTED",
-            payload: true,
-        })
-    }
+    const mp4VideoPlayerContextValue: Mp4VideoPlayerContextValue = useMemo(
+        () => ({
+            player: playerRef.current,
+            state,
+            dispatch,
+            functions: {
+                onPlay,
+                onPause,
+            },
+        }),
+        [playerRef.current, state, dispatch]
+    )
 
-    const onUnmute = () => {
-        const player = playerRef.current
-        if (player === null) return
-        player.muted = false
+    const onMouseEnter = () =>
         dispatch({
-            type: "SET_IS_MUTED",
+            type: "SET_HIDE_CONTROLLER",
             payload: false,
         })
-    }
 
-    const onVolumeChange = (value: number | number[]) => {
-        const _value = value as number
-        const player = playerRef.current
-        if (player === null) return
-
-        player.volume = _value
-        onUnmute()
-
+    const onMouseLeave = () =>
         dispatch({
-            type: "SET_VOLUME",
-            payload: _value,
+            type: "SET_HIDE_CONTROLLER",
+            payload: true,
         })
-    }
-
-    const onSeek = (value: number | number[]) => {
-        const _value = value as number
-        const player = playerRef.current
-        if (player === null) return
-
-        if (player.paused) {
-            onPlay()
-        }
-
-        player.currentTime = _value
-        dispatch({
-            type: "SET_PLAYBACK_TIME",
-            payload: playbackTime,
-        })
-    }
 
     return (
-        <div className="w-full aspect-video relative">
-            <video className="absolute" ref={playerRef} aria-label="Playback"/>
-            <div className="p-3 z-10 absolute bottom-0 w-full">
-                <Slider
-                    hideThumb
-                    minValue={0}
-                    step={0.01}
-                    onChange={onSeek}
-                    maxValue={duration}
-                    value={playbackTime}
-                />
-                <Spacer y={2} />
-                <div className="flex items-center justify-between">
-                    <div className="flex gap-4 items-center">
-                        {isPlay ? (
-                            <Link as="button" onPress={onPause}>
-                                <PauseIcon className="w-6 h-6" />
-                            </Link>
-                        ) : (
-                            <Link as="button" onPress={onPlay}>
-                                <PlayIcon className="w-6 h-6" />
-                            </Link>
-                        )}
-                        <div className="items-center flex gap-2">
-                            {isMuted ? (
-                                <Link as="button" onPress={onUnmute}>
-                                    <SpeakerXMarkIcon className="w-6 h-6" />
-                                </Link>
-                            ) : (
-                                <Link as="button" onPress={onMute}>
-                                    <SpeakerWaveIcon className="w-6 h-6" />
-                                </Link>
-                            )}
-                            <Slider
-                                className="w-28"
-                                size="sm"
-                                minValue={0}
-                                maxValue={1}
-                                value={isMuted ? 0 : volume}
-                                step={0.01}
-                                onChange={onVolumeChange}
-                            />
-                        </div>
-                    </div>
-                    <div className="flex gap-4 items-center">
-                        <Dropdown placement="top-end">
-                            <DropdownTrigger>
-                                <Link as="button" onPress={onUnmute}>
-                                    <Cog6ToothIcon className="w-6 h-6" />
-                                </Link>
-                            </DropdownTrigger>
-                            <DropdownMenu aria-label="Settings">
-                                <DropdownItem
-                                    startContent={
-                                        <ChatBubbleBottomCenterTextIcon className="w-6 h-6" />
-                                    }
-                                    key="subtitle"
-                                >
-                  Subtitle
-                                </DropdownItem>
-                                <DropdownItem
-                                    startContent={<PlayCircleIcon className="w-6 h-6" />}
-                                    key="playbackSpeed"
-                                >
-                  Playback speed
-                                </DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </div>
-                </div>
+        <Mp4VideoPlayerContext.Provider value={mp4VideoPlayerContextValue}>
+            <div
+                className={`w-full h-fit relative bg-content2 rounded-large overflow-hidden ${className ?? ""}`}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+            >
+                <video className="w-full" ref={playerRef} aria-label="Playback" />
+                <ControlBottom />
             </div>
-        </div>
+        </Mp4VideoPlayerContext.Provider>
     )
 }
