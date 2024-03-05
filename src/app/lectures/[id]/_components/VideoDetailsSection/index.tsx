@@ -26,7 +26,7 @@ export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
 
     return (
         <div className={className}>
-            <div className="text-xl font-bold leading-none">{title}</div>
+            <div className="text-xl font-bold ">{title}</div>
             <Spacer y={4} />
             <div className="justify-between flex items-center">
                 <div className="flex items-center gap-8">

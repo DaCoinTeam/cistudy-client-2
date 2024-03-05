@@ -1,0 +1,60 @@
+import React, { useContext } from "react"
+import { AddReply } from "./AddReply"
+import { ReplyItem } from "./ReplyItem"
+import {
+    RepliesContext,
+    RepliesProviders,
+} from "./RepliesProviders"
+import { CommentItemContext } from ".."
+import { PostCommentReplyEntity } from "../../../../../../../../../../../../../common/types"
+
+const WrappedReplies = () => {
+    const { swrs } = useContext(RepliesContext)!
+    const { postCommentRepliesSwr } = swrs
+    const { data } = postCommentRepliesSwr
+
+    const getPostCommentReplies = () => {
+        if (!data) return []
+        const postCommentRepliesReturn: Array<PostCommentReplyEntity> = []
+        data.forEach((element) => {
+            if (!element) return
+            const { results } = element
+            postCommentRepliesReturn.push(...results)
+        })
+        return postCommentRepliesReturn
+    }
+
+    // const getPages = () => {
+    //     if (!data) return 0
+    //     const last = data.at(-1)
+    //     if (!last) return 0
+    //     return Math.ceil(last.metadata.count / COLUMNS_PER_PAGE)
+    // }
+
+    return (
+        <div className="flex flex-col gap-3 mt-4">
+            {getPostCommentReplies().map((postCommentReply) => (
+                <ReplyItem
+                    key={postCommentReply.postCommentReplyId}
+                    postCommentReply={postCommentReply}
+                />
+            ))}
+            <AddReply />
+        </div>
+    )
+}
+
+export const Replies = () => {
+    const { disclosures } = useContext(CommentItemContext)!
+    const { commentDisclosure } = disclosures
+    const { isOpen } = commentDisclosure
+    return (
+        <>
+            {isOpen ? (
+                <RepliesProviders>
+                    <WrappedReplies />
+                </RepliesProviders>
+            ) : null}
+        </>
+    )
+}

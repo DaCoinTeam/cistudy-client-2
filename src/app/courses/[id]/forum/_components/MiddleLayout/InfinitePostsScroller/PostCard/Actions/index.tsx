@@ -35,8 +35,8 @@ export const Actions = () => {
             <Link onPress={onPress} as="button">
                 {
                     liked ?
-                        <HeartIcon height={24} width={24} strokeWidth={3/2}/>
-                        : <SolidHeartIcon height={24} width={24} />
+                        <SolidHeartIcon height={24} width={24} strokeWidth={3/2}/>
+                        : <HeartIcon height={24} width={24} />
                 }
                
             </Link>

@@ -7,8 +7,8 @@ import React, {
     useMemo,
 } from "react"
 import {
-    findManyPostComments,
     FindManyPostCommentsOutputData,
+    findManyPostComments,
 } from "@services"
 import { ErrorResponse } from "@common"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
@@ -18,13 +18,13 @@ import { PostCardContext } from "../.."
 export interface CommentsModalContextValue {
   swrs: {
     postCommentsSwr: SWRInfiniteResponse<
-      FindManyPostCommentsOutputData,
+    FindManyPostCommentsOutputData,
       ErrorResponse
     >;
   };
 }
 
-export const COLUMNS_PER_PAGE = 3
+export const COLUMNS_PER_PAGE = 5
 
 export const CommentsModalContext =
   createContext<CommentsModalContextValue | null>(null)
@@ -38,7 +38,7 @@ const WrappedCommentsModalProviders = ({
     const { post } = props
     const { postId } = post
 
-    const fetchPostComments = useCallback(async (key: number) => {
+    const fetchPostComments = useCallback(async ([key, ]: [number, string]) => {
         return await findManyPostComments(
             {
                 params: {
@@ -71,7 +71,7 @@ const WrappedCommentsModalProviders = ({
                 },
             }
         )
-    }, [])
+    }, [postId])
 
     const postCommentsSwr = useSWRInfinite(
         (key) => [key, "POST_COMMENTS"],
@@ -81,7 +81,7 @@ const WrappedCommentsModalProviders = ({
         }
     )
 
-    const commentsModalContextValue: CommentsModalContextValue = useMemo(
+    const CommentsModalContextValue: CommentsModalContextValue = useMemo(
         () => ({
             swrs: {
                 postCommentsSwr,
@@ -91,7 +91,7 @@ const WrappedCommentsModalProviders = ({
     )
 
     return (
-        <CommentsModalContext.Provider value={commentsModalContextValue}>
+        <CommentsModalContext.Provider value={CommentsModalContextValue}>
             {children}
         </CommentsModalContext.Provider>
     )

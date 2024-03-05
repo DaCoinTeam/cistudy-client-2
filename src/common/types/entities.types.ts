@@ -147,7 +147,6 @@ export interface PostCommentEntity {
   postId: string;
   createdAt: Date;
   updatedAt: Date;
-  fatherCommentId: string;
   post: PostEntity;
   creator: UserEntity;
   html: string;
@@ -158,6 +157,17 @@ export interface PostCommentEntity {
   //graphql
   numberOfLikes?: number;
   liked?: number;
+}
+
+export interface PostCommentReplyEntity {
+  postCommentReplyId: string
+  creatorId: string
+  postCommentId: string
+  createdAt: Date
+  updatedAt: Date
+  content: string
+  postComment: PostCommentEntity
+  creator: UserEntity
 }
 
 export interface SectionEntity {

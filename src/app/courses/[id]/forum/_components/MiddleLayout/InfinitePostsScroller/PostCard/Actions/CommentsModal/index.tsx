@@ -8,10 +8,10 @@ import {
     Link,
 } from "@nextui-org/react"
 import React from "react"
-import { CommentsModalProviders } from "./CommentsModalProviders"
-import { CommentsBody } from "./CommentsBody"
+import { InfiniteCommentsScroller } from "./InfiniteCommentsScroller"
 import { CreateCommentSection } from "./CreateCommentSection"
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline"
+import { CommentsModalProviders } from "./CommentsModalProviders"
 
 export const CommentsModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -28,7 +28,7 @@ export const CommentsModal = () => {
               Comments
                         </ModalHeader>
                         <ModalBody className="p-4 overflow-auto">
-                            <CommentsBody />
+                            <InfiniteCommentsScroller />
                         </ModalBody>
                         <ModalFooter className="p-4 pt-2">
                             <CreateCommentSection />

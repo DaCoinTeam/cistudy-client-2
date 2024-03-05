@@ -36,7 +36,7 @@ const WrappedInfinitePostsScrollerProviders = ({
     const { data: course } = courseSwr
 
     const fetchPosts = useCallback(
-        async (key: number) => {
+        async ([key, ]: [number, string]) => {
             if (!course) return
             const { courseId } = course
 

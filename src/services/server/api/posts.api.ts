@@ -159,3 +159,80 @@ export const toggleLikePost = async (
         throw _ex
     }
 }
+
+export const toggleLikePostComment = async (
+    input: {
+        data: {
+            postCommentId: string;
+        };
+    },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string> => {
+    try {
+        const { data } = input
+        const url = `${BASE_URL}/toggle-like-post-comment`
+
+        const response = await axios.patch(url, data, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+            response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+            authTokenType === AuthTokenType.Access
+        )
+            return await toggleLikePostComment(input, AuthTokenType.Refresh)
+        throw _ex
+    }
+}
+
+export const createPostCommentReply = async (
+    input: {
+        data: {
+            postCommentId: string,
+            content: string
+        };
+    },
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<string> => {
+    try {
+        const { data } = input
+        const url = `${BASE_URL}/create-post-comment-reply`
+
+        const response = await axios.post(url, data, {
+            headers: {
+                Authorization: buildBearerTokenHeader(authTokenType),
+                "Client-Id": getClientId(),
+            },
+        })
+
+        const { data: responseData, tokens } =
+            response.data as BaseResponse<string>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+        return responseData
+    } catch (ex) {
+        const _ex = (ex as AxiosError).response?.data as ErrorResponse
+        const { statusCode } = _ex
+        console.log(statusCode)
+        if (
+            statusCode === ErrorStatusCode.Unauthorized &&
+            authTokenType === AuthTokenType.Access
+        )
+            return await createPostCommentReply(input, AuthTokenType.Refresh)
+        throw _ex
+    }
+}

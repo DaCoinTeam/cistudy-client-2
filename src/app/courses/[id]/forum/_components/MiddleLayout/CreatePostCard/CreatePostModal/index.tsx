@@ -80,8 +80,7 @@ export const WrappedCreatePostModal = () => {
                     <ModalFooter className="p-4 pt-2">
                         <div className="flex gap-2 items-center">
                             <Button
-                                variant="bordered"
-                                className="border shadow-none"
+                                variant="light"
                                 startContent={<RotateCcw size={20} strokeWidth={3/2} />}
                             >
                 Reset

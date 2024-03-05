@@ -3,8 +3,8 @@ import React, { useContext } from "react"
 import { getAssetUrl } from "@services"
 import { CreateCommentModal } from "./CreateCommentModal"
 import { RootContext } from "../../../../../../../../../../_hooks"
-export const CreateCommentSection = () => {
-    
+
+export const CreateCommentSection = () => { 
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { data: profile } = profileSwr
