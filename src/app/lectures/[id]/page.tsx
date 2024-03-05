@@ -1,5 +1,5 @@
 import React from "react"
-import { ResourcesCard, SectionsCard, VideoSection } from "./_components"
+import { SectionsCard, VideoSection } from "./_components"
 import { Spacer } from "@nextui-org/react"
 import { VideoDetailsSection } from "./_components/VideoDetailsSection"
 
@@ -11,11 +11,7 @@ const Page = () => {
                 <Spacer y={6}/>
                 <VideoDetailsSection />
             </div>
-            <div className="col-span-2">
-                <SectionsCard/>
-                <Spacer y={6}/>
-                <ResourcesCard/>
-            </div>              
+            <SectionsCard className="col-span-2 h-fit"/>            
         </div>
     )
 }

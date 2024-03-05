@@ -6,6 +6,7 @@ import { Spacer, User } from "@nextui-org/react"
 import { MoreButton } from "./MoreButton"
 import { parseDateStringFrom } from "@common"
 import { ToggleFollowButton } from "./ToggleFollowButton"
+import { ResourcesModal } from "./ResourcesModal"
 
 interface VideoDetailsSectionProps {
   className?: string;
@@ -41,7 +42,11 @@ export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
                     />
                     <ToggleFollowButton />
                 </div>
-                <MoreButton />
+                <div className="gap-4 flex items-center">
+                    <ResourcesModal />
+                    <MoreButton />
+                </div>
+              
             </div>
             <Spacer y={4} />
             <div className="bg-content2 rounded-large p-4">
