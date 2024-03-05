@@ -27,7 +27,7 @@ export const LectureItem = (props: LectureItemProps) => {
     return (
         <div
             className={`grid gap-2 grid-cols-12 gap-2 p-2 pr-4 items-center z-10 ${
-                !differentFromThisLecture ? "bg-content3" : ""
+                !differentFromThisLecture ? "bg-content2" : ""
             }`}
         >
             <div className="col-span-1">

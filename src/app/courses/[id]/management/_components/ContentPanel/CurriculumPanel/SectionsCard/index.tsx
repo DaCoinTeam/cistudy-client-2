@@ -49,7 +49,7 @@ export const SectionsCard = () => {
     }
 
     return (
-        <Card shadow="none">
+        <Card shadow="none" className="border border-divider">
             <CardHeader className="p-4 pb-2 justify-between text-xl leading-none font-bold items-center">
                 Sections
             </CardHeader> 

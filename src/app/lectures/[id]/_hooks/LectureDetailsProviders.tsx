@@ -59,6 +59,7 @@ export const LectureDetailsProviders = ({
                 resources: {
                     resourceId: true,
                     fileId: true,
+                    name: true
                 },
                 section: {
                     sectionId: true,
