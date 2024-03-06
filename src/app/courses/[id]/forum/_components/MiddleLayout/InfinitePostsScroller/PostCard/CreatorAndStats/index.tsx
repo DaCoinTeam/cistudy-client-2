@@ -21,10 +21,11 @@ export const CreatorAndStats = (props: CreatorAndStatsProps) => {
             <User
                 name={username}
                 classNames={{
-                    name: "font-semibold text-base"
+                    name: "font-semibold text-base",
+                    base: "gap-3"
                 }}
                 description={calculateTimeAgo(updatedAt)}
-                avatarProps={{ src: getAssetUrl(avatarId) }}
+                avatarProps={{ src: getAssetUrl(avatarId), size: "lg" }}
             />
             <div className="flex gap-4">
                 <div className="text-sm">{numberOfLikes} likes</div>

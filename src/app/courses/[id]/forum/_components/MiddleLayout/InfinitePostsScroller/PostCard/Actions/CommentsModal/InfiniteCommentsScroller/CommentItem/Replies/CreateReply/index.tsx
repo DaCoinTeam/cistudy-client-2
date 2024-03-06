@@ -2,20 +2,20 @@ import React, { useContext } from "react"
 import { RootContext } from "../../../../../../../../../../../../../_hooks"
 import { Avatar, Input, Link } from "@nextui-org/react"
 import { getAssetUrl } from "@services"
-import { AddReplyContext, AddReplyProviders } from "./AddReplyProviders"
+import { CreateReplyContext, CreateReplyProviders } from "./CreateReplyProviders"
 import { SendHorizonalIcon } from "lucide-react"
 
-const WrappedAddReply = () => {
+const WrappedCreateReply = () => {
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { data: profile } = profileSwr
 
-    const { formik } = useContext(AddReplyContext)!
+    const { formik } = useContext(CreateReplyContext)!
 
     const onPress = () => formik.submitForm()
 
     return (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
             <Avatar src={getAssetUrl(profile?.avatarId)} />
             <Input
                 placeholder="Create a reply..."
@@ -39,10 +39,10 @@ const WrappedAddReply = () => {
     )
 }
 
-export const AddReply = () => {
+export const CreateReply = () => {
     return (
-        <AddReplyProviders>
-            <WrappedAddReply />
-        </AddReplyProviders>
+        <CreateReplyProviders>
+            <WrappedCreateReply />
+        </CreateReplyProviders>
     )
 }

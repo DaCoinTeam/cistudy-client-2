@@ -18,7 +18,13 @@ import { RotateCcw, PlusIcon } from "lucide-react"
 import { AppendKey, Media } from "@common"
 import { MediaUploader, TextEditor } from "../../../../../../../_shared"
 
-export const WrappedCreatePostModal = () => {
+interface CreatePostModalProps {
+  className?: string;
+}
+
+export const WrappedCreatePostModal = (props: CreatePostModalProps) => {
+    const { className } = props
+
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     const { formik } = useContext(CreatePostModalContext)!
@@ -41,7 +47,8 @@ export const WrappedCreatePostModal = () => {
             <Button
                 fullWidth
                 onPress={onOpen}
-                className="!justify-normal bg-content2"
+                size="lg"
+                className={`${className} !justify-normal bg-content2`}
             >
         Do you need some help?
             </Button>
@@ -54,14 +61,16 @@ export const WrappedCreatePostModal = () => {
                 }}
             >
                 <ModalContent>
-                    <ModalHeader className="p-4 pb-2 text-xl font-bold "> Create Post</ModalHeader>
+                    <ModalHeader className="p-4 pb-2 text-xl font-bold ">
+            Create Post
+                    </ModalHeader>
                     <ModalBody className="p-4 gap-4">
                         <Input
                             label="Title"
                             id="title"
                             variant="bordered"
                             classNames={{
-                                inputWrapper: "border shadow-none"
+                                inputWrapper: "border shadow-none",
                             }}
                             labelPlacement="outside"
                             placeholder="Input title here"
@@ -81,7 +90,7 @@ export const WrappedCreatePostModal = () => {
                         <div className="flex gap-2 items-center">
                             <Button
                                 variant="light"
-                                startContent={<RotateCcw size={20} strokeWidth={3/2} />}
+                                startContent={<RotateCcw size={20} strokeWidth={3 / 2} />}
                             >
                 Reset
                             </Button>
@@ -89,7 +98,7 @@ export const WrappedCreatePostModal = () => {
                                 onPress={onPress}
                                 color="primary"
                                 className="text-secondary-foreground"
-                                startContent={<PlusIcon size={20} strokeWidth={3/2} />}
+                                startContent={<PlusIcon size={20} strokeWidth={3 / 2} />}
                             >
                 Create
                             </Button>
@@ -101,10 +110,10 @@ export const WrappedCreatePostModal = () => {
     )
 }
 
-export const CreatePostModal = () => {
+export const CreatePostModal = (props: CreatePostModalProps) => {
     return (
         <CreatePostModalProviders>
-            <WrappedCreatePostModal />
+            <WrappedCreatePostModal {...props} />
         </CreatePostModalProviders>
     )
 }

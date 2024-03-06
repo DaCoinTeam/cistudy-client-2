@@ -10,7 +10,7 @@ export const CreateCommentSection = () => {
     const { data: profile } = profileSwr
 
     return (
-        <div className="flex items-center gap-4 w-full">
+        <div className="flex items-center gap-2 w-full">
             <Avatar src={getAssetUrl(profile?.avatarId)} />
             <div className="flex-1">
                 <CreateCommentModal />

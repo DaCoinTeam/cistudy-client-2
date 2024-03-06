@@ -12,11 +12,12 @@ export const CreatePostCard = () => {
     return (
         <Card shadow="none" className="border border-divider">
             <CardBody className="p-4">
-                <div className="flex items-center gap-4">
-                    <Avatar src={getAssetUrl(profile?.avatarId)} />
-                    <div className="flex-1">
-                        <CreatePostModal />
+                <div className="flex gap-4 items-stretch">
+                    <Avatar size="lg" src={getAssetUrl(profile?.avatarId)} />
+                    <div className="flex-1 grid place-content-stretch" >
+                        <CreatePostModal className="h-full"/>
                     </div>
+              
                 </div>
             </CardBody>
         </Card>

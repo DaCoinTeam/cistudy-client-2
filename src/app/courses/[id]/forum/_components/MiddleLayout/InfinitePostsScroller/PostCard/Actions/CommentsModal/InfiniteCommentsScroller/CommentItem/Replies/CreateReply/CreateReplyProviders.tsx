@@ -5,7 +5,7 @@ import { createPostCommentReply } from "@services"
 import { RepliesContext } from "../RepliesProviders"
 import { CommentItemContext } from "../.."
 
-interface AddReplyProps {
+interface CreateReplyProps {
   formik: FormikProps<FormikValues>;
 }
 
@@ -13,25 +13,25 @@ interface FormikValues {
   content: string;
 }
 
-export const AddReplyContext = createContext<AddReplyProps | null>(null)
+export const CreateReplyContext = createContext<CreateReplyProps | null>(null)
 
 const initialValues: FormikValues = {
     content: "",
 }
 
-const WrappedAddReplyProviders = ({
+const WrappedCreateReplyProviders = ({
     formik,
     children,
 }: {
   formik: FormikProps<FormikValues>;
   children: ReactNode;
 }) => (
-    <AddReplyContext.Provider value={{ formik }}>
+    <CreateReplyContext.Provider value={{ formik }}>
         <Form onSubmit={formik?.handleSubmit}>{children}</Form>
-    </AddReplyContext.Provider>
+    </CreateReplyContext.Provider>
 )
 
-export const AddReplyProviders = ({ children }: { children: ReactNode }) => {
+export const CreateReplyProviders = ({ children }: { children: ReactNode }) => {
     const { props } = useContext(CommentItemContext)!
     const { postComment } = props
     const { postCommentId } = postComment
@@ -55,9 +55,9 @@ export const AddReplyProviders = ({ children }: { children: ReactNode }) => {
             }}
         >
             {(formik) => (
-                <WrappedAddReplyProviders formik={formik}>
+                <WrappedCreateReplyProviders formik={formik}>
                     {children}
-                </WrappedAddReplyProviders>
+                </WrappedCreateReplyProviders>
             )}
         </Formik>
     )

@@ -1,10 +1,10 @@
-import { Avatar, Spacer } from "@nextui-org/react"
+import { Avatar } from "@nextui-org/react"
 import React from "react"
 import { PostCommentReplyEntity } from "@common"
 import { getAssetUrl } from "@services"
 
 interface ReplyItemProps {
-    postCommentReply: PostCommentReplyEntity
+  postCommentReply: PostCommentReplyEntity;
 }
 
 export const ReplyItem = (props: ReplyItemProps) => {
@@ -13,16 +13,11 @@ export const ReplyItem = (props: ReplyItemProps) => {
     const { avatarId, username } = creator
 
     return (
-        <div className="flex gap-4">
-            <Avatar src={getAssetUrl(avatarId)}/>
-            <div className="flex-1 bg-content2 rounded-large p-3 text-sm">
-                <div className="font-semibold">
-                    {username}
-                </div>
-                <Spacer y={1}/>
-                <div className="text-sm">
-                    {content}
-                </div >  
+        <div className="flex gap-2">
+            <Avatar src={getAssetUrl(avatarId)} />
+            <div className="flex-1 items-center rounded-large bg-content2 p-3">
+                <div className="font-semibold text-sm">{username}</div>
+                <div className="text-sm">{content}</div>
             </div>
         </div>
     )

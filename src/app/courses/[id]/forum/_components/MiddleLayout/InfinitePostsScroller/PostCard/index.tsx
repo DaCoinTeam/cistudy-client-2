@@ -27,7 +27,7 @@ export const PostCard = (props: PostCardProps) => {
     return (
         <PostCardContext.Provider value={postCardContextValue}>
             <Card shadow="none" className="border border-divider">
-                <CardHeader className="p-4 pb-2  font-bold text-xl ">{title}</CardHeader>
+                <CardHeader className="p-4 pb-2 font-bold text-xl ">{title}</CardHeader>
                 <CardBody className="p-4 gap-4">
                     <TextRenderer html={html} />
                     <MediaGroup

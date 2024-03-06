@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { AddReply } from "./AddReply"
+import { CreateReply } from "./CreateReply"
 import { ReplyItem } from "./ReplyItem"
 import {
     RepliesContext,
@@ -39,7 +39,7 @@ const WrappedReplies = () => {
                     postCommentReply={postCommentReply}
                 />
             ))}
-            <AddReply />
+            <CreateReply />
         </div>
     )
 }
