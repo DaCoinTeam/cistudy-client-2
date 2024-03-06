@@ -36,7 +36,7 @@ const WrappedCreateCommentModalProviders = ({
     </CreateCommentModalContext.Provider>
 )
 
-export const CreateCommentModalProviders = ({ children }: { children: ReactNode }) => {
+export const CreateCommentModalProviders = ({ children, onClose }: { children: ReactNode, onClose: () => void }) => {
     const { props } = useContext(PostCardContext)!
     const { post } = props
     const { postId } = post
@@ -74,8 +74,8 @@ export const CreateCommentModalProviders = ({ children }: { children: ReactNode 
                 })
 
                 await mutate()
-
                 helpers.resetForm()
+                onClose()
             }}
         >
             {(formik) => (

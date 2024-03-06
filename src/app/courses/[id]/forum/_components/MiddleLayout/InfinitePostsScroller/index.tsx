@@ -3,15 +3,11 @@ import React, { useContext } from "react"
 import InfiniteScroll from "react-infinite-scroller"
 import { CircularProgress } from "@nextui-org/react"
 import { PostCard } from "./PostCard"
-import {
-    COLUMNS_PER_PAGE,
-    InfinitePostsScrollerContext,
-    InfinitePostsScrollerProviders,
-} from "./InfinitePostsScrollerProviders"
 import { PostEntity } from "@common"
+import { COLUMNS_PER_PAGE, MiddleLayoutContext } from "../MiddleLayoutProviders"
 
-const WrappedInfinitePostsScroller = () => {
-    const { swrs } = useContext(InfinitePostsScrollerContext)!
+export const InfinitePostsScroller = () => {
+    const { swrs } = useContext(MiddleLayoutContext)!
     const { postsSwr } = swrs
     const { data, size, setSize, isValidating } = postsSwr
 
@@ -42,7 +38,7 @@ const WrappedInfinitePostsScroller = () => {
 
     return (
         <InfiniteScroll
-            className="flex flex-col gap-12"
+            className="flex flex-col gap-6"
             pageStart={0}
             initialLoad={false}
             loadMore={onLoadMore}
@@ -53,13 +49,5 @@ const WrappedInfinitePostsScroller = () => {
                 <PostCard key={post.postId} post={post} />
             ))}
         </InfiniteScroll>
-    )
-}
-
-export const InfinitePostsScroller = () => {
-    return (
-        <InfinitePostsScrollerProviders>
-            <WrappedInfinitePostsScroller />
-        </InfinitePostsScrollerProviders>
     )
 }

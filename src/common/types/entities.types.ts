@@ -156,6 +156,7 @@ export interface PostCommentEntity {
 
   //graphql
   numberOfLikes?: number;
+  numberOfReplies?: number;
   liked?: number;
 }
 

@@ -21,7 +21,6 @@ import {
 import { PlusIcon, RotateCcw } from "lucide-react"
 
 export const WrappedCreateCommentModal = () => {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure()
     const { formik } = useContext(CreateCommentModalContext)!
 
     const setHtml = useCallback(
@@ -39,6 +38,46 @@ export const WrappedCreateCommentModal = () => {
 
     return (
         <>
+            <ModalHeader className="flex flex-col p-4 font-bold text-xl pb-2">
+        Create Comment
+            </ModalHeader>
+            <ModalBody className="p-4">
+                <div>
+                    <TextEditor html={formik.values.html} setHtml={setHtml} />
+                    <Spacer y={4} />
+                    <MediaUploader
+                        medias={formik.values.postCommentMedias}
+                        setMedias={setPostCommentMedias}
+                    />
+                </div>
+            </ModalBody>
+            <ModalFooter className="p-4 pt-2">
+                <div className="flex gap-2 items-center">
+                    <Button
+                        variant="light"
+                        startContent={<RotateCcw size={20} strokeWidth={3 / 2} />}
+                    >
+            Reset
+                    </Button>
+                    <Button
+                        onPress={onPress}
+                        color="primary"
+                        className="text-secondary-foreground"
+                        startContent={<PlusIcon size={20} strokeWidth={3 / 2} />}
+                    >
+            Create
+                    </Button>
+                </div>
+            </ModalFooter>
+        </>
+    )
+}
+
+export const CreateCommentModal = () => {
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+
+    return (
+        <CreateCommentModalProviders onClose={onClose}>
             <Button
                 fullWidth
                 onPress={onOpen}
@@ -48,47 +87,9 @@ export const WrappedCreateCommentModal = () => {
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl">
                 <ModalContent>
-                    <ModalHeader className="flex flex-col p-4 font-bold text-xl pb-2">
-            Create Comment
-                    </ModalHeader>
-                    <ModalBody className="p-4">
-                        <div>
-                            <TextEditor html={formik.values.html} setHtml={setHtml} />
-                            <Spacer y={4} />
-                            <MediaUploader
-                                medias={formik.values.postCommentMedias}
-                                setMedias={setPostCommentMedias}
-                            />
-                        </div>
-                    </ModalBody>
-                    <ModalFooter className="p-4 pt-2">
-                        <div className="flex gap-2 items-center">
-                            <Button
-                                variant="light"
-                                startContent={<RotateCcw size={20} strokeWidth={3/2} />}
-                            >
-                Reset
-                            </Button>
-                            <Button
-                                onPress={onPress}
-                                color="primary"
-                                className="text-secondary-foreground"
-                                startContent={<PlusIcon size={20} strokeWidth={3/2} />}
-                            >
-                Create
-                            </Button>
-                        </div>
-                    </ModalFooter>
+                    <WrappedCreateCommentModal />
                 </ModalContent>
             </Modal>
-        </>
-    )
-}
-
-export const CreateCommentModal = () => {
-    return (
-        <CreateCommentModalProviders>
-            <WrappedCreateCommentModal />
         </CreateCommentModalProviders>
     )
 }

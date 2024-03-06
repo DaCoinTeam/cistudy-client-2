@@ -4,6 +4,7 @@ import React, { ReactNode, createContext, useContext } from "react"
 import { CourseDetailsContext } from "../../../../../_hooks"
 import { AppendKey, Media } from "@common"
 import { createPost } from "@services"
+import { MiddleLayoutContext } from "../../MiddleLayoutProviders"
 
 interface CreatePostModalProps {
   formik: FormikProps<FormikValues>;
@@ -38,12 +39,18 @@ const WrappedCreatePostModalProviders = ({
 
 export const CreatePostModalProviders = ({
     children,
+    onClose,
 }: {
   children: ReactNode;
+  onClose: () => void;
 }) => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
+
+    const { swrs: middleLayoutSwrs } = useContext(MiddleLayoutContext)!
+    const { postsSwr } = middleLayoutSwrs
+    const { mutate } = postsSwr
 
     return (
         <Formik
@@ -75,7 +82,9 @@ export const CreatePostModalProviders = ({
                     },
                     files,
                 })
+                await mutate()
                 helpers.resetForm()
+                onClose()
             }}
         >
             {(formik) => (

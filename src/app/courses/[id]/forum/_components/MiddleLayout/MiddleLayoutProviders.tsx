@@ -6,7 +6,7 @@ import React, {
     useContext,
     useMemo,
 } from "react"
-import { CourseDetailsContext } from "../../../../_hooks"
+import { CourseDetailsContext } from "../../../_hooks"
 import {
     FindManyPostsOutputData,
     findManyPosts,
@@ -15,7 +15,7 @@ import { ErrorResponse } from "@common"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
 import { SWRConfig } from "swr"
 
-export interface InfinitePostsScrollerContextValue {
+export interface MiddleLayoutContextValue {
   swrs: {
     postsSwr: SWRInfiniteResponse<FindManyPostsOutputData | undefined, ErrorResponse>;
   };
@@ -23,10 +23,10 @@ export interface InfinitePostsScrollerContextValue {
 
 export const COLUMNS_PER_PAGE = 5
 
-export const InfinitePostsScrollerContext =
-  createContext<InfinitePostsScrollerContextValue | null>(null)
+export const MiddleLayoutContext =
+  createContext<MiddleLayoutContextValue | null>(null)
 
-const WrappedInfinitePostsScrollerProviders = ({
+const WrappedMiddleLayoutProviders = ({
     children,
 }: {
   children: ReactNode;
@@ -87,7 +87,7 @@ const WrappedInfinitePostsScrollerProviders = ({
         }
     )
 
-    const infinitePostsScrollerContextValue: InfinitePostsScrollerContextValue =
+    const MiddleLayoutContextValue: MiddleLayoutContextValue =
     useMemo(
         () => ({
             swrs: {
@@ -98,22 +98,22 @@ const WrappedInfinitePostsScrollerProviders = ({
     )
 
     return (
-        <InfinitePostsScrollerContext.Provider
-            value={infinitePostsScrollerContextValue}
+        <MiddleLayoutContext.Provider
+            value={MiddleLayoutContextValue}
         >
             {children}
-        </InfinitePostsScrollerContext.Provider>
+        </MiddleLayoutContext.Provider>
     )
 }
 
-export const InfinitePostsScrollerProviders = ({
+export const MiddleLayoutProviders = ({
     children,
 }: {
   children: ReactNode;
 }) => (
     <SWRConfig value={{ provider: () => new Map() }}>
-        <WrappedInfinitePostsScrollerProviders>
+        <WrappedMiddleLayoutProviders>
             {children}
-        </WrappedInfinitePostsScrollerProviders>
+        </WrappedMiddleLayoutProviders>
     </SWRConfig>
 )

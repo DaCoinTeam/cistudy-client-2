@@ -39,7 +39,7 @@ export const PostCard = (props: PostCardProps) => {
                         }
                         avatarProps={{ src: getAssetUrl(avatarId)}}
                     />
-                    <div className="text-xl font-bold"> {title} </div>
+                    <div className="text-lg font-bold"> {title} </div>
                 </CardHeader>
                 <CardBody className="p-4 gap-4">
                     <TextRenderer html={html} />

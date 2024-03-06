@@ -22,11 +22,7 @@ interface CreatePostModalProps {
   className?: string;
 }
 
-export const WrappedCreatePostModal = (props: CreatePostModalProps) => {
-    const { className } = props
-
-    const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
+export const WrappedCreatePostModal = () => {
     const { formik } = useContext(CreatePostModalContext)!
 
     const onPress = () => formik.handleSubmit()
@@ -44,12 +40,64 @@ export const WrappedCreatePostModal = (props: CreatePostModalProps) => {
 
     return (
         <>
+            <ModalHeader className="p-4 pb-2 text-xl font-bold ">
+        Create Post
+            </ModalHeader>
+            <ModalBody className="p-4 gap-4">
+                <Input
+                    label="Title"
+                    id="title"
+                    classNames={{
+                        inputWrapper: "bg-content2",
+                    }}
+                    labelPlacement="outside"
+                    placeholder="Input title here"
+                    value={formik.values.title}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    isInvalid={!!(formik.touched.title && formik.errors.title)}
+                    errorMessage={formik.touched.title && formik.errors.title}
+                />
+                <TextEditor html={formik.values.html} setHtml={setHtml} />
+                <MediaUploader
+                    medias={formik.values.postMedias}
+                    setMedias={setPostMedias}
+                />
+            </ModalBody>
+            <ModalFooter className="p-4 pt-2">
+                <div className="flex gap-2 items-center">
+                    <Button
+                        variant="light"
+                        startContent={<RotateCcw size={20} strokeWidth={3 / 2} />}
+                    >
+            Reset
+                    </Button>
+                    <Button
+                        onPress={onPress}
+                        color="primary"
+                        className="text-secondary-foreground"
+                        startContent={<PlusIcon size={20} strokeWidth={3 / 2} />}
+                    >
+            Create
+                    </Button>
+                </div>
+            </ModalFooter>
+        </>
+    )
+}
+
+export const CreatePostModal = (props: CreatePostModalProps) => {
+    const { className } = props
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+
+    return (
+        <>
             <Button
                 fullWidth
                 onPress={onOpen}
                 className={`${className} !justify-normal bg-content2 px-3 text-foreground-500`}
             >
-                Create a post
+        Create a post
             </Button>
             <Modal
                 isOpen={isOpen}
@@ -60,58 +108,11 @@ export const WrappedCreatePostModal = (props: CreatePostModalProps) => {
                 }}
             >
                 <ModalContent>
-                    <ModalHeader className="p-4 pb-2 text-xl font-bold ">
-            Create Post
-                    </ModalHeader>
-                    <ModalBody className="p-4 gap-4">
-                        <Input
-                            label="Title"
-                            id="title"
-                            classNames={{
-                                inputWrapper: "bg-content2",
-                            }}
-                            labelPlacement="outside"
-                            placeholder="Input title here"
-                            value={formik.values.title}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            isInvalid={!!(formik.touched.title && formik.errors.title)}
-                            errorMessage={formik.touched.title && formik.errors.title}
-                        />
-                        <TextEditor html={formik.values.html} setHtml={setHtml} />
-                        <MediaUploader
-                            medias={formik.values.postMedias}
-                            setMedias={setPostMedias}
-                        />
-                    </ModalBody>
-                    <ModalFooter className="p-4 pt-2">
-                        <div className="flex gap-2 items-center">
-                            <Button
-                                variant="light"
-                                startContent={<RotateCcw size={20} strokeWidth={3 / 2} />}
-                            >
-                Reset
-                            </Button>
-                            <Button
-                                onPress={onPress}
-                                color="primary"
-                                className="text-secondary-foreground"
-                                startContent={<PlusIcon size={20} strokeWidth={3 / 2} />}
-                            >
-                Create
-                            </Button>
-                        </div>
-                    </ModalFooter>
+                    <CreatePostModalProviders onClose={onClose}>
+                        <WrappedCreatePostModal />
+                    </CreatePostModalProviders>
                 </ModalContent>
             </Modal>
         </>
-    )
-}
-
-export const CreatePostModal = (props: CreatePostModalProps) => {
-    return (
-        <CreatePostModalProviders>
-            <WrappedCreatePostModal {...props} />
-        </CreatePostModalProviders>
     )
 }

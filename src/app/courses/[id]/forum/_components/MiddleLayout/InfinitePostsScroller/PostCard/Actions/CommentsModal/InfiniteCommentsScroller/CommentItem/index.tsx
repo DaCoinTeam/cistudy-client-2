@@ -51,10 +51,10 @@ export const CommentItem = (props: CommentItemProps) => {
             <div className="flex gap-2">
                 <Avatar src={getAssetUrl(avatarId)} />
                 <div className="flex-1">
-                    <div className="font-semibold"> {username} </div>  
-                    <div className="text-xs text-foreground-500"> {parseTimeAgo(createdAt)} </div>                    
+                    <div className="font-semibold"> {username} </div>    
+                    <div className="text-xs text-foreground-500"> {parseTimeAgo(createdAt)} </div>                  
                     <Spacer y={1}/>
-                    <div className="p-3 rounded-large border border-divider">   
+                    <div className="p-3 rounded-large bg-content2">   
                         <TextRenderer html={html} />
                         {postCommentMedias.length ? (
                             <MediaGroup
@@ -71,8 +71,7 @@ export const CommentItem = (props: CommentItemProps) => {
                     </div>
                     <Spacer y={1}/>
                     <Actions />
-                    <Spacer y={3}/>
-                    <Replies />
+                    <Replies className="mt-3"/>
                 </div>
             </div>
         </CommentItemContext.Provider>

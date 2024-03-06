@@ -16,7 +16,7 @@ import { CommentsModalContext } from "../../../CommentsModalProviders"
 export const Actions = () => {
     const { props, disclosures } = useContext(CommentItemContext)!
     const { postComment } = props
-    const { postCommentId, liked, numberOfLikes } = postComment
+    const { postCommentId, liked, numberOfLikes, numberOfReplies } = postComment
     const { commentDisclosure } = disclosures
     const { onOpenChange, isOpen } = commentDisclosure
 
@@ -34,23 +34,28 @@ export const Actions = () => {
     }
 
     return (
-        <div className="flex gap-4 items-center">
-            <div className="flex gap-2 items-center">
-                <Link onPress={onLikePress} as="button">
-                    {
-                        liked ?
-                            <SolidHeartIcon height={20} width={20}/> 
-                            : <HeartIcon height={20} width={20}/>
-                    }
-                </Link>
-                <div className="text-primary text-sm">{numberOfLikes}</div>
+        <div className="items-center flex justify-between">
+            <div className="flex gap-4 items-center">
+                <div className="flex gap-2 items-center">
+                    <Link onPress={onLikePress} as="button">
+                        {
+                            liked ?
+                                <SolidHeartIcon height={20} width={20}/> 
+                                : <HeartIcon height={20} width={20}/>
+                        }
+                    </Link>
+                    <div className="text-primary text-sm">{numberOfLikes}</div>
+                </div>
+                <div className="flex gap-2 items-center">
+                    <Link onPress={onOpenChange} as="button">
+                        {
+                            isOpen ? <SolidChatBubbleOvalLeftEllipsisIcon height={20} width={20}/> 
+                                : <ChatBubbleOvalLeftEllipsisIcon height={20} width={20}/> 
+                        }
+                    </Link>
+                    <div className="text-primary text-sm">{numberOfReplies}</div>
+                </div>
             </div>
-            <Link onPress={onOpenChange} as="button">
-                {
-                    isOpen ? <SolidChatBubbleOvalLeftEllipsisIcon height={20} width={20}/> 
-                        : <ChatBubbleOvalLeftEllipsisIcon height={20} width={20}/> 
-                }
-            </Link>
-        </div>
+        </div>   
     )
 }

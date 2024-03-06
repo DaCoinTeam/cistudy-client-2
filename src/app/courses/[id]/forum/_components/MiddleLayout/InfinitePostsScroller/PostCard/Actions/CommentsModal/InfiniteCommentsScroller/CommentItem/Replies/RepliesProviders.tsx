@@ -53,7 +53,11 @@ const WrappedRepliesProviders = ({ children }: { children: ReactNode }) => {
                             avatarId: true,
                             username: true,
                         },
+                        createdAt: true,
                     },
+                    metadata: {
+                        count: true
+                    }
                 }
             )
         },

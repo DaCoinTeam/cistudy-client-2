@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import { isErrorResponse } from "@common"
 import { toggleLikePost } from "@services"
 import { PostCardContext } from ".."
-import { InfinitePostsScrollerContext } from "../../InfinitePostsScrollerProviders"
+import { MiddleLayoutContext } from "../../../MiddleLayoutProviders"
 import { CommentsModal } from "./CommentsModal"
 import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline"
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid"
@@ -13,7 +13,7 @@ export const Actions = () => {
     const { post } = props
     const { postId, liked, numberOfLikes } = post
 
-    const { swrs } = useContext(InfinitePostsScrollerContext)!
+    const { swrs } = useContext(MiddleLayoutContext)!
     const { postsSwr } = swrs
     const { mutate } = postsSwr
 
