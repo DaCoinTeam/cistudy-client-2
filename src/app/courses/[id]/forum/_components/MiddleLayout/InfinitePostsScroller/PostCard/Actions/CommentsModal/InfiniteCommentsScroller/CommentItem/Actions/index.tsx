@@ -10,7 +10,7 @@ import {
 import { Link } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { CommentItemContext } from ".."
-import { toggleLikePostComment } from "../../../../../../../../../../../../../services/server"
+import { toggleLikePostComment } from "@services"
 import { CommentsModalContext } from "../../../CommentsModalProviders"
 
 export const Actions = () => {
@@ -34,8 +34,8 @@ export const Actions = () => {
     }
 
     return (
-        <div className="flex gap-3 items-center">
-            <div className="flex gap-1 items-center">
+        <div className="flex gap-4 items-center">
+            <div className="flex gap-2 items-center">
                 <Link onPress={onLikePress} as="button">
                     {
                         liked ?
@@ -45,12 +45,11 @@ export const Actions = () => {
                 </Link>
                 <div className="text-primary text-sm">{numberOfLikes}</div>
             </div>
-            <Link onPress={onOpenChange} as="button" size="sm">
+            <Link onPress={onOpenChange} as="button">
                 {
                     isOpen ? <SolidChatBubbleOvalLeftEllipsisIcon height={20} width={20}/> 
                         : <ChatBubbleOvalLeftEllipsisIcon height={20} width={20}/> 
                 }
-               
             </Link>
         </div>
     )

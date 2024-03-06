@@ -1,5 +1,5 @@
 import React, { createContext, useMemo } from "react"
-import { PostCommentEntity } from "@common"
+import { PostCommentEntity, parseTimeAgo } from "@common"
 import { Avatar, Spacer, useDisclosure } from "@nextui-org/react"
 import { getAssetUrl } from "@services"
 import {
@@ -31,7 +31,7 @@ export const CommentItemContext = createContext<CommentItemContextValue | null>(
 
 export const CommentItem = (props: CommentItemProps) => {
     const { postComment } = props
-    const { html, postCommentMedias, creator } = postComment
+    const { html, postCommentMedias, creator, createdAt } = postComment
     const { avatarId, username } = creator
 
     const commentDisclosure = useDisclosure()
@@ -51,9 +51,10 @@ export const CommentItem = (props: CommentItemProps) => {
             <div className="flex gap-2">
                 <Avatar src={getAssetUrl(avatarId)} />
                 <div className="flex-1">
-                    <div className="p-3 rounded-large border border-divider w-fit">   
-                        <div className="font-semibold text-sm"> {username} </div>
-                        <Spacer y={4.5}/>      
+                    <div className="font-semibold"> {username} </div>  
+                    <div className="text-xs text-foreground-500"> {parseTimeAgo(createdAt)} </div>                    
+                    <Spacer y={1}/>
+                    <div className="p-3 rounded-large border border-divider">   
                         <TextRenderer html={html} />
                         {postCommentMedias.length ? (
                             <MediaGroup
@@ -70,6 +71,7 @@ export const CommentItem = (props: CommentItemProps) => {
                     </div>
                     <Spacer y={1}/>
                     <Actions />
+                    <Spacer y={3}/>
                     <Replies />
                 </div>
             </div>

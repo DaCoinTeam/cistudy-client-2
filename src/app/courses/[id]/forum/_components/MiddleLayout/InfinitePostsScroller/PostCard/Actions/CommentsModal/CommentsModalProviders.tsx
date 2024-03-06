@@ -65,6 +65,7 @@ const WrappedCommentsModalProviders = ({
                     },
                     updatedAt: true,
                     liked: true,
+                    createdAt: true
                 },
                 metadata: {
                     count: true,

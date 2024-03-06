@@ -42,7 +42,7 @@ export const WrappedCreateCommentModal = () => {
             <Button
                 fullWidth
                 onPress={onOpen}
-                className="!justify-normal bg-content2"
+                className="!justify-normal bg-content2 px-3 text-foreground-500"
             >
         Create a comment...
             </Button>

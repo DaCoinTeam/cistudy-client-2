@@ -10,15 +10,12 @@ export const CreatePostCard = () => {
     const { data: profile } = profileSwr
 
     return (
-        <Card shadow="none" className="border border-divider">
-            <CardBody className="p-4">
-                <div className="flex gap-4 items-stretch">
-                    <Avatar size="lg" src={getAssetUrl(profile?.avatarId)} />
-                    <div className="flex-1 grid place-content-stretch" >
-                        <CreatePostModal className="h-full"/>
-                    </div>
-              
-                </div>
+        <Card shadow="none" className="border border-divider p-4">
+            <CardBody className="p-0 flex gap-2 flex-row items-stretch">
+                <Avatar src={getAssetUrl(profile?.avatarId)}/>
+                <div  className="flex-1">
+                    <CreatePostModal/>
+                </div>        
             </CardBody>
         </Card>
     )

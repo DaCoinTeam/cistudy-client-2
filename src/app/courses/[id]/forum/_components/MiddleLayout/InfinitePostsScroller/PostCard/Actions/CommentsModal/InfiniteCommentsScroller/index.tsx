@@ -30,15 +30,12 @@ export const InfiniteCommentsScroller = () => {
         return Math.ceil(last.metadata.count / COLUMNS_PER_PAGE)
     }
 
-    const onLoadMore = () => {
-        console.log("123")
-        setSize(size + 1)
-    } 
+    const onLoadMore = () => setSize(size + 1)
 
     return (
-        <ScrollShadow size={20} className="h-[500px]">
+        <ScrollShadow size={20} className="h-[500px]" hideScrollBar>
             <InfiniteScroll
-                className="flex flex-col gap-6"
+                className="flex flex-col gap-4"
                 pageStart={0}
                 initialLoad={false}
                 loadMore={onLoadMore}

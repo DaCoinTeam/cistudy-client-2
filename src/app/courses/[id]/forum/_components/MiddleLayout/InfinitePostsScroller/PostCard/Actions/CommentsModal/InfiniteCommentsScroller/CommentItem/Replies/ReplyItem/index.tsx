@@ -1,6 +1,6 @@
-import { Avatar } from "@nextui-org/react"
+import { User } from "@nextui-org/react"
 import React from "react"
-import { PostCommentReplyEntity } from "@common"
+import { PostCommentReplyEntity, parseTimeAgo } from "@common"
 import { getAssetUrl } from "@services"
 
 interface ReplyItemProps {
@@ -9,16 +9,21 @@ interface ReplyItemProps {
 
 export const ReplyItem = (props: ReplyItemProps) => {
     const { postCommentReply } = props
-    const { creator, content } = postCommentReply
+    const { creator, content, createdAt } = postCommentReply
     const { avatarId, username } = creator
 
     return (
-        <div className="flex gap-2">
-            <Avatar src={getAssetUrl(avatarId)} />
-            <div className="flex-1 items-center rounded-large bg-content2 p-3">
-                <div className="font-semibold text-sm">{username}</div>
-                <div className="text-sm">{content}</div>
-            </div>
-        </div>
+        <User
+            className="justify-normal"
+            name={content}
+            description={
+                <div className="flex gap-2 items-center">
+                    <div className="font-semibold"> {username} </div>
+                    •
+                    <div> {parseTimeAgo(createdAt)} </div>
+                </div>
+            }
+            avatarProps={{ src: getAssetUrl(avatarId), size: "sm" }}
+        />
     )
 }

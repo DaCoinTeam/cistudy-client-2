@@ -16,8 +16,9 @@ const WrappedCreateReply = () => {
 
     return (
         <div className="flex items-center gap-2">
-            <Avatar src={getAssetUrl(profile?.avatarId)} />
+            <Avatar src={getAssetUrl(profile?.avatarId)} size="sm" />
             <Input
+                size="sm"
                 placeholder="Create a reply..."
                 label=""
                 id="content"
@@ -30,6 +31,9 @@ const WrappedCreateReply = () => {
                         </Link>
                     ) : null
                 }
+                classNames={{
+                    inputWrapper: "bg-content2 px-3"
+                }}
                 isInvalid={!!(formik.touched.content && formik.values.content)}
                 errorMessage={formik.touched.content && formik.values.content}
                 labelPlacement="outside"

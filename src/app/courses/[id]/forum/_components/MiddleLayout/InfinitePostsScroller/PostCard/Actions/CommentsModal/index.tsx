@@ -7,20 +7,28 @@ import {
     ModalFooter,
     Link,
 } from "@nextui-org/react"
-import React from "react"
+import React, { useContext } from "react"
 import { InfiniteCommentsScroller } from "./InfiniteCommentsScroller"
 import { CreateCommentSection } from "./CreateCommentSection"
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline"
 import { CommentsModalProviders } from "./CommentsModalProviders"
+import { PostCardContext } from "../.."
 
 export const CommentsModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
+    const { props } = useContext(PostCardContext)!
+    const { post } = props
+    const { numberOfComments } = post
+
     return (
         <>
-            <Link as="button" onPress={onOpen}>
-                <ChatBubbleOvalLeftEllipsisIcon height={24} width={24} />
-            </Link>
+            <div className="flex items-center gap-2">
+                <Link as="button" onPress={onOpen}>
+                    <ChatBubbleOvalLeftEllipsisIcon height={24} width={24} />
+                </Link>
+                <div className="text-primary"> {numberOfComments} </div>
+            </div>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
                 <CommentsModalProviders>
                     <ModalContent>

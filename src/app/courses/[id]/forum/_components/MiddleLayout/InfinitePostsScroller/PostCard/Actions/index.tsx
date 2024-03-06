@@ -11,7 +11,7 @@ import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid"
 export const Actions = () => {
     const { props } = useContext(PostCardContext)!
     const { post } = props
-    const { postId, liked } = post
+    const { postId, liked, numberOfLikes } = post
 
     const { swrs } = useContext(InfinitePostsScrollerContext)!
     const { postsSwr } = swrs
@@ -30,28 +30,24 @@ export const Actions = () => {
         }
     }
 
-    const renderLikeButton = () => {
-        return (
-            <Link onPress={onPress} as="button">
-                {
-                    liked ?
-                        <SolidHeartIcon height={24} width={24} strokeWidth={3/2}/>
-                        : <HeartIcon height={24} width={24} />
-                }
-               
-            </Link>
-        )
-    }
-
     return (
         <div className="flex items-center justify-between">
+            <div className="flex gap-4 items-center">
+                <div className="flex gap-2 items-center">
+                    <Link onPress={onPress} as="button">
+                        {
+                            liked ?
+                                <SolidHeartIcon height={24} width={24} strokeWidth={3/2}/>
+                                : <HeartIcon height={24} width={24} />
+                        } 
+                    </Link>
+                    <div className="text-primary"> {numberOfLikes} </div>
+                </div>
+                <CommentsModal />
+            </div>
             <Link as="button">
                 <BookmarkIcon height={24} width={24} strokeWidth={3/2} />
             </Link>
-            <div className="flex gap-4 items-center">
-                {renderLikeButton()}
-                <CommentsModal />
-            </div>
         </div>
     )
 }

@@ -8,7 +8,13 @@ import {
 import { CommentItemContext } from ".."
 import { PostCommentReplyEntity } from "../../../../../../../../../../../../../common/types"
 
-const WrappedReplies = () => {
+interface RepliesProps {
+    className?: string
+}
+
+const WrappedReplies = (props: RepliesProps) => {
+    const { className } = props
+
     const { swrs } = useContext(RepliesContext)!
     const { postCommentRepliesSwr } = swrs
     const { data } = postCommentRepliesSwr
@@ -32,14 +38,14 @@ const WrappedReplies = () => {
     // }
 
     return (
-        <div className="flex flex-col gap-3 mt-4">
+        <div className={`flex flex-col gap-3 ${className ?? ""}`}>
             {getPostCommentReplies().map((postCommentReply) => (
                 <ReplyItem
                     key={postCommentReply.postCommentReplyId}
                     postCommentReply={postCommentReply}
                 />
             ))}
-            <CreateReply />
+            <CreateReply key={"createReply"} />
         </div>
     )
 }

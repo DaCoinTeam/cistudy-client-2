@@ -66,6 +66,7 @@ const WrappedInfinitePostsScrollerProviders = ({
                             avatarId: true,
                             username: true,
                         },
+                        createdAt: true,
                         updatedAt: true,
                         liked: true,
                     },

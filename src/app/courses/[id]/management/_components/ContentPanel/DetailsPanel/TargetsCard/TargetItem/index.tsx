@@ -60,9 +60,8 @@ export const TargetItem = (props: TargetItemProps) => {
             <Input
                 labelPlacement="outside"
                 label=""
-                variant="bordered"
                 classNames={{
-                    inputWrapper: "border shadow-none",
+                    inputWrapper: "bg-content2",
                 }}
                 onValueChange={onValueChange}
                 id="content"
