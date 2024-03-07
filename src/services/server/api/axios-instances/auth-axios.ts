@@ -31,14 +31,12 @@ authAxios.interceptors.request.use(
 
 authAxios.interceptors.response.use(
     async (response) => {
-        console.log(response)
         const { data, tokens } = response.data
         if (response.config.params?.authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
         return data
     },
     async (ex: AxiosError) => {
-        console.log(ex.response)
         const error = ex.response?.data as ErrorResponse
         const { statusCode } = error
         const authTokenType =
