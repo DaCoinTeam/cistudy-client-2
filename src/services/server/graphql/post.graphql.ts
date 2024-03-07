@@ -11,7 +11,7 @@ import {
     buildAuthPayloadString,
     PostCommentReplyEntity,
 } from "@common"
-import { client } from "./client.graphql"
+import { client } from "./client"
 import { ApolloError, gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 

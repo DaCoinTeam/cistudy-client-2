@@ -10,7 +10,7 @@ import {
     buildAuthPayloadString,
     saveTokens,
 } from "@common"
-import { client } from "./client.graphql"
+import { client } from "./client"
 import { ApolloError, gql } from "@apollo/client"
 
 export const init = async (
