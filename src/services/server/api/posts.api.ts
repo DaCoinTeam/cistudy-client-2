@@ -1,5 +1,4 @@
 import {
-    BaseResponse,
     MediaType,
 } from "@common"
 
@@ -32,12 +31,11 @@ export const createPost = async (
             formData.append("files", file)
         }
     }
-    const { data : responseData } = await authAxios.post(url, formData, {
+    return await authAxios.post(url, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
     })
-    return responseData
 }
 
 export const createComment = async (
@@ -62,14 +60,11 @@ export const createComment = async (
             formData.append("files", file)
         }
     }
-    const response = await authAxios.post(url, formData, {
+    return await authAxios.post(url, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
     })
-    const { data: responseData } =
-            response.data as BaseResponse<string>
-    return responseData
 }
 
 export const toggleLikePost = async (
@@ -106,8 +101,5 @@ export const createPostCommentReply = async (
 ): Promise<string> => {
     const { data } = input
     const url = `${BASE_URL}/create-post-comment-reply`
-    const response = await authAxios.post(url, data)
-    const { data: responseData } =
-            response.data as BaseResponse<string>
-    return responseData
+    return await authAxios.post(url, data)
 }
