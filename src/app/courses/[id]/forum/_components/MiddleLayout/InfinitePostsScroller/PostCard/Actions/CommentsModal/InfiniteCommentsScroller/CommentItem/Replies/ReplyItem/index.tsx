@@ -3,11 +3,6 @@ import React, { createContext, useContext, useEffect, useMemo } from "react"
 import { PostCommentReplyEntity, parseTimeAgo } from "@common"
 import { getAssetUrl, updatePostCommentReply } from "@services"
 import { MoreButton } from "./MoreButton"
-import {
-    ReplyItemAction,
-    ReplyItemState,
-    useReplyItemReducer,
-} from "./useReplyItemReducer"
 import { useFormik } from "formik"
 import { RepliesContext } from "../RepliesProviders"
 import { ClipboardXIcon, SaveIcon } from "lucide-react"
@@ -18,7 +13,6 @@ interface ReplyItemProps {
 
 interface ReplyItemContextValue {
   props: ReplyItemProps;
-  reducer: [ReplyItemState, React.Dispatch<ReplyItemAction>];
 }
 
 export const ReplyItemContext = createContext<ReplyItemContextValue | null>(
@@ -31,19 +25,17 @@ export const ReplyItem = (props: ReplyItemProps) => {
     postCommentReply
     const { avatarId, username } = creator
 
-    const { swrs } = useContext(RepliesContext)!
+    const { swrs, reducer } = useContext(RepliesContext)!
     const { postCommentRepliesSwr } = swrs
     const { mutate } = postCommentRepliesSwr
 
-    const reducer = useReplyItemReducer()
     const [state, dispatch] = reducer
 
     const replyItemContextValue: ReplyItemContextValue = useMemo(
         () => ({
             props,
-            reducer,
         }),
-        [props, reducer]
+        [props]
     )
 
     const formik = useFormik({
@@ -60,8 +52,8 @@ export const ReplyItem = (props: ReplyItemProps) => {
             })
             await mutate()
             dispatch({
-                type: "SET_IS_EDITED",
-                payload: false,
+                type: "SET_EDITED_POST_COMMENT_REPLY_ID",
+                payload: null,
             })
         },
     })
@@ -86,7 +78,7 @@ export const ReplyItem = (props: ReplyItemProps) => {
             <div className="flex gap-2 group/reply">
                 <Avatar size="sm" src={getAssetUrl(avatarId)} />
                 <div className="flex-1">
-                    {state.isEdited ? (
+                    {state.editedPostCommentReplyId === postCommentReplyId ? (
                         <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
                             <Input
                                 size="sm"

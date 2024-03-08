@@ -22,9 +22,11 @@ interface MoreButtonProps {
 export const MoreButton = (props: MoreButtonProps) => {
     const { className } = props
 
-    const { props: replyItemProps, reducer } = useContext(ReplyItemContext)!
+    const { props: replyItemProps } = useContext(ReplyItemContext)!
     const { postCommentReply } = replyItemProps
     const { postCommentReplyId } = postCommentReply
+
+    const { reducer } = useContext(RepliesContext)!
     const [, dispatch ] = reducer
 
     const { swrs } = useContext(RepliesContext)!
@@ -39,8 +41,8 @@ export const MoreButton = (props: MoreButtonProps) => {
 
     const onEditPress = () => {
         dispatch({
-            type: "SET_IS_EDITED",
-            payload: true
+            type: "SET_EDITED_POST_COMMENT_REPLY_ID",
+            payload: postCommentReplyId
         })
     }
 

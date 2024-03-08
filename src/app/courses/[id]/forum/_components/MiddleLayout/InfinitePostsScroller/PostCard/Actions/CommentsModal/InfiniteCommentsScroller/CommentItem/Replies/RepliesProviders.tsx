@@ -14,6 +14,7 @@ import { ErrorResponse } from "@common"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
 import { SWRConfig } from "swr"
 import { CommentItemContext } from ".."
+import { RepliesAction, RepliesState, useRepliesReducer } from "./useRepliesReducer"
 
 export interface RepliesContextValue {
   swrs: {
@@ -22,6 +23,7 @@ export interface RepliesContextValue {
       ErrorResponse
     >;
   };
+  reducer: [RepliesState, React.Dispatch<RepliesAction>]
 }
 
 export const COLUMNS_PER_PAGE = 5
@@ -32,6 +34,8 @@ const WrappedRepliesProviders = ({ children }: { children: ReactNode }) => {
     const { props } = useContext(CommentItemContext)!
     const { postComment } = props
     const { postCommentId } = postComment
+
+    const reducer = useRepliesReducer()
 
     const fetchPostCommentReplies = useCallback(
         async ([key]: [number, string]) => {
@@ -78,8 +82,9 @@ const WrappedRepliesProviders = ({ children }: { children: ReactNode }) => {
             swrs: {
                 postCommentRepliesSwr,
             },
+            reducer
         }),
-        [postCommentRepliesSwr]
+        [postCommentRepliesSwr, reducer]
     )
 
     return (
