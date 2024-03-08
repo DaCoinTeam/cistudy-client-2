@@ -61,8 +61,9 @@ export const TargetItem = (props: TargetItemProps) => {
                 labelPlacement="outside"
                 label=""
                 classNames={{
-                    inputWrapper: "bg-content2",
+                    inputWrapper: "shadow-none border border-divider",
                 }}
+                variant="bordered"
                 onValueChange={onValueChange}
                 id="content"
                 value={value}

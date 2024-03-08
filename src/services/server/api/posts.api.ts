@@ -92,9 +92,23 @@ export interface UpdatePostCommentOutput { }
 export const updatePostComment = async (
     input: UpdatePostCommentInput
 ): Promise<UpdatePostCommentOutput> => {
-    const { data } = input
+    const { data, files } = input
     const url = `${BASE_URL}/update-post-comment`
-    return await authAxios.put(url, data)
+
+    const formData = new FormData()
+    formData.append("data", JSON.stringify(data))
+
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
+        }
+    }
+
+    return await authAxios.put(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
 }
 
 export interface DeletePostCommentInput {

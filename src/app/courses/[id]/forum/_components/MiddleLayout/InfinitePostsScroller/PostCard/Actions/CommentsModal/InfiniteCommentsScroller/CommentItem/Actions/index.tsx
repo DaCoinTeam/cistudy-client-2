@@ -35,7 +35,7 @@ export const Actions = () => {
 
     return (
         <div className="items-center flex justify-between">
-            <div className="flex gap-3 items-center">
+            <div className="flex gap-4 items-center">
                 <div className="flex gap-1 items-center">
                     <Link onPress={onLikePress} as="button">
                         {

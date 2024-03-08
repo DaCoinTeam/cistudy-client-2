@@ -1,5 +1,5 @@
 import { Skeleton } from "@nextui-org/react"
-import React from "react"
+import React, { useEffect } from "react"
 import { EditorContent, useEditor } from "@tiptap/react"
 import CodeBlock from "@tiptap/extension-code-block"
 import Color from "@tiptap/extension-color"
@@ -29,6 +29,12 @@ export const TextRenderer = (props: TextRendererProps) => {
             }
         }
     })
+
+    useEffect(() => {
+        if (editor === null) return
+        if (!html) return
+        editor.commands.setContent(html)
+    }, [html])
 
     return (
         <div className={className}>

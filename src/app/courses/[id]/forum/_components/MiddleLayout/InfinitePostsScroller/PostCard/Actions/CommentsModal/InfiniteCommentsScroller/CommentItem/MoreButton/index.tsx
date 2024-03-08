@@ -14,6 +14,7 @@ import {
 } from "../../../../../../../../../../../../_shared"
 import { CommentItemContext } from ".."
 import { CommentsModalContext } from "../../../CommentsModalProviders"
+import { EditCommentModalRef, EditCommentModalRefSelectors } from "./EditCommentModalRef"
 
 interface MoreButtonProps {
   className?: string;
@@ -36,8 +37,8 @@ export const MoreButton = (props: MoreButtonProps) => {
     const onConfirmDeleteModalOpen = () =>
         confirmDeleteModalRef.current?.onOpen()
 
-    const onEditPress = () => {
-    }
+    const editCommentModalRef = useRef<EditCommentModalRefSelectors | null>(null)
+    const onEditCommentModalOpen = () => editCommentModalRef.current?.onOpen()
 
     const onDeletePress = async () => {
         await deletePostComment({
@@ -58,17 +59,14 @@ export const MoreButton = (props: MoreButtonProps) => {
                 }}
             >
                 <DropdownTrigger>
-                    <Link
-                        as="button"
-                        className={`${className} bg-transparent`}
-                    >
+                    <Link as="button" className={`${className} bg-transparent`}>
                         <MoreVertical size={20} strokeWidth={3 / 2} />
                     </Link>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
                     <DropdownItem
                         startContent={<PenLineIcon size={20} strokeWidth={3 / 2} />}
-                        onPress={onEditPress}
+                        onPress={onEditCommentModalOpen}
                         key="edit"
                     >
             Edit
@@ -84,12 +82,15 @@ export const MoreButton = (props: MoreButtonProps) => {
                     </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
-            <ConfirmDeleteModalRef
-                ref={confirmDeleteModalRef}
-                title="Delete Comment"
-                content="Are you sure you want to delete this comment? All references will be lost, and you cannot undo this action."
-                onDeletePress={onDeletePress}
-            />
+            <div className="hidden">
+                <EditCommentModalRef ref={editCommentModalRef}/>
+                <ConfirmDeleteModalRef
+                    ref={confirmDeleteModalRef}
+                    title="Delete Comment"
+                    content="Are you sure you want to delete this comment? All references will be lost, and you cannot undo this action."
+                    onDeletePress={onDeletePress}
+                />
+            </div> 
         </>
     )
 }

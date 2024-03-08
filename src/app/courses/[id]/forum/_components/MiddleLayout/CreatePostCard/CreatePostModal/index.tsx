@@ -48,8 +48,9 @@ export const WrappedCreatePostModal = () => {
                     label="Title"
                     id="title"
                     classNames={{
-                        inputWrapper: "shadow-none",
+                        inputWrapper: "shadow-none border border-divider",
                     }}
+                    variant="bordered"
                     labelPlacement="outside"
                     placeholder="Input title here"
                     value={formik.values.title}

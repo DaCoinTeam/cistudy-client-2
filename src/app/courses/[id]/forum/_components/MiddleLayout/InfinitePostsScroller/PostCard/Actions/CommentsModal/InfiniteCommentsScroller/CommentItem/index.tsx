@@ -32,7 +32,7 @@ export const CommentItemContext = createContext<CommentItemContextValue | null>(
 
 export const CommentItem = (props: CommentItemProps) => {
     const { postComment } = props
-    const { html, postCommentMedias, creator, createdAt } = postComment
+    const { html, postCommentMedias, creator, createdAt, updatedAt } = postComment
     const { avatarId, username } = creator
 
     const commentDisclosure = useDisclosure()
@@ -47,6 +47,8 @@ export const CommentItem = (props: CommentItemProps) => {
         [props, commentDisclosure]
     )
 
+    const isEdited = createdAt !== updatedAt
+
     return (
         <CommentItemContext.Provider value={commentItemContextValue}>
             <div className="flex gap-2 group/comment">
@@ -55,7 +57,10 @@ export const CommentItem = (props: CommentItemProps) => {
                     <div className="flex items-center justify-between">
                         <div>
                             <div className="font-semibold"> {username} </div>    
-                            <div className="text-xs text-foreground-500"> {parseTimeAgo(createdAt)} </div>                
+                            <div className="text-xs text-foreground-500 flex gap-2 items-center">
+                                <div>{parseTimeAgo(updatedAt)}</div>
+                                <div>{isEdited ? "Edited" : ""}</div>
+                            </div>            
                         </div>
                         <MoreButton className="transition-opacity opacity-0 group-hover/comment:opacity-100"/>
                     </div>

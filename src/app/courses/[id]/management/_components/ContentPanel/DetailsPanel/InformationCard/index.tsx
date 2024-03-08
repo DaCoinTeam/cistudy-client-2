@@ -36,8 +36,9 @@ export const WrappedInformationCard = (props: InformationCardProps) => {
                     labelPlacement="outside"
                     value={formik.values.title}
                     classNames={{
-                        inputWrapper: "shadow-none",
+                        inputWrapper: "shadow-none border border-divider",
                     }}
+                    variant="bordered"
                     placeholder="Input title here"
                     onChange={formik.handleChange}
                     isInvalid={!!(formik.touched.title && formik.errors.title)}
@@ -49,8 +50,9 @@ export const WrappedInformationCard = (props: InformationCardProps) => {
                     value={formik.values.description}
                     labelPlacement="outside"
                     classNames={{
-                        inputWrapper: "bg-content2"
+                        inputWrapper: "shadow-none border border-divider"
                     }}
+                    variant="bordered"
                     onChange={formik.handleChange}
                     isInvalid={!!(formik.touched.description && formik.errors.description)}
                     errorMessage={!!(formik.touched.description && formik.errors.description)}
