@@ -11,9 +11,9 @@ const Rating = ({isHeading} : RatingProps) => {
             {isHeading ? (
                 <>
                     <StarIcon   className="text-yellow-400 w-7 h-7 "   />
-                    <p className="ms-2 text-xl font-bold text-gray-900 dark:text-white">4.95 </p>
+                    <p className="ms-2 text-lg font-bold text-gray-900 dark:text-white">4.95 </p>
                     <span className="w-2 h-2 mx-2 bg-gray-500 rounded-full dark:bg-gray-400 "></span>
-                    <a href="#" className="text-xl font-bold text-gray-900  dark:text-white">73 reviews</a>
+                    <a href="#" className="text-lg font-bold text-gray-900  dark:text-white">73 reviews</a>
                 </>
             ): (
                 <>

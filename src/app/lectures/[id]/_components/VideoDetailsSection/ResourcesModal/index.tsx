@@ -36,7 +36,7 @@ export const ResourcesModal = (props: ResourcesModalProps) => {
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
-                    <ModalHeader className="p-4 pb-2 text-xl font-bold ">
+                    <ModalHeader className="p-4 pb-2 text-lg font-bold ">
             Resources
                     </ModalHeader>
                     <ModalBody className="p-4 gap-4">

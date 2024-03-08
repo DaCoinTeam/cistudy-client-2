@@ -13,7 +13,7 @@ export const PreviewCard = (props: PreviewCardProps) => {
 
     return (
         <Card shadow="none" className={`${className} border border-divider`}>
-            <CardHeader className="p-4 pb-2 justify-between text-xl  font-bold items-center">
+            <CardHeader className="p-4 pb-2 justify-between text-lg  font-bold items-center">
                 Preview
             </CardHeader> 
             <CardBody className="p-4 pt-2">

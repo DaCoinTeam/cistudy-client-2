@@ -36,7 +36,7 @@ const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
         return (
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
                 <ModalContent>
-                    <ModalHeader className="p-4 pb-2 text-xl">Edit</ModalHeader>
+                    <ModalHeader className="p-4 pb-2 text-lg">Edit</ModalHeader>
                     <ModalBody className="p-4">
                         <Input
                             id="title"

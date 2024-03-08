@@ -40,7 +40,7 @@ export const WrappedCreatePostModal = () => {
 
     return (
         <>
-            <ModalHeader className="p-4 pb-2 text-xl font-bold ">
+            <ModalHeader className="p-4 pb-2 text-lg font-bold ">
         Create Post
             </ModalHeader>
             <ModalBody className="p-4 gap-4">

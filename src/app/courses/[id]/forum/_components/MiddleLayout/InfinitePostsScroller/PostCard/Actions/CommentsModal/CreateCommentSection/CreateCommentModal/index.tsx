@@ -38,7 +38,7 @@ export const WrappedCreateCommentModal = () => {
 
     return (
         <>
-            <ModalHeader className="flex flex-col p-4 font-bold text-xl pb-2">
+            <ModalHeader className="flex flex-col p-4 font-bold text-lg pb-2">
         Create Comment
             </ModalHeader>
             <ModalBody className="p-4">

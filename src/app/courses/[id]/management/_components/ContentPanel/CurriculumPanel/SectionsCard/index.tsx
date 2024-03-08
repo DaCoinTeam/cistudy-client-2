@@ -50,7 +50,7 @@ export const SectionsCard = () => {
 
     return (
         <Card shadow="none" className="border border-divider">
-            <CardHeader className="p-4 pb-2 justify-between text-xl  font-bold items-center">
+            <CardHeader className="p-4 pb-2 justify-between text-lg  font-bold items-center">
                 Sections
             </CardHeader> 
             <CardBody className="p-4 gap-4">

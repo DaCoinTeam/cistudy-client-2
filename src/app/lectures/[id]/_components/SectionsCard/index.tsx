@@ -66,7 +66,7 @@ export const SectionsCard = (props: SectionsCardProps) => {
 
     return (
         <Card shadow="none" className={`${className} bg-transparent border border-divider`}>
-            <CardHeader className="text-xl font-bold  p-4 pb-2"> Sections </CardHeader>
+            <CardHeader className="text-lg font-bold  p-4 pb-2"> Sections </CardHeader>
             <CardBody className="p-0">
                 <ScrollShadow className="h-full">
                     <Accordion

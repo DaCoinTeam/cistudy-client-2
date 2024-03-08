@@ -19,7 +19,7 @@ export const EditProfileModal = () => {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="p-6 pb-0 text-xl font-bold ">Edit</ModalHeader>
+                            <ModalHeader className="p-6 pb-0 text-lg font-bold ">Edit</ModalHeader>
                             <ModalBody className="p-6">
                             </ModalBody>
                             <ModalFooter className="p-6 gap-4 pt-0">
