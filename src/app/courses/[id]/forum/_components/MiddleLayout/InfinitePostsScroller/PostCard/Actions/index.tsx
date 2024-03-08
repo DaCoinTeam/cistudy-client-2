@@ -32,8 +32,8 @@ export const Actions = () => {
 
     return (
         <div className="flex items-center justify-between">
-            <div className="flex gap-4 items-center">
-                <div className="flex gap-2 items-center">
+            <div className="flex gap-3 items-center">
+                <div className="flex gap-1 items-center">
                     <Link onPress={onPress} as="button">
                         {
                             liked ?

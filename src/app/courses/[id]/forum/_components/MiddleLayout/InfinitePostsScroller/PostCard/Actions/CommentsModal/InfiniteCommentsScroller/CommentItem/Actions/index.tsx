@@ -35,8 +35,8 @@ export const Actions = () => {
 
     return (
         <div className="items-center flex justify-between">
-            <div className="flex gap-4 items-center">
-                <div className="flex gap-2 items-center">
+            <div className="flex gap-3 items-center">
+                <div className="flex gap-1 items-center">
                     <Link onPress={onLikePress} as="button">
                         {
                             liked ?
@@ -46,7 +46,7 @@ export const Actions = () => {
                     </Link>
                     <div className="text-primary text-sm">{numberOfLikes}</div>
                 </div>
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-1 items-center">
                     <Link onPress={onOpenChange} as="button">
                         {
                             isOpen ? <SolidChatBubbleOvalLeftEllipsisIcon height={20} width={20}/> 

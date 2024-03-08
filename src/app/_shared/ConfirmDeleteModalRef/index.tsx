@@ -42,7 +42,7 @@ export const ConfirmDeleteModalRef = forwardRef<
                             <div className="text-sm">{content}</div>
                         </ModalBody>
                         <ModalFooter className="p-4 pt-2">
-                            <Button startContent={<ArrowLeftIcon size={20} strokeWidth={3/2}/>} className="bg-content2" onPress={onClose}>
+                            <Button startContent={<ArrowLeftIcon size={20} strokeWidth={3/2}/>} variant="light" onPress={onClose}>
                 Cancel
                             </Button>
                             <Button startContent={<XIcon size={20} strokeWidth={3/2}/>} color="danger" onPress={onDeletePress}>

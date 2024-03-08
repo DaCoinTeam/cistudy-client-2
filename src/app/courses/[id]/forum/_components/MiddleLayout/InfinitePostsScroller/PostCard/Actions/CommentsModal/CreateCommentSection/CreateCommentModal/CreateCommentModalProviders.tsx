@@ -2,7 +2,7 @@
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext } from "react"
 import { AppendKey, Media } from "@common"
-import { createComment } from "@services"
+import { createPostComment } from "@services"
 import { PostCardContext } from "../../../.."
 import { CommentsModalContext } from "../../CommentsModalProviders"
 
@@ -64,7 +64,7 @@ export const CreateCommentModalProviders = ({ children, onClose }: { children: R
                     return result
                 })
 
-                await createComment({
+                await createPostComment({
                     data: {
                         postId,
                         html,

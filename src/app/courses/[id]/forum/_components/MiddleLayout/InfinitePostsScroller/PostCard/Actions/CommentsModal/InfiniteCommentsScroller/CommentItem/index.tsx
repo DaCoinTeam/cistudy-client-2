@@ -8,6 +8,7 @@ import {
 } from "../../../../../../../../../../../_shared"
 import { Actions } from "./Actions"
 import { Replies } from "./Replies"
+import { MoreButton } from "./MoreButton"
 
 interface CommentItemProps {
   postComment: PostCommentEntity;
@@ -48,11 +49,17 @@ export const CommentItem = (props: CommentItemProps) => {
 
     return (
         <CommentItemContext.Provider value={commentItemContextValue}>
-            <div className="flex gap-2">
+            <div className="flex gap-2 group/comment">
                 <Avatar src={getAssetUrl(avatarId)} />
                 <div className="flex-1">
-                    <div className="font-semibold"> {username} </div>    
-                    <div className="text-xs text-foreground-500"> {parseTimeAgo(createdAt)} </div>                  
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="font-semibold"> {username} </div>    
+                            <div className="text-xs text-foreground-500"> {parseTimeAgo(createdAt)} </div>                
+                        </div>
+                        <MoreButton className="transition-opacity opacity-0 group-hover/comment:opacity-100"/>
+                    </div>
+                     
                     <Spacer y={1}/>
                     <div className="p-3 rounded-large bg-content2">   
                         <TextRenderer html={html} />

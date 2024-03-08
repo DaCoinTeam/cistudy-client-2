@@ -23,7 +23,7 @@ export const CommentsModal = () => {
 
     return (
         <>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
                 <Link as="button" onPress={onOpen}>
                     <ChatBubbleOvalLeftEllipsisIcon height={24} width={24} />
                 </Link>

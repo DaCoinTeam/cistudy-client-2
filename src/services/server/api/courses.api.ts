@@ -3,27 +3,30 @@ import { authAxios } from "./axios-instances"
 
 const BASE_URL = `${endpointConfig().api}/courses`
 
-export const createCourse = async (
-): Promise<{
+export interface CreateCourseOutput {
     courseId: string;
-}> => {
+}
+
+export const createCourse = async (): Promise<CreateCourseOutput> => {
     const url = `${BASE_URL}/create-course`
     return await authAxios.post(url)
 }
 
+export interface UpdateCourseInput {
+    data: {
+        courseId: string;
+        title?: string;
+        description?: string;
+        price?: number;
+        thumbnailIndex?: number;
+        previewVideoIndex?: number;
+        targets?: Array<string>;
+    };
+    files?: Array<File>;
+}
+
 export const updateCourse = async (
-    input: {
-        data: {
-            courseId: string;
-            title?: string;
-            description?: string;
-            price?: number;
-            thumbnailIndex?: number;
-            previewVideoIndex?: number;
-            targets?: Array<string>;
-        };
-        files?: Array<File>;
-    },
+    input: UpdateCourseInput
 ): Promise<string> => {
     const { data, files } = input
     const url = `${BASE_URL}/update-course`
@@ -43,13 +46,15 @@ export const updateCourse = async (
     })
 }
 
+export interface CreateCourseTargetInput {
+    data: {
+        courseId: string;
+        content: string;
+    };
+}
+
 export const createCourseTarget = async (
-    input: {
-        data: {
-            courseId: string;
-            content: string;
-        };
-    },
+    input: CreateCourseTargetInput
 ): Promise<string> => {
     const { data } = input
     const url = `${BASE_URL}/create-course-target`
@@ -57,14 +62,16 @@ export const createCourseTarget = async (
     return await authAxios.post(url, data)
 }
 
+export interface UpdateCourseTargetInput {
+    data: {
+        courseTargetId: string;
+        content: string;
+    };
+    signal?: AbortSignal;
+}
+
 export const updateCourseTarget = async (
-    input: {
-        data: {
-            courseTargetId: string;
-            content: string;
-        };
-        signal?: AbortSignal;
-    },
+    input: UpdateCourseTargetInput
 ): Promise<string> => {
     const { data, signal } = input
     const url = `${BASE_URL}/update-course-target`
@@ -74,12 +81,14 @@ export const updateCourseTarget = async (
     })
 }
 
+export interface DeleteCourseTargetInput {
+    data: {
+        courseTargetId: string;
+    };
+}
+
 export const deleteCourseTarget = async (
-    input: {
-        data: {
-            courseTargetId: string;
-        };
-    },
+    input: DeleteCourseTargetInput
 ): Promise<string> => {
     const { data } = input
     const { courseTargetId } = data
@@ -88,13 +97,15 @@ export const deleteCourseTarget = async (
     return await authAxios.delete(url)
 }
 
+export interface CreateLectureInput {
+    data: {
+        sectionId: string;
+        title: string;
+    };
+}
+
 export const createLecture = async (
-    input: {
-        data: {
-            sectionId: string;
-            title: string;
-        };
-    }
+    input: CreateLectureInput
 ): Promise<string> => {
     const { data } = input
     const url = `${BASE_URL}/create-lecture`
@@ -102,16 +113,18 @@ export const createLecture = async (
     return await authAxios.post(url, data,)
 }
 
+export interface UpdateLectureInput {
+    data: {
+        lectureId: string;
+        title?: string;
+        thumbnailIndex?: number;
+        lectureVideoIndex?: number;
+    };
+    files?: Array<File>;
+}
+
 export const updateLecture = async (
-    input: {
-        data: {
-            lectureId: string;
-            title?: string;
-            thumbnailIndex?: number;
-            lectureVideoIndex?: number;
-        };
-        files?: Array<File>;
-    }
+    input: UpdateLectureInput
 ): Promise<string> => {
     const { data, files } = input
     const url = `${BASE_URL}/update-lecture`
@@ -131,12 +144,14 @@ export const updateLecture = async (
     })
 }
 
+export interface DeleteLectureInput {
+    data: {
+        lectureId: string;
+    };
+}
+
 export const deleteLecture = async (
-    input: {
-        data: {
-            lectureId: string;
-        };
-    }
+    input: DeleteLectureInput
 ): Promise<string> => {
     const { data } = input
     const { lectureId } = data
@@ -145,13 +160,15 @@ export const deleteLecture = async (
     return await authAxios.delete(url)
 }
 
+export interface CreateResourcesInput {
+    data: {
+        lectureId: string;
+    };
+    files: Array<File>;
+}
+
 export const createResources = async (
-    input: {
-        data: {
-            lectureId: string;
-        };
-        files: Array<File>;
-    },
+    input: CreateResourcesInput
 ): Promise<string> => {
     const { data, files } = input
     const url = `${BASE_URL}/create-resources`
@@ -167,13 +184,15 @@ export const createResources = async (
     return await authAxios.post(url, formData)
 }
 
+export interface CreateSectionInput {
+    data: {
+        courseId: string;
+        title?: string;
+    };
+}
+
 export const createSection = async (
-    input: {
-        data: {
-            courseId: string;
-            title?: string;
-        };
-    }
+    input: CreateSectionInput
 ): Promise<string> => {
     const { data } = input
     const url = `${BASE_URL}/create-section`
@@ -181,13 +200,15 @@ export const createSection = async (
     return await authAxios.post(url, data)
 }
 
+export interface UpdateSectionInput {
+    data: {
+        sectionId: string;
+        title?: string;
+    };
+}
+
 export const updateSection = async (
-    input: {
-        data: {
-            sectionId: string;
-            title?: string;
-        };
-    }
+    input: UpdateSectionInput
 ): Promise<string> => {
     const { data } = input
     const url = `${BASE_URL}/update-section`
@@ -195,12 +216,14 @@ export const updateSection = async (
     return await authAxios.put(url, data)
 }
 
+export interface DeleteSectionInput {
+    data: {
+        sectionId: string;
+    };
+}
+
 export const deleteSection = async (
-    input: {
-        data: {
-            sectionId: string;
-        };
-    }
+    input: DeleteSectionInput
 ): Promise<string> => {
     const { data } = input
     const { sectionId } = data
@@ -209,12 +232,14 @@ export const deleteSection = async (
     return await authAxios.delete(url)
 }
 
+export interface DeleteResourceInput {
+    data: {
+        resourceId: string;
+    };
+}
+
 export const deleteResource = async (
-    input: {
-        data: {
-            resourceId: string;
-        };
-    }
+    input: DeleteResourceInput
 ): Promise<string> => {
     const { data } = input
     const { resourceId } = data

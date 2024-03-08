@@ -81,7 +81,7 @@ export const CreateCommentModal = () => {
             <Button
                 fullWidth
                 onPress={onOpen}
-                className="!justify-normal bg-content2 px-3 text-foreground-500"
+                className="!justify-normal px-3 text-foreground-500"
             >
         Create a comment...
             </Button>

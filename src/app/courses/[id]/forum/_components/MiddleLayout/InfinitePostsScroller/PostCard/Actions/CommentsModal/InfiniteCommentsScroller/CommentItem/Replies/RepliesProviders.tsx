@@ -54,6 +54,7 @@ const WrappedRepliesProviders = ({ children }: { children: ReactNode }) => {
                             username: true,
                         },
                         createdAt: true,
+                        updatedAt: true
                     },
                     metadata: {
                         count: true

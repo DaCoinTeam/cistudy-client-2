@@ -48,7 +48,7 @@ export const WrappedCreatePostModal = () => {
                     label="Title"
                     id="title"
                     classNames={{
-                        inputWrapper: "bg-content2",
+                        inputWrapper: "shadow-none",
                     }}
                     labelPlacement="outside"
                     placeholder="Input title here"
@@ -95,7 +95,7 @@ export const CreatePostModal = (props: CreatePostModalProps) => {
             <Button
                 fullWidth
                 onPress={onOpen}
-                className={`${className} !justify-normal bg-content2 px-3 text-foreground-500`}
+                className={`${className} !justify-normal px-3 text-foreground-500`}
             >
         Create a post
             </Button>

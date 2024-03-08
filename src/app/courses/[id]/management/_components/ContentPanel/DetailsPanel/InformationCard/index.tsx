@@ -36,7 +36,7 @@ export const WrappedInformationCard = (props: InformationCardProps) => {
                     labelPlacement="outside"
                     value={formik.values.title}
                     classNames={{
-                        inputWrapper: "bg-content2"
+                        inputWrapper: "shadow-none",
                     }}
                     placeholder="Input title here"
                     onChange={formik.handleChange}
