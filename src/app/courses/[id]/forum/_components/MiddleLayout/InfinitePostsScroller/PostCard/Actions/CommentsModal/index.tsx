@@ -29,7 +29,7 @@ export const CommentsModal = () => {
                 </Link>
                 <div className="text-primary"> {numberOfComments} </div>
             </div>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
                 <CommentsModalProviders>
                     <ModalContent>
                         <ModalHeader className="p-4 pb-2 text-lg  font-bold">

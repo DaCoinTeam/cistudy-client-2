@@ -14,7 +14,17 @@ export const MediaItem = (props: MediaItemProps) => {
         <>
             {
                 mediaType == MediaType.Image ? 
-                    <Image alt="image" src={getAssetUrl(mediaId)} />
+                    (
+                        <Image
+                            classNames={{
+                                wrapper:
+        "w-full !max-w-full aspect-video grid content-center overflow-hidden",
+                            }}
+                            alt="preview"
+                            src={getAssetUrl(mediaId)}
+                            className="w-full"
+                        />
+                    )
                     : <div/>
             }
         </>
