@@ -1,6 +1,6 @@
 "use client"
 import { AppendKey, Media, getMediaType } from "@common"
-import React, { createContext, forwardRef, useContext, useImperativeHandle, useMemo, useRef } from "react"
+import React, { createContext, forwardRef, memo, useContext, useImperativeHandle, useMemo, useRef } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { XMarkIcon } from "@heroicons/react/24/solid"
 import { Badge, Image } from "@nextui-org/react"
@@ -22,7 +22,7 @@ interface MediaUploaderContextValue {
 export const MediaUploaderContext =
   createContext<MediaUploaderContextValue | null>(null)
 
-const WrappedMediaUploader = () => {
+const WrappedMediaUploaderRef = () => {
     const { props, functions } = useContext(MediaUploaderContext)!
     const { medias } = props
     const { deleteMedia } = functions
@@ -87,8 +87,8 @@ export interface MediaUploaderRefSelectors {
     onDirectoryOpen: () => void
 } 
 
-export const MediaUploaderRef = forwardRef<MediaUploaderRefSelectors, MediaUploaderProps>((props, ref) => {
-    const { medias: propsMedias, setMedias } = props
+export const MediaUploaderRef = memo(forwardRef<MediaUploaderRefSelectors, MediaUploaderProps>((props, ref) => {
+    const { medias: propsMedias, setMedias, className } = props
 
     const fileInputRef = useRef<HTMLInputElement | null>(null)
     const onDirectoryOpen = () => {
@@ -143,8 +143,8 @@ export const MediaUploaderRef = forwardRef<MediaUploaderRefSelectors, MediaUploa
     return (
         <>
             <MediaUploaderContext.Provider value={mediaUploaderContextValue}>
-                <div className={props.className}>
-                    <WrappedMediaUploader />
+                <div className={propsMedias.length > 0 ? className : ""}>
+                    <WrappedMediaUploaderRef />
                 </div>
             </MediaUploaderContext.Provider>
             <input
@@ -157,4 +157,4 @@ export const MediaUploaderRef = forwardRef<MediaUploaderRefSelectors, MediaUploa
             />
         </>
     )
-})
+}))

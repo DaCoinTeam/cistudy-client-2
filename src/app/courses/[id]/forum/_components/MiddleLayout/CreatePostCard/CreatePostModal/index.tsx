@@ -17,7 +17,11 @@ import {
 } from "./CreatePostModalProviders"
 import { PlusIcon, ImageIcon } from "lucide-react"
 import { AppendKey, Media } from "@common"
-import { MediaUploaderRef, MediaUploaderRefSelectors, TextEditor } from "../../../../../../../_shared"
+import {
+    MediaUploaderRef,
+    MediaUploaderRefSelectors,
+    TextEditor,
+} from "../../../../../../../_shared"
 
 interface CreatePostModalProps {
   className?: string;
@@ -63,9 +67,10 @@ export const WrappedCreatePostModal = () => {
                     isInvalid={!!(formik.touched.title && formik.errors.title)}
                     errorMessage={formik.touched.title && formik.errors.title}
                 />
-                <Spacer y={4}/>
+                <Spacer y={4} />
                 <TextEditor html={formik.values.html} setHtml={setHtml} />
                 <MediaUploaderRef
+                    className="mt-4"
                     ref={mediaUploaderRef}
                     medias={formik.values.postMedias}
                     setMedias={setPostMedias}
@@ -73,19 +78,23 @@ export const WrappedCreatePostModal = () => {
             </ModalBody>
             <ModalFooter className="p-4 pt-2 justify-between items-center">
                 <div className="flex gap-2 items-center">
-                    <Button variant="light" startContent={<ImageIcon height={20} width={20} strokeWidth={3/2}/>} as="button" onPress={onDirectoryOpen}>
-                        Add Images
+                    <Button
+                        variant="light"
+                        isIconOnly
+                        as="button"
+                        onPress={onDirectoryOpen}
+                        color="primary"
+                    >
+                        <ImageIcon height={20} width={20} strokeWidth={3 / 2} />
                     </Button>
                 </div>
                 <div className="flex gap-2 items-center">
-                    <Button
-                        variant="light"
-                    >
-            Reset
-                    </Button>
+                    <Button variant="light">Reset</Button>
                     <Button
                         onPress={onPress}
-                        startContent={<PlusIcon height={20} width={20} strokeWidth={3/2}/>}
+                        startContent={
+                            <PlusIcon height={20} width={20} strokeWidth={3 / 2} />
+                        }
                         color="primary"
                         className="text-secondary-foreground"
                     >
@@ -113,7 +122,7 @@ export const CreatePostModal = (props: CreatePostModalProps) => {
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
-                size="4xl"
+                size="2xl"
                 classNames={{
                     closeButton: "top-3 right-3",
                 }}

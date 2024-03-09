@@ -4,6 +4,7 @@ import React, {
     useContext,
     useEffect,
     useImperativeHandle,
+    useRef,
 } from "react"
 import {
     Button,
@@ -12,7 +13,6 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
-    Spacer,
     useDisclosure,
 } from "@nextui-org/react"
 import {
@@ -22,9 +22,10 @@ import {
 import { AppendKey, Media } from "@common"
 import {
     TextEditor,
-    MediaUploader,
+    MediaUploaderRef,
+    MediaUploaderRefSelectors,
 } from "../../../../../../../../../../../../../_shared"
-import { RotateCcw, SaveIcon } from "lucide-react"
+import { ImageIcon, RotateCcw, SaveIcon } from "lucide-react"
 import { CommentItemContext } from "../.."
 import { getAssetFile } from "../../../../../../../../../../../../../../services/server"
 
@@ -45,6 +46,9 @@ export const WrappedEditCommentModalRef = () => {
             formik.setFieldValue("postCommentMedias", postMedias),
         [formik.values.postCommentMedias]
     )
+
+    const mediaUploaderRef = useRef<MediaUploaderRefSelectors | null>(null)
+    const onDirectoryOpen = () => mediaUploaderRef.current?.onDirectoryOpen()
 
     useEffect(() => {
         const handleEffect = async () => 
@@ -83,14 +87,26 @@ export const WrappedEditCommentModalRef = () => {
             <ModalBody className="p-4">
                 <div>
                     <TextEditor html={html} setHtml={setHtml} />
-                    <Spacer y={4} />
-                    <MediaUploader
+                    <MediaUploaderRef
+                        className="mt-4"
+                        ref={mediaUploaderRef}
                         medias={formik.values.postCommentMedias}
                         setMedias={setPostCommentMedias}
                     />
                 </div>
             </ModalBody>
-            <ModalFooter className="p-4 pt-2">
+            <ModalFooter className="p-4 pt-2 justify-between">
+                <div className="flex gap-2 items-center">
+                    <Button
+                        variant="light"
+                        isIconOnly
+                        as="button"
+                        onPress={onDirectoryOpen}
+                        color="primary"
+                    >
+                        <ImageIcon height={20} width={20} strokeWidth={3 / 2} />
+                    </Button>
+                </div>
                 <div className="flex gap-2 items-center">
                     <Button
                         variant="light"
