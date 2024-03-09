@@ -67,7 +67,7 @@ const extensions = [
     CodeBlock.configure({
         HTMLAttributes: {
             class:
-      "px-2 py-1 h-fit font-mono font-normal inline-block whitespace-nowrap bg-content3 text-default-foreground text-small rounded-small w-full",
+      "px-2 py-1 h-fit my-2 font-mono font-normal inline-block whitespace-nowrap bg-content3 text-default-foreground text-small rounded-small w-full",
         },
     }),
     Paragraph.configure({

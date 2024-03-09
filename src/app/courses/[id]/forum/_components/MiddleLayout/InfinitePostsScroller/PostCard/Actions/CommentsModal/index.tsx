@@ -5,7 +5,7 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-    Link,
+    Button,
 } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { InfiniteCommentsScroller } from "./InfiniteCommentsScroller"
@@ -23,12 +23,15 @@ export const CommentsModal = () => {
 
     return (
         <>
-            <div className="flex items-center gap-1">
-                <Link as="button" onPress={onOpen}>
-                    <ChatBubbleOvalLeftEllipsisIcon height={24} width={24} />
-                </Link>
-                <div className="text-primary"> {numberOfComments} </div>
-            </div>
+            <Button
+                color="primary"
+                variant="light"
+                className="min-w-0 px-2.5"
+                startContent={<ChatBubbleOvalLeftEllipsisIcon height={20} width={20} />}
+                onPress={onOpen}
+            >
+                <div className="text-sm"> {numberOfComments}</div>
+            </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
                 <CommentsModalProviders>
                     <ModalContent>

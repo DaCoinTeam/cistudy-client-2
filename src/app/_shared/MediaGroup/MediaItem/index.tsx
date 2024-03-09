@@ -22,7 +22,7 @@ export const MediaItem = (props: MediaItemProps) => {
                             }}
                             alt="preview"
                             src={getAssetUrl(mediaId)}
-                            className="w-full"
+                            className="w-full rounded-medium"
                         />
                     )
                     : <div/>

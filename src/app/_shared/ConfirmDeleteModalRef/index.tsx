@@ -8,7 +8,7 @@ import {
     ModalFooter,
     Button,
 } from "@nextui-org/react"
-import { ArrowLeftIcon, XIcon } from "lucide-react"
+import { XIcon } from "lucide-react"
 import { forwardRef, useImperativeHandle } from "react"
 
 export interface ConfirmDeleteModalRefProps {
@@ -42,7 +42,7 @@ export const ConfirmDeleteModalRef = forwardRef<
                             <div className="text-sm">{content}</div>
                         </ModalBody>
                         <ModalFooter className="p-4 pt-2">
-                            <Button startContent={<ArrowLeftIcon size={20} strokeWidth={3/2}/>} variant="light" onPress={onClose}>
+                            <Button variant="light" onPress={onClose}>
                 Cancel
                             </Button>
                             <Button startContent={<XIcon size={20} strokeWidth={3/2}/>} color="danger" onPress={onDeletePress}>

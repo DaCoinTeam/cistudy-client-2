@@ -7,7 +7,7 @@ import {
     ChatBubbleOvalLeftEllipsisIcon,
     HeartIcon,
 } from "@heroicons/react/24/outline"
-import { Link } from "@nextui-org/react"
+import { Button } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { CommentItemContext } from ".."
 import { toggleLikePostComment } from "@services"
@@ -35,27 +35,42 @@ export const Actions = () => {
 
     return (
         <div className="items-center flex justify-between">
-            <div className="flex gap-4 items-center">
-                <div className="flex gap-1 items-center">
-                    <Link onPress={onLikePress} as="button">
-                        {
-                            liked ?
-                                <SolidHeartIcon height={20} width={20}/> 
-                                : <HeartIcon height={20} width={20}/>
-                        }
-                    </Link>
-                    <div className="text-primary text-sm">{numberOfLikes}</div>
-                </div>
-                <div className="flex gap-1 items-center">
-                    <Link onPress={onOpenChange} as="button">
-                        {
-                            isOpen ? <SolidChatBubbleOvalLeftEllipsisIcon height={20} width={20}/> 
-                                : <ChatBubbleOvalLeftEllipsisIcon height={20} width={20}/> 
-                        }
-                    </Link>
-                    <div className="text-primary text-sm">{numberOfReplies}</div>
-                </div>
+            <div className="flex gap-2 items-center">
+                <Button
+                    color="primary"
+                    variant="light"
+                    onPress={onLikePress}
+                    className="px-2.5 min-w-0"
+                    startContent={
+                        <>
+                            {liked ? (
+                                <SolidHeartIcon height={20} width={20} />
+                            ) : (
+                                <HeartIcon height={20} width={20} />
+                            )}
+                        </>
+                    }
+                >
+                    {numberOfLikes}
+                </Button>
+                <Button
+                    color="primary"
+                    variant="light"
+                    className="px-2.5 min-w-0"
+                    onPress={onOpenChange}
+                    startContent={
+                        <>
+                            {isOpen ? (
+                                <SolidChatBubbleOvalLeftEllipsisIcon height={20} width={20} />
+                            ) : (
+                                <ChatBubbleOvalLeftEllipsisIcon height={20} width={20} />
+                            )}
+                        </>
+                    }
+                >
+                    {numberOfReplies}
+                </Button>
             </div>
-        </div>   
+        </div>
     )
 }

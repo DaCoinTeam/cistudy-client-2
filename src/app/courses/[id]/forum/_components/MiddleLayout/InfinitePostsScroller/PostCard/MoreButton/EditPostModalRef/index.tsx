@@ -7,6 +7,7 @@ import React, {
 } from "react"
 import {
     Button,
+    Input,
     Modal,
     ModalBody,
     ModalContent,
@@ -15,47 +16,44 @@ import {
     useDisclosure,
 } from "@nextui-org/react"
 import {
-    EditCommentModalContext,
-    EditCommentModalProviders,
-} from "./EditCommentModalProviders"
+    EditPostModalContext, EditPostModalProviders,
+} from "./EditPostModalProviders"
 import { AppendKey, Media } from "@common"
-import {
-    TextEditor,
-    MediaUploader
-} from "../../../../../../../../../../../../../_shared"
 import { SaveIcon } from "lucide-react"
-import { CommentItemContext } from "../.."
-import { getAssetFile } from "../../../../../../../../../../../../../../services/server"
 
-export const WrappedEditCommentModalRef = () => {
-    const { formik } = useContext(EditCommentModalContext)!
+import { getAssetFile } from "@services"
+import { MediaUploader, TextEditor } from "../../../../../../../../../_shared"
+import { PostCardContext } from "../.."
 
-    const { props } = useContext(CommentItemContext)!
-    const { postComment } = props
-    const { html, postCommentMedias } = postComment
+export const WrappedEditPostModalRef = () => {
+    const { formik } = useContext(EditPostModalContext)!
+
+    const { props } = useContext(PostCardContext)!
+    const { post } = props
+    const { html, postMedias, title } = post
     
     const setHtml = useCallback(
         (html: string) => formik.setFieldValue("html", html),
         [formik.values.html]
     )
 
-    const setPostCommentMedias = useCallback(
+    const setPostMedias = useCallback(
         (postMedias: Array<AppendKey<Media>>) =>
-            formik.setFieldValue("postCommentMedias", postMedias),
-        [formik.values.postCommentMedias]
+            formik.setFieldValue("postMedias", postMedias),
+        [formik.values.postMedias]
     )
 
     useEffect(() => {
         const handleEffect = async () => 
         {   
             const promises : Array<Promise<void>> = []
-            const formatedPostCommentMedias : Array<AppendKey<Media>> = []
-            for (const {mediaId, postCommentMediaId, mediaType} of postCommentMedias) {
+            const formatedPostMedias : Array<AppendKey<Media>> = []
+            for (const {mediaId, postMediaId, mediaType} of postMedias) {
                 const promise = async () => {
                     const file = await getAssetFile(mediaId)
                     if (file === null) return 
-                    formatedPostCommentMedias.push({
-                        key: postCommentMediaId,
+                    formatedPostMedias.push({
+                        key: postMediaId,
                         mediaType,
                         file
                     })
@@ -63,7 +61,7 @@ export const WrappedEditCommentModalRef = () => {
                 promises.push(promise())
             }
             await Promise.all(promises)
-            setPostCommentMedias(formatedPostCommentMedias)
+            setPostMedias(formatedPostMedias)
         }
         handleEffect()
     }, [])
@@ -72,18 +70,39 @@ export const WrappedEditCommentModalRef = () => {
         setHtml(html)
     }, [])
 
+    useEffect(() => {
+        formik.setFieldValue("title", title)
+    }, [])
+
+
     const onPress = () => formik.handleSubmit()
 
     return (
         <>
             <ModalHeader className="flex flex-col p-4 font-bold text-lg pb-2">
-        Update Comment
+        Update Post
             </ModalHeader>
             <ModalBody className="p-4 gap-4">
+                <Input  
+                    id="title"
+                    classNames={{
+                        inputWrapper: "shadow-none !border !border-divider",
+                        innerWrapper: "pb-0"
+                    }}
+                    size="lg"
+                    variant="bordered"
+                    labelPlacement="outside"
+                    placeholder="Input title here"
+                    value={formik.values.title}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    isInvalid={!!(formik.touched.title && formik.errors.title)}
+                    errorMessage={formik.touched.title && formik.errors.title}
+                />
                 <TextEditor html={html} setHtml={setHtml} />
                 <MediaUploader
-                    medias={formik.values.postCommentMedias}
-                    setMedias={setPostCommentMedias}
+                    medias={formik.values.postMedias}
+                    setMedias={setPostMedias}
                 />
             </ModalBody>
             <ModalFooter className="p-4 pt-2">
@@ -125,9 +144,9 @@ export const EditCommentModalRef = forwardRef<EditCommentModalRefSelectors, Edit
         return (
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" className={`${className}`}>
                 <ModalContent>
-                    <EditCommentModalProviders onClose={onClose}>
-                        <WrappedEditCommentModalRef />
-                    </EditCommentModalProviders>
+                    <EditPostModalProviders onClose={onClose}>
+                        <WrappedEditPostModalRef />
+                    </EditPostModalProviders>
                 </ModalContent>
             </Modal>
         )

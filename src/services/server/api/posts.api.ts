@@ -39,6 +39,58 @@ export const createPost = async (input: CreatePostInput): Promise<CreatePostOutp
     })
 }
 
+export interface UpdatePostInput {
+    data: {
+        postId: string;
+        title?: string;
+        html?: string;
+        postMedias?: Array<{
+            mediaType: MediaType;
+            mediaIndex: number;
+        }>;
+    };
+    files?: Array<File>;
+}
+
+export interface UpdatePostOutput { }
+
+export const updatePost = async (input: UpdatePostInput): Promise<CreatePostOutput> => {
+    const { data, files } = input
+    const url = `${BASE_URL}/update-post`
+
+    const formData = new FormData()
+    formData.append("data", JSON.stringify(data))
+
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
+        }
+    }
+
+    return await authAxios.put(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
+}
+
+export interface DeletePostInput {
+    data: {
+        postId: string;
+    };
+}
+export interface DeletePostOutput { }
+
+export const deletePost = async (
+    input: DeletePostInput
+): Promise<DeletePostOutput> => {
+    const { data } = input
+    const { postId } = data
+    const url = `${BASE_URL}/delete-post/${postId}`
+    return await authAxios.delete(url)
+}
+
+
 export interface CreatePostCommentInput {
     data: {
         postId: string;

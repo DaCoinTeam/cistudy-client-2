@@ -37,22 +37,3 @@ export const EditProfileModal = () => {
         </>
     )
 }
-
-{/* <Input
-            label="Username"
-            value={username}
-            onValueChange={onValueChange}
-            isInvalid={!isValid}
-            errorMessage={errors.username}
-            readOnly={!isEdited}
-            endContent={
-                <Link
-                    color="primary"
-                    onPress={onPress}
-                    as="button"
-                    className="text-sm"
-                >
-                    {isEdited ? <SaveIcon size={20} strokeWidth={3/2}/> : <PencilIcon size={20} strokeWidth={3/2}/>}
-                </Link>
-            }
-        /> */}

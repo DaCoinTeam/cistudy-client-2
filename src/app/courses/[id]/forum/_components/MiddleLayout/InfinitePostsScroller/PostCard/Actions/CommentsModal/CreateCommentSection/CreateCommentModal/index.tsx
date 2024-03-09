@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useRef } from "react"
+import React, { useCallback, useContext } from "react"
 import {
     Button,
     Modal,
@@ -15,10 +15,9 @@ import {
 import { AppendKey, Media } from "@common"
 import {
     TextEditor,
-    MediaUploaderRef,
-    MediaUploaderRefSelectors,
+    MediaUploader,
 } from "../../../../../../../../../../../_shared"
-import { ImageIcon, PlusIcon } from "lucide-react"
+import { PlusIcon } from "lucide-react"
 
 export const WrappedCreateCommentModal = () => {
     const { formik } = useContext(CreateCommentModalContext)!
@@ -34,9 +33,6 @@ export const WrappedCreateCommentModal = () => {
         [formik.values.postCommentMedias]
     )
 
-    const mediaUploaderRef = useRef<MediaUploaderRefSelectors | null>(null)
-    const onDirectoryOpen = () => mediaUploaderRef.current?.onDirectoryOpen()
-
     const onPress = () => formik.handleSubmit()
 
     return (
@@ -45,28 +41,10 @@ export const WrappedCreateCommentModal = () => {
         Create Comment
             </ModalHeader>
             <ModalBody className="p-4">
-                <div>
-                    <TextEditor html={formik.values.html} setHtml={setHtml} />
-                    <MediaUploaderRef
-                        className="mt-4"
-                        ref={mediaUploaderRef}
-                        medias={formik.values.postCommentMedias}
-                        setMedias={setPostCommentMedias}
-                    />
-                </div>
+                <TextEditor setHtml={setHtml} />
+                <MediaUploader medias={formik.values.postCommentMedias} setMedias={setPostCommentMedias}/>
             </ModalBody>
-            <ModalFooter className="p-4 pt-2 justify-between">
-                <div className="flex gap-2 items-center">
-                    <Button
-                        variant="light"
-                        isIconOnly
-                        as="button"
-                        onPress={onDirectoryOpen}
-                        color="primary"
-                    >
-                        <ImageIcon height={20} width={20} strokeWidth={3 / 2} />
-                    </Button>
-                </div>
+            <ModalFooter className="p-4 pt-2">
                 <div className="flex gap-2 items-center">
                     <Button
                         variant="light"
@@ -99,7 +77,7 @@ export const CreateCommentModal = () => {
             >
         Create a comment...
             </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
                 <ModalContent>
                     <WrappedCreateCommentModal />
                 </ModalContent>

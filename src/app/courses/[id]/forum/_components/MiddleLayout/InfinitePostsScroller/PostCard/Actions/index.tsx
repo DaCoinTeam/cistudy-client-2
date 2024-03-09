@@ -1,4 +1,4 @@
-import { Link } from "@nextui-org/react"
+import { Button, Link } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { isErrorResponse } from "@common"
 import { toggleLikePost } from "@services"
@@ -32,21 +32,36 @@ export const Actions = () => {
 
     return (
         <div className="flex items-center justify-between">
-            <div className="flex gap-4 items-center">
-                <div className="flex gap-1 items-center">
-                    <Link onPress={onPress} as="button">
-                        {
-                            liked ?
-                                <SolidHeartIcon height={24} width={24} strokeWidth={3/2}/>
-                                : <HeartIcon height={24} width={24} />
-                        } 
-                    </Link>
-                    <div className="text-primary"> {numberOfLikes} </div>
+            <div className="flex gap-2 items-center">
+                <div className="flex items-center gap-2">
+                    <Button
+                        startContent={
+                            liked ? (
+                                <SolidHeartIcon height={20} width={20} />
+                            ) : (
+                                <HeartIcon height={20} width={20} />
+                            )
+                        }
+                        className="!px-2.5 min-w-0"
+                        color="primary"
+                        variant="light"
+                        onPress={onPress}
+                    >
+                        {numberOfLikes}
+                    </Button>
+                    <CommentsModal />
                 </div>
-                <CommentsModal />
             </div>
             <Link as="button">
-                <BookmarkIcon height={24} width={24} strokeWidth={3/2} />
+                <Button
+                    isIconOnly
+                    color="primary"
+                    variant="light"
+                    onPress={onPress}
+                >
+                    <BookmarkIcon height={20} width={20} />
+                </Button>
+               
             </Link>
         </div>
     )

@@ -1,10 +1,18 @@
 "use client"
 import React, { createContext, useMemo } from "react"
 import { PostEntity, parseTimeAgo } from "@common"
-import { Card, CardBody, CardHeader, User } from "@nextui-org/react"
+import {
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    Spacer,
+    User,
+} from "@nextui-org/react"
 import { MediaGroup, TextRenderer } from "../../../../../../../_shared"
 import { Actions } from "./Actions"
 import { getAssetUrl } from "../../../../../../../../services/server"
+import { MoreButton } from "./MoreButton"
 interface PostCardProps {
   post: PostEntity;
 }
@@ -17,7 +25,7 @@ export const PostCardContext = createContext<PostCardContextValue | null>(null)
 
 export const PostCard = (props: PostCardProps) => {
     const { post } = props
-    const { title, html, postMedias, creator, createdAt } = post
+    const { title, html, postMedias, creator, createdAt, updatedAt } = post
     const { avatarId, username } = creator
 
     const postCardContextValue: PostCardContextValue = useMemo(
@@ -25,20 +33,29 @@ export const PostCard = (props: PostCardProps) => {
         [props]
     )
 
+    const isEdited = updatedAt !== createdAt
+
     return (
         <PostCardContext.Provider value={postCardContextValue}>
             <Card shadow="none" className="border border-divider">
                 <CardHeader className="p-4 pb-2 inline">
-                    <User
-                        classNames={{
-                            name: "text-base font-semibold",
-                        }}
-                        name={username}
-                        description={
-                            parseTimeAgo(createdAt)
-                        }
-                        avatarProps={{ src: getAssetUrl(avatarId)}}
-                    />
+                    <div className="flex items-center justify-between">
+                        <User
+                            classNames={{
+                                name: "text-base font-semibold",
+                            }}
+                            name={username}
+                            description={
+                                <div className="flex gap-2 items-center">
+                                    <div>{parseTimeAgo(updatedAt)}</div>
+                                    {isEdited ? <div> Edited </div> : null}
+                                </div>
+                            }
+                            avatarProps={{ src: getAssetUrl(avatarId) }}
+                        />
+                        <MoreButton />
+                    </div>
+                    <Spacer y={2} />
                     <div className="text-lg font-bold"> {title} </div>
                 </CardHeader>
                 <CardBody className="p-4 gap-4">
@@ -51,9 +68,9 @@ export const PostCard = (props: PostCardProps) => {
                         }))}
                     />
                 </CardBody>
-                <CardBody className="p-4">
+                <CardFooter className="p-4 pt-2 inline">
                     <Actions />
-                </CardBody>
+                </CardFooter>
             </Card>
         </PostCardContext.Provider>
     )

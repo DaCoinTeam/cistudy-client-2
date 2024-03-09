@@ -1,9 +1,10 @@
 "use client"
-import { AppendKey, Media, getMediaType } from "@common"
-import React, { createContext, forwardRef, memo, useContext, useImperativeHandle, useMemo, useRef } from "react"
+import { AppendKey, Media } from "@common"
+import React, { createContext, memo, useContext, useMemo } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { XMarkIcon } from "@heroicons/react/24/solid"
 import { Badge, Image } from "@nextui-org/react"
+import { UploadDropzone } from "./UploadDropzone"
 
 interface MediaUploaderProps {
   className?: string;
@@ -22,12 +23,12 @@ interface MediaUploaderContextValue {
 export const MediaUploaderContext =
   createContext<MediaUploaderContextValue | null>(null)
 
-const WrappedMediaUploaderRef = () => {
+const WrappedMediaUploader = () => {
     const { props, functions } = useContext(MediaUploaderContext)!
     const { medias } = props
     const { deleteMedia } = functions
 
-    const renderLessEqual3 = () => (
+    const renderImages = () => (
         <>
             {medias.map(({ key, file }) => (
                 <Badge
@@ -48,28 +49,7 @@ const WrappedMediaUploaderRef = () => {
                         }}
                         alt="preview"
                         src={URL.createObjectURL(file)}
-                        className="w-full"
-                    />
-                </Badge>
-            ))}
-        </>
-    )
-
-    const renderGreater3 = () => (
-        <>
-            {medias.map(({ key, file }) => (
-                <Badge
-                    key={key}
-                    content={<XMarkIcon />}
-                    className="cursor-pointer"
-                    isOneChar
-                    onClick={() => deleteMedia(key)}
-                    color="danger"
-                >
-                    <Image
-                        className="w-full aspect-video"
-                        alt="media"
-                        src={URL.createObjectURL(file)}
+                        className="w-full rounded-medium"
                     />
                 </Badge>
             ))}
@@ -77,48 +57,25 @@ const WrappedMediaUploaderRef = () => {
     )
 
     return (
-        <div className="grid grid-cols-4 gap-3">
-            {medias.length > 3 ? renderGreater3() : renderLessEqual3()}
+        <div className="grid grid-cols-4 gap-2">
+            {renderImages()}
+            {medias.length !== 4 ? <UploadDropzone/> : null}
         </div>
     )
 }
 
-export interface MediaUploaderRefSelectors {
-    onDirectoryOpen: () => void
-} 
-
-export const MediaUploaderRef = memo(forwardRef<MediaUploaderRefSelectors, MediaUploaderProps>((props, ref) => {
+export const MediaUploader = memo((props : MediaUploaderProps) => {
     const { medias: propsMedias, setMedias, className } = props
 
-    const fileInputRef = useRef<HTMLInputElement | null>(null)
-    const onDirectoryOpen = () => {
-        if (fileInputRef.current) fileInputRef.current.click()
-    }
-    const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files
-        if (files === null) return 
-        const medias: Array<Media> = []
-        for (const file of  Array.from(files)) {
-            const mediaType = getMediaType(file.name)
-            if (mediaType === null) return 
-
-            medias.push({
-                mediaType,
-                file
-            })
-        }
-        addMedias(...medias)
-    }
-
-    useImperativeHandle(ref, () => ({
-        onDirectoryOpen
-    }))
-
     const addMedias = (...medias: Array<Media>) => {
-        const mediaWithKeys: Array<AppendKey<Media>> = medias.map((media) => ({
+        let mediaWithKeys: Array<AppendKey<Media>> = medias.map((media) => ({
             key: uuidv4(),
             ...media,
         }))
+        if (mediaWithKeys.length + medias.length > 4) {
+            mediaWithKeys = mediaWithKeys.filter((_, index) => (index + propsMedias.length) < 4)
+        }
+
         setMedias([...propsMedias, ...mediaWithKeys])
     }
 
@@ -143,18 +100,10 @@ export const MediaUploaderRef = memo(forwardRef<MediaUploaderRefSelectors, Media
     return (
         <>
             <MediaUploaderContext.Provider value={mediaUploaderContextValue}>
-                <div className={propsMedias.length > 0 ? className : ""}>
-                    <WrappedMediaUploaderRef />
+                <div className={`${className}`}>
+                    <WrappedMediaUploader />
                 </div>
             </MediaUploaderContext.Provider>
-            <input
-                multiple
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                onChange={onFileChange}
-                className="hidden"
-            />
         </>
     )
-}))
+})

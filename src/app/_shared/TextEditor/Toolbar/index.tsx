@@ -17,7 +17,7 @@ import {
 
 import React from "react"
 import { useCurrentEditor } from "@tiptap/react"
-import { Button, Spacer } from "@nextui-org/react"
+import { Button } from "@nextui-org/react"
 import { ColorPicker } from "./ColorPicker"
 
 interface ToolbarProps {
@@ -30,7 +30,7 @@ export const Toolbar = (props: ToolbarProps) => {
 
     return (
         <div className={props.className}>
-            <div className="flex gap-2">
+            <div className="flex">
                 <Button
                     onPress={() => editor.chain().focus().toggleBold().run()}
                     disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -93,8 +93,7 @@ export const Toolbar = (props: ToolbarProps) => {
                 </Button>
                 <ColorPicker />
             </div>
-            <Spacer y={2} />
-            <div className="flex gap-2">
+            <div className="flex">
                 <Button
                     onPress={() =>
                         editor.chain().focus().toggleHeading({ level: 1 }).run()

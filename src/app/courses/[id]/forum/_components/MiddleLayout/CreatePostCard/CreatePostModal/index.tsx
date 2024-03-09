@@ -1,5 +1,5 @@
 "use client"
-import React, { useCallback, useContext, useRef } from "react"
+import React, { useCallback, useContext } from "react"
 import {
     Button,
     Input,
@@ -15,11 +15,10 @@ import {
     CreatePostModalContext,
     CreatePostModalProviders,
 } from "./CreatePostModalProviders"
-import { PlusIcon, ImageIcon } from "lucide-react"
+import { PlusIcon } from "lucide-react"
 import { AppendKey, Media } from "@common"
 import {
-    MediaUploaderRef,
-    MediaUploaderRefSelectors,
+    MediaUploader,
     TextEditor,
 } from "../../../../../../../_shared"
 
@@ -43,21 +42,19 @@ export const WrappedCreatePostModal = () => {
         [formik.values.postMedias]
     )
 
-    const mediaUploaderRef = useRef<MediaUploaderRefSelectors | null>(null)
-    const onDirectoryOpen = () => mediaUploaderRef.current?.onDirectoryOpen()
-
     return (
         <>
             <ModalHeader className="p-4 pb-2 text-lg font-bold ">
         Create Post
             </ModalHeader>
             <ModalBody className="p-4 gap-0">
-                <Input
-                    label="Title"
+                <Input  
                     id="title"
                     classNames={{
-                        inputWrapper: "shadow-none border border-divider",
+                        inputWrapper: "shadow-none !border !border-divider",
+                        innerWrapper: "pb-0"
                     }}
+                    size="lg"
                     variant="bordered"
                     labelPlacement="outside"
                     placeholder="Input title here"
@@ -68,39 +65,25 @@ export const WrappedCreatePostModal = () => {
                     errorMessage={formik.touched.title && formik.errors.title}
                 />
                 <Spacer y={4} />
-                <TextEditor html={formik.values.html} setHtml={setHtml} />
-                <MediaUploaderRef
-                    className="mt-4"
-                    ref={mediaUploaderRef}
+                <TextEditor setHtml={setHtml} />
+                <Spacer y={4} />
+                <MediaUploader
                     medias={formik.values.postMedias}
                     setMedias={setPostMedias}
                 />
             </ModalBody>
-            <ModalFooter className="p-4 pt-2 justify-between items-center">
-                <div className="flex gap-2 items-center">
-                    <Button
-                        variant="light"
-                        isIconOnly
-                        as="button"
-                        onPress={onDirectoryOpen}
-                        color="primary"
-                    >
-                        <ImageIcon height={20} width={20} strokeWidth={3 / 2} />
-                    </Button>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Button variant="light">Reset</Button>
-                    <Button
-                        onPress={onPress}
-                        startContent={
-                            <PlusIcon height={20} width={20} strokeWidth={3 / 2} />
-                        }
-                        color="primary"
-                        className="text-secondary-foreground"
-                    >
+            <ModalFooter className="p-4 pt-2 items-center">
+                <Button variant="light">Reset</Button>
+                <Button
+                    onPress={onPress}
+                    startContent={
+                        <PlusIcon height={20} width={20} strokeWidth={3 / 2} />
+                    }
+                    color="primary"
+                    className="text-secondary-foreground"
+                >
             Create
-                    </Button>
-                </div>
+                </Button>
             </ModalFooter>
         </>
     )

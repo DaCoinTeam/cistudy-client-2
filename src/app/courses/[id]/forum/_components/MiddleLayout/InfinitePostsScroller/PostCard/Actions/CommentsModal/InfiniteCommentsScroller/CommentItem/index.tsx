@@ -18,12 +18,12 @@ interface CommentItemContextValue {
   props: CommentItemProps;
   disclosures: {
     commentDisclosure: {
-        isOpen: boolean;
-        onOpen: () => void;
-        onClose: () => void;
-        onOpenChange: () => void;
-    }
-  }
+      isOpen: boolean;
+      onOpen: () => void;
+      onClose: () => void;
+      onOpenChange: () => void;
+    };
+  };
 }
 
 export const CommentItemContext = createContext<CommentItemContextValue | null>(
@@ -32,7 +32,8 @@ export const CommentItemContext = createContext<CommentItemContextValue | null>(
 
 export const CommentItem = (props: CommentItemProps) => {
     const { postComment } = props
-    const { html, postCommentMedias, creator, createdAt, updatedAt } = postComment
+    const { html, postCommentMedias, creator, createdAt, updatedAt } =
+    postComment
     const { avatarId, username } = creator
 
     const commentDisclosure = useDisclosure()
@@ -41,8 +42,8 @@ export const CommentItem = (props: CommentItemProps) => {
         () => ({
             props,
             disclosures: {
-                commentDisclosure
-            }
+                commentDisclosure,
+            },
         }),
         [props, commentDisclosure]
     )
@@ -56,34 +57,31 @@ export const CommentItem = (props: CommentItemProps) => {
                 <div className="flex-1">
                     <div className="flex items-center justify-between">
                         <div>
-                            <div className="font-semibold"> {username} </div>    
+                            <div className="font-semibold"> {username} </div>
                             <div className="text-xs text-foreground-500 flex gap-2 items-center">
                                 <div>{parseTimeAgo(updatedAt)}</div>
-                                <div>{isEdited ? "Edited" : ""}</div>
-                            </div>            
+                                {isEdited ? <div>Edited</div> : null}
+                            </div>
                         </div>
-                        <MoreButton className="transition-opacity opacity-0 group-hover/comment:opacity-100"/>
+                        <MoreButton className="transition-opacity opacity-0 group-hover/comment:opacity-100" />
                     </div>
-                     
-                    <Spacer y={1}/>
-                    <div className="p-3 rounded-large bg-content2">   
+                    <Spacer y={0.5} />
+                    <div className="bg-content2 rounded-medium p-2.5">
                         <TextRenderer html={html} />
-                        {postCommentMedias.length ? (
-                            <MediaGroup
-                                className="mt-3"
-                                medias={postCommentMedias?.map(
-                                    ({ postCommentMediaId, mediaId, mediaType }) => ({
-                                        key: postCommentMediaId,
-                                        mediaId,
-                                        mediaType,
-                                    })
-                                )}
-                            />
-                        ) : null}
+                        <MediaGroup
+                            className="mt-4"
+                            medias={postCommentMedias?.map(
+                                ({ postCommentMediaId, mediaId, mediaType }) => ({
+                                    key: postCommentMediaId,
+                                    mediaId,
+                                    mediaType,
+                                })
+                            )}
+                        />
                     </div>
-                    <Spacer y={1}/>
+                    <Spacer y={2} />
                     <Actions />
-                    <Replies className="mt-3"/>
+                    <Replies className="mt-3" />
                 </div>
             </div>
         </CommentItemContext.Provider>
