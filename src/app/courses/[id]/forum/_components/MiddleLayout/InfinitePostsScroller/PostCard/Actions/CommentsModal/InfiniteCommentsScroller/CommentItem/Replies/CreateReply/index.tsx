@@ -34,7 +34,7 @@ const WrappedCreateReply = () => {
                                 value={formik.values.content}
                                 onChange={formik.handleChange}
                                 endContent={
-                                    <Link size="sm" as="button" isDisabled={!formik.values.content} type="submit">
+                                    <Link className="px-2.5" size="sm" as="button" isDisabled={!formik.values.content} type="submit">
                                         <SendHorizonalIcon size={20} strokeWidth={3 / 2} />
                                     </Link>
                                 }

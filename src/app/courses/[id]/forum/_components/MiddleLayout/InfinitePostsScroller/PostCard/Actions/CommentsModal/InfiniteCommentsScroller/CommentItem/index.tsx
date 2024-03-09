@@ -65,7 +65,7 @@ export const CommentItem = (props: CommentItemProps) => {
                         </div>
                         <MoreButton className="transition-opacity opacity-0 group-hover/comment:opacity-100" />
                     </div>
-                    <Spacer y={0.5} />
+                    <Spacer y={2} />
                     <div className="bg-content2 rounded-medium p-2.5">
                         <TextRenderer html={html} />
                         <MediaGroup

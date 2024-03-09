@@ -107,6 +107,7 @@ export const ReplyItem = (props: ReplyItemProps) => {
                                             isDisabled={hasChanged}
                                             onPress={formik.submitForm}
                                             as="button"
+                                            className="px-2.5"
                                             size="sm"
                                         >
                                             <SaveIcon size={20} strokeWidth={3 / 2} />
