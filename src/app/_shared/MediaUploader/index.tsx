@@ -1,9 +1,8 @@
 "use client"
-import { AppendKey, Media } from "@common"
-import React, { createContext, memo, useContext, useMemo } from "react"
+import { AppendKey, Media, getMediaType } from "@common"
+import React, { createContext, forwardRef, useContext, useImperativeHandle, useMemo, useRef } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { XMarkIcon } from "@heroicons/react/24/solid"
-import { UploadCard } from "./UploadCard"
 import { Badge, Image } from "@nextui-org/react"
 
 interface MediaUploaderProps {
@@ -15,7 +14,7 @@ interface MediaUploaderProps {
 interface MediaUploaderContextValue {
   props: MediaUploaderProps;
   functions: {
-    addMedias: (medias: Array<Media>) => void;
+    addMedias: (...medias: Array<Media>) => void;
     deleteMedia: (key: string) => void;
   };
 }
@@ -53,7 +52,6 @@ const WrappedMediaUploader = () => {
                     />
                 </Badge>
             ))}
-            <UploadCard />
         </>
     )
 
@@ -75,22 +73,48 @@ const WrappedMediaUploader = () => {
                     />
                 </Badge>
             ))}
-            <UploadCard />
         </>
     )
 
     return (
         <div className="grid grid-cols-4 gap-3">
-            {" "}
-            {medias.length > 3 ? renderGreater3() : renderLessEqual3()}{" "}
+            {medias.length > 3 ? renderGreater3() : renderLessEqual3()}
         </div>
     )
 }
 
-export const MediaUploader = memo((props: MediaUploaderProps) => {
+export interface MediaUploaderRefSelectors {
+    onDirectoryOpen: () => void
+} 
+
+export const MediaUploaderRef = forwardRef<MediaUploaderRefSelectors, MediaUploaderProps>((props, ref) => {
     const { medias: propsMedias, setMedias } = props
 
-    const addMedias = (medias: Array<Media>) => {
+    const fileInputRef = useRef<HTMLInputElement | null>(null)
+    const onDirectoryOpen = () => {
+        if (fileInputRef.current) fileInputRef.current.click()
+    }
+    const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files
+        if (files === null) return 
+        const medias: Array<Media> = []
+        for (const file of  Array.from(files)) {
+            const mediaType = getMediaType(file.name)
+            if (mediaType === null) return 
+
+            medias.push({
+                mediaType,
+                file
+            })
+        }
+        addMedias(...medias)
+    }
+
+    useImperativeHandle(ref, () => ({
+        onDirectoryOpen
+    }))
+
+    const addMedias = (...medias: Array<Media>) => {
         const mediaWithKeys: Array<AppendKey<Media>> = medias.map((media) => ({
             key: uuidv4(),
             ...media,
@@ -117,10 +141,20 @@ export const MediaUploader = memo((props: MediaUploaderProps) => {
     )
 
     return (
-        <MediaUploaderContext.Provider value={mediaUploaderContextValue}>
-            <div className={props.className}>
-                <WrappedMediaUploader />
-            </div>
-        </MediaUploaderContext.Provider>
+        <>
+            <MediaUploaderContext.Provider value={mediaUploaderContextValue}>
+                <div className={props.className}>
+                    <WrappedMediaUploader />
+                </div>
+            </MediaUploaderContext.Provider>
+            <input
+                multiple
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={onFileChange}
+                className="hidden"
+            />
+        </>
     )
 })

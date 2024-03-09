@@ -1,5 +1,5 @@
 "use client"
-import React, { useCallback, useContext } from "react"
+import React, { useCallback, useContext, useRef } from "react"
 import {
     Button,
     Input,
@@ -8,15 +8,16 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
+    Spacer,
     useDisclosure,
 } from "@nextui-org/react"
 import {
     CreatePostModalContext,
     CreatePostModalProviders,
 } from "./CreatePostModalProviders"
-import { RotateCcw, PlusIcon } from "lucide-react"
+import { PlusIcon, ImageIcon } from "lucide-react"
 import { AppendKey, Media } from "@common"
-import { MediaUploader, TextEditor } from "../../../../../../../_shared"
+import { MediaUploaderRef, MediaUploaderRefSelectors, TextEditor } from "../../../../../../../_shared"
 
 interface CreatePostModalProps {
   className?: string;
@@ -38,12 +39,15 @@ export const WrappedCreatePostModal = () => {
         [formik.values.postMedias]
     )
 
+    const mediaUploaderRef = useRef<MediaUploaderRefSelectors | null>(null)
+    const onDirectoryOpen = () => mediaUploaderRef.current?.onDirectoryOpen()
+
     return (
         <>
             <ModalHeader className="p-4 pb-2 text-lg font-bold ">
         Create Post
             </ModalHeader>
-            <ModalBody className="p-4 gap-4">
+            <ModalBody className="p-4 gap-0">
                 <Input
                     label="Title"
                     id="title"
@@ -59,25 +63,31 @@ export const WrappedCreatePostModal = () => {
                     isInvalid={!!(formik.touched.title && formik.errors.title)}
                     errorMessage={formik.touched.title && formik.errors.title}
                 />
+                <Spacer y={4}/>
                 <TextEditor html={formik.values.html} setHtml={setHtml} />
-                <MediaUploader
+                <MediaUploaderRef
+                    ref={mediaUploaderRef}
                     medias={formik.values.postMedias}
                     setMedias={setPostMedias}
                 />
             </ModalBody>
-            <ModalFooter className="p-4 pt-2">
+            <ModalFooter className="p-4 pt-2 justify-between items-center">
+                <div className="flex gap-2 items-center">
+                    <Button variant="light" startContent={<ImageIcon height={20} width={20} strokeWidth={3/2}/>} as="button" onPress={onDirectoryOpen}>
+                        Add Images
+                    </Button>
+                </div>
                 <div className="flex gap-2 items-center">
                     <Button
                         variant="light"
-                        startContent={<RotateCcw size={20} strokeWidth={3 / 2} />}
                     >
             Reset
                     </Button>
                     <Button
                         onPress={onPress}
+                        startContent={<PlusIcon height={20} width={20} strokeWidth={3/2}/>}
                         color="primary"
                         className="text-secondary-foreground"
-                        startContent={<PlusIcon size={20} strokeWidth={3 / 2} />}
                     >
             Create
                     </Button>
