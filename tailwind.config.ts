@@ -28,6 +28,7 @@ const config: Config = {
                     default: {
                         DEFAULT: "rgb(244 244 245)"
                     },
+                    content3: "rgb(228 228 231)"
                 },
             },
             dark: {
