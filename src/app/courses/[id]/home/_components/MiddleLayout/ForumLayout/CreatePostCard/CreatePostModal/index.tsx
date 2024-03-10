@@ -21,6 +21,7 @@ import {
     MediaUploader,
     TextEditor,
 } from "../../../../../../../../_shared"
+import { ArrowPathIcon } from "@heroicons/react/24/outline"
 
 interface CreatePostModalProps {
   className?: string;
@@ -44,7 +45,7 @@ export const WrappedCreatePostModal = () => {
 
     return (
         <>
-            <ModalHeader className="p-4 pb-2 text-lg font-bold ">
+            <ModalHeader className="p-4 pb-2 text-lg font-semibold ">
         Create Post
             </ModalHeader>
             <ModalBody className="p-4 gap-0">
@@ -73,7 +74,7 @@ export const WrappedCreatePostModal = () => {
                 />
             </ModalBody>
             <ModalFooter className="p-4 pt-2 items-center">
-                <Button variant="light">Reset</Button>
+                <Button startContent={<ArrowPathIcon height={20} width={20} />} variant="light">Reset</Button>
                 <Button
                     onPress={onPress}
                     startContent={

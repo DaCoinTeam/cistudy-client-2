@@ -117,6 +117,7 @@ export interface UpdateLectureInput {
     data: {
         lectureId: string;
         title?: string;
+        description?: string;
         thumbnailIndex?: number;
         lectureVideoIndex?: number;
     };

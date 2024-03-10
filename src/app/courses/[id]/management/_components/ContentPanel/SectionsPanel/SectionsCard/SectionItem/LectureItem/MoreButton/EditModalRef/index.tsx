@@ -8,6 +8,7 @@ import {
     Input,
     Button,
     ModalFooter,
+    Textarea,
 } from "@nextui-org/react"
 import { forwardRef, useContext, useImperativeHandle } from "react"
 import {
@@ -46,11 +47,25 @@ const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                             isInvalid={!!(formik.touched.title && formik.errors.title)}
                             errorMessage={formik.touched.title && formik.errors.title}
                             classNames={{
-                                inputWrapper: "shadow-none border border-divider",
+                                inputWrapper: "shadow-none !border !border-divider",
                             }}
                             labelPlacement="outside"
                             label="Title"
                             placeholder="Input title here"
+                        />
+                        <Textarea
+                            id="description"
+                            variant="bordered"
+                            value={formik.values.description}
+                            onChange={formik.handleChange}
+                            isInvalid={!!(formik.touched.description && formik.errors.description)}
+                            errorMessage={formik.touched.description && formik.errors.description}
+                            classNames={{
+                                inputWrapper: "shadow-none !border !border-divider",
+                            }}
+                            labelPlacement="outside"
+                            label="Description"
+                            placeholder="Input description here"
                         />
                     </ModalBody>
                     {hasChanged() ? (
@@ -64,7 +79,8 @@ const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                             </Button>
                             <Button
                                 onPress={onSubmit}
-                                className="bg-content2"
+                                color="primary"
+                                className="text-secondary-foreground"
                                 startContent={<SaveIcon size={20} strokeWidth={3/2} />}
                             >
                 Save

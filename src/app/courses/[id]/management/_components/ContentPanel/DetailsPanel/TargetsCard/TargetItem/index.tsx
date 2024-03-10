@@ -61,7 +61,7 @@ export const TargetItem = (props: TargetItemProps) => {
                 labelPlacement="outside"
                 label=""
                 classNames={{
-                    inputWrapper: "shadow-none border border-divider",
+                    inputWrapper: "shadow-none !border !border-divider",
                 }}
                 variant="bordered"
                 onValueChange={onValueChange}

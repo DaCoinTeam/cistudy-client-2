@@ -9,9 +9,9 @@ import {
 } from "@nextui-org/react"
 import {
     FolderIcon,
-    MoreVertical,
+    MoreVerticalIcon,
     PenLineIcon,
-    PlaySquare,
+    PlaySquareIcon,
     XIcon,
 } from "lucide-react"
 import { EditModalRef, EditModalRefSelectors } from "./EditModalRef"
@@ -82,7 +82,7 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
                         isIconOnly
                         variant="flat"
                     >
-                        <MoreVertical size={20} strokeWidth={3/2} />
+                        <MoreVerticalIcon size={20} strokeWidth={3/2} />
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
@@ -94,7 +94,7 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
             Resources
                     </DropdownItem>
                     <DropdownItem
-                        startContent={<PlaySquare size={20} strokeWidth={3/2} />}
+                        startContent={<PlaySquareIcon size={20} strokeWidth={3/2} />}
                         onPress={onLectureModalOpen}
                         key="lecture"
                     >

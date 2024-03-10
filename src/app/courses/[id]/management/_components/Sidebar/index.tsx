@@ -1,6 +1,10 @@
+"use client"
+import { Card, CardBody, CardHeader, Divider, Spacer, User } from "@nextui-org/react"
+import React, { useContext } from "react"
+import { Stars } from "../../../../../_shared"
+import { getAssetUrl } from "@services"
 import { Menu } from "./Menu"
-import { Spacer } from "@nextui-org/react"
-import { Actions } from "./Actions"
+import { ManagementContext } from "../../_hooks"
 
 interface SidebarProps {
     className?: string
@@ -8,17 +12,34 @@ interface SidebarProps {
 
 export const Sidebar = (props: SidebarProps) => {
     const { className } = props
+    const { swrs } = useContext(ManagementContext)!
+    const { courseManagementSwr } = swrs
+    const { data: courseManagement } = courseManagementSwr
+    const { title, creator } = { ...courseManagement }
+    const { avatarId, username, numberOfFollowers } = { ...creator }
+
     return (
-        <div className={`${className} bg-content1 rounded-large p-4 sticky top-[5.5rem]`}>
-            <div className="text-lg  font-bold"> Course Management </div>
-            <Spacer y={6}/>
-            {/* <div className="gap-2 flex items-center text-foreground-500">
-                <KeyRoundIcon size={16} strokeWidth={3/2}/>
-                <div className="text-xs truncate">12323</div>
-            </div> */}
-            <Menu/>
-            <Spacer y={12}/>
-            <Actions />
-        </div>
+        <Card shadow="none" className={`${className} border border-divider p-4 sticky top-[5.5rem] rounded-medium`}>
+            <CardHeader className="p-0 pb-4 inline">
+                <div className="text-lg font-semibold"> {title} </div>
+                <div className="text-xs text-foreground-500"> Javascript, Typescript </div>
+                <Spacer y={4}/>
+                <User className="flex justify-start" classNames={{name: "text-base font-semibold"}} name={username} description={`${numberOfFollowers} followers`} avatarProps={{
+                    src: getAssetUrl(avatarId)
+                }} />
+                
+                <Spacer y={4}/>
+                <Stars readonly/>
+                <Spacer y={1}/>
+                <div className="text-xs text-foreground-500">
+                    {232} users has enrolled this course
+                </div>      
+                <Spacer y={4}/> 
+            </CardHeader>
+            <Divider />
+            <CardBody className="p-0 pt-4">
+                <Menu />
+            </CardBody>
+        </Card>
     )
 }

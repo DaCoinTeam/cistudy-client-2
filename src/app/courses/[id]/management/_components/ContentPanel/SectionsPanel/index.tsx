@@ -2,7 +2,7 @@
 import React from "react"
 import { SectionsCard } from "./SectionsCard"
 
-export const CurriculumPanel = () => {
+export const SectionsPanel = () => {
     return (
         <div className="w-full">
             <SectionsCard />

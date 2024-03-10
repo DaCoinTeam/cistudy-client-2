@@ -10,7 +10,7 @@ export const CourseBanner = () => {
 
     return (
         <div className="w-full h-72 object-cover bg-content3 px-[5em] py-[2em]">
-            <div className="max-w-[1280px] mx-auto">
+            <div className="max-w-[100rem] mx-auto">
                 <div className="mb-4 text-2xl font-extrabold text-gray-900 dark:text-white md:text-4xl text-lg">
                     <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
                         {course?.title}

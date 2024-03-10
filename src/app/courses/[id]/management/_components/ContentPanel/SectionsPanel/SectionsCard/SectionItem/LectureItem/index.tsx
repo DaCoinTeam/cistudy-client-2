@@ -1,10 +1,10 @@
 import React, { createContext, useMemo } from "react"
 import { LectureEntity } from "@common"
 import { getAssetUrl } from "@services"
-import { Clock1 } from "lucide-react"
 import { MoreButton } from "./MoreButton"
 import { InteractiveThumbnail } from "../../../../../../../../../_shared"
 import { useRouter } from "next/navigation"
+import { ClockIcon } from "@heroicons/react/24/outline"
 
 interface LectureItemProps {
   lecture: LectureEntity;
@@ -20,7 +20,7 @@ export const LectureItemContext = createContext<LectureItemContextValue | null>(
 
 export const LectureItem = (props: LectureItemProps) => {
     const { lecture } = props
-    const { lectureId } = lecture
+    const { lectureId, description, title, thumbnailId } = lecture
 
     const lectureItemContextValue: LectureItemContextValue = useMemo(
         () => ({
@@ -37,12 +37,15 @@ export const LectureItem = (props: LectureItemProps) => {
         <LectureItemContext.Provider value={lectureItemContextValue}>
             <div className="justify-between flex items-center w-full">
                 <div className="grid grid-cols-6 gap-2 items-center w-full">
-                    <InteractiveThumbnail src={getAssetUrl(lecture?.thumbnailId)} onPress={onPress}/>
+                    <InteractiveThumbnail src={getAssetUrl(thumbnailId)} onPress={onPress}/>
                     <div className="col-span-5">
-                        <div className="text-sm"> {lecture?.title} </div>
+                        <div className="text-sm"> {title} </div>
                         <div className="flex items-center gap-1">
-                            <Clock1 className="w-3 h-3 text-foreground-500" />
+                            <ClockIcon height={12} width={12} className="text-foreground-500" />
                             <div className="text-xs text-foreground-500">15 min </div>
+                        </div>
+                        <div className="text-foreground-500 text-sm line-clamp-2">
+                            {description}
                         </div>
                     </div>
                 </div>

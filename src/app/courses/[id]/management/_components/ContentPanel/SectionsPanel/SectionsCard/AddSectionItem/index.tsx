@@ -2,18 +2,17 @@
 import { Button } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { createSection } from "@services"
-import { CourseDetailsContext } from "../../../../../../_hooks"
 import { PlusIcon } from "lucide-react"
+import { ManagementContext } from "../../../../../_hooks"
 
 export const AddSectionItem = () => {
-    const { swrs } = useContext(CourseDetailsContext)!
-    const { courseSwr } = swrs
-    const { data: course, mutate } = courseSwr
+    const { swrs } = useContext(ManagementContext)!
+    const { courseManagementSwr } = swrs
+    const { data: courseManagement, mutate } = courseManagementSwr
+    const { courseId } = { ...courseManagement }
 
     const onPress = async () => {
-        if (!course) return
-        const { courseId } = course
-
+        if (!courseId) return
         await createSection({
             data: {
                 courseId,
@@ -28,7 +27,7 @@ export const AddSectionItem = () => {
             onPress={onPress}
             fullWidth
             startContent={<PlusIcon size={20} strokeWidth={3/2} />}
-            className="bg-content2 h-[4.25rem]"
+            className="h-[4.5rem] !bg-transparent"
         >
       Add Section
         </Button>

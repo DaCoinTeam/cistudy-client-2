@@ -37,7 +37,7 @@ export const PostCard = (props: PostCardProps) => {
 
     return (
         <PostCardContext.Provider value={postCardContextValue}>
-            <Card shadow="none" className="border border-divider">
+            <Card shadow="none" className="border border-divider rounded-medium">
                 <CardHeader className="p-4 pb-2 inline">
                     <div className="flex items-center justify-between">
                         <User
@@ -56,7 +56,7 @@ export const PostCard = (props: PostCardProps) => {
                         <MoreButton />
                     </div>
                     <Spacer y={2} />
-                    <div className="text-lg font-bold"> {title} </div>
+                    <div className="text-lg font-semibold"> {title} </div>
                 </CardHeader>
                 <CardBody className="p-4 gap-4">
                     <TextRenderer html={html} />

@@ -25,8 +25,8 @@ export const WrappedInformationCard = (props: InformationCardProps) => {
     const onDiscardChangesPress = () => discardChanges()
 
     return (
-        <Card shadow="none" className={`${className} border border-divider`}>
-            <CardHeader className="p-4 pb-2 justify-between text-lg  font-bold items-center">
+        <Card shadow="none" className={`${className} border border-divider rounded-medium`}>
+            <CardHeader className="p-4 pb-2 justify-between text-lg  font-semibold items-center">
                 Information
             </CardHeader> 
             <CardBody className="p-4 gap-4">
@@ -36,7 +36,7 @@ export const WrappedInformationCard = (props: InformationCardProps) => {
                     labelPlacement="outside"
                     value={formik.values.title}
                     classNames={{
-                        inputWrapper: "shadow-none border border-divider",
+                        inputWrapper: "shadow-none !border !border-divider",
                     }}
                     variant="bordered"
                     placeholder="Input title here"
@@ -50,7 +50,7 @@ export const WrappedInformationCard = (props: InformationCardProps) => {
                     value={formik.values.description}
                     labelPlacement="outside"
                     classNames={{
-                        inputWrapper: "shadow-none border border-divider"
+                        inputWrapper: "shadow-none !border !border-divider"
                     }}
                     variant="bordered"
                     onChange={formik.handleChange}

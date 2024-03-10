@@ -5,9 +5,9 @@ import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
 import { PanelSelected } from "../../../_hooks"
 import {
-    VideoCameraIcon,
     ChatBubbleLeftRightIcon,
     EyeIcon,
+    ListBulletIcon,
 } from "@heroicons/react/24/outline"
 
 interface MenuProps {
@@ -51,7 +51,7 @@ export const Menu = (props: MenuProps) => {
         },
         {
             startContent: (
-                <VideoCameraIcon width={24} height={24} strokeWidth={3 / 2} />
+                <ListBulletIcon width={24} height={24} strokeWidth={3 / 2} />
             ),
             key: "sections",
             content: "Sections",

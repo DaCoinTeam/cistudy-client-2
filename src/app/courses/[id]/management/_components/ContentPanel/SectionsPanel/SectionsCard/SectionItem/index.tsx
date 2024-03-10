@@ -35,6 +35,7 @@ const WrappedSectionItem = (props: SectionItemProps) => {
                 lectureId: true,
                 lectureVideoId: true,
                 title: true,
+                description: true,
                 thumbnailId: true,
                 videoType: true,
                 resources: {

@@ -27,7 +27,7 @@ export const CourseSideBar = () => {
                 </div>
                 <div className="px-5 pt-3">
                     <div className="my-1">
-                        <h5 className=" text-2xl font-bold tracking-tight text-gray-900 dark:text-white">$599</h5>
+                        <h5 className=" text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">$599</h5>
 
                     </div>
                     <div  className="my-2">

@@ -26,6 +26,7 @@ import {
 import { SaveIcon } from "lucide-react"
 import { CommentItemContext } from "../.."
 import { getAssetFile } from "@services"
+import { ArrowPathIcon } from "@heroicons/react/24/outline"
 
 export const WrappedEditCommentModalRef = () => {
     const { formik } = useContext(EditCommentModalContext)!
@@ -76,7 +77,7 @@ export const WrappedEditCommentModalRef = () => {
 
     return (
         <>
-            <ModalHeader className="flex flex-col p-4 font-bold text-lg pb-2">
+            <ModalHeader className="flex flex-col p-4 font-semibold text-lg pb-2">
         Update Comment
             </ModalHeader>
             <ModalBody className="p-4 gap-4">
@@ -89,6 +90,7 @@ export const WrappedEditCommentModalRef = () => {
             <ModalFooter className="p-4 pt-2">
                 <Button
                     variant="light"
+                    startContent={<ArrowPathIcon height={20} width={20} />} 
                 >
             Reset
                 </Button>

@@ -14,7 +14,7 @@ const WrappedCoursesManagementPanel = (props: CoursesManagementPanelProps) => {
         <Card className={`${className ?? ""} border border-divider`} shadow="none">
             <CardHeader className="p-6 pb-0 inline">
                 <div className="justify-between flex items-center">
-                    <div className="text-lg font-bold"> Courses </div>
+                    <div className="text-lg font-semibold"> Courses </div>
                     <Actions />
                 </div>
             </CardHeader>

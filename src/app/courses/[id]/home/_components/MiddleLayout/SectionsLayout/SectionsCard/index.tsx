@@ -38,15 +38,15 @@ export const SectionsCard = (props: SectionsCardProps) => {
     }
 
     return (
-        <Card shadow="none" className={`${className} bg-transparent border border-divider`}>
-            <CardHeader className="text-lg font-bold p-4 pb-2"> Sections </CardHeader>
-            <CardBody className="p-4 gap-4">
+        <Card shadow="none" className={`${className} bg-transparent border border-divider rounded-medium`}>
+            <CardHeader className="text-lg font-semibold p-4 pb-2"> Sections </CardHeader>
+            <CardBody className="p-0 gap-0">
                 <Accordion
                     selectionMode="multiple"
-                    variant="splitted"
-                    className="!px-0 gap-4"
+                    variant="light"
+                    className="!px-4"
                     itemClasses={{
-                        base: "!shadow-none border border-divider gap-4",
+                        base: "!shadow-none gap-4",
                     }}
                 >
                     {renderSections()}

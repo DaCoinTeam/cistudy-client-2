@@ -2,7 +2,7 @@ import { useReducer } from "react"
 
 export enum PanelSelected {
     Details = "details",
-    Curriculum = "curriculum"
+    Sections = "sections"
 }
 
 export interface ManagementState {

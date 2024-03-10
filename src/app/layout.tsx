@@ -6,19 +6,30 @@ import { NextUIProvider } from "@nextui-org/react"
 import { RootProviders } from "./_hooks"
 import { Navbar } from "./_components"
 import { ReactNode } from "react"
+import { MetaMaskProvider } from "@metamask/sdk-react"
 const font = Open_Sans({ subsets: ["latin"] })
 
-const Layout = ({children} : {children: ReactNode}) => {
+const Layout = ({ children }: { children: ReactNode }) => {
     return (
         <ReduxProviders>
             <html lang="en">
                 <body className={`${font.className} min-h-screen`}>
-                    <NextUIProvider className="min-h-screen flex flex-col">
-                        <RootProviders>
-                            <Navbar/>
-                            {children}
-                        </RootProviders>
-                    </NextUIProvider>
+                    <MetaMaskProvider
+                        debug={false}
+                        sdkOptions={{
+                            dappMetadata: {
+                                name: "Example React Dapp",
+                                url: window.location.href,
+                            },
+                        }}
+                    >
+                        <NextUIProvider className="min-h-screen flex flex-col">
+                            <RootProviders>
+                                <Navbar />
+                                {children}
+                            </RootProviders>
+                        </NextUIProvider>
+                    </MetaMaskProvider>
                 </body>
             </html>
         </ReduxProviders>

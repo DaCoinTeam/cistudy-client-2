@@ -68,6 +68,11 @@ const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
                     courseTargetId: true,
                     content: true,
                 },
+                creator: {
+                    avatarId: true,
+                    numberOfFollowers: true,
+                    username: true
+                }
             }
         )
     }, [course?.courseId])

@@ -29,8 +29,8 @@ export const WrappedTargetsCard = (props: TargetsCardProps) => {
     }
 
     return (
-        <Card shadow="none" className={`${className} border border-divider`}>
-            <CardHeader className="p-4 pb-2 justify-between text-lg  font-bold items-center">
+        <Card shadow="none" className={`${className} border border-divider rounded-medium`}>
+            <CardHeader className="p-4 pb-2 justify-between text-lg  font-semibold items-center">
                 Targets
             </CardHeader> 
             <CardBody className="p-4 gap-4">

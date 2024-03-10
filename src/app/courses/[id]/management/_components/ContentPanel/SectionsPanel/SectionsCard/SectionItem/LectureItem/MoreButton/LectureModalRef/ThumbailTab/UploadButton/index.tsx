@@ -47,7 +47,8 @@ export const UploadButton = (props: UploadButtonProps) => {
         <>
             <Button
                 onPress={onPress}
-                className={`bg-content2 ${className}`}
+                className={`${className} text-secondary-foreground`}
+                color="primary"
                 startContent={<UploadIcon size={20} strokeWidth={3/2} />}
             >
           Upload

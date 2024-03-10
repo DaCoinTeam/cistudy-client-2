@@ -60,7 +60,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
                 />
                 {
                     isOwnProfile ? (
-                        <div className="w-full h-full max-w-[1280px] m-auto relative">
+                        <div className="w-full h-full max-w-[100rem] m-auto relative">
                             <Button
                                 onPress={onPress}
                                 className="bg-content3 z-10 w-fit absolute bottom-6 right-6 border shadow-none"

@@ -10,7 +10,7 @@ export const CreatePostCard = () => {
     const { data: profile } = profileSwr
 
     return (
-        <Card shadow="none" className="border border-divider p-4">
+        <Card shadow="none" className="border border-divider p-4 rounded-medium">
             <CardBody className="p-0 flex gap-2 flex-row items-stretch">
                 <Avatar src={getAssetUrl(profile?.avatarId)}/>
                 <div  className="flex-1">

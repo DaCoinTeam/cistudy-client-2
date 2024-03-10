@@ -26,11 +26,15 @@ export const EditModalRefContext =
 interface FormikValues {
   title: string;
   titlePrevious: string;
+  description: string;
+  descriptionPrevious: string;
 }
 
 const initialValues: FormikValues = {
     title: "",
     titlePrevious: "",
+    description: "",
+    descriptionPrevious: ""
 }
 
 const WrappedEditModalRefProviders = ({
@@ -42,10 +46,9 @@ const WrappedEditModalRefProviders = ({
 }) => {
     const { props } = useContext(LectureItemContext)!
     const { lecture } = props
-    const { title } = lecture
+    const { title, description } = lecture
 
     const titlePreviousRef = useRef(false)
-
     useEffect(() => {
         if (!titlePreviousRef.current) {
             titlePreviousRef.current = true
@@ -54,15 +57,26 @@ const WrappedEditModalRefProviders = ({
         formik?.setFieldValue("title", title)
     }, [title])
 
+    const descriptionPreviousRef = useRef(false)
+    useEffect(() => {
+        if (!descriptionPreviousRef.current) {
+            descriptionPreviousRef.current = true
+            formik?.setFieldValue("descriptionPrevious", description)
+        }
+        formik?.setFieldValue("description", description)
+    }, [description])
+
     const hasChanged = () =>
         formik?.values.title !== formik?.values.titlePrevious
+        || formik?.values.description !== formik?.values.descriptionPrevious
 
     const discardChanges = () =>
     {
         formik.setFieldValue("title", formik?.values.titlePrevious)
+        formik.setFieldValue("description", formik?.values.descriptionPrevious)
     }
 
-    const EditModalRefContextValue: EditModalRefContextValue = useMemo(
+    const editModalRefContextValue: EditModalRefContextValue = useMemo(
         () => ({
             formik,
             functions: {
@@ -74,7 +88,7 @@ const WrappedEditModalRefProviders = ({
     )
 
     return (
-        <EditModalRefContext.Provider value={EditModalRefContextValue}>
+        <EditModalRefContext.Provider value={editModalRefContextValue}>
             <Form onSubmit={formik?.handleSubmit}>{children}</Form>
         </EditModalRefContext.Provider>
     )
@@ -96,14 +110,16 @@ export const EditModalRefProviders = ({
     return (
         <Formik
             initialValues={initialValues}
-            onSubmit={async ({ title }, { setFieldValue }) => {
+            onSubmit={async ({ title, description }, { setFieldValue }) => {
                 await updateLecture({
                     data: {
                         lectureId,
+                        description,
                         title
                     },
                 })
                 setFieldValue("titlePrevious", title)
+                setFieldValue("descriptionPrevious", description)
                 await mutate()
             }}
         >

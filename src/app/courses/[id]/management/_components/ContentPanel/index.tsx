@@ -1,6 +1,6 @@
 "use client"
 import React, { useContext } from "react"
-import { CurriculumPanel } from "./CurriculumPanel"
+import { SectionsPanel } from "./SectionsPanel"
 import { DetailsPanel } from "./DetailsPanel"
 import { PanelSelected, ManagementContext } from "../../_hooks"
 
@@ -14,14 +14,14 @@ export const ContentPanel = (props: ContentPanelProps) => {
     const [ state ] = reducer
     const { panelSelected } = state
 
-    const panelSelectedToPanelComponent: Record<PanelSelected, JSX.Element> = {
+    const panelSelectedToComponent: Record<PanelSelected, JSX.Element> = {
         [PanelSelected.Details]: <DetailsPanel />,
-        [PanelSelected.Curriculum]: <CurriculumPanel />,
+        [PanelSelected.Sections]: <SectionsPanel />,
     }
 
     return (
         <div className={`${className}`}>
-            {panelSelectedToPanelComponent[panelSelected]}
+            {panelSelectedToComponent[panelSelected]}
         </div>
     )
 }

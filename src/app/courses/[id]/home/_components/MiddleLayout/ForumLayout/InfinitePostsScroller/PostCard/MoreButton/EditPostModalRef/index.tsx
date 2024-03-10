@@ -24,6 +24,7 @@ import { SaveIcon } from "lucide-react"
 import { getAssetFile } from "@services"
 import { MediaUploader, TextEditor } from "../../../../../../../../../../_shared"
 import { PostCardContext } from "../.."
+import { ArrowPathIcon } from "@heroicons/react/24/outline"
 
 export const WrappedEditPostModalRef = () => {
     const { formik } = useContext(EditPostModalContext)!
@@ -79,7 +80,7 @@ export const WrappedEditPostModalRef = () => {
 
     return (
         <>
-            <ModalHeader className="flex flex-col p-4 font-bold text-lg pb-2">
+            <ModalHeader className="flex flex-col p-4 font-semibold text-lg pb-2">
         Update Post
             </ModalHeader>
             <ModalBody className="p-4 gap-4">
@@ -108,6 +109,7 @@ export const WrappedEditPostModalRef = () => {
             <ModalFooter className="p-4 pt-2">
                 <Button
                     variant="light"
+                    startContent={<ArrowPathIcon height={20} width={20} />} 
                 >
             Reset
                 </Button>

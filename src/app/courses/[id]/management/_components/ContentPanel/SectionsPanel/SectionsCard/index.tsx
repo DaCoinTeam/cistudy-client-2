@@ -5,6 +5,7 @@ import {
     Card,
     CardBody,
     CardHeader,
+    Divider,
 } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { AddSectionItem } from "./AddSectionItem"
@@ -23,10 +24,10 @@ export const SectionsCard = () => {
         return (
             <Accordion
                 selectionMode="multiple"
-                variant="splitted"
+                variant="light"
                 className="!px-0 gap-4"
                 itemClasses={{
-                    base: "!shadow-none border border-divider gap-4",
+                    base: "!shadow-none gap-4",
                 }}
             >
                 {sections.map((section) => (
@@ -49,12 +50,11 @@ export const SectionsCard = () => {
     }
 
     return (
-        <Card shadow="none" className="border border-divider">
-            <CardHeader className="p-4 pb-2 justify-between text-lg  font-bold items-center">
-                Sections
-            </CardHeader> 
-            <CardBody className="p-4 gap-4">
+        <Card shadow="none" className="border border-divider rounded-medium">
+            <CardHeader className="text-lg font-semibold p-4 pb-2"> Sections </CardHeader>
+            <CardBody className="py-0 px-4 gap-0">
                 {renderSections()}
+                <Divider/>
                 <AddSectionItem />
             </CardBody>
         </Card>
