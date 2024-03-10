@@ -49,6 +49,11 @@ export const WrappedCourseDetailsProviders = ({
                         title: true,
                     },
                 },
+                creator: {
+                    avatarId: true,
+                    username: true,
+                    numberOfFollowers: true
+                }
             }
         )
     }, [])

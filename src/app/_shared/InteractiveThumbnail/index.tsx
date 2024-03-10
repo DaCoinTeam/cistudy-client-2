@@ -16,7 +16,7 @@ export const InteractiveThumbnail = (props: InteractiveThumbnailProps) => {
             onPress={onPress}
             className={`${className ?? ""} h-fit p-0 relative aspect-video`}
         >
-            <Image alt="thumbnail" src={src} className="w-full" />
+            <Image alt="thumbnail" src={src} className="w-full rounded-none" />
             <div className="opacity-0 hover:opacity-100 transition-opacity z-10 grid place-items-center absolute top-0 left-0 w-full h-full bg-foreground-900/60">
                 <PlayCircleIcon className="text-primary" height={size ?? 60} width={size ?? 60} />
             </div>
