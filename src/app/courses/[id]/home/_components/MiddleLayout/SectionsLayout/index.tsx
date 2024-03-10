@@ -1,10 +1,10 @@
 import React from "react"
 import { SectionsCard } from "./SectionsCard"
 
-interface LearnLayoutProps {
+interface SectionsLayoutProps {
     className?: string
 }
-export const LearnLayout = (props: LearnLayoutProps) => {
+export const SectionsLayout = (props: SectionsLayoutProps) => {
     const { className } = props
     return (
         <div className={`${className}`}>

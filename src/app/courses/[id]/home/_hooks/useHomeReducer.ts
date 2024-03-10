@@ -2,7 +2,7 @@ import { useReducer } from "react"
 
 export enum PanelSelected {
     Forum = "forum",
-    Learn = "learn",
+    Sections = "sections",
     Preview = "preview"
 }
 

@@ -53,9 +53,9 @@ export const Menu = (props: MenuProps) => {
             startContent: (
                 <VideoCameraIcon width={24} height={24} strokeWidth={3 / 2} />
             ),
-            key: "learn",
-            content: "Learn",
-            panelSelected: PanelSelected.Learn,
+            key: "sections",
+            content: "Sections",
+            panelSelected: PanelSelected.Sections,
         },
         {
             startContent: (

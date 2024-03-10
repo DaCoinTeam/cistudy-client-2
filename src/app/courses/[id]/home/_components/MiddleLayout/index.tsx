@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext } from "react"
 import { ForumLayout } from "./ForumLayout"
-import { LearnLayout } from "./LearnLayout"
+import { SectionsLayout } from "./SectionsLayout"
 import { HomeContext, PanelSelected } from "../../_hooks"
 
 interface MiddleLayoutProps {
@@ -17,7 +17,7 @@ export const MiddleLayout = (props: MiddleLayoutProps) => {
     const render = () => {
         const panelSelectedToComponent: Record<PanelSelected, JSX.Element> = {
             [PanelSelected.Forum]: <ForumLayout className={`${className}`} />,
-            [PanelSelected.Learn]: <LearnLayout className={`${className}`} />,
+            [PanelSelected.Sections]: <SectionsLayout className={`${className}`} />,
             [PanelSelected.Preview]: <></>,
         }
         return panelSelectedToComponent[panelSelected]

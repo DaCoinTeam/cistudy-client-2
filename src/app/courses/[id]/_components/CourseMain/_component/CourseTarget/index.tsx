@@ -9,7 +9,7 @@ const CourseTarget = () => {
     return (
         <>
             <div className='p-5 border border-indigo-600 '>
-                <h2 className='my-2 text-2xl font-bold'>What youll learn</h2>
+                <h2 className='my-2 text-2xl font-bold'>What youll sections</h2>
                 <div className='grid grid-cols-2 gap-2++ ms-5'>
                     {course?.courseTargets.map((target) =>(
                         <div key={target.courseTargetId} className='my-2'>
