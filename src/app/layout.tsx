@@ -19,7 +19,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
                         sdkOptions={{
                             dappMetadata: {
                                 name: "Example React Dapp",
-                                url: window.location.href,
                             },
                         }}
                     >

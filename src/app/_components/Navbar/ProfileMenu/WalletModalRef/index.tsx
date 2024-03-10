@@ -1,56 +1,24 @@
 "use client"
 import React, {
     forwardRef,
-    useContext,
     useImperativeHandle,
 } from "react"
 import {
-    Button,
     Modal,
-    ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
     useDisclosure,
 } from "@nextui-org/react"
-import { useSDK } from "@metamask/sdk-react"
-import { RootContext } from "../../../../_hooks"
-import { MetamaskLogoIcon } from "./MetamaskLogoIcon"
+import { WalletModalRefProviders } from "./WalletModalRefProviders"
+import { BodyContent } from "./BodyContent"
 
 export const WrappedWalletModalRef = () => {
-    const { reducer } = useContext(RootContext)!
-    const [ state, dispatch ] = reducer
-    const { wallets } = state
-    const { metamask } = wallets
-    const { address } = metamask
-
-    const { sdk, connected, connecting, provider, chainId } = useSDK()
-
-    const onConnectWalletPress = async () => {
-        try {
-            const accounts = await sdk?.connect()
-            if (accounts === null) return
-            dispatch({
-                type: "SET_METAMASK_ADDRESS",
-                payload: accounts.at(0)
-            }) 
-        } catch (ex) {
-            console.warn("failed to connect..", ex)
-        }
-    }
-
     return (
         <>
             <ModalHeader className="flex flex-col p-4 font-semibold text-lg pb-2">
         Wallet
             </ModalHeader>
-            <ModalBody className="p-4 gap-4">
-                
-                {address}
-            </ModalBody>
-            <ModalFooter className="p-4 pt-2 inline">
-                <Button fullWidth onPress={onConnectWalletPress} startContent={<MetamaskLogoIcon size={20}/>}> Connect Wallet </Button>
-            </ModalFooter>
+            <BodyContent/>
         </>
     )
 }
@@ -75,9 +43,37 @@ export const WalletModalRef = forwardRef<WalletModalRefSelectors, WalletModalRef
         return (
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="sm" className={`${className}`}>
                 <ModalContent>
-                    <WrappedWalletModalRef />
+                    <WalletModalRefProviders>
+                        <WrappedWalletModalRef />
+                    </WalletModalRefProviders>
                 </ModalContent>
             </Modal>
         )
     }
 )
+
+// <div className="text-5xl font-semibold py-2 text-center">
+// $2323
+// </div>
+// <div className="border border-divider rounded-medium p-4">
+// <User className="flex justify-start" name={"STARCI Token"} description={"0 STARCI"} avatarProps={{
+// src: "/starci-logo.svg"
+// }} />
+// {/* <div className="flex items-center gap-2">
+//  <Button startContent={<CoinsIcon size={20} strokeWidth={3/2} />}> Swap  </Button>
+// <Button startContent={<SendIcon size={20} strokeWidth={3/2} />}> Transfer </Button>
+// </div>   */}
+// </div>
+// <div className="border border-divider rounded-medium p-3">
+// <User className="flex justify-start" name={"STARCI2 Token"} description={"0 STARCI2"} avatarProps={{
+// src: "/starci-logo.svg"
+// }} />
+// <Spacer y={4}/>
+// <Divider />
+// <Spacer y={4}/>
+// <div className="flex items-center gap-2">
+// {/* <Button startContent={<HandCoinsIcon size={20} strokeWidth={3/2} />}> Claim  </Button>
+// <Button startContent={<CoinsIcon size={20} strokeWidth={3/2} />}> Swap  </Button>
+// <Button startContent={<SendIcon size={20} strokeWidth={3/2} />}> Transfer </Button> */}
+// </div>
+// </div>
