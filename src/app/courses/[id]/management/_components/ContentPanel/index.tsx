@@ -3,6 +3,7 @@ import React, { useContext } from "react"
 import { SectionsPanel } from "./SectionsPanel"
 import { GeneralPanel } from "./GeneralPanel"
 import { PanelSelected, ManagementContext } from "../../_hooks"
+import { EarningPanel } from "./EarningPanel"
 
 interface ContentPanelProps {
   className?: string;
@@ -17,6 +18,7 @@ export const ContentPanel = (props: ContentPanelProps) => {
     const panelSelectedToComponent: Record<PanelSelected, JSX.Element> = {
         [PanelSelected.General]: <GeneralPanel className={`${className}`} />,
         [PanelSelected.Sections]: <SectionsPanel className={`${className}`} />,
+        [PanelSelected.Earning]: <EarningPanel className={`${className}`} />
     }
 
     return <>{panelSelectedToComponent[panelSelected]}</>

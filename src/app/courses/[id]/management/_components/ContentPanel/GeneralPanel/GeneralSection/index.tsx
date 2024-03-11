@@ -54,29 +54,25 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 isInvalid={!!(formik.touched.description && formik.errors.description)}
                 errorMessage={!!(formik.touched.description && formik.errors.description)}
             />
-            {
-                hasChanged() ? (
-                    <>
-                        <Spacer y={4}/>
-                        <div className="flex gap-2">
-                            <Button
-                                onPress={onDiscardChangesPress}
-                                startContent={<XMarkIcon height={20} width={20} />}
-                            >
+            <Spacer y={4}/>
+            <div className="flex gap-2">
+                <Button
+                    isDisabled={!hasChanged()}
+                    onPress={onDiscardChangesPress}
+                    startContent={<XMarkIcon height={20} width={20} />}
+                >
               Cancel
-                            </Button>
-                            <Button
-                                type="submit"
-                                color="primary"
-                                className="text-secondary-foreground"
-                                startContent={<CheckIcon height={20} width={20} />}
-                            >
+                </Button>
+                <Button
+                    isDisabled={!hasChanged()}
+                    type="submit"
+                    color="primary"
+                    className="text-secondary-foreground"
+                    startContent={<CheckIcon height={20} width={20} />}
+                >
               Save
-                            </Button>
-                        </div>
-                    </>             
-                ) : null
-            }
+                </Button>
+            </div>
         </div>
     )
 }

@@ -95,6 +95,8 @@ export interface CourseEntity {
   enrolledInfos: Array<EnrolledInfoEntity>;
   sections: Array<SectionEntity>;
   courseTargets: Array<CourseTargetEntity>;
+   //graphql
+   numberOfEnrollments?: number
 }
 
 export interface CourseTargetEntity {

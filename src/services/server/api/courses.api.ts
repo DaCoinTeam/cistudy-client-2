@@ -12,6 +12,24 @@ export const createCourse = async (): Promise<CreateCourseOutput> => {
     return await authAxios.post(url)
 }
 
+export interface EnrollCourseInput {
+    data: {
+        courseId: string;
+    };
+}
+
+export interface EnrollCourseOutput {
+    enrolledInfoId: string;
+}
+
+export const enrollCourse = async (input: EnrollCourseInput): Promise<EnrollCourseOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/enroll-course`
+
+    return await authAxios.patch(url, { data })
+}
+
+
 export interface UpdateCourseInput {
     data: {
         courseId: string;

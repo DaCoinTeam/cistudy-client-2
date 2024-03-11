@@ -7,7 +7,6 @@ const Page = () => {
             <div >
                 <div className="mb-5">
                     <CourseBanner/>
-              
                 </div>
        
                 <div className="grid grid-cols-3 gap-4 px-[5em] mb-5">      

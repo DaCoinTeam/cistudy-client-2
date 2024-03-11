@@ -8,6 +8,7 @@ import {
     Cog6ToothIcon,
     ListBulletIcon,
 } from "@heroicons/react/24/outline"
+import { DollarSign } from "lucide-react"
 
 interface MenuProps {
   className?: string;
@@ -41,20 +42,22 @@ export const Menu = (props: MenuProps) => {
 
     const items = [
         {
-            startContent: (
-                <Cog6ToothIcon width={24} height={24} />
-            ),
+            startContent: <Cog6ToothIcon width={24} height={24} />,
             key: "general",
             content: "General",
             panelSelected: PanelSelected.General,
         },
         {
-            startContent: (
-                <ListBulletIcon width={24} height={24} strokeWidth={3 / 2} />
-            ),
+            startContent: <ListBulletIcon width={24} height={24} />,
             key: "sections",
             content: "Sections",
             panelSelected: PanelSelected.Sections,
+        },
+        {
+            startContent: <DollarSign size={24} strokeWidth={3 / 2} />,
+            key: "earning",
+            content: "Earning",
+            panelSelected: PanelSelected.Earning,
         },
     ]
 

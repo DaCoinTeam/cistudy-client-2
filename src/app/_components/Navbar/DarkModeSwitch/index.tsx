@@ -19,9 +19,9 @@ export const DarkModeSwitch = () => {
             isSelected={darkMode}
             thumbIcon={({ isSelected, className }) =>
                 isSelected ? (
-                    <SunIcon height={20} width={20} className={className} />
-                ) : (
                     <MoonIcon height={20} width={20} className={className} />
+                ) : (
+                    <SunIcon height={20} width={20} className={className} />
                 )
             }
         />

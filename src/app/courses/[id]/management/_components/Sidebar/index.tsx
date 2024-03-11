@@ -1,10 +1,7 @@
 "use client"
-import { Card, CardBody, CardHeader, Divider, Spacer, User } from "@nextui-org/react"
-import React, { useContext } from "react"
-import { Stars } from "../../../../../_shared"
-import { getAssetUrl } from "@services"
+import { Card, CardBody } from "@nextui-org/react"
+import React from "react"
 import { Menu } from "./Menu"
-import { ManagementContext } from "../../_hooks"
 
 interface SidebarProps {
     className?: string
@@ -12,34 +9,14 @@ interface SidebarProps {
 
 export const Sidebar = (props: SidebarProps) => {
     const { className } = props
-    const { swrs } = useContext(ManagementContext)!
-    const { courseManagementSwr } = swrs
-    const { data: courseManagement } = courseManagementSwr
-    const { title, creator } = { ...courseManagement }
-    const { avatarId, username, numberOfFollowers } = { ...creator }
 
     return (
-        <Card shadow="none" className={`${className} border border-divider p-4 sticky top-[5.5rem] rounded-medium`}>
-            {/* <CardHeader className="p-0 pb-4 inline">
-                <div className="text-2xl"> {title} </div>
-                <div className="text-xs text-foreground-500"> Javascript, Typescript </div>
-                <Spacer y={4}/>
-                <User className="flex justify-start" classNames={{name: "text-base font-semibold"}} name={username} description={`${numberOfFollowers} followers`} avatarProps={{
-                    src: getAssetUrl(avatarId)
-                }} />
-                
-                <Spacer y={4}/>
-                <Stars readonly/>
-                <Spacer y={1}/>
-                <div className="text-xs text-foreground-500">
-                    {232} users has enrolled this course
-                </div>      
-                <Spacer y={4}/> 
-            </CardHeader>
-            <Divider /> */}
-            <CardBody className="p-0">
-                <Menu />
-            </CardBody>
-        </Card>
+        <div className={`${className} sticky top-[5.5rem]`} >
+            <Card shadow="none" className="border border-divider p-4 rounded-medium w-full">
+                <CardBody className="p-0">
+                    <Menu />
+                </CardBody>
+            </Card>
+        </div>   
     )
 }

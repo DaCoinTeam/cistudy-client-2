@@ -72,7 +72,8 @@ const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
                     avatarId: true,
                     numberOfFollowers: true,
                     username: true
-                }
+                },
+                numberOfEnrollments: true
             }
         )
     }, [course?.courseId])

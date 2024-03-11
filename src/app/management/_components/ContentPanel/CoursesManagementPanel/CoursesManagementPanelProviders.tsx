@@ -28,7 +28,7 @@ export const ROWS_PER_PAGE = 5
 export const CoursesManagementPanelContext =
   createContext<CoursesManagementPanelContextValue | null>(null)
 
-const WrappedcoursesManagementPanelProviders = ({
+const WrappedCoursesManagementPanelProviders = ({
     children,
 }: {
   children: ReactNode;
@@ -98,8 +98,8 @@ export const CoursesManagementPanelProviders = ({
   children: ReactNode;
 }) => (
     <SWRConfig value={{ provider: () => new Map() }}>
-        <WrappedcoursesManagementPanelProviders>
+        <WrappedCoursesManagementPanelProviders>
             {children}
-        </WrappedcoursesManagementPanelProviders>
+        </WrappedCoursesManagementPanelProviders>
     </SWRConfig>
 )
