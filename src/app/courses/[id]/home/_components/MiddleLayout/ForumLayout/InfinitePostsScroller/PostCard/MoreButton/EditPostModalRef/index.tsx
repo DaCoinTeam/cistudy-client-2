@@ -19,12 +19,11 @@ import {
     EditPostModalContext, EditPostModalProviders,
 } from "./EditPostModalProviders"
 import { AppendKey, Media } from "@common"
-import { SaveIcon } from "lucide-react"
 
 import { getAssetFile } from "@services"
 import { MediaUploader, TextEditor } from "../../../../../../../../../../_shared"
 import { PostCardContext } from "../.."
-import { ArrowPathIcon } from "@heroicons/react/24/outline"
+import { ArrowPathIcon, CheckIcon } from "@heroicons/react/24/outline"
 
 export const WrappedEditPostModalRef = () => {
     const { formik } = useContext(EditPostModalContext)!
@@ -80,8 +79,8 @@ export const WrappedEditPostModalRef = () => {
 
     return (
         <>
-            <ModalHeader className="flex flex-col p-4 font-semibold text-lg pb-2">
-        Update Post
+            <ModalHeader className="p-4 text-xl pb-2">
+        Edit Post
             </ModalHeader>
             <ModalBody className="p-4 gap-4">
                 <Input  
@@ -108,7 +107,6 @@ export const WrappedEditPostModalRef = () => {
             </ModalBody>
             <ModalFooter className="p-4 pt-2">
                 <Button
-                    variant="light"
                     startContent={<ArrowPathIcon height={20} width={20} />} 
                 >
             Reset
@@ -117,7 +115,7 @@ export const WrappedEditPostModalRef = () => {
                     onPress={onPress}
                     color="primary"
                     className="text-secondary-foreground"
-                    startContent={<SaveIcon size={20} strokeWidth={3 / 2} />}
+                    startContent={<CheckIcon height={20} width={20}/>}
                 >
             Save
                 </Button>

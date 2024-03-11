@@ -76,8 +76,8 @@ export const WrappedEditCommentModalRef = () => {
 
     return (
         <>
-            <ModalHeader className="p-4 pb-2 text-2xl font-normal">
-        Update Comment
+            <ModalHeader className="p-4 pb-2 text-xl">
+        Edit Comment
             </ModalHeader>
             <ModalBody className="p-4 gap-4">
                 <TextEditor html={html} setHtml={setHtml} />

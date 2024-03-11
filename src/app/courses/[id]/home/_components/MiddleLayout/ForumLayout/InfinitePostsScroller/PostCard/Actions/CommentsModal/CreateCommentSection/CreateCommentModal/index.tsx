@@ -17,8 +17,7 @@ import {
     TextEditor,
     MediaUploader,
 } from "../../../../../../../../../../../../_shared"
-import { PlusIcon } from "lucide-react"
-import { ArrowPathIcon } from "@heroicons/react/16/solid"
+import { ArrowPathIcon, PlusIcon } from "@heroicons/react/24/outline"
 
 export const WrappedCreateCommentModal = () => {
     const { formik } = useContext(CreateCommentModalContext)!
@@ -38,7 +37,7 @@ export const WrappedCreateCommentModal = () => {
 
     return (
         <>
-            <ModalHeader className="flex flex-col p-4 font-semibold text-lg pb-2">
+            <ModalHeader className="p-4 pb-2">
         Create Comment
             </ModalHeader>
             <ModalBody className="p-4">
@@ -48,7 +47,6 @@ export const WrappedCreateCommentModal = () => {
             <ModalFooter className="p-4 pt-2">
                 <div className="flex gap-2 items-center">
                     <Button
-                        variant="light"
                         startContent={<ArrowPathIcon height={20} width={20} />} 
                     >
             Reset
@@ -57,7 +55,7 @@ export const WrappedCreateCommentModal = () => {
                         onPress={onPress}
                         color="primary"
                         className="text-secondary-foreground"
-                        startContent={<PlusIcon size={20} strokeWidth={3 / 2} />}
+                        startContent={<PlusIcon height={20} width={20} />}
                     >
             Create
                     </Button>

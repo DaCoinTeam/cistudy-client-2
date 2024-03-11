@@ -45,7 +45,7 @@ export const WrappedCreatePostModal = () => {
 
     return (
         <>
-            <ModalHeader className="p-4 pb-2 font-normal text-2xl">
+            <ModalHeader className="p-4 pb-2 text-xl">
         Create Post
             </ModalHeader>
             <ModalBody className="p-4 gap-0">
@@ -74,11 +74,11 @@ export const WrappedCreatePostModal = () => {
                 />
             </ModalBody>
             <ModalFooter className="p-4 pt-2 items-center">
-                <Button startContent={<ArrowPathIcon height={20} width={20} />} variant="light">Reset</Button>
+                <Button startContent={<ArrowPathIcon height={20} width={20} />}>Reset</Button>
                 <Button
                     onPress={onPress}
                     startContent={
-                        <PlusIcon height={20} width={20} strokeWidth={3 / 2} />
+                        <PlusIcon height={20} width={20}/>
                     }
                     color="primary"
                     className="text-secondary-foreground"
