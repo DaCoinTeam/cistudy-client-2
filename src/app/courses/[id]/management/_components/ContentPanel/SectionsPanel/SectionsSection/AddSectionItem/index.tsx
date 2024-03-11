@@ -1,9 +1,9 @@
 "use client"
-import { Button } from "@nextui-org/react"
+import { Link } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { createSection } from "@services"
-import { PlusIcon } from "lucide-react"
 import { ManagementContext } from "../../../../../_hooks"
+import { PlusIcon } from "@heroicons/react/24/outline"
 
 export const AddSectionItem = () => {
     const { swrs } = useContext(ManagementContext)!
@@ -23,13 +23,11 @@ export const AddSectionItem = () => {
     }
 
     return (
-        <Button
-            onPress={onPress}
-            fullWidth
-            startContent={<PlusIcon size={20} strokeWidth={3/2} />}
-            className="h-[4.5rem] !bg-transparent"
-        >
-      Add Section
-        </Button>
+        <Link as={"button"} onPress={onPress} color="foreground" className="h-[4.5rem] w-full !bg-transparent px-4 grid place-content-center">
+            <div className="items-center flex gap-2">
+                <PlusIcon width={20} height={20} />
+                <div className="text-sm">Add section</div>
+            </div>
+        </Link>
     )
 }

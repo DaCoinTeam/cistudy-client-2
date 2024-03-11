@@ -2,17 +2,22 @@
 import {
     Accordion,
     AccordionItem,
-    Card,
-    CardBody,
-    CardHeader,
     Divider,
+    Spacer,
 } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { AddSectionItem } from "./AddSectionItem"
 import { ManagementContext } from "../../../../_hooks"
 import { SectionItem } from "./SectionItem"
 import { MoreButton } from "./MoreButton"
-export const SectionsCard = () => {
+
+interface SectionsSectionProps {
+    className?: string
+}
+
+export const SectionsSection = (props: SectionsSectionProps) => {
+    const { className } = props
+
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data: courseManagement } = courseManagementSwr
@@ -37,9 +42,8 @@ export const SectionsCard = () => {
                         startContent={<MoreButton section={section} />}
                         subtitle={"3 lesson"}
                         classNames={{
-                            title: "text-base font-semibold",
-                            content: "flex flex-col gap-4 pb-4 pt-2",
-                            subtitle: "text-xs",
+                            content: "flex flex-col gap-4 px-4 pb-4 pt-2",
+                            heading: "!px-4"
                         }}
                     >
                         <SectionItem key={section.sectionId} section={section} />
@@ -50,13 +54,15 @@ export const SectionsCard = () => {
     }
 
     return (
-        <Card shadow="none" className="border border-divider rounded-medium">
-            <CardHeader className="text-lg font-semibold p-4 pb-2"> Sections </CardHeader>
-            <CardBody className="py-0 px-4 gap-0">
+        <div className={`${className}`}>
+            <div className="text-2xl"> Sections </div>
+            <Spacer y={4}/>
+            <div className="border border-divider rounded-medium">
                 {renderSections()}
                 <Divider/>
                 <AddSectionItem />
-            </CardBody>
-        </Card>
+            </div>
+        </div>
+       
     )
 }

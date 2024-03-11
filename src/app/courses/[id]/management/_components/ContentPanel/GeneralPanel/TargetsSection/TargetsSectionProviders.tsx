@@ -12,7 +12,7 @@ import { ManagementContext } from "../../../../_hooks"
 import useSWR, { SWRConfig, SWRResponse } from "swr"
 import { CourseTargetEntity, ErrorResponse } from "@common"
 
-export interface TargetsCardContextValue {
+export interface TargetsSectionContextValue {
   swrs: {
     courseTargetsSwr: SWRResponse<
       Array<CourseTargetEntity> | undefined,
@@ -21,19 +21,18 @@ export interface TargetsCardContextValue {
   };
 }
 
-export const TargetsCardContext = createContext<TargetsCardContextValue | null>(
+export const TargetsSectionContext = createContext<TargetsSectionContextValue | null>(
     null
 )
 
-const WrappedTargetsCardProviders = ({ children }: { children: ReactNode }) => {
+const WrappedTargetsSectionProviders = ({ children }: { children: ReactNode }) => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data: courseManagement } = courseManagementSwr
+    const { courseId } = { ...courseManagement }
 
     const fetchCourseTargets = useCallback(async () => {
-        if (!courseManagement) return
-        const { courseId } = courseManagement
-
+        if (!courseId) return
         return await findManyCourseTargets(
             {
                 courseId,
@@ -43,11 +42,11 @@ const WrappedTargetsCardProviders = ({ children }: { children: ReactNode }) => {
                 content: true,
             }
         )
-    }, [courseManagement?.courseId])
+    }, [courseId])
 
-    const courseTargetsSwr = useSWR(["COURSE_TARGETS"], fetchCourseTargets)
+    const courseTargetsSwr = useSWR(courseId ? ["COURSE_TARGETS"] : null, fetchCourseTargets)
 
-    const targetsCardContextValue: TargetsCardContextValue = useMemo(
+    const targetsCardContextValue: TargetsSectionContextValue = useMemo(
         () => ({
             swrs: {
                 courseTargetsSwr,
@@ -57,14 +56,14 @@ const WrappedTargetsCardProviders = ({ children }: { children: ReactNode }) => {
     )
 
     return (
-        <TargetsCardContext.Provider value={targetsCardContextValue}>
+        <TargetsSectionContext.Provider value={targetsCardContextValue}>
             {children}
-        </TargetsCardContext.Provider>
+        </TargetsSectionContext.Provider>
     )
 }
 
-export const TargetsCardProviders = ({ children }: { children: ReactNode }) => (
+export const TargetsSectionProviders = ({ children }: { children: ReactNode }) => (
     <SWRConfig value={{ provider: () => new Map() }}>
-        <WrappedTargetsCardProviders>{children}</WrappedTargetsCardProviders>
+        <WrappedTargetsSectionProviders>{children}</WrappedTargetsSectionProviders>
     </SWRConfig>
 )

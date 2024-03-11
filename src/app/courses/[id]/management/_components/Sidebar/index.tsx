@@ -20,7 +20,7 @@ export const Sidebar = (props: SidebarProps) => {
 
     return (
         <Card shadow="none" className={`${className} border border-divider p-4 sticky top-[5.5rem] rounded-medium`}>
-            <CardHeader className="p-0 pb-4 inline">
+            {/* <CardHeader className="p-0 pb-4 inline">
                 <div className="text-lg font-semibold"> {title} </div>
                 <div className="text-xs text-foreground-500"> Javascript, Typescript </div>
                 <Spacer y={4}/>
@@ -36,8 +36,8 @@ export const Sidebar = (props: SidebarProps) => {
                 </div>      
                 <Spacer y={4}/> 
             </CardHeader>
-            <Divider />
-            <CardBody className="p-0 pt-4">
+            <Divider /> */}
+            <CardBody className="p-0">
                 <Menu />
             </CardBody>
         </Card>

@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext } from "react"
 import { SectionsPanel } from "./SectionsPanel"
-import { DetailsPanel } from "./DetailsPanel"
+import { GeneralPanel } from "./GeneralPanel"
 import { PanelSelected, ManagementContext } from "../../_hooks"
 
 interface ContentPanelProps {
@@ -11,17 +11,13 @@ interface ContentPanelProps {
 export const ContentPanel = (props: ContentPanelProps) => {
     const { className } = props
     const { reducer } = useContext(ManagementContext)!
-    const [ state ] = reducer
+    const [state] = reducer
     const { panelSelected } = state
 
     const panelSelectedToComponent: Record<PanelSelected, JSX.Element> = {
-        [PanelSelected.Details]: <DetailsPanel />,
-        [PanelSelected.Sections]: <SectionsPanel />,
+        [PanelSelected.General]: <GeneralPanel className={`${className}`} />,
+        [PanelSelected.Sections]: <SectionsPanel className={`${className}`} />,
     }
 
-    return (
-        <div className={`${className}`}>
-            {panelSelectedToComponent[panelSelected]}
-        </div>
-    )
+    return <>{panelSelectedToComponent[panelSelected]}</>
 }

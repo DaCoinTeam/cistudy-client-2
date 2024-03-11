@@ -1,11 +1,15 @@
 "use client"
 import React from "react"
-import { SectionsCard } from "./SectionsCard"
+import { SectionsSection } from "./SectionsSection"
 
-export const SectionsPanel = () => {
+interface SectionPanelProps {
+    className?: string
+}
+export const SectionsPanel = (props: SectionPanelProps) => {
+    const { className } = props
     return (
-        <div className="w-full">
-            <SectionsCard />
+        <div className={`${className}`}>
+            <SectionsSection />
         </div>
     )
 }

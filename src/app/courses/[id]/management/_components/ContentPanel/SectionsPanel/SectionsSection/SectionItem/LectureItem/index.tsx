@@ -5,6 +5,7 @@ import { MoreButton } from "./MoreButton"
 import { InteractiveThumbnail } from "../../../../../../../../../_shared"
 import { useRouter } from "next/navigation"
 import { ClockIcon } from "@heroicons/react/24/outline"
+import { Spacer } from "@nextui-org/react"
 
 interface LectureItemProps {
   lecture: LectureEntity;
@@ -36,14 +37,15 @@ export const LectureItem = (props: LectureItemProps) => {
     return (
         <LectureItemContext.Provider value={lectureItemContextValue}>
             <div className="justify-between flex items-center w-full">
-                <div className="grid grid-cols-6 gap-2 items-center w-full">
+                <div className="grid grid-cols-6 gap-3 w-full">
                     <InteractiveThumbnail src={getAssetUrl(thumbnailId)} onPress={onPress}/>
-                    <div className="col-span-5">
-                        <div className="text-sm"> {title} </div>
+                    <div className="col-span-3">
+                        <div> {title} </div>
                         <div className="flex items-center gap-1">
                             <ClockIcon height={12} width={12} className="text-foreground-500" />
                             <div className="text-xs text-foreground-500">15 min </div>
                         </div>
+                        <Spacer y={0.5}/>
                         <div className="text-foreground-500 text-sm line-clamp-2">
                             {description}
                         </div>

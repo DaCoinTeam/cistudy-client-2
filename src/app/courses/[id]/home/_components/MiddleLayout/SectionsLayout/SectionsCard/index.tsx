@@ -4,11 +4,11 @@ import React, { useContext } from "react"
 import { LectureItem } from "./LectureItem"
 import { HomeContext } from "../../../../_hooks"
 
-interface SectionsCardProps {
+interface SectionsSectionProps {
   className?: string;
 }
 
-export const SectionsCard = (props: SectionsCardProps) => {
+export const SectionsSection = (props: SectionsSectionProps) => {
     const { className } = props
 
     const { swrs } = useContext(HomeContext)!

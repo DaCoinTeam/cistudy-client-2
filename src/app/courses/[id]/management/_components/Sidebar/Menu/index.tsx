@@ -5,7 +5,7 @@ import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
 import { PanelSelected } from "../../../_hooks"
 import {
-    DocumentMagnifyingGlassIcon,
+    Cog6ToothIcon,
     ListBulletIcon,
 } from "@heroicons/react/24/outline"
 
@@ -42,11 +42,11 @@ export const Menu = (props: MenuProps) => {
     const items = [
         {
             startContent: (
-                <DocumentMagnifyingGlassIcon width={24} height={24} strokeWidth={3 / 2} />
+                <Cog6ToothIcon width={24} height={24} />
             ),
-            key: "details",
-            content: "Details",
-            panelSelected: PanelSelected.Details,
+            key: "general",
+            content: "General",
+            panelSelected: PanelSelected.General,
         },
         {
             startContent: (

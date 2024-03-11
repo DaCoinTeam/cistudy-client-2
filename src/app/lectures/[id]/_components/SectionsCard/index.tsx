@@ -5,11 +5,11 @@ import { LectureDetailsContext } from "../../_hooks"
 import { LectureItem } from "./LectureItem"
 import { getSetValues } from "@common"
 
-interface SectionsCardProps {
+interface SectionsSectionProps {
   className?: string;
 }
 
-export const SectionsCard = (props: SectionsCardProps) => {
+export const SectionsSection = (props: SectionsSectionProps) => {
     const { className } = props
 
     const { swrs } = useContext(LectureDetailsContext)!

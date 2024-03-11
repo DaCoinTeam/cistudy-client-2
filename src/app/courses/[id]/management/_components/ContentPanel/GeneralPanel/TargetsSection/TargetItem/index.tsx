@@ -2,9 +2,9 @@ import { Input, Link } from "@nextui-org/react"
 import React, { useContext, useEffect, useState } from "react"
 import { CourseTargetEntity } from "@common"
 import { deleteCourseTarget, updateCourseTarget } from "@services"
-import { XIcon } from "lucide-react"
 import { DELAY_TIME } from "@config"
-import { TargetsCardContext } from "../TargetsCardProviders"
+import { TargetsSectionContext } from "../TargetsSectionProviders"
+import { TrashIcon } from "@heroicons/react/24/outline"
 
 interface TargetItemProps {
   courseTarget: CourseTargetEntity;
@@ -14,7 +14,7 @@ export const TargetItem = (props: TargetItemProps) => {
     const { courseTarget } = props
     const { courseTargetId, content } = courseTarget
 
-    const { swrs } = useContext(TargetsCardContext)!
+    const { swrs } = useContext(TargetsSectionContext)!
     const { courseTargetsSwr } = swrs
     const { mutate } = courseTargetsSwr
 
@@ -61,9 +61,8 @@ export const TargetItem = (props: TargetItemProps) => {
                 labelPlacement="outside"
                 label=""
                 classNames={{
-                    inputWrapper: "shadow-none !border !border-divider",
+                    inputWrapper: "shadow-none !bg-transparent",
                 }}
-                variant="bordered"
                 onValueChange={onValueChange}
                 id="content"
                 value={value}
@@ -75,7 +74,7 @@ export const TargetItem = (props: TargetItemProps) => {
                             className="text-sm"
                             as="button"
                         >
-                            <XIcon size={20} strokeWidth={3/2} />
+                            <TrashIcon className="text-primary" height={20} width={20} />
                         </Link>
                     </div>
                 }

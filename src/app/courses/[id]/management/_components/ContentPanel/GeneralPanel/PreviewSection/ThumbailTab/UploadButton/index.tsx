@@ -2,7 +2,7 @@ import React, { useContext, useRef } from "react"
 import { updateCourse } from "@services"
 import { ManagementContext } from "../../../../../../_hooks"
 import { Button } from "@nextui-org/react"
-import { UploadIcon } from "lucide-react"
+import { ArrowUpTrayIcon } from "@heroicons/react/24/outline"
 
 interface UploadButtonProps {
     className? : string
@@ -29,7 +29,7 @@ export const UploadButton = (props: UploadButtonProps) => {
         await updateCourse({
             data: {
                 courseId,
-                previewVideoIndex: 0,
+                thumbnailIndex: 0,
             },
             files: [file],
         })
@@ -45,14 +45,15 @@ export const UploadButton = (props: UploadButtonProps) => {
         <>
             <Button
                 onPress={onPress}
-                className={`bg-content2 ${className}`}
-                startContent={<UploadIcon size={20} strokeWidth={3/2} />}
+                color="primary"
+                className={`${className} text-secondary-foreground`}
+                startContent={<ArrowUpTrayIcon height={20} width={20} />}
             >
           Upload
             </Button>
             <input
                 type="file"
-                accept="video/*"
+                accept="image/*"
                 ref={fileInputRef}
                 onChange={onFileChange}
                 className="hidden"

@@ -12,7 +12,7 @@ import { updateCourse } from "@services"
 import { isErrorResponse } from "@common"
 import { ManagementContext } from "../../../../_hooks"
 
-interface DetailsPanelContextValue {
+interface GeneralSectionContextValue {
   formik: FormikProps<FormikValues>;
   functions: {
     hasChanged: () => boolean;
@@ -20,8 +20,8 @@ interface DetailsPanelContextValue {
   };
 }
 
-export const DetailsPanelContext =
-  createContext<DetailsPanelContextValue | null>(null)
+export const GeneralSectionContext =
+  createContext<GeneralSectionContextValue | null>(null)
 
 interface FormikValues {
   title: string;
@@ -37,7 +37,7 @@ const initialValues: FormikValues = {
     descriptionPrevious: "",
 }
 
-const WrappedDetailsPanelProviders = ({
+const WrappedGeneralSectionProviders = ({
     formik,
     children,
 }: {
@@ -84,7 +84,7 @@ const WrappedDetailsPanelProviders = ({
         formik.setFieldValue("description", formik?.values.descriptionPrevious)
     }
 
-    const detailsPanelContextValue: DetailsPanelContextValue = useMemo(
+    const detailsPanelContextValue: GeneralSectionContextValue = useMemo(
         () => ({
             formik,
             functions: {
@@ -96,13 +96,13 @@ const WrappedDetailsPanelProviders = ({
     )
 
     return (
-        <DetailsPanelContext.Provider value={detailsPanelContextValue}>
+        <GeneralSectionContext.Provider value={detailsPanelContextValue}>
             <Form onSubmit={formik?.handleSubmit}>{children}</Form>
-        </DetailsPanelContext.Provider>
+        </GeneralSectionContext.Provider>
     )
 }
 
-export const DetailsPanelProviders = ({
+export const GeneralSectionProviders = ({
     children,
 }: {
   children: ReactNode;
@@ -134,9 +134,9 @@ export const DetailsPanelProviders = ({
             }}
         >
             {(formik) => (
-                <WrappedDetailsPanelProviders formik={formik}>
+                <WrappedGeneralSectionProviders formik={formik}>
                     {children}
-                </WrappedDetailsPanelProviders>
+                </WrappedGeneralSectionProviders>
             )}
         </Formik>
     )
