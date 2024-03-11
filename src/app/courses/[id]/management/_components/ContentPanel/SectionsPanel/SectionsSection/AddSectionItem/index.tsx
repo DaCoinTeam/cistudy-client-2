@@ -23,7 +23,7 @@ export const AddSectionItem = () => {
     }
 
     return (
-        <Link as={"button"} onPress={onPress} color="foreground" className="h-[4.5rem] w-full !bg-transparent px-4 grid place-content-center">
+        <Link as={"button"} onPress={onPress} color="foreground" className="h-20 w-full !bg-transparent px-4 grid place-content-center">
             <div className="items-center flex gap-2">
                 <PlusIcon width={20} height={20} />
                 <div className="text-sm">Add section</div>
