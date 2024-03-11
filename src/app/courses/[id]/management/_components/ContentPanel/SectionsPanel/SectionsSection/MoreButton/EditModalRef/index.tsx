@@ -14,7 +14,7 @@ import {
     EditModalRefContext,
     EditModalRefProviders,
 } from "./EditModalRefProviders"
-import { ClipboardXIcon, SaveIcon } from "lucide-react"
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
 
 export interface EditModalRefSelectors {
   onOpen: () => void;
@@ -36,7 +36,9 @@ export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
         return (
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
                 <ModalContent>
-                    <ModalHeader className="p-4 pb-2 text-lg">Edit</ModalHeader>
+                    <ModalHeader className="p-4 pb-2 text-2xl font-normal">
+            Edit
+                    </ModalHeader>
                     <ModalBody className="p-4">
                         <Input
                             id="title"
@@ -45,7 +47,7 @@ export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                             isInvalid={!!(formik.touched.title && formik.errors.title)}
                             errorMessage={formik.touched.title && formik.errors.title}
                             classNames={{
-                                inputWrapper: "shadow-none border border-divider",
+                                inputWrapper: "shadow-none !border !border-divider",
                             }}
                             variant="bordered"
                             labelPlacement="outside"
@@ -53,27 +55,23 @@ export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                             placeholder="Input title here"
                         />
                     </ModalBody>
-                    {
-                        hasChanged() ? (
-                            <ModalFooter className="gap-2">
-                                <Button
-                                    onPress={onDiscardChangesPress}
-                                    variant="light"
-                                    startContent={<ClipboardXIcon size={20} strokeWidth={3/2} />}
-                                >
-              Discard Changes
-                                </Button>
-                                <Button
-                                    onPress={onSubmit}
-                                    className="bg-content2"
-                                    startContent={<SaveIcon size={20} strokeWidth={3/2} />}
-                                >
-              Save
-                                </Button>
-                               
-                            </ModalFooter>
-                        ) : null
-                    }
+                    <ModalFooter className="gap-2 p-4 pt-2">
+                        <Button
+                            isDisabled={!hasChanged()}
+                            onPress={onDiscardChangesPress}
+                            startContent={<XMarkIcon width={20} height={20} />}
+                        >
+                  Discard Changes
+                        </Button>
+                        <Button
+                            isDisabled={!hasChanged()}
+                            onPress={onSubmit}
+                            color="primary"
+                            startContent={<CheckIcon width={20} height={20} />}
+                        >
+                  Save
+                        </Button>
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
         )

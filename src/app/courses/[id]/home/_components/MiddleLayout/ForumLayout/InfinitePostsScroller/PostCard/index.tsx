@@ -6,6 +6,7 @@ import {
     CardBody,
     CardFooter,
     CardHeader,
+    Divider,
     Spacer,
     User,
 } from "@nextui-org/react"
@@ -38,7 +39,7 @@ export const PostCard = (props: PostCardProps) => {
     return (
         <PostCardContext.Provider value={postCardContextValue}>
             <Card shadow="none" className="border border-divider rounded-medium">
-                <CardHeader className="p-4 pb-2 inline">
+                <CardHeader className="p-4 pb-4 inline">
                     <div className="flex items-center justify-between">
                         <User
                             classNames={{
@@ -55,9 +56,10 @@ export const PostCard = (props: PostCardProps) => {
                         />
                         <MoreButton />
                     </div>
-                    <Spacer y={2} />
-                    <div className="text-lg font-semibold"> {title} </div>
+                    <Spacer y={4} />
+                    <div className="text-xl"> {title} </div>
                 </CardHeader>
+                <Divider />
                 <CardBody className="p-4 gap-4">
                     <TextRenderer html={html} />
                     <MediaGroup

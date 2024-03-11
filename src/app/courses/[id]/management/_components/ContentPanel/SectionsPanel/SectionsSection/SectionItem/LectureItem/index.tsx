@@ -37,9 +37,9 @@ export const LectureItem = (props: LectureItemProps) => {
     return (
         <LectureItemContext.Provider value={lectureItemContextValue}>
             <div className="justify-between flex items-center w-full">
-                <div className="grid grid-cols-6 gap-3 w-full">
-                    <InteractiveThumbnail src={getAssetUrl(thumbnailId)} onPress={onPress}/>
-                    <div className="col-span-3">
+                <div className="flex gap-3 w-full">
+                    <InteractiveThumbnail className="w-40 h-fit" src={getAssetUrl(thumbnailId)} onPress={onPress}/>
+                    <div>
                         <div> {title} </div>
                         <div className="flex items-center gap-1">
                             <ClockIcon height={12} width={12} className="text-foreground-500" />

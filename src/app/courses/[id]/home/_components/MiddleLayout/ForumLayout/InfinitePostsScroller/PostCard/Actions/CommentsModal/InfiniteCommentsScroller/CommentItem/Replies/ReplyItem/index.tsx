@@ -5,7 +5,7 @@ import { getAssetUrl, updatePostCommentReply } from "@services"
 import { MoreButton } from "./MoreButton"
 import { useFormik } from "formik"
 import { RepliesContext } from "../RepliesProviders"
-import { SaveIcon } from "lucide-react"
+import { CheckIcon } from "@heroicons/react/24/outline"
 
 interface ReplyItemProps {
   postCommentReply: PostCommentReplyEntity;
@@ -110,7 +110,7 @@ export const ReplyItem = (props: ReplyItemProps) => {
                                             className="px-2.5"
                                             size="sm"
                                         >
-                                            <SaveIcon size={20} strokeWidth={3 / 2} />
+                                            <CheckIcon width={20} height={20} />
                                         </Link>
                                     }
                                 />

@@ -1,5 +1,5 @@
 "use client"
-import { Button } from "@nextui-org/react"
+import { Link } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { createLecture } from "@services"
 import { SectionItemContext } from ".."
@@ -24,12 +24,17 @@ export const AddLectureItem = () => {
     }
 
     return (
-        <Button
-            className="w-fit"
+        <Link
+            as="button"
+            className="w-full grid place-content-center h-10"
             onPress={onPress}
-            startContent={<PlusIcon width={20} height={20}/>}
+            color="foreground"
         >
-      Add lecture
-        </Button>
+            <div className="gap-2 flex">
+                <PlusIcon width={20} height={20}/>
+                <div className="text-sm">Add lecture </div>
+            </div>
+    
+        </Link>
     )
 }

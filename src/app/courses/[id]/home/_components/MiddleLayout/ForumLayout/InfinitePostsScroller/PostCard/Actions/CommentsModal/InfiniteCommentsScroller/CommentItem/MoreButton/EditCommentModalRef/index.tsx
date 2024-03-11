@@ -23,10 +23,9 @@ import {
     TextEditor,
     MediaUploader
 } from "../../../../../../../../../../../../../../_shared"
-import { SaveIcon } from "lucide-react"
 import { CommentItemContext } from "../.."
 import { getAssetFile } from "@services"
-import { ArrowPathIcon } from "@heroicons/react/24/outline"
+import { ArrowPathIcon, CheckIcon } from "@heroicons/react/24/outline"
 
 export const WrappedEditCommentModalRef = () => {
     const { formik } = useContext(EditCommentModalContext)!
@@ -77,7 +76,7 @@ export const WrappedEditCommentModalRef = () => {
 
     return (
         <>
-            <ModalHeader className="flex flex-col p-4 font-semibold text-lg pb-2">
+            <ModalHeader className="p-4 pb-2 text-2xl font-normal">
         Update Comment
             </ModalHeader>
             <ModalBody className="p-4 gap-4">
@@ -89,7 +88,6 @@ export const WrappedEditCommentModalRef = () => {
             </ModalBody>
             <ModalFooter className="p-4 pt-2">
                 <Button
-                    variant="light"
                     startContent={<ArrowPathIcon height={20} width={20} />} 
                 >
             Reset
@@ -98,7 +96,7 @@ export const WrappedEditCommentModalRef = () => {
                     onPress={onPress}
                     color="primary"
                     className="text-secondary-foreground"
-                    startContent={<SaveIcon size={20} strokeWidth={3 / 2} />}
+                    startContent={<CheckIcon width={20} height={20} />}
                 >
             Save
                 </Button>

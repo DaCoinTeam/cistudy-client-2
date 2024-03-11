@@ -1,15 +1,15 @@
 "use client"
-import { Accordion, AccordionItem, Card, CardBody, CardHeader, ScrollShadow, Selection } from "@nextui-org/react"
+import { Accordion, AccordionItem, Card, CardBody, CardHeader, Divider, ScrollShadow, Selection } from "@nextui-org/react"
 import React, { useContext, useEffect, useState } from "react"
 import { LectureDetailsContext } from "../../_hooks"
 import { LectureItem } from "./LectureItem"
 import { getSetValues } from "@common"
 
-interface SectionsSectionProps {
+interface SectionsCardProps {
   className?: string;
 }
 
-export const SectionsSection = (props: SectionsSectionProps) => {
+export const SectionsCard = (props: SectionsCardProps) => {
     const { className } = props
 
     const { swrs } = useContext(LectureDetailsContext)!
@@ -49,9 +49,7 @@ export const SectionsSection = (props: SectionsSectionProps) => {
             <AccordionItem
                 key={sectionId}
                 classNames={{
-                    title: "text-base font-semibold",
                     content: "flex flex-col pt-0 pb-2",
-                    subtitle: "text-xs",
                     trigger: "!px-4"
                 }}
                 title={title}
@@ -65,8 +63,9 @@ export const SectionsSection = (props: SectionsSectionProps) => {
     }
 
     return (
-        <Card shadow="none" className={`${className} bg-transparent border border-divider`}>
-            <CardHeader className="text-lg font-semibold  p-4 pb-2"> Sections </CardHeader>
+        <Card shadow="none" className={`${className} rounded-medium bg-transparent border border-divider`}>
+            <CardHeader className="text-2xl p-4"> Sections </CardHeader>
+            <Divider />
             <CardBody className="p-0">
                 <ScrollShadow className="h-full">
                     <Accordion

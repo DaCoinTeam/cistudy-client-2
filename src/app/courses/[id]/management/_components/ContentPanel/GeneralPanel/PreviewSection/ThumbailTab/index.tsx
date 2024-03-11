@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import { ManagementContext } from "../../../../../_hooks"
 import { getAssetUrl } from "@services"
 import { UploadButton } from "./UploadButton"
-import { XMarkIcon } from "@heroicons/react/24/outline"
+import { TrashIcon } from "@heroicons/react/24/outline"
 
 export const ThumbnailTab = () => {
     const { swrs } = useContext(ManagementContext)!
@@ -24,8 +24,7 @@ export const ThumbnailTab = () => {
             <Spacer y={4} />
             <div className="gap-2 flex items-center">
                 <Button
-                    variant="light"
-                    startContent={<XMarkIcon height={20} width={20} />}
+                    startContent={<TrashIcon height={20} width={20} />}
                 >
           Delete
                 </Button>

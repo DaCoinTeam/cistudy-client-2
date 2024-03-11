@@ -61,7 +61,6 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                         <div className="flex gap-2">
                             <Button
                                 onPress={onDiscardChangesPress}
-                                variant="light"
                                 startContent={<XMarkIcon height={20} width={20} />}
                             >
               Cancel

@@ -12,7 +12,7 @@ const Page = () => {
                     <UserAvatar className="z-20 absolute -bottom-12 left-6" />
                 </div>
             </div>
-            <Spacer y={3}/>
+            <Spacer y={4}/>
             <div className="max-w-[100rem] px-4 mx-auto">
                 <UnderAvatarSection />
                 <Spacer y={12}/>

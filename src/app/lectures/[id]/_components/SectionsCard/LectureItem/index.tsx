@@ -26,30 +26,24 @@ export const LectureItem = (props: LectureItemProps) => {
 
     return (
         <div
-            className={`grid gap-2 grid-cols-12 gap-2 p-2 pr-4 items-center z-10 ${
+            className={`flex gap-3 p-3 pr-4 items-center z-10 ${
                 !differentFromThisLecture ? "bg-content2" : ""
             }`}
         >
-            <div className="col-span-1">
-                {
-                    !differentFromThisLecture ? <PlayIcon height={20} width={20} /> : null
-                }
-            </div>
-            
-            <InteractiveThumbnail
-                size={40}
-                src={getAssetUrl(thumbnailId)}
-                onPress={onPress}
-                className="col-span-4"
-            />
-            <div className="col-span-7">
+            <PlayIcon height={20} width={20} className={`${!differentFromThisLecture ? "opacity-100" : "opacity-0"}`} />  
+            <div className="flex gap-3">
+                <InteractiveThumbnail
+                    src={getAssetUrl(thumbnailId)}
+                    onPress={onPress}
+                    className="w-28 h-fit"
+                />
                 <div>
                     <div className="truncate text-sm"> {title} </div>
                     <div className="flex gap-1 items-center text-foreground-500">
                         <ClockIcon strokeWidth={3 / 2} size={12} />
                         <div className="text-xs">15m</div>
                     </div>
-                </div>
+                </div>  
             </div>
         </div>
     )

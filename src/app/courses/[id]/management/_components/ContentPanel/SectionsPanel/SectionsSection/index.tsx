@@ -3,7 +3,6 @@ import {
     Accordion,
     AccordionItem,
     Divider,
-    Spacer,
 } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { AddSectionItem } from "./AddSectionItem"
@@ -54,15 +53,10 @@ export const SectionsSection = (props: SectionsSectionProps) => {
     }
 
     return (
-        <div className={`${className}`}>
-            <div className="text-2xl"> Sections </div>
-            <Spacer y={4}/>
-            <div className="border border-divider rounded-medium">
-                {renderSections()}
-                <Divider/>
-                <AddSectionItem />
-            </div>
+        <div className={`${className} border border-divider rounded-medium`}>
+            {renderSections()}
+            <Divider/>
+            <AddSectionItem />
         </div>
-       
     )
 }

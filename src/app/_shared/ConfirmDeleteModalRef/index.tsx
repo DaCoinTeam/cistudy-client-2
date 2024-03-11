@@ -37,7 +37,7 @@ export const ConfirmDeleteModalRef = forwardRef<
             <ModalContent>
                 {(onClose) => (
                     <>
-                        <ModalHeader className="p-4 pb-2 text-lg font-semibold">{title}</ModalHeader>
+                        <ModalHeader className="p-4 pb-2 text-2xl">{title}</ModalHeader>
                         <ModalBody className="p-4">
                             <div className="text-sm">{content}</div>
                         </ModalBody>

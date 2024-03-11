@@ -31,10 +31,12 @@ export const AddTargetItem = () => {
             onPress={onPress}
             as="button"
             color="foreground"
-            className="flex items-center gap-2 h-10 px-3"
-        >
-            <PlusIcon height={20} width={20}/>
-            <div className="text-sm">Add target</div>
+            className="h-10 w-full grid place-content-center"
+        >   
+            <div className="flex gap-2 items-center">
+                <PlusIcon height={20} width={20}/>
+                <div className="text-sm">Add target</div>
+            </div>
         </Link>
     )
 }

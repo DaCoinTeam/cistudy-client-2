@@ -26,7 +26,7 @@ export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
 
     return (
         <div className={className}>
-            <div className="text-lg font-semibold ">{title}</div>
+            <div className="text-2xl">{title}</div>
             <Spacer y={4} />
             <div className="justify-between flex items-center">
                 <div className="flex items-center gap-8">
@@ -42,7 +42,7 @@ export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
                     />
                     <ToggleFollowButton />
                 </div>
-                <div className="gap-4 flex items-center">
+                <div className="gap-2 flex items-center">
                     <ResourcesModal />
                     <MoreButton />
                 </div>

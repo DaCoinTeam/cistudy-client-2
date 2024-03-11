@@ -13,7 +13,7 @@ export const PriceCard = (props: PriceCardProps) => {
             <CardBody className="p-4 gap-4 pt-3 pb-0">
                 <div className="flex justify-between items-center">
                     <div className="flex items-center gap-1 text-foreground-500">
-                        <div className="text-lg font-semibold">
+                        <div className="text-2xl">
                         Net Price
                         </div>    
                         <Tooltip content={"Cuong dep trai"}>
@@ -26,7 +26,7 @@ export const PriceCard = (props: PriceCardProps) => {
                             src="/starci-logo.svg"
                             className="w-[18px] h-[18px]"
                         />
-                        <div className="text-lg font-semibold"> 123123 </div>
+                        <div className="text-2xl"> 123123 </div>
                     </div>
                 </div>
                 <div className="flex justify-between items-center">

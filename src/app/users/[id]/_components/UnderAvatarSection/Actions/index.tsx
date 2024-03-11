@@ -30,7 +30,7 @@ export const Actions = (props: ActionsProps) => {
         </>
     )
     return (
-        <div className={`${className ?? ""} gap-4 flex items-center`}>
+        <div className={`${className ?? ""} gap-2 flex items-center`}>
             {renderButton()}
             <MoreButton />
         </div>
