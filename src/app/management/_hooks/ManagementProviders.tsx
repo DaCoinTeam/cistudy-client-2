@@ -1,6 +1,7 @@
 "use client"
 import React, {
     ReactNode,
+    Suspense,
     createContext,
     useEffect,
     useMemo,
@@ -29,19 +30,19 @@ const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
 
     const searchParams = useSearchParams()
 
-    const tab = (searchParams.get("tab") ?? PanelSelected.Followers) as PanelSelected
+    const tab = (searchParams.get("tab") ??
+    PanelSelected.Followers) as PanelSelected
 
     useEffect(() => {
         dispatch({
             type: "SET_PANEL_SELECTED",
-            payload: tab 
-        }
-        )
+            payload: tab,
+        })
     }, [])
 
     const manageContextValue: ManagementContextValue = useMemo(
         () => ({
-            reducer
+            reducer,
         }),
         [reducer]
     )
@@ -54,5 +55,7 @@ const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
 }
 
 export const ManagementProviders = ({ children }: { children: ReactNode }) => (
-    <WrappedManagementProviders>{children}</WrappedManagementProviders>
+    <Suspense>
+        <WrappedManagementProviders>{children}</WrappedManagementProviders>
+    </Suspense>
 )
