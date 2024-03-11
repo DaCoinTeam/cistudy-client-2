@@ -9,11 +9,13 @@ import {
     TableCell,
     Pagination,
     Spinner,
+    Spacer,
 } from "@nextui-org/react"
 import { CoursesManagementPanelContext, ROWS_PER_PAGE } from "../CoursesManagementPanelProviders"
 import { getAssetUrl } from "@services"
 import { useRouter } from "next/navigation"
 import { InteractiveThumbnail } from "../../../../../_shared"
+import { ClockIcon } from "@heroicons/react/24/outline"
 
 export const CoursesTable = () => {
     const router = useRouter()
@@ -43,9 +45,10 @@ export const CoursesTable = () => {
     return (
         <Table
             aria-label="Example table with client async pagination"
-            removeWrapper
             selectionMode="multiple"
+            shadow="none"
             classNames={{
+                wrapper: "border border-divider rounded-medium p-0",
                 td: [
                     "group-data-[first=true]:first:before:rounded-none",
                     "group-data-[first=true]:last:before:rounded-none",
@@ -83,16 +86,16 @@ export const CoursesTable = () => {
             }
         >
             <TableHeader>
-                <TableColumn key="video" width={"55%"}>
+                <TableColumn key="video" width={750}>
           Video
                 </TableColumn>
-                <TableColumn width={"15%"} key="title">
+                <TableColumn key="title">
           Enrollments
                 </TableColumn>
-                <TableColumn width={"15%"} key="mass">
+                <TableColumn key="mass">
           Mass
                 </TableColumn>
-                <TableColumn width={"15%"} key="birth_year">
+                <TableColumn key="birth_year">
           Birth year
                 </TableColumn>
             </TableHeader>
@@ -104,15 +107,20 @@ export const CoursesTable = () => {
                 {({ courseId, thumbnailId, title, description }) => (
                     <TableRow key={courseId}>
                         <TableCell>
-                            <div className="grid grid-cols-4 gap-3 py-2">
+                            <div className="flex gap-3 py-2">
                                 <InteractiveThumbnail
-                                    className="col-span-1"
+                                    className="w-40 min-w-40 h-fit"
                                     src={getAssetUrl(thumbnailId)}
-                                    onPress={() => router.push(`/courses/${courseId}/manage`)}
+                                    onPress={() => router.push(`/courses/${courseId}/management`)}
                                 />
-                                <div className="col-span-3 text-base grid content-center">
-                                    <div className="font-semibold">{title}</div>
-                                    <div className="text-xs text-foreground-500 line-clamp-3">
+                                <div>
+                                    <div className="line-clamp-1 text-base">{title}</div>
+                                    <div className="flex gap-1 items-center text-foreground-500">
+                                        <ClockIcon height={12} width={12} />
+                                        <div className="text-xs">15m</div>
+                                    </div>
+                                    <Spacer y={1}/>
+                                    <div className="text-sm text-foreground-500 line-clamp-2">
                                         {description}
                                     </div>
                                 </div>

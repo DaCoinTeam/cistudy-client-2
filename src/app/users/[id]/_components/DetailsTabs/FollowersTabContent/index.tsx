@@ -23,7 +23,7 @@ const WrappedFollowersTabContent = () => {
     return (
         <Card shadow="none" className="border border-divider">
             <CardHeader className="p-4 pb-2  justify-between flex items-center"> 
-                <div className="text-2xl"> Followers </div>
+                <div className="text-xl font-semibold"> Followers </div>
                 <Actions />
             </CardHeader>
             <CardBody className="p-4">{renderFollowers()}</CardBody>

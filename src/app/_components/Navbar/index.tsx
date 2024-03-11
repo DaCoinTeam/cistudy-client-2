@@ -13,6 +13,7 @@ import { AuthModal } from "./AuthModal"
 import { NavbarContext, NavbarProviders } from "./NavbarProviders"
 import { ProfileMenu } from "./ProfileMenu"
 import { RootContext } from "../../_hooks"
+import { DarkModeSwitch } from "./DarkModeSwitch"
 
 interface NavbarProps {
   className?: string;
@@ -75,8 +76,14 @@ const WrappedNavbar = (props: NavbarProps) => {
                     </NavbarItem>
                 </NavbarContent>
                 <NavbarContent justify="end">
+                    <NavbarItem>
+                        <DarkModeSwitch/>
+                    </NavbarItem>
                     {profile ? (
-                        <ProfileMenu />
+                        <NavbarItem>
+                            <ProfileMenu />
+                        </NavbarItem>
+                      
                     ) : (
                         <>
                             <NavbarItem className="hidden lg:flex">
