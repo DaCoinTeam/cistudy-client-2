@@ -24,13 +24,16 @@ const config: Config = {
         themes: {
             light: {
                 colors: {
-                    primary: "rgb(20 184 166)",
-                    background: "rgb(244 244 245)"
+                    primary: "rgb(20 184 166)",   
+                    secondary: "rgb(17, 159, 140)"                 //background: "rgb(244 244 245)"
                 },
+                
             },
             dark: {
                 colors: {
                     primary: "rgb(20 184 166)",
+                    secondary: "rgb(52 211 153)"   
+                    // background: "red"
                 },
             }
         }

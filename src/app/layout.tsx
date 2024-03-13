@@ -11,7 +11,7 @@ const font = Open_Sans({ subsets: ["latin"] })
 const Layout = ({children} : {children: ReactNode}) => {
     return (
         <ReduxProviders>
-            <html lang="en">
+            <html lang="en" >
                 <body className={`${font.className} min-h-screen`}>
                     <NextUIProvider className="min-h-screen flex flex-col">
                         <RootProviders>

@@ -49,11 +49,11 @@ export const SectionsCard = () => {
     }
 
     return (
-        <Card shadow="none">
-            <CardHeader className="p-4 pb-2">
+        <Card shadow="none" className="border border-divider">
+            <CardHeader className="p-6 pb-2">
                 <div className="text-xl font-bold leading-none">Sections</div>
             </CardHeader>
-            <CardBody className="p-4 gap-4">
+            <CardBody className="p-6 gap-4">
                 {renderSections()}
                 <AddSectionItem />
             </CardBody>
