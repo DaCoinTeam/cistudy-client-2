@@ -1,6 +1,5 @@
 import {
     CheckIcon,
-    Cog6ToothIcon,
     XMarkIcon,
 } from "@heroicons/react/24/outline"
 import {
@@ -21,6 +20,7 @@ import {
     ManagePriceModalProviders,
 } from "./ManagePriceModalProviders"
 import { sanitizeNumericInput } from "@common"
+import { Settings2Icon } from "lucide-react"
 
 const WrappedManagePriceModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -40,7 +40,7 @@ const WrappedManagePriceModal = () => {
     }
 
     console.log(formik.values)
-    
+
     const onDiscountChange = (value: string) => {
         const sanitizeInput = sanitizeNumericInput(value)
         console.log(sanitizeInput)
@@ -59,7 +59,7 @@ const WrappedManagePriceModal = () => {
     return (
         <>
             <Button
-                startContent={<Cog6ToothIcon height={20} width={20} />}
+                startContent={<Settings2Icon size={20} strokeWidth={3/2} />}
                 onPress={onOpen}
             >
         Manage Price
