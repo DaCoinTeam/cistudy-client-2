@@ -55,17 +55,11 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 errorMessage={!!(formik.touched.description && formik.errors.description)}
             />
             <Spacer y={4}/>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-row-reverse">
                 {
                     hasChanged() ?
                         (
                             <>
-                                <Button
-                                    onPress={onDiscardChangesPress}
-                                    startContent={<XMarkIcon height={20} width={20} />}
-                                >
-                  Cancel
-                                </Button>
                                 <Button
                                     type="submit"
                                     color="primary"
@@ -73,6 +67,12 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                                     startContent={<CheckIcon height={20} width={20} />}
                                 >
                   Save
+                                </Button>
+                                <Button
+                                    onPress={onDiscardChangesPress}
+                                    startContent={<XMarkIcon height={20} width={20} />}
+                                >
+                  Cancel
                                 </Button>
                             </>
                         ) : null
