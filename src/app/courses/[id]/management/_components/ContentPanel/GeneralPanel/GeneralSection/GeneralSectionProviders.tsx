@@ -10,12 +10,14 @@ import React, {
 } from "react"
 import { updateCourse } from "@services"
 import { ManagementContext } from "../../../../_hooks"
+import { SubcategoryEntity, TopicEntity } from "@common"
 
 interface GeneralSectionContextValue {
   formik: FormikProps<FormikValues>;
   functions: {
     hasChanged: () => boolean;
     discardChanges: () => void;
+    addTopic: (topic: TopicEntity) => void;
   };
 }
 
@@ -27,6 +29,12 @@ interface FormikValues {
   description: string;
   titlePrevious: string;
   descriptionPrevious: string;
+  categoryId?: string;
+  subcategories: Array<SubcategoryEntity>;
+  topics: Array<TopicEntity>;
+  categoryIdPrevious?: string;
+  subcategoriesPrevious: Array<SubcategoryEntity>;
+  topicsPrevious: Array<TopicEntity>;
 }
 
 const initialValues: FormikValues = {
@@ -34,6 +42,10 @@ const initialValues: FormikValues = {
     description: "",
     titlePrevious: "",
     descriptionPrevious: "",
+    subcategories: [],
+    topics: [],
+    subcategoriesPrevious: [],
+    topicsPrevious: [],
 }
 
 const WrappedGeneralSectionProviders = ({
@@ -45,53 +57,71 @@ const WrappedGeneralSectionProviders = ({
 }) => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
-    const { data : courseManagement } = courseManagementSwr
+    const { data: courseManagement } = courseManagementSwr
     const { title, description } = { ...courseManagement }
-
 
     const titlePreviousRef = useRef(false)
 
     useEffect(() => {
+        if (!title) return
+
         if (!titlePreviousRef.current) {
             titlePreviousRef.current = true
             formik?.setFieldValue("titlePrevious", title)
         }
+
         formik?.setFieldValue("title", title)
     }, [title])
 
     const descriptionPreviousRef = useRef(false)
 
     useEffect(() => {
+        if (!description) return
+
         if (!descriptionPreviousRef.current) {
             descriptionPreviousRef.current = true
             formik?.setFieldValue("descriptionPrevious", description)
         }
+
         formik?.setFieldValue("description", description)
     }, [description])
 
     const hasChanged = () =>
-        formik?.values.title !== formik?.values.titlePrevious ||
-    formik?.values.description !== formik?.values.descriptionPrevious
+        formik.values.title !== formik.values.titlePrevious ||
+    formik.values.description !== formik.values.descriptionPrevious ||
+    formik.values.categoryId !== formik.values.categoryIdPrevious ||
+    formik.values.topics !== formik.values.topicsPrevious ||
+    formik.values.subcategories !== formik.values.subcategoriesPrevious
 
-    const discardChanges = () =>
-    {
-        formik.setFieldValue("title", formik?.values.titlePrevious)
-        formik.setFieldValue("description", formik?.values.descriptionPrevious)
+    const discardChanges = () => {
+        formik.setFieldValue("title", formik.values.titlePrevious)
+        formik.setFieldValue("description", formik.values.descriptionPrevious)
+        formik.setFieldValue("categoryId", formik.values.categoryIdPrevious)
+        formik.setFieldValue("subcategories", formik.values.subcategoriesPrevious)
+        formik.setFieldValue("topics", formik.values.topicsPrevious)
     }
 
-    const detailsPanelContextValue: GeneralSectionContextValue = useMemo(
+    const addTopic = (topic: TopicEntity) => {
+        console.log(formik.values)
+        if (formik.values.topics.some(({ topicId }) => topicId === topic.topicId))
+            return
+        formik.setFieldValue("topics", [...formik.values.topics, topic])
+    }
+
+    const generalSectionContextValue: GeneralSectionContextValue = useMemo(
         () => ({
             formik,
             functions: {
                 hasChanged,
-                discardChanges
+                discardChanges,
+                addTopic,
             },
         }),
         [formik]
     )
 
     return (
-        <GeneralSectionContext.Provider value={detailsPanelContextValue}>
+        <GeneralSectionContext.Provider value={generalSectionContextValue}>
             <Form onSubmit={formik?.handleSubmit}>{children}</Form>
         </GeneralSectionContext.Provider>
     )
@@ -109,7 +139,7 @@ export const GeneralSectionProviders = ({
     return (
         <Formik
             initialValues={initialValues}
-            onSubmit={async ({ title, description }, { setFieldValue }) => {
+            onSubmit={async ({ title, description, categoryId, topics, subcategories }, { setFieldValue }) => {
                 if (!courseManagement) return
                 const { courseId } = courseManagement
                 await updateCourse({
@@ -117,6 +147,9 @@ export const GeneralSectionProviders = ({
                         courseId,
                         title,
                         description,
+                        categoryId,
+                        subcategoryIds: subcategories.map(({subcategoryId}) => subcategoryId),
+                        topicIds: topics.map(({topicId}) => topicId)
                     },
                 })
                 setFieldValue("titlePrevious", title)

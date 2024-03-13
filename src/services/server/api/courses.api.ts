@@ -22,13 +22,14 @@ export interface EnrollCourseOutput {
     enrolledInfoId: string;
 }
 
-export const enrollCourse = async (input: EnrollCourseInput): Promise<EnrollCourseOutput> => {
+export const enrollCourse = async (
+    input: EnrollCourseInput
+): Promise<EnrollCourseOutput> => {
     const { data } = input
     const url = `${BASE_URL}/enroll-course`
 
     return await authAxios.patch(url, { data })
 }
-
 
 export interface UpdateCourseInput {
     data: {
@@ -41,6 +42,9 @@ export interface UpdateCourseInput {
         thumbnailIndex?: number;
         previewVideoIndex?: number;
         targets?: Array<string>;
+        categoryId?: string;
+        subcategoryIds?: Array<string>;
+        topicIds?: Array<string>;
     };
     files?: Array<File>;
 }
@@ -130,7 +134,7 @@ export const createLecture = async (
     const { data } = input
     const url = `${BASE_URL}/create-lecture`
 
-    return await authAxios.post(url, data,)
+    return await authAxios.post(url, data)
 }
 
 export interface UpdateLectureInput {

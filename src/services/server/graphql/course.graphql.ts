@@ -13,6 +13,7 @@ import {
     AuthTokens,
     ErrorStatusCode,
     CourseTargetEntity,
+    CategoryEntity,
 } from "@common"
 import { client } from "./client"
 import { ApolloError, gql } from "@apollo/client"
@@ -20,8 +21,8 @@ import { DeepPartial } from "@apollo/client/utilities"
 
 export const findOneCourse = async (
     input: {
-    courseId: string;
-  },
+        courseId: string;
+    },
     schema: Schema<DeepPartial<CourseEntity>>
 ): Promise<CourseEntity> => {
     try {
@@ -47,7 +48,7 @@ export const findOneCourse = async (
         console.log(ex)
         const _ex = ex as ApolloError
         const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         throw error
@@ -73,7 +74,7 @@ export const findManyCourses = async (
         console.log(ex)
         const _ex = ex as ApolloError
         const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         return error
@@ -89,7 +90,7 @@ export const findManyLectures = async (
             take: number,
             skip: number
         }>
-  },
+    },
     schema: Schema<DeepPartial<LectureEntity>>
 ): Promise<Array<LectureEntity>> => {
     try {
@@ -117,7 +118,7 @@ export const findManyLectures = async (
         console.log(ex)
         const _ex = ex as ApolloError
         const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         throw error
@@ -132,7 +133,7 @@ export const findOneLecture = async (
         options?: Partial<{
             followerId: string
         }>
-  },
+    },
     schema: Schema<DeepPartial<LectureEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<LectureEntity> => {
@@ -159,7 +160,7 @@ export const findOneLecture = async (
         })
 
         const { data, tokens } =
-      graphqlData.findOneLecture as BaseResponse<LectureEntity>
+            graphqlData.findOneLecture as BaseResponse<LectureEntity>
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
 
@@ -167,12 +168,12 @@ export const findOneLecture = async (
     } catch (ex) {
         const _ex = ex as ApolloError
         const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         if (
             error.statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
+            authTokenType === AuthTokenType.Access
         )
             return await findOneLecture(input, schema, AuthTokenType.Refresh)
 
@@ -182,8 +183,8 @@ export const findOneLecture = async (
 
 export const findManyResources = async (
     input: {
-    lectureId: string;
-  },
+        lectureId: string;
+    },
     schema: Schema<DeepPartial<ResourceEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<Array<ResourceEntity>> => {
@@ -206,8 +207,8 @@ export const findManyResources = async (
         })
 
         const { data, tokens } = graphqlData.findManyResources as BaseResponse<
-      Array<ResourceEntity>
-    >
+            Array<ResourceEntity>
+        >
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
 
@@ -215,12 +216,12 @@ export const findManyResources = async (
     } catch (ex) {
         const _ex = ex as ApolloError
         const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         if (
             error.statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
+            authTokenType === AuthTokenType.Access
         )
             return await findManyResources(input, schema, AuthTokenType.Refresh)
 
@@ -230,8 +231,8 @@ export const findManyResources = async (
 
 export const findManyCourseTargets = async (
     input: {
-    courseId: string;
-  },
+        courseId: string;
+    },
     schema: Schema<DeepPartial<CourseTargetEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
 ): Promise<Array<CourseTargetEntity>> => {
@@ -254,8 +255,8 @@ export const findManyCourseTargets = async (
         })
 
         const { data, tokens } = graphqlData.findManyCourseTargets as BaseResponse<
-      Array<CourseTargetEntity>
-    >
+            Array<CourseTargetEntity>
+        >
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
 
@@ -263,14 +264,41 @@ export const findManyCourseTargets = async (
     } catch (ex) {
         const _ex = ex as ApolloError
         const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
         if (
             error.statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
+            authTokenType === AuthTokenType.Access
         )
             return await findManyCourseTargets(input, schema, AuthTokenType.Refresh)
+
+        throw error
+    }
+}
+
+export const findManyCategories = async (
+    schema: Schema<DeepPartial<CategoryEntity>>
+): Promise<Array<CategoryEntity>> => {
+    try {
+        const payload = buildPayloadString(schema)
+        const { data } = await client().query({
+            query: gql`
+            query FindManyCategories {
+                findManyCategories {
+      ${payload}
+    }
+  }
+          `
+        })
+
+        return data.findManyCategories as Array<CategoryEntity>
+    } catch (ex) {
+        console.log(ex)
+        const _ex = ex as ApolloError
+        const error = (
+            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+        ).originalError
 
         throw error
     }

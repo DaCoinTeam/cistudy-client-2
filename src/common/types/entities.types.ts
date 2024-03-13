@@ -97,8 +97,8 @@ export interface CourseEntity {
   enrolledInfos: Array<EnrolledInfoEntity>;
   sections: Array<SectionEntity>;
   courseTargets: Array<CourseTargetEntity>;
-   //graphql
-   numberOfEnrollments?: number
+  //graphql
+  numberOfEnrollments?: number
 }
 
 export interface CourseTargetEntity {
@@ -230,4 +230,51 @@ export interface PostCommentMediaEntity {
   postCommentId: string;
   mediaType: MediaType;
   postComment: PostCommentEntity;
+}
+
+export interface CategoryEntity {
+  categoryId: string
+  name: string
+  createdAt: Date
+  updatedAt: Date
+  subcategories: Array<SubcategoryEntity>
+}
+
+export interface SubcategoryEntity {
+  subcategoryId: string
+  name: string
+  createdAt: Date
+  updatedAt: Date
+  categoryId: string
+  category: CategoryEntity
+  subcategoryTopics: Array<SubcategoryTopicEntity>
+}
+
+export interface SubcategoryTopicEntity {
+  subcategoryTopicId: string
+  createdAt: Date
+  updatedAt: Date
+  subcategoryId: string
+  topicId: string
+  subcategory: SubcategoryEntity
+  topic: TopicEntity
+}
+
+export interface TopicEntity {
+  topicId: string
+  name: string
+  createdAt: Date
+  updatedAt: Date
+  courseTopics: Array<CourseTopicEntity>
+  subcategoryTopics: Array<SubcategoryTopicEntity>
+}
+
+export interface CourseTopicEntity {
+  courseTopicId: string
+  createdAt: Date
+  updatedAt: Date
+  courseId: string
+  topicId: string
+  course: CourseEntity
+  topic: TopicEntity
 }
