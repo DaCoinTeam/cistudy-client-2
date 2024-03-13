@@ -57,9 +57,9 @@ const WrappedManagePriceModalProviders = ({
     useEffect(() => {
         if (!pricePreviousRef.current) {
             pricePreviousRef.current = true
-            formik.setFieldValue("pricePrevious", price)
+            formik.setFieldValue("pricePrevious", price?.toString())
         }
-        formik.setFieldValue("price", price)
+        formik.setFieldValue("price", price?.toString())
     }, [price])
 
     const discountPreviousRef = useRef(false)

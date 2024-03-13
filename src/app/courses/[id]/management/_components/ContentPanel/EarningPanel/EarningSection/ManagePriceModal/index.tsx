@@ -39,6 +39,8 @@ const WrappedManagePriceModal = () => {
         if (sanitizeInput != null) formik.setFieldValue("price", sanitizeInput)
     }
 
+    console.log(formik.values)
+    
     const onDiscountChange = (value: string) => {
         const sanitizeInput = sanitizeNumericInput(value)
         console.log(sanitizeInput)
