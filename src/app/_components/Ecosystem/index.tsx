@@ -1,5 +1,6 @@
-import { Spacer } from "@nextui-org/react"
+import { Button, Image, Link, Spacer } from "@nextui-org/react"
 import React from "react"
+import { STARCI_COIN } from "@config"
 
 interface EcosystemProps {
   className?: string;
@@ -8,7 +9,7 @@ interface EcosystemProps {
 export const Ecosystem = (props: EcosystemProps) => {
     const { className } = props
     return (
-        <div className={`${className}`}>
+        <div className={`${className ?? ""} grid place-items-center`}>
             <div className="text-2xl font-bold text-center">
         Discover the Ecosystem
             </div>
@@ -19,9 +20,15 @@ export const Ecosystem = (props: EcosystemProps) => {
         ecosystem.
             </div>
             <Spacer y={6} />
-            {/* <div className="grid place-items-center">
-                <Button color="primary" className="text-secondary-foreground" size="lg"> Buy STARCI </Button>
-            </div>      */}
+            <Image src={STARCI_COIN} alt="starciCoin" height={300} width={300} />  
+            <Spacer y={6} />
+            <div className="grid grid-cols-2 gap-2">
+                <Button color="primary" size="lg" className="text-secondary-foreground"> Buy STARCI </Button>
+                <div className="flex content-center">
+                <Link as="button" size="lg" color="primary" showAnchorIcon> Learn </Link>
+                </div>
+              
+            </div>   
         </div>
     )
 }
