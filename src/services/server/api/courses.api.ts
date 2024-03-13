@@ -1,7 +1,7 @@
-import { endpointConfig } from "@config"
+import { API_ENDPOINT } from "@config"
 import { authAxios } from "./axios-instances"
 
-const BASE_URL = `${endpointConfig().api}/courses`
+const BASE_URL = `${API_ENDPOINT}/courses`
 
 export interface CreateCourseOutput {
     courseId: string;
@@ -36,6 +36,8 @@ export interface UpdateCourseInput {
         title?: string;
         description?: string;
         price?: number;
+        discount?: number;
+        enableDiscount?: boolean;
         thumbnailIndex?: number;
         previewVideoIndex?: number;
         targets?: Array<string>;

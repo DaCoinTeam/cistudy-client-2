@@ -28,7 +28,7 @@ export const LectureModalRef = forwardRef<LectureModalRefSelectors | null>(
         return (
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
                 <ModalContent>
-                    <ModalHeader className="p-4 pb-2 text-2xl">
+                    <ModalHeader className="p-4 pb-2 text-xl">
                 Lecture
                     </ModalHeader>
                     <ModalBody className="p-4 pt-2 gap-0">

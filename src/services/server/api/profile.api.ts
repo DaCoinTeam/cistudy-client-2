@@ -1,7 +1,7 @@
-import { endpointConfig } from "@config"
+import { API_ENDPOINT } from "@config"
 import { authAxios } from "./axios-instances"
 
-const BASE_URL = `${endpointConfig().api}/profile`
+const BASE_URL = `${API_ENDPOINT}/profile`
 
 export interface UpdateProfileInput {
     data: {

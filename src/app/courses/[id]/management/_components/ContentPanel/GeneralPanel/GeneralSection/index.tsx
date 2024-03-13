@@ -56,22 +56,27 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             />
             <Spacer y={4}/>
             <div className="flex gap-2">
-                <Button
-                    isDisabled={!hasChanged()}
-                    onPress={onDiscardChangesPress}
-                    startContent={<XMarkIcon height={20} width={20} />}
-                >
-              Cancel
-                </Button>
-                <Button
-                    isDisabled={!hasChanged()}
-                    type="submit"
-                    color="primary"
-                    className="text-secondary-foreground"
-                    startContent={<CheckIcon height={20} width={20} />}
-                >
-              Save
-                </Button>
+                {
+                    hasChanged() ?
+                        (
+                            <>
+                                <Button
+                                    onPress={onDiscardChangesPress}
+                                    startContent={<XMarkIcon height={20} width={20} />}
+                                >
+                  Cancel
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    className="text-secondary-foreground"
+                                    startContent={<CheckIcon height={20} width={20} />}
+                                >
+                  Save
+                                </Button>
+                            </>
+                        ) : null
+                }
             </div>
         </div>
     )

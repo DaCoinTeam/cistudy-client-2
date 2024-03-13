@@ -1,0 +1,1 @@
+export const STARCI_LOGO = "/starci-logo.svg"

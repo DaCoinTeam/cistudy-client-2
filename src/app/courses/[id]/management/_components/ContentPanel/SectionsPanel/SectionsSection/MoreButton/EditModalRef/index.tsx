@@ -30,13 +30,13 @@ export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
 
         const { formik, functions } = useContext(EditModalRefContext)!
         const { discardChanges, hasChanged } = functions
-        const onDiscardChangesPress = () => discardChanges()
+        const onCancelPress = () => discardChanges()
         const onSubmit = () => formik.handleSubmit()
 
         return (
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
                 <ModalContent>
-                    <ModalHeader className="p-4 pb-2 text-2xl font-normal">
+                    <ModalHeader className="p-4 pb-2 text-xl">
             Edit
                     </ModalHeader>
                     <ModalBody className="p-4">
@@ -58,10 +58,10 @@ export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                     <ModalFooter className="gap-2 p-4 pt-2">
                         <Button
                             isDisabled={!hasChanged()}
-                            onPress={onDiscardChangesPress}
+                            onPress={onCancelPress}
                             startContent={<XMarkIcon width={20} height={20} />}
                         >
-                  Discard Changes
+                  Cancel
                         </Button>
                         <Button
                             isDisabled={!hasChanged()}

@@ -21,7 +21,8 @@
       "@services": ["./src/services"],
       "@common": ["./src/common"],
       "@config": ["./src/config"],
-      "@redux": ["./src/redux"]
+      "@redux": ["./src/redux"],
+      "@blockchain": ["./src/blockchain"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
