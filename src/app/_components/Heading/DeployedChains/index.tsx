@@ -16,7 +16,7 @@ export const DeployedChains = () => {
     ]
     return (
         <div className="w-fit mx-auto">
-            <div className="flex gap-4">
+            <div className="flex gap-2">
                 {
                     chains.map(
                         ({key, icon, title}) => (

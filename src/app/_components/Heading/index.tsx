@@ -1,6 +1,7 @@
 import React from "react"
 import { Image, Spacer } from "@nextui-org/react"
 import { DeployedChains } from "./DeployedChains"
+import { STARCI_TEACH } from "@config"
 
 export const Heading = () => {
     return (
@@ -24,7 +25,7 @@ export const Heading = () => {
                     <Image
                         className="col-span-1"
                         alt="starciTeach"
-                        src="/starci-teach.svg"
+                        src={STARCI_TEACH}
                     />
                 </div>
                 <Spacer y={12} />
