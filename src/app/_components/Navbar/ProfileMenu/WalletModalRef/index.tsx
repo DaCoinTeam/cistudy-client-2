@@ -15,7 +15,7 @@ import { BodyContent } from "./BodyContent"
 export const WrappedWalletModalRef = () => {
     return (
         <>
-            <ModalHeader className="flex flex-col p-4 font-semibold text-lg pb-2">
+            <ModalHeader className="p-4 font-semibold pb-2">
         Wallet
             </ModalHeader>
             <BodyContent/>

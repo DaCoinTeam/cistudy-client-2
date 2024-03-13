@@ -15,7 +15,7 @@ import {
     EditModalRefContext,
     EditModalRefProviders,
 } from "./EditModalRefProviders"
-import { ClipboardXIcon, SaveIcon } from "lucide-react"
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
 
 export interface EditModalRefSelectors {
   onOpen: () => void;
@@ -31,13 +31,13 @@ const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
 
         const { formik, functions } = useContext(EditModalRefContext)!
         const { discardChanges, hasChanged } = functions
-        const onDiscardChangesPress = () => discardChanges()
+        const onCancelPress = () => discardChanges()
         const onSubmit = () => formik.handleSubmit()
 
         return (
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
                 <ModalContent>
-                    <ModalHeader className="p-4 pb-2 text-lg">Edit</ModalHeader>
+                    <ModalHeader className="p-4 pb-2 text-xl">Edit</ModalHeader>
                     <ModalBody className="p-4">
                         <Input
                             id="title"
@@ -68,25 +68,25 @@ const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                             placeholder="Input description here"
                         />
                     </ModalBody>
-                    {hasChanged() ? (
-                        <ModalFooter className="gap-2">
-                            <Button
-                                onPress={onDiscardChangesPress}
-                                variant="light"
-                                startContent={<ClipboardXIcon size={20} strokeWidth={3/2} />}
-                            >
-                Discard Changes
-                            </Button>
-                            <Button
-                                onPress={onSubmit}
-                                color="primary"
-                                className="text-secondary-foreground"
-                                startContent={<SaveIcon size={20} strokeWidth={3/2} />}
-                            >
+                    <ModalFooter className="gap-2">
+                        <Button
+                            onPress={onCancelPress}
+                            variant="light"
+                            isDisabled={!hasChanged()}
+                            startContent={<XMarkIcon width={20} height={20}/>}
+                        >
+                Cancel
+                        </Button>
+                        <Button
+                            onPress={onSubmit}
+                            color="primary"
+                            isDisabled={!hasChanged()}
+                            className="text-secondary-foreground"
+                            startContent={<CheckIcon width={20} height={20}/>}
+                        >
                 Save
-                            </Button>
-                        </ModalFooter>
-                    ) : null}
+                        </Button>
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
         )

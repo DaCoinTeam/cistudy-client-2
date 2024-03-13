@@ -1,8 +1,8 @@
-import { endpointConfig } from "@config"
+import { API_ENDPOINT } from "@config"
 import { baseAxios } from "./axios-instances/base-axios"
 import { UserEntity } from "@common"
 
-const BASE_URL = `${endpointConfig().api}/auth`
+const BASE_URL = `${API_ENDPOINT}/auth`
 
 export interface SignUpInput {
     email: string;

@@ -7,6 +7,7 @@ import { IntervalSelected } from "./useEarningSectionReducer"
 import { Key } from "@common"
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline"
 import { ManagementContext } from "../../../../_hooks"
+import { ManagePriceModal } from "./ManagePriceModal"
 
 const WrappedEarningSection = () => {
     const { reducer } = useContext(EarningSectionContext)!
@@ -46,6 +47,11 @@ const WrappedEarningSection = () => {
             <div className="flex-1">
                 <LineChart />
             </div>
+            <Spacer y={4}/>
+            <div className="flex items-center gap-2">
+                <ManagePriceModal/>
+            </div>
+           
         </div>
     )
 }

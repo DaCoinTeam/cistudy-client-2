@@ -85,6 +85,8 @@ export interface CourseEntity {
   thumbnailId: string;
   description: string;
   price: number;
+  discount: number;
+  enableDiscount: boolean;
   verifyStatus: VerifyStatus;
   isDraft: boolean;
   creator: UserEntity;

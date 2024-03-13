@@ -1,11 +1,11 @@
 import { Button, Spacer } from "@nextui-org/react"
-import { XIcon } from "lucide-react"
 import React, { useContext } from "react"
 import { getAssetManifestUrl, getAssetUrl } from "@services"
 import { UploadButton } from "./UploadButton"
 import { LectureItemContext } from "../../.."
 import { VideoPlayer } from "../../../../../../../../../../../../_shared"
 import { VideoType } from "@common"
+import { TrashIcon } from "@heroicons/react/24/outline"
 
 export const VideoTab = () => {
     const { props } = useContext(LectureItemContext)!
@@ -24,14 +24,13 @@ export const VideoTab = () => {
                 className="w-full"
             />
             <Spacer y={6} />
-            <div className="gap-2 flex items-center flex-row-reverse">
-                <UploadButton />
+            <div className="gap-2 flex items-center">
                 <Button
-                    variant="light"
-                    startContent={<XIcon size={20} strokeWidth={3/2} />}
+                    startContent={<TrashIcon width={20} height={20} />}
                 >
           Delete
                 </Button>
+                <UploadButton />
             </div>
         </div>
     )

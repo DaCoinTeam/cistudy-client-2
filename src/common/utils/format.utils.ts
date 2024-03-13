@@ -8,3 +8,11 @@ export const truncateAddress = (address: Address): string => {
     const ending = address.slice(-4)
     return `${beginning}...${ending}`
 }
+
+export const sanitizeNumericInput = (input: string): string | null => {
+    const regex = new RegExp(/^\d*[.,]?\d*$/)
+    if (!regex.test(input)) {
+        return null
+    }
+    return input.replace(/,/g, ".")
+}

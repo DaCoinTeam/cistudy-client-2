@@ -9,7 +9,6 @@ import React, {
     useRef,
 } from "react"
 import { updateCourse } from "@services"
-import { isErrorResponse } from "@common"
 import { ManagementContext } from "../../../../_hooks"
 
 interface GeneralSectionContextValue {
@@ -47,32 +46,28 @@ const WrappedGeneralSectionProviders = ({
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data : courseManagement } = courseManagementSwr
+    const { title, description } = { ...courseManagement }
+
 
     const titlePreviousRef = useRef(false)
 
     useEffect(() => {
-        if (!courseManagement) return
-        const { title } = courseManagement
-
         if (!titlePreviousRef.current) {
             titlePreviousRef.current = true
             formik?.setFieldValue("titlePrevious", title)
         }
         formik?.setFieldValue("title", title)
-    }, [courseManagement?.title])
+    }, [title])
 
     const descriptionPreviousRef = useRef(false)
 
     useEffect(() => {
-        if (!courseManagement) return
-        const { description } = courseManagement
-
         if (!descriptionPreviousRef.current) {
             descriptionPreviousRef.current = true
             formik?.setFieldValue("descriptionPrevious", description)
         }
-        formik?.setFieldValue("description", courseManagement.description)
-    }, [courseManagement?.description])
+        formik?.setFieldValue("description", description)
+    }, [description])
 
     const hasChanged = () =>
         formik?.values.title !== formik?.values.titlePrevious ||
@@ -117,20 +112,16 @@ export const GeneralSectionProviders = ({
             onSubmit={async ({ title, description }, { setFieldValue }) => {
                 if (!courseManagement) return
                 const { courseId } = courseManagement
-                const response = await updateCourse({
+                await updateCourse({
                     data: {
                         courseId,
                         title,
                         description,
                     },
                 })
-                if (!isErrorResponse(response)) {
-                    setFieldValue("titlePrevious", title)
-                    setFieldValue("descriptionPrevious", description)
-                    await mutate()
-                } else {
-                    console.log(response)
-                }
+                setFieldValue("titlePrevious", title)
+                setFieldValue("descriptionPrevious", description)
+                await mutate()
             }}
         >
             {(formik) => (

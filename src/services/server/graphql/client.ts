@@ -1,10 +1,10 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client"
 import { setContext } from "@apollo/client/link/context"
-import { endpointConfig } from "@config"
+import { GRAPHQL_ENDPOINT } from "@config"
 import { AuthTokenType, getAuthToken, getClientId } from "@common"
 
 const httpLink = createHttpLink({
-    uri: endpointConfig().graphql,
+    uri: GRAPHQL_ENDPOINT,
 })
 
 const link = (type: AuthTokenType | null = null) =>
