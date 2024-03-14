@@ -4,7 +4,7 @@ import { authAxios } from "./axios-instances"
 const BASE_URL = `${API_ENDPOINT}/courses`
 
 export interface CreateCourseOutput {
-    courseId: string;
+  courseId: string;
 }
 
 export const createCourse = async (): Promise<CreateCourseOutput> => {
@@ -13,13 +13,13 @@ export const createCourse = async (): Promise<CreateCourseOutput> => {
 }
 
 export interface EnrollCourseInput {
-    data: {
-        courseId: string;
-    };
+  data: {
+    courseId: string;
+  };
 }
 
 export interface EnrollCourseOutput {
-    enrolledInfoId: string;
+  enrolledInfoId: string;
 }
 
 export const enrollCourse = async (
@@ -32,27 +32,28 @@ export const enrollCourse = async (
 }
 
 export interface UpdateCourseInput {
-    data: {
-        courseId: string;
-        title?: string;
-        description?: string;
-        price?: number;
-        discount?: number;
-        enableDiscount?: boolean;
-        thumbnailIndex?: number;
-        previewVideoIndex?: number;
-        targets?: Array<string>;
-        categoryId?: string;
-        subcategoryIds?: Array<string>;
-        topicIds?: Array<string>;
-    };
-    files?: Array<File>;
+  data: {
+    courseId: string;
+    title?: string;
+    description?: string;
+    price?: number;
+    discount?: number;
+    enableDiscount?: boolean;
+    thumbnailIndex?: number;
+    previewVideoIndex?: number;
+    targets?: Array<string>;
+    categoryId?: string;
+    subcategoryIds?: Array<string>;
+    topicIds?: Array<string>;
+  };
+  files?: Array<File>;
 }
 
 export const updateCourse = async (
     input: UpdateCourseInput
 ): Promise<string> => {
     const { data, files } = input
+
     const url = `${BASE_URL}/update-course`
     const formData = new FormData()
 
@@ -71,10 +72,10 @@ export const updateCourse = async (
 }
 
 export interface CreateCourseTargetInput {
-    data: {
-        courseId: string;
-        content: string;
-    };
+  data: {
+    courseId: string;
+    content: string;
+  };
 }
 
 export const createCourseTarget = async (
@@ -87,11 +88,11 @@ export const createCourseTarget = async (
 }
 
 export interface UpdateCourseTargetInput {
-    data: {
-        courseTargetId: string;
-        content: string;
-    };
-    signal?: AbortSignal;
+  data: {
+    courseTargetId: string;
+    content: string;
+  };
+  signal?: AbortSignal;
 }
 
 export const updateCourseTarget = async (
@@ -106,9 +107,9 @@ export const updateCourseTarget = async (
 }
 
 export interface DeleteCourseTargetInput {
-    data: {
-        courseTargetId: string;
-    };
+  data: {
+    courseTargetId: string;
+  };
 }
 
 export const deleteCourseTarget = async (
@@ -122,10 +123,10 @@ export const deleteCourseTarget = async (
 }
 
 export interface CreateLectureInput {
-    data: {
-        sectionId: string;
-        title: string;
-    };
+  data: {
+    sectionId: string;
+    title: string;
+  };
 }
 
 export const createLecture = async (
@@ -138,14 +139,14 @@ export const createLecture = async (
 }
 
 export interface UpdateLectureInput {
-    data: {
-        lectureId: string;
-        title?: string;
-        description?: string;
-        thumbnailIndex?: number;
-        lectureVideoIndex?: number;
-    };
-    files?: Array<File>;
+  data: {
+    lectureId: string;
+    title?: string;
+    description?: string;
+    thumbnailIndex?: number;
+    lectureVideoIndex?: number;
+  };
+  files?: Array<File>;
 }
 
 export const updateLecture = async (
@@ -170,9 +171,9 @@ export const updateLecture = async (
 }
 
 export interface DeleteLectureInput {
-    data: {
-        lectureId: string;
-    };
+  data: {
+    lectureId: string;
+  };
 }
 
 export const deleteLecture = async (
@@ -186,10 +187,10 @@ export const deleteLecture = async (
 }
 
 export interface CreateResourcesInput {
-    data: {
-        lectureId: string;
-    };
-    files: Array<File>;
+  data: {
+    lectureId: string;
+  };
+  files: Array<File>;
 }
 
 export const createResources = async (
@@ -210,10 +211,10 @@ export const createResources = async (
 }
 
 export interface CreateSectionInput {
-    data: {
-        courseId: string;
-        title?: string;
-    };
+  data: {
+    courseId: string;
+    title?: string;
+  };
 }
 
 export const createSection = async (
@@ -226,10 +227,10 @@ export const createSection = async (
 }
 
 export interface UpdateSectionInput {
-    data: {
-        sectionId: string;
-        title?: string;
-    };
+  data: {
+    sectionId: string;
+    title?: string;
+  };
 }
 
 export const updateSection = async (
@@ -242,9 +243,9 @@ export const updateSection = async (
 }
 
 export interface DeleteSectionInput {
-    data: {
-        sectionId: string;
-    };
+  data: {
+    sectionId: string;
+  };
 }
 
 export const deleteSection = async (
@@ -258,9 +259,9 @@ export const deleteSection = async (
 }
 
 export interface DeleteResourceInput {
-    data: {
-        resourceId: string;
-    };
+  data: {
+    resourceId: string;
+  };
 }
 
 export const deleteResource = async (

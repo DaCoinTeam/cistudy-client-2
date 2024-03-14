@@ -24,7 +24,6 @@ export const ThumbnailTab = () => {
             <Spacer y={4} />
             <div className="gap-2 flex items-center">
                 <Button
-                    variant="light"
                     startContent={<TrashIcon height={20} width={20} />}
                 >
           Delete

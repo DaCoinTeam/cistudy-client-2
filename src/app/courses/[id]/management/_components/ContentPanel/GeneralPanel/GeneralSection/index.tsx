@@ -30,7 +30,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
 
     const { formik, functions } = useContext(GeneralSectionContext)!
 
-    const { hasChanged, discardChanges, addTopic } = functions
+    const { hasChanged, discardChanges, addTopic, deleteTopic } = functions
 
     const onCancelPress = () => discardChanges()
 
@@ -72,10 +72,10 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
         )
 
     const getTopics = () => {
+        if (!formik.values.subcategories.length) return []
         const topics = formik.values.subcategories.flatMap((subcategory) =>
             subcategory.subcategoryTopics.flatMap(({ topic }) => topic)
         )
-
         return topics.reduce((prevs: Array<TopicEntity>, next) => {
             if (!prevs.some(({ topicId }) => topicId === next.topicId)) {
                 prevs.push(next)
@@ -85,11 +85,13 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
     }
 
     const onTopicChange = (key: Key) => {
-        console.log(getTopics())
         const topic = getTopics().find(({ topicId }) => topicId === key)
         if (!topic) return
         addTopic(topic)
+        formik.setFieldValue("topicInputValue", "")
     }
+
+    const onTopicInputValueChange = (value: string) => formik.setFieldValue("topicInputValue", value)
 
     return (
         <div className={`${className}`}>
@@ -170,49 +172,30 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 )}
             </Select>
             <Spacer y={4} />
-            <Autocomplete
-                label="Topics"
-                variant="bordered"
-                className="w-fullr"
-                labelPlacement="outside"
-                placeholder="Select an topic"
-                defaultItems={getTopics()}
-                classNames={{
-                    popoverContent: "shadow-none border border-divider rounded-medium",
-                }}
-                inputProps={{
-                    classNames: {
-                        inputWrapper: "!border !border-divider shadow-none",
-                    },
-                }}
-                onSelectionChange={onTopicChange}
-            >
-                {({ topicId, name }) => (
-                    <AutocompleteItem
-                        startContent={
-                            <Image
-                                alt="topic"
-                                height={20}
-                                width={20}
-                                src={getTopicSVGUrl(name)}
-                            />
-                        }
-                        key={topicId}
+            <div>
+                <div className="text-sm"> Topics </div>
+                <Spacer y={2}/>
+                <div className="border border-divider rounded-medium">
+                    <Autocomplete
+                        variant="bordered"
+                        className="w-full"
+                        labelPlacement="outside"
+                        placeholder="Select an topic"
+                        value={formik.values.topicInputValue}
+                        onValueChange={onTopicInputValueChange}
+                        defaultItems={getTopics()}
+                        classNames={{
+                            popoverContent: "shadow-none border border-divider rounded-medium",
+                        }}
+                        inputProps={{
+                            classNames: {
+                                inputWrapper: "!border-0 shadow-none",
+                            },
+                        }}
+                        onSelectionChange={onTopicChange}
                     >
-                        {name}
-                    </AutocompleteItem>
-                )}
-            </Autocomplete>
-
-            {formik.values.topics.length ? (
-                <>
-                    <Spacer y={2} />
-                    <div className="flex gap-2">
-                        {formik.values.topics.map(({ topicId, name }) => (
-                            <Chip
-                                key={topicId}
-                                radius="md"
-                                onClose={() => {}}
+                        {({ topicId, name }) => (
+                            <AutocompleteItem
                                 startContent={
                                     <Image
                                         alt="topic"
@@ -221,17 +204,43 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                                         src={getTopicSVGUrl(name)}
                                     />
                                 }
+                                key={topicId}
                             >
                                 {name}
-                            </Chip>
-                        ))}
-                    </div>
-                </>
-            ) : null}
+                            </AutocompleteItem>
+                        )}
+                    </Autocomplete>
+
+                    {formik.values.topics.length ? (
+                        <>
+                            <div className="flex gap-2 p-3">
+                                {formik.values.topics.map(({ topicId, name }) => (
+                                    <Chip
+                                        key={topicId}
+                                        radius="md"
+                                        variant="light"
+                                        onClose={() => deleteTopic(topicId)}
+                                        startContent={
+                                            <Image
+                                                alt="topic"
+                                                height={20}
+                                                width={20}
+                                                src={getTopicSVGUrl(name)}
+                                            />
+                                        }
+                                    >
+                                        {name}
+                                    </Chip>
+                                ))}
+                            </div>
+                        </>
+                    ) : null}
+                </div>
+                                   
+            </div>
             <Spacer y={6} />
             <div className="flex gap-2">
                 <Button
-                    variant="light"
                     isDisabled={!hasChanged()}
                     onPress={onCancelPress}
                     startContent={<XMarkIcon height={20} width={20} />}

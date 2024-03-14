@@ -18,6 +18,7 @@ interface GeneralSectionContextValue {
     hasChanged: () => boolean;
     discardChanges: () => void;
     addTopic: (topic: TopicEntity) => void;
+    deleteTopic: (topicId: string) => void;
   };
 }
 
@@ -27,11 +28,12 @@ export const GeneralSectionContext =
 interface FormikValues {
   title: string;
   description: string;
-  titlePrevious: string;
-  descriptionPrevious: string;
   categoryId?: string;
   subcategories: Array<SubcategoryEntity>;
   topics: Array<TopicEntity>;
+  topicInputValue: string;
+  titlePrevious: string;
+  descriptionPrevious: string;
   categoryIdPrevious?: string;
   subcategoriesPrevious: Array<SubcategoryEntity>;
   topicsPrevious: Array<TopicEntity>;
@@ -40,10 +42,11 @@ interface FormikValues {
 const initialValues: FormikValues = {
     title: "",
     description: "",
-    titlePrevious: "",
-    descriptionPrevious: "",
     subcategories: [],
     topics: [],
+    topicInputValue: "",
+    titlePrevious: "",
+    descriptionPrevious: "",
     subcategoriesPrevious: [],
     topicsPrevious: [],
 }
@@ -58,10 +61,10 @@ const WrappedGeneralSectionProviders = ({
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data: courseManagement } = courseManagementSwr
-    const { title, description } = { ...courseManagement }
+    const { title, description, categoryId, courseSubcategories, courseTopics } =
+    { ...courseManagement }
 
     const titlePreviousRef = useRef(false)
-
     useEffect(() => {
         if (!title) return
 
@@ -74,7 +77,6 @@ const WrappedGeneralSectionProviders = ({
     }, [title])
 
     const descriptionPreviousRef = useRef(false)
-
     useEffect(() => {
         if (!description) return
 
@@ -86,12 +88,62 @@ const WrappedGeneralSectionProviders = ({
         formik?.setFieldValue("description", description)
     }, [description])
 
+    const categoryPreviousRef = useRef(false)
+    useEffect(() => {
+        if (!categoryId) return
+        if (!categoryPreviousRef.current) {
+            categoryPreviousRef.current = true
+            formik?.setFieldValue("categoryIdPrevious", categoryId)
+        }
+        formik?.setFieldValue("categoryId", categoryId)
+    }, [categoryId])
+
+    const courseSubcategoriesPreviousRef = useRef(false)
+    useEffect(() => {
+        if (!courseSubcategories?.length) return
+
+        const subcategories = courseSubcategories
+            .map(({ subcategory }) => subcategory)
+            .sort((prev, next) => prev.name.localeCompare(next.name))
+
+        if (!courseSubcategoriesPreviousRef.current) {
+            courseSubcategoriesPreviousRef.current = true
+            formik.setFieldValue("subcategoriesPrevious", subcategories)
+        }
+        formik.setFieldValue("subcategories", subcategories)
+    }, [courseSubcategories])
+
+    const courseTopicsPreviousRef = useRef(false)
+    useEffect(() => {
+        if (!courseTopics?.length) return
+
+        const topics = courseTopics
+            .map(({ topic }) => topic)
+            .sort((prev, next) => prev.name.localeCompare(next.name))
+
+        if (!courseTopicsPreviousRef.current) {
+            courseTopicsPreviousRef.current = true
+            formik.setFieldValue("topicsPrevious", topics)
+        }
+        formik.setFieldValue("topics", topics)
+    }, [courseTopics])
+
     const hasChanged = () =>
         formik.values.title !== formik.values.titlePrevious ||
     formik.values.description !== formik.values.descriptionPrevious ||
     formik.values.categoryId !== formik.values.categoryIdPrevious ||
-    formik.values.topics !== formik.values.topicsPrevious ||
-    formik.values.subcategories !== formik.values.subcategoriesPrevious
+    JSON.stringify(formik.values.topics.map(({ topicId }) => topicId)) !==
+      JSON.stringify(
+          formik.values.topicsPrevious.map(({ topicId }) => topicId)
+      ) ||
+    JSON.stringify(
+        formik.values.subcategories.map(({ subcategoryId }) => subcategoryId)
+    ) !==
+      JSON.stringify(
+          formik.values.subcategoriesPrevious.map(
+              ({ subcategoryId }) => subcategoryId
+          )
+      )
 
     const discardChanges = () => {
         formik.setFieldValue("title", formik.values.titlePrevious)
@@ -102,10 +154,16 @@ const WrappedGeneralSectionProviders = ({
     }
 
     const addTopic = (topic: TopicEntity) => {
-        console.log(formik.values)
         if (formik.values.topics.some(({ topicId }) => topicId === topic.topicId))
             return
         formik.setFieldValue("topics", [...formik.values.topics, topic])
+    }
+
+    const deleteTopic = (topicId: string) => {
+        const deleted = formik.values.topics.filter(
+            (topic) => topicId !== topic.topicId
+        )
+        formik.setFieldValue("topics", deleted)
     }
 
     const generalSectionContextValue: GeneralSectionContextValue = useMemo(
@@ -115,6 +173,7 @@ const WrappedGeneralSectionProviders = ({
                 hasChanged,
                 discardChanges,
                 addTopic,
+                deleteTopic,
             },
         }),
         [formik]
@@ -139,7 +198,10 @@ export const GeneralSectionProviders = ({
     return (
         <Formik
             initialValues={initialValues}
-            onSubmit={async ({ title, description, categoryId, topics, subcategories }, { setFieldValue }) => {
+            onSubmit={async (
+                { title, description, categoryId, topics, subcategories },
+                { setFieldValue }
+            ) => {
                 if (!courseManagement) return
                 const { courseId } = courseManagement
                 await updateCourse({
@@ -148,12 +210,20 @@ export const GeneralSectionProviders = ({
                         title,
                         description,
                         categoryId,
-                        subcategoryIds: subcategories.map(({subcategoryId}) => subcategoryId),
-                        topicIds: topics.map(({topicId}) => topicId)
+                        subcategoryIds: subcategories.length
+                            ? subcategories.map(({ subcategoryId }) => subcategoryId)
+                            : undefined,
+                        topicIds: topics.length
+                            ? topics.map(({ topicId }) => topicId)
+                            : undefined,
                     },
                 })
                 setFieldValue("titlePrevious", title)
                 setFieldValue("descriptionPrevious", description)
+                setFieldValue("titlePrevious", title)
+                setFieldValue("categoryIdPrevious", categoryId)
+                setFieldValue("subcategoriesPrevious", subcategories)
+                setFieldValue("topicsPrevious", topics)
                 await mutate()
             }}
         >

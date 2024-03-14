@@ -67,6 +67,28 @@ const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
                         },
                     },
                 },
+                categoryId: true,
+                courseSubcategories: {
+                    courseSubcategoryId: true,
+                    subcategory: {
+                        subcategoryId: true,
+                        name: true,
+                        subcategoryTopics: {
+                            subcategoryTopicId: true,
+                            topic: {
+                                topicId: true,
+                                name: true
+                            }
+                        }
+                    }
+                },
+                courseTopics: {
+                    courseTopicId: true,
+                    topic: {
+                        topicId: true, 
+                        name: true
+                    }
+                },
                 courseTargets: {
                     courseTargetId: true,
                     content: true,
@@ -76,7 +98,7 @@ const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
                     numberOfFollowers: true,
                     username: true
                 },
-                numberOfEnrollments: true
+                numberOfEnrollments: true,
             }
         )
     }, [course?.courseId])
