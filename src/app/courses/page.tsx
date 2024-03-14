@@ -22,7 +22,7 @@ const Page = () => {
             <div className="text-3xl">
                 {getCount()} results for {formik.values.searchValue}
             </div>    
-            <Spacer y={12}/>
+            <Spacer y={6}/>
             <div className="grid grid-cols-4 gap-12">
                 <CourseFilters className="col-span-1"/>
                 <InfiniteCoursesScroller className="col-span-3" />
