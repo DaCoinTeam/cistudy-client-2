@@ -154,7 +154,7 @@ const WrappedGeneralSectionProviders = ({
     const addTopic = (topic: TopicEntity) => {
         if (formik.values.topics.some(({ topicId }) => topicId === topic.topicId))
             return
-        formik.setFieldValue("topics", [...formik.values.topics, topic])
+        formik.setFieldValue("topics", [...formik.values.topics, topic].sort((prev, next) => prev.name.localeCompare(next.name)))
     }
 
     const deleteTopic = (topicId: string) => {

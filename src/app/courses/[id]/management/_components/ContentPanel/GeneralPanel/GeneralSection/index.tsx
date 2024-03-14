@@ -90,7 +90,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
         addTopic(topic)
         formik.setFieldValue("topicInputValue", "")
     }
-    
+
     return (
         <div className={`${className}`}>
             <div className="text-2xl"> General </div>
@@ -215,6 +215,9 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                                         key={topicId}
                                         radius="md"
                                         variant="light"
+                                        classNames={{
+                                            base: "px-0"
+                                        }}
                                         onClose={() => deleteTopic(topicId)}
                                         startContent={
                                             <Image

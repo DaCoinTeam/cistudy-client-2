@@ -4,7 +4,6 @@ import { PreviewSection } from "./PreviewSection"
 import { GeneralSection } from "./GeneralSection"
 import { TargetsSection } from "./TargetsSection"
 import { Spacer } from "@nextui-org/react"
-import { FiltersSection } from "./FiltersSection"
 interface GeneralPanelProps {
   className?: string;
 }

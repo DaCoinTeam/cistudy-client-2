@@ -17,7 +17,7 @@ export const VideoTab = () => {
                 src={getAssetUrl(courseManagement?.previewVideoId)}
                 className="w-full"
             />
-            <Spacer y={4} />
+            <Spacer y={6} />
             <div className="gap-2 flex items-center">
                 <Button
                     startContent={<TrashIcon height={20} width={20} />}
