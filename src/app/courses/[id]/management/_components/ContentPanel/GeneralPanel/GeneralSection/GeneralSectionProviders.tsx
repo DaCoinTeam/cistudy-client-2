@@ -31,7 +31,6 @@ interface FormikValues {
   categoryId?: string;
   subcategories: Array<SubcategoryEntity>;
   topics: Array<TopicEntity>;
-  topicInputValue: string;
   titlePrevious: string;
   descriptionPrevious: string;
   categoryIdPrevious?: string;
@@ -44,7 +43,6 @@ const initialValues: FormikValues = {
     description: "",
     subcategories: [],
     topics: [],
-    topicInputValue: "",
     titlePrevious: "",
     descriptionPrevious: "",
     subcategoriesPrevious: [],

@@ -90,9 +90,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
         addTopic(topic)
         formik.setFieldValue("topicInputValue", "")
     }
-
-    const onTopicInputValueChange = (value: string) => formik.setFieldValue("topicInputValue", value)
-
+    
     return (
         <div className={`${className}`}>
             <div className="text-2xl"> General </div>
@@ -181,8 +179,6 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                         className="w-full"
                         labelPlacement="outside"
                         placeholder="Select an topic"
-                        value={formik.values.topicInputValue}
-                        onValueChange={onTopicInputValueChange}
                         defaultItems={getTopics()}
                         classNames={{
                             popoverContent: "shadow-none border border-divider rounded-medium",
