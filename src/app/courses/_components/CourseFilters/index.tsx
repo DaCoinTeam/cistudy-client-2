@@ -27,6 +27,7 @@ export const CourseFilters = (props: CourseFiltersProps) => {
             <Divider />
             <CardBody className="p-0">
                 <Accordion
+                    selectionMode="multiple"
                     className="!px-0"
                     itemClasses={{
                         base: "!shadow-none gap-4 px-4",
