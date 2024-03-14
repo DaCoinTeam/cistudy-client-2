@@ -67,7 +67,7 @@ export const Menu = (props: MenuProps) => {
                 autoFocus={true}
                 className="p-0"
                 classNames={{
-                    list: "gap-1",
+                    list: "gap-0",
                 }}
             >
                 {items.map(({ key, startContent, panelSelected, content }) => (

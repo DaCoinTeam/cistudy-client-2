@@ -19,7 +19,6 @@ export const PreviewSection = (props: PreviewSectionProps) => {
                 classNames={{
                     panel: "p-0 pt-4",
                 }}
-                defaultSelectedKey={"thumbnail"}
                 variant="underlined"
                 color="primary"
             >

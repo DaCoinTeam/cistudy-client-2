@@ -13,9 +13,9 @@ export const GeneralPanel = (props: GeneralPanelProps) => {
     return (
         <div className={`${className}`}>
             <GeneralSection />
-            <Spacer y={6} />
+            <Spacer y={12} />
             <PreviewSection />
-            <Spacer y={6} />
+            <Spacer y={12} />
             <TargetsSection />
         </div>
     )

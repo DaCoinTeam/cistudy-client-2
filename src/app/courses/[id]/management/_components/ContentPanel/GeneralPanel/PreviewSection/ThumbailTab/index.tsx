@@ -23,12 +23,13 @@ export const ThumbnailTab = () => {
             />
             <Spacer y={6} />
             <div className="gap-2 flex items-center">
+                <UploadButton />
                 <Button
+                    variant="light"
                     startContent={<TrashIcon height={20} width={20} />}
                 >
           Delete
                 </Button>
-                <UploadButton />
             </div>
         </div>
     )

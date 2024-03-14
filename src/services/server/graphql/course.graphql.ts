@@ -1,7 +1,6 @@
 import {
     ExtensionsWithOriginalError,
     CourseEntity,
-    ErrorResponse,
     Schema,
     buildPayloadString,
     LectureEntity,
@@ -55,21 +54,47 @@ export const findOneCourse = async (
     }
 }
 
+export interface FindManyCoursesInput {
+    options?: {
+        take?: number,
+        skip?: number
+    }
+}
+
+export interface FindManyCoursesOutputData {
+    results: Array<CourseEntity>;
+    metadata: {
+        count: number;
+    };
+}
+
+
 export const findManyCourses = async (
-    schema: Schema<DeepPartial<CourseEntity>>
-): Promise<Array<CourseEntity> | ErrorResponse> => {
+    input: FindManyCoursesInput,
+    schema: Schema<DeepPartial<FindManyCoursesOutputData>>
+): Promise<FindManyCoursesOutputData> => {
     try {
+        const { options } = input
+        const { skip, take } = { ...options }
+
         const payload = buildPayloadString(schema)
         const { data } = await client().query({
             query: gql`
-          query FindManyCourses {
-  findManyCourses {
+            query FindManyCourses($data: FindManyCoursesInputData!) {
+                findManyCourses(data: $data) {
       ${payload}
     }
   }
-          `,
+          `, variables: {
+                data: {
+                    options: {
+                        skip,
+                        take,
+                    }
+                }           
+            },
         })
-        return data.findManyCourses as Array<CourseEntity>
+        return data.findManyCourses as FindManyCoursesOutputData
     } catch (ex) {
         console.log(ex)
         const _ex = ex as ApolloError
@@ -77,7 +102,7 @@ export const findManyCourses = async (
             _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
         ).originalError
 
-        return error
+        throw error
     }
 }
 

@@ -178,7 +178,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                         variant="bordered"
                         className="w-full"
                         labelPlacement="outside"
-                        placeholder="Select an topic"
+                        placeholder="Find a topic"
                         defaultItems={getTopics()}
                         classNames={{
                             popoverContent: "shadow-none border border-divider rounded-medium",
@@ -209,15 +209,13 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
 
                     {formik.values.topics.length ? (
                         <>
-                            <div className="flex gap-2 p-3">
+                            <div className="flex gap-4 p-3">
                                 {formik.values.topics.map(({ topicId, name }) => (
                                     <Chip
                                         key={topicId}
                                         radius="md"
                                         variant="light"
-                                        classNames={{
-                                            base: "px-0"
-                                        }}
+                                        className="px-0"
                                         onClose={() => deleteTopic(topicId)}
                                         startContent={
                                             <Image
@@ -240,13 +238,6 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             <Spacer y={6} />
             <div className="flex gap-2">
                 <Button
-                    isDisabled={!hasChanged()}
-                    onPress={onCancelPress}
-                    startContent={<XMarkIcon height={20} width={20} />}
-                >
-          Cancel
-                </Button>
-                <Button
                     className="text-secondary-foreground"
                     isDisabled={!hasChanged()}
                     type="submit"
@@ -254,6 +245,14 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                     startContent={<CheckIcon height={20} width={20} />}
                 >
           Save
+                </Button>
+                <Button
+                    variant="light"
+                    isDisabled={!hasChanged()}
+                    onPress={onCancelPress}
+                    startContent={<XMarkIcon height={20} width={20} />}
+                >
+          Cancel
                 </Button>
             </div>
         </div>

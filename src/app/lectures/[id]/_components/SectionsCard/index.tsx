@@ -1,5 +1,5 @@
 "use client"
-import { Accordion, AccordionItem, Card, CardBody, CardHeader, ScrollShadow, Selection } from "@nextui-org/react"
+import { Accordion, AccordionItem, Card, CardBody, CardHeader, Divider, ScrollShadow, Selection } from "@nextui-org/react"
 import React, { useContext, useEffect, useState } from "react"
 import { LectureDetailsContext } from "../../_hooks"
 import { LectureItem } from "./LectureItem"
@@ -64,11 +64,11 @@ export const SectionsCard = (props: SectionsCardProps) => {
 
     return (
         <Card shadow="none" className={`${className} rounded-medium bg-transparent border border-divider`}>
-            <CardHeader className="text-xl p-4 pb-2 font-semibold"> Sections </CardHeader>
+            <CardHeader className="text-xl p-4 pb-4 font-semibold"> Sections </CardHeader>
+            <Divider/>
             <CardBody className="p-0">
                 <ScrollShadow className="h-full">
                     <Accordion
-                        showDivider={false}
                         selectedKeys={selectedKeys}
                         onSelectionChange={onSelectionChange}
                         selectionMode="multiple"
