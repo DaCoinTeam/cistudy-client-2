@@ -70,9 +70,6 @@ export const CoursesTable = () => {
                                 isCompact
                                 showControls
                                 showShadow
-                                classNames={{
-                                    cursor: "text-secondary-foreground",
-                                }}
                                 color="primary"
                                 page={page}
                                 total={pages}

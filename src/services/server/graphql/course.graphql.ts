@@ -7,6 +7,8 @@ import {
     buildAuthPayloadString,
     CourseTargetEntity,
     CategoryEntity,
+    SubcategoryEntity,
+    TopicEntity,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
 import { gql } from "@apollo/client"
@@ -45,6 +47,7 @@ export interface FindManyCoursesInputData {
   options?: {
     take?: number;
     skip?: number;
+    searchValue?: string;
   };
 }
 
@@ -52,6 +55,9 @@ export interface FindManyCoursesOutputData {
   results: Array<CourseEntity>;
   metadata: {
     count: number;
+    categories: Array<CategoryEntity>,
+    subcategories: Array<SubcategoryEntity>,
+    topics: Array<TopicEntity>
   };
 }
 
@@ -74,7 +80,7 @@ export const findManyCourses = async (
     })
     return getGraphqlResponseData({
         response,
-        isAuth: true,
+        isAuth: false,
     })
 }
 

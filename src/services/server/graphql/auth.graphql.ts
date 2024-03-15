@@ -94,5 +94,5 @@ export const getAvatarUrl = (params: {
   kind?: UserKind;
 }) => {
     const { avatarId, avatarUrl, kind } = params
-    return kind === UserKind.Local ? getAssetUrl(avatarId) : avatarUrl
+    return (avatarId || kind === UserKind.Local) ? getAssetUrl(avatarId) : avatarUrl
 }

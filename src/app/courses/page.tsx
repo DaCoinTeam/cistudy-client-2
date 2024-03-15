@@ -3,12 +3,14 @@ import { useContext } from "react"
 import { RootContext } from "../_hooks"
 import { CourseFilters, InfiniteCoursesScroller } from "./_components"
 import { Spacer } from "@nextui-org/react"
+import { useSearchParams } from "next/navigation"
 
 const Page = () => {
-    const { swrs, formik } = useContext(RootContext)!
+    const { swrs } = useContext(RootContext)!
     const { coursesSwr } = swrs
     const { data } = coursesSwr
     
+    const searchParams = useSearchParams()
 
     const getCount = () => {
         if (!data) return 0
@@ -20,7 +22,7 @@ const Page = () => {
     return (
         <div className="p-12 max-w-[100rem] mx-auto">
             <div className="text-3xl">
-                {getCount()} results for {formik.values.searchValue}
+                {getCount()} results for {searchParams.get("searchValue")}
             </div>    
             <Spacer y={6}/>
             <div className="grid grid-cols-4 gap-12">

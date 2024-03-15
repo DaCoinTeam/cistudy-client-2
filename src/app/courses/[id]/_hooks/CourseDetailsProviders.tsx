@@ -26,7 +26,9 @@ export const WrappedCourseDetailsProviders = ({
     const fetchCourse = useCallback(async () => {
         return await findOneCourse(
             {
-                courseId,
+                params: {
+                    courseId
+                },
             },
             {
                 courseId: true,

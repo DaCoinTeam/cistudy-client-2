@@ -23,7 +23,7 @@ export const Ecosystem = (props: EcosystemProps) => {
             <Image src={STARCI_COIN} alt="starciCoin" height={300} width={300} />  
             <Spacer y={6} />
             <div className="grid grid-cols-2 gap-2">
-                <Button color="primary" size="lg" className="text-secondary-foreground"> Buy STARCI </Button>
+                <Button color="primary" size="lg"> Buy STARCI </Button>
                 <Link as="button" size="lg" color="primary" className="flex justify-center" showAnchorIcon> Learn </Link>
             </div>   
         </div>

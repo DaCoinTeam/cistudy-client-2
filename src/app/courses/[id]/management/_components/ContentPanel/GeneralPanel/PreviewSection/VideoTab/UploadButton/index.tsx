@@ -46,7 +46,7 @@ export const UploadButton = (props: UploadButtonProps) => {
             <Button
                 color="primary"
                 onPress={onPress}
-                className={`${className} text-secondary-foreground`}
+                className={`${className}`}
                 startContent={<ArrowUpTrayIcon height={20} width={20} />}
             >
           Upload

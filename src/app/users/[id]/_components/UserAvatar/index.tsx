@@ -1,4 +1,4 @@
-import { getAssetUrl, updateProfile } from "@services"
+import { getAvatarUrl, updateProfile } from "@services"
 import { useContext, useRef } from "react"
 import { UserDetailsContext } from "../../_hooks"
 import { RootContext } from "../../../../_hooks"
@@ -17,12 +17,13 @@ export const UserAvatar = (props: UserAvatarProps) => {
     const { swrs } = useContext(UserDetailsContext)!
     const { userSwr } = swrs
     const { data: user, mutate } = userSwr
+    const { userId, avatarId, avatarUrl, kind } = {...user}
 
     const { swrs: rootSwrs } = useContext(RootContext)!
     const { profileSwr } = rootSwrs
     const { data: profile } = profileSwr
 
-    const isOwnProfile = user?.userId === profile?.userId
+    const isOwnProfile = userId === profile?.userId
 
     const onPress = () => {
         if (fileInputRef.current) fileInputRef.current.click()
@@ -36,9 +37,9 @@ export const UserAvatar = (props: UserAvatarProps) => {
 
         await updateProfile({
             data: {
-                avatarIndex: 0
+                avatarIndex: 0,
             },
-            files: [file]
+            files: [file],
         })
 
         await mutate()
@@ -51,10 +52,14 @@ export const UserAvatar = (props: UserAvatarProps) => {
                     <Avatar
                         isBordered
                         classNames={{
-                            base: "ring-0"
+                            base: "ring-0",
                         }}
                         className="w-44 h-44"
-                        src={getAssetUrl(user?.avatarId, { forceUpdate: true })}
+                        src={getAvatarUrl({
+                            avatarId,
+                            avatarUrl,
+                            kind,
+                        })}
                     />
                     {isOwnProfile ? (
                         <Button

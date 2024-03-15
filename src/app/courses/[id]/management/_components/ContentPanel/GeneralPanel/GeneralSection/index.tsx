@@ -238,7 +238,6 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             <Spacer y={6} />
             <div className="flex gap-2">
                 <Button
-                    className="text-secondary-foreground"
                     isDisabled={!hasChanged()}
                     type="submit"
                     color="primary"

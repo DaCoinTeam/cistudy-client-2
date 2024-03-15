@@ -35,7 +35,9 @@ export const WrappedFollowersTabContentProviders = ({
         if (!userId) return
         return await findManyFollowers(
             {
-                userId,
+                params: {
+                    userId,
+                }
             },
             {
                 userId: true,

@@ -12,10 +12,12 @@ export const SearchInput = (props: SearchInputProps) => {
     const { formik } = useContext(RootContext)!
 
     const onValueChange = (value: string) => {
-        formik.setFieldValue("searchInputValue", value)
+        formik.setFieldValue("searchValue", value)
     }
 
-    const onSubmit = () => formik.submitForm()
+    const onSubmit = () => {
+        formik.submitForm()
+    }
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") onSubmit()
@@ -27,7 +29,7 @@ export const SearchInput = (props: SearchInputProps) => {
             classNames={{
                 inputWrapper: "!border !border-divider shadow-none",
             }}
-            value={formik.values.searchInputValue}
+            value={formik.values.searchValue}
             onValueChange={onValueChange}
             className={`${className}`}
             labelPlacement="outside"

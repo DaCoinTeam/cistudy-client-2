@@ -128,7 +128,6 @@ const WrappedManagePriceModal = () => {
                             isDisabled={!hasChanged()}
                             onPress={onSubmit}
                             color="primary"
-                            className="text-secondary-foreground"
                             startContent={<CheckIcon height={20} width={20} />}
                         >
               Save

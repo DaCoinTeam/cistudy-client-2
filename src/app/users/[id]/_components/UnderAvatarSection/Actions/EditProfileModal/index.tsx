@@ -8,7 +8,6 @@ export const EditProfileModal = () => {
     return (
         <>
             <Button
-                className="text-secondary-foreground"
                 onPress={onOpen}
                 color="primary"
                 startContent={<PenIcon size={20} strokeWidth={3/2} />}

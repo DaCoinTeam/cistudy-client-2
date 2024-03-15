@@ -81,7 +81,6 @@ export const WrappedCreatePostModal = () => {
                         <PlusIcon height={20} width={20}/>
                     }
                     color="primary"
-                    className="text-secondary-foreground"
                 >
             Create
                 </Button>

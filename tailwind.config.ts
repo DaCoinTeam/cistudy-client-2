@@ -25,12 +25,14 @@ const config: Config = {
             light: {
                 colors: {
                     primary: "rgb(20 184 166)",
+                    secondary: "rgb(20 184 166)",
                     success: "rgb(17 94 89)",
                     default: {
                         DEFAULT: "rgb(244 244 245)"
                     },
                     content3: "rgb(228 228 231)"
                 },
+
             },
             dark: {
                 colors: {
