@@ -23,20 +23,30 @@ const httpLink = createHttpLink({
     uri: GRAPHQL_ENDPOINT,
 })
 
-const beforeAuthLink = new ApolloLink((operation, forward) => {
-    const token = getAuthToken()
+const beforeLink = new ApolloLink((operation, forward) => {
     operation.setContext({
         headers: {
-            Authorization: token ? `Bearer ${token}` : "",
             "Client-Id": getClientId(),
         },
     })
     return forward(operation)
 })
 
+const beforeAuthLink = new ApolloLink((operation, forward) => {
+    const token = getAuthToken()
+    operation.setContext({
+        headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Client-Id": getClientId(),
+            "Auth-Token-Type": AuthTokenType.Access,
+        },
+    })
+    return forward(operation)
+})
+
 const onErrorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors) console.log(`[Graphql error]: ${graphQLErrors}`)
-    if (networkError) console.log(`[Network error]: ${networkError}`)
+    if (graphQLErrors) throw graphQLErrors[0].extensions.originalError
+    if (networkError) throw networkError
 })
 
 const onErrorAuthLink = onError(
@@ -44,51 +54,54 @@ const onErrorAuthLink = onError(
         if (graphQLErrors) {
             const error = graphQLErrors[0].extensions.originalError as ErrorResponse
             if (error.statusCode === ErrorStatusCode.Unauthorized) {
+                const context = operation.getContext()
+                const headers = context.headers
+                if (headers === AuthTokenType.Refresh)
+                    throw graphQLErrors
+
                 const token = getAuthToken(AuthTokenType.Refresh)
                 operation.setContext({
                     headers: {
                         Authorization: token ? `Bearer ${token}` : "",
                         "Client-Id": getClientId(),
+                        "Auth-Token-Type": AuthTokenType.Refresh,
                     },
                 })
                 return forward(operation)
             }
         }
-        if (networkError) console.log(`[Network error]: ${networkError}`)
+        if (networkError) throw networkError
     }
 )
 
 export const client = new ApolloClient({
-    link: from([onErrorLink, httpLink]),
+    link: from([beforeLink, onErrorLink, httpLink]),
     cache: new InMemoryCache(),
 })
 
 export const authClient = new ApolloClient({
-    link: from([
-        beforeAuthLink,
-        onErrorAuthLink,
-        httpLink,
-    ]),
+    link: from([beforeAuthLink, onErrorAuthLink, httpLink]),
     cache: new InMemoryCache(),
 })
 
 export const getGraphqlResponseData = <T>(
-    params: {
-        isAuth: false
-        response: ApolloQueryResult<T>
-    } | {
-        isAuth: true
-        response: ApolloQueryResult<BaseResponse<T>>
-    }
+    params:
+    | {
+        isAuth: false;
+        response: ApolloQueryResult<T>;
+      }
+    | {
+        isAuth: true;
+        response: ApolloQueryResult<BaseResponse<T>>;
+      }
 ) => {
     const { isAuth, response } = params
-    const data = response.data! 
+    const data = response.data!
     if (!isAuth) {
         return Object.values(data).at(0) as T
     } else {
         const baseResponse = Object.values(data).at(0) as BaseResponse<T>
-        const { data : graphqlData, tokens } =  { ...baseResponse }
-        
+        const { data: graphqlData, tokens } = { ...baseResponse }
         if (tokens) saveTokens(tokens)
         return graphqlData
     }
