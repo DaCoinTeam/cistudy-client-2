@@ -50,6 +50,9 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                     <AccordionItem
                         key="categories"
                         aria-label="Categories"
+                        classNames={{
+                            content: "pt-0 pb-4"
+                        }}
                         title={
                             <div className="flex gap-3 items-center">
                                 <div>Categories</div>
@@ -59,15 +62,22 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                             </div>
                         }
                     >
-                        {getMetadata()?.categories.map(({ categoryId, name }) => (
-                            <div key={categoryId}>
-                                <div className="text-sm">{name}</div>
-                            </div>
-                        ))}
+                        <div className="flex flex-col gap-3">
+                            {getMetadata()?.categories.map(({ categoryId, name }) => (
+                                <div key={categoryId}>
+                                    <Checkbox size="sm">
+                                        <div>{name}</div>
+                                    </Checkbox>               
+                                </div>
+                            ))}
+                        </div>
                     </AccordionItem>
                     <AccordionItem
                         key="subcategories"
                         aria-label="Subcategories"
+                        classNames={{
+                            content: "pt-0 pb-4"
+                        }}
                         title={
                             <div className="flex gap-3 items-center">
                                 <div>Subcategories</div>
@@ -77,15 +87,22 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                             </div>
                         }
                     >
-                        {getMetadata()?.subcategories.map(({ subcategoryId, name }) => (
-                            <div key={subcategoryId}>
-                                <div className="text-sm">{name}</div>
-                            </div>
-                        ))}
+                        <div className="flex flex-col gap-3">
+                            {getMetadata()?.subcategories.map(({ subcategoryId, name }) => (
+                                <div key={subcategoryId}>
+                                    <Checkbox size="sm">
+                                        <div>{name}</div>
+                                    </Checkbox>               
+                                </div>
+                            ))}
+                        </div>
                     </AccordionItem>
                     <AccordionItem
                         key="topics"
                         aria-label="Topics"
+                        classNames={{
+                            content: "pt-0 pb-4"
+                        }}
                         title={
                             <div className="flex gap-3 items-center">
                                 <div>Topics</div>
@@ -95,16 +112,19 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                             </div>
                         }
                     >
-                        {getMetadata()?.topics.map(({ topicId, name }) => (
-                            <div key={topicId}>
-                                <Checkbox size="sm">
-                                    <div className="flex items-center gap-2">
-                                        <Image src={getTopicSVGUrl(name)} alt="topic" height={14} width={14}/>
-                                        <div className="text-sm">{name}</div>
-                                    </div>
-                                </Checkbox>               
-                            </div>
-                        ))}
+                        <div className="flex flex-col gap-3">
+                            {getMetadata()?.topics.map(({ topicId, name }) => (
+                                <div key={topicId}>
+                                    <Checkbox size="sm">
+                                        <div className="flex gap-2 items-center">
+                                            <Image src={getTopicSVGUrl(name)} alt="topic" height={14} width={14}/>
+                                            <div>{name}</div>
+                                        </div>
+                                    </Checkbox>               
+                                </div>
+                            ))}
+                        </div>
+                      
                     </AccordionItem>
                 </Accordion>
             </CardBody>

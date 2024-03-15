@@ -13,7 +13,7 @@ import useSWR, { SWRResponse } from "swr"
 import { RootAction, RootState, useRootReducer } from "./useRootReducer"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
 import { FormikProps, useFormik } from "formik"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 interface FormikValues {
   searchValue: string;
@@ -97,6 +97,7 @@ export const RootProviders = ({ children }: { children: ReactNode }) => {
     const formik = useFormik({
         initialValues: initialValues,
         onSubmit: async ({ searchValue }) => {
+            console.log(searchValue)
             const urlInstance = new URL(window.location.href)
             const searchParams = urlInstance.searchParams
             urlInstance.pathname = "/courses"
@@ -106,18 +107,21 @@ export const RootProviders = ({ children }: { children: ReactNode }) => {
                 searchParams.append("searchValue", searchValue)
             }
             router.push(urlInstance.toString())
-            await coursesSwr.mutate()
         },
     })
 
+    const searchParams = useSearchParams()
+    const searchValue = searchParams.get("searchValue")
+
     const fetchCourses = useCallback(
         async ([key]: [number, string]) => {
+            
             return await findManyCourses(
                 {
                     options: {
                         skip: COLUMNS_PER_PAGE * key,
                         take: COLUMNS_PER_PAGE,
-                        searchValue: formik.values.searchValue,
+                        searchValue: searchValue ?? undefined,
                     },
                 },
                 {
@@ -149,10 +153,10 @@ export const RootProviders = ({ children }: { children: ReactNode }) => {
                 }
             )
         },
-        [formik.values.searchValue]
+        [searchValue]
     )
 
-    const coursesSwr = useSWRInfinite((key) => [key, "COURSES"], fetchCourses, {
+    const coursesSwr = useSWRInfinite((key) => [key, searchValue, "COURSES"], fetchCourses, {
         revalidateFirstPage: false,
     })
 
