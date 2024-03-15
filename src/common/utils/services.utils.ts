@@ -1,10 +1,4 @@
-
-import {
-    Atomic,
-    AuthTokenType,
-    ErrorResponse,
-    Schema,
-} from "../types"
+import { Atomic, AuthTokenType, ErrorResponse, Schema } from "../types"
 import { getAuthToken } from "./storage.utils"
 import { ABORTED_MESSAGE } from "@config"
 
@@ -49,15 +43,10 @@ export const buildPayloadString = <T extends object>(
 }
 
 export const buildAuthPayloadString = <T extends object>(
-    schema?: Schema<T>,
-    authTokenType: AuthTokenType = AuthTokenType.Access
+    schema?: Schema<T>
 ) => {
     const data = buildPayloadString(schema)
-    return `data { ${data} } ${
-        authTokenType === AuthTokenType.Refresh
-            ? "tokens { accessToken, refreshToken }"
-            : ""
-    }`
+    return `data { ${data} } tokens { accessToken, refreshToken } }`
 }
 
 export const isErrorResponse = (

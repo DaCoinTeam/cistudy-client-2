@@ -27,6 +27,7 @@
     "@tiptap/pm": "^2.2.4",
     "@tiptap/react": "^2.2.4",
     "@tiptap/starter-kit": "^2.2.4",
+    "apollo-link-token-refresh": "^0.6.1",
     "axios": "^1.6.7",
     "dashjs": "^4.7.3",
     "date-fns": "^3.3.1",
