@@ -181,7 +181,7 @@ export const findManyResources = async (
 
 export interface FindManyCourseTargetsInputData {
   params: {
-    lectureId: string;
+    courseId: string;
   };
 }
 

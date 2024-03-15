@@ -23,7 +23,7 @@ export const SectionsSection = (props: SectionsSectionProps) => {
             <AccordionItem
                 key={sectionId}
                 classNames={{
-                    content: "flex flex-col gap-4 pb-4 pt-2",
+                    content: "flex flex-col gap-4 py-4",
                 }}
                 title={title}
                 subtitle={`${lectures.length} lectures`}

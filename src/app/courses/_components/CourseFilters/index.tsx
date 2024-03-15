@@ -45,14 +45,12 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                     itemClasses={{
                         base: "!shadow-none gap-4 px-4",
                         title: "!text-base",
+                        content: "pt-2 pb-4"
                     }}
                 >
                     <AccordionItem
                         key="categories"
                         aria-label="Categories"
-                        classNames={{
-                            content: "pt-0 pb-4"
-                        }}
                         title={
                             <div className="flex gap-3 items-center">
                                 <div>Categories</div>
@@ -75,9 +73,6 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                     <AccordionItem
                         key="subcategories"
                         aria-label="Subcategories"
-                        classNames={{
-                            content: "pt-0 pb-4"
-                        }}
                         title={
                             <div className="flex gap-3 items-center">
                                 <div>Subcategories</div>
@@ -100,9 +95,6 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                     <AccordionItem
                         key="topics"
                         aria-label="Topics"
-                        classNames={{
-                            content: "pt-0 pb-4"
-                        }}
                         title={
                             <div className="flex gap-3 items-center">
                                 <div>Topics</div>

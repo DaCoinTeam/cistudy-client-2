@@ -1,15 +1,15 @@
 import React, { useContext } from "react"
-import { CourseDetailsContext } from "../../../../../../_hooks"
 import { createCourseTarget } from "@services"
 import { Link } from "@nextui-org/react"
 import { PlusIcon } from "@heroicons/react/24/outline"
 import { TargetsSectionContext } from "../TargetsSectionProviders"
+import { ManagementContext } from "../../../../../_hooks"
 
 export const AddTargetItem = () => {
-    const { swrs } = useContext(CourseDetailsContext)!
-    const { courseSwr } = swrs
-    const { data : course } = courseSwr
-    const { courseId } = { ...course } 
+    const { swrs } = useContext(ManagementContext)!
+    const { courseManagementSwr } = swrs
+    const { data : courseManagement } = courseManagementSwr
+    const { courseId } = { ...courseManagement } 
 
     const { swrs: targetsSectionSwrs } = useContext(TargetsSectionContext)!
     const { courseTargetsSwr } = targetsSectionSwrs
@@ -23,6 +23,7 @@ export const AddTargetItem = () => {
                 content: "Write something here",
             },
         })
+        console.log("C")
         await mutate()
     }
 
