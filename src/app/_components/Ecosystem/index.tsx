@@ -25,7 +25,7 @@ export const Ecosystem = (props: EcosystemProps) => {
             <div className="grid grid-cols-2 gap-2">
                 <Button color="primary" size="lg" className="text-secondary-foreground"> Buy STARCI </Button>
                 <div className="flex content-center">
-                <Link as="button" size="lg" color="primary" showAnchorIcon> Learn </Link>
+                    <Link as="button" size="lg" color="primary" showAnchorIcon> Learn </Link>
                 </div>
               
             </div>   
