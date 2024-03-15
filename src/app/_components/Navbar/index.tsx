@@ -14,6 +14,7 @@ import { NavbarContext, NavbarProviders } from "./NavbarProviders"
 import { ProfileMenu } from "./ProfileMenu"
 import { RootContext } from "../../_hooks"
 import { DarkModeSwitch } from "./DarkModeSwitch"
+import { SearchInput } from "./SearchInput"
 
 interface NavbarProps {
   className?: string;
@@ -51,29 +52,15 @@ const WrappedNavbar = (props: NavbarProps) => {
 
     return (
         <>
-            <NextUINavbar isBordered className={className} classNames={{
-                wrapper: "!max-w-full px-6"
+            <NextUINavbar className={className} classNames={{
+                wrapper: "!max-w-full px-12"
             }}>
                 <NavbarBrand>
                     <PencilIcon className="w-6 h-6" />
                     <p className="font-semibold text-inherit">ACME</p>
                 </NavbarBrand>
-                <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                    <NavbarItem>
-                        <Link color="foreground" href="#">
-              Features
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem isActive>
-                        <Link href="#" aria-current="page">
-              Customers
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link color="foreground" href="#">
-              Integrations
-                        </Link>
-                    </NavbarItem>
+                <NavbarContent justify="center">
+                    <SearchInput className="w-[500px]"/>
                 </NavbarContent>
                 <NavbarContent justify="end">
                     <NavbarItem>

@@ -9,13 +9,11 @@ import {
     TableCell,
     Pagination,
     Spinner,
-    Spacer,
 } from "@nextui-org/react"
 import { CoursesManagementPanelContext, ROWS_PER_PAGE } from "../CoursesManagementPanelProviders"
 import { getAssetUrl } from "@services"
 import { useRouter } from "next/navigation"
 import { InteractiveThumbnail } from "../../../../../_shared"
-import { ClockIcon } from "@heroicons/react/24/outline"
 
 export const CoursesTable = () => {
     const router = useRouter()
@@ -114,13 +112,8 @@ export const CoursesTable = () => {
                                     onPress={() => router.push(`/courses/${courseId}/management`)}
                                 />
                                 <div>
-                                    <div className="line-clamp-1 text-base">{title}</div>
-                                    <div className="flex gap-1 items-center text-foreground-500">
-                                        <ClockIcon height={12} width={12} />
-                                        <div className="text-xs">15m</div>
-                                    </div>
-                                    <Spacer y={1}/>
-                                    <div className="text-sm text-foreground-500 line-clamp-2">
+                                    <div className="text-base">{title}</div>
+                                    <div className="text-xs text-foreground-500 line-clamp-3">
                                         {description}
                                     </div>
                                 </div>

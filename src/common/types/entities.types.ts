@@ -84,6 +84,7 @@ export interface CourseEntity {
   title: string;
   thumbnailId: string;
   description: string;
+  creatorId: string;
   price: number;
   discount: number;
   enableDiscount: boolean;
@@ -93,14 +94,18 @@ export interface CourseEntity {
   isDeleted: boolean;
   previewVideoId: string;
   includes: string;
+  createdAt: Date;
+  updatedAt: Date;
+  courseTopics: Array<CourseTopicEntity>;
+  categoryId: string;
+  category: CategoryEntity;
+  courseSubcategories: Array<CourseSubcategoryEntity>;
+  courseTargets: Array<CourseTargetEntity>;
   posts: Array<PostEntity>;
   enrolledInfos: Array<EnrolledInfoEntity>;
   sections: Array<SectionEntity>;
-  courseTargets: Array<CourseTargetEntity>;
-   //graphql
-   numberOfEnrollments?: number
+  numberOfEnrollments?: number;
 }
-
 export interface CourseTargetEntity {
   courseTargetId: string;
   content: string;
@@ -230,4 +235,71 @@ export interface PostCommentMediaEntity {
   postCommentId: string;
   mediaType: MediaType;
   postComment: PostCommentEntity;
+}
+
+export interface CategoryEntity {
+  categoryId: string
+  name: string
+  createdAt: Date
+  updatedAt: Date
+  subcategories: Array<SubcategoryEntity>
+}
+
+export interface SubcategoryEntity {
+  subcategoryId: string
+  name: string
+  createdAt: Date
+  updatedAt: Date
+  categoryId: string
+  category: CategoryEntity
+  subcategoryTopics: Array<SubcategoryTopicEntity>
+}
+
+export interface SubcategoryTopicEntity {
+  subcategoryTopicId: string
+  createdAt: Date
+  updatedAt: Date
+  subcategoryId: string
+  topicId: string
+  subcategory: SubcategoryEntity
+  topic: TopicEntity
+}
+
+export interface TopicEntity {
+  topicId: string
+  name: string
+  createdAt: Date
+  updatedAt: Date
+  courseTopics: Array<CourseTopicEntity>
+  subcategoryTopics: Array<SubcategoryTopicEntity>
+}
+
+export interface CourseTopicEntity {
+  courseTopicId: string
+  createdAt: Date
+  updatedAt: Date
+  courseId: string
+  topicId: string
+  course: CourseEntity
+  topic: TopicEntity
+}
+
+export interface CourseSubcategoryEntity {
+  courseSubcategoryId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  courseId: string;
+  subcategoryId: string;
+  course: CourseEntity;
+  subcategory: SubcategoryEntity;
+}
+
+export interface CourseTopicEntity {
+  courseTopicId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  courseId: string;
+  topicId: string;
+  course: CourseEntity;
+  topic: TopicEntity;
 }
