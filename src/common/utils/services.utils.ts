@@ -46,7 +46,7 @@ export const buildAuthPayloadString = <T extends object>(
     schema?: Schema<T>
 ) => {
     const data = buildPayloadString(schema)
-    return `data { ${data} } tokens { accessToken, refreshToken } }`
+    return `data { ${data} } tokens { accessToken, refreshToken }`
 }
 
 export const isErrorResponse = (

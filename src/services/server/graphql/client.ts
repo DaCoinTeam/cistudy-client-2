@@ -10,7 +10,6 @@ import {
 import { GRAPHQL_ENDPOINT } from "@config"
 import {
     AuthTokenType,
-    AuthTokens,
     BaseResponse,
     ErrorResponse,
     ErrorStatusCode,
@@ -87,8 +86,9 @@ export const getGraphqlResponseData = <T>(
     if (!isAuth) {
         return Object.values(data).at(0) as T
     } else {
-        const graphqlData = Object.values(data).at(0) as T
-        const tokens = Object.values(data).at(1) as AuthTokens
+        const baseResponse = Object.values(data).at(0) as BaseResponse<T>
+        const { data : graphqlData, tokens } =  { ...baseResponse }
+        
         if (tokens) saveTokens(tokens)
         return graphqlData
     }
