@@ -50,7 +50,9 @@ const WrappedRootProviders = (props: { children: ReactNode, formik: FormikProps<
                 username: true,
                 email: true,
                 avatarId: true,
+                avatarUrl: true,
                 coverPhotoId: true,
+                kind: true
             })
         } catch (ex) {
             console.log(ex)

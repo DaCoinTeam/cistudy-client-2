@@ -8,7 +8,7 @@ import {
 import React, { useContext, useRef } from "react"
 import { removeTokens } from "@common"
 import { RootContext } from "../../../_hooks"
-import { getAssetUrl } from "@services"
+import { getAvatarUrl } from "@services"
 import { useRouter } from "next/navigation"
 import { WalletModalRef, WalletModalRefSelectors } from "./WalletModalRef"
 
@@ -16,22 +16,26 @@ export const ProfileMenu = () => {
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { mutate, data: profile } = profileSwr
-    const { avatarId, username, userId } = { ...profile }
+    const { avatarId, username, userId, avatarUrl, kind } = { ...profile }
 
-    const onSignOutPress = async () => { 
+    const onSignOutPress = async () => {
         await mutate(null, {
             revalidate: false,
         })
         removeTokens()
     }
 
-    const router = useRouter() 
+    const router = useRouter()
     const onProfilePress = () => router.push(`/users/${userId}`)
 
-    const walletModalRef = useRef<WalletModalRefSelectors|null>(null)
+    const walletModalRef = useRef<WalletModalRefSelectors | null>(null)
     const onWalletPress = () => walletModalRef.current?.onOpen()
 
-
+    console.log(getAvatarUrl({
+        avatarId,
+        avatarUrl,
+        kind,
+    }))
     return (
         <>
             <Dropdown placement="bottom-end">
@@ -39,7 +43,11 @@ export const ProfileMenu = () => {
                     <Avatar
                         isBordered
                         as="button"
-                        src={getAssetUrl(avatarId)}
+                        src={getAvatarUrl({
+                            avatarId,
+                            avatarUrl,
+                            kind,
+                        })}
                         className="transition-transform"
                     />
                 </DropdownTrigger>
@@ -48,19 +56,22 @@ export const ProfileMenu = () => {
                         <p className="font-semibold">Signed in as</p>
                         <p className="font-semibold">{username}</p>
                     </DropdownItem>
-                    <DropdownItem key="profile" onPress={onProfilePress}>Profile</DropdownItem>
-                    <DropdownItem key="wallet" onPress={onWalletPress}>Wallet</DropdownItem>
+                    <DropdownItem key="profile" onPress={onProfilePress}>
+            Profile
+                    </DropdownItem>
+                    <DropdownItem key="wallet" onPress={onWalletPress}>
+            Wallet
+                    </DropdownItem>
                     <DropdownItem key="analytics">Analytics</DropdownItem>
                     <DropdownItem key="system">System</DropdownItem>
                     <DropdownItem key="configurations">Configurations</DropdownItem>
                     <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
                     <DropdownItem onPress={onSignOutPress} key="logout" color="danger">
-          Sign Out
+            Sign Out
                     </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
-            <WalletModalRef ref={walletModalRef}/>
+            <WalletModalRef ref={walletModalRef} />
         </>
-     
     )
 }

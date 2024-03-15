@@ -7,11 +7,13 @@ import {
     ExtensionsWithOriginalError,
     Schema,
     UserEntity,
+    UserKind,
     buildAuthPayloadString,
     saveTokens,
 } from "@common"
 import { client } from "./client"
 import { ApolloError, gql } from "@apollo/client"
+import { getAssetUrl } from ".."
 
 export const init = async (
     schema: Schema<DeepPartial<UserEntity>>,
@@ -28,9 +30,7 @@ export const init = async (
   }
           `,
         })
-        const { data, tokens } = graphqlData.init as BaseResponse<
-            UserEntity
-        >
+        const { data, tokens } = graphqlData.init as BaseResponse<UserEntity>
         if (authTokenType === AuthTokenType.Refresh)
             saveTokens(tokens as AuthTokens)
         return data
@@ -40,7 +40,7 @@ export const init = async (
             .originalError
         if (
             error.statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
+      authTokenType === AuthTokenType.Access
         )
             return await init(schema, AuthTokenType.Refresh)
         throw error
@@ -49,9 +49,9 @@ export const init = async (
 
 export const signIn = async (
     input: {
-        email: string;
-        password: string;
-    },
+    email: string;
+    password: string;
+  },
     schema: Schema<DeepPartial<UserEntity>>
 ): Promise<UserEntity> => {
     const { email, password } = input
@@ -72,9 +72,7 @@ export const signIn = async (
                 },
             },
         })
-        const { data, tokens } = graphqlData.signIn as BaseResponse<
-            UserEntity
-        >
+        const { data, tokens } = graphqlData.signIn as BaseResponse<UserEntity>
         saveTokens(tokens as AuthTokens)
         return data
     } catch (ex) {
@@ -83,4 +81,50 @@ export const signIn = async (
             .originalError
         throw error
     }
+}
+
+export interface VerifyGoogleAccessTokenData {
+  params: {
+    token: string;
+  };
+}
+
+export const verifyGoogleAccessToken = async (
+    data: VerifyGoogleAccessTokenData,
+    schema: Schema<DeepPartial<UserEntity>>
+): Promise<UserEntity> => {
+    try {
+        const payload = buildAuthPayloadString(schema, AuthTokenType.Refresh)
+        const { data: graphqlData } = await client().query({
+            query: gql`
+           query VerifyGoogleAccessToken($data: VerifyGoogleAccessTokenData!) {
+  verifyGoogleAccessToken(data: $data) {
+      ${payload}
+    }
+  }
+          `,
+            variables: {
+                data,
+            },
+        })
+        const { data: graphqlResponse, tokens } =
+      graphqlData.verifyGoogleAccessToken as BaseResponse<UserEntity>
+        console.log(graphqlResponse, tokens)
+        saveTokens(tokens as AuthTokens)
+        return graphqlResponse
+    } catch (ex) {
+        const { graphQLErrors } = ex as ApolloError
+        const error = (graphQLErrors[0].extensions as ExtensionsWithOriginalError)
+            .originalError
+        throw error
+    }
+}
+
+export const getAvatarUrl = (params: {
+  avatarId?: string;
+  avatarUrl?: string;
+  kind?: UserKind;
+}) => {
+    const { avatarId, avatarUrl, kind } = params
+    return kind === UserKind.Local ? getAssetUrl(avatarId) : avatarUrl
 }

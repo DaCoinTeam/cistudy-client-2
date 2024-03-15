@@ -37,6 +37,7 @@ export interface UserEntity {
   email: string;
   password?: string;
   avatarId?: string;
+  avatarUrl?: string;
   phoneNumber?: string;
   balance: number;
   role: UserRole;
