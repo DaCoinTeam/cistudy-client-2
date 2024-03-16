@@ -12,15 +12,17 @@ import { FindManyCoursesOutputData, findManyCourses, init } from "@services"
 import useSWR, { SWRResponse } from "swr"
 import { RootAction, RootState, useRootReducer } from "./useRootReducer"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
-import { FormikProps, useFormik } from "formik"
-import { useRouter, useSearchParams } from "next/navigation"
+import { Formik, FormikProps } from "formik"
+
 
 interface FormikValues {
   searchValue: string;
+  searchInputValue: string;
 }
 
 const initialValues: FormikValues = {
     searchValue: "",
+    searchInputValue: ""
 }
 
 interface RootContextValue {
@@ -28,7 +30,7 @@ interface RootContextValue {
     profileSwr: SWRResponse<UserEntity | null, ErrorResponse>;
     coursesSwr: SWRInfiniteResponse<FindManyCoursesOutputData, ErrorResponse>;
   };
-  formik: FormikProps<FormikValues>;
+  formik: FormikProps<FormikValues>,
   reducer: [RootState, React.Dispatch<RootAction>];
 }
 
@@ -36,14 +38,10 @@ export const RootContext = createContext<RootContextValue | null>(null)
 
 export const COLUMNS_PER_PAGE = 5
 
-const WrappedRootProviders = (props: {
-  children: ReactNode;
-  formik: FormikProps<FormikValues>;
-  coursesSwr: SWRInfiniteResponse<FindManyCoursesOutputData, ErrorResponse>;
-}) => {
+const WrappedRootProviders = (props: { children: ReactNode, formik: FormikProps<FormikValues> }) => {
     const reducer = useRootReducer()
 
-    const { formik, coursesSwr } = props
+    const { formik } = props
 
     const fetchProfile = useCallback(async () => {
         try {
@@ -54,21 +52,48 @@ const WrappedRootProviders = (props: {
                 avatarId: true,
                 avatarUrl: true,
                 coverPhotoId: true,
-                kind: true,
+                kind: true
             })
         } catch (ex) {
+            console.log(ex)
             return null
         }
     }, [])
 
-    const profileSwr = useSWR(
-        [formik.values.searchValue, "PROFILE"],
-        fetchProfile,
-        {
-            revalidateIfStale: false,
-            revalidateOnFocus: false,
-        }
-    )
+    const fetchCourses = useCallback(async ([key]: [number, string]) => {
+        return await findManyCourses(
+            {
+                options: {
+                    skip: COLUMNS_PER_PAGE * key,
+                    take: COLUMNS_PER_PAGE,
+                },
+            },
+            {
+                results: {
+                    courseId: true,
+                    title: true,
+                    creator: {
+                        avatarId: true,
+                        username: true,
+                    },
+                    thumbnailId: true,
+                    description: true,
+                },
+                metadata: {
+                    count: true,
+                },
+            }
+        )
+    }, [])
+
+    const profileSwr = useSWR(["PROFILE"], fetchProfile, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+    })
+
+    const coursesSwr = useSWRInfinite((key) => [key, "COURSES"], fetchCourses, {
+        revalidateFirstPage: false,
+    })
 
     useEffect(() => {
         generateClientId()
@@ -83,7 +108,7 @@ const WrappedRootProviders = (props: {
             formik,
             reducer,
         }),
-        [profileSwr, coursesSwr, reducer, formik]
+        [profileSwr, coursesSwr, reducer]
     )
 
     return (
@@ -93,77 +118,24 @@ const WrappedRootProviders = (props: {
     )
 }
 
-export const RootProviders = ({ children }: { children: ReactNode }) => {
-    const formik = useFormik({
-        initialValues: initialValues,
-        onSubmit: async ({ searchValue }) => {
-            console.log(searchValue)
-            const urlInstance = new URL(window.location.href)
-            const searchParams = urlInstance.searchParams
-            urlInstance.pathname = "/courses"
-            if (searchParams.has("searchValue")) {
-                searchParams.set("searchValue", searchValue)
-            } else {
-                searchParams.append("searchValue", searchValue)
-            }
-            router.push(urlInstance.toString())
-        },
-    })
 
-    const searchParams = useSearchParams()
-    const searchValue = searchParams.get("searchValue")
-
-    const fetchCourses = useCallback(
-        async ([key]: [number, string]) => {
-            
-            return await findManyCourses(
-                {
-                    options: {
-                        skip: COLUMNS_PER_PAGE * key,
-                        take: COLUMNS_PER_PAGE,
-                        searchValue: searchValue ?? undefined,
-                    },
-                },
-                {
-                    results: {
-                        courseId: true,
-                        title: true,
-                        creator: {
-                            avatarId: true,
-                            username: true,
-                        },
-                        thumbnailId: true,
-                        description: true,
-                    },
-                    metadata: {
-                        count: true,
-                        categories: {
-                            categoryId: true,
-                            name: true,
-                        },
-                        subcategories: {
-                            subcategoryId: true,
-                            name: true,
-                        },
-                        topics: {
-                            topicId: true,
-                            name: true,
-                        },
-                    },
-                }
-            )
-        },
-        [searchValue]
-    )
-
-    const coursesSwr = useSWRInfinite((key) => [key, searchValue, "COURSES"], fetchCourses, {
-        revalidateFirstPage: false,
-    })
-
-    const router = useRouter()
+export const RootProviders = ({
+    children
+}: {
+  children: ReactNode;
+}) => {
     return (
-        <WrappedRootProviders formik={formik} coursesSwr={coursesSwr}>
-            {children}
-        </WrappedRootProviders>
+        <Formik
+            initialValues={initialValues}
+            onSubmit={async ({ searchInputValue }) => {
+                console.log(searchInputValue)
+            }}
+        >
+            {(formik) => (
+                <WrappedRootProviders formik={formik}>
+                    {children}
+                </WrappedRootProviders>
+            )}
+        </Formik>
     )
 }

@@ -1,11 +1,11 @@
 "use client"
-import { useContext } from "react"
+import { Suspense, useContext } from "react"
 import { RootContext } from "../_hooks"
 import { CourseFilters, InfiniteCoursesScroller } from "./_components"
 import { Spacer } from "@nextui-org/react"
 import { useSearchParams } from "next/navigation"
 
-const Page = () => {
+const WrappedPage = () => {
     const { swrs } = useContext(RootContext)!
     const { coursesSwr } = swrs
     const { data } = coursesSwr
@@ -32,4 +32,10 @@ const Page = () => {
         </div>
     )
 }
+
+const Page = () => (
+    <Suspense>
+        <WrappedPage/>
+    </Suspense>
+)
 export default Page

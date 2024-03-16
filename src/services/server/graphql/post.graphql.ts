@@ -10,10 +10,13 @@ import { gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 
 export interface FindManyPostsInputData {
-    results: Array<PostEntity>;
-    metadata: {
-        count: number;
-    };
+    params: {
+        courseId: string
+    },
+    options?: {
+        skip?: number,
+        take?: number
+    }
 }
 
 export interface FindManyPostsOutputData {
@@ -89,7 +92,7 @@ export const findManyPostComments = async (
 
 export interface FindManyPostCommentRepliesInputData {
     params: {
-        postId: string;
+        postCommentId: string;
     };
     options?: {
         take?: number;

@@ -40,7 +40,9 @@ const WrappedHomeProviders = ({ children }: { children: ReactNode }) => {
         if (!courseId) return
         return await findOneCourse(
             {
-                courseId,
+                params: {
+                    courseId,
+                } 
             },
             {
                 courseId: true,

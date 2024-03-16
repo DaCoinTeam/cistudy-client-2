@@ -3,6 +3,7 @@ import {
     ApolloClient,
     ApolloLink,
     ApolloQueryResult,
+    DefaultOptions,
     InMemoryCache,
     createHttpLink,
     from,
@@ -74,26 +75,42 @@ const onErrorAuthLink = onError(
     }
 )
 
+
+const defaultOptions: DefaultOptions = {
+    watchQuery: {
+        fetchPolicy: "no-cache",
+        errorPolicy: "ignore",
+    },
+    query: {
+        fetchPolicy: "no-cache",
+        errorPolicy: "all",
+    },
+}
+  
 export const client = new ApolloClient({
     link: from([beforeLink, onErrorLink, httpLink]),
     cache: new InMemoryCache(),
+    defaultOptions
 })
 
 export const authClient = new ApolloClient({
     link: from([beforeAuthLink, onErrorAuthLink, httpLink]),
     cache: new InMemoryCache(),
+    defaultOptions
 })
 
+export type NonAuthResponse<T> = {
+    isAuth: false;
+    response: ApolloQueryResult<T>;
+}
+
+export type AuthResponse<T> = {
+    isAuth: true;
+    response: ApolloQueryResult<BaseResponse<T>>;
+}
+
 export const getGraphqlResponseData = <T>(
-    params:
-    | {
-        isAuth: false;
-        response: ApolloQueryResult<T>;
-      }
-    | {
-        isAuth: true;
-        response: ApolloQueryResult<BaseResponse<T>>;
-      }
+    params: NonAuthResponse<T> | AuthResponse<T>
 ) => {
     const { isAuth, response } = params
     const data = response.data!

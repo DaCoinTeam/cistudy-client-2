@@ -202,6 +202,10 @@ export const findManyCourseTargets = async (
             data,
         },
     })
+    console.log(getGraphqlResponseData({
+        response,
+        isAuth: true,
+    }))
     return getGraphqlResponseData({
         response,
         isAuth: true,

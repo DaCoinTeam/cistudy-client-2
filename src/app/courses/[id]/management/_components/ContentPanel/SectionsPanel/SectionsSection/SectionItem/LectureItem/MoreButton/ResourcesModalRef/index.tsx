@@ -44,7 +44,9 @@ const WrappedResourcesModalRef = () => {
     const fetchResources = useCallback(async () => {
         return await findManyResources(
             {
-                lectureId,
+                params: {
+                    lectureId,
+                }
             },
             {
                 resourceId: true,

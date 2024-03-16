@@ -23,7 +23,6 @@ export const AddTargetItem = () => {
                 content: "Write something here",
             },
         })
-        console.log("C")
         await mutate()
     }
 
