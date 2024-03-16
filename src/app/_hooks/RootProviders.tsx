@@ -144,7 +144,7 @@ export const RootProviders = ({
             onSubmit={async ({ searchValue }) => {
                 const urlInstance = new URL(window.location.href)
                 urlInstance.pathname = "/courses"
-                urlInstance.searchParams.append("searchValue", searchValue)
+                urlInstance.searchParams.set("searchValue", searchValue)
                 router.push(urlInstance.toString())
                 await ref.current?.mutate()
             }}
