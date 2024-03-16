@@ -55,13 +55,13 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                             <div className="flex gap-3 items-center">
                                 <div>Categories</div>
                                 <div className="text-foreground-500">
-                                    {getMetadata()?.categories.length}
+                                    {getMetadata()?.categories?.length ?? 0}
                                 </div>
                             </div>
                         }
                     >
                         <div className="flex flex-col gap-3">
-                            {getMetadata()?.categories.map(({ categoryId, name }) => (
+                            {getMetadata()?.categories?.map(({ categoryId, name }) => (
                                 <div key={categoryId}>
                                     <Checkbox size="sm">
                                         <div>{name}</div>
@@ -77,13 +77,13 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                             <div className="flex gap-3 items-center">
                                 <div>Subcategories</div>
                                 <div className="text-foreground-500">
-                                    {getMetadata()?.subcategories.length}
+                                    {getMetadata()?.subcategories?.length ?? 0}
                                 </div>
                             </div>
                         }
                     >
                         <div className="flex flex-col gap-3">
-                            {getMetadata()?.subcategories.map(({ subcategoryId, name }) => (
+                            {getMetadata()?.subcategories?.map(({ subcategoryId, name }) => (
                                 <div key={subcategoryId}>
                                     <Checkbox size="sm">
                                         <div>{name}</div>
@@ -99,13 +99,13 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                             <div className="flex gap-3 items-center">
                                 <div>Topics</div>
                                 <div className="text-foreground-500">
-                                    {getMetadata()?.topics.length}
+                                    {getMetadata()?.topics?.length ?? 0}
                                 </div>
                             </div>
                         }
                     >
                         <div className="flex flex-col gap-3">
-                            {getMetadata()?.topics.map(({ topicId, name }) => (
+                            {getMetadata()?.topics?.map(({ topicId, name }) => (
                                 <div key={topicId}>
                                     <Checkbox size="sm">
                                         <div className="flex gap-2 items-center">

@@ -15,6 +15,8 @@ export const SearchInput = (props: SearchInputProps) => {
         formik.setFieldValue("searchValue", value)
     }
 
+    console.log(formik.values)
+    
     const onSubmit = () => {
         formik.submitForm()
     }

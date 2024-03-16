@@ -1,4 +1,4 @@
-import { Button, Link } from "@nextui-org/react"
+import { Button } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { isErrorResponse } from "@common"
 import { toggleLikePost } from "@services"
@@ -52,17 +52,14 @@ export const Actions = () => {
                     <CommentsModal />
                 </div>
             </div>
-            <Link as="button">
-                <Button
-                    isIconOnly
-                    color="primary"
-                    variant="light"
-                    onPress={onPress}
-                >
-                    <BookmarkIcon height={20} width={20} />
-                </Button>
-               
-            </Link>
+            <Button
+                isIconOnly
+                color="primary"
+                variant="light"
+                onPress={onPress}
+            >
+                <BookmarkIcon height={20} width={20} />
+            </Button>
         </div>
     )
 }

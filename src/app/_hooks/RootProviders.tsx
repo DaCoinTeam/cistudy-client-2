@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import {
     ReactNode,
     createContext,
+    forwardRef,
     useCallback,
     useEffect,
+    useImperativeHandle,
     useMemo,
+    useRef,
 } from "react"
 import React from "react"
 import { ErrorResponse, UserEntity, generateClientId } from "@common"
@@ -13,16 +17,15 @@ import useSWR, { SWRResponse } from "swr"
 import { RootAction, RootState, useRootReducer } from "./useRootReducer"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
 import { Formik, FormikProps } from "formik"
+import { useRouter } from "next/navigation"
 
 
 interface FormikValues {
   searchValue: string;
-  searchInputValue: string;
 }
 
 const initialValues: FormikValues = {
     searchValue: "",
-    searchInputValue: ""
 }
 
 interface RootContextValue {
@@ -38,9 +41,12 @@ export const RootContext = createContext<RootContextValue | null>(null)
 
 export const COLUMNS_PER_PAGE = 5
 
-const WrappedRootProviders = (props: { children: ReactNode, formik: FormikProps<FormikValues> }) => {
-    const reducer = useRootReducer()
+interface WrappedRootProvidersSelectors {
+    mutate: any
+}
 
+const WrappedRootProviders = forwardRef<WrappedRootProvidersSelectors, { children: ReactNode, formik: FormikProps<FormikValues> }>((props, ref) => {
+    const reducer = useRootReducer()
     const { formik } = props
 
     const fetchProfile = useCallback(async () => {
@@ -94,6 +100,10 @@ const WrappedRootProviders = (props: { children: ReactNode, formik: FormikProps<
     const coursesSwr = useSWRInfinite((key) => [key, "COURSES"], fetchCourses, {
         revalidateFirstPage: false,
     })
+    
+    useImperativeHandle(ref, () => ({
+        mutate: coursesSwr.mutate
+    }))
 
     useEffect(() => {
         generateClientId()
@@ -116,23 +126,31 @@ const WrappedRootProviders = (props: { children: ReactNode, formik: FormikProps<
             {props.children}
         </RootContext.Provider>
     )
-}
-
+})
 
 export const RootProviders = ({
     children
 }: {
   children: ReactNode;
 }) => {
+
+    const ref = useRef<WrappedRootProvidersSelectors | null>(null)
+
+    const router = useRouter()
+
     return (
         <Formik
             initialValues={initialValues}
-            onSubmit={async ({ searchInputValue }) => {
-                console.log(searchInputValue)
+            onSubmit={async ({ searchValue }) => {
+                const urlInstance = new URL(window.location.href)
+                urlInstance.pathname = "/courses"
+                urlInstance.searchParams.append("searchValue", searchValue)
+                router.push(urlInstance.toString())
+                await ref.current?.mutate()
             }}
         >
             {(formik) => (
-                <WrappedRootProviders formik={formik}>
+                <WrappedRootProviders ref={ref} formik={formik}>
                     {children}
                 </WrappedRootProviders>
             )}
