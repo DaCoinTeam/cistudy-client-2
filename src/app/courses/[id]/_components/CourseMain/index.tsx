@@ -1,30 +1,28 @@
 import React from "react"
-import Rating from "../Rating"
+import { Stars } from "../../../../_shared"
 import { Spacer } from "@nextui-org/react"
-import CourseContent from "./_component/CourseContent"
-import Instructor from "./_component/Instructor"
-import Reviews from "./_component/Reviews"
-import CourseTarget from "./_component/CourseTarget"
+import { CourseContent } from "./CourseContent"
+import { Instructor } from "./Instructor"
+import { Reviews } from "./Reviews"
+import { CourseTargets } from "./CourseTargets"
 export const CourseMain = () => {
-   
     return (
-        <div>
-
-            <div className='py-2'>
-                <CourseTarget  />
-            </div>
-            <div className='py-2'>
+        <div className="max-w-[1920px] mx-auto w-full px-12">
+            <div className="w-2/3">
+                <CourseTargets />
+                <Spacer y={12} />
                 <CourseContent />
-            </div>
-            <div className='py-2'>
+                <Spacer y={12} />
                 <Instructor />
-            </div>
-            <div className='py-2'>
-                <h2 className="text-2xl font-extrabold dark:text-white py-2">Reviews</h2>
-
-                <Rating stars={4.8} isHeading={true} />
-                <Spacer y={2} />
-                <Reviews />
+                <Spacer y={12} />
+                <div className="py-2">
+                    <div className="text-2xl">
+            Reviews
+                    </div>
+                    <Stars />
+                    <Spacer y={4} />
+                    <Reviews />
+                </div>
             </div>
         </div>
     )

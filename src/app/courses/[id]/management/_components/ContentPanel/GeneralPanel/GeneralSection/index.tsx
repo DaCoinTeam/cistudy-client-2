@@ -17,9 +17,9 @@ import {
     GeneralSectionContext,
 } from "./GeneralSectionProviders"
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
-import { getTopicSVGUrl, Key, TopicEntity } from "@common"
+import { Key, TopicEntity } from "@common"
 import useSWR from "swr"
-import { findManyCategories } from "@services"
+import { findManyCategories, getAssetUrl } from "@services"
 
 interface GeneralSectionProps {
   className?: string;
@@ -45,6 +45,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                     topic: {
                         topicId: true,
                         name: true,
+                        svgId: true
                     },
                 },
             },
@@ -193,14 +194,14 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                         }
                         onSelectionChange={onTopicChange}
                     >
-                        {({ topicId, name }) => (
+                        {({ topicId, name, svgId }) => (
                             <AutocompleteItem
                                 startContent={
                                     <Image
                                         alt="topic"
                                         height={20}
                                         width={20}
-                                        src={getTopicSVGUrl(name)}
+                                        src={getAssetUrl(svgId)}
                                     />
                                 }
                                 key={topicId}
@@ -212,8 +213,8 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
 
                     {formik.values.topics.length ? (
                         <>
-                            <div className="flex gap-4 p-3">
-                                {formik.values.topics.map(({ topicId, name }) => (
+                            <div className="flex gap-4 p-4">
+                                {formik.values.topics.map(({ topicId, name, svgId }) => (
                                     <Chip
                                         key={topicId}
                                         radius="md"
@@ -225,7 +226,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                                                 alt="topic"
                                                 height={20}
                                                 width={20}
-                                                src={getTopicSVGUrl(name)}
+                                                src={getAssetUrl(svgId)}
                                             />
                                         }
                                     >

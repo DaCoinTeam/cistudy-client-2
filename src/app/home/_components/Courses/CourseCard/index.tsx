@@ -1,6 +1,6 @@
 import React from "react"
-import { Button, Card, CardBody, CardFooter, CardHeader, Image } from "@nextui-org/react"
-import Rating from "../../../../courses/[id]/_components/Rating"
+import { Card, CardFooter, CardHeader, Image } from "@nextui-org/react"
+import { Stars } from "../../../../_shared"
 
 interface CourseInterface {
   id?: number;
@@ -52,8 +52,7 @@ export const CourseCard = (props: CourseInterface) => {
                     <div className="flex flex-col">
                         <p className="text-2xl text-gray-900 font-medium ">{props.authorName}</p>
                         <div className=" text-gray-900 font-bold">
-                            <Rating stars={props.rating 
-                            || 5} />
+                            <Stars />
                         </div>
                     </div>
                 </div>

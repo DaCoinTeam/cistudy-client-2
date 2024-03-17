@@ -2,7 +2,6 @@ import React from "react"
 import { LectureEntity } from "@common"
 import { InteractiveThumbnail } from "../../../../../../../../_shared"
 import { getAssetUrl } from "@services"
-import { ClockIcon } from "@heroicons/react/24/outline"
 
 interface LectureItemProps {
   lecture: LectureEntity;
@@ -10,7 +9,7 @@ interface LectureItemProps {
 
 export const LectureItem = (props: LectureItemProps) => {
     const { lecture } = props
-    const { lectureId, title, thumbnailId } = lecture
+    const { lectureId, title, thumbnailId, description } = lecture
 
     const onPress = () =>  window.open(`/lectures/${lectureId}`)
 
@@ -27,8 +26,8 @@ export const LectureItem = (props: LectureItemProps) => {
                 <div>
                     <div className="truncate text-sm"> {title} </div>
                     <div className="flex gap-1 items-center text-foreground-500">
-                        <ClockIcon height={12} width={12} />
-                        <div className="text-xs">15m</div>
+                        <div className="text-xs text-foreground-500">15m</div>
+                        <div className="text-xs text-foreground-500">{description}</div>
                     </div>
                 </div>
             </div>

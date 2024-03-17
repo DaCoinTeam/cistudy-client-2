@@ -4,8 +4,6 @@ import { getAssetUrl } from "@services"
 import { MoreButton } from "./MoreButton"
 import { InteractiveThumbnail } from "../../../../../../../../../_shared"
 import { useRouter } from "next/navigation"
-import { ClockIcon } from "@heroicons/react/24/outline"
-import { Spacer } from "@nextui-org/react"
 
 interface LectureItemProps {
   lecture: LectureEntity;
@@ -21,7 +19,7 @@ export const LectureItemContext = createContext<LectureItemContextValue | null>(
 
 export const LectureItem = (props: LectureItemProps) => {
     const { lecture } = props
-    const { lectureId, description, title, thumbnailId } = lecture
+    const { lectureId, title, thumbnailId, description } = lecture
 
     const lectureItemContextValue: LectureItemContextValue = useMemo(
         () => ({
@@ -41,14 +39,8 @@ export const LectureItem = (props: LectureItemProps) => {
                     <InteractiveThumbnail className="w-40 h-fit" src={getAssetUrl(thumbnailId)} onPress={onPress}/>
                     <div>
                         <div> {title} </div>
-                        <div className="flex items-center gap-1">
-                            <ClockIcon height={12} width={12} className="text-foreground-500" />
-                            <div className="text-xs text-foreground-500">15 min </div>
-                        </div>
-                        <Spacer y={0.5}/>
-                        <div className="text-foreground-500 text-sm line-clamp-2">
-                            {description}
-                        </div>
+                        <div className="text-xs text-foreground-500">15 min </div>
+                        <div className="text-xs text-foreground-500"> {description} </div>
                     </div>
                 </div>
                 <MoreButton />

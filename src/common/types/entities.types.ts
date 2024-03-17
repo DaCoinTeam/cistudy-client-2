@@ -271,6 +271,7 @@ export interface TopicEntity {
   name: string
   createdAt: Date
   updatedAt: Date
+  svgId: string
   courseTopics: Array<CourseTopicEntity>
   subcategoryTopics: Array<SubcategoryTopicEntity>
 }

@@ -1,96 +1,68 @@
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    Spacer,
+} from "@nextui-org/react"
 
-import { Button, Card, CardBody, CardHeader, Spacer } from "@nextui-org/react"
-
-import { faChalkboard, faCircleQuestion, faFolderOpen } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { getAssetUrl } from "@services"
 import { useContext } from "react"
 import { VideoPlayer } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
+import { ShoppingCartIcon } from "@heroicons/react/24/outline"
+import { ClipboardPenLineIcon, FolderOpenIcon, PlaySquareIcon } from "lucide-react"
 export const CourseSideBar = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
-    //  const course = {
-    //     title:"React Native: Advanced Concepts",
-    //     description:"Master the advanced topics of React Native: Animations, Maps, Notifications, Navigation and More!",
-    //     rating:4.5,
-    //     creator:"Stephen Grider",
-    //     creatorImg:"https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
-    //     thumbnailId:"https://i.ytimg.com/vi/sE4jbpJz_14/sddefault.jpg",
-    //     level:"Intermediate",
-    //     students:423554,
-    //     courseTargets: [
-    //         {
-    //             courseTargetId: "tg1",
-    //             content: "Master the advanced topics of React Native: Animations, Maps, Notifications, Navigation and More!",
-    //             createdAt: new Date(),
-    //             updatedAt: new Date(),
-    //             position: 1,
-    //         },
-    //         {
-    //             courseTargetId: "tg2",
-    //             content: "Understand the latest Navigation options for new React Native apps",
-    //             createdAt: new Date(),
-    //             updatedAt: new Date(),
-    //             position: 1,
-    //         },
-    //     ]
-
-    // }
+    const { previewVideoId } = { ...course }
     return (
-        <Card shadow="sm"  radius="lg"  className="w-80"  >
-            <CardHeader className=" h-[180px] px-0 mb-2  object-cover">
-                <VideoPlayer 
+        <Card shadow="none" radius="md" className="w-80 border border-divider">
+            <CardHeader className="p-0 pb-2 object-cover">
+                <VideoPlayer
                     className="w-full rounded-b-none h-[180px]"
-                    src={getAssetUrl(course?.previewVideoId)}                              
+                    src={getAssetUrl(previewVideoId)}
                 />
             </CardHeader>
-            <CardBody className=" p-0 " >
-
-                <div className="px-5 pt-3">
-                    <div>
-                        <div className=" text-2xl font-bold tracking-tight text-gray-900 dark:text-white">599 VND</div>
+            <CardBody className="p-4">
+                <div>
+                    <div className=" text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              599 STARCI
                     </div>
-                    {/* <div >
-                        <div className=" text-sm tracking-tight text-yellow-400 dark:text-white "> Best price </div>
-                    </div> */}
-                    
-                    <Spacer y={3} />
-                    <div >
-                        <div className="text-sm font-bold text-gray-400 dark:text-white">Resource</div>
-                        <Spacer y={2} />
-                        <div className="mb-1">
-                            <FontAwesomeIcon  icon={faChalkboard} className="inline-block mr-4 text-default-500" />
-                           4 Lessons
-                        </div>
-                       
-                        <div className="mb-1" >
-                            <FontAwesomeIcon  icon={faCircleQuestion} className="inline-block mr-4 text-default-500" />
-                         3 Quizzes
-                        </div>
-                      
-                        <div  className="mb-1"> 
-                            <FontAwesomeIcon  icon={faFolderOpen} className="inline-block mr-4 text-default-500" />
-                            7 downloadable resources
-                        </div>
-                    </div>
-                    <Spacer y={4} />
-                    <div className="mx-2">
-                        <Button color="primary" className="text-white font-bold" radius="full"  fullWidth>
-                         Buy Now
-                        </Button>
-                        <Spacer y={2} />
-                        <Button color="primary" radius="full"  variant="bordered" fullWidth>
-                         Add to cart
-                        </Button>
-                    </div>
-                    
-                    <Spacer y={4} />
                 </div>
-                
-                
+                <Spacer y={4} />
+                <div>
+                    <div className="text">
+              This course included
+                    </div>
+                    <Spacer y={2}/>
+                    <div className="flex text-foreground-500 flex-col gap-2">
+                        <div className="flex gap-2">
+                            <PlaySquareIcon size={20} strokeWidth={3/2}/>
+                            <div className="text-sm"> 4 lectures</div> 
+                        </div>
+                        <div className="flex text-foreground-500 gap-2">
+                            <FolderOpenIcon size={20} strokeWidth={3/2}/>
+                            <div className="text-sm"> 7 downloadable resources </div> 
+                        </div>
+                    </div>    
+                </div>
             </CardBody>
+            <CardFooter className="p-4 pt-2 flex-col gap-4">
+                <Button startContent={<ClipboardPenLineIcon height={20} width={20} strokeWidth={3/2} />} color="primary" fullWidth>
+          Enroll now
+                </Button>
+                <Button
+                    color="primary"
+                    variant="light"
+                    startContent={<ShoppingCartIcon height={20} width={20} />}
+                    fullWidth
+                >
+          Add to cart
+                </Button>
+            </CardFooter>
         </Card>
     )
 }

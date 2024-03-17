@@ -79,7 +79,8 @@ const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
                             subcategoryTopicId: true,
                             topic: {
                                 topicId: true,
-                                name: true
+                                name: true,
+                                svgId: true,
                             }
                         }
                     }
@@ -88,7 +89,8 @@ const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
                     courseTopicId: true,
                     topic: {
                         topicId: true, 
-                        name: true
+                        name: true,
+                        svgId: true,
                     }
                 },
                 courseTargets: {

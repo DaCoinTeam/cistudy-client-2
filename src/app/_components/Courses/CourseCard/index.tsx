@@ -1,9 +1,7 @@
-import { Card, CardFooter, CardHeader, Image, Spacer } from "@nextui-org/react"
-import Rating from "../../../courses/[id]/_components/Rating"
+import { Card, CardFooter, Image } from "@nextui-org/react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBriefcase, faStar } from "@fortawesome/free-solid-svg-icons"
-// import Rating from "../../../../courses/[id]/_components/Rating"
 import { BriefcaseIcon, UserIcon  } from "@heroicons/react/24/outline"
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 interface CourseInterface {
   id?: number;
@@ -15,27 +13,8 @@ interface CourseInterface {
   rating?: number;
 }
 export const CourseCard = (props: CourseInterface) => {
-    console.log(props)
     return (
-    // <Card className='col-span-12 sm:col-span-4 h-[310px]'>
-    //     <Image
-    //         removeWrapper
-    //         alt='Card background'
-    //         className='z-0 w-full h-full object-cover'
-    //         src={props.thumbnail}
-    //     />
-    //     <CardFooter className='absolute z-10 bottom-1 flex-col !items-start'>
-    //         <p className='text-tiny text-white/60 uppercase font-bold'>
-    //   Plant a tree
-    //         </p>
-    //         <h4 className='text-white font-medium text-large'>{props.title}</h4>
-    //     </CardFooter>
-    // </Card>
         <Card isFooterBlurred className="col-span-12 sm:col-span-7 h-[280px] border-divider">
-            {/* <CardHeader className="absolute z-10 top-1 flex-col items-start">
-                <p className="text-tiny text-white/60 uppercase font-bold">Your day your way</p>
-                <h4 className="text-white/90 font-medium text-xl">Intermediate</h4>
-            </CardHeader> */}
             <Image
                 removeWrapper
                 alt="Relaxing app background"

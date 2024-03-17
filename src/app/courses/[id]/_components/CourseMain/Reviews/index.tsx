@@ -1,6 +1,6 @@
 import React from "react"
 import Review from "./_components/Review"
-const Reviews = () => {
+export const Reviews = () => {
     const ReviewData = [
         {
             reviewId: "rID1",
@@ -41,4 +41,3 @@ const Reviews = () => {
         </>
     )
 }
-export default Reviews
