@@ -32,11 +32,11 @@ const config: Config = {
                     },
                     content3: "rgb(228 228 231)"
                 },
-
             },
             dark: {
                 colors: {
                     primary: "rgb(20 184 166)",
+                    secondary: "rgb(52 211 153)",   
                     success: "rgb(153 246 228)",
                 },
             }
