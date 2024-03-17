@@ -1,8 +1,6 @@
 "use client"
 import { EmblaOptionsType } from "embla-carousel"
 import "./_css/embla.css"
-import "./_css/sandbox.css"
-import "./_css/base.css"
 import EmblaCarousel from "./_component"
 import { CourseInterface } from ".."
 
