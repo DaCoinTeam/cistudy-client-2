@@ -1,7 +1,7 @@
 import React from "react"
 import { Stars } from "../../../../_shared"
 import { Spacer } from "@nextui-org/react"
-import { CourseContent } from "./CourseContent"
+import { Sections } from "./Sections"
 import { Instructor } from "./Instructor"
 import { Reviews } from "./Reviews"
 import { CourseTargets } from "./CourseTargets"
@@ -11,7 +11,7 @@ export const CourseMain = () => {
             <div className="w-2/3">
                 <CourseTargets />
                 <Spacer y={12} />
-                <CourseContent />
+                <Sections />
                 <Spacer y={12} />
                 <Instructor />
                 <Spacer y={12} />

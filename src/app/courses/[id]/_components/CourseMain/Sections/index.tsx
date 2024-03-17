@@ -5,7 +5,7 @@ import { CourseDetailsContext } from "../../../_hooks"
 import { InteractiveThumbnail } from "../../../../../_shared"
 import { getAssetUrl } from "@services"
 
-export const CourseContent = () => {
+export const Sections = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
@@ -13,7 +13,7 @@ export const CourseContent = () => {
 
     return (
         <div>
-            <div className="text-2xl">Course content</div>
+            <div className="text-2xl">Sections</div>
             <Spacer y={4}/>
             <div className="border border-divivder rounded-medium">
                 <Accordion

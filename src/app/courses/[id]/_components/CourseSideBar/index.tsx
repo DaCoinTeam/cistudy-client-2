@@ -19,7 +19,7 @@ export const CourseSideBar = () => {
     const { data: course } = courseSwr
     const { previewVideoId } = { ...course }
     return (
-        <Card shadow="none" radius="md" className="w-80 border border-divider">
+        <Card shadow="none" radius="md" className="w-80 border border-divider rounded-medium">
             <CardHeader className="p-0 pb-2 object-cover">
                 <VideoPlayer
                     className="w-full rounded-b-none h-[180px]"
