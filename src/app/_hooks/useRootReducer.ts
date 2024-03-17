@@ -1,6 +1,7 @@
 import { useReducer } from "react"
 import { Address } from "web3"
 
+
 export interface RootState {
     wallets: {
         metamask: {
@@ -29,7 +30,7 @@ export interface SetMetamaskStarci2BalanceAction {
 export type RootAction =
     | SetMetamaskAddressAction
     | SetMetamaskStarciBalanceAction
-    | SetMetamaskStarci2BalanceAction;
+    | SetMetamaskStarci2BalanceAction
 
 const initialState: RootState = {
     wallets: {

@@ -1,12 +1,12 @@
 import { Button } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { FacebookIcon } from "./FacebookIcon"
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import { FacebookAuthProvider, signInWithPopup } from "firebase/auth"
 import { firebaseAuth, verifyGoogleAccessToken } from "@services"
 import { RootContext } from "../../../../../_hooks"
 
 export const SignInByFacebookIcon = () => {
-    const provider = new GoogleAuthProvider()
+    const provider = new FacebookAuthProvider()
 
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
@@ -15,7 +15,18 @@ export const SignInByFacebookIcon = () => {
     const onPress = async () => {
         const credential = await signInWithPopup(firebaseAuth, provider)
         const token = await credential.user.getIdToken()
-        const response = await verifyGoogleAccessToken({ token })
+        const response = await verifyGoogleAccessToken(
+            {
+                params: {
+                    token,
+                },
+            },
+            {
+                userId: true,
+                avatarId: true,
+                username: true,
+            }
+        )
         await mutate(response)
     }
 

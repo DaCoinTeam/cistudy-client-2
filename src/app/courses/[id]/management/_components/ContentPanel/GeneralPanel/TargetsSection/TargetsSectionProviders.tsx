@@ -35,7 +35,9 @@ const WrappedTargetsSectionProviders = ({ children }: { children: ReactNode }) =
         if (!courseId) return
         return await findManyCourseTargets(
             {
-                courseId,
+                params: {
+                    courseId
+                }
             },
             {
                 courseTargetId: true,

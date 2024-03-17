@@ -81,7 +81,6 @@ const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                             onPress={onSubmit}
                             color="primary"
                             isDisabled={!hasChanged()}
-                            className="text-secondary-foreground"
                             startContent={<CheckIcon width={20} height={20}/>}
                         >
                 Save

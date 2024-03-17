@@ -42,7 +42,7 @@ export const SectionsSection = (props: SectionsSectionProps) => {
                         startContent={<MoreButton section={section} />}
                         subtitle={"3 lesson"}
                         classNames={{
-                            content: "flex flex-col gap-4 px-4 pb-4 pt-2",
+                            content: "flex flex-col gap-4 p-4",
                             heading: "!px-4"
                         }}
                     >

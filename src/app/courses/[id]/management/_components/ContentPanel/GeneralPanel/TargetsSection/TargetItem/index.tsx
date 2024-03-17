@@ -1,5 +1,5 @@
 import { Input, Link } from "@nextui-org/react"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { CourseTargetEntity } from "@common"
 import { deleteCourseTarget, updateCourseTarget } from "@services"
 import { DELAY_TIME } from "@config"
@@ -25,7 +25,12 @@ export const TargetItem = (props: TargetItemProps) => {
         setValue(content)
     }, [content])
 
+    const hasMountRef = useRef(false)
     useEffect(() => {
+        if (!hasMountRef.current && value)  {
+            hasMountRef.current = true
+            return
+        }
         const abortController = new AbortController()
         const handleEffect = async () => {
             await updateCourseTarget({

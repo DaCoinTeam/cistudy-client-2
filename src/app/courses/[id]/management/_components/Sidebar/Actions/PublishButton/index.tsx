@@ -6,7 +6,6 @@ export const PublishButton = () => {
     return (
         <Button
             color="primary"
-            className="text-secondary-foreground"
             size="lg"
             fullWidth
             startContent={<ArrowUpFromLineIcon size={24} strokeWidth={3/2} />}

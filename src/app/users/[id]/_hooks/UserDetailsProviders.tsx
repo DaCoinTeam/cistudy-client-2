@@ -14,7 +14,7 @@ import { RootContext } from "../../../_hooks"
 
 export interface UserDetailsContextValue {
   swrs: {
-    userSwr: SWRResponse<UserEntity | undefined, ErrorResponse>;
+    userSwr: SWRResponse<UserEntity, ErrorResponse>;
   };
 }
 
@@ -31,15 +31,13 @@ const WrappedUserDetailsProviders = ({ children }: { children: ReactNode }) => {
     const { data: profile } = profileSwr
 
     const fetchUser = useCallback(async () => {
-        if (!profile) return
-
         return await findOneUser(
             {
                 params: {
                     userId
                 },
                 options: {
-                    followerId: profile.userId,
+                    followerId: profile?.userId,
                 },
             },
             {
@@ -50,11 +48,13 @@ const WrappedUserDetailsProviders = ({ children }: { children: ReactNode }) => {
                 coverPhotoId: true,
                 followed: true,
                 numberOfFollowers: true,
+                avatarUrl: true,
+                kind: true
             }
         )
     }, [profile])
 
-    const userSwr = useSWR(profile?.userId ? ["USER"] : null, fetchUser)
+    const userSwr = useSWR([profile?.userId, "USER"], fetchUser)
 
     const userDetailsContextValue: UserDetailsContextValue = useMemo(
         () => ({

@@ -20,7 +20,7 @@ export const DeployedChains = () => {
                 {
                     chains.map(
                         ({key, icon, title}) => (
-                            <Button size="lg" startContent={icon} key={key}>      
+                            <Button size="lg" className="flex-1" startContent={icon} key={key}>      
                                 {title}
                             </Button>
                         )

@@ -42,8 +42,11 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
         }
         onSubmit={async ({ email, password }) => {
             const response = await signIn({
-                email,
-                password
+                params: {
+                    email,
+                    password
+                }
+
             }, {
                 avatarId: true,
                 coverPhotoId: true,

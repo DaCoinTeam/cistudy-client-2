@@ -1,7 +1,6 @@
 "use client"
 import React, {
     ReactNode,
-    Suspense,
     createContext,
     useEffect,
     useMemo,
@@ -55,7 +54,5 @@ const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
 }
 
 export const ManagementProviders = ({ children }: { children: ReactNode }) => (
-    <Suspense>
-        <WrappedManagementProviders>{children}</WrappedManagementProviders>
-    </Suspense>
+    <WrappedManagementProviders>{children}</WrappedManagementProviders>
 )

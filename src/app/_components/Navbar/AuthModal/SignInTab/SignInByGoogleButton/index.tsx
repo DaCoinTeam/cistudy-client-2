@@ -12,14 +12,20 @@ export const SignInByGoogleIcon = () => {
     const { profileSwr } = swrs
     const { mutate } = profileSwr
 
-
     const onPress = async () => {
         const credential = await signInWithPopup(firebaseAuth, provider)
         const token = await credential.user.getIdToken()
-        const response = await verifyGoogleAccessToken({ token })
+        const response = await verifyGoogleAccessToken(
+            { params: { token } },
+            {
+                username: true,
+                email: true,
+                avatarUrl: true
+            }
+        )
         await mutate(response)
     }
-  
+
     return (
         <Button onPress={onPress} isIconOnly variant="flat" className="w-12 h-12">
             <GoogleIcon size={40} />

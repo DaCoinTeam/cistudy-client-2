@@ -95,7 +95,6 @@ export const WrappedEditCommentModalRef = () => {
                 <Button
                     onPress={onPress}
                     color="primary"
-                    className="text-secondary-foreground"
                     startContent={<CheckIcon width={20} height={20} />}
                 >
             Save

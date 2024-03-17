@@ -1,277 +1,233 @@
 import {
-    ExtensionsWithOriginalError,
     CourseEntity,
-    ErrorResponse,
     Schema,
     buildPayloadString,
     LectureEntity,
     ResourceEntity,
-    AuthTokenType,
     buildAuthPayloadString,
-    BaseResponse,
-    saveTokens,
-    AuthTokens,
-    ErrorStatusCode,
     CourseTargetEntity,
+    CategoryEntity,
+    SubcategoryEntity,
+    TopicEntity,
 } from "@common"
-import { client } from "./client"
-import { ApolloError, gql } from "@apollo/client"
+import { authClient, client, getGraphqlResponseData } from "./client"
+import { gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 
-export const findOneCourse = async (
-    input: {
+export interface FindOneCourseInputData {
+  params: {
     courseId: string;
-  },
+  };
+}
+
+export const findOneCourse = async (
+    data: FindOneCourseInputData,
     schema: Schema<DeepPartial<CourseEntity>>
 ): Promise<CourseEntity> => {
-    try {
-        const { courseId } = input
-        const payload = buildPayloadString(schema)
-        const { data } = await client().query({
-            query: gql`
+    const payload = buildPayloadString(schema)
+    const response = await client.query({
+        query: gql`
             query FindOneCourse($data: FindOneCourseInputData!) {
     findOneCourse(data: $data) {
       ${payload}
     }
   }
           `,
-            variables: {
-                data: {
-                    courseId,
-                },
-            },
-        })
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        response,
+        isAuth: false,
+    })
+}
 
-        return data.findOneCourse as CourseEntity
-    } catch (ex) {
-        console.log(ex)
-        const _ex = ex as ApolloError
-        const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
-        ).originalError
+export interface FindManyCoursesInputData {
+  options?: {
+    take?: number;
+    skip?: number;
+    searchValue?: string;
+  };
+}
 
-        throw error
-    }
+export interface FindManyCoursesOutputData {
+  results: Array<CourseEntity>;
+  metadata: {
+    count: number;
+    categories: Array<CategoryEntity>,
+    subcategories: Array<SubcategoryEntity>,
+    topics: Array<TopicEntity>
+  };
 }
 
 export const findManyCourses = async (
-    schema: Schema<DeepPartial<CourseEntity>>
-): Promise<Array<CourseEntity> | ErrorResponse> => {
-    try {
-        const payload = buildPayloadString(schema)
-        const { data } = await client().query({
-            query: gql`
-          query FindManyCourses {
-  findManyCourses {
+    data: FindManyCoursesInputData,
+    schema: Schema<DeepPartial<FindManyCoursesOutputData>>
+): Promise<FindManyCoursesOutputData> => {
+    const payload = buildPayloadString(schema)
+    const response = await authClient.query({
+        query: gql`
+            query FindManyCourses($data: FindManyCoursesInputData!) {
+                findManyCourses(data: $data) {
       ${payload}
     }
   }
           `,
-        })
-        return data.findManyCourses as Array<CourseEntity>
-    } catch (ex) {
-        console.log(ex)
-        const _ex = ex as ApolloError
-        const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
-        ).originalError
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        response,
+        isAuth: false,
+    })
+}
 
-        return error
-    }
+export interface FindManyLecturesInputData {
+  params: {
+    sectionId: string;
+  };
+  options?: {
+    take?: number;
+    skip?: number;
+  };
 }
 
 export const findManyLectures = async (
-    input: {
-        params: {
-            sectionId: string;
-        },
-        options?: Partial<{
-            take: number,
-            skip: number
-        }>
-  },
+    data: FindManyLecturesInputData,
     schema: Schema<DeepPartial<LectureEntity>>
 ): Promise<Array<LectureEntity>> => {
-    try {
-        const { params } = input
-        const { sectionId } = params
-
-        const payload = buildPayloadString(schema)
-        const { data } = await client().query({
-            query: gql`
+    const payload = buildAuthPayloadString(schema)
+    const response = await authClient.query({
+        query: gql`
             query FindManyLectures($data: FindManyLecturesInputData!) {
                 findManyLectures(data: $data) {
     ${payload}
   }
 }
         `,
-            variables: {
-                data: {
-                    sectionId,
-                },
-            },
-        })
+        variables: {
+            data,
+        },
+    })
 
-        return data.findManyLectures as Array<LectureEntity>
-    } catch (ex) {
-        console.log(ex)
-        const _ex = ex as ApolloError
-        const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
-        ).originalError
+    return getGraphqlResponseData({
+        response,
+        isAuth: true,
+    })
+}
 
-        throw error
-    }
+export interface FindOneLectureInputData {
+  params: {
+    lectureId: string;
+  };
+  options?: {
+    followerId?: string;
+  };
 }
 
 export const findOneLecture = async (
-    input: {
-        params: {
-            lectureId: string;
-        },
-        options?: Partial<{
-            followerId: string
-        }>
-  },
-    schema: Schema<DeepPartial<LectureEntity>>,
-    authTokenType: AuthTokenType = AuthTokenType.Access
+    data: FindOneLectureInputData,
+    schema: Schema<DeepPartial<LectureEntity>>
 ): Promise<LectureEntity> => {
-    try {
-        const { params, options } = input
-        const { lectureId } = params
-        const payload = buildAuthPayloadString(schema, authTokenType)
-        const { data: graphqlData } = await client(authTokenType).query({
-            query: gql`
+    const payload = buildAuthPayloadString(schema)
+    const response = await authClient.query({
+        query: gql`
             query FindOneLecture($data: FindOneLectureInputData!) {
                 findOneLecture(data: $data) {              
       ${payload}
     }
   }
           `,
-            variables: {
-                data: {
-                    params: {
-                        lectureId,
-                    },
-                    options
-                },
-            },
-        })
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        response,
+        isAuth: true,
+    })
+}
 
-        const { data, tokens } =
-      graphqlData.findOneLecture as BaseResponse<LectureEntity>
-        if (authTokenType === AuthTokenType.Refresh)
-            saveTokens(tokens as AuthTokens)
-
-        return data
-    } catch (ex) {
-        const _ex = ex as ApolloError
-        const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
-        ).originalError
-
-        if (
-            error.statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
-        )
-            return await findOneLecture(input, schema, AuthTokenType.Refresh)
-
-        throw error
-    }
+export interface FindManyResourcesInputData {
+  params: {
+    lectureId: string;
+  };
 }
 
 export const findManyResources = async (
-    input: {
-    lectureId: string;
-  },
-    schema: Schema<DeepPartial<ResourceEntity>>,
-    authTokenType: AuthTokenType = AuthTokenType.Access
+    data: FindManyResourcesInputData,
+    schema: Schema<DeepPartial<ResourceEntity>>
 ): Promise<Array<ResourceEntity>> => {
-    try {
-        const { lectureId } = input
-        const payload = buildAuthPayloadString(schema, authTokenType)
-        const { data: graphqlData } = await client(authTokenType).query({
-            query: gql`
+    const payload = buildAuthPayloadString(schema)
+    const response = await authClient.query({
+        query: gql`
             query FindManyResources($data: FindManyResourcesInputData!) {
                 findManyResources(data: $data) {              
       ${payload}
     }
   }
           `,
-            variables: {
-                data: {
-                    lectureId,
-                },
-            },
-        })
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        response,
+        isAuth: true,
+    })
+}
 
-        const { data, tokens } = graphqlData.findManyResources as BaseResponse<
-      Array<ResourceEntity>
-    >
-        if (authTokenType === AuthTokenType.Refresh)
-            saveTokens(tokens as AuthTokens)
-
-        return data
-    } catch (ex) {
-        const _ex = ex as ApolloError
-        const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
-        ).originalError
-
-        if (
-            error.statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
-        )
-            return await findManyResources(input, schema, AuthTokenType.Refresh)
-
-        throw error
-    }
+export interface FindManyCourseTargetsInputData {
+  params: {
+    courseId: string;
+  };
 }
 
 export const findManyCourseTargets = async (
-    input: {
-    courseId: string;
-  },
-    schema: Schema<DeepPartial<CourseTargetEntity>>,
-    authTokenType: AuthTokenType = AuthTokenType.Access
+    data: FindManyCourseTargetsInputData,
+    schema: Schema<DeepPartial<CourseTargetEntity>>
 ): Promise<Array<CourseTargetEntity>> => {
-    try {
-        const { courseId } = input
-        const payload = buildAuthPayloadString(schema, authTokenType)
-        const { data: graphqlData } = await client(authTokenType).query({
-            query: gql`
+    const payload = buildAuthPayloadString(schema)
+    const response = await authClient.query({
+        query: gql`
             query FindManyCourseTargets($data: FindManyCourseTargetsInputData!) {
                 findManyCourseTargets(data: $data) {       
       ${payload}
     }
   }
           `,
-            variables: {
-                data: {
-                    courseId,
-                },
-            },
-        })
+        variables: {
+            data,
+        },
+    })
+    console.log(getGraphqlResponseData({
+        response,
+        isAuth: true,
+    }))
+    return getGraphqlResponseData({
+        response,
+        isAuth: true,
+    })
+}
 
-        const { data, tokens } = graphqlData.findManyCourseTargets as BaseResponse<
-      Array<CourseTargetEntity>
-    >
-        if (authTokenType === AuthTokenType.Refresh)
-            saveTokens(tokens as AuthTokens)
-
-        return data
-    } catch (ex) {
-        const _ex = ex as ApolloError
-        const error = (
-      _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
-        ).originalError
-
-        if (
-            error.statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
-        )
-            return await findManyCourseTargets(input, schema, AuthTokenType.Refresh)
-
-        throw error
+export const findManyCategories = async (
+    schema: Schema<DeepPartial<CategoryEntity>>
+): Promise<Array<CategoryEntity>> => {
+    const payload = buildPayloadString(schema)
+    const response = await client.query({
+        query: gql`
+            query FindManyCategories {
+                findManyCategories {
+      ${payload}
     }
+  }
+          `,
+    })
+
+    return getGraphqlResponseData({
+        response,
+        isAuth: false
+    })
 }

@@ -16,7 +16,6 @@ export const ManageButton = (props: ManageButtonProps) => {
         const urlInstance = new URL(window.location.href)
         urlInstance.pathname = "/management"
         urlInstance.searchParams.append("tab", "courses")
-        urlInstance.searchParams.append("tab", "courses")
         router.push(urlInstance.toString())
     }
 

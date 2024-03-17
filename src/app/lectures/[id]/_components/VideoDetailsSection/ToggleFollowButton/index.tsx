@@ -36,7 +36,6 @@ export const ToggleFollowButton = () => {
     return (
         <Button
             onPress={onPress}
-            className="text-secondary-foreground"
             color="primary"
             startContent={
                 creator?.followed ? (
