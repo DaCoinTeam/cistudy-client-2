@@ -1,6 +1,7 @@
 "use client"
 import { EmblaOptionsType } from "embla-carousel"
 import "./_css/embla.css"
+
 import EmblaCarousel from "./_component"
 import { CourseInterface } from ".."
 
@@ -13,7 +14,7 @@ export const Carousel = (props: CarouselProps) => {
     console.log("courses",courses)
     return (
         <div>
-            <EmblaCarousel slides={courses} options={OPTIONS} />
+            <EmblaCarousel  slides={courses} options={OPTIONS} />
         </div>
     )
 }
