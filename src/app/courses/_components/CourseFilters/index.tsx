@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { RootContext } from "../../../_hooks"
-import { getTopicSVGUrl } from "@common"
+import { getAssetUrl } from "@services"
 
 interface CourseFiltersProps {
   className?: string;
@@ -105,11 +105,11 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                         }
                     >
                         <div className="flex flex-col gap-3">
-                            {getMetadata()?.topics?.map(({ topicId, name }) => (
+                            {getMetadata()?.topics?.map(({ topicId, name, svgId }) => (
                                 <div key={topicId}>
                                     <Checkbox size="sm">
                                         <div className="flex gap-2 items-center">
-                                            <Image src={getTopicSVGUrl(name)} alt="topic" height={14} width={14}/>
+                                            <Image src={getAssetUrl(svgId)} alt="topic" height={14} width={14}/>
                                             <div>{name}</div>
                                         </div>
                                     </Checkbox>               

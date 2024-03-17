@@ -15,7 +15,7 @@ export const Sections = () => {
         <div>
             <div className="text-2xl">Sections</div>
             <Spacer y={4}/>
-            <div className="border border-divivder rounded-medium">
+            <div className="border border-divider rounded-medium">
                 <Accordion
                     itemClasses={{
                         heading: "!px-4 !py-0",
