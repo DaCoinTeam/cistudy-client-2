@@ -12,7 +12,7 @@ export const CourseTargets = () => {
         <div>
             <div className="text-2xl">What you will learn</div>
             <Spacer y={4} />
-            <div className="p-4 border rounded-medium bg-content1">
+            <div className="p-4 border border-divider rounded-medium">
                 <div className="grid grid-cols-2 gap-2">
                     {course?.courseTargets.map((target) => (
                         <div
