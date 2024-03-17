@@ -12,7 +12,6 @@
   .embla__viewport {
     overflow: hidden;
     border-radius: 15px;
-    background-color: white;
   }
   .embla__container {
     backface-visibility: hidden;
