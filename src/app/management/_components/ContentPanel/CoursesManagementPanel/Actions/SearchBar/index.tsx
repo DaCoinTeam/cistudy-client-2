@@ -12,7 +12,7 @@ export const SearchBar = (props: SearchBarProps) => {
         <Input
             variant="bordered"
             classNames={{
-                inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
             }}
             className={`${className ?? ""} w-60`}
             placeholder="Search"

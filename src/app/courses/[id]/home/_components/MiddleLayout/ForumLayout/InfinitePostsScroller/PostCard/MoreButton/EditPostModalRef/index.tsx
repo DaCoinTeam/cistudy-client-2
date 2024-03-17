@@ -86,7 +86,7 @@ export const WrappedEditPostModalRef = () => {
                 <Input  
                     variant="bordered"
                     classNames={{
-                        inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                        inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                     }} 
                     id="title"
                     size="lg"

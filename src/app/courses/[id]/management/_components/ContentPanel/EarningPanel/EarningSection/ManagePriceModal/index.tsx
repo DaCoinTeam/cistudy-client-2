@@ -71,7 +71,7 @@ const WrappedManagePriceModal = () => {
                         <Input
                             variant="bordered"
                             classNames={{
-                                inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                                inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                             }} 
                             id="price"
                             value={formik.values.price}
@@ -90,7 +90,7 @@ const WrappedManagePriceModal = () => {
                         <Input
                             variant="bordered"
                             classNames={{
-                                inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                                inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                             }} 
                             id="discount"
                             value={formik.values.discount}

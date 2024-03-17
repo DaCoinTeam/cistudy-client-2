@@ -33,7 +33,7 @@ const WrappedSignInTab = () => {
                         id="email"
                         isRequired
                         classNames={{
-                            inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                            inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                         }} 
                         labelPlacement="outside"
                         placeholder="Input email here"
@@ -47,7 +47,7 @@ const WrappedSignInTab = () => {
                     <Input
                         variant="bordered"
                         classNames={{
-                            inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                            inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                         }} 
                         label="Password"
                         id="password"

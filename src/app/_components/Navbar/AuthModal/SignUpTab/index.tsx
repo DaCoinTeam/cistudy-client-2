@@ -28,7 +28,7 @@ const WrappedSignUpTab = () => {
                     <Input
                         variant="bordered"
                         classNames={{
-                            inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                            inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                         }} 
                         label="Email"
                         id="email"
@@ -45,7 +45,7 @@ const WrappedSignUpTab = () => {
                     <Input
                         variant="bordered"
                         classNames={{
-                            inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                            inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                         }} 
                         label="Password"
                         id="password"
@@ -63,7 +63,7 @@ const WrappedSignUpTab = () => {
                     <Input
                         variant="bordered"
                         classNames={{
-                            inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                            inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                         }} 
                         label="Confirm"
                         id="confirm"
@@ -81,7 +81,7 @@ const WrappedSignUpTab = () => {
                     <div className="grid grid-cols-2 gap-4">
                         <Input
                             classNames={{
-                                inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                                inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                             }} 
                             label="First name"
                             id="firstName"
@@ -99,7 +99,7 @@ const WrappedSignUpTab = () => {
                         <Input
                             variant="bordered"  
                             classNames={{
-                                inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                                inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                             }} 
                             label="Last name"
                             id="lastName"
@@ -117,7 +117,7 @@ const WrappedSignUpTab = () => {
                     <Input
                         variant="bordered"
                         classNames={{
-                            inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                            inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                         }} 
                         label="Birthdate"
                         id="birthdate"

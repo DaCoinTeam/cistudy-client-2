@@ -53,7 +53,7 @@ export const WrappedCreatePostModal = () => {
                     id="title"
                     size="lg"
                     classNames={{
-                        inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                        inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                     }} 
                     labelPlacement="outside"
                     placeholder="Input title here"
