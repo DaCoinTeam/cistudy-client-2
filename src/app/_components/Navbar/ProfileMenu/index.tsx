@@ -27,15 +27,12 @@ export const ProfileMenu = () => {
 
     const router = useRouter()
     const onProfilePress = () => router.push(`/users/${userId}`)
+    const onManagementPress = () => router.push("/management")
+    const onEnrolledCouresPress = () => router.push("/enrolled-courses")
 
     const walletModalRef = useRef<WalletModalRefSelectors | null>(null)
     const onWalletPress = () => walletModalRef.current?.onOpen()
 
-    console.log(getAvatarUrl({
-        avatarId,
-        avatarUrl,
-        kind,
-    }))
     return (
         <>
             <Dropdown placement="bottom-end">
@@ -59,11 +56,15 @@ export const ProfileMenu = () => {
                     <DropdownItem key="profile" onPress={onProfilePress}>
             Profile
                     </DropdownItem>
+                    <DropdownItem key="enrolledCourses" onPress={onEnrolledCouresPress}>
+            Enrolled Courses
+                    </DropdownItem>
                     <DropdownItem key="wallet" onPress={onWalletPress}>
             Wallet
                     </DropdownItem>
-                    <DropdownItem key="analytics">Analytics</DropdownItem>
-                    <DropdownItem key="system">System</DropdownItem>
+                    <DropdownItem key="management" onPress={onManagementPress}>
+            Management
+                    </DropdownItem>
                     <DropdownItem key="configurations">Configurations</DropdownItem>
                     <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
                     <DropdownItem onPress={onSignOutPress} key="logout" color="danger">

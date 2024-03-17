@@ -32,7 +32,7 @@ authAxios.interceptors.request.use(
 authAxios.interceptors.response.use(
     async (response) => {
         const { data, tokens } = response.data
-        if (response.config.params?.authTokenType === AuthTokenType.Refresh)
+        if (tokens)
             saveTokens(tokens as AuthTokens)
         return data
     },

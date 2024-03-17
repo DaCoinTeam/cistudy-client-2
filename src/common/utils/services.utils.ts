@@ -4,7 +4,10 @@ import { ABORTED_MESSAGE } from "@config"
 
 export const buildBearerTokenHeader = (
     type: AuthTokenType = AuthTokenType.Access
-) => `Bearer ${getAuthToken(type)}`
+) => {
+    const token = getAuthToken(type)
+    return token ? `Bearer ${token}` : ""
+}
 
 export const buildPayloadString = <T extends object>(
     schema?: Schema<T>,

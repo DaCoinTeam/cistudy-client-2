@@ -14,7 +14,7 @@ import {
     BaseResponse,
     ErrorResponse,
     ErrorStatusCode,
-    getAuthToken,
+    buildBearerTokenHeader,
     getClientId,
     saveTokens,
 } from "@common"
@@ -34,10 +34,9 @@ const beforeLink = new ApolloLink((operation, forward) => {
 })
 
 const beforeAuthLink = new ApolloLink((operation, forward) => {
-    const token = getAuthToken()
     operation.setContext({
         headers: {
-            Authorization: token ? `Bearer ${token}` : "",
+            Authorization: buildBearerTokenHeader(AuthTokenType.Access),
             "Client-Id": getClientId(),
             "Auth-Token-Type": AuthTokenType.Access,
         },
@@ -60,10 +59,9 @@ const onErrorAuthLink = onError(
                 if (headers === AuthTokenType.Refresh)
                     throw graphQLErrors
 
-                const token = getAuthToken(AuthTokenType.Refresh)
                 operation.setContext({
                     headers: {
-                        Authorization: token ? `Bearer ${token}` : "",
+                        Authorization: buildBearerTokenHeader(AuthTokenType.Refresh),
                         "Client-Id": getClientId(),
                         "Auth-Token-Type": AuthTokenType.Refresh,
                     },
@@ -99,7 +97,7 @@ export const authClient = new ApolloClient({
     defaultOptions
 })
 
-export type NonAuthResponse<T> = {
+export type NotAuthResponse<T> = {
     isAuth: false;
     response: ApolloQueryResult<T>;
 }
@@ -110,7 +108,7 @@ export type AuthResponse<T> = {
 }
 
 export const getGraphqlResponseData = <T>(
-    params: NonAuthResponse<T> | AuthResponse<T>
+    params: NotAuthResponse<T> | AuthResponse<T>
 ) => {
     const { isAuth, response } = params
     const data = response.data!

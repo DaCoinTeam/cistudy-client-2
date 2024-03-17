@@ -43,3 +43,40 @@ export const findManySelfCreatedCourses = async (
         isAuth: true,
     })
 }
+
+export interface FindManyEnrolledCoursesInputData {
+  options?: {
+    skip?: number;
+    take?: number;
+  };
+}
+
+export interface FindManyEnrolledCoursesOutputData {
+  results: Array<CourseEntity>;
+  metadata: {
+    count: number;
+  };
+}
+
+export const findManyEnrolledCourses = async (
+    data: FindManyEnrolledCoursesInputData,
+    schema: Schema<DeepPartial<FindManyEnrolledCoursesOutputData>>
+): Promise<FindManyEnrolledCoursesOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const response = await authClient.query({
+        query: gql`
+            query FindManyEnrolledCourses($data: FindManyEnrolledCoursesInputData!) {
+                findManyEnrolledCourses(data: $data) {
+        ${payload}
+    }
+  }
+            `,
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        response,
+        isAuth: true,
+    })
+}
