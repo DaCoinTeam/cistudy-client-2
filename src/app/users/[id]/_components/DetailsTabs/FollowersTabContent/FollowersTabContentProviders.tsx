@@ -29,11 +29,10 @@ export const WrappedFollowersTabContentProviders = ({
     const { swrs } = useContext(UserDetailsContext)!
     const { userSwr } = swrs
     const { data: user } = userSwr
+    const { userId } = { ...user }
 
     const fetchFollowers = useCallback(async () => {
-        if (!user) return
-        const { userId } = user
-
+        if (!userId) return
         return await findManyFollowers(
             {
                 userId,
@@ -45,9 +44,9 @@ export const WrappedFollowersTabContentProviders = ({
                 coverPhotoId: true,
             }
         )
-    }, [user?.userId])
+    }, [userId])
 
-    const followersSwr = useSWR(["FOLLOWERS"], fetchFollowers)
+    const followersSwr = useSWR(userId ? ["FOLLOWERS"] : null, fetchFollowers)
 
     const followersTabContentContextValue: FollowersTabContentContextValue =
     useMemo(

@@ -1,10 +1,14 @@
 "use client"
 import React, { useContext } from "react"
-import { ManagementContext } from "../../../_hooks/ManagementProviders"
+import { ManagementContext } from "../../../_hooks"
 import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
 import { PanelSelected } from "../../../_hooks"
-import { BookAIcon, ListCollapseIcon } from "lucide-react"
+import {
+    Cog6ToothIcon,
+    ListBulletIcon,
+} from "@heroicons/react/24/outline"
+import { DollarSign } from "lucide-react"
 
 interface MenuProps {
   className?: string;
@@ -14,12 +18,15 @@ export const Menu = (props: MenuProps) => {
     const { className } = props
 
     const { reducer } = useContext(ManagementContext)!
-    const [ state, dispatch ] = reducer
+    const [state, dispatch] = reducer
     const { panelSelected } = state
 
     const selectedKeys = new Set([panelSelected])
 
-    const isSelected = (panelSelected: PanelSelected) => Array.from(selectedKeys).includes(panelSelected) ? "!text-primary rounded-large" : ""
+    const isSelected = (panelSelected: PanelSelected) =>
+        Array.from(selectedKeys).includes(panelSelected)
+            ? "!bg-content2 !text-foreground rounded-medium"
+            : ""
 
     const onSelectionChange = (selection: Selection) => {
         if (typeof selection === "string") return
@@ -33,6 +40,27 @@ export const Menu = (props: MenuProps) => {
         })
     }
 
+    const items = [
+        {
+            startContent: <Cog6ToothIcon width={24} height={24} />,
+            key: "general",
+            content: "General",
+            panelSelected: PanelSelected.General,
+        },
+        {
+            startContent: <ListBulletIcon width={24} height={24} />,
+            key: "sections",
+            content: "Sections",
+            panelSelected: PanelSelected.Sections,
+        },
+        {
+            startContent: <DollarSign size={24} strokeWidth={3 / 2} />,
+            key: "earning",
+            content: "Earning",
+            panelSelected: PanelSelected.Earning,
+        },
+    ]
+
     return (
         <div className={`${className}`}>
             <Listbox
@@ -45,28 +73,25 @@ export const Menu = (props: MenuProps) => {
                 onSelectionChange={onSelectionChange}
                 autoFocus={true}
                 className="p-0"
+                classNames={{
+                    list: "gap-1",
+                }}
             >
-                <ListboxItem
-                    classNames={{
-                        title: "text-base",
-                        base: `items-center px-0 rounded-none text-foreground-500 !bg-transparent ${isSelected(PanelSelected.Details)}`
-                    }}
-                    startContent={<ListCollapseIcon size={24} strokeWidth={4/3}/>}
-                    key="details"
-                >
-          Details
-                </ListboxItem>
-                <ListboxItem
-                    classNames={{
-                        title: "text-base",
-                        base: `rounded-none px-0 !bg-transparent text-foreground-500 ${isSelected(PanelSelected.Curriculum)}`,
-                    }}
-                    startContent={<BookAIcon size={24} strokeWidth={4/3} />}
-                    key="curriculum"
-                >
-          Curriculum
-                </ListboxItem>
-            </Listbox>    
-        </div>        
+                {items.map(({ key, startContent, panelSelected, content }) => (
+                    <ListboxItem
+                        classNames={{
+                            title: "text-base",
+                            base: `items-center rounded-none text-foreground-500 !p-3 !bg-transparent ${isSelected(
+                                panelSelected
+                            )}`,
+                        }}
+                        startContent={startContent}
+                        key={key}
+                    >
+                        {content}
+                    </ListboxItem>
+                ))}
+            </Listbox>
+        </div>
     )
 }

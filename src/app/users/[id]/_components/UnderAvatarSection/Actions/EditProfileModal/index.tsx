@@ -11,7 +11,7 @@ export const EditProfileModal = () => {
                 className="text-secondary-foreground"
                 onPress={onOpen}
                 color="primary"
-                startContent={<PenIcon size={20} strokeWidth={4/3} />}
+                startContent={<PenIcon size={20} strokeWidth={3/2} />}
             >
           Edit
             </Button>
@@ -19,7 +19,7 @@ export const EditProfileModal = () => {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="p-6 pb-0 text-xl font-bold leading-none">Edit</ModalHeader>
+                            <ModalHeader className="p-6 pb-0 text-2xl ">Edit</ModalHeader>
                             <ModalBody className="p-6">
                             </ModalBody>
                             <ModalFooter className="p-6 gap-4 pt-0">
@@ -37,22 +37,3 @@ export const EditProfileModal = () => {
         </>
     )
 }
-
-{/* <Input
-            label="Username"
-            value={username}
-            onValueChange={onValueChange}
-            isInvalid={!isValid}
-            errorMessage={errors.username}
-            readOnly={!isEdited}
-            endContent={
-                <Link
-                    color="primary"
-                    onPress={onPress}
-                    as="button"
-                    className="text-sm"
-                >
-                    {isEdited ? <SaveIcon size={20} strokeWidth={4/3}/> : <PencilIcon size={20} strokeWidth={4/3}/>}
-                </Link>
-            }
-        /> */}

@@ -28,9 +28,9 @@ export const ToggleFollowButton = () => {
             className="bg-content2"
             startContent={
                 user?.followed ? (
-                    <UserMinus2Icon className="21" strokeWidth={4 / 3} />
+                    <UserMinus2Icon className="21" strokeWidth={3/2} />
                 ) : (
-                    <UserPlus2Icon className="21" strokeWidth={4 / 3} />
+                    <UserPlus2Icon className="21" strokeWidth={3/2} />
                 )
             }
         >

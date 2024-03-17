@@ -1,161 +1,258 @@
-import {
-    AuthTokenType,
-    AuthTokens,
-    BaseResponse,
-    ErrorResponse,
-    ErrorStatusCode,
-    MediaType,
-    buildBearerTokenHeader,
-    getClientId,
-    saveTokens,
-} from "@common"
-import axios, { AxiosError } from "axios"
-import { endpointConfig } from "@config"
+import { MediaType } from "@common"
+import { API_ENDPOINT } from "@config"
+import { authAxios } from "./axios-instances"
 
-const BASE_URL = `${endpointConfig().api}/posts`
+const BASE_URL = `${API_ENDPOINT}/posts`
 
-export const createPost = async (
-    input: {
-        data: {
-            title: string;
-            courseId: string;
-            html: string;
-            postMedias: Array<{
-                mediaType: MediaType;
-                mediaIndex: number;
-            }>;
-        };
-        files?: Array<File>;
-    },
-    authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string> => {
-    try {
-        const { data, files } = input
-        const url = `${BASE_URL}/create-post`
-        const formData = new FormData()
-
-        formData.append("data", JSON.stringify(data))
-        if (files) {
-            for (const file of files) {
-                formData.append("files", file)
-            }
-        }
-
-        const response = await axios.post(url, formData, {
-            headers: {
-                Authorization: buildBearerTokenHeader(authTokenType),
-                "Content-Type": "multipart/form-data",
-                "Client-Id": getClientId(),
-            },
-        })
-
-        const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
-
-        if (authTokenType === AuthTokenType.Refresh)
-            saveTokens(tokens as AuthTokens)
-        return responseData
-    } catch (ex) {
-        const _ex = (ex as AxiosError).response?.data as ErrorResponse
-        const { statusCode } = _ex
-        console.log(statusCode)
-        if (
-            statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
-        )
-            return await createPost(input, AuthTokenType.Refresh)
-        throw _ex
-    }
+export interface CreatePostInput {
+    data: {
+        title: string;
+        courseId: string;
+        html: string;
+        postMedias: Array<{
+            mediaType: MediaType;
+            mediaIndex: number;
+        }>;
+    };
+    files?: Array<File>;
 }
 
-export const createComment = async (
-    input: {
-        data: {
-            postId: string;
-            html: string;
-            postCommentMedias: Array<{
-                mediaType: MediaType;
-                mediaIndex: number;
-            }>;
-        };
-        files?: Array<File>;
-    },
-    authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string> => {
-    console.log(input)
-    try {
-        const { data, files } = input
-        const url = `${BASE_URL}/create-comment`
-        const formData = new FormData()
+export interface CreatePostOutput { }
 
-        formData.append("data", JSON.stringify(data))
-        if (files) {
-            for (const file of files) {
-                formData.append("files", file)
-            }
+export const createPost = async (input: CreatePostInput): Promise<CreatePostOutput> => {
+    const { data, files } = input
+    const url = `${BASE_URL}/create-post`
+
+    const formData = new FormData()
+    formData.append("data", JSON.stringify(data))
+
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
         }
-
-        const response = await axios.post(url, formData, {
-            headers: {
-                Authorization: buildBearerTokenHeader(authTokenType),
-                "Content-Type": "multipart/form-data",
-                "Client-Id": getClientId(),
-            },
-        })
-
-        const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
-
-        if (authTokenType === AuthTokenType.Refresh)
-            saveTokens(tokens as AuthTokens)
-        return responseData
-    } catch (ex) {
-        const _ex = (ex as AxiosError).response?.data as ErrorResponse
-        const { statusCode } = _ex
-        console.log(statusCode)
-        if (
-            statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
-        )
-            return await createComment(input, AuthTokenType.Refresh)
-        throw _ex
     }
+
+    return await authAxios.post(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
 }
 
+export interface UpdatePostInput {
+    data: {
+        postId: string;
+        title?: string;
+        html?: string;
+        postMedias?: Array<{
+            mediaType: MediaType;
+            mediaIndex: number;
+        }>;
+    };
+    files?: Array<File>;
+}
+
+export interface UpdatePostOutput { }
+
+export const updatePost = async (input: UpdatePostInput): Promise<CreatePostOutput> => {
+    const { data, files } = input
+    const url = `${BASE_URL}/update-post`
+
+    const formData = new FormData()
+    formData.append("data", JSON.stringify(data))
+
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
+        }
+    }
+
+    return await authAxios.put(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
+}
+
+export interface DeletePostInput {
+    data: {
+        postId: string;
+    };
+}
+export interface DeletePostOutput { }
+
+export const deletePost = async (
+    input: DeletePostInput
+): Promise<DeletePostOutput> => {
+    const { data } = input
+    const { postId } = data
+    const url = `${BASE_URL}/delete-post/${postId}`
+    return await authAxios.delete(url)
+}
+
+
+export interface CreatePostCommentInput {
+    data: {
+        postId: string;
+        html: string;
+        postCommentMedias: Array<{
+            mediaType: MediaType;
+            mediaIndex: number;
+        }>;
+    };
+    files?: Array<File>;
+}
+
+export interface CreatePostCommentOutput { }
+
+export const createPostComment = async (
+    input: CreatePostCommentInput
+): Promise<CreatePostCommentOutput> => {
+    const { data, files } = input
+    const url = `${BASE_URL}/create-post-comment`
+
+    const formData = new FormData()
+    formData.append("data", JSON.stringify(data))
+
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
+        }
+    }
+
+    return await authAxios.post(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
+}
+
+export interface UpdatePostCommentInput {
+    data: {
+        postCommentId: string;
+        html: string;
+        postCommentMedias: Array<{
+            mediaType: MediaType;
+            mediaIndex: number;
+        }>;
+    };
+    files?: Array<File>;
+}
+
+export interface UpdatePostCommentOutput { }
+
+export const updatePostComment = async (
+    input: UpdatePostCommentInput
+): Promise<UpdatePostCommentOutput> => {
+    const { data, files } = input
+    const url = `${BASE_URL}/update-post-comment`
+
+    const formData = new FormData()
+    formData.append("data", JSON.stringify(data))
+
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
+        }
+    }
+
+    return await authAxios.put(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
+}
+
+export interface DeletePostCommentInput {
+    data: {
+        postCommentId: string;
+    };
+}
+export interface DeletePostCommentOutput { }
+
+export const deletePostComment = async (
+    input: DeletePostCommentInput
+): Promise<DeletePostCommentOutput> => {
+    const { data } = input
+    const { postCommentId } = data
+    const url = `${BASE_URL}/delete-post-comment/${postCommentId}`
+    return await authAxios.delete(url)
+}
+
+export interface ToggleLikePostInput {
+    data: {
+        postId: string;
+    };
+}
+export interface ToggleLikePostOutput { }
 export const toggleLikePost = async (
-    input: {
-        data: {
-            postId: string;
-        };
-    },
-    authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string> => {
-    try {
-        const { data } = input
-        const url = `${BASE_URL}/toggle-like-post`
-
-        const response = await axios.patch(url, data, {
-            headers: {
-                Authorization: buildBearerTokenHeader(authTokenType),
-                "Client-Id": getClientId(),
-            },
-        })
-
-        const { data: responseData, tokens } =
-            response.data as BaseResponse<string>
-
-        if (authTokenType === AuthTokenType.Refresh)
-            saveTokens(tokens as AuthTokens)
-        return responseData
-    } catch (ex) {
-        const _ex = (ex as AxiosError).response?.data as ErrorResponse
-        const { statusCode } = _ex
-        console.log(statusCode)
-        if (
-            statusCode === ErrorStatusCode.Unauthorized &&
-            authTokenType === AuthTokenType.Access
-        )
-            return await toggleLikePost(input, AuthTokenType.Refresh)
-        throw _ex
-    }
+    input: ToggleLikePostInput
+): Promise<ToggleLikePostOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/toggle-like-post`
+    return await authAxios.patch(url, data)
 }
+
+export interface ToggleLikePostCommentInput {
+    data: {
+        postCommentId: string;
+    };
+}
+export interface ToggleLikePostCommentOutput { }
+export const toggleLikePostComment = async (
+    input: ToggleLikePostCommentInput
+): Promise<ToggleLikePostCommentOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/toggle-like-post-comment`
+    return await authAxios.patch(url, data)
+}
+
+export interface CreatePostCommentReplyInput {
+    data: {
+        postCommentId: string;
+        content: string;
+    };
+}
+export interface CreatePostCommentReplyOutput {
+    postCommentReplyId: string;
+}
+export const createPostCommentReply = async (
+    input: CreatePostCommentReplyInput
+): Promise<CreatePostCommentReplyOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/create-post-comment-reply`
+    return await authAxios.post(url, data)
+}
+
+export interface UpdatePostCommentReplyInput {
+    data: {
+        postCommentReplyId: string;
+        content: string;
+    };
+}
+export interface UpdatePostCommentReplyOutput { }
+export const updatePostCommentReply = async (
+    input: UpdatePostCommentReplyInput
+): Promise<UpdatePostCommentReplyOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/update-post-comment-reply`
+    return await authAxios.put(url, data)
+}
+
+export interface DeletePostCommentReplyInput {
+    data: {
+        postCommentReplyId: string;
+    };
+}
+export interface DeletePostCommentReplyOutput { }
+export const deletePostCommentReply = async (
+    input: DeletePostCommentReplyInput
+): Promise<DeletePostCommentReplyOutput> => {
+    const { data } = input
+    const { postCommentReplyId } = data
+    const url = `${BASE_URL}/delete-post-comment-reply/${postCommentReplyId}`
+    return await authAxios.delete(url)
+}
+
+
+

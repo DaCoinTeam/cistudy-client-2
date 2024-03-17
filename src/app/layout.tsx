@@ -1,26 +1,46 @@
 "use client"
 import { Open_Sans } from "next/font/google"
 import "./_css/globals.css"
-import { ReduxProviders } from "@redux"
+import { ReduxProviders, RootState } from "@redux"
 import { NextUIProvider } from "@nextui-org/react"
 import { RootProviders } from "./_hooks"
 import { Navbar } from "./_components"
 import { ReactNode } from "react"
+import { MetaMaskProvider } from "@metamask/sdk-react"
+import { useSelector } from "react-redux"
 const font = Open_Sans({ subsets: ["latin"] })
 
-const Layout = ({children} : {children: ReactNode}) => {
+const WrappedLayout = ({ children }: { children: ReactNode }) => {
+    const darkMode = useSelector((state: RootState) => state.configuration.darkMode)
     return (
-        <ReduxProviders>
-            <html lang="en" >
-                <body className={`${font.className} min-h-screen`}>
+        <html lang="en" className={darkMode ? "dark" : "light"}>
+            <body className={`${font.className} min-h-screen`}>
+                <MetaMaskProvider
+                    debug={false}
+                    sdkOptions={{
+                        dappMetadata: {
+                            name: "Example React Dapp",
+                        },
+                    }}
+                >
                     <NextUIProvider className="min-h-screen flex flex-col">
                         <RootProviders>
-                            <Navbar/>
+                            <Navbar />
                             {children}
                         </RootProviders>
                     </NextUIProvider>
-                </body>
-            </html>
+                </MetaMaskProvider>
+            </body>
+        </html>
+    )
+}
+
+const Layout = ({ children }: { children: ReactNode }) => {
+    return (
+        <ReduxProviders>
+            <WrappedLayout>
+                {children}
+            </WrappedLayout>
         </ReduxProviders>
     )
 }

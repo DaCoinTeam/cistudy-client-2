@@ -7,7 +7,7 @@ import {
     UserEntity,
     buildPayloadString,
 } from "@common"
-import { client } from "./client.graphql"
+import { client } from "./client"
 
 export const findOneUser = async (
     input: {

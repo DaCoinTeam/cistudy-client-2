@@ -18,7 +18,7 @@ export const ManageButton = (props: ManageButtonProps) => {
         <Button
             className={`${className} bg-content2`}
             onPress={onPress}
-            startContent={<Settings2Icon size={20} strokeWidth={4 / 3} />}
+            startContent={<Settings2Icon size={20} strokeWidth={3/2} />}
         >
       Manage
         </Button>

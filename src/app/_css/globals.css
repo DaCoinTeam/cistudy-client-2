@@ -7,7 +7,7 @@
     @apply text-2xl;
   }
   h3 {
-    @apply text-xl;
+    @apply text-lg;
   }
   h4 {
     @apply text-lg;
@@ -27,5 +27,5 @@
 }
 
 .ProseMirror {
-  @apply bg-content1 p-3 rounded-large min-h-[100px];
+  @apply bg-content1 rounded-large min-h-[100px];
 }

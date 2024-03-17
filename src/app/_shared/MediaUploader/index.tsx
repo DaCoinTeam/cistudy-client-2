@@ -3,8 +3,8 @@ import { AppendKey, Media } from "@common"
 import React, { createContext, memo, useContext, useMemo } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { XMarkIcon } from "@heroicons/react/24/solid"
-import { UploadCard } from "./UploadCard"
 import { Badge, Image } from "@nextui-org/react"
+import { UploadDropzone } from "./UploadDropzone"
 
 interface MediaUploaderProps {
   className?: string;
@@ -15,7 +15,7 @@ interface MediaUploaderProps {
 interface MediaUploaderContextValue {
   props: MediaUploaderProps;
   functions: {
-    addMedias: (medias: Array<Media>) => void;
+    addMedias: (...medias: Array<Media>) => void;
     deleteMedia: (key: string) => void;
   };
 }
@@ -28,7 +28,7 @@ const WrappedMediaUploader = () => {
     const { medias } = props
     const { deleteMedia } = functions
 
-    const renderLessEqual3 = () => (
+    const renderImages = () => (
         <>
             {medias.map(({ key, file }) => (
                 <Badge
@@ -49,52 +49,33 @@ const WrappedMediaUploader = () => {
                         }}
                         alt="preview"
                         src={URL.createObjectURL(file)}
-                        className="w-full"
+                        className="w-full rounded-medium"
                     />
                 </Badge>
             ))}
-            <UploadCard />
-        </>
-    )
-
-    const renderGreater3 = () => (
-        <>
-            {medias.map(({ key, file }) => (
-                <Badge
-                    key={key}
-                    content={<XMarkIcon />}
-                    className="cursor-pointer"
-                    isOneChar
-                    onClick={() => deleteMedia(key)}
-                    color="danger"
-                >
-                    <Image
-                        className="w-full aspect-video"
-                        alt="media"
-                        src={URL.createObjectURL(file)}
-                    />
-                </Badge>
-            ))}
-            <UploadCard />
         </>
     )
 
     return (
-        <div className="grid grid-cols-4 gap-3">
-            {" "}
-            {medias.length > 3 ? renderGreater3() : renderLessEqual3()}{" "}
+        <div className="grid grid-cols-4 gap-2">
+            {renderImages()}
+            {medias.length !== 4 ? <UploadDropzone/> : null}
         </div>
     )
 }
 
-export const MediaUploader = memo((props: MediaUploaderProps) => {
-    const { medias: propsMedias, setMedias } = props
+export const MediaUploader = memo((props : MediaUploaderProps) => {
+    const { medias: propsMedias, setMedias, className } = props
 
-    const addMedias = (medias: Array<Media>) => {
-        const mediaWithKeys: Array<AppendKey<Media>> = medias.map((media) => ({
+    const addMedias = (...medias: Array<Media>) => {
+        let mediaWithKeys: Array<AppendKey<Media>> = medias.map((media) => ({
             key: uuidv4(),
             ...media,
         }))
+        if (mediaWithKeys.length + medias.length > 4) {
+            mediaWithKeys = mediaWithKeys.filter((_, index) => (index + propsMedias.length) < 4)
+        }
+
         setMedias([...propsMedias, ...mediaWithKeys])
     }
 
@@ -117,10 +98,12 @@ export const MediaUploader = memo((props: MediaUploaderProps) => {
     )
 
     return (
-        <MediaUploaderContext.Provider value={mediaUploaderContextValue}>
-            <div className={props.className}>
-                <WrappedMediaUploader />
-            </div>
-        </MediaUploaderContext.Provider>
+        <>
+            <MediaUploaderContext.Provider value={mediaUploaderContextValue}>
+                <div className={`${className}`}>
+                    <WrappedMediaUploader />
+                </div>
+            </MediaUploaderContext.Provider>
+        </>
     )
 })

@@ -13,7 +13,8 @@ export const configurationSlice = createSlice({
     initialState,
     reducers: {
         setDarkMode(state, action : { payload: boolean }) {
-            state.darkMode = action.payload
+            const value = action.payload
+            state.darkMode = value
         },
     },
 })

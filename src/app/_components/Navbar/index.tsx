@@ -13,6 +13,7 @@ import { AuthModal } from "./AuthModal"
 import { NavbarContext, NavbarProviders } from "./NavbarProviders"
 import { ProfileMenu } from "./ProfileMenu"
 import { RootContext } from "../../_hooks"
+import { DarkModeSwitch } from "./DarkModeSwitch"
 
 interface NavbarProps {
   className?: string;
@@ -50,12 +51,12 @@ const WrappedNavbar = (props: NavbarProps) => {
 
     return (
         <>
-            <NextUINavbar className={className} classNames={{
-                wrapper: "!max-w-full px-6 !bg-content1"
+            <NextUINavbar isBordered className={className} classNames={{
+                wrapper: "!max-w-full px-6"
             }}>
                 <NavbarBrand>
                     <PencilIcon className="w-6 h-6" />
-                    <p className="font-bold text-inherit">ACME</p>
+                    <p className="font-semibold text-inherit">ACME</p>
                 </NavbarBrand>
                 <NavbarContent className="hidden sm:flex gap-4" justify="center">
                     <NavbarItem>
@@ -75,8 +76,14 @@ const WrappedNavbar = (props: NavbarProps) => {
                     </NavbarItem>
                 </NavbarContent>
                 <NavbarContent justify="end">
+                    <NavbarItem>
+                        <DarkModeSwitch/>
+                    </NavbarItem>
                     {profile ? (
-                        <ProfileMenu />
+                        <NavbarItem>
+                            <ProfileMenu />
+                        </NavbarItem>
+                      
                     ) : (
                         <>
                             <NavbarItem className="hidden lg:flex">

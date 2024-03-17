@@ -44,7 +44,7 @@ export interface UserEntity {
   firstName?: string;
   lastName?: string;
   birthdate?: Date;
-  username: string
+  username: string;
   verified: boolean;
   kind: UserKind;
   externalId?: string;
@@ -56,8 +56,8 @@ export interface UserEntity {
   posts: Array<PostEntity>;
   courses: Array<CourseEntity>;
   //graphql
-  followed?: boolean
-  numberOfFollowers?: number
+  followed?: boolean;
+  numberOfFollowers?: number;
 }
 
 export interface PostEntity {
@@ -85,6 +85,8 @@ export interface CourseEntity {
   thumbnailId: string;
   description: string;
   price: number;
+  discount: number;
+  enableDiscount: boolean;
   verifyStatus: VerifyStatus;
   isDraft: boolean;
   creator: UserEntity;
@@ -95,6 +97,8 @@ export interface CourseEntity {
   enrolledInfos: Array<EnrolledInfoEntity>;
   sections: Array<SectionEntity>;
   courseTargets: Array<CourseTargetEntity>;
+   //graphql
+   numberOfEnrollments?: number
 }
 
 export interface CourseTargetEntity {
@@ -117,19 +121,20 @@ export interface EnrolledInfoEntity {
 }
 
 export interface LectureEntity {
-  lectureId: string
-  title: string
-  thumbnailId?: string
-  lectureVideoId?: string
-  sectionId: string
-  processStatus: ProcessStatus
-  videoType: VideoType
-  createdAt: Date
-  updatedAt: Date
-  section: SectionEntity
-  resources: Array<ResourceEntity>
+  lectureId: string;
+  title: string;
+  thumbnailId?: string;
+  lectureVideoId?: string;
+  sectionId: string;
+  processStatus: ProcessStatus;
+  videoType: VideoType;
+  createdAt: Date;
+  updatedAt: Date;
+  section: SectionEntity;
+  resources: Array<ResourceEntity>;
+  numberOfViews: number;
+  description: string;
 }
-
 
 export interface PostCommentLikeEntity {
   postCommentLikeId: string;
@@ -141,24 +146,34 @@ export interface PostCommentLikeEntity {
 }
 
 export interface PostCommentEntity {
-  postCommentId: string
-  creatorId: string
-  postId: string
-  createdAt: Date
-  updatedAt: Date
-  fatherCommentId: string
-  post: PostEntity
-  creator: UserEntity
-  html: string
-  postCommentMedias: Array<PostCommentMediaEntity>
-  postCommentLikes: Array<PostCommentLikeEntity>
-  childComments: Array<PostCommentEntity>
+  postCommentId: string;
+  creatorId: string;
+  postId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  post: PostEntity;
+  creator: UserEntity;
+  html: string;
+  postCommentMedias: Array<PostCommentMediaEntity>;
+  postCommentLikes: Array<PostCommentLikeEntity>;
+  childComments: Array<PostCommentEntity>;
 
   //graphql
   numberOfLikes?: number;
+  numberOfReplies?: number;
   liked?: number;
 }
 
+export interface PostCommentReplyEntity {
+  postCommentReplyId: string
+  creatorId: string
+  postCommentId: string
+  createdAt: Date
+  updatedAt: Date
+  content: string
+  postComment: PostCommentEntity
+  creator: UserEntity
+}
 
 export interface SectionEntity {
   sectionId: string;
@@ -200,19 +215,19 @@ export interface PostReactEntity {
 }
 
 export interface PostMediaEntity {
-  postMediaId: string
-  position: number
-  mediaId: string
-  postId: string
-  mediaType: MediaType
-  post: PostEntity
+  postMediaId: string;
+  position: number;
+  mediaId: string;
+  postId: string;
+  mediaType: MediaType;
+  post: PostEntity;
 }
 
 export interface PostCommentMediaEntity {
-  postCommentMediaId: string
-  position: number
-  mediaId: string
-  postCommentId: string
-  mediaType: MediaType
-  postComment: PostCommentEntity
+  postCommentMediaId: string;
+  position: number;
+  mediaId: string;
+  postCommentId: string;
+  mediaType: MediaType;
+  postComment: PostCommentEntity;
 }

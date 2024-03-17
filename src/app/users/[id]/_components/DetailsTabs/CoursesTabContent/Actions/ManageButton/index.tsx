@@ -1,7 +1,7 @@
 "use client"
 import { Button } from "@nextui-org/react"
 import { Settings2Icon } from "lucide-react"
-import { usePathname, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import React from "react"
 
 interface ManageButtonProps {
@@ -11,14 +11,20 @@ export const ManageButton = (props: ManageButtonProps) => {
     const { className } = props 
 
     const router = useRouter()
-    const path = usePathname()
 
-    const onPress = () => router.push(`${path}/manage`)
+    const onPress = () =>  {
+        const urlInstance = new URL(window.location.href)
+        urlInstance.pathname = "/management"
+        urlInstance.searchParams.append("tab", "courses")
+        urlInstance.searchParams.append("tab", "courses")
+        router.push(urlInstance.toString())
+    }
+
     return (
         <Button
             className={`${className} bg-content2`}
             onPress={onPress}
-            startContent={<Settings2Icon size={20} strokeWidth={4 / 3} />}
+            startContent={<Settings2Icon size={20} strokeWidth={3/2} />}
         >
       Manage
         </Button>

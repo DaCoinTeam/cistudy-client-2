@@ -1,8 +1,9 @@
 import { useReducer } from "react"
 
 export enum PanelSelected {
-    Details = "details",
-    Curriculum = "curriculum"
+    General = "general",
+    Sections = "sections",
+    Earning = "earning"
 }
 
 export interface ManagementState {
@@ -17,7 +18,7 @@ export interface SetPanelSelectedAction {
 export type ManagementAction = SetPanelSelectedAction;
 
 export const state: ManagementState = {
-    panelSelected: PanelSelected.Details,
+    panelSelected: PanelSelected.General,
 }
 
 export const reducer = (

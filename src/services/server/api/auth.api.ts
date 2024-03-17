@@ -1,57 +1,32 @@
-import { endpointConfig } from "@config"
+import { API_ENDPOINT } from "@config"
+import { baseAxios } from "./axios-instances/base-axios"
+import { UserEntity } from "@common"
 
-import {
-    UserEntity,
-    ErrorResponse,
-    saveTokens,
-    BaseResponse,
-    getClientId,
-    AuthTokens,
-} from "@common"
+const BASE_URL = `${API_ENDPOINT}/auth`
 
-import axios, { AxiosError } from "axios"
-
-const BASE_URL = `${endpointConfig().api}/auth`
-
-export const signUp = async (input: {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  birthdate: string;
-}): Promise<string> => {
-    try {
-        const url = `${BASE_URL}/sign-up`
-        const response = await axios.post(url, input, {
-            headers: {
-                "Client-Id": getClientId(),
-            },
-        })
-        return response.data as string
-    } catch (ex) {
-        throw (ex as AxiosError).response?.data as ErrorResponse
-    }
+export interface SignUpInput {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    birthdate: string;
 }
 
-export const verifyGoogleAccessToken = async (input: {
-  token: string;
-}): Promise<UserEntity> => {
-    try {
-        let url = `${BASE_URL}/verify-google-access-token`
-        const urlObject = new URL(url)
-        urlObject.searchParams.append("token", input.token)
-        url = urlObject.toString()
+export const signUp = async (input: SignUpInput): Promise<string> => {
+    const url = `${BASE_URL}/sign-up`
+    return await baseAxios.post(url, input)
+}
 
-        const response = await axios.get(url, {
-            headers: {
-                "Client-Id": getClientId(),
-            },
-        })
-        const { data, tokens } = response.data as BaseResponse<UserEntity>
-        saveTokens(tokens as AuthTokens)
+export interface VerifyGoogleAccessTokenInput {
+    token: string;
+}
 
-        return data
-    } catch (ex) {
-        throw (ex as AxiosError).response?.data as ErrorResponse
-    }
+export const verifyGoogleAccessToken = async (
+    input: VerifyGoogleAccessTokenInput
+): Promise<UserEntity> => {
+    let url = `${BASE_URL}/verify-google-access-token`
+    const urlObject = new URL(url)
+    urlObject.searchParams.append("token", input.token)
+    url = urlObject.toString()
+    return await baseAxios.get(url)
 }

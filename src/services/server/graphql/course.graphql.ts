@@ -14,7 +14,7 @@ import {
     ErrorStatusCode,
     CourseTargetEntity,
 } from "@common"
-import { client } from "./client.graphql"
+import { client } from "./client"
 import { ApolloError, gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 
@@ -126,13 +126,19 @@ export const findManyLectures = async (
 
 export const findOneLecture = async (
     input: {
-    lectureId: string;
+        params: {
+            lectureId: string;
+        },
+        options?: Partial<{
+            followerId: string
+        }>
   },
     schema: Schema<DeepPartial<LectureEntity>>,
     authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<LectureEntity | ErrorResponse> => {
+): Promise<LectureEntity> => {
     try {
-        const { lectureId } = input
+        const { params, options } = input
+        const { lectureId } = params
         const payload = buildAuthPayloadString(schema, authTokenType)
         const { data: graphqlData } = await client(authTokenType).query({
             query: gql`
@@ -144,7 +150,10 @@ export const findOneLecture = async (
           `,
             variables: {
                 data: {
-                    lectureId,
+                    params: {
+                        lectureId,
+                    },
+                    options
                 },
             },
         })
@@ -167,7 +176,7 @@ export const findOneLecture = async (
         )
             return await findOneLecture(input, schema, AuthTokenType.Refresh)
 
-        return error
+        throw error
     }
 }
 

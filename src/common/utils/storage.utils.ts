@@ -2,6 +2,8 @@ import { AuthTokenType, AuthTokens } from "../types"
 const CLIENT_ID = "clientId"
 const ACCESS_TOKEN = "accessToken"
 const REFRESH_TOKEN = "refreshToken"
+const DARK_MODE = "darkMode"
+
 
 import { v4 as uuidv4 } from "uuid"
 
@@ -31,3 +33,7 @@ export const removeTokens = () => {
     localStorage.removeItem(ACCESS_TOKEN)
     localStorage.removeItem(REFRESH_TOKEN)
 }
+
+export const getDarkMode = (): boolean => localStorage.getItem(DARK_MODE) === "true"
+
+export const setDarkMode = (value: boolean) => localStorage.setItem(DARK_MODE, value.toString())

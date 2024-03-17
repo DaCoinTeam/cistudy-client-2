@@ -1,5 +1,5 @@
 import { Skeleton } from "@nextui-org/react"
-import React from "react"
+import React, { useEffect } from "react"
 import { EditorContent, useEditor } from "@tiptap/react"
 import CodeBlock from "@tiptap/extension-code-block"
 import Color from "@tiptap/extension-color"
@@ -30,6 +30,12 @@ export const TextRenderer = (props: TextRendererProps) => {
         }
     })
 
+    useEffect(() => {
+        if (editor === null) return
+        if (!html) return
+        editor.commands.setContent(html)
+    }, [html])
+
     return (
         <div className={className}>
             {html ? (
@@ -55,13 +61,13 @@ const extensions = [
     Code.configure({
         HTMLAttributes: {
             class:
-      "px-2 py-1 h-fit font-mono font-normal inline-block whitespace-nowrap bg-default/40 text-default-foreground text-small rounded-small",
+      "px-2 py-1 h-fit font-mono font-normal inline-block whitespace-nowrap bg-content3 text-default-foreground text-small rounded-small",
         },
     }),
     CodeBlock.configure({
         HTMLAttributes: {
             class:
-      "px-2 py-1 h-fit font-mono font-normal inline-block whitespace-nowrap bg-default/40 text-default-foreground text-small rounded-small w-full",
+      "px-2 py-1 h-fit my-2 font-mono font-normal inline-block whitespace-nowrap bg-content3 text-default-foreground text-small rounded-small w-full",
         },
     }),
     Paragraph.configure({

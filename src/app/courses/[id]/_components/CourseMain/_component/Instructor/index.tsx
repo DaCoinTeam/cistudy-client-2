@@ -16,7 +16,7 @@ const Instructor = () => {
 
                 />
                 <div className='font-medium dark:text-white items-center ms-5'>
-                    <p className='text-xl font-extrabold dark:text-white '>Jese Leos </p>
+                    <p className='text-lg font-extrabold dark:text-white '>Jese Leos </p>
                     <p className=' text-md font-normal text-gray-500 dark:text-gray-400'>
             Software Engineer, Teacher
                     </p>

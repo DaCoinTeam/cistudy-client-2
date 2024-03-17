@@ -27,8 +27,8 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
                 }}
             >
                 <DropdownTrigger>
-                    <Button className={`${className} bg-content1 shadow-none`} isIconOnly>
-                        <MoreHorizontal size={20} strokeWidth={4/3} />
+                    <Button className={`${className} bg-content2 shadow-none`} isIconOnly>
+                        <MoreHorizontal size={20} strokeWidth={3/2} />
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">

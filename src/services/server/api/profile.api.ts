@@ -1,62 +1,34 @@
-import { endpointConfig } from "@config"
-import {
-    BaseResponse,
-    AuthTokenType,
-    ErrorResponse,
-    ErrorStatusCode,
-    buildBearerTokenHeader,
-    saveTokens,
-    getClientId,
-    AuthTokens,
-} from "@common"
+import { API_ENDPOINT } from "@config"
+import { authAxios } from "./axios-instances"
 
-import axios, { AxiosError } from "axios"
+const BASE_URL = `${API_ENDPOINT}/profile`
 
-const BASE_URL = `${endpointConfig().api}/profile`
+export interface UpdateProfileInput {
+    data: {
+        username?: string;
+        avatarIndex?: number;
+        coverPhotoIndex?: number;
+    };
+    files?: Array<File>;
+}
 
 export const updateProfile = async (
-    input: {
-        data: {
-            username?: string,
-            avatarIndex?: number,
-            coverPhotoIndex?: number
+    input: UpdateProfileInput
+): Promise<string> => {
+    const { data, files } = input
+    const url = `${BASE_URL}/update-profile`
+    const formData = new FormData()
+
+    formData.append("data", JSON.stringify(data))
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
         }
-        files?: Array<File>,
-    },
-    authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
-    try {
-        const { data, files } = input
-        const url = `${BASE_URL}/update-profile`
-        const formData = new FormData()
-
-        formData.append("data", JSON.stringify(data))
-        if (files){
-            for (const file of files){
-                formData.append("files", file)
-            }
-        }
-       
-        const response = await axios.put(url, formData, {
-            headers: {
-                Authorization: buildBearerTokenHeader(authTokenType),
-                "Content-Type": "multipart/form-data",
-                "Client-Id": getClientId()
-            },
-        })
-
-        const { data : responseData, tokens } = response.data as BaseResponse<string>
-
-        if (authTokenType === AuthTokenType.Refresh) saveTokens(tokens as AuthTokens)
-        return responseData
-    } catch (ex) {
-        const _ex = (ex as AxiosError).response?.data as ErrorResponse
-        const { statusCode } = _ex
-        console.log(statusCode)
-        if (
-            statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
-        ) return await updateProfile(input, AuthTokenType.Refresh)
-        return _ex
     }
+
+    return await authAxios.put(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
 }

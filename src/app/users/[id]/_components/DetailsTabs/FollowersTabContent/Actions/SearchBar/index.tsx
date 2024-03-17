@@ -14,7 +14,7 @@ export const SearchBar = (props: SearchBarProps) => {
             placeholder="Search"
             label=""
             labelPlacement="outside"
-            startContent={<SearchIcon size={20} strokeWidth={4 / 3} />}
+            startContent={<SearchIcon size={20} strokeWidth={3/2} />}
         />
     )
 }

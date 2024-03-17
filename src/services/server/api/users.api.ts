@@ -1,54 +1,19 @@
-import { endpointConfig } from "@config"
+import { API_ENDPOINT } from "@config"
+import { authAxios } from "./axios-instances"
 
-import {
-    ErrorResponse,
-    saveTokens,
-    BaseResponse,
-    getClientId,
-    AuthTokens,
-    AuthTokenType,
-    ErrorStatusCode,
-    buildBearerTokenHeader,
-} from "@common"
+const BASE_URL = `${API_ENDPOINT}/users`
 
-import axios, { AxiosError } from "axios"
-
-const BASE_URL = `${endpointConfig().api}/users`
+export interface ToggleFollowInput {
+    data: {
+        followedUserId: string;
+    };
+}
 
 export const toggleFollow = async (
-    input: {
-    data: {
-      followedUserId: string;
-    };
-  },
-    authTokenType: AuthTokenType = AuthTokenType.Access
-): Promise<string | ErrorResponse> => {
-    try {
-        const { data } = input
-        const url = `${BASE_URL}/toggle-follow`
+    input: ToggleFollowInput
+): Promise<string> => {
+    const { data } = input
+    const url = `${BASE_URL}/toggle-follow`
 
-        const response = await axios.patch(url, data, {
-            headers: {
-                Authorization: buildBearerTokenHeader(authTokenType),
-                "Client-Id": getClientId(),
-            },
-        })
-
-        const { data: responseData, tokens } =
-      response.data as BaseResponse<string>
-
-        if (authTokenType === AuthTokenType.Refresh)
-            saveTokens(tokens as AuthTokens)
-        return responseData
-    } catch (ex) {
-        const _ex = (ex as AxiosError).response?.data as ErrorResponse
-        const { statusCode } = _ex
-        console.log(statusCode)
-        if (
-            statusCode === ErrorStatusCode.Unauthorized &&
-      authTokenType === AuthTokenType.Access
-        )
-            return await toggleFollow(input, AuthTokenType.Refresh)
-        return _ex
-    }
+    return await authAxios.patch(url, data)
 }

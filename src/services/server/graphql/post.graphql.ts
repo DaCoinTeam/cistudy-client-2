@@ -9,8 +9,9 @@ import {
     AuthTokens,
     ErrorStatusCode,
     buildAuthPayloadString,
+    PostCommentReplyEntity,
 } from "@common"
-import { client } from "./client.graphql"
+import { client } from "./client"
 import { ApolloError, gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 
@@ -140,6 +141,74 @@ export const findManyPostComments = async (
             authTokenType === AuthTokenType.Access
         )
             return await findManyPostComments(input, schema, AuthTokenType.Refresh)
+
+        throw error
+    }
+}
+
+
+export interface FindManyPostCommentRepliesOutputData {
+    results: Array<PostCommentReplyEntity>;
+    metadata: {
+        count: number;
+    };
+}
+
+
+export const findManyPostCommentReplies = async (
+    input: {
+        params: {
+            postCommentId: string;
+        };
+        options?: Partial<{
+            take: number;
+            skip: number;
+        }>;
+    },
+    schema: Schema<DeepPartial<FindManyPostCommentRepliesOutputData>>,
+    authTokenType: AuthTokenType = AuthTokenType.Access
+): Promise<FindManyPostCommentRepliesOutputData> => {
+    try {
+        const { params, options } = input
+        const { postCommentId } = params
+
+        const payload = buildAuthPayloadString(schema, authTokenType)
+
+        const { data: graphqlData } = await client(authTokenType).query({
+            query: gql`
+            query FindManyPostCommentReplies($data: FindManyPostCommentRepliesInputData!) {
+                findManyPostCommentReplies(data: $data) {
+    ${payload}
+  }
+}
+        `,
+            variables: {
+                data: {
+                    params: {
+                        postCommentId,
+                    },
+                    options
+                },
+            },
+        })
+        const { data, tokens } =
+            graphqlData.findManyPostCommentReplies as BaseResponse<FindManyPostCommentRepliesOutputData>
+
+        if (authTokenType === AuthTokenType.Refresh)
+            saveTokens(tokens as AuthTokens)
+
+        return data
+    } catch (ex) {
+        const _ex = ex as ApolloError
+        const error = (
+            _ex.graphQLErrors[0].extensions as ExtensionsWithOriginalError
+        ).originalError
+
+        if (
+            error.statusCode === ErrorStatusCode.Unauthorized &&
+            authTokenType === AuthTokenType.Access
+        )
+            return await findManyPostCommentReplies(input, schema, AuthTokenType.Refresh)
 
         throw error
     }

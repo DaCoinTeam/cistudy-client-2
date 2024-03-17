@@ -1,8 +1,9 @@
 "use client"
 import React, { useContext } from "react"
-import { CurriculumPanel } from "./CurriculumPanel"
-import { DetailsPanel } from "./DetailsPanel"
+import { SectionsPanel } from "./SectionsPanel"
+import { GeneralPanel } from "./GeneralPanel"
 import { PanelSelected, ManagementContext } from "../../_hooks"
+import { EarningPanel } from "./EarningPanel"
 
 interface ContentPanelProps {
   className?: string;
@@ -11,17 +12,14 @@ interface ContentPanelProps {
 export const ContentPanel = (props: ContentPanelProps) => {
     const { className } = props
     const { reducer } = useContext(ManagementContext)!
-    const [ state ] = reducer
+    const [state] = reducer
     const { panelSelected } = state
 
-    const panelSelectedToPanelComponent: Record<PanelSelected, JSX.Element> = {
-        [PanelSelected.Details]: <DetailsPanel />,
-        [PanelSelected.Curriculum]: <CurriculumPanel />,
+    const panelSelectedToComponent: Record<PanelSelected, JSX.Element> = {
+        [PanelSelected.General]: <GeneralPanel className={`${className}`} />,
+        [PanelSelected.Sections]: <SectionsPanel className={`${className}`} />,
+        [PanelSelected.Earning]: <EarningPanel className={`${className}`} />
     }
 
-    return (
-        <div className={`${className}`}>
-            {panelSelectedToPanelComponent[panelSelected]}
-        </div>
-    )
+    return <>{panelSelectedToComponent[panelSelected]}</>
 }

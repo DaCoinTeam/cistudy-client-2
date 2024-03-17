@@ -25,15 +25,20 @@ const config: Config = {
             light: {
                 colors: {
                     primary: "rgb(20 184 166)",   
-                    secondary: "rgb(17, 159, 140)"                 //background: "rgb(244 244 245)"
+                    secondary: "rgb(17, 159, 140)",                 
+                    success: "rgb(17 94 89)",
+                    default: {
+                        DEFAULT: "rgb(244 244 245)"
+                    },
+                    content3: "rgb(228 228 231)"
                 },
                 
             },
             dark: {
                 colors: {
                     primary: "rgb(20 184 166)",
-                    secondary: "rgb(52 211 153)"   
-                    // background: "red"
+                    secondary: "rgb(52 211 153)",   
+                    success: "rgb(153 246 228)",
                 },
             }
         }

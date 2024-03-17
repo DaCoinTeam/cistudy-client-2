@@ -1,10 +1,5 @@
 "use client"
-import React, {
-    ReactNode,
-    createContext,
-    useCallback,
-    useMemo,
-} from "react"
+import React, { ReactNode, createContext, useCallback, useMemo } from "react"
 
 import { findOneCourse } from "@services"
 import { useParams } from "next/navigation"
@@ -13,7 +8,7 @@ import { CourseEntity, ErrorResponse } from "@common"
 
 export interface CourseDetailsContextValue {
   swrs: {
-    courseSwr:  SWRResponse<CourseEntity, ErrorResponse>;
+    courseSwr: SWRResponse<CourseEntity, ErrorResponse>;
   };
 }
 
@@ -25,8 +20,8 @@ export const WrappedCourseDetailsProviders = ({
 }: {
   children: ReactNode;
 }) => {
-    const input = useParams()
-    const courseId = input.id as string
+    const params = useParams()
+    const courseId = params.id as string
 
     const fetchCourse = useCallback(async () => {
         return await findOneCourse(
@@ -54,18 +49,25 @@ export const WrappedCourseDetailsProviders = ({
                         title: true,
                     },
                 },
+                creator: {
+                    avatarId: true,
+                    username: true,
+                    numberOfFollowers: true
+                }
             }
         )
     }, [])
 
-    const courseSwr = useSWR(["COURSE"], fetchCourse)
-
+    const courseSwr = useSWR(["COURSE"], fetchCourse, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+    })
 
     const courseDetailsContextValue: CourseDetailsContextValue = useMemo(
         () => ({
             swrs: {
-                courseSwr
-            }
+                courseSwr,
+            },
         }),
         [courseSwr]
     )
@@ -83,8 +85,6 @@ export const CourseDetailsProviders = ({
   children: ReactNode;
 }) => (
     <SWRConfig value={{ provider: () => new Map() }}>
-        <WrappedCourseDetailsProviders>
-            {children}
-        </WrappedCourseDetailsProviders>
+        <WrappedCourseDetailsProviders>{children}</WrappedCourseDetailsProviders>
     </SWRConfig>
 )

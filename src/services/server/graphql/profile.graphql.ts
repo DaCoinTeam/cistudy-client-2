@@ -11,7 +11,7 @@ import {
     CourseEntity,
     Schema,
 } from "@common"
-import { client } from "./client.graphql"
+import { client } from "./client"
 
 export interface FindManySelfCreatedCoursesInputOptions {
   skip: number;

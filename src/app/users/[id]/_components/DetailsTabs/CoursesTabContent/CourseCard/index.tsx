@@ -3,14 +3,10 @@ import { CourseEntity } from "@common"
 import {
     Card,
     CardBody,
-    CardFooter,
     CardHeader,
-    Divider,
-    Spacer,
 } from "@nextui-org/react"
 import { getAssetUrl } from "@services"
-import { VideoPlayer } from "../../../../../../_shared"
-import { FilePenLineIcon, MessagesSquareIcon } from "lucide-react"
+import { InteractiveThumbnail } from "../../../../../../_shared"
 
 interface CourseCardProps {
   course: CourseEntity;
@@ -24,35 +20,14 @@ export const CourseCard = (props: CourseCardProps) => {
     return (
         <Card className={`${className ?? ""} border border-divider`} shadow="none">
             <CardHeader className="p-0">
-                <VideoPlayer
+                <InteractiveThumbnail
                     src={getAssetUrl(previewVideoId)}
-                    className="!rounded-b-none"
+                    className="!rounded-b-none w-full h-fit"
                 />
             </CardHeader>
-            <CardBody className="p-3 pb-0">
-                <div className="leading-none">{title}</div>
-                <Spacer y={3}/>
-                <Divider />
+            <CardBody className="p-4">
+                <div className="font-semibold">{title}</div>
             </CardBody>
-            <CardFooter className="gap-3">
-                <div className="flex items-center gap-1">
-                    <FilePenLineIcon
-                        size={16}
-                        strokeWidth={4 / 3}
-                        className="text-foreground-500"
-                    />
-                    <div className="text-xs text-foreground-500"> 2133 enrolls</div>
-                </div>
-                
-                <div className="flex items-center gap-1">
-                    <MessagesSquareIcon
-                        size={16}
-                        strokeWidth={4 / 3}
-                        className="text-foreground-500"
-                    />
-                    <div className="text-xs text-foreground-500"> 2133 feedbacks</div>
-                </div>
-            </CardFooter>
         </Card>
     )
 }
