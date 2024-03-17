@@ -8,14 +8,14 @@ import {
     ModalFooter,
     Spacer,
 } from "@nextui-org/react"
-import { FormikContext, FormikProviders } from "./FormikProviders"
+import { SignInTabContext , SignInTabProviders } from "./SignInTabProviders"
 import { useContext } from "react"
 import { NavbarContext } from "../../NavbarProviders"
 import { SignInByGoogleIcon } from "./SignInByGoogleButton"
 import { SignInByFacebookIcon } from "./SignInByFacebookButton"
 
 const WrappedSignInTab = () => {
-    const formik = useContext(FormikContext)!
+    const { formik } = useContext(SignInTabContext)!
     const { dispatch } = useContext(NavbarContext)!
 
     const onPressToSignUp = () => dispatch({
@@ -25,12 +25,18 @@ const WrappedSignInTab = () => {
 
     return (
         <>
-            <ModalBody className="p-6">
+            <ModalBody className="p-4">
                 <div>
                     <Input
+                        variant="bordered"
                         label="Email"
                         id="email"
                         isRequired
+                        classNames={{
+                            inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                        }} 
+                        labelPlacement="outside"
+                        placeholder="Input email here"
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -39,10 +45,16 @@ const WrappedSignInTab = () => {
                     />
                     <Spacer y={4} />
                     <Input
+                        variant="bordered"
+                        classNames={{
+                            inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                        }} 
                         label="Password"
                         id="password"
                         type="password"
                         isRequired
+                        labelPlacement="outside"
+                        placeholder="Input password here"
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -58,7 +70,7 @@ const WrappedSignInTab = () => {
                     </div>
                 </div>
             </ModalBody>
-            <ModalFooter className="p-6 pt-0">
+            <ModalFooter className="p-4 pt-2">
                 <div className="w-full">
                     <Button
                         type="submit"
@@ -86,7 +98,7 @@ const WrappedSignInTab = () => {
 }
 
 export const SignInTab = () => (
-    <FormikProviders>
+    <SignInTabProviders>
         <WrappedSignInTab />
-    </FormikProviders>
+    </SignInTabProviders>
 )

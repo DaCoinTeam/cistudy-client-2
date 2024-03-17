@@ -51,12 +51,10 @@ export const WrappedCreatePostModal = () => {
             <ModalBody className="p-4 gap-0">
                 <Input  
                     id="title"
-                    classNames={{
-                        inputWrapper: "shadow-none !border !border-divider",
-                        innerWrapper: "pb-0"
-                    }}
                     size="lg"
-                    variant="bordered"
+                    classNames={{
+                        inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                    }} 
                     labelPlacement="outside"
                     placeholder="Input title here"
                     value={formik.values.title}

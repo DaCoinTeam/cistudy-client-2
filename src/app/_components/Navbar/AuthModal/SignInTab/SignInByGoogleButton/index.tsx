@@ -4,6 +4,7 @@ import { GoogleIcon } from "./GoogleIcon"
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { firebaseAuth, verifyGoogleAccessToken } from "@services"
 import { RootContext } from "../../../../../_hooks"
+import { NavbarContext } from "../../../NavbarProviders"
 
 export const SignInByGoogleIcon = () => {
     const provider = new GoogleAuthProvider()
@@ -12,10 +13,14 @@ export const SignInByGoogleIcon = () => {
     const { profileSwr } = swrs
     const { mutate } = profileSwr
 
+    const { dispatch } = useContext(NavbarContext)!
+
     const onPress = async () => {
+       
+         
         const credential = await signInWithPopup(firebaseAuth, provider)
         const token = await credential.user.getIdToken()
-        const response = await verifyGoogleAccessToken(
+        await verifyGoogleAccessToken(
             { params: { token } },
             {
                 username: true,
@@ -23,7 +28,11 @@ export const SignInByGoogleIcon = () => {
                 avatarUrl: true
             }
         )
-        await mutate(response)
+        await mutate()
+        dispatch({
+            type: "SET_IS_AUTH_MODAL_OPEN",
+            payload: false
+        })
     }
 
     return (

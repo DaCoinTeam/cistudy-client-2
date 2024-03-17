@@ -35,7 +35,7 @@ export const AuthModal = (props: AuthModalProps) => {
             className={`${props.className}`}
         >
             <ModalContent>
-                <ModalHeader className="p-6 pb-0">
+                <ModalHeader className="p-4 pb-2">
                     <Tabs
                         selectedKey={isSignUp ? "signUp" : "signIn"}
                         onSelectionChange={onSelectionChange}

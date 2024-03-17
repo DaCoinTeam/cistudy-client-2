@@ -69,16 +69,16 @@ const WrappedManagePriceModal = () => {
                     <ModalHeader className="p-4 pb-2 text-xl">Manage Price</ModalHeader>
                     <ModalBody className="p-4 gap-0">
                         <Input
+                            variant="bordered"
+                            classNames={{
+                                inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                            }} 
                             id="price"
                             value={formik.values.price}
                             onValueChange={onPriceChange}
                             onBlur={formik.handleBlur}
-                            variant="bordered"
                             isInvalid={!!(formik.touched.price && formik.errors.price)}
                             errorMessage={formik.touched.price && formik.errors.price}
-                            classNames={{
-                                inputWrapper: "!border !border-divider shadow-none",
-                            }}
                             placeholder="Input price here"
                             labelPlacement="outside"
                             label="Price"
@@ -88,16 +88,16 @@ const WrappedManagePriceModal = () => {
                         />
                         <Spacer y={4} />
                         <Input
+                            variant="bordered"
+                            classNames={{
+                                inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                            }} 
                             id="discount"
                             value={formik.values.discount}
                             onValueChange={onDiscountChange}
                             onBlur={formik.handleBlur}
-                            variant="bordered"
                             isInvalid={!!(formik.touched.discount && formik.errors.discount)}
                             errorMessage={formik.touched.discount && formik.errors.discount}
-                            classNames={{
-                                inputWrapper: "!border !border-divider shadow-none",
-                            }}
                             placeholder="Input price here"
                             labelPlacement="outside"
                             label="Discount"

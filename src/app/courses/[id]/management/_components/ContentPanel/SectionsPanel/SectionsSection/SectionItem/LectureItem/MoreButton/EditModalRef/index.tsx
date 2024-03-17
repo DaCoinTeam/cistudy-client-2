@@ -41,14 +41,10 @@ const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                     <ModalBody className="p-4">
                         <Input
                             id="title"
-                            variant="bordered"
                             value={formik.values.title}
                             onChange={formik.handleChange}
                             isInvalid={!!(formik.touched.title && formik.errors.title)}
                             errorMessage={formik.touched.title && formik.errors.title}
-                            classNames={{
-                                inputWrapper: "shadow-none !border !border-divider",
-                            }}
                             labelPlacement="outside"
                             label="Title"
                             placeholder="Input title here"
@@ -61,7 +57,7 @@ const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                             isInvalid={!!(formik.touched.description && formik.errors.description)}
                             errorMessage={formik.touched.description && formik.errors.description}
                             classNames={{
-                                inputWrapper: "shadow-none !border !border-divider",
+                                inputWrapper: "shadow-none !border border-divider",
                             }}
                             labelPlacement="outside"
                             label="Description"

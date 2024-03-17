@@ -7,7 +7,7 @@ import { BookOpenIcon, MessagesSquareIcon, RssIcon } from "lucide-react"
 export const DetailsTabs = () => {
     return (
         <div className="flex w-full flex-col">
-            <Tabs aria-label="Options" color="primary" classNames={{
+            <Tabs aria-label="Options" variant="underlined" color="primary" classNames={{
                 panel: "!px-0 !pt-6",
             }}>
                 <Tab key="followers"  title={

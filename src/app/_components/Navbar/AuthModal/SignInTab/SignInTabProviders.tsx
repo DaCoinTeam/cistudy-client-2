@@ -4,8 +4,13 @@ import React, { ReactNode, createContext, useContext, } from "react"
 import { signIn } from "@services"
 import * as Yup from "yup"
 import { RootContext } from "../../../../_hooks"
+import { NavbarContext } from "../../NavbarProviders"
 
-export const FormikContext = createContext<FormikProps<FormikValues> | null>(
+interface SignInTabContextValue {
+    formik: FormikProps<FormikValues>
+}
+
+export const SignInTabContext = createContext<SignInTabContextValue | null>(
     null
 )
 
@@ -20,18 +25,20 @@ const initialValues: FormikValues = {
 }
 
 const WrappedFormikProviders = ({ formik, children }: {
-    formik: FormikProps<FormikValues> | null;
+    formik: FormikProps<FormikValues>;
     children: ReactNode;
 }) => (
-    <FormikContext.Provider value={formik}>
-        <Form onSubmit={formik?.handleSubmit}>{children}</Form>
-    </FormikContext.Provider>
+    <SignInTabContext.Provider value={{formik}}>
+        <Form onSubmit={formik.handleSubmit}>{children}</Form>
+    </SignInTabContext.Provider>
 )
 
-export const FormikProviders = ({ children }: { children: ReactNode }) => {
+export const SignInTabProviders = ({ children }: { children: ReactNode }) => {
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { mutate } = profileSwr
+
+    const { dispatch } = useContext(NavbarContext)!
 
     return (
         <Formik initialValues={initialValues} validationSchema={
@@ -55,6 +62,10 @@ export const FormikProviders = ({ children }: { children: ReactNode }) => {
                 birthdate: true
             })
             await mutate(response)
+            dispatch({
+                type: "SET_IS_AUTH_MODAL_OPEN",
+                payload: false
+            })
         }}
         >
             {(formik) => (

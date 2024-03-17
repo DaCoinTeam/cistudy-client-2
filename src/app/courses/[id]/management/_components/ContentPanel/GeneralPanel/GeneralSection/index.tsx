@@ -96,14 +96,14 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             <div className="text-2xl"> General </div>
             <Spacer y={4} />
             <Input
+                variant="bordered"
+                classNames={{
+                    inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                }} 
                 label="Title"
                 id="title"
                 labelPlacement="outside"
                 value={formik.values.title}
-                classNames={{
-                    inputWrapper: "shadow-none !border !border-divider",
-                }}
-                variant="bordered"
                 placeholder="Input title here"
                 onChange={formik.handleChange}
                 isInvalid={!!(formik.touched.title && formik.errors.title)}
@@ -111,15 +111,15 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             />
             <Spacer y={4} />
             <Textarea
+                variant="bordered"
+                classNames={{
+                    inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                }} 
                 label="Description"
                 id="description"
                 value={formik.values.description}
                 labelPlacement="outside"
                 placeholder="Input description here"
-                classNames={{
-                    inputWrapper: "shadow-none !border !border-divider",
-                }}
-                variant="bordered"
                 onChange={formik.handleChange}
                 isInvalid={!!(formik.touched.description && formik.errors.description)}
                 errorMessage={
@@ -129,12 +129,12 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
 
             <Spacer y={4} />
             <Select
-                label="Category"
                 variant="bordered"
+                label="Category"
                 placeholder="Select category"
                 labelPlacement="outside"
                 classNames={{
-                    trigger: "shadow-none !border !border-divider",
+                    trigger: "!border !border-divider bg-transparent shadow-none",
                     popoverContent: "shadow-none border border-divider rounded-medium",
                 }}
                 items={categories ?? []}
@@ -150,10 +150,10 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             </Select>
             <Spacer y={4} />
             <Select
-                label="Subcategories"
                 variant="bordered"
+                label="Subcategories"
                 classNames={{
-                    trigger: "shadow-none !border !border-divider",
+                    trigger: "!border !border-divider bg-transparent shadow-none",
                     popoverContent: "shadow-none border border-divider rounded-medium",
                 }}
                 selectionMode="multiple"
@@ -173,21 +173,22 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             <div>
                 <div className="text-sm"> Topics </div>
                 <Spacer y={2}/>
-                <div className="border border-divider rounded-medium">
+                <div className="!border !border-divider rounded-medium">
                     <Autocomplete
-                        variant="bordered"
                         className="w-full"
                         labelPlacement="outside"
                         placeholder="Find a topic"
                         defaultItems={getTopics()}
                         classNames={{
-                            popoverContent: "shadow-none border border-divider rounded-medium",
+                            popoverContent: "rounded-medium",
                         }}
-                        inputProps={{
-                            classNames: {
-                                inputWrapper: "!border-0 shadow-none",
-                            },
-                        }}
+                        inputProps={
+                            {
+                                classNames: {
+                                    inputWrapper: "!bg-transparent shadow-none"
+                                }
+                            }
+                        }
                         onSelectionChange={onTopicChange}
                     >
                         {({ topicId, name }) => (

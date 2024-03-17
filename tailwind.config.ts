@@ -32,6 +32,7 @@ const config: Config = {
                     },
                     content3: "rgb(228 228 231)"
                 },
+            
 
             },
             dark: {

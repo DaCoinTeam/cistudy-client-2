@@ -7,12 +7,12 @@ import {
     ModalFooter,
     Spacer,
 } from "@nextui-org/react"
-import { FormikContext, FormikProviders } from "./FormikProviders"
+import { SignUpTabContext, SignUpTabProviders } from "./SignUpTabProviders"
 import { useContext } from "react"
 import { NavbarContext } from "../../NavbarProviders"
 
 const WrappedSignUpTab = () => {
-    const formik = useContext(FormikContext)!
+    const { formik } = useContext(SignUpTabContext)!
 
     const { dispatch } = useContext(NavbarContext)!
 
@@ -23,12 +23,18 @@ const WrappedSignUpTab = () => {
         })
     return (
         <>
-            <ModalBody className="p-6">
+            <ModalBody className="p-4">
                 <div>
                     <Input
+                        variant="bordered"
+                        classNames={{
+                            inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                        }} 
                         label="Email"
                         id="email"
                         isRequired
+                        labelPlacement="outside"
+                        placeholder="Input email here"
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -37,10 +43,16 @@ const WrappedSignUpTab = () => {
                     />
                     <Spacer y={4} />
                     <Input
+                        variant="bordered"
+                        classNames={{
+                            inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                        }} 
                         label="Password"
                         id="password"
                         type="password"
                         isRequired
+                        labelPlacement="outside"
+                        placeholder="Input password here"
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -49,10 +61,16 @@ const WrappedSignUpTab = () => {
                     />
                     <Spacer y={4} />
                     <Input
+                        variant="bordered"
+                        classNames={{
+                            inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                        }} 
                         label="Confirm"
                         id="confirm"
                         type="password"
                         isRequired
+                        labelPlacement="outside"
+                        placeholder="Input confirm here"
                         value={formik.values.confirm}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -62,9 +80,14 @@ const WrappedSignUpTab = () => {
                     <Spacer y={4} />
                     <div className="grid grid-cols-2 gap-4">
                         <Input
+                            classNames={{
+                                inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                            }} 
                             label="First name"
                             id="firstName"
                             isRequired
+                            labelPlacement="outside"
+                            placeholder="Input first name here"
                             value={formik.values.firstName}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -74,9 +97,15 @@ const WrappedSignUpTab = () => {
                             errorMessage={formik.touched.firstName && formik.errors.firstName}
                         />
                         <Input
+                            variant="bordered"  
+                            classNames={{
+                                inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                            }} 
                             label="Last name"
                             id="lastName"
                             isRequired
+                            labelPlacement="outside"
+                            placeholder="Input last name here"
                             value={formik.values.lastName}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -86,11 +115,17 @@ const WrappedSignUpTab = () => {
                     </div>
                     <Spacer y={4} />
                     <Input
+                        variant="bordered"
+                        classNames={{
+                            inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                        }} 
                         label="Birthdate"
                         id="birthdate"
                         type="date"
                         disableAnimation
                         isRequired
+                        labelPlacement="outside"
+                        placeholder="Input birthdate here"
                         value={formik.values.birthdate}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -106,7 +141,7 @@ const WrappedSignUpTab = () => {
                     </div>
                 </div>
             </ModalBody>
-            <ModalFooter className="p-6">
+            <ModalFooter className="p-4 pt-2">
                 <Button
                     isDisabled={!!Object.keys(formik.errors).length}
                     type="submit"
@@ -121,7 +156,7 @@ const WrappedSignUpTab = () => {
 }
 
 export const SignUpTab = () => (
-    <FormikProviders>
+    <SignUpTabProviders>
         <WrappedSignUpTab />
-    </FormikProviders>
+    </SignUpTabProviders>
 )
