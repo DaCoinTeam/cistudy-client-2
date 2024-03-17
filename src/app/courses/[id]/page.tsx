@@ -1,25 +1,27 @@
 "use client"
-import React from "react"
-import {CourseBanner, CourseMain, CourseSideBar} from "./_components"
+import { CourseBanner, CourseMain, CourseSideBar } from "./_components"
+
 const Page = () => {
     return (
-        <div className="relative h-fit pb-12">
-            <div >
+        <div className="h-fit pb-12 flex justify-center ">
+            <div className="max-w-[1920px] relative ">
+    
                 <div className="mb-5">
                     <CourseBanner/>
                 </div>
-       
-                <div className="grid grid-cols-3 gap-4 px-[5em] mb-5">      
-                    <div className="col-span-2">
+                  
+                <div className=" px-[5em] mb-5 justify-self-center flex ">   
+                    <div className="w-2/3">
                         <CourseMain/>
                     </div>      
-                    <div className="px-5">
+                </div>
+                <div className="absolute h-[100%] w-1/4 top-10 right-6 justify-center ">
+                    <div className="fixed">
+                        <CourseSideBar/>
                     </div>
-                </div>
-                <div className="fixed top-28 right-14 ">
-                    <CourseSideBar/>
-                </div>
+                </div>     
             </div>
+            
         </div>
     )
 }

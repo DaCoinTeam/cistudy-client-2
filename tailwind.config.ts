@@ -32,12 +32,16 @@ const config: Config = {
                     },
                     content3: "rgb(228 228 231)"
                 },
+<<<<<<< HEAD
             
 
+=======
+>>>>>>> fd920e6e73eedf121de53dd87dd3fa2c97bd02de
             },
             dark: {
                 colors: {
                     primary: "rgb(20 184 166)",
+                    secondary: "rgb(52 211 153)",   
                     success: "rgb(153 246 228)",
                 },
             }
