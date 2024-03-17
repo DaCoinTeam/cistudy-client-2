@@ -98,7 +98,9 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             <Input
                 variant="bordered"
                 classNames={{
-                    inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                    inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none",
+                    input: "my-1",
+                    innerWrapper: "py-1"
                 }} 
                 label="Title"
                 id="title"
@@ -113,7 +115,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             <Textarea
                 variant="bordered"
                 classNames={{
-                    inputWrapper: "!border !border-divider bg-transparent shadow-none"
+                    inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                 }} 
                 label="Description"
                 id="description"
@@ -134,7 +136,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 placeholder="Select category"
                 labelPlacement="outside"
                 classNames={{
-                    trigger: "!border !border-divider bg-transparent shadow-none",
+                    trigger: "px-4 !border !border-divider bg-transparent shadow-none",
                     popoverContent: "shadow-none border border-divider rounded-medium",
                 }}
                 items={categories ?? []}
@@ -153,7 +155,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 variant="bordered"
                 label="Subcategories"
                 classNames={{
-                    trigger: "!border !border-divider bg-transparent shadow-none",
+                    trigger: "px-4 !border !border-divider bg-transparent shadow-none",
                     popoverContent: "shadow-none border border-divider rounded-medium",
                 }}
                 selectionMode="multiple"
@@ -185,7 +187,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                         inputProps={
                             {
                                 classNames: {
-                                    inputWrapper: "!bg-transparent shadow-none"
+                                    inputWrapper: "px-4 !bg-transparent shadow-none"
                                 }
                             }
                         }

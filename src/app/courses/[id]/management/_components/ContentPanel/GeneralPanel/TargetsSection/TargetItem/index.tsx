@@ -65,8 +65,9 @@ export const TargetItem = (props: TargetItemProps) => {
             <Input
                 labelPlacement="outside"
                 label=""
+                className="py-1.5"
                 classNames={{
-                    inputWrapper: "shadow-none !bg-transparent",
+                    inputWrapper: "px-4 shadow-none !bg-transparent",
                 }}
                 onValueChange={onValueChange}
                 id="content"
