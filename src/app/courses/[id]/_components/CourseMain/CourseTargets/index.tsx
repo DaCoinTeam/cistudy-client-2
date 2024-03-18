@@ -7,6 +7,8 @@ export const CourseTargets = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
+    const { courseTargets } = { ...course }
+
 
     return (
         <div>
@@ -14,13 +16,13 @@ export const CourseTargets = () => {
             <Spacer y={4} />
             <div className="p-4 border border-divider rounded-medium">
                 <div className="grid grid-cols-2 gap-2">
-                    {course?.courseTargets.map((target) => (
+                    {courseTargets?.map(({courseTargetId, content}) => (
                         <div
-                            key={target.courseTargetId}
+                            key={courseTargetId}
                             className="flex gap-2 items-center"
                         >
                             <CheckIcon height={20} width={20} />
-                            <div className="text-sm">{target.content}</div>
+                            <div className="text-sm">{content}</div>
                         </div>
                     ))}
                 </div>

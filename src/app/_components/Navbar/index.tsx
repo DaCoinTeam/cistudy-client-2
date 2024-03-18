@@ -23,27 +23,24 @@ interface NavbarProps {
 const WrappedNavbar = (props: NavbarProps) => {
     const { className } = props 
 
-    const { dispatch } = useContext(NavbarContext)!
+    const { disclosures, reducer } = useContext(NavbarContext)!
+    const { authModalDisclosure } = disclosures
+    const { onOpen } = authModalDisclosure
+    const [, dispatch] = reducer
 
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { data: profile } = profileSwr
 
     const onSignInPress = () => {
-        dispatch({
-            type: "SET_IS_AUTH_MODAL_OPEN",
-            payload: true
-        })
+        onOpen()
         dispatch({
             type: "SET_IS_SIGN_UP",
             payload: false
         })
     }
     const onSignUpPress = () => {
-        dispatch({
-            type: "SET_IS_AUTH_MODAL_OPEN",
-            payload: true
-        })
+        onOpen()
         dispatch({
             type: "SET_IS_SIGN_UP",
             payload: true

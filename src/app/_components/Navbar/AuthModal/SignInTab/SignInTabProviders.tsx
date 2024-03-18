@@ -38,7 +38,9 @@ export const SignInTabProviders = ({ children }: { children: ReactNode }) => {
     const { profileSwr } = swrs
     const { mutate } = profileSwr
 
-    const { dispatch } = useContext(NavbarContext)!
+    const { disclosures } = useContext(NavbarContext)!
+    const { authModalDisclosure } = disclosures
+    const { onClose } = authModalDisclosure
 
     return (
         <Formik initialValues={initialValues} validationSchema={
@@ -62,10 +64,7 @@ export const SignInTabProviders = ({ children }: { children: ReactNode }) => {
                 birthdate: true
             })
             await mutate(response)
-            dispatch({
-                type: "SET_IS_AUTH_MODAL_OPEN",
-                payload: false
-            })
+            onClose()
         }}
         >
             {(formik) => (

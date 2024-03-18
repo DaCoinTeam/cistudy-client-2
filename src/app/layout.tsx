@@ -8,6 +8,7 @@ import { Navbar } from "./_components"
 import { ReactNode } from "react"
 import { MetaMaskProvider } from "@metamask/sdk-react"
 import { useSelector } from "react-redux"
+import { NotConnectWalletModal } from "./_components/NotConnectWalletModal"
 const font = Open_Sans({ subsets: ["latin"] })
 
 const WrappedLayout = ({ children }: { children: ReactNode }) => {
@@ -27,6 +28,8 @@ const WrappedLayout = ({ children }: { children: ReactNode }) => {
                         <RootProviders>
                             <Navbar />
                             {children}
+                            
+                            <NotConnectWalletModal/>
                         </RootProviders>
                     </NextUIProvider>
                 </MetaMaskProvider>

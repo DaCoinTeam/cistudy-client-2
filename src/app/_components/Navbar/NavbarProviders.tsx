@@ -4,21 +4,32 @@ import {
     NavbarState,
     useNavbarReducer,
 } from "./useNavbarReducer"
+import { useDisclosure } from "@nextui-org/react"
+import { Disclosure } from "@common"
 
 export interface NavbarContextValue {
-  state: NavbarState;
-  dispatch: React.Dispatch<NavbarAction>;
+  reducer: [NavbarState, React.Dispatch<NavbarAction>];
+  disclosures: {
+    authModalDisclosure: Disclosure;
+  };
 }
 
 export const NavbarContext = createContext<NavbarContextValue | null>(null)
 
 export const NavbarProviders = ({ children }: { children: ReactNode }) => {
-    const [state, dispatch] = useNavbarReducer()
+    const reducer = useNavbarReducer()
 
-    const navbarContextValue: NavbarContextValue = useMemo(() => ({
-        state,
-        dispatch,
-    }), [state, dispatch])
+    const authModalDisclosure = useDisclosure()
+
+    const navbarContextValue: NavbarContextValue = useMemo(
+        () => ({
+            reducer,
+            disclosures: {
+                authModalDisclosure
+            },
+        }),
+        [reducer, authModalDisclosure]
+    )
     return (
         <NavbarContext.Provider value={navbarContextValue}>
             {children}

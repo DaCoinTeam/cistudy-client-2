@@ -46,7 +46,10 @@ const WrappedSignUpTabProviders = ({
 )
 
 export const SignUpTabProviders = ({ children }: { children: ReactNode }) => {
-    const { dispatch } = useContext(NavbarContext)!
+    
+    const { disclosures } = useContext(NavbarContext)!
+    const { authModalDisclosure } = disclosures
+    const { onClose } = authModalDisclosure
 
     return (
         <Formik
@@ -72,10 +75,7 @@ export const SignUpTabProviders = ({ children }: { children: ReactNode }) => {
                     lastName,
                     birthdate,
                 })
-                dispatch({
-                    type: "SET_IS_AUTH_MODAL_OPEN",
-                    payload: false
-                })
+                onClose()
             }}
         >
             {(formik) => (

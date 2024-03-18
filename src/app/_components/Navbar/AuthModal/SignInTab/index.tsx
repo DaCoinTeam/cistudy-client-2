@@ -16,7 +16,8 @@ import { SignInByFacebookIcon } from "./SignInByFacebookButton"
 
 const WrappedSignInTab = () => {
     const { formik } = useContext(SignInTabContext)!
-    const { dispatch } = useContext(NavbarContext)!
+    const { reducer } = useContext(NavbarContext)!
+    const [, dispatch] = reducer
 
     const onPressToSignUp = () => dispatch({
         type: "SET_IS_SIGN_UP",

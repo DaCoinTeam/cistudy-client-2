@@ -11,14 +11,14 @@ import {
     useRef,
 } from "react"
 import React from "react"
-import { ErrorResponse, UserEntity, generateClientId } from "@common"
+import { Disclosure, ErrorResponse, UserEntity, generateClientId } from "@common"
 import { FindManyCoursesOutputData, findManyCourses, init } from "@services"
 import useSWR, { SWRResponse } from "swr"
 import { RootAction, RootState, useRootReducer } from "./useRootReducer"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
 import { Formik, FormikProps } from "formik"
 import { useRouter } from "next/navigation"
-
+import { useDisclosure } from "@nextui-org/react"
 
 interface FormikValues {
   searchValue: string;
@@ -33,8 +33,11 @@ interface RootContextValue {
     profileSwr: SWRResponse<UserEntity | null, ErrorResponse>;
     coursesSwr: SWRInfiniteResponse<FindManyCoursesOutputData, ErrorResponse>;
   };
-  formik: FormikProps<FormikValues>,
+  formik: FormikProps<FormikValues>;
   reducer: [RootState, React.Dispatch<RootAction>];
+  disclosures: {
+    notConnectWalletModalDisclosure: Disclosure;
+  };
 }
 
 export const RootContext = createContext<RootContextValue | null>(null)
@@ -42,12 +45,17 @@ export const RootContext = createContext<RootContextValue | null>(null)
 export const COLUMNS_PER_PAGE = 5
 
 interface WrappedRootProvidersSelectors {
-    mutate: any
+  mutate: any;
 }
 
-const WrappedRootProviders = forwardRef<WrappedRootProvidersSelectors, { children: ReactNode, formik: FormikProps<FormikValues> }>((props, ref) => {
+const WrappedRootProviders = forwardRef<
+  WrappedRootProvidersSelectors,
+  { children: ReactNode; formik: FormikProps<FormikValues> }
+>((props, ref) => {
     const reducer = useRootReducer()
     const { formik } = props
+
+    const notConnectWalletModalDisclosure = useDisclosure()
 
     const fetchProfile = useCallback(async () => {
         try {
@@ -58,7 +66,7 @@ const WrappedRootProviders = forwardRef<WrappedRootProvidersSelectors, { childre
                 avatarId: true,
                 avatarUrl: true,
                 coverPhotoId: true,
-                kind: true
+                kind: true,
             })
         } catch (ex) {
             console.log(ex)
@@ -100,9 +108,9 @@ const WrappedRootProviders = forwardRef<WrappedRootProvidersSelectors, { childre
     const coursesSwr = useSWRInfinite((key) => [key, "COURSES"], fetchCourses, {
         revalidateFirstPage: false,
     })
-    
+
     useImperativeHandle(ref, () => ({
-        mutate: coursesSwr.mutate
+        mutate: coursesSwr.mutate,
     }))
 
     useEffect(() => {
@@ -117,6 +125,9 @@ const WrappedRootProviders = forwardRef<WrappedRootProvidersSelectors, { childre
             },
             formik,
             reducer,
+            disclosures: {
+                notConnectWalletModalDisclosure
+            }
         }),
         [profileSwr, coursesSwr, reducer]
     )
@@ -128,12 +139,7 @@ const WrappedRootProviders = forwardRef<WrappedRootProvidersSelectors, { childre
     )
 })
 
-export const RootProviders = ({
-    children
-}: {
-  children: ReactNode;
-}) => {
-
+export const RootProviders = ({ children }: { children: ReactNode }) => {
     const ref = useRef<WrappedRootProvidersSelectors | null>(null)
 
     const router = useRouter()

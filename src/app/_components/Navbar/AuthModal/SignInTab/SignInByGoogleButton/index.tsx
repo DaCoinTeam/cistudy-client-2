@@ -13,7 +13,9 @@ export const SignInByGoogleIcon = () => {
     const { profileSwr } = swrs
     const { mutate } = profileSwr
 
-    const { dispatch } = useContext(NavbarContext)!
+    const { disclosures } = useContext(NavbarContext)!
+    const { authModalDisclosure } = disclosures
+    const { onClose } = authModalDisclosure
 
     const onPress = async () => {
        
@@ -29,10 +31,7 @@ export const SignInByGoogleIcon = () => {
             }
         )
         await mutate()
-        dispatch({
-            type: "SET_IS_AUTH_MODAL_OPEN",
-            payload: false
-        })
+        onClose()
     }
 
     return (

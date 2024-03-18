@@ -16,13 +16,14 @@ interface AuthModalProps {
 }
 
 export const AuthModal = (props: AuthModalProps) => {
-    const { state, dispatch } = useContext(NavbarContext)!
-    const { isAuthModalOpen, isSignUp } = state
+    const { disclosures, reducer } = useContext(NavbarContext)!
+    const { authModalDisclosure } = disclosures
+    const { onOpenChange, isOpen } = authModalDisclosure
 
-    const onOpenChange = () => dispatch({
-        type: "SET_IS_AUTH_MODAL_OPEN",
-        payload: !isAuthModalOpen
-    })
+    const [state, dispatch] = reducer
+
+    const { isSignUp } = state
+
     const onSelectionChange = (key: Key) => dispatch({
         type: "SET_IS_SIGN_UP",
         payload: key === "signUp"
@@ -30,7 +31,7 @@ export const AuthModal = (props: AuthModalProps) => {
     
     return (
         <Modal
-            isOpen={isAuthModalOpen}
+            isOpen={isOpen}
             onOpenChange={onOpenChange}
             className={`${props.className}`}
         >

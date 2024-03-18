@@ -14,7 +14,8 @@ import { NavbarContext } from "../../NavbarProviders"
 const WrappedSignUpTab = () => {
     const { formik } = useContext(SignUpTabContext)!
 
-    const { dispatch } = useContext(NavbarContext)!
+    const { reducer } = useContext(NavbarContext)!
+    const [, dispatch] = reducer
 
     const onPressToSignIn = () =>
         dispatch({

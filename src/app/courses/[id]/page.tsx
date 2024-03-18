@@ -1,6 +1,6 @@
 "use client"
 import { Spacer } from "@nextui-org/react"
-import { CourseBanner, CourseMain, CourseSideBar } from "./_components"
+import { CourseBanner, CourseMain, CourseFloat } from "./_components"
 
 const Page = () => {
     return (
@@ -11,7 +11,7 @@ const Page = () => {
                 <CourseMain/>   
                 <div className="absolute h-[100%] w-1/4 top-10 right-6 justify-center ">
                     <div className="fixed">
-                        <CourseSideBar/>
+                        <CourseFloat/>
                     </div>
                 </div>     
             </div>
