@@ -51,7 +51,7 @@ const WrappedManagePriceModal = () => {
           Number.parseFloat(sanitizeInput) > 100)
             )
                 return
-            formik.setFieldValue("discount", sanitizeInput)
+            formik.setFieldValue("discountPrice", sanitizeInput)
         }
     }
     const onSubmit = () => formik.submitForm()
@@ -92,12 +92,12 @@ const WrappedManagePriceModal = () => {
                             classNames={{
                                 inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
                             }} 
-                            id="discount"
-                            value={formik.values.discount}
+                            id="discountPrice"
+                            value={formik.values.discountPrice}
                             onValueChange={onDiscountChange}
                             onBlur={formik.handleBlur}
-                            isInvalid={!!(formik.touched.discount && formik.errors.discount)}
-                            errorMessage={formik.touched.discount && formik.errors.discount}
+                            isInvalid={!!(formik.touched.discountPrice && formik.errors.discountPrice)}
+                            errorMessage={formik.touched.discountPrice && formik.errors.discountPrice}
                             placeholder="Input price here"
                             labelPlacement="outside"
                             label="Discount"
@@ -105,7 +105,7 @@ const WrappedManagePriceModal = () => {
                         />
                         <Spacer y={4} />
                         <div className="flex justify-between items-center">
-                            <div className="text-sm">Enable discount</div>
+                            <div className="text-sm">Enable discountPrice</div>
                             <Switch
                                 isSelected={formik.values.enableDiscount}
                                 onValueChange={onEnableDiscountChange}

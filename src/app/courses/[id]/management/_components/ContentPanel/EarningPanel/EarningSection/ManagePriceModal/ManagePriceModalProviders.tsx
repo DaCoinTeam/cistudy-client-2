@@ -25,8 +25,8 @@ export const ManagePriceModalContext =
 interface FormikValues {
   price: string;
   pricePrevious: string;
-  discount: string;
-  discountPrevious: string;
+  discountPrice: string;
+  discountPricePrevious: string;
   enableDiscount: boolean;
   enableDiscountPrevious: boolean;
 }
@@ -34,8 +34,8 @@ interface FormikValues {
 const initialValues: FormikValues = {
     price: "",
     pricePrevious: "",
-    discount: "",
-    discountPrevious: "0",
+    discountPrice: "",
+    discountPricePrevious: "0",
     enableDiscount: false,
     enableDiscountPrevious: false,
 }
@@ -50,7 +50,7 @@ const WrappedManagePriceModalProviders = ({
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data: courseManagement } = courseManagementSwr
-    const { price, discount, enableDiscount } = { ...courseManagement }
+    const { price, discountPrice, enableDiscount } = { ...courseManagement }
 
     const pricePreviousRef = useRef(false)
 
@@ -62,15 +62,15 @@ const WrappedManagePriceModalProviders = ({
         formik.setFieldValue("price", price?.toString())
     }, [price])
 
-    const discountPreviousRef = useRef(false)
+    const discountPricePreviousRef = useRef(false)
 
     useEffect(() => {
-        if (!discountPreviousRef.current) {
-            discountPreviousRef.current = true
-            formik?.setFieldValue("discountPrevious", discount?.toString())
+        if (!discountPricePreviousRef.current) {
+            discountPricePreviousRef.current = true
+            formik?.setFieldValue("discountPricePrevious", discountPrice?.toString())
         }
-        formik?.setFieldValue("discount", discount?.toString())
-    }, [discount])
+        formik?.setFieldValue("discountPrice", discountPrice?.toString())
+    }, [discountPrice])
 
     const enableDiscountPreviousRef = useRef(false)
 
@@ -84,12 +84,12 @@ const WrappedManagePriceModalProviders = ({
 
     const hasChanged = () =>
         formik?.values.price !== formik?.values.pricePrevious ||
-    formik?.values.discount !== formik?.values.discountPrevious ||
+    formik?.values.discountPrice !== formik?.values.discountPricePrevious ||
     formik.values.enableDiscount !== formik.values.enableDiscountPrevious
 
     const discardChanges = () => {
         formik.setFieldValue("price", formik?.values.pricePrevious)
-        formik.setFieldValue("discount", formik?.values.discountPrevious)
+        formik.setFieldValue("discountPrice", formik?.values.discountPricePrevious)
         formik.setFieldValue(
             "enableDiscount",
             formik?.values.enableDiscountPrevious
@@ -128,7 +128,7 @@ export const ManagePriceModalProviders = ({
         <Formik
             initialValues={initialValues}
             onSubmit={async (
-                { price, discount, enableDiscount },
+                { price, discountPrice, enableDiscount },
                 { setFieldValue }
             ) => {
                 if (!courseId) return
@@ -136,12 +136,12 @@ export const ManagePriceModalProviders = ({
                     data: {
                         courseId,
                         price: Number.parseFloat(price),
-                        discount: Number.parseFloat(discount),
+                        discountPrice: Number.parseFloat(discountPrice),
                         enableDiscount,
                     },
                 })
                 setFieldValue("pricePrevious", price)
-                setFieldValue("discountPrevious", discount)
+                setFieldValue("discountPricePrevious", discountPrice)
                 setFieldValue("enableDiscountPrevious", enableDiscount)
                 await mutate()
             }}

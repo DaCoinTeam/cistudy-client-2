@@ -52,7 +52,7 @@ const WrappedManagementProviders = ({ children }: { children: ReactNode }) => {
                 previewVideoId: true,
                 thumbnailId: true,
                 price: true,
-                discount: true,
+                discountPrice: true,
                 enableDiscount: true,
                 sections: {
                     sectionId: true,

@@ -37,7 +37,7 @@ export const WrappedCourseDetailsProviders = ({
                 previewVideoId: true,
                 thumbnailId: true,
                 price: true,
-                discount: true,
+                discountPrice: true,
                 enableDiscount: true,
                 courseTargets: {
                     courseTargetId: true,

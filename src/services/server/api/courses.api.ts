@@ -1,6 +1,5 @@
 import { API_ENDPOINT } from "@config"
 import { authAxios } from "./axios-instances"
-import { roundToFixed } from "@common"
 
 const BASE_URL = `${API_ENDPOINT}/courses`
 
@@ -38,7 +37,7 @@ export interface UpdateCourseInput {
     title?: string;
     description?: string;
     price?: number;
-    discount?: number;
+    discountPrice?: number;
     enableDiscount?: boolean;
     thumbnailIndex?: number;
     previewVideoIndex?: number;
@@ -274,8 +273,3 @@ export const deleteResource = async (
 
     return await authAxios.delete(url)
 }
-
-export const getDiscountPrice = (price?: number, discount?: number) => {
-    if (!price || !discount) return 0
-    return roundToFixed(price * (100 - discount) / 100)
-} 

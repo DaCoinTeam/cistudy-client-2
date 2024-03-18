@@ -16,8 +16,3 @@ export const sanitizeNumericInput = (input: string): string | null => {
     }
     return input.replace(/,/g, ".")
 }
-
-export const roundToFixed = (value: number, fractionDigits: number = 2): number => {
-    const fixed = value.toFixed(fractionDigits)
-    return Number.parseFloat(fixed)
-}

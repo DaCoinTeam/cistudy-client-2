@@ -7,7 +7,7 @@ import {
     Spacer,
 } from "@nextui-org/react"
 
-import { getAssetUrl, getDiscountPrice } from "@services"
+import { getAssetUrl } from "@services"
 import { useContext } from "react"
 import { VideoPlayer } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
@@ -19,12 +19,15 @@ import {
 } from "lucide-react"
 import { useSDK } from "@metamask/sdk-react"
 import { RootContext } from "../../../../_hooks"
+import { computePercentage } from "@common"
 
 export const CourseFloat = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course, isLoading } = courseSwr
-    const { previewVideoId, price, enableDiscount, discount } = { ...course }
+    const { previewVideoId, price, enableDiscount, discountPrice } = {
+        ...course,
+    }
 
     const { account } = useSDK()
 
@@ -37,36 +40,31 @@ export const CourseFloat = () => {
             onOpen()
             return
         }
-        // call api
+    // call api
     }
 
+    const renderDiscountPercentage = () => {
+        if (!discountPrice || !price) return 0
+        return 100 - computePercentage(discountPrice, price)
+    }
     const renderPrice = () => {
         if (isLoading) return null
 
-        if (!enableDiscount) 
-            return (
-                <div
-                    className="text-3xl font-semibold"
-                >
-                    {price} STARCI
-                </div>
-            )
-        
+        if (!enableDiscount)
+            return <div className="text-3xl font-semibold">{price} STARCI</div>
+
         return (
             <div>
                 <div className="flex gap-2 items-center">
-                    <div className="text-3xl font-semibold">
-                        {getDiscountPrice(price, discount)} STARCI
-                    </div>
-                    <div
-                        className="line-through text-foreground-500 text-sm"
-                    >
+                    <div className="text-3xl font-semibold">{discountPrice} STARCI</div>
+                    <div className="line-through text-foreground-500 text-sm">
                         {price} STARCI
                     </div>
                 </div>
-                <div className="text-sm"> {discount}% off </div>
+                <div className="text-sm">
+                    {renderDiscountPercentage()}% off
+                </div>
             </div>
-       
         )
     }
     return (
