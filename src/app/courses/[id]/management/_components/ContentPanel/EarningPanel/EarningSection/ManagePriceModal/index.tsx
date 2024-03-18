@@ -100,8 +100,10 @@ const WrappedManagePriceModal = () => {
                             errorMessage={formik.touched.discountPrice && formik.errors.discountPrice}
                             placeholder="Input price here"
                             labelPlacement="outside"
-                            label="Discount"
-                            endContent={<div className="text-foreground-500 text-sm">%</div>}
+                            label="Discount price"
+                            endContent={
+                                <div className="text-foreground-500 text-sm">STARCI</div>
+                            }
                         />
                         <Spacer y={4} />
                         <div className="flex justify-between items-center">
