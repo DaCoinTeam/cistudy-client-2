@@ -14,7 +14,7 @@ import {
 import {
     CoursesManagementPanelContext,
     ROWS_PER_PAGE,
-} from "../CoursesManagementPanelProviders"
+} from "../CoursesManagementPanelProvider"
 import { getAssetUrl } from "@services"
 import { useRouter } from "next/navigation"
 import { InteractiveThumbnail } from "../../../../../_shared"

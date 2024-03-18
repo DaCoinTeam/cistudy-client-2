@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from "react"
 import { CourseTargetEntity } from "@common"
 import { deleteCourseTarget, updateCourseTarget } from "@services"
 import { DELAY_TIME } from "@config"
-import { TargetsSectionContext } from "../TargetsSectionProviders"
+import { TargetsSectionContext } from "../TargetsSectionProvider"
 import { TrashIcon } from "@heroicons/react/24/outline"
 
 interface TargetItemProps {

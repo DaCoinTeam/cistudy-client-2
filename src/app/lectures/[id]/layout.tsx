@@ -1,8 +1,8 @@
 "use client"
 import { ReactNode } from "react"
-import { LectureDetailsProviders } from "./_hooks"
+import { LectureDetailsProvider } from "./_hooks"
 const Layout = ({ children }: { children: ReactNode }) => {
-    return <LectureDetailsProviders>{children}</LectureDetailsProviders>
+    return <LectureDetailsProvider>{children}</LectureDetailsProvider>
 }
 
 export default Layout

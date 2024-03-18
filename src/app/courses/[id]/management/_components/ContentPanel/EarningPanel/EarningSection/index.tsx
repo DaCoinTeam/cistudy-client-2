@@ -2,7 +2,7 @@
 import React, { useContext } from "react"
 import { LineChart } from "../../../../../../../_shared"
 import { Spacer, Tab, Tabs } from "@nextui-org/react"
-import { EarningSectionProviders, EarningSectionContext } from "./EarningSectionProviders"
+import { EarningSectionProvider, EarningSectionContext } from "./EarningSectionProvider"
 import { IntervalSelected } from "./useEarningSectionReducer"
 import { Key } from "@common"
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline"
@@ -58,8 +58,8 @@ const WrappedEarningSection = () => {
 
 export const EarningSection = () => {
     return (
-        <EarningSectionProviders>
+        <EarningSectionProvider>
             <WrappedEarningSection/>
-        </EarningSectionProviders>
+        </EarningSectionProvider>
     )
 }

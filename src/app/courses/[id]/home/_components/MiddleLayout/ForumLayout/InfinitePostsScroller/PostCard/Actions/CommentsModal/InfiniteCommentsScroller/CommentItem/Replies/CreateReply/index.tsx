@@ -2,9 +2,9 @@ import React, { useContext } from "react"
 import { RootContext } from "../../../../../../../../../../../../../../_hooks"
 import { Avatar, Input, Link } from "@nextui-org/react"
 import { getAssetUrl } from "@services"
-import { CreateReplyContext, CreateReplyProviders } from "./CreateReplyProviders"
+import { CreateReplyContext, CreateReplyProvider } from "./CreateReplyProvider"
 import { SendHorizonalIcon } from "lucide-react"
-import { RepliesContext } from "../RepliesProviders"
+import { RepliesContext } from "../RepliesProvider"
 
 const WrappedCreateReply = () => {
     const { swrs } = useContext(RootContext)!
@@ -56,8 +56,8 @@ const WrappedCreateReply = () => {
 
 export const CreateReply = () => {
     return (
-        <CreateReplyProviders>
+        <CreateReplyProvider>
             <WrappedCreateReply />
-        </CreateReplyProviders>
+        </CreateReplyProvider>
     )
 }

@@ -11,7 +11,7 @@ import React, { useContext } from "react"
 import { InfiniteCommentsScroller } from "./InfiniteCommentsScroller"
 import { CreateCommentSection } from "./CreateCommentSection"
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline"
-import { CommentsModalProviders } from "./CommentsModalProviders"
+import { CommentsModalProvider } from "./CommentsModalProvider"
 import { PostCardContext } from "../.."
 
 export const CommentsModal = () => {
@@ -33,7 +33,7 @@ export const CommentsModal = () => {
                 <div className="text-sm"> {numberOfComments}</div>
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
-                <CommentsModalProviders>
+                <CommentsModalProvider>
                     <ModalContent>
                         <ModalHeader className="p-4 pb-2 text-xl">
               Comments
@@ -45,7 +45,7 @@ export const CommentsModal = () => {
                             <CreateCommentSection />
                         </ModalFooter>
                     </ModalContent>
-                </CommentsModalProviders>
+                </CommentsModalProvider>
             </Modal>
         </>
     )

@@ -4,7 +4,7 @@ import { GoogleIcon } from "./GoogleIcon"
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { firebaseAuth, verifyGoogleAccessToken } from "@services"
 import { RootContext } from "../../../../../_hooks"
-import { NavbarContext } from "../../../NavbarProviders"
+import { NavbarContext } from "../../../NavbarProvider"
 
 export const SignInByGoogleIcon = () => {
     const provider = new GoogleAuthProvider()

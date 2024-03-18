@@ -1,11 +1,11 @@
 "use client"
 import { ReactNode, Suspense } from "react"
-import { ManagementProviders } from "./_hooks"
+import { ManagementProvider } from "./_hooks"
 
 const Layout = ({ children }: { children: ReactNode }) => {
     return (
         <Suspense>
-            <ManagementProviders>{children}</ManagementProviders>
+            <ManagementProvider>{children}</ManagementProvider>
         </Suspense>
     )
 }

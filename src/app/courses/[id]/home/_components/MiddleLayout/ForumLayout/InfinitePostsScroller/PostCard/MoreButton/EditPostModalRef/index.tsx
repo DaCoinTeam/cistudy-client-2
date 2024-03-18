@@ -16,8 +16,8 @@ import {
     useDisclosure,
 } from "@nextui-org/react"
 import {
-    EditPostModalContext, EditPostModalProviders,
-} from "./EditPostModalProviders"
+    EditPostModalContext, EditPostModalProvider,
+} from "./EditPostModalProvider"
 import { AppendKey, Media } from "@common"
 
 import { getAssetFile } from "@services"
@@ -142,9 +142,9 @@ export const EditCommentModalRef = forwardRef<EditCommentModalRefSelectors, Edit
         return (
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" className={`${className}`}>
                 <ModalContent>
-                    <EditPostModalProviders onClose={onClose}>
+                    <EditPostModalProvider onClose={onClose}>
                         <WrappedEditPostModalRef />
-                    </EditPostModalProviders>
+                    </EditPostModalProvider>
                 </ModalContent>
             </Modal>
         )

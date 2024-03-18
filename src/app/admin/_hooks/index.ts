@@ -1,2 +1,2 @@
-export * from "./AdminProviders"
+export * from "./AdminProvider"
 export * from "./useAdminReducer"

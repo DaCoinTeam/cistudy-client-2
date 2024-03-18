@@ -10,8 +10,8 @@ import {
 } from "@nextui-org/react"
 import {
     CreateCommentModalContext,
-    CreateCommentModalProviders,
-} from "./CreateCommentModalProviders"
+    CreateCommentModalProvider,
+} from "./CreateCommentModalProvider"
 import { AppendKey, Media } from "@common"
 import {
     TextEditor,
@@ -69,7 +69,7 @@ export const CreateCommentModal = () => {
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
     return (
-        <CreateCommentModalProviders onClose={onClose}>
+        <CreateCommentModalProvider onClose={onClose}>
             <Button
                 fullWidth
                 onPress={onOpen}
@@ -82,6 +82,6 @@ export const CreateCommentModal = () => {
                     <WrappedCreateCommentModal />
                 </ModalContent>
             </Modal>
-        </CreateCommentModalProviders>
+        </CreateCommentModalProvider>
     )
 }

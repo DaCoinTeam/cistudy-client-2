@@ -1,1 +1,1 @@
-export * from "./UserDetailsProviders"
+export * from "./UserDetailsProvider"

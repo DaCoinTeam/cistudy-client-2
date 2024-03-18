@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react"
 import { PencilIcon } from "@heroicons/react/16/solid"
 import { AuthModal } from "./AuthModal"
-import { NavbarContext, NavbarProviders } from "./NavbarProviders"
+import { NavbarContext, NavbarProvider } from "./NavbarProvider"
 import { ProfileMenu } from "./ProfileMenu"
 import { RootContext } from "../../_hooks"
 import { DarkModeSwitch } from "./DarkModeSwitch"
@@ -90,7 +90,7 @@ const WrappedNavbar = (props: NavbarProps) => {
 }
 
 export const Navbar = (props: NavbarProps) => (
-    <NavbarProviders>
+    <NavbarProvider>
         <WrappedNavbar {...props} />{" "}
-    </NavbarProviders>
+    </NavbarProvider>
 )

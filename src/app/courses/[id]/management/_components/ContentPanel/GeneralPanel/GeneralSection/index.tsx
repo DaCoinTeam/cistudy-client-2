@@ -13,9 +13,9 @@ import {
 } from "@nextui-org/react"
 import React, { useCallback, useContext } from "react"
 import {
-    GeneralSectionProviders,
+    GeneralSectionProvider,
     GeneralSectionContext,
-} from "./GeneralSectionProviders"
+} from "./GeneralSectionProvider"
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { Key, TopicEntity } from "@common"
 import useSWR from "swr"
@@ -263,7 +263,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
 }
 
 export const GeneralSection = (props: GeneralSectionProps) => (
-    <GeneralSectionProviders>
+    <GeneralSectionProvider>
         <WrappedGeneralSection {...props} />
-    </GeneralSectionProviders>
+    </GeneralSectionProvider>
 )

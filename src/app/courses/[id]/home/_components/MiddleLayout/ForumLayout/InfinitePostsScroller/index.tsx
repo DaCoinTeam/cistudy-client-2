@@ -4,7 +4,7 @@ import InfiniteScroll from "react-infinite-scroller"
 import { CircularProgress } from "@nextui-org/react"
 import { PostCard } from "./PostCard"
 import { PostEntity } from "@common"
-import { COLUMNS_PER_PAGE, ForumLayoutContext } from "../ForumLayoutProviders"
+import { COLUMNS_PER_PAGE, ForumLayoutContext } from "../ForumLayoutProvider"
 
 export const InfinitePostsScroller = () => {
     const { swrs } = useContext(ForumLayoutContext)!

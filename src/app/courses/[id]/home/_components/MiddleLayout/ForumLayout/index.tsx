@@ -1,7 +1,7 @@
 import { Spacer } from "@nextui-org/react"
 import { CreatePostCard } from "./CreatePostCard"
 import { InfinitePostsScroller } from "./InfinitePostsScroller"
-import { ForumLayoutProviders } from "./ForumLayoutProviders"
+import { ForumLayoutProvider } from "./ForumLayoutProvider"
 
 interface ForumLayoutProps {
     className?: string
@@ -20,8 +20,8 @@ export const WrappedForumLayout = (props: ForumLayoutProps) => {
 
 export const ForumLayout = (props: ForumLayoutProps) => {
     return (
-        <ForumLayoutProviders>
+        <ForumLayoutProvider>
             <WrappedForumLayout {...props}/>
-        </ForumLayoutProviders>
+        </ForumLayoutProvider>
     )
 }

@@ -8,9 +8,9 @@ import {
     ModalFooter,
     Spacer,
 } from "@nextui-org/react"
-import { SignInTabContext , SignInTabProviders } from "./SignInTabProviders"
+import { SignInTabContext , SignInTabProvider } from "./SignInTabProvider"
 import { useContext } from "react"
-import { NavbarContext } from "../../NavbarProviders"
+import { NavbarContext } from "../../NavbarProvider"
 import { SignInByGoogleIcon } from "./SignInByGoogleButton"
 import { SignInByFacebookIcon } from "./SignInByFacebookButton"
 
@@ -99,7 +99,7 @@ const WrappedSignInTab = () => {
 }
 
 export const SignInTab = () => (
-    <SignInTabProviders>
+    <SignInTabProvider>
         <WrappedSignInTab />
-    </SignInTabProviders>
+    </SignInTabProvider>
 )

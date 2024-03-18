@@ -3,7 +3,7 @@ import { CircularProgress, ScrollShadow } from "@nextui-org/react"
 import { CommentItem } from "./CommentItem"
 import { PostCommentEntity } from "@common"
 import InfiniteScroll from "react-infinite-scroller"
-import { COLUMNS_PER_PAGE, CommentsModalContext } from "../CommentsModalProviders"
+import { COLUMNS_PER_PAGE, CommentsModalContext } from "../CommentsModalProvider"
 
 export const InfiniteCommentsScroller = () => {
     const { swrs } = useContext(CommentsModalContext)!

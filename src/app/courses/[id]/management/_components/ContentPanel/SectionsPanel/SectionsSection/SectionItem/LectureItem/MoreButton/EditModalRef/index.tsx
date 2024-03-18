@@ -13,8 +13,8 @@ import {
 import { forwardRef, useContext, useImperativeHandle } from "react"
 import {
     EditModalRefContext,
-    EditModalRefProviders,
-} from "./EditModalRefProviders"
+    EditModalRefProvider,
+} from "./EditModalRefProvider"
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
 
 export interface EditModalRefSelectors {
@@ -94,8 +94,8 @@ const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
 
 export const EditModalRef = forwardRef<EditModalRefSelectors | null>(
     (_, ref) => (
-        <EditModalRefProviders>
+        <EditModalRefProvider>
             <WrappedEditModalRef ref={ref} />
-        </EditModalRefProviders>
+        </EditModalRefProvider>
     )
 )

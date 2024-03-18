@@ -4,8 +4,8 @@ import { ReplyItem } from "./ReplyItem"
 import {
     COLUMNS_PER_PAGE,
     RepliesContext,
-    RepliesProviders,
-} from "./RepliesProviders"
+    RepliesProvider,
+} from "./RepliesProvider"
 import { CommentItemContext } from ".."
 import { PostCommentReplyEntity } from "@common"
 import { Link } from "@nextui-org/react"
@@ -74,9 +74,9 @@ export const Replies = (props: RepliesProps) => {
     return (
         <>
             {isOpen ? (
-                <RepliesProviders>
+                <RepliesProvider>
                     <WrappedReplies {...props}/>
-                </RepliesProviders>
+                </RepliesProvider>
             ) : null}
         </>
     )

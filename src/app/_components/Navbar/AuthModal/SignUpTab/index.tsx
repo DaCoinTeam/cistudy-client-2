@@ -7,9 +7,9 @@ import {
     ModalFooter,
     Spacer,
 } from "@nextui-org/react"
-import { SignUpTabContext, SignUpTabProviders } from "./SignUpTabProviders"
+import { SignUpTabContext, SignUpTabProvider } from "./SignUpTabProvider"
 import { useContext } from "react"
-import { NavbarContext } from "../../NavbarProviders"
+import { NavbarContext } from "../../NavbarProvider"
 
 const WrappedSignUpTab = () => {
     const { formik } = useContext(SignUpTabContext)!
@@ -157,7 +157,7 @@ const WrappedSignUpTab = () => {
 }
 
 export const SignUpTab = () => (
-    <SignUpTabProviders>
+    <SignUpTabProvider>
         <WrappedSignUpTab />
-    </SignUpTabProviders>
+    </SignUpTabProvider>
 )

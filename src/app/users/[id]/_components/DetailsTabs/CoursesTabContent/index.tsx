@@ -2,8 +2,8 @@ import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import React, { useContext } from "react"
 import {
     CoursesTabContentContext,
-    CoursesTabContentProviders,
-} from "./CoursesTabContentProviders"
+    CoursesTabContentProvider,
+} from "./CoursesTabContentProvider"
 import { CourseCard } from "./CourseCard"
 import { Actions } from "./Actions"
 
@@ -29,8 +29,8 @@ const WrappedCoursesTabContent = () => {
 
 export const CoursesTabContent = () => {
     return (
-        <CoursesTabContentProviders>
+        <CoursesTabContentProvider>
             <WrappedCoursesTabContent />
-        </CoursesTabContentProviders>
+        </CoursesTabContentProvider>
     )
 }

@@ -13,7 +13,7 @@ import {
     ConfirmDeleteModalRefSelectors,
 } from "../../../../../../../../../../../../../../../_shared"
 import { ReplyItemContext } from ".."
-import { RepliesContext } from "../../RepliesProviders"
+import { RepliesContext } from "../../RepliesProvider"
 
 interface MoreButtonProps {
   className?: string;

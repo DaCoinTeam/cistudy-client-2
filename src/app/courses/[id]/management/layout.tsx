@@ -1,9 +1,9 @@
 "use client"
 import { ReactNode } from "react"
-import { ManagementProviders } from "./_hooks/ManagementProviders"
+import { ManagementProvider } from "./_hooks/ManagementProvider"
 
 const Layout = ({ children }: { children: ReactNode }) => {
-    return <ManagementProviders>{children}</ManagementProviders>
+    return <ManagementProvider>{children}</ManagementProvider>
 }
 
 export default Layout

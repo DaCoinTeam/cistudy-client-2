@@ -13,7 +13,7 @@ import {
     ConfirmDeleteModalRefSelectors,
 } from "../../../../../../../../../../../../../_shared"
 import { CommentItemContext } from ".."
-import { CommentsModalContext } from "../../../CommentsModalProviders"
+import { CommentsModalContext } from "../../../CommentsModalProvider"
 import { EditCommentModalRef, EditCommentModalRefSelectors } from "./EditCommentModalRef"
 
 interface MoreButtonProps {

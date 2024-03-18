@@ -4,7 +4,7 @@ import { PostCommentReplyEntity, parseTimeAgo } from "@common"
 import { getAssetUrl, updatePostCommentReply } from "@services"
 import { MoreButton } from "./MoreButton"
 import { useFormik } from "formik"
-import { RepliesContext } from "../RepliesProviders"
+import { RepliesContext } from "../RepliesProvider"
 import { CheckIcon } from "@heroicons/react/24/outline"
 
 interface ReplyItemProps {

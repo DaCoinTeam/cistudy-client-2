@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import { TargetItem } from "./TargetItem"
 import { AddTargetItem } from "./AddTargetItem"
 import { Divider, Spacer } from "@nextui-org/react"
-import { TargetsSectionContext, TargetsSectionProviders } from "./TargetsSectionProviders"
+import { TargetsSectionContext, TargetsSectionProvider } from "./TargetsSectionProvider"
 
 interface TargetsSectionProps {
     className?: string
@@ -44,7 +44,7 @@ export const WrappedTargetsSection = (props: TargetsSectionProps) => {
 }
 
 export const TargetsSection = (props: TargetsSectionProps) => (
-    <TargetsSectionProviders>
+    <TargetsSectionProvider>
         <WrappedTargetsSection {...props} />
-    </TargetsSectionProviders>
+    </TargetsSectionProvider>
 )

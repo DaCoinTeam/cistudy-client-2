@@ -16,7 +16,7 @@ import {
     EditCommentModalRef,
     EditCommentModalRefSelectors,
 } from "./EditPostModalRef"
-import { ForumLayoutContext } from "../../../ForumLayoutProviders"
+import { ForumLayoutContext } from "../../../ForumLayoutProvider"
 import { PostCardContext } from ".."
 
 interface MoreButtonProps {

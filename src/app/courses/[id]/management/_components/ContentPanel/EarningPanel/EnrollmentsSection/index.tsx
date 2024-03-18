@@ -2,7 +2,7 @@
 import React, { useContext } from "react"
 import { LineChart } from "../../../../../../../_shared"
 import { Spacer, Tab, Tabs } from "@nextui-org/react"
-import { EnrollmentsSectionContext, EnrollmentsSectionProviders } from "./EnrollmentsSectionProviders"
+import { EnrollmentsSectionContext, EnrollmentsSectionProvider } from "./EnrollmentsSectionProvider"
 import { IntervalSelected } from "./useEnrollmentsSectionReducer"
 import { Key } from "@common"
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline"
@@ -52,8 +52,8 @@ const WrappedEnrollmentsSection = () => {
 
 export const EnrollmentsSection = () => {
     return (
-        <EnrollmentsSectionProviders>
+        <EnrollmentsSectionProvider>
             <WrappedEnrollmentsSection/>
-        </EnrollmentsSectionProviders>
+        </EnrollmentsSectionProvider>
     )
 }

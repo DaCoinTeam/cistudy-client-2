@@ -1,2 +1,2 @@
 export * from "./useManagementReducer"
-export * from "./ManagementProviders"
+export * from "./ManagementProvider"

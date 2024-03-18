@@ -9,7 +9,7 @@ import {
     ModalHeader,
     useDisclosure,
 } from "@nextui-org/react"
-import { WalletModalRefProviders } from "./WalletModalRefProviders"
+import { WalletModalRefProvider } from "./WalletModalRefProvider"
 import { BodyContent } from "./BodyContent"
 
 export const WrappedWalletModalRef = () => {
@@ -43,9 +43,9 @@ export const WalletModalRef = forwardRef<WalletModalRefSelectors, WalletModalRef
         return (
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="sm" className={`${className}`}>
                 <ModalContent>
-                    <WalletModalRefProviders>
+                    <WalletModalRefProvider>
                         <WrappedWalletModalRef />
-                    </WalletModalRefProviders>
+                    </WalletModalRefProvider>
                 </ModalContent>
             </Modal>
         )

@@ -10,7 +10,7 @@ import {
     Pagination,
     Spinner,
 } from "@nextui-org/react"
-import { CoursesManagementPanelContext, ROWS_PER_PAGE } from "../CoursesManagementPanelProviders"
+import { CoursesManagementPanelContext, ROWS_PER_PAGE } from "../CoursesManagementPanelProvider"
 import { getAssetUrl } from "@services"
 import { useRouter } from "next/navigation"
 import { InteractiveThumbnail } from "../../../../../_shared"

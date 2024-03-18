@@ -1,2 +1,2 @@
 export * from "./useHomeReducer"
-export * from "./HomeProviders"
+export * from "./HomeProvider"

@@ -16,8 +16,8 @@ import {
 } from "@nextui-org/react"
 import {
     EditCommentModalContext,
-    EditCommentModalProviders,
-} from "./EditCommentModalProviders"
+    EditCommentModalProvider,
+} from "./EditCommentModalProvider"
 import { AppendKey, Media } from "@common"
 import {
     TextEditor,
@@ -124,9 +124,9 @@ export const EditCommentModalRef = forwardRef<EditCommentModalRefSelectors, Edit
         return (
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" className={`${className}`}>
                 <ModalContent>
-                    <EditCommentModalProviders onClose={onClose}>
+                    <EditCommentModalProvider onClose={onClose}>
                         <WrappedEditCommentModalRef />
-                    </EditCommentModalProviders>
+                    </EditCommentModalProvider>
                 </ModalContent>
             </Modal>
         )

@@ -17,8 +17,8 @@ import {
 import React, { useContext } from "react"
 import {
     ManagePriceModalContext,
-    ManagePriceModalProviders,
-} from "./ManagePriceModalProviders"
+    ManagePriceModalProvider,
+} from "./ManagePriceModalProvider"
 import { sanitizeNumericInput } from "@common"
 import { Settings2Icon } from "lucide-react"
 
@@ -142,7 +142,7 @@ const WrappedManagePriceModal = () => {
 }
 
 export const ManagePriceModal = () => (
-    <ManagePriceModalProviders>
+    <ManagePriceModalProvider>
         <WrappedManagePriceModal />
-    </ManagePriceModalProviders>
+    </ManagePriceModalProvider>
 )

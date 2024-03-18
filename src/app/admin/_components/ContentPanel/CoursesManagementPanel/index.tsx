@@ -2,7 +2,7 @@ import { Spacer } from "@nextui-org/react"
 import React from "react"
 import { Actions } from "./Actions"
 import { CoursesTable } from "./CoursesTable"
-import { CoursesManagementPanelProviders } from "./CoursesManagementPanelProviders"
+import { CoursesManagementPanelProvider } from "./CoursesManagementPanelProvider"
 
 interface CoursesManagementPanelProps {
   className?: string;
@@ -24,8 +24,8 @@ const WrappedCoursesManagementPanel = (props: CoursesManagementPanelProps) => {
 
 export const CoursesManagementPanel = (props: CoursesManagementPanelProps) => {
     return (
-        <CoursesManagementPanelProviders>
+        <CoursesManagementPanelProvider>
             <WrappedCoursesManagementPanel {...props} />
-        </CoursesManagementPanelProviders>
+        </CoursesManagementPanelProvider>
     )
 }

@@ -1,9 +1,9 @@
 "use client"
 import { Open_Sans } from "next/font/google"
 import "./_css/globals.css"
-import { ReduxProviders, RootState } from "@redux"
+import { ReduxProvider, RootState } from "@redux"
 import { NextUIProvider } from "@nextui-org/react"
-import { RootProviders } from "./_hooks"
+import { RootProvider } from "./_hooks"
 import { Navbar } from "./_components"
 import { ReactNode } from "react"
 import { MetaMaskProvider } from "@metamask/sdk-react"
@@ -25,12 +25,12 @@ const WrappedLayout = ({ children }: { children: ReactNode }) => {
                     }}
                 >
                     <NextUIProvider className="min-h-screen flex flex-col">
-                        <RootProviders>
+                        <RootProvider>
                             <Navbar />
                             {children}
                             
                             <NotConnectWalletModal/>
-                        </RootProviders>
+                        </RootProvider>
                     </NextUIProvider>
                 </MetaMaskProvider>
             </body>
@@ -40,11 +40,11 @@ const WrappedLayout = ({ children }: { children: ReactNode }) => {
 
 const Layout = ({ children }: { children: ReactNode }) => {
     return (
-        <ReduxProviders>
+        <ReduxProvider>
             <WrappedLayout>
                 {children}
             </WrappedLayout>
-        </ReduxProviders>
+        </ReduxProvider>
     )
 }
 

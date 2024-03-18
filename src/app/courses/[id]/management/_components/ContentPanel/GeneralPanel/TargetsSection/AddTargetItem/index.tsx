@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import { createCourseTarget } from "@services"
 import { Link } from "@nextui-org/react"
 import { PlusIcon } from "@heroicons/react/24/outline"
-import { TargetsSectionContext } from "../TargetsSectionProviders"
+import { TargetsSectionContext } from "../TargetsSectionProvider"
 import { ManagementContext } from "../../../../../_hooks"
 
 export const AddTargetItem = () => {

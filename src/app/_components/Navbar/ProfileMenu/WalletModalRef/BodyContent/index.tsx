@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { WalletModalRefContext } from "../WalletModalRefProviders"
+import { WalletModalRefContext } from "../WalletModalRefProvider"
 import { CurrentContent } from "../useWalletModalRefReducer"
 import { ConnectWalletContent } from "./ConnectWalletContent"
 import { HomeContent } from "./HomeContent"

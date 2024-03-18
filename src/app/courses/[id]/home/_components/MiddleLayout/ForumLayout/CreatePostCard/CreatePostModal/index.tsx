@@ -13,8 +13,8 @@ import {
 } from "@nextui-org/react"
 import {
     CreatePostModalContext,
-    CreatePostModalProviders,
-} from "./CreatePostModalProviders"
+    CreatePostModalProvider,
+} from "./CreatePostModalProvider"
 import { PlusIcon } from "lucide-react"
 import { AppendKey, Media } from "@common"
 import {
@@ -109,9 +109,9 @@ export const CreatePostModal = (props: CreatePostModalProps) => {
                 }}
             >
                 <ModalContent>
-                    <CreatePostModalProviders onClose={onClose}>
+                    <CreatePostModalProvider onClose={onClose}>
                         <WrappedCreatePostModal />
-                    </CreatePostModalProviders>
+                    </CreatePostModalProvider>
                 </ModalContent>
             </Modal>
         </>

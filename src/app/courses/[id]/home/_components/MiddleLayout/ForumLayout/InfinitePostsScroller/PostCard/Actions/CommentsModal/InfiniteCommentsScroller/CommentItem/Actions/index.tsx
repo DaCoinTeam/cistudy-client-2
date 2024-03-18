@@ -11,7 +11,7 @@ import { Button } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { CommentItemContext } from ".."
 import { toggleLikePostComment } from "@services"
-import { CommentsModalContext } from "../../../CommentsModalProviders"
+import { CommentsModalContext } from "../../../CommentsModalProvider"
 
 export const Actions = () => {
     const { props, disclosures } = useContext(CommentItemContext)!

@@ -6,7 +6,7 @@ import {
     Tabs,
     Tab,
 } from "@nextui-org/react"
-import { NavbarContext } from "../NavbarProviders"
+import { NavbarContext } from "../NavbarProvider"
 import { SignInTab } from "./SignInTab"
 import { SignUpTab } from "./SignUpTab"
 import { Key } from "@common"

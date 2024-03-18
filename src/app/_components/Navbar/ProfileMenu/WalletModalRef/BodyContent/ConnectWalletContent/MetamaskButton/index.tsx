@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { RootContext } from "../../../../../../../_hooks"
 import { MetamaskLogoIcon } from "./MetamaskLogoIcon"
-import { WalletModalRefContext } from "../../../WalletModalRefProviders"
+import { WalletModalRefContext } from "../../../WalletModalRefProvider"
 import { CurrentContent } from "../../../useWalletModalRefReducer"
 import { ChainId, ERC20Contract, chainInfos } from "@blockchain"
 

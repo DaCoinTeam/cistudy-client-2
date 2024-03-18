@@ -2,8 +2,8 @@ import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import React, { useContext } from "react"
 import {
     FollowersTabContentContext,
-    FollowersTabContentProviders,
-} from "./FollowersTabContentProviders"
+    FollowersTabContentProvider,
+} from "./FollowersTabContentProvider"
 import { FollowerCard } from "./FollowerCard"
 import { Actions } from "./Actions"
 
@@ -33,8 +33,8 @@ const WrappedFollowersTabContent = () => {
 
 export const FollowersTabContent = () => {
     return (
-        <FollowersTabContentProviders>
+        <FollowersTabContentProvider>
             <WrappedFollowersTabContent />
-        </FollowersTabContentProviders>
+        </FollowersTabContentProvider>
     )
 }
