@@ -1,10 +1,10 @@
-import Web3, { HttpProvider, WebSocketProvider } from "web3"
+import { EthExecutionAPI, HttpProvider, WebSocketProvider } from "web3"
 import { ChainId, chainInfos } from "../chains"
 
-export const getHttpWeb3 = (
+export const getHttpProvider = (
     chainId: ChainId, 
     controller?: AbortController
-) : Web3 => {
+) : HttpProvider<EthExecutionAPI>  => {
     const providerOptions = controller
         ? {
             providerOptions: {
@@ -12,11 +12,9 @@ export const getHttpWeb3 = (
             }
         } : undefined
     
-    const provider = new HttpProvider(chainInfos[chainId].httpRpcUrl, providerOptions)
-    return new Web3(provider)
+    return new HttpProvider(chainInfos[chainId].httpRpcUrl, providerOptions)
 }
 
-export const getWebsocketWeb3 = (chainId: ChainId) : Web3 => {
-    const provider = new WebSocketProvider((chainInfos[chainId].websocketRpcUrl))
-    return new Web3(provider)
+export const getWebsocketWeb3 = (chainId: ChainId) : WebSocketProvider<EthExecutionAPI> => {
+    return new WebSocketProvider((chainInfos[chainId].websocketRpcUrl))
 }

@@ -29,12 +29,11 @@ const WrappedSignInTab = () => {
             <ModalBody className="p-4">
                 <div>
                     <Input
-                        variant="bordered"
                         label="Email"
                         id="email"
                         isRequired
                         classNames={{
-                            inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
+                            inputWrapper: "input-input-wrapper"
                         }} 
                         labelPlacement="outside"
                         placeholder="Input email here"
@@ -46,9 +45,8 @@ const WrappedSignInTab = () => {
                     />
                     <Spacer y={4} />
                     <Input
-                        variant="bordered"
                         classNames={{
-                            inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
+                            inputWrapper: "input-input-wrapper"
                         }} 
                         label="Password"
                         id="password"
@@ -100,6 +98,6 @@ const WrappedSignInTab = () => {
 
 export const SignInTab = () => (
     <SignInTabProvider>
-        <WrappedSignInTab />
+        <WrappedSignInTab/>
     </SignInTabProvider>
 )

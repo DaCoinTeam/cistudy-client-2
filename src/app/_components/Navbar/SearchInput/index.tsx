@@ -27,9 +27,8 @@ export const SearchInput = (props: SearchInputProps) => {
 
     return (
         <Input
-            variant="bordered"
             classNames={{
-                inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
+                inputWrapper: "input-input-wrapper"
             }} 
             value={formik.values.searchValue}
             onValueChange={onValueChange}

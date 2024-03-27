@@ -1,10 +1,11 @@
 "use client"
-import React, { ReactNode, createContext, useCallback, useMemo } from "react"
+import React, { ReactNode, createContext, useCallback, useContext, useMemo } from "react"
 
 import { findOneCourse } from "@services"
 import { useParams } from "next/navigation"
 import useSWR, { SWRConfig, SWRResponse } from "swr"
 import { CourseEntity, ErrorResponse } from "@common"
+import { RootContext } from "../../../_hooks"
 
 export interface CourseDetailsContextValue {
   swrs: {
@@ -23,11 +24,17 @@ export const WrappedCourseDetailsProvider = ({
     const params = useParams()
     const courseId = params.id as string
 
+    const { swrs } = useContext(RootContext)!
+    const { profileSwr } = swrs
+    const { data: profile } = profileSwr
+    const { userId } = { ...profile }
+
     const fetchCourse = useCallback(async () => {
         return await findOneCourse(
             {
                 params: {
-                    courseId
+                    courseId,
+                    userId
                 },
             },
             {
@@ -39,6 +46,7 @@ export const WrappedCourseDetailsProvider = ({
                 price: true,
                 discountPrice: true,
                 enableDiscount: true,
+                enrolled: true,
                 courseTargets: {
                     courseTargetId: true,
                     content: true,
@@ -78,9 +86,9 @@ export const WrappedCourseDetailsProvider = ({
                 }
             }
         )
-    }, [])
+    }, [userId])
 
-    const courseSwr = useSWR(["COURSE"], fetchCourse, {
+    const courseSwr = useSWR(["COURSE", userId], fetchCourse, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
     })

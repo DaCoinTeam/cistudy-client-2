@@ -29,3 +29,7 @@
 .ProseMirror {
   @apply bg-content1 rounded-large min-h-[100px];
 }
+
+.input-input-wrapper {
+  @apply px-4 !border !border-divider bg-transparent shadow-none group-data-[invalid=true]:bg-danger/10
+}

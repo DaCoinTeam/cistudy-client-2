@@ -12,6 +12,7 @@ import { useContext } from "react"
 import { NavbarContext } from "../../NavbarProvider"
 
 const WrappedSignUpTab = () => {
+
     const { formik } = useContext(SignUpTabContext)!
 
     const { reducer } = useContext(NavbarContext)!
@@ -27,9 +28,8 @@ const WrappedSignUpTab = () => {
             <ModalBody className="p-4">
                 <div>
                     <Input
-                        variant="bordered"
                         classNames={{
-                            inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
+                            inputWrapper: "input-input-wrapper"
                         }} 
                         label="Email"
                         id="email"
@@ -44,9 +44,8 @@ const WrappedSignUpTab = () => {
                     />
                     <Spacer y={4} />
                     <Input
-                        variant="bordered"
                         classNames={{
-                            inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
+                            inputWrapper: "input-input-wrapper"
                         }} 
                         label="Password"
                         id="password"
@@ -62,9 +61,8 @@ const WrappedSignUpTab = () => {
                     />
                     <Spacer y={4} />
                     <Input
-                        variant="bordered"
                         classNames={{
-                            inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
+                            inputWrapper: "input-input-wrapper"
                         }} 
                         label="Confirm"
                         id="confirm"
@@ -82,7 +80,7 @@ const WrappedSignUpTab = () => {
                     <div className="grid grid-cols-2 gap-4">
                         <Input
                             classNames={{
-                                inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
+                                inputWrapper: "input-input-wrapper"
                             }} 
                             label="First name"
                             id="firstName"
@@ -98,9 +96,8 @@ const WrappedSignUpTab = () => {
                             errorMessage={formik.touched.firstName && formik.errors.firstName}
                         />
                         <Input
-                            variant="bordered"  
                             classNames={{
-                                inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
+                                inputWrapper: "input-input-wrapper",
                             }} 
                             label="Last name"
                             id="lastName"
@@ -116,9 +113,8 @@ const WrappedSignUpTab = () => {
                     </div>
                     <Spacer y={4} />
                     <Input
-                        variant="bordered"
                         classNames={{
-                            inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
+                            inputWrapper: "input-input-wrapper"
                         }} 
                         label="Birthdate"
                         id="birthdate"

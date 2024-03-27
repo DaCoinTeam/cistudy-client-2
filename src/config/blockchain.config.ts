@@ -1,0 +1,1 @@
+export const EVM_RECIPIENT = process.env.NEXT_PUBLIC_EVM_RECIPIENT as string

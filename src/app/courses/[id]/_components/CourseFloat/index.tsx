@@ -7,11 +7,11 @@ import {
     Spacer,
 } from "@nextui-org/react"
 
-import { getAssetUrl } from "@services"
+import { enrollCourse, getAssetUrl } from "@services"
 import { useContext } from "react"
 import { VideoPlayer } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
-import { ShoppingCartIcon } from "@heroicons/react/24/outline"
+import { ArrowRightEndOnRectangleIcon, ShoppingCartIcon } from "@heroicons/react/24/outline"
 import {
     ClipboardPenLineIcon,
     FolderOpenIcon,
@@ -19,28 +19,51 @@ import {
 } from "lucide-react"
 import { useSDK } from "@metamask/sdk-react"
 import { RootContext } from "../../../../_hooks"
-import { computePercentage } from "@common"
+import { computePercentage, computeRaw } from "@common"
+import { ChainId, ERC20Contract, chainInfos } from "@blockchain"
+import { EVM_RECIPIENT } from "@config"
+import { usePathname, useRouter } from "next/navigation"
 
 export const CourseFloat = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
-    const { data: course, isLoading } = courseSwr
-    const { previewVideoId, price, enableDiscount, discountPrice } = {
+    const { data: course, isLoading, mutate } = courseSwr
+    const { previewVideoId, price, enableDiscount, discountPrice, courseId, enrolled } = {
         ...course,
     }
-
-    const { account } = useSDK()
+    const { account, provider } = useSDK()
 
     const { disclosures } = useContext(RootContext)!
     const { notConnectWalletModalDisclosure } = disclosures
     const { onOpen } = notConnectWalletModalDisclosure
 
-    const onEnrollPress = () => {
+    const getPrice = () => {
+        if (!discountPrice || !price) return BigInt(0)
+        return enableDiscount ? computeRaw(discountPrice) : computeRaw(price)
+    } 
+
+    const onEnrollPress = async () => {
         if (!account) {
             onOpen()
             return
         }
-    // call api
+        if (!courseId) return
+
+        const primaryTokenContract = new ERC20Contract(ChainId.KalytnTestnet, chainInfos[ChainId.KalytnTestnet].primaryToken, provider, account)
+        const transaction = await primaryTokenContract.transfer(EVM_RECIPIENT, getPrice())
+        
+        if (transaction === null) {
+            onOpen()
+            return
+        }
+        
+        await enrollCourse({
+            data: {
+                courseId,
+                transactionHash: transaction.transactionHash
+            }
+        })
+        await mutate()
     }
 
     const renderDiscountPercentage = () => {
@@ -67,6 +90,11 @@ export const CourseFloat = () => {
             </div>
         )
     }
+
+    const path = usePathname()
+    const router = useRouter()
+    const onEnterCoursePress = () => router.push(`${path}/home`)
+    
     return (
         <Card
             shadow="none"
@@ -80,6 +108,13 @@ export const CourseFloat = () => {
                 />
             </CardHeader>
             <CardBody className="p-4">
+                {
+                    enrolled ?
+                        <div className="text-primary text-sm">
+                            Enrolled
+                        </div>
+                        : null
+                }
                 <div>{renderPrice()}</div>
                 <Spacer y={4} />
                 <div>
@@ -98,24 +133,42 @@ export const CourseFloat = () => {
                 </div>
             </CardBody>
             <CardFooter className="p-4 pt-2 flex-col gap-4">
-                <Button
-                    startContent={
-                        <ClipboardPenLineIcon height={20} width={20} strokeWidth={3 / 2} />
-                    }
-                    onPress={onEnrollPress}
-                    color="primary"
-                    fullWidth
-                >
+                {
+                    enrolled ?
+                        (
+                            <Button
+                                color="primary"
+                                onPress={onEnterCoursePress}
+                                startContent={<ArrowRightEndOnRectangleIcon height={20} width={20} />}
+                                fullWidth
+                            >
+              Enter course
+                            </Button>
+                        ) : 
+                        (<>
+                            <Button
+                                startContent={
+                                    <ClipboardPenLineIcon height={20} width={20} strokeWidth={3 / 2} />
+                                }
+                                onPress={onEnrollPress}
+                                color="primary"
+                                fullWidth
+                            >
           Enroll now
-                </Button>
-                <Button
-                    color="primary"
-                    variant="light"
-                    startContent={<ShoppingCartIcon height={20} width={20} />}
-                    fullWidth
-                >
+                            </Button>
+                            <Button
+                                color="primary"
+                                variant="light"
+                                startContent={<ShoppingCartIcon height={20} width={20} />}
+                                fullWidth
+                            >
           Add to cart
-                </Button>
+                            </Button>
+                        </>
+                     
+                        )
+                }
+                
             </CardFooter>
         </Card>
     )

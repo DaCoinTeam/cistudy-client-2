@@ -7,6 +7,7 @@ import InfiniteScroll from "react-infinite-scroller"
 import { CircularProgress, Divider, Spacer, User } from "@nextui-org/react"
 import { InteractiveThumbnail, Stars } from "../../../_shared"
 import { getAssetUrl } from "@services"
+import { useRouter } from "next/navigation"
 
 interface InfiniteCoursesScrollerProps {
     className?: string
@@ -18,6 +19,8 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
     const { coursesSwr } = swrs
     const { data, size, setSize, isValidating } = coursesSwr
     
+    const router = useRouter()
+
     const onLoadMore = () => {
         setSize(size + 1)
     }
@@ -54,7 +57,7 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
         >
             {getCourses().map(({courseId, title, thumbnailId, description, creator }) => (
                 <div className="flex gap-4" key={courseId}>
-                    <InteractiveThumbnail className="min-w-60 w-60 h-fit" src={getAssetUrl(thumbnailId)}/>
+                    <InteractiveThumbnail className="min-w-60 w-60 h-fit" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
                     <div className="flex-1">
                         <div className="text-lg"> {title} </div>
                         <div className="text-sm text-foreground-500 line-clamp-3"> {description} </div>

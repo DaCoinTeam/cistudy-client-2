@@ -105,7 +105,10 @@ export interface CourseEntity {
   posts: Array<PostEntity>;
   enrolledInfos: Array<EnrolledInfoEntity>;
   sections: Array<SectionEntity>;
+
+  //graphql
   numberOfEnrollments?: number;
+  enrolled?: boolean
 }
 export interface CourseTargetEntity {
   courseTargetId: string;
@@ -124,6 +127,7 @@ export interface EnrolledInfoEntity {
   enrolledAt: Date;
   course: CourseEntity;
   user: UserEntity;
+  enrolled: boolean;
 }
 
 export interface LectureEntity {

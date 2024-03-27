@@ -13,11 +13,12 @@ export const authAxios = axios.create()
 
 authAxios.interceptors.request.use(
     (config) => {
-        const authTokenType = config.params?.authTokenType ?? AuthTokenType.Access
+        const authTokenType = config?.headers.get("Auth-Token-Type") as AuthTokenType ?? AuthTokenType.Access
         const headers = new AxiosHeaders({
             ...config.headers,
             Authorization: buildBearerTokenHeader(authTokenType),
             "Client-Id": getClientId(),
+            "Auth-Token-Type": authTokenType
         })
         return {
             ...config,
@@ -40,16 +41,16 @@ authAxios.interceptors.response.use(
         const error = ex.response?.data as ErrorResponse
         const { statusCode } = error
         const authTokenType =
-      ex.config?.params?.authTokenType ?? AuthTokenType.Access
-        console.log(authTokenType)
+        ex.config?.headers.get("Auth-Token-Type") ?? AuthTokenType.Access
         if (
             statusCode === ErrorStatusCode.Unauthorized &&
       authTokenType === AuthTokenType.Access
         ) {
             return await authAxios.request({
                 ...ex.config,
-                params: {
-                    authTokenType: AuthTokenType.Refresh,
+                headers: {
+                    ...ex.config?.headers,
+                    "Auth-Token-Type": AuthTokenType.Refresh,
                 },
             })
         }

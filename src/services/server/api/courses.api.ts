@@ -15,6 +15,7 @@ export const createCourse = async (): Promise<CreateCourseOutput> => {
 export interface EnrollCourseInput {
   data: {
     courseId: string;
+    transactionHash: string;
   };
 }
 
@@ -28,7 +29,7 @@ export const enrollCourse = async (
     const { data } = input
     const url = `${BASE_URL}/enroll-course`
 
-    return await authAxios.patch(url, { data })
+    return await authAxios.patch(url, data)
 }
 
 export interface UpdateCourseInput {
@@ -273,3 +274,4 @@ export const deleteResource = async (
 
     return await authAxios.delete(url)
 }
+

@@ -6,6 +6,7 @@ import { HomeContent } from "./HomeContent"
 import { RootContext } from "../../../../../_hooks"
 
 export const BodyContent = () => {
+
     const { reducer } = useContext(WalletModalRefContext)!
     const [ state ] = reducer
     const { currentContent } = state
@@ -16,11 +17,10 @@ export const BodyContent = () => {
     const { metamask } = wallets
     const { address } = metamask
 
-    console.log(currentContent)
     const render = () => {
 
         const currentContentToComponent: Record<CurrentContent, JSX.Element> = {
-            [CurrentContent.Home]: <HomeContent />,
+            [CurrentContent.Home]: <HomeContent/>,
             [CurrentContent.STARCI]: <div />,
             [CurrentContent.STARCI2]: <div />,
         }

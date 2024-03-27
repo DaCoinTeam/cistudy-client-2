@@ -17,6 +17,7 @@ import { DeepPartial } from "@apollo/client/utilities"
 export interface FindOneCourseInputData {
   params: {
     courseId: string;
+    userId?: string;
   };
 }
 

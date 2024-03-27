@@ -1,46 +1,38 @@
 import { GAS_LIMIT, GAS_PRICE } from "../../gas"
-import { getHttpWeb3 } from "../../providers"
-import Web3, { Address } from "web3"
+import Web3, { Address, Contract, EthExecutionAPI, SupportedProviders } from "web3"
 import abi from "./abi"
 import { ChainId } from "../../chains"
-
-const getERC20Contract = (web3: Web3, address: Address) =>
-    new web3.eth.Contract(abi, address, web3)
+import { getHttpProvider } from "../../providers"
 
 export class ERC20Contract {
-    private chainId: ChainId
-    private address: Address
-    private web3?: Web3
+    private contract: Contract<typeof abi>
     private sender?: Address
 
     constructor(
         chainId: ChainId,
         address: Address,
-        web3?: Web3,
+        provider?: SupportedProviders<EthExecutionAPI>,
         sender?: string
     ) {
-        this.chainId = chainId
-        this.address = address
-        this.web3 = web3
+        if (!provider) provider = getHttpProvider(chainId)
+        const web3 = new Web3(provider)
+        this.contract = new web3.eth.Contract(abi, address, web3)
+
         this.sender = sender
     }
 
     async name() {
         try {
-            const web3 = getHttpWeb3(this.chainId)
-            const contract = getERC20Contract(web3, this.address)
-            return await contract.methods.name().call()
+            return await this.contract.methods.name().call()
         } catch (ex) {
             console.log(ex)
             return null
         }
     }
 
-    async symbol(controller?: AbortController) {
+    async symbol() {
         try {
-            const web3 = getHttpWeb3(this.chainId, controller)
-            const contract = getERC20Contract(web3, this.address)
-            return await contract.methods.symbol().call()
+            return await  this.contract.methods.symbol().call()
         } catch (ex) {
             console.log(ex)
             return null
@@ -49,9 +41,7 @@ export class ERC20Contract {
 
     async decimals() {
         try {
-            const web3 = getHttpWeb3(this.chainId)
-            const contract = getERC20Contract(web3, this.address)
-            return Number(await contract.methods.decimals().call())
+            return Number(await this.contract.methods.decimals().call())
         } catch (ex) {
             console.log(ex)
             return null
@@ -60,9 +50,7 @@ export class ERC20Contract {
 
     async balanceOf(owner: Address) {
         try {
-            const web3 = getHttpWeb3(this.chainId)
-            const contract = getERC20Contract(web3, this.address)
-            return await contract.methods.balanceOf(owner).call<bigint>()
+            return await this.contract.methods.balanceOf(owner).call<bigint>()
         } catch (ex) {
             console.log(ex)
             return null
@@ -71,20 +59,29 @@ export class ERC20Contract {
 
     async allowance(owner: Address, spender: Address) {
         try {
-            const web3 = getHttpWeb3(this.chainId)
-            const contract = getERC20Contract(web3, this.address)
-            return await contract.methods.allowance(owner, spender).call<bigint>()
+            return await this.contract.methods.allowance(owner, spender).call<bigint>()
         } catch (ex) {
             console.log(ex)
             return null
         }
     }
 
-    async approve(spender: string, value: bigint) {
+    async approve(spender: Address, value: bigint) {
         try {
-            if (!this.web3) return null
-            const contract = getERC20Contract(this.web3, this.address)
-            return contract.methods.approve(spender, value).send({
+            return this.contract.methods.approve(spender, value).send({
+                from: this.sender,
+                gas: GAS_LIMIT,
+                gasPrice: GAS_PRICE,
+            })
+        } catch (ex) {
+            console.log(ex)
+            return null
+        }
+    }
+
+    async transfer(recipient: Address, amount: bigint) {
+        try {
+            return this.contract.methods.transfer(recipient, amount).send({
                 from: this.sender,
                 gas: GAS_LIMIT,
                 gasPrice: GAS_PRICE,
