@@ -17,7 +17,7 @@ const WrappedLayout = ({ children }: { children: ReactNode }) => {
         <html lang="en" className={darkMode ? "dark" : "light"}>
             <body className={`${font.className} min-h-screen`}>
                 <MetaMaskProvider
-
+                    debug={false}
                     sdkOptions={{
                         dappMetadata: {
                             name: "CiStudy", 

@@ -11,7 +11,10 @@ import { enrollCourse, getAssetUrl } from "@services"
 import { useContext } from "react"
 import { VideoPlayer } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
-import { ArrowRightEndOnRectangleIcon, ShoppingCartIcon } from "@heroicons/react/24/outline"
+import {
+    ArrowRightEndOnRectangleIcon,
+    ShoppingCartIcon,
+} from "@heroicons/react/24/outline"
 import {
     ClipboardPenLineIcon,
     FolderOpenIcon,
@@ -28,7 +31,14 @@ export const CourseFloat = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course, isLoading, mutate } = courseSwr
-    const { previewVideoId, price, enableDiscount, discountPrice, courseId, enrolled } = {
+    const {
+        previewVideoId,
+        price,
+        enableDiscount,
+        discountPrice,
+        courseId,
+        enrolled,
+    } = {
         ...course,
     }
     const { account, provider } = useSDK()
@@ -40,7 +50,7 @@ export const CourseFloat = () => {
     const getPrice = () => {
         if (!discountPrice || !price) return BigInt(0)
         return enableDiscount ? computeRaw(discountPrice) : computeRaw(price)
-    } 
+    }
 
     const onEnrollPress = async () => {
         if (!account) {
@@ -49,19 +59,28 @@ export const CourseFloat = () => {
         }
         if (!courseId) return
 
-        const primaryTokenContract = new ERC20Contract(ChainId.KalytnTestnet, chainInfos[ChainId.KalytnTestnet].primaryToken, provider, account)
-        const transaction = await primaryTokenContract.transfer(EVM_RECIPIENT, getPrice())
-        
-        if (transaction === null) {
+        if (!account) {
             onOpen()
             return
         }
-        
+        const primaryTokenContract = new ERC20Contract(
+            ChainId.KalytnTestnet,
+            chainInfos[ChainId.KalytnTestnet].primaryToken,
+            provider,
+            account
+        )
+        const transaction = await primaryTokenContract.transfer(
+            EVM_RECIPIENT,
+            getPrice()
+        )
+
+        if (transaction === null) return
+
         await enrollCourse({
             data: {
                 courseId,
-                transactionHash: transaction.transactionHash
-            }
+                transactionHash: transaction.transactionHash,
+            },
         })
         await mutate()
     }
@@ -84,9 +103,7 @@ export const CourseFloat = () => {
                         {price} STARCI
                     </div>
                 </div>
-                <div className="text-sm">
-                    {renderDiscountPercentage()}% off
-                </div>
+                <div className="text-sm">{renderDiscountPercentage()}% off</div>
             </div>
         )
     }
@@ -94,7 +111,7 @@ export const CourseFloat = () => {
     const path = usePathname()
     const router = useRouter()
     const onEnterCoursePress = () => router.push(`${path}/home`)
-    
+
     return (
         <Card
             shadow="none"
@@ -108,13 +125,7 @@ export const CourseFloat = () => {
                 />
             </CardHeader>
             <CardBody className="p-4">
-                {
-                    enrolled ?
-                        <div className="text-primary text-sm">
-                            Enrolled
-                        </div>
-                        : null
-                }
+                {enrolled ? <div className="text-primary text-sm">Enrolled</div> : null}
                 <div>{renderPrice()}</div>
                 <Spacer y={4} />
                 <div>
@@ -133,42 +144,43 @@ export const CourseFloat = () => {
                 </div>
             </CardBody>
             <CardFooter className="p-4 pt-2 flex-col gap-4">
-                {
-                    enrolled ?
-                        (
-                            <Button
-                                color="primary"
-                                onPress={onEnterCoursePress}
-                                startContent={<ArrowRightEndOnRectangleIcon height={20} width={20} />}
-                                fullWidth
-                            >
-              Enter course
-                            </Button>
-                        ) : 
-                        (<>
-                            <Button
-                                startContent={
-                                    <ClipboardPenLineIcon height={20} width={20} strokeWidth={3 / 2} />
-                                }
-                                onPress={onEnrollPress}
-                                color="primary"
-                                fullWidth
-                            >
-          Enroll now
-                            </Button>
-                            <Button
-                                color="primary"
-                                variant="light"
-                                startContent={<ShoppingCartIcon height={20} width={20} />}
-                                fullWidth
-                            >
-          Add to cart
-                            </Button>
-                        </>
-                     
-                        )
-                }
-                
+                {enrolled ? (
+                    <Button
+                        color="primary"
+                        onPress={onEnterCoursePress}
+                        startContent={
+                            <ArrowRightEndOnRectangleIcon height={20} width={20} />
+                        }
+                        fullWidth
+                    >
+            Enter course
+                    </Button>
+                ) : (
+                    <>
+                        <Button
+                            startContent={
+                                <ClipboardPenLineIcon
+                                    height={20}
+                                    width={20}
+                                    strokeWidth={3 / 2}
+                                />
+                            }
+                            onPress={onEnrollPress}
+                            color="primary"
+                            fullWidth
+                        >
+              Enroll now
+                        </Button>
+                        <Button
+                            color="primary"
+                            variant="light"
+                            startContent={<ShoppingCartIcon height={20} width={20} />}
+                            fullWidth
+                        >
+              Add to cart
+                        </Button>
+                    </>
+                )}
             </CardFooter>
         </Card>
     )
