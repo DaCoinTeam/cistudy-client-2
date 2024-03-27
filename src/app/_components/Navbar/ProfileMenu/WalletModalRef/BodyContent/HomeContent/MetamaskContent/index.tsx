@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext } from "react"
 import { RootContext } from "../../../../../../../_hooks"
-import { Button, Divider, Link, ModalBody, Spacer, User } from "@nextui-org/react"
+import { Button, Link, ModalBody, Spacer, User } from "@nextui-org/react"
 import { computeDenomination, truncateAddress } from "@common"
 
 export const MetamaskContent = () => {
@@ -38,12 +38,12 @@ export const MetamaskContent = () => {
                     }} name="STARCI Token" description={`${computeDenomination(starciBalance)} STARCI`} />
                 </div>
                 <Spacer y={4}/>
-                <div className="border border-divider rounded-medium w-full">
-                    <User className="flex justify-start p-4" avatarProps={{
+                <div className="border border-divider rounded-medium w-full p-4">
+                    <User className="flex justify-start" avatarProps={{
                         src: "/starci-logo.svg"
                     }} name="STARCI2 Token" description={`${computeDenomination(starci2Balance)} STARCI2`} />
-                    <Divider />
-                    <div className="flex gap-3 p-4 items-center">
+                    <Spacer y={4}/>
+                    <div className="flex gap-3 items-center">
                         <Button color="primary"> Withdraw </Button>
                         <div className="text-sm text-foreground-400">{balance} STARCI2</div>
                     </div>
