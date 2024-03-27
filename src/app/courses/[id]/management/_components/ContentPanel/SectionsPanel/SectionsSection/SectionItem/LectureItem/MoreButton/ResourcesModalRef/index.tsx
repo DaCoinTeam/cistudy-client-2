@@ -101,9 +101,9 @@ const WrappedResourcesModalRef = () => {
                                     <input {...getInputProps()} />
                                     <div className="cursor-pointer border-dashed rounded-large border-4 h-48 grid place-items-center">
                                         <div>
-                                            <DocumentArrowUpIcon className="w-20 h-20 text-foreground-500" />
+                                            <DocumentArrowUpIcon className="w-20 h-20 text-foreground-400" />
                                             <Spacer y={1} />
-                                            <div className="text-sm text-foreground-500">
+                                            <div className="text-sm text-foreground-400">
                         Upload file(s)
                                             </div>
                                         </div>

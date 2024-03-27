@@ -13,7 +13,7 @@ export const init = async (
     schema: Schema<DeepPartial<UserEntity>>,
 ): Promise<UserEntity> => {
     const payload = buildAuthPayloadString(schema)
-    const response = await authClient.query({
+    const { data: graphqlData } = await authClient.query({
         query: gql`
             query Init {
         init  {
@@ -23,7 +23,7 @@ export const init = async (
           `,
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: true,
     })
 }
@@ -40,7 +40,7 @@ export const signIn = async (
     schema: Schema<DeepPartial<UserEntity>>
 ): Promise<UserEntity> => {
     const payload = buildAuthPayloadString(schema)
-    const response = await client.query({
+    const { data: graphqlData } = await client.query({
         query: gql`
             query SignIn($data: SignInInputData!) {
                 signIn(data: $data) {
@@ -54,7 +54,7 @@ export const signIn = async (
     })
 
     return getGraphqlResponseData({
-        response,
+        data : graphqlData,
         isAuth: true,
     })
 }
@@ -70,7 +70,7 @@ export const verifyGoogleAccessToken = async (
     schema: Schema<DeepPartial<UserEntity>>
 ): Promise<UserEntity> => {
     const payload = buildAuthPayloadString(schema)
-    const response = await client.query({
+    const { data: graphqlData } = await client.query({
         query: gql`
            query VerifyGoogleAccessToken($data: VerifyGoogleAccessTokenData!) {
   verifyGoogleAccessToken(data: $data) {
@@ -83,7 +83,7 @@ export const verifyGoogleAccessToken = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: true
     })
 }

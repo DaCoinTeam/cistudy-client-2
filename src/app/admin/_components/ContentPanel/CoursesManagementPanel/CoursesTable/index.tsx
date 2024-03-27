@@ -128,7 +128,7 @@ export const CoursesTable = () => {
                                 />
                                 <div>
                                     <div className="text-base">{title}</div>
-                                    <div className="text-xs text-foreground-500 line-clamp-3">
+                                    <div className="text-xs text-foreground-400 line-clamp-3">
                                         {description}
                                     </div>
                                 </div>

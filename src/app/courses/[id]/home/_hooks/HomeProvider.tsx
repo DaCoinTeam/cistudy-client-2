@@ -14,7 +14,7 @@ import {
 } from "./useHomeReducer"
 import useSWR, { SWRConfig, SWRResponse } from "swr"
 import { CourseEntity, ErrorResponse } from "@common"
-import { findOneCourse } from "../../../../../services/server"
+import { findOneCourseAuth } from "../../../../../services/server"
 import { CourseDetailsContext } from "../../_hooks"
 
 export interface HomeContextValue {
@@ -38,7 +38,7 @@ const WrappedHomeProvider = ({ children }: { children: ReactNode }) => {
 
     const fetchCourseHome = useCallback(async () => {
         if (!courseId) return
-        return await findOneCourse(
+        return await findOneCourseAuth(
             {
                 params: {
                     courseId,

@@ -83,7 +83,7 @@ const WrappedManagePriceModal = () => {
                             labelPlacement="outside"
                             label="Price"
                             endContent={
-                                <div className="text-foreground-500 text-sm">STARCI</div>
+                                <div className="text-foreground-400 text-sm">STARCI</div>
                             }
                         />
                         <Spacer y={4} />
@@ -102,7 +102,7 @@ const WrappedManagePriceModal = () => {
                             labelPlacement="outside"
                             label="Discount price"
                             endContent={
-                                <div className="text-foreground-500 text-sm">STARCI</div>
+                                <div className="text-foreground-400 text-sm">STARCI</div>
                             }
                         />
                         <Spacer y={4} />

@@ -32,7 +32,7 @@ export const Instructor = (props: InstructorProps) => {
                 />
                 <div>
                     <div className="text-lg font-semibold">{username}</div>
-                    <div className="text-sm text-foreground-500">
+                    <div className="text-sm text-foreground-400">
                         {numberOfFollowers} follower
                     </div>
                     <div className="flex items-center">

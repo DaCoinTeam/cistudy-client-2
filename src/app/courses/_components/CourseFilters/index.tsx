@@ -54,7 +54,7 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                         title={
                             <div className="flex gap-3 items-center">
                                 <div>Categories</div>
-                                <div className="text-foreground-500">
+                                <div className="text-foreground-400">
                                     {getMetadata()?.categories?.length ?? 0}
                                 </div>
                             </div>
@@ -76,7 +76,7 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                         title={
                             <div className="flex gap-3 items-center">
                                 <div>Subcategories</div>
-                                <div className="text-foreground-500">
+                                <div className="text-foreground-400">
                                     {getMetadata()?.subcategories?.length ?? 0}
                                 </div>
                             </div>
@@ -98,7 +98,7 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                         title={
                             <div className="flex gap-3 items-center">
                                 <div>Topics</div>
-                                <div className="text-foreground-500">
+                                <div className="text-foreground-400">
                                     {getMetadata()?.topics?.length ?? 0}
                                 </div>
                             </div>

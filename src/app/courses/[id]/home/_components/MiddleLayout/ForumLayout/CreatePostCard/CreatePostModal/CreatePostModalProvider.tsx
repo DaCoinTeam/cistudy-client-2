@@ -55,7 +55,7 @@ export const CreatePostModalProvider = ({
     return (
         <Formik
             initialValues={initialValues}
-            onSubmit={async ({ title, html, postMedias: postMediasRaw }, helpers) => {
+            onSubmit={async ({ title, html, postMedias: postMediasRaw }, {resetForm}) => {
                 if (!courseHome) return
                 const { courseId } = courseHome
 
@@ -83,7 +83,7 @@ export const CreatePostModalProvider = ({
                     files,
                 })
                 await mutate()
-                helpers.resetForm()
+                resetForm()
                 onClose()
             }}
         >

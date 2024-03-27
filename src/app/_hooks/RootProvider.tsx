@@ -67,6 +67,7 @@ const WrappedRootProvider = forwardRef<
                 avatarUrl: true,
                 coverPhotoId: true,
                 kind: true,
+                balance: true
             })
         } catch (ex) {
             console.log(ex)

@@ -2,7 +2,6 @@
 import {
     ApolloClient,
     ApolloLink,
-    ApolloQueryResult,
     DefaultOptions,
     InMemoryCache,
     createHttpLink,
@@ -97,21 +96,20 @@ export const authClient = new ApolloClient({
     defaultOptions
 })
 
-export type NotAuthResponse<T> = {
+export type NotAuthResponse<T extends object> = {
     isAuth: false;
-    response: ApolloQueryResult<T>;
+    data: T;
 }
 
-export type AuthResponse<T> = {
+export type AuthResponse<T extends object> = {
     isAuth: true;
-    response: ApolloQueryResult<BaseResponse<T>>;
+    data: BaseResponse<T>;
 }
 
-export const getGraphqlResponseData = <T>(
+export const getGraphqlResponseData = <T extends object>(
     params: NotAuthResponse<T> | AuthResponse<T>
 ) => {
-    const { isAuth, response } = params
-    const data = response.data!
+    const { isAuth, data } = params
     if (!isAuth) {
         return Object.values(data).at(0) as T
     } else {

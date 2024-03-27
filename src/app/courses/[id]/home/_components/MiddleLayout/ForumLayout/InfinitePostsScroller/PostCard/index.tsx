@@ -6,7 +6,6 @@ import {
     CardBody,
     CardFooter,
     CardHeader,
-    Spacer,
     User,
 } from "@nextui-org/react"
 import { MediaGroup, TextRenderer } from "../../../../../../../../_shared"
@@ -55,10 +54,9 @@ export const PostCard = (props: PostCardProps) => {
                         />
                         <MoreButton />
                     </div>
-                    <Spacer y={2} />
-                    <div className="text-xl font-semibold"> {title} </div>
                 </CardHeader>
                 <CardBody className="p-4 gap-4">
+                    <div className="text-xl font-semibold"> {title} </div>
                     <TextRenderer html={html} />
                     <MediaGroup
                         medias={postMedias?.map(({ mediaId, mediaType, postMediaId }) => ({

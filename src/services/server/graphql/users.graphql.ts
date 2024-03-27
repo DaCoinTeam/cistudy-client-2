@@ -22,7 +22,7 @@ export const findOneUser = async (
     schema?: Schema<DeepPartial<UserEntity>>
 ): Promise<UserEntity> => {
     const payload = buildPayloadString(schema)
-    const response = await client.query({
+    const { data: graphqlData } = await client.query({
         query: gql`
             query FindOneUser($data: FindOneUserInputData!) {
                 findOneUser(data: $data)   {
@@ -35,7 +35,7 @@ export const findOneUser = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: false
     })
 }
@@ -51,7 +51,7 @@ export const findManyFollowers = async (
     schema?: Schema<DeepPartial<UserEntity>>
 ): Promise<Array<UserEntity>> => {
     const payload = buildPayloadString(schema)
-    const response = await client.query({
+    const { data: graphqlData } = await client.query({
         query: gql`
             query FindManyFollowers($data: FindManyFollowersInputData!) {
                 findManyFollowers(data: $data)   {
@@ -64,7 +64,7 @@ export const findManyFollowers = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: false
     })
 }
@@ -84,7 +84,7 @@ export const findManyCreatedCourses = async (
     schema?: Schema<DeepPartial<CourseEntity>>
 ): Promise<Array<CourseEntity>> => {
     const payload = buildPayloadString(schema)
-    const response = await client.query({
+    const { data: graphqlData } = await client.query({
         query: gql`
             query FindManyCreatedCourses($data: FindManyCreatedCoursesInputData!) {
                 findManyCreatedCourses(data: $data)   {
@@ -97,7 +97,7 @@ export const findManyCreatedCourses = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: false
     })
 }

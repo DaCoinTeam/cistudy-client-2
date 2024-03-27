@@ -12,7 +12,7 @@ export const PriceCard = (props: PriceCardProps) => {
         <Card className={`${className}`}>
             <CardBody className="p-4 gap-4 pt-3 pb-0">
                 <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-1 text-foreground-500">
+                    <div className="flex items-center gap-1 text-foreground-400">
                         <div className="text-2xl">
                         Net Price
                         </div>    
@@ -30,7 +30,7 @@ export const PriceCard = (props: PriceCardProps) => {
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-1 text-foreground-500">
+                    <div className="flex items-center gap-1 text-foreground-400">
                         <div className="font-semibold">
                         Fee
                         </div>    
@@ -48,7 +48,7 @@ export const PriceCard = (props: PriceCardProps) => {
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-1 text-foreground-500">
+                    <div className="flex items-center gap-1 text-foreground-400">
                         <div className="font-semibold">
                         Actual
                         </div>    

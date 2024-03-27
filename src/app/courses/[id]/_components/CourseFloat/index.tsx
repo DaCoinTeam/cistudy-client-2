@@ -80,7 +80,7 @@ export const CourseFloat = () => {
             <div>
                 <div className="flex gap-2 items-center">
                     <div className="text-3xl font-semibold">{discountPrice} STARCI</div>
-                    <div className="line-through text-foreground-500 text-sm">
+                    <div className="line-through text-foreground-400 text-sm">
                         {price} STARCI
                     </div>
                 </div>
@@ -120,12 +120,12 @@ export const CourseFloat = () => {
                 <div>
                     <div className="text-sm">This course included</div>
                     <Spacer y={2} />
-                    <div className="flex text-foreground-500 flex-col gap-2">
+                    <div className="flex text-foreground-400 flex-col gap-2">
                         <div className="flex gap-2">
                             <PlaySquareIcon size={20} strokeWidth={3 / 2} />
                             <div className="text-sm"> 4 lectures</div>
                         </div>
-                        <div className="flex text-foreground-500 gap-2">
+                        <div className="flex text-foreground-400 gap-2">
                             <FolderOpenIcon size={20} strokeWidth={3 / 2} />
                             <div className="text-sm"> 7 downloadable resources </div>
                         </div>

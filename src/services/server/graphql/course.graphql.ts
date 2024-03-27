@@ -26,7 +26,7 @@ export const findOneCourse = async (
     schema: Schema<DeepPartial<CourseEntity>>
 ): Promise<CourseEntity> => {
     const payload = buildPayloadString(schema)
-    const response = await client.query({
+    const { data: graphqlData } = await client.query({
         query: gql`
             query FindOneCourse($data: FindOneCourseInputData!) {
     findOneCourse(data: $data) {
@@ -39,8 +39,37 @@ export const findOneCourse = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: false,
+    })
+}
+
+export interface FindOneCourseAuthInputData {
+  params: {
+    courseId: string;
+  };
+}
+
+export const findOneCourseAuth = async (
+    data: FindOneCourseAuthInputData,
+    schema: Schema<DeepPartial<CourseEntity>>
+): Promise<CourseEntity> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query FindOneCourseAuth($data: FindOneCourseAuthInputData!) {
+    findOneCourseAuth(data: $data) {
+      ${payload}
+    }
+  }
+          `,
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData ,
+        isAuth: true,
     })
 }
 
@@ -67,7 +96,7 @@ export const findManyCourses = async (
     schema: Schema<DeepPartial<FindManyCoursesOutputData>>
 ): Promise<FindManyCoursesOutputData> => {
     const payload = buildPayloadString(schema)
-    const response = await authClient.query({
+    const { data: graphqlData } = await authClient.query({
         query: gql`
             query FindManyCourses($data: FindManyCoursesInputData!) {
                 findManyCourses(data: $data) {
@@ -80,7 +109,7 @@ export const findManyCourses = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: false,
     })
 }
@@ -100,7 +129,7 @@ export const findManyLectures = async (
     schema: Schema<DeepPartial<LectureEntity>>
 ): Promise<Array<LectureEntity>> => {
     const payload = buildAuthPayloadString(schema)
-    const response = await authClient.query({
+    const { data: graphqlData } = await authClient.query({
         query: gql`
             query FindManyLectures($data: FindManyLecturesInputData!) {
                 findManyLectures(data: $data) {
@@ -114,7 +143,7 @@ export const findManyLectures = async (
     })
 
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: true,
     })
 }
@@ -133,7 +162,7 @@ export const findOneLecture = async (
     schema: Schema<DeepPartial<LectureEntity>>
 ): Promise<LectureEntity> => {
     const payload = buildAuthPayloadString(schema)
-    const response = await authClient.query({
+    const { data: graphqlData } = await authClient.query({
         query: gql`
             query FindOneLecture($data: FindOneLectureInputData!) {
                 findOneLecture(data: $data) {              
@@ -146,7 +175,7 @@ export const findOneLecture = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: true,
     })
 }
@@ -162,7 +191,7 @@ export const findManyResources = async (
     schema: Schema<DeepPartial<ResourceEntity>>
 ): Promise<Array<ResourceEntity>> => {
     const payload = buildAuthPayloadString(schema)
-    const response = await authClient.query({
+    const { data: graphqlData } = await authClient.query({
         query: gql`
             query FindManyResources($data: FindManyResourcesInputData!) {
                 findManyResources(data: $data) {              
@@ -175,7 +204,7 @@ export const findManyResources = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: true,
     })
 }
@@ -191,7 +220,7 @@ export const findManyCourseTargets = async (
     schema: Schema<DeepPartial<CourseTargetEntity>>
 ): Promise<Array<CourseTargetEntity>> => {
     const payload = buildAuthPayloadString(schema)
-    const response = await authClient.query({
+    const { data: graphqlData } = await authClient.query({
         query: gql`
             query FindManyCourseTargets($data: FindManyCourseTargetsInputData!) {
                 findManyCourseTargets(data: $data) {       
@@ -203,12 +232,8 @@ export const findManyCourseTargets = async (
             data,
         },
     })
-    console.log(getGraphqlResponseData({
-        response,
-        isAuth: true,
-    }))
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: true,
     })
 }
@@ -217,7 +242,7 @@ export const findManyCategories = async (
     schema: Schema<DeepPartial<CategoryEntity>>
 ): Promise<Array<CategoryEntity>> => {
     const payload = buildPayloadString(schema)
-    const response = await client.query({
+    const { data: graphqlData } = await client.query({
         query: gql`
             query FindManyCategories {
                 findManyCategories {
@@ -228,7 +253,7 @@ export const findManyCategories = async (
     })
 
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: false
     })
 }

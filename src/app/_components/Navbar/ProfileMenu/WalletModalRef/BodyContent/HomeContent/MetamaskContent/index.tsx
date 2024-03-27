@@ -1,11 +1,15 @@
 "use client"
 import React, { useContext } from "react"
 import { RootContext } from "../../../../../../../_hooks"
-import { Button, Link, ModalBody, Spacer, User } from "@nextui-org/react"
+import { Button, Divider, Link, ModalBody, Spacer, User } from "@nextui-org/react"
 import { computeDenomination, truncateAddress } from "@common"
 
 export const MetamaskContent = () => {
-    const { reducer } = useContext(RootContext)!
+    const { swrs, reducer } = useContext(RootContext)!
+    const { profileSwr } = swrs
+    const { data: profile } = profileSwr
+    const { balance } = { ...profile }
+
     const [state] = reducer
     const { wallets } = state
     const { metamask } = wallets
@@ -28,16 +32,21 @@ export const MetamaskContent = () => {
                     </Button>
                 </div>
                 <Spacer y={6}/>
-                <div className="bg-content2 rounded-medium w-full p-4">
+                <div className="border border-divider rounded-medium w-full p-4">
                     <User avatarProps={{
                         src: "/starci-logo.svg"
                     }} name="STARCI Token" description={`${computeDenomination(starciBalance)} STARCI`} />
                 </div>
                 <Spacer y={4}/>
-                <div className="bg-content2 rounded-medium w-full p-4">
-                    <User avatarProps={{
+                <div className="border border-divider rounded-medium w-full">
+                    <User className="flex justify-start p-4" avatarProps={{
                         src: "/starci-logo.svg"
                     }} name="STARCI2 Token" description={`${computeDenomination(starci2Balance)} STARCI2`} />
+                    <Divider />
+                    <div className="flex gap-3 p-4 items-center">
+                        <Button color="primary"> Withdraw </Button>
+                        <div className="text-sm text-foreground-400">{balance} STARCI2</div>
+                    </div>
                 </div>
             </div> 
         </ModalBody>

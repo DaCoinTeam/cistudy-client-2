@@ -36,15 +36,15 @@ export const Sections = () => {
                             >
                                 {lectures.map(({lectureId, title, description, thumbnailId}) => (
                                     <div key={lectureId} className="flex gap-3">
-                                        <InteractiveThumbnail src={getAssetUrl(thumbnailId)} className="w-40 h-fit" />
+                                        <InteractiveThumbnail isPressable src={getAssetUrl(thumbnailId)} className="w-40 h-fit" />
                                         <div>
                                             <div>
                                                 {title}
                                             </div>
-                                            <div className="text-xs text-foreground-500">
+                                            <div className="text-xs text-foreground-400">
                                                 15m
                                             </div>
-                                            <div className="text-xs text-foreground-500">
+                                            <div className="text-xs text-foreground-400">
                                                 {description}
                                             </div>
                                         </div>

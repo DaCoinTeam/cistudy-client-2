@@ -29,7 +29,7 @@ interface CreatePostModalProps {
 
 export const WrappedCreatePostModal = () => {
     const { formik } = useContext(CreatePostModalContext)!
-
+    console.log(formik.errors)
     const onPress = () => formik.handleSubmit()
 
     const setHtml = useCallback(
@@ -72,7 +72,7 @@ export const WrappedCreatePostModal = () => {
                 />
             </ModalBody>
             <ModalFooter className="p-4 pt-2 items-center">
-                <Button startContent={<ArrowPathIcon height={20} width={20} />}>Reset</Button>
+                <Button variant="light" startContent={<ArrowPathIcon height={20} width={20} />}>Reset</Button>
                 <Button
                     onPress={onPress}
                     startContent={
@@ -96,7 +96,7 @@ export const CreatePostModal = (props: CreatePostModalProps) => {
             <Button
                 fullWidth
                 onPress={onOpen}
-                className={`${className} !justify-normal px-3 text-foreground-500`}
+                className={`${className} !justify-normal px-3 text-foreground-400`}
             >
         Create a post
             </Button>

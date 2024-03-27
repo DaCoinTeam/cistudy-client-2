@@ -31,7 +31,7 @@ export const findManyPosts = async (
     schema: Schema<DeepPartial<FindManyPostsOutputData>>,
 ): Promise<FindManyPostsOutputData> => {
     const payload = buildAuthPayloadString(schema)
-    const response = await authClient.query({
+    const { data: graphqlData } = await authClient.query({
         query: gql`
             query FindManyPosts($data: FindManyPostsInputData!) {
   findManyPosts(data: $data) {
@@ -44,7 +44,7 @@ export const findManyPosts = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: true
     })   
 }
@@ -71,7 +71,7 @@ export const findManyPostComments = async (
     schema: Schema<DeepPartial<FindManyPostCommentsOutputData>>
 ): Promise<FindManyPostCommentsOutputData> => {
     const payload = buildAuthPayloadString(schema)
-    const response = await authClient.query({
+    const { data: graphqlData } = await authClient.query({
         query: gql`
             query FindManyPostComments($data: FindManyPostCommentsInputData!) {
                 findManyPostComments(data: $data) {
@@ -84,7 +84,7 @@ export const findManyPostComments = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: true
     })   
 }
@@ -113,7 +113,7 @@ export const findManyPostCommentReplies = async (
 ): Promise<FindManyPostCommentRepliesOutputData> => {
     const payload = buildAuthPayloadString(schema)
 
-    const response = await authClient.query({
+    const { data: graphqlData } = await authClient.query({
         query: gql`
             query FindManyPostCommentReplies($data: FindManyPostCommentRepliesInputData!) {
                 findManyPostCommentReplies(data: $data) {
@@ -126,7 +126,7 @@ export const findManyPostCommentReplies = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: true
     })   
 }

@@ -29,7 +29,7 @@ export const UploadDropzone = () => {
                     <div {...getRootProps()}>
                         <input {...getInputProps()} />
                         <div className="rounded-medium grid cursor-pointer place-content-center aspect-video bg-content2">
-                            <FilePlus2 size={24} className="text-foreground-500" strokeWidth={3/2}/>
+                            <FilePlus2 size={24} className="text-foreground-400" strokeWidth={3/2}/>
                         </div>
                     </div>
                 </section>

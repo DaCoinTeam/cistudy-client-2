@@ -104,13 +104,14 @@ export const CoursesTable = () => {
                         <TableCell>
                             <div className="flex gap-3 py-2">
                                 <InteractiveThumbnail
+                                    isPressable
                                     className="w-40 min-w-40 h-fit"
                                     src={getAssetUrl(thumbnailId)}
                                     onPress={() => router.push(`/courses/${courseId}/management`)}
                                 />
                                 <div>
                                     <div className="text-base">{title}</div>
-                                    <div className="text-xs text-foreground-500 line-clamp-3">
+                                    <div className="text-xs text-foreground-400 line-clamp-3">
                                         {description}
                                     </div>
                                 </div>

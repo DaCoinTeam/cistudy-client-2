@@ -54,6 +54,11 @@ const WrappedEnrolledCoursesSectionProvider = ({
                         previewVideoId: true,
                         title: true,
                         description: true,
+                        creator: {
+                            username: true,
+                            numberOfFollowers: true,
+                            avatarId: true
+                        }
                     },
                     metadata: {
                         count: true,

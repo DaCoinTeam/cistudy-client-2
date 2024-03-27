@@ -18,6 +18,7 @@ export const LectureItem = (props: LectureItemProps) => {
             className="flex gap-3 z-10"
         >
             <InteractiveThumbnail
+                isPressable
                 src={getAssetUrl(thumbnailId)}
                 onPress={onPress}
                 className="h-fit w-40"
@@ -25,9 +26,9 @@ export const LectureItem = (props: LectureItemProps) => {
             <div>
                 <div>
                     <div className="truncate text-sm"> {title} </div>
-                    <div className="flex gap-1 items-center text-foreground-500">
-                        <div className="text-xs text-foreground-500">15m</div>
-                        <div className="text-xs text-foreground-500">{description}</div>
+                    <div className="flex gap-1 items-center text-foreground-400">
+                        <div className="text-xs text-foreground-400">15m</div>
+                        <div className="text-xs text-foreground-400">{description}</div>
                     </div>
                 </div>
             </div>

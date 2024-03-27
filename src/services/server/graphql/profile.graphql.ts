@@ -26,7 +26,7 @@ export const findManySelfCreatedCourses = async (
     schema: Schema<DeepPartial<FindManySelfCreatedCoursesOutputData>>
 ): Promise<FindManySelfCreatedCoursesOutputData> => {
     const payload = buildAuthPayloadString(schema)
-    const response = await authClient.query({
+    const { data: graphqlData } = await authClient.query({
         query: gql`
             query FindManySelfCreatedCourses($data: FindManySelfCreatedCoursesInputData!) {
                 findManySelfCreatedCourses(data: $data) {
@@ -39,7 +39,7 @@ export const findManySelfCreatedCourses = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: true,
     })
 }
@@ -63,7 +63,7 @@ export const findManyEnrolledCourses = async (
     schema: Schema<DeepPartial<FindManyEnrolledCoursesOutputData>>
 ): Promise<FindManyEnrolledCoursesOutputData> => {
     const payload = buildAuthPayloadString(schema)
-    const response = await authClient.query({
+    const { data: graphqlData } = await authClient.query({
         query: gql`
             query FindManyEnrolledCourses($data: FindManyEnrolledCoursesInputData!) {
                 findManyEnrolledCourses(data: $data) {
@@ -76,7 +76,7 @@ export const findManyEnrolledCourses = async (
         },
     })
     return getGraphqlResponseData({
-        response,
+        data: graphqlData,
         isAuth: true,
     })
 }

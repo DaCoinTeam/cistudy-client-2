@@ -36,11 +36,11 @@ export const LectureItem = (props: LectureItemProps) => {
         <LectureItemContext.Provider value={lectureItemContextValue}>
             <div className="justify-between flex items-center w-full">
                 <div className="flex gap-3 w-full">
-                    <InteractiveThumbnail className="w-40 h-fit" src={getAssetUrl(thumbnailId)} onPress={onPress}/>
+                    <InteractiveThumbnail isPressable className="w-40 h-fit" src={getAssetUrl(thumbnailId)} onPress={onPress}/>
                     <div>
                         <div> {title} </div>
-                        <div className="text-xs text-foreground-500">15 min </div>
-                        <div className="text-xs text-foreground-500"> {description} </div>
+                        <div className="text-xs text-foreground-400">15 min </div>
+                        <div className="text-xs text-foreground-400"> {description} </div>
                     </div>
                 </div>
                 <MoreButton />

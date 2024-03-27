@@ -124,7 +124,7 @@ export const ReplyItem = (props: ReplyItemProps) => {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <div className="font-semibold text-sm"> {username} </div>
-                                    <div className="text-xs text-foreground-500 flex gap-2 items-center">
+                                    <div className="text-xs text-foreground-400 flex gap-2 items-center">
                                         <div>{parseTimeAgo(updatedAt)}</div>
                                         {isEdited ? <div>Edited</div> : null}
                                     </div>

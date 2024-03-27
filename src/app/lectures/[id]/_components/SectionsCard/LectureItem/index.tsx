@@ -33,13 +33,14 @@ export const LectureItem = (props: LectureItemProps) => {
             <PlayIcon height={20} width={20} className={`${!differentFromThisLecture ? "opacity-100" : "opacity-0"}`} />  
             <div className="flex gap-3">
                 <InteractiveThumbnail
+                    isPressable
                     src={getAssetUrl(thumbnailId)}
                     onPress={onPress}
                     className="w-28 h-fit"
                 />
                 <div>
                     <div className="truncate text-sm"> {title} </div>
-                    <div className="flex gap-1 items-center text-foreground-500">
+                    <div className="flex gap-1 items-center text-foreground-400">
                         <ClockIcon strokeWidth={3 / 2} size={12} />
                         <div className="text-xs">15m</div>
                     </div>

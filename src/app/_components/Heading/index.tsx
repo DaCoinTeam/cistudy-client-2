@@ -45,7 +45,7 @@ export const Heading = () => {
                             <div className="text-4xl font-bold">
                             123
                             </div>
-                            <div className="text-foreground-500">
+                            <div className="text-foreground-400">
                              in the last 30 days
                             </div>
                         </div>
@@ -56,7 +56,7 @@ export const Heading = () => {
                             <div className="text-4xl font-bold">
                             123
                             </div>
-                            <div className="text-foreground-500">
+                            <div className="text-foreground-400">
                              in the last 30 days
                             </div>
                         </div>
@@ -67,7 +67,7 @@ export const Heading = () => {
                             <div className="text-4xl font-bold">
                             123
                             </div>
-                            <div className="text-foreground-500">
+                            <div className="text-foreground-400">
                              in the last 30 days
                             </div>
                         </div>
