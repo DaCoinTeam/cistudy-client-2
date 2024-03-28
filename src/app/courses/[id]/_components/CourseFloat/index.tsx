@@ -22,7 +22,7 @@ import {
 } from "lucide-react"
 import { useSDK } from "@metamask/sdk-react"
 import { RootContext } from "../../../../_hooks"
-import { computePercentage, computeRaw } from "@common"
+import { computePercentage, computeRaw, sleep } from "@common"
 import { ChainId, ERC20Contract, chainInfos } from "@blockchain"
 import { EVM_RECIPIENT } from "@config"
 import { usePathname, useRouter } from "next/navigation"
@@ -75,7 +75,10 @@ export const CourseFloat = () => {
         )
 
         if (transaction === null) return
-
+        
+        //sleep to ensurre transaction is writen, will use websocket later
+        await sleep(2000)
+        
         await enrollCourse({
             data: {
                 courseId,
