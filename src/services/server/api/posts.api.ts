@@ -1,8 +1,8 @@
 import { MediaType } from "@common"
-import { API_ENDPOINT } from "@config"
+import { ENDPOINT_API } from "@config"
 import { authAxios } from "./axios-instances"
 
-const BASE_URL = `${API_ENDPOINT}/posts`
+const BASE_URL = `${ENDPOINT_API}/posts`
 
 export interface CreatePostInput {
     data: {

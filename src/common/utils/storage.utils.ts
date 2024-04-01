@@ -12,8 +12,8 @@ export const saveTokens = (tokens: AuthTokens) => {
     localStorage.setItem(REFRESH_TOKEN, tokens.refreshToken)
 }
 
-export const getClientId = (): string | null => {
-    return localStorage.getItem(CLIENT_ID)
+export const getClientId = (): string | undefined => {
+    return localStorage.getItem(CLIENT_ID) ?? undefined
 }
 
 export const generateClientId = () => {

@@ -7,7 +7,7 @@ import {
     createHttpLink,
     from,
 } from "@apollo/client"
-import { GRAPHQL_ENDPOINT } from "@config"
+import { ENDPOINT_GRAPHQL } from "@config"
 import {
     AuthTokenType,
     BaseResponse,
@@ -20,7 +20,7 @@ import {
 import { onError } from "@apollo/client/link/error"
 
 const httpLink = createHttpLink({
-    uri: GRAPHQL_ENDPOINT,
+    uri: ENDPOINT_GRAPHQL,
 })
 
 const beforeLink = new ApolloLink((operation, forward) => {

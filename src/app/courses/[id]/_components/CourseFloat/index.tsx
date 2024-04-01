@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/react"
 
 import { enrollCourse, getAssetUrl } from "@services"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { VideoPlayer } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
 import {
@@ -43,7 +43,7 @@ export const CourseFloat = () => {
     }
     const { account, provider } = useSDK()
 
-    const { disclosures } = useContext(RootContext)!
+    const { disclosures, socket } = useContext(RootContext)!
     const { notConnectWalletModalDisclosure } = disclosures
     const { onOpen } = notConnectWalletModalDisclosure
 

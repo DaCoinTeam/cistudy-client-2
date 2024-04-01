@@ -19,6 +19,8 @@ import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
 import { Formik, FormikProps } from "formik"
 import { useRouter } from "next/navigation"
 import { useDisclosure } from "@nextui-org/react"
+import { useSocketClient } from "./useSocketClient"
+import { Socket } from "socket.io-client"
 
 interface FormikValues {
   searchValue: string;
@@ -38,6 +40,7 @@ interface RootContextValue {
   disclosures: {
     notConnectWalletModalDisclosure: Disclosure;
   };
+  socket: Socket | null
 }
 
 export const RootContext = createContext<RootContextValue | null>(null)
@@ -56,6 +59,7 @@ const WrappedRootProvider = forwardRef<
     const { formik } = props
 
     const notConnectWalletModalDisclosure = useDisclosure()
+    const socket = useSocketClient()
 
     const fetchProfile = useCallback(async () => {
         try {
@@ -128,9 +132,10 @@ const WrappedRootProvider = forwardRef<
             reducer,
             disclosures: {
                 notConnectWalletModalDisclosure
-            }
+            },
+            socket
         }),
-        [profileSwr, coursesSwr, reducer]
+        [profileSwr, coursesSwr, reducer, notConnectWalletModalDisclosure, socket]
     )
 
     return (

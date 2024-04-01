@@ -1,2 +1,3 @@
-export const API_ENDPOINT = process.env.NEXT_PUBLIC_SERVER_ENDPOINT_API as string
-export const GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_SERVER_ENDPOINT_GRAPHQL as string
+export const ENDPOINT_API = process.env.NEXT_PUBLIC_SERVER_ENDPOINT_API as string
+export const ENDPOINT_GRAPHQL = process.env.NEXT_PUBLIC_SERVER_ENDPOINT_GRAPHQL as string
+export const ENDPOINT_WEBSOCKET = process.env.NEXT_PUBLIC_SERVER_ENDPOINT_WEBSOCKET as string

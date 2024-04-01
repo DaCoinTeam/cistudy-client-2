@@ -1,8 +1,8 @@
-import { API_ENDPOINT } from "@config"
+import { ENDPOINT_API } from "@config"
 import axios from "axios"
 import { v4 as uuidv4 } from "uuid"
 
-const BASE_URL = `${API_ENDPOINT}/assets`
+const BASE_URL = `${ENDPOINT_API}/assets`
 
 interface GetAssetOptions {
     forceUpdate: boolean;

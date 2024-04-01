@@ -1,7 +1,7 @@
-import { API_ENDPOINT } from "@config"
+import { ENDPOINT_API } from "@config"
 import { authAxios } from "./axios-instances"
 
-const BASE_URL = `${API_ENDPOINT}/courses`
+const BASE_URL = `${ENDPOINT_API}/courses`
 
 export interface CreateCourseOutput {
   courseId: string;
