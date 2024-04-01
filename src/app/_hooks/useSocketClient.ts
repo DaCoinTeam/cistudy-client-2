@@ -5,80 +5,76 @@ import { onInitialize } from "@services"
 import { getClientId, AuthTokenType, BaseResponse, saveTokens, getAuthToken } from "@common"
 
 export const useSocketClient = () => {
-    const [ callback, setCallback ] = useState<WsCallback | null>(null)
     const [ connected, setConnected ] = useState(true)
 
     const socketRef = useRef<Socket|null>(null)
     const hasMountedRef = useRef(false)
-
-    const initializeSocket = () => {
-        const socket = io(ENDPOINT_WEBSOCKET, {
-            extraHeaders: {
-                "Client-Id": getClientId() ?? "",
-            },
-            auth: {
-                token: getAuthToken(),
-                authTokenType: AuthTokenType.Access
-            },
-        })
-        if (socket.disconnected) {
-            socket.connect()
-        }
-        return socket
-    }
+    const callbackRef = useRef<WsCallback|null>(null)
 
     useEffect(() => {
-        const _socket = initializeSocket()
-        socketRef.current = _socket
-
-        if (callback !== null) {
-            setCallback(null)
-            const { event, data } = callback
-            _socket.emit(event, data)
+        if (!hasMountedRef.current) {
+            socketRef.current = io(ENDPOINT_WEBSOCKET, {
+                extraHeaders: {
+                    "Client-Id": getClientId() ?? "",
+                },
+                auth: {
+                    token: getAuthToken(),
+                    authTokenType: AuthTokenType.Access
+                },
+            })
+        } else {
+            if (connected) return
+            socketRef.current?.connect()
         }
 
         const updateSocket = (authTokenType: AuthTokenType = AuthTokenType.Access) => {
-            _socket.auth = {
+            (socketRef.current as Socket).auth = {
                 token: getAuthToken(authTokenType),
                 authTokenType: authTokenType
             }
-            _socket.disconnect()
+            socketRef.current?.disconnect()
             setConnected(false)
         }
 
-        _socket.onAny((_, { tokens }: BaseResponse<unknown>) => {
+        socketRef.current?.onAny((_, { tokens }: BaseResponse<unknown>) => {
             if (tokens) {
                 saveTokens(tokens)
                 updateSocket()
             }
         })
 
-        _socket.on("connect", () => {
+        socketRef.current?.on("connect", () => {
         })
 
-        _socket.on("exception", ({ callback, status }: WsError) => {
-            if (status === WsErrorStatus.Unauthorized && (_socket.auth as WsAuth).authTokenType === AuthTokenType.Access) {
-                setCallback(callback)
+        socketRef.current?.on("exception", ({ callback, status }: WsError) => {
+            if (status === WsErrorStatus.Unauthorized && (socketRef.current?.auth as WsAuth).authTokenType === AuthTokenType.Access) {
+                console.log(callback, status)
+                callbackRef.current = callback
                 updateSocket(AuthTokenType.Refresh)
             }
         })
 
-        _socket.on("disconnect", (reason, details) => {
+        socketRef.current?.on("disconnect", (reason, details) => {
             console.log(reason)
             console.log(details)
         })
 
-        _socket.on("initialize", onInitialize)
+        socketRef.current?.on("initialize", onInitialize)
+
+        if (callbackRef.current !== null) {
+            const { event, data } = callbackRef.current
+            console.log(event, data)
+            socketRef.current?.emit(event, data)
+            callbackRef.current = null
+        }
 
         if (!hasMountedRef.current) {
-            _socket.emit("initialize")
+            socketRef.current?.emit("initialize")
             hasMountedRef.current = true
-        } 
+        } else {
+            setConnected(true)
+        }
 
-        return (() => {
-            _socket.disconnect()
-            socketRef.current == null
-        })
     }, [connected])
 
     return socketRef.current

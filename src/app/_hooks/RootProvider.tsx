@@ -55,8 +55,11 @@ const WrappedRootProvider = forwardRef<
   WrappedRootProviderSelectors,
   { children: ReactNode; formik: FormikProps<FormikValues> }
 >((props, ref) => {
+    useEffect(() => {console.log("132")
+        return (() => console.log("cuong"))
+    }, [])
     const reducer = useRootReducer()
-    const { formik } = props
+    const { children, formik } = props
 
     const notConnectWalletModalDisclosure = useDisclosure()
     const socket = useSocketClient()
@@ -105,10 +108,7 @@ const WrappedRootProvider = forwardRef<
         )
     }, [])
 
-    const profileSwr = useSWR(["PROFILE"], fetchProfile, {
-        revalidateIfStale: false,
-        revalidateOnFocus: false,
-    })
+    const profileSwr = useSWR(["PROFILE"], fetchProfile)
 
     const coursesSwr = useSWRInfinite((key) => [key, "COURSES"], fetchCourses, {
         revalidateFirstPage: false,
@@ -140,12 +140,15 @@ const WrappedRootProvider = forwardRef<
 
     return (
         <RootContext.Provider value={rootContextValue}>
-            {props.children}
+            {children}
         </RootContext.Provider>
     )
 })
 
 export const RootProvider = ({ children }: { children: ReactNode }) => {
+    useEffect(() => {console.log("132")
+        return (() => console.log("cuong"))
+    }, [])
     const ref = useRef<WrappedRootProviderSelectors | null>(null)
 
     const router = useRouter()

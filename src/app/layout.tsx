@@ -5,34 +5,40 @@ import { ReduxProvider, RootState } from "@redux"
 import { NextUIProvider } from "@nextui-org/react"
 import { RootProvider } from "./_hooks"
 import { Navbar } from "./_components"
-import { ReactNode } from "react"
+import { ReactNode, useEffect } from "react"
 import { MetaMaskProvider } from "@metamask/sdk-react"
 import { useSelector } from "react-redux"
 import { NotConnectWalletModal } from "./_components/NotConnectWalletModal"
 const font = Open_Sans({ subsets: ["latin"] })
 
 const WrappedLayout = ({ children }: { children: ReactNode }) => {
-    const darkMode = useSelector((state: RootState) => state.configuration.darkMode)
+    useEffect(() => {
+        console.log("1234")
+    }, [])
+
+    console.log("Cuong1231243")
+    const darkMode = useSelector(
+        (state: RootState) => state.configuration.darkMode
+    )
     return (
         <html lang="en" className={darkMode ? "dark" : "light"}>
             <body className={`${font.className} min-h-screen`}>
-                <MetaMaskProvider
-                    debug={false}
-                    sdkOptions={{
-                        dappMetadata: {
-                            name: "CiStudy", 
-                        },
-                    }}
-                >
-                    <NextUIProvider className="min-h-screen flex flex-col">
-                        <RootProvider>
+                <NextUIProvider className="min-h-screen flex flex-col">
+                    <RootProvider>
+                        <MetaMaskProvider
+                            debug={false}
+                            sdkOptions={{
+                                dappMetadata: {
+                                    name: "CiStudy",
+                                },
+                            }}
+                        >
                             <Navbar />
                             {children}
-                            
-                            <NotConnectWalletModal/>
-                        </RootProvider>
-                    </NextUIProvider>
-                </MetaMaskProvider>
+                            <NotConnectWalletModal />
+                        </MetaMaskProvider>
+                    </RootProvider>
+                </NextUIProvider>
             </body>
         </html>
     )
@@ -41,9 +47,7 @@ const WrappedLayout = ({ children }: { children: ReactNode }) => {
 const Layout = ({ children }: { children: ReactNode }) => {
     return (
         <ReduxProvider>
-            <WrappedLayout>
-                {children}
-            </WrappedLayout>
+            <WrappedLayout>{children}</WrappedLayout>
         </ReduxProvider>
     )
 }
