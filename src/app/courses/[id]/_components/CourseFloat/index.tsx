@@ -22,7 +22,7 @@ import {
 } from "lucide-react"
 import { useSDK } from "@metamask/sdk-react"
 import { RootContext } from "../../../../_hooks"
-import { computePercentage, computeRaw, sleep } from "@common"
+import { computePercentage, computeRaw } from "@common"
 import { ChainId, ERC20Contract, chainInfos } from "@blockchain"
 import { EVM_RECIPIENT } from "@config"
 import { usePathname, useRouter } from "next/navigation"
@@ -48,10 +48,24 @@ export const CourseFloat = () => {
     const { onOpen } = notConnectWalletModalDisclosure
 
     useEffect(() => {
-        socket?.on("transaction-verified", () => {
-            console.log("c")
-        })
-    }, [])
+        if (socket === null) return
+        socket.on(
+            "transaction-verified",
+            async ({ code }: TransactionVerifiedMessage) => {
+                if (!courseId) return
+                await enrollCourse({
+                    data: {
+                        courseId,
+                        code,
+                    },
+                })
+                await mutate()
+            }
+        )
+        return () => {
+            socket.removeListener("transaction-verified")
+        }
+    }, [socket, courseId])
 
     const getPrice = () => {
         if (!discountPrice || !price) return BigInt(0)
@@ -80,22 +94,10 @@ export const CourseFloat = () => {
             getPrice()
         )
 
-        const { transactionHash } = { ...transaction }
-
-        socket?.emit("verify-transaction", transactionHash)
-
         if (transaction === null) return
-        
-        //sleep to ensurre transaction is writen, will use websocket later
-        await sleep(2000)
-        
-        await enrollCourse({
-            data: {
-                courseId,
-                transactionHash: transaction.transactionHash,
-            },
-        })
-        await mutate()
+
+        const { transactionHash } = transaction
+        socket?.emit("verify-transaction", { transactionHash })
     }
 
     const renderDiscountPercentage = () => {
@@ -197,4 +199,8 @@ export const CourseFloat = () => {
             </CardFooter>
         </Card>
     )
+}
+
+interface TransactionVerifiedMessage {
+  code: string;
 }
