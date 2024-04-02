@@ -12,7 +12,7 @@ export const saveTokens = (tokens: AuthTokens) => {
     localStorage.setItem(REFRESH_TOKEN, tokens.refreshToken)
 }
 
-export const getClientId = (): string | null => {
+export const getClientId = () => {
     return localStorage.getItem(CLIENT_ID)
 }
 

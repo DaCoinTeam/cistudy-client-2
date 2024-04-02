@@ -1,9 +1,7 @@
-"use client"
+
 import { Spacer } from "@nextui-org/react"
 import { Ecosystem, Heading, Courses } from "./_components"
-import { useEffect } from "react"
 const Page = () => {
-    useEffect(() => {console.log("123")}, [])
     return (
         <div>
             <Heading/>
