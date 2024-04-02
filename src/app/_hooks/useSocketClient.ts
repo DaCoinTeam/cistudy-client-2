@@ -35,6 +35,7 @@ export const useSocketClient = () => {
         })
 
         socketRef.current.onAny((_, response: BaseResponse<unknown>) => {
+            console.log("called")
             const { tokens } = { ...response }
             if (tokens) {
                 saveTokens(tokens)
