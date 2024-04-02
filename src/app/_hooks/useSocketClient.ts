@@ -1,81 +1,79 @@
 import { useEffect, useRef, useState } from "react"
 import { Socket, io } from "socket.io-client"
 import { ENDPOINT_WEBSOCKET } from "@config"
-import { onInitialize } from "@services"
-import { getClientId, AuthTokenType, BaseResponse, saveTokens, getAuthToken } from "@common"
+import { AuthTokenType, BaseResponse, getAuthToken, getClientId, saveTokens } from "@common"
 
 export const useSocketClient = () => {
-    const [ connected, setConnected ] = useState(true)
+    const [disconnected, setDisconnected] = useState(false)
 
-    const socketRef = useRef<Socket|null>(null)
-    const hasMountedRef = useRef(false)
-    const callbackRef = useRef<WsCallback|null>(null)
+    const socketRef = useRef<Socket | null>(null)
+    const callbackRef = useRef<WsCallback | null>(null)
+
+    const update = (authTokenType: AuthTokenType = AuthTokenType.Access) => {
+        if (socketRef.current === null) return
+        socketRef.current.auth = {
+            token: getAuthToken(authTokenType),
+            authTokenType: authTokenType
+        }
+        socketRef.current.disconnect()
+        setDisconnected(true)
+    }
 
     useEffect(() => {
-        if (!hasMountedRef.current) {
-            socketRef.current = io(ENDPOINT_WEBSOCKET, {
-                extraHeaders: {
-                    "Client-Id": getClientId() ?? "",
-                },
-                auth: {
-                    token: getAuthToken(),
-                    authTokenType: AuthTokenType.Access
-                },
-            })
-        } else {
-            if (connected) return
-            socketRef.current?.connect()
-        }
-
-        const updateSocket = (authTokenType: AuthTokenType = AuthTokenType.Access) => {
-            (socketRef.current as Socket).auth = {
-                token: getAuthToken(authTokenType),
-                authTokenType: authTokenType
+        socketRef.current = io(ENDPOINT_WEBSOCKET, {
+            extraHeaders: {
+                "Client-Id": getClientId() ?? ""
+            },
+            auth: {
+                token: getAuthToken(),
+                authTokenType: AuthTokenType.Access
             }
-            socketRef.current?.disconnect()
-            setConnected(false)
-        }
+        })
 
-        socketRef.current?.onAny((_, { tokens }: BaseResponse<unknown>) => {
+        socketRef.current.on("connect", () => {
+            console.log("connected")
+        })
+
+        socketRef.current.onAny((_, response: BaseResponse<unknown>) => {
+            const { tokens } = { ...response }
             if (tokens) {
                 saveTokens(tokens)
-                updateSocket()
+                update()
             }
         })
 
-        socketRef.current?.on("connect", () => {
-        })
-
-        socketRef.current?.on("exception", ({ callback, status }: WsError) => {
+        socketRef.current.on("exception", ({ callback, status }: WsError) => {
             if (status === WsErrorStatus.Unauthorized && (socketRef.current?.auth as WsAuth).authTokenType === AuthTokenType.Access) {
-                console.log(callback, status)
                 callbackRef.current = callback
-                updateSocket(AuthTokenType.Refresh)
+                update(AuthTokenType.Refresh)
             }
         })
 
-        socketRef.current?.on("disconnect", (reason, details) => {
+        socketRef.current.on("disconnect", (
+            reason, 
+            details
+        ) => {
             console.log(reason)
             console.log(details)
         })
 
-        socketRef.current?.on("initialize", onInitialize)
+        socketRef.current.emit("initialize")
 
+        return (() => { socketRef.current?.removeAllListeners() })
+    }, [])
+
+    useEffect(() => {
+        if (!disconnected) return
+
+        socketRef.current?.connect()
         if (callbackRef.current !== null) {
-            const { event, data } = callbackRef.current
-            console.log(event, data)
+            const { data, event } = callbackRef.current
             socketRef.current?.emit(event, data)
             callbackRef.current = null
         }
+        setDisconnected(false)
 
-        if (!hasMountedRef.current) {
-            socketRef.current?.emit("initialize")
-            hasMountedRef.current = true
-        } else {
-            setConnected(true)
-        }
-
-    }, [connected])
+    }, [disconnected])
 
     return socketRef.current
 }

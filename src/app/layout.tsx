@@ -26,7 +26,6 @@ const WrappedLayout = ({ children }: { children: ReactNode }) => {
                 <NextUIProvider className="min-h-screen flex flex-col">
                     <RootProvider>
                         <MetaMaskProvider
-                            debug={false}
                             sdkOptions={{
                                 dappMetadata: {
                                     name: "CiStudy",
