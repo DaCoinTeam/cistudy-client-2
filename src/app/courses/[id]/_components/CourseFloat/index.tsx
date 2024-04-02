@@ -47,6 +47,12 @@ export const CourseFloat = () => {
     const { notConnectWalletModalDisclosure } = disclosures
     const { onOpen } = notConnectWalletModalDisclosure
 
+    useEffect(() => {
+        socket?.on("transaction-verified", () => {
+            console.log("c")
+        })
+    }, [])
+
     const getPrice = () => {
         if (!discountPrice || !price) return BigInt(0)
         return enableDiscount ? computeRaw(discountPrice) : computeRaw(price)
@@ -73,6 +79,10 @@ export const CourseFloat = () => {
             EVM_RECIPIENT,
             getPrice()
         )
+
+        const { transactionHash } = { ...transaction }
+
+        socket?.emit("verify-transaction", transactionHash)
 
         if (transaction === null) return
         
