@@ -71,8 +71,8 @@ export const CourseFloat = () => {
     }, [socket, courseId])
 
     const getPrice = () => {
-        if (!discountPrice || !price) return BigInt(0)
-        return enableDiscount ? computeRaw(discountPrice) : computeRaw(price)
+        if (!price) return BigInt(0)
+        return enableDiscount ? computeRaw(discountPrice ?? 0) : computeRaw(price)
     }
 
     const onEnrollPress = async () => {
@@ -100,15 +100,14 @@ export const CourseFloat = () => {
         if (transaction === null) return
         const { transactionHash } = transaction
 
-        socket?.emit("verify-transaction", transactionHash)
-        
-        //sleep to ensurre transaction is writen, will use websocket later
-        await sleep(2000)
-        
+        socket?.emit(VERIFY_TRANSACTION, {
+            transactionHash,
+        })
+
         await enrollCourse({
             data: {
                 courseId,
-                transactionHash: transaction.transactionHash,
+                code: transaction.transactionHash,
             },
         })
         await mutate()
