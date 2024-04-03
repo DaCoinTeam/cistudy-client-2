@@ -27,6 +27,7 @@ const WrappedLayout = ({ children }: { children: ReactNode }) => {
                     <RootProvider>
                         <MetaMaskProvider
                             sdkOptions={{
+                                extensionOnly: true,
                                 dappMetadata: {
                                     name: "CiStudy",
                                 },

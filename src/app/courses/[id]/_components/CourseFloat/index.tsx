@@ -24,7 +24,7 @@ import { useSDK } from "@metamask/sdk-react"
 import { RootContext } from "../../../../_hooks"
 import { computePercentage, computeRaw, sleep } from "@common"
 import { ChainId, ERC20Contract, chainInfos } from "@blockchain"
-import { EVM_RECIPIENT } from "@config"
+import { EVM_ADDRESS } from "@config"
 import { usePathname, useRouter } from "next/navigation"
 
 export const CourseFloat = () => {
@@ -76,15 +76,14 @@ export const CourseFloat = () => {
             account
         )
         const transaction = await primaryTokenContract.transfer(
-            EVM_RECIPIENT,
+            EVM_ADDRESS,
             getPrice()
         )
 
-        const { transactionHash } = { ...transaction }
+        if (transaction === null) return
+        const { transactionHash } = transaction
 
         socket?.emit("verify-transaction", transactionHash)
-
-        if (transaction === null) return
         
         //sleep to ensurre transaction is writen, will use websocket later
         await sleep(2000)

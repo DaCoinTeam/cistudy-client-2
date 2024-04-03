@@ -10,4 +10,3 @@ type SchemaRecursive<T> = T extends (infer U)[]
 export type Schema<T> = SchemaRecursive<T> extends Record<string, Atomic>
   ? SchemaRecursive<T>
   : Record<string, Atomic>;
-
