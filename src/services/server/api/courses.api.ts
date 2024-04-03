@@ -15,7 +15,7 @@ export const createCourse = async (): Promise<CreateCourseOutput> => {
 export interface EnrollCourseInput {
   data: {
     courseId: string;
-    transactionHash: string;
+    code: string;
   };
 }
 

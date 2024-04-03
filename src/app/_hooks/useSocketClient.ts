@@ -5,22 +5,23 @@ import { AuthTokenType, BaseResponse, getAuthToken, getClientId, saveTokens } fr
 
 export const useSocketClient = () => {
     const [disconnected, setDisconnected] = useState(false)
+    const [socket, setSocket] = useState<Socket | null>(null)
 
-    const socketRef = useRef<Socket | null>(null)
     const callbackRef = useRef<WsCallback | null>(null)
 
     const update = (authTokenType: AuthTokenType = AuthTokenType.Access) => {
-        if (socketRef.current === null) return
-        socketRef.current.auth = {
+        if (socket === null) return
+        socket.auth = {
             token: getAuthToken(authTokenType),
             authTokenType: authTokenType
         }
-        socketRef.current.disconnect()
+        socket.disconnect()
+        setSocket(socket)
         setDisconnected(true)
     }
 
     useEffect(() => {
-        socketRef.current = io(ENDPOINT_WEBSOCKET, {
+        const socket = io(ENDPOINT_WEBSOCKET, {
             extraHeaders: {
                 "Client-Id": getClientId() ?? ""
             },
@@ -30,11 +31,11 @@ export const useSocketClient = () => {
             }
         })
 
-        socketRef.current.on("connect", () => {
+        socket.on("connect", () => {
             console.log("connected")
         })
 
-        socketRef.current.onAny((_, response: BaseResponse<unknown>) => {
+        socket.onAny((_, response: BaseResponse<unknown>) => {
             console.log("called")
             const { tokens } = { ...response }
             if (tokens) {
@@ -43,14 +44,14 @@ export const useSocketClient = () => {
             }
         })
 
-        socketRef.current.on("exception", ({ callback, status }: WsError) => {
-            if (status === WsErrorStatus.Unauthorized && (socketRef.current?.auth as WsAuth).authTokenType === AuthTokenType.Access) {
+        socket.on("exception", ({ callback, status }: WsError) => {
+            if (status === WsErrorStatus.Unauthorized && (socket?.auth as WsAuth).authTokenType === AuthTokenType.Access) {
                 callbackRef.current = callback
                 update(AuthTokenType.Refresh)
             }
         })
 
-        socketRef.current.on("disconnect", (
+        socket.on("disconnect", (
             reason, 
             details
         ) => {
@@ -58,25 +59,27 @@ export const useSocketClient = () => {
             console.log(details)
         })
 
-        socketRef.current.emit("initialize")
+        socket.emit("initialize")
 
-        return (() => { socketRef.current?.removeAllListeners() })
+        setSocket(socket)
+
+        return (() => { socket?.removeAllListeners() })
     }, [])
 
     useEffect(() => {
         if (!disconnected) return
 
-        socketRef.current?.connect()
+        socket?.connect()
         if (callbackRef.current !== null) {
             const { data, event } = callbackRef.current
-            socketRef.current?.emit(event, data)
+            socket?.emit(event, data)
             callbackRef.current = null
         }
         setDisconnected(false)
-
+        setSocket(socket)
     }, [disconnected])
 
-    return socketRef.current
+    return socket
 }
 
 export interface WsCallback {

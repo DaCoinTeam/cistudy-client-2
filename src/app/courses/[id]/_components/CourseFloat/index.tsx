@@ -22,10 +22,13 @@ import {
 } from "lucide-react"
 import { useSDK } from "@metamask/sdk-react"
 import { RootContext } from "../../../../_hooks"
-import { computePercentage, computeRaw, sleep } from "@common"
+import { computePercentage, computeRaw } from "@common"
 import { ChainId, ERC20Contract, chainInfos } from "@blockchain"
 import { EVM_ADDRESS } from "@config"
 import { usePathname, useRouter } from "next/navigation"
+
+const VERIFY_TRANSACTION = "verify-transaction"
+const TRANSACTION_VERIFIED = "transaction-verified"
 
 export const CourseFloat = () => {
     const { swrs } = useContext(CourseDetailsContext)!
@@ -48,10 +51,24 @@ export const CourseFloat = () => {
     const { onOpen } = notConnectWalletModalDisclosure
 
     useEffect(() => {
-        socket?.on("transaction-verified", () => {
-            console.log("c")
-        })
-    }, [])
+        if (socket === null) return
+        socket.on(
+            TRANSACTION_VERIFIED,
+            async ({ code }: TransactionVerifiedMessage) => {
+                if (!courseId) return
+                await enrollCourse({
+                    data: {
+                        courseId,
+                        code,
+                    },
+                })
+                await mutate()
+            }
+        )
+        return () => {
+            socket.removeListener(TRANSACTION_VERIFIED)
+        }
+    }, [socket, courseId])
 
     const getPrice = () => {
         if (!discountPrice || !price) return BigInt(0)
@@ -196,4 +213,8 @@ export const CourseFloat = () => {
             </CardFooter>
         </Card>
     )
+}
+
+interface TransactionVerifiedMessage {
+  code: string;
 }
