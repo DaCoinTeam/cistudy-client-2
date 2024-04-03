@@ -27,6 +27,9 @@ import { ChainId, ERC20Contract, chainInfos } from "@blockchain"
 import { EVM_RECIPIENT } from "@config"
 import { usePathname, useRouter } from "next/navigation"
 
+const VERIFY_TRANSACTION = "verify-transaction"
+const TRANSACTION_VERIFIED = "transaction-verified"
+
 export const CourseFloat = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
@@ -50,7 +53,7 @@ export const CourseFloat = () => {
     useEffect(() => {
         if (socket === null) return
         socket.on(
-            "transaction-verified",
+            TRANSACTION_VERIFIED,
             async ({ code }: TransactionVerifiedMessage) => {
                 if (!courseId) return
                 await enrollCourse({
@@ -63,7 +66,7 @@ export const CourseFloat = () => {
             }
         )
         return () => {
-            socket.removeListener("transaction-verified")
+            socket.removeListener(TRANSACTION_VERIFIED)
         }
     }, [socket, courseId])
 
@@ -97,7 +100,7 @@ export const CourseFloat = () => {
         if (transaction === null) return
 
         const { transactionHash } = transaction
-        socket?.emit("verify-transaction", { transactionHash })
+        socket?.emit(VERIFY_TRANSACTION, { transactionHash })
     }
 
     const renderDiscountPercentage = () => {
