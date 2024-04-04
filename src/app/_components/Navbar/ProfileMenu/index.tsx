@@ -6,17 +6,26 @@ import {
     Avatar,
 } from "@nextui-org/react"
 import React, { useContext, useRef } from "react"
-import { removeTokens } from "@common"
+import { UserRole, removeTokens } from "@common"
 import { RootContext } from "../../../_hooks"
 import { getAvatarUrl } from "@services"
 import { useRouter } from "next/navigation"
 import { WalletModalRef, WalletModalRefSelectors } from "./WalletModalRef"
 
+interface Item {
+    key: string;
+    content: JSX.Element | Array<JSX.Element> | string;
+    onPress?: () => void;
+    color?: "danger" | undefined;
+}
+
 export const ProfileMenu = () => {
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { mutate, data: profile } = profileSwr
-    const { avatarId, username, userId, avatarUrl, kind } = { ...profile }
+    const { avatarId, username, userId, avatarUrl, kind, userRole } = {
+        ...profile,
+    }
 
     const onSignOutPress = async () => {
         await mutate(null, {
@@ -32,6 +41,99 @@ export const ProfileMenu = () => {
 
     const walletModalRef = useRef<WalletModalRefSelectors | null>(null)
     const onWalletPress = () => walletModalRef.current?.onOpen()
+
+    const items: Array<Item> = 
+    userRole === UserRole.Administrator ?
+        [
+            {
+                key: "base",
+                content: [
+                    <div key="signedInAs" className="font-semibold">
+          Signed in as
+                    </div>,
+                    <div key="username" className="font-semibold">
+                        {username}
+                    </div>,
+                ],
+            },
+            {
+                key: "profile",
+                onPress: onProfilePress,
+                content: "Profile",
+            },
+            {
+                key: "enrolledCourses",
+                onPress: onEnrolledCouresPress,
+                content: "Enrolled courses",
+            },
+            {
+                key: "wallet",
+                onPress: onWalletPress,
+                content: "Wallet",
+            },
+            {
+                key: "management",
+                onPress: onManagementPress,
+                content: "Management",
+            },
+            {
+                key: "help_and_feedback",
+                content: "Help & Feedback",
+            },
+            { 
+                key: "adminDashboard",
+                content: "Admin dashboard", 
+            },
+            {
+                key: "logout",
+                onPress: onSignOutPress,
+                content: "Sign Out",
+                color: "danger",
+            },
+        ] : 
+        [
+            {
+                key: "base",
+                content: [
+                    <div key="signedInAs" className="font-semibold">
+          Signed in as
+                    </div>,
+                    <div key="username" className="font-semibold">
+                        {username}
+                    </div>,
+                ],
+            },
+            {
+                key: "profile",
+                onPress: onProfilePress,
+                content: "Profile",
+            },
+            {
+                key: "enrolledCourses",
+                onPress: onEnrolledCouresPress,
+                content: "Enrolled courses",
+            },
+            {
+                key: "wallet",
+                onPress: onWalletPress,
+                content: "Wallet",
+            },
+            {
+                key: "management",
+                onPress: onManagementPress,
+                content: "Management",
+            },
+            {
+                key: "help_and_feedback",
+                content: "Help & Feedback",
+            },
+            {
+                key: "logout",
+                onPress: onSignOutPress,
+                content: "Sign Out",
+                color: "danger",
+            },
+        ]
 
     return (
         <>
@@ -49,27 +151,13 @@ export const ProfileMenu = () => {
                     />
                 </DropdownTrigger>
                 <DropdownMenu aria-label="User Actions" variant="flat">
-                    <DropdownItem key="base" className="h-14 gap-2">
-                        <p className="font-semibold">Signed in as</p>
-                        <p className="font-semibold">{username}</p>
-                    </DropdownItem>
-                    <DropdownItem key="profile" onPress={onProfilePress}>
-            Profile
-                    </DropdownItem>
-                    <DropdownItem key="enrolledCourses" onPress={onEnrolledCouresPress}>
-            Enrolled Courses
-                    </DropdownItem>
-                    <DropdownItem key="wallet" onPress={onWalletPress}>
-            Wallet
-                    </DropdownItem>
-                    <DropdownItem key="management" onPress={onManagementPress}>
-            Management
-                    </DropdownItem>
-                    <DropdownItem key="configurations">Configurations</DropdownItem>
-                    <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-                    <DropdownItem onPress={onSignOutPress} key="logout" color="danger">
-            Sign Out
-                    </DropdownItem>
+                    {
+                        items.map(({content, key, onPress, color}) => (
+                            <DropdownItem key={key} onPress={onPress} color={color}>
+                                {content}
+                            </DropdownItem>
+                        ))
+                    }
                 </DropdownMenu>
             </Dropdown>
             <WalletModalRef ref={walletModalRef} />
