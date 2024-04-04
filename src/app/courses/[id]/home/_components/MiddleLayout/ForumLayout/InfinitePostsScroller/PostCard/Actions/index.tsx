@@ -1,14 +1,17 @@
 import { Button } from "@nextui-org/react"
 import React, { useContext } from "react"
-import { isErrorResponse } from "@common"
 import { toggleLikePost } from "@services"
 import { PostCardContext } from ".."
 import { ForumLayoutContext } from "../../../ForumLayoutProvider"
 import { CommentsModal } from "./CommentsModal"
 import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline"
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid"
+import { RootContext } from "../../../../../../../../../_hooks"
+import { ToastType } from "../../../../../../../../../_components"
 
 export const Actions = () => {
+    const { notify } = useContext(RootContext)!
+
     const { props } = useContext(PostCardContext)!
     const { post } = props
     const { postId, liked, numberOfLikes } = post
@@ -18,16 +21,19 @@ export const Actions = () => {
     const { mutate } = postsSwr
 
     const onPress = async () => {
-        const response = await toggleLikePost({
+
+        const { earnAmount } = await toggleLikePost({
             data: {
                 postId,
             },
         })
-        if (!isErrorResponse(response)) {
-            await mutate()
-        } else {
-            console.log(response)
-        }
+        notify!({
+            type: ToastType.Earn,
+            data: {
+                earnAmount: earnAmount ?? 0
+            }
+        })
+        mutate()
     }
 
     return (

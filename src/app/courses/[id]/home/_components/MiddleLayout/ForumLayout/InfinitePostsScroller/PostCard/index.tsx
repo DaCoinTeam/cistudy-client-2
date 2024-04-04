@@ -41,7 +41,7 @@ export const PostCard = (props: PostCardProps) => {
                     <div className="flex items-center justify-between">
                         <User
                             classNames={{
-                                name: "text-base font-semibold",
+                                name: "text-base",
                             }}
                             name={username}
                             description={

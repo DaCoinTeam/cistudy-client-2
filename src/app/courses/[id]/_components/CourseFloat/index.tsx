@@ -103,14 +103,6 @@ export const CourseFloat = () => {
         socket?.emit(VERIFY_TRANSACTION, {
             transactionHash,
         })
-
-        await enrollCourse({
-            data: {
-                courseId,
-                code: transaction.transactionHash,
-            },
-        })
-        await mutate()
     }
 
     const renderDiscountPercentage = () => {

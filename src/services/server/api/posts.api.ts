@@ -184,10 +184,14 @@ export interface ToggleLikePostInput {
         postId: string;
     };
 }
-export interface ToggleLikePostOutput { }
+export interface ToggleLikePostOutputData {
+    postLikeId: string
+    earnAmount?: number
+}
+
 export const toggleLikePost = async (
     input: ToggleLikePostInput
-): Promise<ToggleLikePostOutput> => {
+): Promise<ToggleLikePostOutputData> => {
     const { data } = input
     const url = `${BASE_URL}/toggle-like-post`
     return await authAxios.patch(url, data)

@@ -32,7 +32,7 @@ export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
                 <div className="flex items-center gap-8">
                     <User
                         classNames={{
-                            name: "font-semibold text-base",
+                            name: "text-base",
                         }}
                         name={username}
                         description={`${numberOfFollowers} followers`}

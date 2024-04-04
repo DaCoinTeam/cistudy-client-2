@@ -43,17 +43,19 @@ export interface UpdateCourseInput {
     thumbnailIndex?: number;
     previewVideoIndex?: number;
     targets?: Array<string>;
+    receivedWalletAddress?: string;
     categoryId?: string;
     subcategoryIds?: Array<string>;
     topicIds?: Array<string>;
   };
   files?: Array<File>;
+  signal?: AbortSignal;
 }
 
 export const updateCourse = async (
     input: UpdateCourseInput
 ): Promise<string> => {
-    const { data, files } = input
+    const { data, files, signal } = input
 
     const url = `${BASE_URL}/update-course`
     const formData = new FormData()
@@ -69,6 +71,7 @@ export const updateCourse = async (
         headers: {
             "Content-Type": "multipart/form-data",
         },
+        signal
     })
 }
 

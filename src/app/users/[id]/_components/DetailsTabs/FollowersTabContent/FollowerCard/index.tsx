@@ -22,7 +22,7 @@ export const FollowerCard = (props: FollowerCardProps) => {
                 <User
                     className="w-fit"
                     classNames={{
-                        name: "font-semibold text-base",
+                        name: "text-base",
                         base: "gap-3"
                     }}
                     name={username}

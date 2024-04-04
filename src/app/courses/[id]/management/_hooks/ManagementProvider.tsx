@@ -54,6 +54,7 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                 price: true,
                 discountPrice: true,
                 enableDiscount: true,
+                receivedWalletAddress: true,
                 sections: {
                     sectionId: true,
                     title: true,

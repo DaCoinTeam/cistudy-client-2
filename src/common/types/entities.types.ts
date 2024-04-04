@@ -105,6 +105,7 @@ export interface CourseEntity {
   posts: Array<PostEntity>;
   enrolledInfos: Array<EnrolledInfoEntity>;
   sections: Array<SectionEntity>;
+  receivedWalletAddress?: string;
 
   //graphql
   numberOfEnrollments?: number;

@@ -64,7 +64,7 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                         <Spacer y={4}/>
                         <div className="flex gap-4 h-10 items-center">
                             <User classNames={{
-                                name: "text-base font-semibold"
+                                name: "text-base"
                             }} avatarProps={{
                                 src: getAssetUrl(creator.avatarId)
                             }} name={creator.username} description={"2 followers"}/>

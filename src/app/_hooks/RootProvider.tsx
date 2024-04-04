@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation"
 import { useDisclosure } from "@nextui-org/react"
 import { useSocketClient } from "./useSocketClient"
 import { Socket } from "socket.io-client"
+import { NotifyFn, ToastRef, ToastRefSelectors } from "../_components"
 
 interface FormikValues {
   searchValue: string;
@@ -40,7 +41,8 @@ interface RootContextValue {
   disclosures: {
     notConnectWalletModalDisclosure: Disclosure;
   };
-  socket: Socket | null
+  socket: Socket | null,
+  notify?: NotifyFn
 }
 
 export const RootContext = createContext<RootContextValue | null>(null)
@@ -122,6 +124,8 @@ const WrappedRootProvider = forwardRef<
         generateClientId()
     }, [])
 
+    const toastRef = useRef<ToastRefSelectors | null>(null)
+
     const rootContextValue: RootContextValue = useMemo(
         () => ({
             swrs: {
@@ -133,7 +137,8 @@ const WrappedRootProvider = forwardRef<
             disclosures: {
                 notConnectWalletModalDisclosure
             },
-            socket
+            socket,
+            notify: toastRef.current?.notify
         }),
         [profileSwr, coursesSwr, reducer, notConnectWalletModalDisclosure, socket]
     )
@@ -141,6 +146,7 @@ const WrappedRootProvider = forwardRef<
     return (
         <RootContext.Provider value={rootContextValue}>
             {children}
+            <ToastRef ref={toastRef}/>
         </RootContext.Provider>
     )
 })

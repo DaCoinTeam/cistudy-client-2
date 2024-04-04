@@ -4,16 +4,17 @@ import {
     CourseEntity,
     Schema,
     UserEntity,
+    buildAuthPayloadString,
     buildPayloadString,
 } from "@common"
-import { client, getGraphqlResponseData } from "./client"
+import { authClient, client, getGraphqlResponseData } from "./client"
 
 export interface FindOneUserInputData {
     params: {
         userId: string;
     },
     options?: {
-      followerId?: string;
+        followerId?: string;
     };
 }
 
@@ -75,7 +76,7 @@ export interface FindManyCreatedCoursesInputData {
     },
     options?: {
         skip?: number;
-        take?: number;    
+        take?: number;
     }
 }
 
@@ -99,5 +100,42 @@ export const findManyCreatedCourses = async (
     return getGraphqlResponseData({
         data: graphqlData,
         isAuth: false
+    })
+}
+
+export interface FindManyUsersInputData {
+    options?: {
+        take?: number;
+        skip?: number;
+    };
+}
+
+export interface FindManyUsersOutputData {
+    results: Array<UserEntity>;
+    metadata: {
+        count: number;
+    };
+}
+
+export const findManyUsers = async (
+    data: FindManyUsersInputData,
+    schema?: Schema<DeepPartial<FindManyUsersOutputData>>
+): Promise<FindManyUsersOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query FindManyUsers($data: FindManyUsersInputData!) {
+                findManyUsers(data: $data)   {
+      ${payload}
+    }
+  }
+          `,
+        variables: {
+            data
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true
     })
 }
