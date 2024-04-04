@@ -7,10 +7,8 @@ export const useAuthorization = (allowedUserRoles: Array<UserRole> = [UserRole.U
     useEffect(() => {
         if (!userRole) return
         const isAuthorized = allowedUserRoles.includes(userRole)
-        console.log(isAuthorized)
         if (!isAuthorized) {
             router.push("/")
         }
-        //continue proccess
     }, [userRole])
 }
