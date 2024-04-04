@@ -97,11 +97,8 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             <div className="text-2xl"> General </div>
             <Spacer y={4} />
             <Input
-                variant="bordered"
                 classNames={{
-                    inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none",
-                    input: "my-1",
-                    innerWrapper: "py-1"
+                    inputWrapper: "input-input-wrapper"
                 }} 
                 label="Title"
                 id="title"
@@ -114,9 +111,8 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             />
             <Spacer y={4} />
             <Textarea
-                variant="bordered"
                 classNames={{
-                    inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
+                    inputWrapper: "input-input-wrapper"
                 }} 
                 label="Description"
                 id="description"
@@ -199,8 +195,9 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                                 startContent={
                                     <Image
                                         alt="topic"
-                                        height={20}
-                                        width={20}
+                                        classNames={{
+                                            wrapper: "w-5 h-5 grid place-items-center"
+                                        }}
                                         src={getAssetUrl(svgId)}
                                     />
                                 }
@@ -224,8 +221,9 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                                         startContent={
                                             <Image
                                                 alt="topic"
-                                                height={20}
-                                                width={20}
+                                                classNames={{
+                                                    wrapper: "w-5 h-5 grid place-items-center"
+                                                }}
                                                 src={getAssetUrl(svgId)}
                                             />
                                         }
