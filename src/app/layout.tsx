@@ -5,18 +5,13 @@ import { ReduxProvider, RootState } from "@redux"
 import { NextUIProvider } from "@nextui-org/react"
 import { RootProvider } from "./_hooks"
 import { Navbar } from "./_components"
-import { ReactNode, useEffect } from "react"
+import { ReactNode } from "react"
 import { MetaMaskProvider } from "@metamask/sdk-react"
 import { useSelector } from "react-redux"
 import { NotConnectWalletModal } from "./_components/NotConnectWalletModal"
 const font = Open_Sans({ subsets: ["latin"] })
 
 const WrappedLayout = ({ children }: { children: ReactNode }) => {
-    useEffect(() => {
-        console.log("1234")
-    }, [])
-
-    console.log("Cuong1231243")
     const darkMode = useSelector(
         (state: RootState) => state.configuration.darkMode
     )

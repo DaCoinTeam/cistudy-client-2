@@ -3,6 +3,7 @@ import { useReducer } from "react"
 export enum PanelSelected {
     Users = "users",
     Courses = "courses",
+    Transactions = "transactions"
 }
 
 export interface AdminState {

@@ -1,3 +1,5 @@
+import { Address, LogsOutput } from "web3"
+
 export enum UserKind {
   Local = "local",
   Google = "google",
@@ -40,7 +42,7 @@ export interface UserEntity {
   avatarUrl?: string;
   phoneNumber?: string;
   balance: number;
-  role: UserRole;
+  userRole: UserRole;
   walletId?: string;
   firstName?: string;
   lastName?: string;
@@ -109,7 +111,7 @@ export interface CourseEntity {
 
   //graphql
   numberOfEnrollments?: number;
-  enrolled?: boolean
+  enrolled?: boolean;
 }
 export interface CourseTargetEntity {
   courseTargetId: string;
@@ -176,14 +178,14 @@ export interface PostCommentEntity {
 }
 
 export interface PostCommentReplyEntity {
-  postCommentReplyId: string
-  creatorId: string
-  postCommentId: string
-  createdAt: Date
-  updatedAt: Date
-  content: string
-  postComment: PostCommentEntity
-  creator: UserEntity
+  postCommentReplyId: string;
+  creatorId: string;
+  postCommentId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  content: string;
+  postComment: PostCommentEntity;
+  creator: UserEntity;
 }
 
 export interface SectionEntity {
@@ -244,51 +246,51 @@ export interface PostCommentMediaEntity {
 }
 
 export interface CategoryEntity {
-  categoryId: string
-  name: string
-  createdAt: Date
-  updatedAt: Date
-  subcategories: Array<SubcategoryEntity>
+  categoryId: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  subcategories: Array<SubcategoryEntity>;
 }
 
 export interface SubcategoryEntity {
-  subcategoryId: string
-  name: string
-  createdAt: Date
-  updatedAt: Date
-  categoryId: string
-  category: CategoryEntity
-  subcategoryTopics: Array<SubcategoryTopicEntity>
+  subcategoryId: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  categoryId: string;
+  category: CategoryEntity;
+  subcategoryTopics: Array<SubcategoryTopicEntity>;
 }
 
 export interface SubcategoryTopicEntity {
-  subcategoryTopicId: string
-  createdAt: Date
-  updatedAt: Date
-  subcategoryId: string
-  topicId: string
-  subcategory: SubcategoryEntity
-  topic: TopicEntity
+  subcategoryTopicId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  subcategoryId: string;
+  topicId: string;
+  subcategory: SubcategoryEntity;
+  topic: TopicEntity;
 }
 
 export interface TopicEntity {
-  topicId: string
-  name: string
-  createdAt: Date
-  updatedAt: Date
-  svgId: string
-  courseTopics: Array<CourseTopicEntity>
-  subcategoryTopics: Array<SubcategoryTopicEntity>
+  topicId: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  svgId: string;
+  courseTopics: Array<CourseTopicEntity>;
+  subcategoryTopics: Array<SubcategoryTopicEntity>;
 }
 
 export interface CourseTopicEntity {
-  courseTopicId: string
-  createdAt: Date
-  updatedAt: Date
-  courseId: string
-  topicId: string
-  course: CourseEntity
-  topic: TopicEntity
+  courseTopicId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  courseId: string;
+  topicId: string;
+  course: CourseEntity;
+  topic: TopicEntity;
 }
 
 export interface CourseSubcategoryEntity {
@@ -309,4 +311,15 @@ export interface CourseTopicEntity {
   topicId: string;
   course: CourseEntity;
   topic: TopicEntity;
+}
+
+export interface TransactionEntity {
+  transactionHash: string;
+  from: Address;
+  to: Address;
+  value: string;
+  isValidated: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  log: LogsOutput;
 }
