@@ -6,6 +6,7 @@ const BASE_URL = `${ENDPOINT_API}/profile`
 export interface UpdateProfileInput {
     data: {
         username?: string;
+        birthdate?: string;
         avatarIndex?: number;
         coverPhotoIndex?: number;
     };
