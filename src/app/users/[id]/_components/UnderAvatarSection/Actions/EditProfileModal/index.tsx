@@ -4,7 +4,7 @@ import { PenIcon, RefreshCcw } from "lucide-react"
 import React from "react"
 
 export const EditProfileModal = () => {
-    const {isOpen, onOpen, onOpenChange} = useDisclosure()
+    const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure()
     
     return (
         <>
@@ -22,10 +22,10 @@ export const EditProfileModal = () => {
                         
                     </ModalBody>
                     <ModalFooter className="p-6 gap-2 pt-0">
-                        <Button startContent={<RefreshCcw size={20} strokeWidth={3/2} />} variant="light" onPress={onClose}>
+                        <Button startContent={<RefreshCcw size={20} strokeWidth={3/2} />} variant="light">
                     Reset
                         </Button>
-                        <Button startContent={<CheckIcon height={20} width={20} />} color="primary" onPress={onClose}>
+                        <Button startContent={<CheckIcon height={20} width={20} />} color="primary">
                     Save
                         </Button>
                     </ModalFooter>
