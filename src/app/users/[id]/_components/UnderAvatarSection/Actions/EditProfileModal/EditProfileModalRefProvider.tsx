@@ -116,8 +116,6 @@ export const EditProfileModalRefProvider = ({
     const { birthdate,  username } = values
 
     return (
-        <Formik
-            initialValues={initialValues}
-            onSubmit={async (
-                {  },
-                { setFieldValue }
+        <div/>
+    )
+}
