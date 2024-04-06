@@ -16,7 +16,7 @@ import {
     ROWS_PER_PAGE,
 } from "../TransactionsManagementPanelProvider"
 import { useRouter } from "next/navigation"
-import { VerifyStatus, truncateHex } from "@common"
+import { VerifyStatus, computeDenomination, parseDateStringFrom, truncateHex } from "@common"
 
 export const TransactionsTable = () => {
     const router = useRouter()
@@ -103,26 +103,28 @@ export const TransactionsTable = () => {
             }
         >
             <TableHeader>
-                <TableColumn key="infomation" width={750}>
-          Infomation
+                <TableColumn key="address">
+          Address
                 </TableColumn>
-                <TableColumn key="enrollments">Enrollments</TableColumn>
-                <TableColumn key="status">Status</TableColumn>
-                <TableColumn key="birth_year">Birth year</TableColumn>
+                <TableColumn key="from">From</TableColumn>
+                <TableColumn key="to">To</TableColumn>
+                <TableColumn key="value"> Value </TableColumn>
+                <TableColumn key="createdAt"> Created At </TableColumn>
             </TableHeader>
             <TableBody
                 items={results ?? []}
                 loadingContent={<Spinner />}
                 loadingState={loadingState()}
             >
-                {({ transactionHash, createdAt }) => (
+                {({ transactionHash, from, to, createdAt, value }) => (
                     <TableRow key={transactionHash}>
                         <TableCell>
                             {truncateHex(transactionHash)}
                         </TableCell>
-                        <TableCell>123</TableCell>
-                        <TableCell>213</TableCell>
-                        <TableCell>123</TableCell>
+                        <TableCell>{truncateHex(from)}</TableCell>
+                        <TableCell>{truncateHex(to)}</TableCell>
+                        <TableCell>{computeDenomination(BigInt(value))} STARCI</TableCell>
+                        <TableCell>{parseDateStringFrom(createdAt)}</TableCell>
                     </TableRow>
                 )}
             </TableBody>

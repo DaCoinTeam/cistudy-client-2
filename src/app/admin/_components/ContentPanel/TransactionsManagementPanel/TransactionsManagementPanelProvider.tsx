@@ -49,7 +49,8 @@ const WrappedTransactionsManagementPanelProvider = ({
                         transactionHash: true,
                         createdAt: true,
                         from: true,
-                        to: true
+                        to: true,
+                        value: true
                     },
                     metadata: {
                         count: true
