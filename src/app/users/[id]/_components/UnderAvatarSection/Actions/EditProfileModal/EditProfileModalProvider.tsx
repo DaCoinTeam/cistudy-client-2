@@ -8,10 +8,11 @@ import React, {
     useMemo,
     useRef,
 } from "react"
-import { updateCourse, updateProfile } from "@services"
+import { updateProfile } from "@services"
 import { UserDetailsContext } from "../../../../_hooks"
 import { parseISODateString } from "@common"
-import { RootContext, RootProvider } from "../../../../../../_hooks"
+import { RootContext } from "../../../../../../_hooks"
+import * as Yup from "yup"
 
 interface EditProfileModalContextValue {
   formik: FormikProps<FormikValues>;
@@ -38,7 +39,7 @@ const initialValues: FormikValues = {
     birthdatePrevious: parseISODateString(),
 }
 
-const WrappedEditProfileModalRefProvider = ({
+const WrappedEditProfileModalProvider = ({
     formik,
     children,
 }: {
@@ -101,21 +102,34 @@ const WrappedEditProfileModalRefProvider = ({
     )
 }
 
-export const EditProfileModalRefProvider = ({
+export const EditProfileModalProvider = ({
     children,
 }: {
   children: ReactNode;
 }) => {
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
-    const { data: profile, mutate } = profileSwr
-
-
-    const { formik } = useContext(EditProfileModalContext)!
-    const { values } = formik
-    const { birthdate,  username } = values
-
+    const { mutate } = profileSwr
     return (
-        <div/>
+        <Formik initialValues={initialValues} validationSchema={
+            Yup.object({
+                //birthdate: Yup.string().email("Invalid email").required("Email is required"),
+                //username: Yup.string().required("Password is required"),
+            })
+        }
+        onSubmit={async ({ birthdate, username }) => {
+            await updateProfile({
+                data: {
+                    username,
+                    birthdate
+                }
+            })
+            await mutate()
+        }}
+        >
+            {(formik) => (
+                <WrappedEditProfileModalProvider formik={formik}> {children}</WrappedEditProfileModalProvider>
+            )}
+        </Formik>
     )
 }
