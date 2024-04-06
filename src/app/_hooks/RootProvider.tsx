@@ -97,6 +97,8 @@ const WrappedRootProvider = forwardRef<
                     creator: {
                         avatarId: true,
                         username: true,
+                        avatarUrl: true,
+                        kind: true
                     },
                     thumbnailId: true,
                     description: true,

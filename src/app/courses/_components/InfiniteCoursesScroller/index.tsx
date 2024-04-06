@@ -6,7 +6,7 @@ import { COLUMNS_PER_PAGE } from "../../../_hooks"
 import InfiniteScroll from "react-infinite-scroller"
 import { CircularProgress, Divider, Spacer, User } from "@nextui-org/react"
 import { InteractiveThumbnail, Stars } from "../../../_shared"
-import { getAssetUrl } from "@services"
+import { getAssetUrl, getAvatarUrl } from "@services"
 import { useRouter } from "next/navigation"
 
 interface InfiniteCoursesScrollerProps {
@@ -66,7 +66,11 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                             <User classNames={{
                                 name: "text-base"
                             }} avatarProps={{
-                                src: getAssetUrl(creator.avatarId)
+                                src: getAvatarUrl({
+                                    avatarUrl: creator.avatarUrl,
+                                    avatarId: creator.avatarId,
+                                    kind: creator.kind
+                                })
                             }} name={creator.username} description={"2 followers"}/>
                             <Divider orientation="vertical"/>
                             <Stars />
