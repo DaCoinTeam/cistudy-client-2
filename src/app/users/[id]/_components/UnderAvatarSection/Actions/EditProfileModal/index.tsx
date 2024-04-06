@@ -1,9 +1,10 @@
+import { CheckIcon } from "@heroicons/react/24/outline"
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react"
-import { PenIcon } from "lucide-react"
+import { PenIcon, RefreshCcw } from "lucide-react"
 import React from "react"
 
 export const EditProfileModal = () => {
-    const {isOpen, onOpen, onOpenChange} = useDisclosure()
+    const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure()
     
     return (
         <>
@@ -16,21 +17,18 @@ export const EditProfileModal = () => {
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="p-6 pb-0 text-2xl ">Edit</ModalHeader>
-                            <ModalBody className="p-6">
-                            </ModalBody>
-                            <ModalFooter className="p-6 gap-4 pt-0">
-                                <Button color="danger" variant="light" onPress={onClose}>
-                    Close
-                                </Button>
-                                <Button color="primary" onPress={onClose}>
-                    Action
-                                </Button>
-                            </ModalFooter>
-                        </>
-                    )}
+                    <ModalHeader className="p-6 pb-0 text-2xl ">Edit</ModalHeader>
+                    <ModalBody className="p-6">
+                        
+                    </ModalBody>
+                    <ModalFooter className="p-6 gap-2 pt-0">
+                        <Button startContent={<RefreshCcw size={20} strokeWidth={3/2} />} variant="light">
+                    Reset
+                        </Button>
+                        <Button startContent={<CheckIcon height={20} width={20} />} color="primary">
+                    Save
+                        </Button>
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>

@@ -57,9 +57,6 @@ const WrappedRootProvider = forwardRef<
   WrappedRootProviderSelectors,
   { children: ReactNode; formik: FormikProps<FormikValues> }
 >((props, ref) => {
-    useEffect(() => {console.log("132")
-        return (() => console.log("cuong"))
-    }, [])
     const reducer = useRootReducer()
     const { children, formik } = props
 
@@ -76,7 +73,8 @@ const WrappedRootProvider = forwardRef<
                 avatarUrl: true,
                 coverPhotoId: true,
                 kind: true,
-                balance: true
+                balance: true,
+                userRole: true
             })
         } catch (ex) {
             console.log(ex)
@@ -152,9 +150,6 @@ const WrappedRootProvider = forwardRef<
 })
 
 export const RootProvider = ({ children }: { children: ReactNode }) => {
-    useEffect(() => {console.log("132")
-        return (() => console.log("cuong"))
-    }, [])
     const ref = useRef<WrappedRootProviderSelectors | null>(null)
 
     const router = useRouter()

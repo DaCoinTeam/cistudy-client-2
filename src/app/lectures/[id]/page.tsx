@@ -5,7 +5,7 @@ import { VideoDetailsSection } from "./_components/VideoDetailsSection"
 
 const Page = () => {
     return (
-        <div className="grid grid-cols-7 max-w-[100rem] gap-6 p-6 mx-auto">
+        <div className="grid grid-cols-7 max-w-[1920px] gap-12 p-12 mx-auto">
             <div className="col-span-5">
                 <VideoSection />
                 <Spacer y={6}/>

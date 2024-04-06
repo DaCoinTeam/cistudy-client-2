@@ -2,7 +2,7 @@
 import React, { useContext } from "react"
 import { RootContext } from "../../../../../../../_hooks"
 import { Button, Link, ModalBody, Spacer, User } from "@nextui-org/react"
-import { computeDenomination, truncateAddress } from "@common"
+import { computeDenomination, truncateHex } from "@common"
 
 export const MetamaskContent = () => {
     const { swrs, reducer } = useContext(RootContext)!
@@ -18,7 +18,7 @@ export const MetamaskContent = () => {
     return (
         <ModalBody className="p-4">
             <div className="grid place-items-center">
-                <Link color="foreground" as="button" showAnchorIcon> {truncateAddress(address)} </Link>
+                <Link color="foreground" as="button" showAnchorIcon> {truncateHex(address)} </Link>
                 <Spacer y={4}/>
                 <div className="flex gap-4 items-center w-full">
                     <Button className="flex-1">
