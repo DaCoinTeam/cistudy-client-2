@@ -17,7 +17,7 @@ export interface FindManyPostsInputData {
         skip?: number,
         take?: number
     }
-}
+} 
 
 export interface FindManyPostsOutputData {
     results: Array<PostEntity>;
