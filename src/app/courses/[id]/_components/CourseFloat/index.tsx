@@ -55,14 +55,15 @@ export const CourseFloat = () => {
         socket.on(
             TRANSACTION_VERIFIED,
             async ({ code }: TransactionVerifiedMessage) => {
+                console.log("C")
                 if (!courseId) return
-                await enrollCourse({
-                    data: {
-                        courseId,
-                        code,
-                    },
-                })
-                await mutate()
+                // await enrollCourse({
+                //     data: {
+                //         courseId,
+                //         code,
+                //     },
+                // })
+                // await mutate()
             }
         )
         return () => {
@@ -97,12 +98,22 @@ export const CourseFloat = () => {
             getPrice()
         )
 
+        console.log(transaction)
+
         if (transaction === null) return
         const { transactionHash } = transaction
 
-        socket?.emit(VERIFY_TRANSACTION, {
-            transactionHash,
+        // socket?.emit(VERIFY_TRANSACTION, {
+        //     transactionHash,
+        // })
+
+        await enrollCourse({
+            data: {
+                courseId,
+                code: "ABCXYZ",
+            },
         })
+        await mutate()
     }
 
     const renderDiscountPercentage = () => {
@@ -136,7 +147,7 @@ export const CourseFloat = () => {
         <Card
             shadow="none"
             radius="md"
-            className="w-80 border border-divider rounded-medium"
+            className="w-full border border-divider rounded-medium"
         >
             <CardHeader className="p-0 pb-2 object-cover">
                 <VideoPlayer
