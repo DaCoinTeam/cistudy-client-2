@@ -12,8 +12,7 @@ const Page = () => {
                 <CourseBanner/>
                 <Spacer y={12}/>
                 <CourseMain/>     
-            </div>
-            
+            </div>          
         </div>
     )
 }
