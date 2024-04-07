@@ -82,7 +82,9 @@ export const WrappedCourseDetailsProvider = ({
                 creator: {
                     avatarId: true,
                     username: true,
-                    numberOfFollowers: true
+                    numberOfFollowers: true,
+                    avatarUrl: true,
+                    kind: true
                 }
             }
         )
