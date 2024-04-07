@@ -5,21 +5,23 @@ import { authAxios } from "./axios-instances"
 const BASE_URL = `${ENDPOINT_API}/posts`
 
 export interface CreatePostInput {
-    data: {
-        title: string;
-        courseId: string;
-        html: string;
-        postMedias: Array<{
-            mediaType: MediaType;
-            mediaIndex: number;
-        }>;
-    };
-    files?: Array<File>;
+  data: {
+    title: string;
+    courseId: string;
+    html: string;
+    postMedias: Array<{
+      mediaType: MediaType;
+      mediaIndex: number;
+    }>;
+  };
+  files?: Array<File>;
 }
 
-export interface CreatePostOutput { }
+export interface CreatePostOutput {}
 
-export const createPost = async (input: CreatePostInput): Promise<CreatePostOutput> => {
+export const createPost = async (
+    input: CreatePostInput
+): Promise<CreatePostOutput> => {
     const { data, files } = input
     const url = `${BASE_URL}/create-post`
 
@@ -40,21 +42,23 @@ export const createPost = async (input: CreatePostInput): Promise<CreatePostOutp
 }
 
 export interface UpdatePostInput {
-    data: {
-        postId: string;
-        title?: string;
-        html?: string;
-        postMedias?: Array<{
-            mediaType: MediaType;
-            mediaIndex: number;
-        }>;
-    };
-    files?: Array<File>;
+  data: {
+    postId: string;
+    title?: string;
+    html?: string;
+    postMedias?: Array<{
+      mediaType: MediaType;
+      mediaIndex: number;
+    }>;
+  };
+  files?: Array<File>;
 }
 
-export interface UpdatePostOutput { }
+export interface UpdatePostOutput {}
 
-export const updatePost = async (input: UpdatePostInput): Promise<CreatePostOutput> => {
+export const updatePost = async (
+    input: UpdatePostInput
+): Promise<CreatePostOutput> => {
     const { data, files } = input
     const url = `${BASE_URL}/update-post`
 
@@ -75,11 +79,11 @@ export const updatePost = async (input: UpdatePostInput): Promise<CreatePostOutp
 }
 
 export interface DeletePostInput {
-    data: {
-        postId: string;
-    };
+  data: {
+    postId: string;
+  };
 }
-export interface DeletePostOutput { }
+export interface DeletePostOutput {}
 
 export const deletePost = async (
     input: DeletePostInput
@@ -90,20 +94,22 @@ export const deletePost = async (
     return await authAxios.delete(url)
 }
 
-
 export interface CreatePostCommentInput {
-    data: {
-        postId: string;
-        html: string;
-        postCommentMedias: Array<{
-            mediaType: MediaType;
-            mediaIndex: number;
-        }>;
-    };
-    files?: Array<File>;
+  data: {
+    postId: string;
+    html: string;
+    postCommentMedias: Array<{
+      mediaType: MediaType;
+      mediaIndex: number;
+    }>;
+  };
+  files?: Array<File>;
 }
 
-export interface CreatePostCommentOutput { }
+export interface CreatePostCommentOutput {
+  postCommentId: string;
+  earnAmount: number;
+}
 
 export const createPostComment = async (
     input: CreatePostCommentInput
@@ -128,18 +134,18 @@ export const createPostComment = async (
 }
 
 export interface UpdatePostCommentInput {
-    data: {
-        postCommentId: string;
-        html: string;
-        postCommentMedias: Array<{
-            mediaType: MediaType;
-            mediaIndex: number;
-        }>;
-    };
-    files?: Array<File>;
+  data: {
+    postCommentId: string;
+    html: string;
+    postCommentMedias: Array<{
+      mediaType: MediaType;
+      mediaIndex: number;
+    }>;
+  };
+  files?: Array<File>;
 }
 
-export interface UpdatePostCommentOutput { }
+export interface UpdatePostCommentOutput {}
 
 export const updatePostComment = async (
     input: UpdatePostCommentInput
@@ -164,11 +170,11 @@ export const updatePostComment = async (
 }
 
 export interface DeletePostCommentInput {
-    data: {
-        postCommentId: string;
-    };
+  data: {
+    postCommentId: string;
+  };
 }
-export interface DeletePostCommentOutput { }
+export interface DeletePostCommentOutput {}
 
 export const deletePostComment = async (
     input: DeletePostCommentInput
@@ -180,13 +186,13 @@ export const deletePostComment = async (
 }
 
 export interface ToggleLikePostInput {
-    data: {
-        postId: string;
-    };
+  data: {
+    postId: string;
+  };
 }
 export interface ToggleLikePostOutputData {
-    postLikeId: string
-    earnAmount?: number
+  postLikeId: string;
+  earnAmount?: number;
 }
 
 export const toggleLikePost = async (
@@ -198,11 +204,14 @@ export const toggleLikePost = async (
 }
 
 export interface ToggleLikePostCommentInput {
-    data: {
-        postCommentId: string;
-    };
+  data: {
+    postCommentId: string;
+  };
 }
-export interface ToggleLikePostCommentOutput { }
+export interface ToggleLikePostCommentOutput {
+    postCommentLikeId: string,
+    earnAmount?: number
+}
 export const toggleLikePostComment = async (
     input: ToggleLikePostCommentInput
 ): Promise<ToggleLikePostCommentOutput> => {
@@ -212,13 +221,13 @@ export const toggleLikePostComment = async (
 }
 
 export interface CreatePostCommentReplyInput {
-    data: {
-        postCommentId: string;
-        content: string;
-    };
+  data: {
+    postCommentId: string;
+    content: string;
+  };
 }
 export interface CreatePostCommentReplyOutput {
-    postCommentReplyId: string;
+  postCommentReplyId: string;
 }
 export const createPostCommentReply = async (
     input: CreatePostCommentReplyInput
@@ -229,12 +238,12 @@ export const createPostCommentReply = async (
 }
 
 export interface UpdatePostCommentReplyInput {
-    data: {
-        postCommentReplyId: string;
-        content: string;
-    };
+  data: {
+    postCommentReplyId: string;
+    content: string;
+  };
 }
-export interface UpdatePostCommentReplyOutput { }
+export interface UpdatePostCommentReplyOutput {}
 export const updatePostCommentReply = async (
     input: UpdatePostCommentReplyInput
 ): Promise<UpdatePostCommentReplyOutput> => {
@@ -244,11 +253,11 @@ export const updatePostCommentReply = async (
 }
 
 export interface DeletePostCommentReplyInput {
-    data: {
-        postCommentReplyId: string;
-    };
+  data: {
+    postCommentReplyId: string;
+  };
 }
-export interface DeletePostCommentReplyOutput { }
+export interface DeletePostCommentReplyOutput {}
 export const deletePostCommentReply = async (
     input: DeletePostCommentReplyInput
 ): Promise<DeletePostCommentReplyOutput> => {
@@ -257,6 +266,3 @@ export const deletePostCommentReply = async (
     const url = `${BASE_URL}/delete-post-comment-reply/${postCommentReplyId}`
     return await authAxios.delete(url)
 }
-
-
-

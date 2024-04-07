@@ -5,6 +5,8 @@ import { AppendKey, Media } from "@common"
 import { createPostComment } from "@services"
 import { PostCardContext } from "../../../.."
 import { CommentsModalContext } from "../../CommentsModalProvider"
+import { RootContext } from "../../../../../../../../../../../../_hooks"
+import { ToastType } from "../../../../../../../../../../../../_components"
 
 interface FormikValues {
     html: string
@@ -45,6 +47,8 @@ export const CreateCommentModalProvider = ({ children, onClose }: { children: Re
     const { postCommentsSwr } = swrs
     const { mutate } = postCommentsSwr
 
+    const { notify } = useContext(RootContext)!
+
     return (
         <Formik
             initialValues={initialValues}
@@ -64,13 +68,20 @@ export const CreateCommentModalProvider = ({ children, onClose }: { children: Re
                     return result
                 })
 
-                await createPostComment({
+                const { earnAmount } = await createPostComment({
                     data: {
                         postId,
                         html,
                         postCommentMedias
                     },
                     files
+                })
+
+                notify!({
+                    type: ToastType.Earn,
+                    data: {
+                        earnAmount: earnAmount ?? 0
+                    }
                 })
 
                 await mutate()

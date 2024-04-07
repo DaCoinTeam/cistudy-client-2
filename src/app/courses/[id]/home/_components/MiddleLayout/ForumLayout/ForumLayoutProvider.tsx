@@ -65,6 +65,8 @@ const WrappedForumLayoutProvider = ({
                         creator: {
                             avatarId: true,
                             username: true,
+                            avatarUrl: true,
+                            kind: true
                         },
                         createdAt: true,
                         updatedAt: true,
