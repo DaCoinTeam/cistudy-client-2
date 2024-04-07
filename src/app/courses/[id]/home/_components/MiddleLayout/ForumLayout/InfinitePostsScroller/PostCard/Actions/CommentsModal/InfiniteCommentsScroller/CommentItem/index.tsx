@@ -1,7 +1,7 @@
 import React, { createContext, useMemo } from "react"
 import { PostCommentEntity, parseTimeAgo } from "@common"
 import { Avatar, Spacer, useDisclosure } from "@nextui-org/react"
-import { getAssetUrl } from "@services"
+import { getAvatarUrl } from "@services"
 import {
     TextRenderer,
     MediaGroup,
@@ -34,7 +34,7 @@ export const CommentItem = (props: CommentItemProps) => {
     const { postComment } = props
     const { html, postCommentMedias, creator, createdAt, updatedAt } =
     postComment
-    const { avatarId, username } = creator
+    const { avatarId, username, avatarUrl, kind } = creator
 
     const commentDisclosure = useDisclosure()
 
@@ -53,7 +53,11 @@ export const CommentItem = (props: CommentItemProps) => {
     return (
         <CommentItemContext.Provider value={commentItemContextValue}>
             <div className="flex gap-2 group/comment">
-                <Avatar src={getAssetUrl(avatarId)} />
+                <Avatar src={getAvatarUrl({
+                    avatarId,
+                    avatarUrl,
+                    kind
+                })} />
                 <div className="flex-1">
                     <div className="flex items-center justify-between">
                         <div>
