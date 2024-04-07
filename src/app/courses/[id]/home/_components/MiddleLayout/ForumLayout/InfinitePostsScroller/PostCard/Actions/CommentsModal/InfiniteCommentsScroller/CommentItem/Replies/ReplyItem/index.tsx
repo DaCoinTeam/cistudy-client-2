@@ -1,7 +1,7 @@
 import { Avatar, Input, Link, Spacer } from "@nextui-org/react"
 import React, { createContext, useContext, useEffect, useMemo } from "react"
 import { PostCommentReplyEntity, parseTimeAgo } from "@common"
-import { getAssetUrl, updatePostCommentReply } from "@services"
+import { getAvatarUrl, updatePostCommentReply } from "@services"
 import { MoreButton } from "./MoreButton"
 import { useFormik } from "formik"
 import { RepliesContext } from "../RepliesProvider"
@@ -23,7 +23,7 @@ export const ReplyItem = (props: ReplyItemProps) => {
     const { postCommentReply } = props
     const { creator, createdAt, content, postCommentReplyId, updatedAt } =
     postCommentReply
-    const { avatarId, username } = creator
+    const { avatarId, username, avatarUrl, kind } = creator
 
     const { swrs, reducer } = useContext(RepliesContext)!
     const { postCommentRepliesSwr } = swrs
@@ -82,7 +82,11 @@ export const ReplyItem = (props: ReplyItemProps) => {
     return (
         <ReplyItemContext.Provider value={replyItemContextValue}>
             <div className="flex gap-2 group/reply">
-                <Avatar size="sm" src={getAssetUrl(avatarId)} />
+                <Avatar size="sm" src={getAvatarUrl({
+                    avatarId,
+                    avatarUrl,
+                    kind
+                })} />
                 <div className="flex-1">
                     {state.editedPostCommentReplyId === postCommentReplyId ? (
                         <div>
