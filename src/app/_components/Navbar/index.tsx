@@ -54,7 +54,7 @@ const WrappedNavbar = (props: NavbarProps) => {
             }}>
                 <NavbarBrand>
                     <PencilIcon className="w-6 h-6" />
-                    <p className="font-semibold text-inherit">ACME</p>
+                    <p className="font-semibold text-inherit">CISTUDY</p>
                 </NavbarBrand>
                 <NavbarContent justify="center">
                     <SearchInput className="w-[500px]"/>
