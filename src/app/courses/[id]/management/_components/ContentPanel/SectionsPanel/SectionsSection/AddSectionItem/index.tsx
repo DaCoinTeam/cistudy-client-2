@@ -16,7 +16,7 @@ export const AddSectionItem = () => {
         await createSection({
             data: {
                 courseId,
-                title: "Nguyen Van Tu Cuong",
+                title: "Untitled",
             },
         })
         await mutate()
