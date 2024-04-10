@@ -14,6 +14,7 @@ import { ProfileMenu } from "./ProfileMenu"
 import { RootContext } from "../../_hooks"
 import { DarkModeSwitch } from "./DarkModeSwitch"
 import { SearchInput } from "./SearchInput"
+import { useRouter } from "next/navigation"
 
 interface NavbarProps {
   className?: string;
@@ -30,6 +31,7 @@ const WrappedNavbar = (props: NavbarProps) => {
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { data: profile } = profileSwr
+    const router = useRouter()
 
     const onSignInPress = () => {
         onOpen()
@@ -52,9 +54,7 @@ const WrappedNavbar = (props: NavbarProps) => {
                 wrapper: "!max-w-full px-12"
             }}>
                 <NavbarBrand>
-                    {/* <PencilIcon className="w-6 h-6" /> */}
-                    {/* <p className="font-semibold text-inherit">CISTUDY</p> */}
-                    <div className="font-semibold text-primary"> 
+                    <div className="font-semibold text-primary cursor-pointer"  onClick={() => router.push("/")}> 
                         <span className="text-primary">
                         Ci
                         </span>
@@ -64,6 +64,9 @@ const WrappedNavbar = (props: NavbarProps) => {
                     </div>
                 </NavbarBrand>
                 <NavbarContent justify="center">
+                    <NavbarItem  className="px-4 cursor-pointer" onClick={() => router.push("/courses")}>
+                        Courses
+                    </NavbarItem>
                     <SearchInput className="w-[500px]"/>
                 </NavbarContent>
                 <NavbarContent justify="end">
