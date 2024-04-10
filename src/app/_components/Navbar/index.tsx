@@ -8,7 +8,6 @@ import {
     Link,
     Button,
 } from "@nextui-org/react"
-import { PencilIcon } from "@heroicons/react/16/solid"
 import { AuthModal } from "./AuthModal"
 import { NavbarContext, NavbarProvider } from "./NavbarProvider"
 import { ProfileMenu } from "./ProfileMenu"
@@ -53,8 +52,16 @@ const WrappedNavbar = (props: NavbarProps) => {
                 wrapper: "!max-w-full px-12"
             }}>
                 <NavbarBrand>
-                    <PencilIcon className="w-6 h-6" />
-                    <p className="font-semibold text-inherit">CISTUDY</p>
+                    {/* <PencilIcon className="w-6 h-6" /> */}
+                    {/* <p className="font-semibold text-inherit">CISTUDY</p> */}
+                    <div className="font-semibold text-primary"> 
+                        <span className="text-primary">
+                        Ci
+                        </span>
+                        <span className="text-success">
+                        Study
+                        </span>
+                    </div>
                 </NavbarBrand>
                 <NavbarContent justify="center">
                     <SearchInput className="w-[500px]"/>
