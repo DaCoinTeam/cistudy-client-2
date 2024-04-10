@@ -7,11 +7,11 @@ import {
     usePrevNextButtons
 } from "./EmblaCarouselArrowButtons"
 import useEmblaCarousel from "embla-carousel-react"
-import { CourseInterface } from "../.."
 import { CourseCard } from "../../CourseCard"
+import { CourseEntity } from "@common"
 
 type PropType = {
-  slides: CourseInterface[]
+  slides: CourseEntity[]
   options?: EmblaOptionsType
 }
 

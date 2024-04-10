@@ -3,10 +3,10 @@ import { EmblaOptionsType } from "embla-carousel"
 import "./_css/embla.css"
 
 import EmblaCarousel from "./_component"
-import { CourseInterface } from ".."
+import { CourseEntity } from "@common"
 
 type CarouselProps = {
-    courses: CourseInterface[]
+    courses: CourseEntity[]
 }
 export const Carousel = (props: CarouselProps) => {
     const OPTIONS: EmblaOptionsType = { align: "start" }
