@@ -34,7 +34,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
             <div className="embla__viewport bg-white dark:bg-black " ref={emblaRef}>
                 <div className="embla__container ">
                     {slides.map((slide) => (
-                        <div className="embla__slide" key={slide.id}>
+                        <div className="embla__slide" key={slide.courseId}>
                             <div className="embla__slide__number">
                                 <CourseCard {...slide}  />
                             </div>
