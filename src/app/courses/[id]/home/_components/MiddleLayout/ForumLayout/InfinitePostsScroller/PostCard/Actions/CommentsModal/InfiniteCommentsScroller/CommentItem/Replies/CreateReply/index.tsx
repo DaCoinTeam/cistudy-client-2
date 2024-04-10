@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { RootContext } from "../../../../../../../../../../../../../../_hooks"
 import { Avatar, Input, Link } from "@nextui-org/react"
-import { getAssetUrl } from "@services"
+import { getAvatarUrl } from "@services"
 import { CreateReplyContext, CreateReplyProvider } from "./CreateReplyProvider"
 import { SendHorizonalIcon } from "lucide-react"
 import { RepliesContext } from "../RepliesProvider"
@@ -10,6 +10,7 @@ const WrappedCreateReply = () => {
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { data: profile } = profileSwr
+    const { avatarId, avatarUrl, kind } = { ...profile }
 
     const { formik } = useContext(CreateReplyContext)!
 
@@ -23,7 +24,11 @@ const WrappedCreateReply = () => {
                 !editedPostCommentReplyId ? (
                     <div>
                         <div className="flex items-center gap-2">
-                            <Avatar src={getAssetUrl(profile?.avatarId)} size="sm" />
+                            <Avatar src={getAvatarUrl({
+                                avatarId,
+                                avatarUrl,
+                                kind
+                            })} size="sm" />
                             <Input
                                 size="sm"
                                 placeholder="Create a reply..."

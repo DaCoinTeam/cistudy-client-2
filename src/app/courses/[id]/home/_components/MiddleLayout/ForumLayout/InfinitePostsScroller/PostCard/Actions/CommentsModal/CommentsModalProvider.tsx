@@ -62,6 +62,8 @@ const WrappedCommentsModalProvider = ({
                     creator: {
                         avatarId: true,
                         username: true,
+                        avatarUrl: true,
+                        kind: true
                     },
                     updatedAt: true,
                     liked: true,

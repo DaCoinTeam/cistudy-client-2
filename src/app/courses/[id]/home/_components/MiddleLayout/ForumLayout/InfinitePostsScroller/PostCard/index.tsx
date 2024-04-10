@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react"
 import { MediaGroup, TextRenderer } from "../../../../../../../../_shared"
 import { Actions } from "./Actions"
-import { getAssetUrl } from "@services"
+import { getAvatarUrl } from "@services"
 import { MoreButton } from "./MoreButton"
 interface PostCardProps {
   post: PostEntity;
@@ -25,7 +25,7 @@ export const PostCardContext = createContext<PostCardContextValue | null>(null)
 export const PostCard = (props: PostCardProps) => {
     const { post } = props
     const { title, html, postMedias, creator, createdAt, updatedAt } = post
-    const { avatarId, username } = creator
+    const { avatarId, username, avatarUrl, kind } = creator
 
     const postCardContextValue: PostCardContextValue = useMemo(
         () => ({ props }),
@@ -50,7 +50,11 @@ export const PostCard = (props: PostCardProps) => {
                                     {isEdited ? <div> Edited </div> : null}
                                 </div>
                             }
-                            avatarProps={{ src: getAssetUrl(avatarId) }}
+                            avatarProps={{ src: getAvatarUrl({
+                                avatarId,
+                                avatarUrl,
+                                kind
+                            }) }}
                         />
                         <MoreButton />
                     </div>

@@ -20,7 +20,7 @@ const WrappedPage = () => {
     }
 
     return (
-        <div className="p-12 max-w-[100rem] mx-auto">
+        <div className="p-12 max-w-[1920px] w-full mx-auto">
             <div className="text-3xl">
                 {getCount()} results for {searchParams.get("searchValue")}
             </div>    

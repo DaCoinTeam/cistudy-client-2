@@ -12,6 +12,8 @@ import React, { useContext } from "react"
 import { CommentItemContext } from ".."
 import { toggleLikePostComment } from "@services"
 import { CommentsModalContext } from "../../../CommentsModalProvider"
+import { RootContext } from "../../../../../../../../../../../../../_hooks"
+import { ToastType } from "../../../../../../../../../../../../../_components"
 
 export const Actions = () => {
     const { props, disclosures } = useContext(CommentItemContext)!
@@ -24,13 +26,23 @@ export const Actions = () => {
     const { postCommentsSwr } = swrs
     const { mutate } = postCommentsSwr
 
+    const { notify } = useContext(RootContext)!
+
     const onLikePress = async () => {
-        await toggleLikePostComment({
+        const { earnAmount } = await toggleLikePostComment({
             data: {
                 postCommentId,
             },
         })
-        await mutate()
+
+    notify!({
+        type: ToastType.Earn,
+        data: {
+            earnAmount: earnAmount ?? 0,
+        },
+    })
+
+    await mutate()
     }
 
     return (
