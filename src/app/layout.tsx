@@ -9,28 +9,14 @@ import { ReactNode, useEffect } from "react"
 import { MetaMaskProvider } from "@metamask/sdk-react"
 import { useSelector } from "react-redux"
 import { NotConnectWalletModal } from "./_components/NotConnectWalletModal"
-const font = Open_Sans({ subsets: ["latin"] })
-import { useRouter } from "next/router"
 import { pageView } from "./google-analytics"
-
+import { usePathname } from "next/navigation"
+const font = Open_Sans({ subsets: ["latin"] })
 const WrappedLayout = ({ children }: { children: ReactNode }) => {
     const darkMode = useSelector(
         (state: RootState) => state.configuration.darkMode
     )
 
-    const router = useRouter()
-
-    useEffect(() => {
-        const handleRouteChange = (url: string) => {
-            pageView(url)
-        }
-
-        router.events.on("routeChangeComplete", handleRouteChange)
-
-        return () => {
-            router.events.off("routeChangeComplete", handleRouteChange)
-        }
-    }, [router.events])
 
     return (
         <html lang="en" className={darkMode ? "dark" : "light"}>
@@ -57,6 +43,15 @@ const WrappedLayout = ({ children }: { children: ReactNode }) => {
 }
 
 const Layout = ({ children }: { children: ReactNode }) => {
+
+    const pathname = usePathname()
+    useEffect(() => {
+        const handleRouteChange = () => {
+            pageView(pathname)
+        }
+        handleRouteChange()
+    }, [pathname])
+
     return (
         <ReduxProvider>
             <WrappedLayout>{children}</WrappedLayout>
