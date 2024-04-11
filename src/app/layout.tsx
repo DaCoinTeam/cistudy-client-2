@@ -5,16 +5,33 @@ import { ReduxProvider, RootState } from "@redux"
 import { NextUIProvider } from "@nextui-org/react"
 import { RootProvider } from "./_hooks"
 import { Navbar } from "./_components"
-import { ReactNode } from "react"
+import { ReactNode, useEffect } from "react"
 import { MetaMaskProvider } from "@metamask/sdk-react"
 import { useSelector } from "react-redux"
 import { NotConnectWalletModal } from "./_components/NotConnectWalletModal"
 const font = Open_Sans({ subsets: ["latin"] })
+import { useRouter } from "next/router"
+import { pageView } from "./google-analytics"
 
 const WrappedLayout = ({ children }: { children: ReactNode }) => {
     const darkMode = useSelector(
         (state: RootState) => state.configuration.darkMode
     )
+
+    const router = useRouter()
+
+    useEffect(() => {
+        const handleRouteChange = (url: string) => {
+            pageView(url)
+        }
+
+        router.events.on("routeChangeComplete", handleRouteChange)
+
+        return () => {
+            router.events.off("routeChangeComplete", handleRouteChange)
+        }
+    }, [router.events])
+
     return (
         <html lang="en" className={darkMode ? "dark" : "light"}>
             <body className={`${font.className} min-h-screen`}>
