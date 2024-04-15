@@ -17,7 +17,7 @@ import {
     ROWS_PER_PAGE,
 } from "../UsersManagementPanelProvider"
 import { useRouter } from "next/navigation"
-import { VerifyStatus } from "@common"
+import { VerifyStatus, parseISODateString } from "@common"
 import { getAvatarUrl } from "@services"
 
 export const UsersTable = () => {
@@ -43,21 +43,23 @@ export const UsersTable = () => {
 
     const pages = count ? Math.ceil(count / ROWS_PER_PAGE) : 0
 
-    const renderStatus = (status: VerifyStatus) => {
-        const statusToComponent: Record<VerifyStatus, JSX.Element> = {
-            [VerifyStatus.Pending]: (
-                <Chip color="warning" variant="flat">
-          Pending
-                </Chip>
-            ),
-            [VerifyStatus.Approved]: (
+
+    //
+    enum Status {
+        Enabled,
+        Disabled
+    }
+
+    const renderStatus = (status: Status) => {
+        const statusToComponent: Record<Status, JSX.Element> = {
+            [Status.Enabled]: (
                 <Chip color="success" variant="flat">
-          Success
+          Enabled
                 </Chip>
             ),
-            [VerifyStatus.Rejected]: (
+            [Status.Disabled]: (
                 <Chip color="danger" variant="flat">
-          Rejected
+          Disabled
                 </Chip>
             ),
         }
@@ -105,19 +107,19 @@ export const UsersTable = () => {
             }
         >
             <TableHeader>
-                <TableColumn key="infomation" width={750}>
+                <TableColumn key="infomation">
           Infomation
                 </TableColumn>
-                <TableColumn key="enrollments">Enrollments</TableColumn>
+                <TableColumn key="email">Email</TableColumn>
+                <TableColumn key="birthdate">Birthdate</TableColumn>
                 <TableColumn key="status">Status</TableColumn>
-                <TableColumn key="birth_year">Birth year</TableColumn>
             </TableHeader>
             <TableBody
                 items={results ?? []}
                 loadingContent={<Spinner />}
                 loadingState={loadingState()}
             >
-                {({ userId, avatarId, username, avatarUrl, kind }) => (
+                {({ userId, avatarId, username, avatarUrl, kind, birthdate, email }) => (
                     <TableRow key={userId}>
                         <TableCell>
                             <div className="flex gap-3 py-2">
@@ -137,9 +139,9 @@ export const UsersTable = () => {
                                 />
                             </div>
                         </TableCell>
-                        <TableCell>123</TableCell>
-                        <TableCell>3213</TableCell>
-                        <TableCell>123</TableCell>
+                        <TableCell>{email}</TableCell>
+                        <TableCell>{parseISODateString(birthdate)}</TableCell>
+                        <TableCell>{renderStatus(Status.Enabled)}</TableCell>
                     </TableRow>
                 )}
             </TableBody>

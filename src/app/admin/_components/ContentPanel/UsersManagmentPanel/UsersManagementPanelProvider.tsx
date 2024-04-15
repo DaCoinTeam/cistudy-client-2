@@ -51,6 +51,8 @@ const WrappedUsersManagementPanelProvider = ({
                         avatarUrl: true,
                         kind: true,
                         username: true,
+                        birthdate: true,
+                        email: true
                     },
                     metadata: {
                         count: true

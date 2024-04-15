@@ -38,6 +38,7 @@ export const ProfileMenu = () => {
     const onProfilePress = () => router.push(`/users/${userId}`)
     const onManagementPress = () => router.push("/management")
     const onEnrolledCouresPress = () => router.push("/enrolled-courses")
+    const onAdminDashboardPress = () => router.push("/admin")
 
     const walletModalRef = useRef<WalletModalRefSelectors | null>(null)
     const onWalletPress = () => walletModalRef.current?.onOpen()
@@ -82,7 +83,8 @@ export const ProfileMenu = () => {
             },
             { 
                 key: "adminDashboard",
-                content: "Admin dashboard", 
+                onPress: onAdminDashboardPress,
+                content: "Admin dashboard"
             },
             {
                 key: "logout",

@@ -55,7 +55,7 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
             hasMore={size < getPages() && !isValidating}
             loader={<CircularProgress key={0} aria-label="Loading..." />}
         >
-            {getCourses().map(({courseId, title, thumbnailId, description, creator }) => (
+            {getCourses().map(({ courseId, title, thumbnailId, description, creator }) => (
                 <div className="flex gap-4" key={courseId}>
                     <InteractiveThumbnail isPressable className="min-w-60 w-60 h-fit" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
                     <div className="flex-1">

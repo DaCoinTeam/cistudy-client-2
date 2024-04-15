@@ -10,7 +10,7 @@ export const CreateCourseButton = () => {
 
     const onPress = async () => {
         const { courseId } = await createCourse()
-        router.push(`/courses/${courseId}/manage`)
+        router.push(`/courses/${courseId}/management`)
     }
 
     return (
