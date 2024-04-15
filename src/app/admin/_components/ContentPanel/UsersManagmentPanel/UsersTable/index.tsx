@@ -112,6 +112,7 @@ export const UsersTable = () => {
                 </TableColumn>
                 <TableColumn key="email">Email</TableColumn>
                 <TableColumn key="birthdate">Birthdate</TableColumn>
+                <TableColumn key="createdAt">Created At</TableColumn>
                 <TableColumn key="status">Status</TableColumn>
             </TableHeader>
             <TableBody
@@ -119,7 +120,7 @@ export const UsersTable = () => {
                 loadingContent={<Spinner />}
                 loadingState={loadingState()}
             >
-                {({ userId, avatarId, username, avatarUrl, kind, birthdate, email }) => (
+                {({ userId, avatarId, username, avatarUrl, kind, birthdate, email, createdAt }) => (
                     <TableRow key={userId}>
                         <TableCell>
                             <div className="flex gap-3 py-2">
@@ -141,6 +142,7 @@ export const UsersTable = () => {
                         </TableCell>
                         <TableCell>{email}</TableCell>
                         <TableCell>{parseISODateString(birthdate)}</TableCell>
+                        <TableCell>{parseISODateString(createdAt)}</TableCell>
                         <TableCell>{renderStatus(Status.Enabled)}</TableCell>
                     </TableRow>
                 )}

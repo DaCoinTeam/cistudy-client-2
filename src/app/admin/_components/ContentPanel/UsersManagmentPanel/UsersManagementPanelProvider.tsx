@@ -52,7 +52,9 @@ const WrappedUsersManagementPanelProvider = ({
                         kind: true,
                         username: true,
                         birthdate: true,
-                        email: true
+                        email: true,
+                        createdAt: true,
+                        updatedAt: true
                     },
                     metadata: {
                         count: true

@@ -47,6 +47,8 @@ export interface UserEntity {
   firstName?: string;
   lastName?: string;
   birthdate?: Date;
+  createdAt: Date;
+  updatedAt: Date;
   username: string;
   verified: boolean;
   kind: UserKind;
