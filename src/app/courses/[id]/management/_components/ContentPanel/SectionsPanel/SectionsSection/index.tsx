@@ -40,7 +40,7 @@ export const SectionsSection = (props: SectionsSectionProps) => {
                         key={section.sectionId}
                         title={section.title}
                         startContent={<MoreButton section={section} />}
-                        subtitle={"3 lesson"}
+                        subtitle={"Add your lectures"}
                         classNames={{
                             content: "flex flex-col gap-4 p-4",
                             heading: "!px-4"

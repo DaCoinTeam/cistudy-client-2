@@ -22,9 +22,11 @@ export const CoursesTable = () => {
     const { page } = state
     const { selfCreatedCoursesSwr } = swrs
     const { data: selfCreatedCourses, isLoading } = selfCreatedCoursesSwr
-
+    const getRandomNumber = (limit : number) => {
+        return Math.floor(Math.random() * limit)
+    }
     if (!selfCreatedCourses) return null
-
+   
     const loadingState = () => {
         if (isLoading) return "loading"
         return "idle"
@@ -117,9 +119,9 @@ export const CoursesTable = () => {
                                 </div>
                             </div>
                         </TableCell>
-                        <TableCell>123</TableCell>
-                        <TableCell>12323</TableCell>
-                        <TableCell>123</TableCell>
+                        <TableCell>{getRandomNumber(501)}</TableCell>
+                        <TableCell>{getRandomNumber(1001)}</TableCell>
+                        <TableCell>{getRandomNumber(3)}</TableCell>
                     </TableRow>
                 )}
             </TableBody>

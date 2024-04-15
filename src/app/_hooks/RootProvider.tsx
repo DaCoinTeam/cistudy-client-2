@@ -102,6 +102,7 @@ const WrappedRootProvider = forwardRef<
                     },
                     thumbnailId: true,
                     description: true,
+                    price: true,
                 },
                 metadata: {
                     count: true,
