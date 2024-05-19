@@ -125,7 +125,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                     !!(formik.touched.description && formik.errors.description)
                 }
             />
-
+ 
             <Spacer y={4} />
             <Select
                 variant="bordered"
