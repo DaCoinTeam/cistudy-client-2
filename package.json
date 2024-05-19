@@ -15,7 +15,7 @@
     "@heroicons/react": "^2.1.1",
     "@metamask/sdk-react": "^0.16.0",
     "@next/third-parties": "^14.2.1",
-    "@nextui-org/react": "^2.2.9",
+    "@nextui-org/react": "^2.3.6",
     "@reduxjs/toolkit": "^2.1.0",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tiptap/extension-code": "^2.2.4",

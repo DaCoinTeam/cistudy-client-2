@@ -85,7 +85,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
         }, [])
     }
 
-    const onTopicChange = (key: Key) => {
+    const onTopicChange = (key: Key | null) => {
         const topic = getTopics().find(({ topicId }) => topicId === key)
         if (!topic) return
         addTopic(topic)
