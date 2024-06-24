@@ -8,8 +8,8 @@ export const Reviews = () => {
             content: "I really enjoyed this course. It was very informative and the instructor was great!",
             rating: 5,
             date: "2022-04-22",
-            user: {
-                userId: "uID1",
+            account: {
+                accountId: "uID1",
                 firstName: "John",
                 lastName: "Doe",
                 avatarId: "https://cdn.aglty.io/boys-town/quotes/ryan_20230915120925.jpg"
@@ -21,8 +21,8 @@ export const Reviews = () => {
             content: "Marx is a great instructor and I learned a lot from this course. I would definitely recommend it to anyone who wants to learn React Native!",
             rating: 4,
             date: "2022-04-22",
-            user: {
-                userId: "uID2",
+            account: {
+                accountId: "uID2",
                 firstName: "Marx",
                 lastName: "Bierber",
                 avatarId: "https://cdn.aglty.io/boys-town/quotes/ryan_20230915120925.jpg"

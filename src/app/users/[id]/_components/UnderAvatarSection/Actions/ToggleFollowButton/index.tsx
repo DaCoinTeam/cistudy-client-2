@@ -1,21 +1,21 @@
 import { Button } from "@nextui-org/react"
-import { UserMinus2Icon, UserPlus2Icon } from "lucide-react"
+import { AccountMinus2Icon, AccountPlus2Icon } from "lucide-react"
 import React, { useContext } from "react"
-import { UserDetailsContext } from "../../../../_hooks"
+import { AccountDetailsContext } from "../../../../_hooks"
 import { toggleFollow } from "@services"
 
 export const ToggleFollowButton = () => {
-    const { swrs } = useContext(UserDetailsContext)!
-    const { userSwr } = swrs
-    const { data: user , mutate } = userSwr
+    const { swrs } = useContext(AccountDetailsContext)!
+    const { accountSwr } = swrs
+    const { data: account , mutate } = accountSwr
 
     const onPress = async () => {
-        if (!user) return
-        const { userId } = user
+        if (!account) return
+        const { accountId } = account
 
         await toggleFollow({
             data: {
-                followedUserId: userId,
+                followedAccountId: accountId,
             },
         })
         
@@ -27,14 +27,14 @@ export const ToggleFollowButton = () => {
             onPress={onPress}
             className="bg-content2"
             startContent={
-                user?.followed ? (
-                    <UserMinus2Icon className="21" strokeWidth={3/2} />
+                account?.followed ? (
+                    <AccountMinus2Icon className="21" strokeWidth={3/2} />
                 ) : (
-                    <UserPlus2Icon className="21" strokeWidth={3/2} />
+                    <AccountPlus2Icon className="21" strokeWidth={3/2} />
                 )
             }
         >
-            {user?.followed ? "Unfollow" : "Follow"}
+            {account?.followed ? "Unfollow" : "Follow"}
         </Button>
     )
 }

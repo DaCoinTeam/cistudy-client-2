@@ -16,7 +16,7 @@ export const Ecosystem = (props: EcosystemProps) => {
             </div>
             <Spacer y={6} />
             <div className="text-xl text-center">
-        STARCI token empowers users with a versatile digital asset designed to
+        STARCI token empowers accounts with a versatile digital asset designed to
         facilitate seamless transactions and interactions within the STARCI
         ecosystem.
             </div>

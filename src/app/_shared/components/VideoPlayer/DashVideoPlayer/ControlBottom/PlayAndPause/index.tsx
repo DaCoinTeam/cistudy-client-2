@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { DashVideoPlayerContext } from "../.."
 import { Link } from "@nextui-org/react"
-import { PauseIcon, PlayIcon } from "@heroicons/react/24/solid"
+import { HiPlay, HiPause } from "react-icons/hi2";
 
 export const PlayAndPause = () => {
     const { state, functions } = useContext(DashVideoPlayerContext)!
@@ -12,11 +12,11 @@ export const PlayAndPause = () => {
         <>
             {isPlay ? (
                 <Link as="button" onPress={onPause}>
-                    <PauseIcon className="w-6 h-6" />
+                    <HiPause className="w-6 h-6" />
                 </Link>
             ) : (
                 <Link as="button" onPress={onPlay}>
-                    <PlayIcon className="w-6 h-6" />
+                    <HiPlay className="w-6 h-6" />
                 </Link>
             )}
         </>

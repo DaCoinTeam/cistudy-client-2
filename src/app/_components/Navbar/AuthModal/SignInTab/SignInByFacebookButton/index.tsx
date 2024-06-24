@@ -14,7 +14,7 @@ export const SignInByFacebookIcon = () => {
 
     const onPress = async () => {
         const credential = await signInWithPopup(firebaseAuth, provider)
-        const token = await credential.user.getIdToken()
+        const token = await credential.account.getIdToken()
         const response = await verifyGoogleAccessToken(
             {
                 params: {
@@ -22,7 +22,7 @@ export const SignInByFacebookIcon = () => {
                 },
             },
             {
-                userId: true,
+                accountId: true,
                 avatarId: true,
                 username: true,
             }

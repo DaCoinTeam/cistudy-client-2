@@ -20,7 +20,7 @@ import { ErrorResponse, ResourceEntity } from "@common"
 import { ResourceItem } from "./ResourceItem"
 import { createResources, findManyResources } from "@services"
 import Dropzone from "react-dropzone"
-import { LectureItemContext } from "../.."
+import { LessonItemContext } from "../.."
 import useSWR, { SWRResponse } from "swr"
 
 interface ResourceModalContextValue {
@@ -37,15 +37,15 @@ export const ResourceModalContext =
   createContext<ResourceModalContextValue | null>(null)
 
 const WrappedResourcesModalRef = () => {
-    const { props } = useContext(LectureItemContext)!
-    const { lecture } = props
-    const { lectureId } = lecture
+    const { props } = useContext(LessonItemContext)!
+    const { lesson } = props
+    const { lessonId } = lesson
 
     const fetchResources = useCallback(async () => {
         return await findManyResources(
             {
                 params: {
-                    lectureId,
+                    lessonId,
                 }
             },
             {
@@ -70,7 +70,7 @@ const WrappedResourcesModalRef = () => {
     const onDrop = useCallback(async (files: Array<File>) => {
         await createResources({
             data: {
-                lectureId,
+                lessonId,
             },
             files,
         })

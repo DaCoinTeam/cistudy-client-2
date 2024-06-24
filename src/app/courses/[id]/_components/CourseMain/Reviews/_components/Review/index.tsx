@@ -1,7 +1,6 @@
-import { faStar } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline"
+// import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline"
 import { Avatar, Card, CardBody, Spacer } from "@nextui-org/react"
+import { Stars } from "../../../../../../../_shared"
 const itemClasses = {
     // base: "py-0 w-full",
     // title: "font-normal text-medium",
@@ -20,8 +19,8 @@ type ReviewProps = {
         content: string
         rating: number
         date: string
-        user: {
-            userId: string
+        account: {
+            accountId: string
             firstName: string
             lastName: string
             avatarId: string
@@ -39,7 +38,7 @@ const Review = ({review} : ReviewProps) => {
                     <div>
                         <Avatar
                             className='w-12 h-12'
-                            src={review.user.avatarId}
+                            src={review.account.avatarId}
                         />
                     </div>
                     <div>
@@ -49,12 +48,13 @@ const Review = ({review} : ReviewProps) => {
                         <Spacer y={1} />
 
                         <div className='flex items-center mb-1 space-x-1 rtl:space-x-reverse'>
-                            {star.map((_, index) => (
+                            <Stars initialValue={review.rating} readonly />
+                            {/* {star.map((_, index) => (
                                 <FontAwesomeIcon key={index + "star"} icon={faStar}  className="text-yellow-500 w-4 h-4 me-0.5" />
                             ))}
                             {outlinedStar.map((_, index) => (
                                 <StarIconOutline key={index + "starOutlined"} className='text-yellow-400 w-5 h-5 ' />
-                            ))}
+                            ))} */}
                             {/* <FontAwesomeIcon icon={faStar}  className="text-yellow-500 w-4 h-4 me-0.5" />
                             <FontAwesomeIcon icon={faStar}  className="text-yellow-500 w-4 h-4 me-0.5" />
                             <FontAwesomeIcon icon={faStar}  className="text-yellow-500 w-4 h-4 me-0.5" />
@@ -68,7 +68,7 @@ const Review = ({review} : ReviewProps) => {
                 <Spacer y={2} />
 
                 <div className='font-bold dark:text-white items-center'>
-                    <p>{review.user.firstName} {review.user.lastName}</p>
+                    <p>{review.account.firstName} {review.account.lastName}</p>
                    
                 </div>
                 <Spacer y={1} />

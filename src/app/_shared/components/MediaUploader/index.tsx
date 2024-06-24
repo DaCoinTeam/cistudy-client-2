@@ -2,9 +2,9 @@
 import { AppendKey, Media } from "@common"
 import React, { createContext, memo, useContext, useMemo } from "react"
 import { v4 as uuidv4 } from "uuid"
-import { XMarkIcon } from "@heroicons/react/24/solid"
 import { Badge, Image } from "@nextui-org/react"
 import { UploadDropzone } from "./UploadDropzone"
+import { HiXMark } from "react-icons/hi2";
 
 interface MediaUploaderProps {
   className?: string;
@@ -33,7 +33,7 @@ const WrappedMediaUploader = () => {
             {medias.map(({ key, file }) => (
                 <Badge
                     key={key}
-                    content={<XMarkIcon />}
+                    content={<HiXMark />}
                     className="cursor-pointer"
                     classNames={{
                         base: "grid place-items-stretch",

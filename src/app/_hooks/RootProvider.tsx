@@ -11,7 +11,7 @@ import {
     useRef,
 } from "react"
 import React from "react"
-import { Disclosure, ErrorResponse, UserEntity, generateClientId } from "@common"
+import { Disclosure, ErrorResponse, AccountEntity, generateClientId } from "@common"
 import { FindManyCoursesOutputData, findManyCourses, init } from "@services"
 import useSWR, { SWRResponse } from "swr"
 import { RootAction, RootState, useRootReducer } from "./useRootReducer"
@@ -33,7 +33,7 @@ const initialValues: FormikValues = {
 
 interface RootContextValue {
   swrs: {
-    profileSwr: SWRResponse<UserEntity | null, ErrorResponse>;
+    profileSwr: SWRResponse<AccountEntity | null, ErrorResponse>;
     coursesSwr: SWRInfiniteResponse<FindManyCoursesOutputData, ErrorResponse>;
   };
   formik: FormikProps<FormikValues>;
@@ -41,7 +41,7 @@ interface RootContextValue {
   disclosures: {
     notConnectWalletModalDisclosure: Disclosure;
   };
-  socket: Socket | null,
+//   socket: Socket | null,
   notify?: NotifyFn
 }
 
@@ -61,12 +61,12 @@ const WrappedRootProvider = forwardRef<
     const { children, formik } = props
 
     const notConnectWalletModalDisclosure = useDisclosure()
-    const socket = useSocketClient()
+    // const socket = useSocketClient()
 
     const fetchProfile = useCallback(async () => {
         try {
             return await init({
-                userId: true,
+                accountId: true,
                 username: true,
                 email: true,
                 avatarId: true,
@@ -74,7 +74,7 @@ const WrappedRootProvider = forwardRef<
                 coverPhotoId: true,
                 kind: true,
                 balance: true,
-                userRole: true
+                accountRole: true
             })
         } catch (ex) {
             console.log(ex)
@@ -86,6 +86,7 @@ const WrappedRootProvider = forwardRef<
         return await findManyCourses(
             {
                 options: {
+                    searchValue: "",
                     skip: COLUMNS_PER_PAGE * key,
                     take: COLUMNS_PER_PAGE,
                 },
@@ -98,18 +99,27 @@ const WrappedRootProvider = forwardRef<
                         avatarId: true,
                         username: true,
                         avatarUrl: true,
-                        kind: true
+                        kind: true,
                     },
                     thumbnailId: true,
                     description: true,
                     price: true,
+
                 },
                 metadata: {
                     count: true,
+                    categories: {
+                        categoryId: true,
+                        name: true,
+                    },
+                    // topics: {
+                    //     name: true,
+                    //     topicId: true
+                    // },
                 },
             }
         )
-    }, [])
+    }, [reducer])
 
     const profileSwr = useSWR(["PROFILE"], fetchProfile)
 
@@ -138,10 +148,12 @@ const WrappedRootProvider = forwardRef<
             disclosures: {
                 notConnectWalletModalDisclosure
             },
-            socket,
+            // socket,
             notify: toastRef.current?.notify
         }),
-        [profileSwr, coursesSwr, reducer, notConnectWalletModalDisclosure, socket]
+        [profileSwr, coursesSwr, reducer,
+            //  notConnectWalletModalDisclosure, socket
+            ]
     )
 
     return (

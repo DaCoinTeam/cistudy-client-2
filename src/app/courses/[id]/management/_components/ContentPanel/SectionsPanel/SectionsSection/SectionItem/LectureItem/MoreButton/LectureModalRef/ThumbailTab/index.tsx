@@ -2,13 +2,13 @@ import { Button, Spacer, Image } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { getAssetUrl } from "@services"
 import { UploadButton } from "./UploadButton"
-import { LectureItemContext } from "../../.."
+import { LessonItemContext } from "../../.."
 import { TrashIcon } from "@heroicons/react/24/outline"
 
 export const ThumbnailTab = () => {
-    const { props } = useContext(LectureItemContext)!
-    const { lecture } = props
-    const { thumbnailId } = lecture
+    const { props } = useContext(LessonItemContext)!
+    const { lesson } = props
+    const { thumbnailId } = lesson
 
     return (
         <div>

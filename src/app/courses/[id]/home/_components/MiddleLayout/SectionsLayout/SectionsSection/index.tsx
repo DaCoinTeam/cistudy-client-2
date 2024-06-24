@@ -1,8 +1,8 @@
 "use client"
 import { Accordion, AccordionItem } from "@nextui-org/react"
 import React, { useContext } from "react"
-import { LectureItem } from "./LectureItem"
 import { HomeContext } from "../../../../_hooks"
+import { LessonItem } from "./LessonItem";
 
 interface SectionsSectionProps {
   className?: string;
@@ -19,17 +19,17 @@ export const SectionsSection = (props: SectionsSectionProps) => {
 
     const renderSections = () => {
         if (!sections) return []
-        return sections.map(({ sectionId, title, lectures }) => (
+        return sections.map(({ sectionId, title, lessons }) => (
             <AccordionItem
                 key={sectionId}
                 classNames={{
                     content: "flex flex-col gap-4 py-4",
                 }}
                 title={title}
-                subtitle={`${lectures.length} lectures`}
+                subtitle={`${lessons.length} lessons`}
             >
-                {lectures.map((lecture) => (
-                    <LectureItem key={lecture.lectureId} lecture={lecture} />
+                {lessons.map((lesson) => (
+                    <LessonItem key={lesson.lessonId} lesson={lesson} />
                 ))}
             </AccordionItem>
         ))

@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { UserDetailsContext } from "../../../_hooks"
+import { AccountDetailsContext } from "../../../_hooks"
 import { EditProfileModal } from "./EditProfileModal"
 import { ToggleFollowButton } from "./ToggleFollowButton"
 import { MoreButton } from "./MoreButton"
@@ -12,9 +12,9 @@ interface ActionsProps {
 export const Actions = (props: ActionsProps) => {
     const { className } = props
 
-    const { swrs } = useContext(UserDetailsContext)!
-    const { userSwr } = swrs
-    const { data: user } = userSwr
+    const { swrs } = useContext(AccountDetailsContext)!
+    const { accountSwr } = swrs
+    const { data: account } = accountSwr
 
     const { swrs: rootSwrs } = useContext(RootContext)!
     const { profileSwr } = rootSwrs
@@ -22,7 +22,7 @@ export const Actions = (props: ActionsProps) => {
 
     const renderButton = () => (
         <>
-            {user?.userId === profile?.userId ? (
+            {account?.accountId === profile?.accountId ? (
                 <EditProfileModal />
             ) : (
                 <ToggleFollowButton />

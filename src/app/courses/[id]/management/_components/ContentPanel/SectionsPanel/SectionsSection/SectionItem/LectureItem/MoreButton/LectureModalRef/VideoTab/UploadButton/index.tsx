@@ -1,8 +1,8 @@
 import React, { useContext, useRef } from "react"
-import { updateLecture } from "@services"
+import { updateLesson } from "@services"
 import { Button } from "@nextui-org/react"
 import { UploadIcon } from "lucide-react"
-import { LectureItemContext } from "../../../.."
+import { LessonItemContext } from "../../../.."
 import { SectionItemContext } from "../../../../.."
 
 interface UploadButtonProps {
@@ -14,13 +14,13 @@ export const UploadButton = (props: UploadButtonProps) => {
 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
-    const { props : lectureItemProps } = useContext(LectureItemContext)!
-    const { lecture } = lectureItemProps
-    const { lectureId } = lecture
+    const { props : lessonItemProps } = useContext(LessonItemContext)!
+    const { lesson } = lessonItemProps
+    const { lessonId } = lesson
 
     const { swrs } = useContext(SectionItemContext)!
-    const { lecturesSwr } = swrs
-    const { mutate } = lecturesSwr
+    const { lessonsSwr } = swrs
+    const { mutate } = lessonsSwr
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files
@@ -28,10 +28,10 @@ export const UploadButton = (props: UploadButtonProps) => {
         const file = files.item(0)
         if (file === null) return
 
-        await updateLecture({
+        await updateLesson({
             data: {
-                lectureId,
-                lectureVideoIndex: 0,
+                lessonId,
+                lessonVideoIndex: 0,
             },
             files: [file],
         })

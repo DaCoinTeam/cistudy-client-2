@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from "react"
-import { UserDetailsContext } from "../../_hooks"
+import { AccountDetailsContext } from "../../_hooks"
 import { Button, Image } from "@nextui-org/react"
 import { getAssetUrl, updateProfile } from "@services"
 import { RootContext } from "../../../../_hooks"
@@ -14,15 +14,15 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
-    const { swrs } = useContext(UserDetailsContext)!
-    const { userSwr } = swrs
-    const { data: user, mutate } = userSwr
+    const { swrs } = useContext(AccountDetailsContext)!
+    const { accountSwr } = swrs
+    const { data: account, mutate } = accountSwr
 
     const { swrs: rootSwrs } = useContext(RootContext)!
     const { profileSwr } = rootSwrs
     const { data: profile, mutate: rootMutate } = profileSwr
 
-    const isOwnProfile = user?.userId === profile?.userId
+    const isOwnProfile = account?.accountId === profile?.accountId
 
     const onPress = () => {
         if (fileInputRef.current) fileInputRef.current.click()
@@ -52,7 +52,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
                 <Image
                     alt="coverPhoto"
                     radius="none"
-                    src={getAssetUrl(user?.coverPhotoId, { forceUpdate: true })}
+                    src={getAssetUrl(account?.coverPhotoId, { forceUpdate: true })}
                     className="w-full"
                     classNames={{
                         wrapper: "w-full !max-w-full absolute",

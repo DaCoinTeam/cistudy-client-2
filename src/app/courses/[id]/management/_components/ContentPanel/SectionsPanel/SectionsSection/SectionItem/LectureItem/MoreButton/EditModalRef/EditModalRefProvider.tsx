@@ -8,8 +8,8 @@ import React, {
     useMemo,
     useRef,
 } from "react"
-import { updateLecture } from "@services"
-import { LectureItemContext } from "../.."
+import { updateLesson } from "@services"
+import { LessonItemContext } from "../.."
 import { SectionItemContext } from "../../.."
 
 interface EditModalRefContextValue {
@@ -44,9 +44,9 @@ const WrappedEditModalRefProvider = ({
   formik: FormikProps<FormikValues>;
   children: ReactNode;
 }) => {
-    const { props } = useContext(LectureItemContext)!
-    const { lecture } = props
-    const { title, description } = lecture
+    const { props } = useContext(LessonItemContext)!
+    const { lesson } = props
+    const { title, description } = lesson
 
     const titlePreviousRef = useRef(false)
     useEffect(() => {
@@ -99,21 +99,21 @@ export const EditModalRefProvider = ({
 }: {
   children: ReactNode;
 }) => {
-    const { props } = useContext(LectureItemContext)!
-    const { lecture } = props
-    const { lectureId } = lecture
+    const { props } = useContext(LessonItemContext)!
+    const { lesson } = props
+    const { lessonId } = lesson
 
     const { swrs } = useContext(SectionItemContext)!
-    const { lecturesSwr } = swrs
-    const { mutate } = lecturesSwr
+    const { lessonsSwr } = swrs
+    const { mutate } = lessonsSwr
 
     return (
         <Formik
             initialValues={initialValues}
             onSubmit={async ({ title, description }, { setFieldValue }) => {
-                await updateLecture({
+                await updateLesson({
                     data: {
-                        lectureId,
+                        lessonId,
                         description,
                         title
                     },

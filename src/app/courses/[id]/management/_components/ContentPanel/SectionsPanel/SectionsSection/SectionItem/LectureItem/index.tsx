@@ -1,27 +1,27 @@
 import React, { createContext, useMemo } from "react"
-import { LectureEntity } from "@common"
+import { LessonEntity } from "@common"
 import { getAssetUrl } from "@services"
 import { MoreButton } from "./MoreButton"
 import { InteractiveThumbnail } from "../../../../../../../../../_shared"
 import { useRouter } from "next/navigation"
 
-interface LectureItemProps {
-  lecture: LectureEntity;
+interface LessonItemProps {
+  lesson: LessonEntity;
 }
 
-interface LectureItemContextValue {
-  props: LectureItemProps;
+interface LessonItemContextValue {
+  props: LessonItemProps;
 }
 
-export const LectureItemContext = createContext<LectureItemContextValue | null>(
+export const LessonItemContext = createContext<LessonItemContextValue | null>(
     null
 )
 
-export const LectureItem = (props: LectureItemProps) => {
-    const { lecture } = props
-    const { lectureId, title, thumbnailId, description } = lecture
+export const LessonItem = (props: LessonItemProps) => {
+    const { lesson } = props
+    const { lessonId, title, thumbnailId, description } = lesson
 
-    const lectureItemContextValue: LectureItemContextValue = useMemo(
+    const lessonItemContextValue: LessonItemContextValue = useMemo(
         () => ({
             props,
         }),
@@ -30,10 +30,10 @@ export const LectureItem = (props: LectureItemProps) => {
 
     const router = useRouter()
 
-    const onPress = () => router.push(`/lectures/${lectureId}`)
+    const onPress = () => router.push(`/lessons/${lessonId}`)
 
     return (
-        <LectureItemContext.Provider value={lectureItemContextValue}>
+        <LessonItemContext.Provider value={lessonItemContextValue}>
             <div className="justify-between flex items-center w-full">
                 <div className="flex gap-3 w-full">
                     <InteractiveThumbnail isPressable className="w-40 h-fit" src={getAssetUrl(thumbnailId)} onPress={onPress}/>
@@ -45,6 +45,6 @@ export const LectureItem = (props: LectureItemProps) => {
                 </div>
                 <MoreButton />
             </div>
-        </LectureItemContext.Provider>
+        </LessonItemContext.Provider>
     )
 }

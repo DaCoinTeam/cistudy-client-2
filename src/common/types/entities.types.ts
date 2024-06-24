@@ -1,13 +1,13 @@
 import { Address, LogsOutput } from "web3"
 
-export enum UserKind {
+export enum AccountKind {
   Local = "local",
   Google = "google",
   Facebook = "facebook",
 }
 
-export enum UserRole {
-  User = "user",
+export enum AccountRole {
+  Account = "account",
   Moderator = "moderator",
   Administrator = "administrator",
 }
@@ -34,15 +34,15 @@ export enum VideoType {
   DASH = "dash",
 }
 
-export interface UserEntity {
-  userId: string;
+export interface AccountEntity {
+  accountId: string;
   email: string;
   password?: string;
   avatarId?: string;
   avatarUrl?: string;
   phoneNumber?: string;
   balance: number;
-  userRole: UserRole;
+  accountRole: AccountRole;
   walletId?: string;
   firstName?: string;
   lastName?: string;
@@ -51,7 +51,7 @@ export interface UserEntity {
   updatedAt: Date;
   username: string;
   verified: boolean;
-  kind: UserKind;
+  kind: AccountKind;
   externalId?: string;
   coverPhotoId: string;
   sessions: Array<SessionEntity>;
@@ -73,7 +73,7 @@ export interface PostEntity {
   createdAt: Date;
   updatedAt: Date;
   course: CourseEntity;
-  creator: UserEntity;
+  creator: AccountEntity;
   html: string;
   postMedias: Array<PostMediaEntity>;
   postComments: Array<PostCommentEntity>;
@@ -95,7 +95,7 @@ export interface CourseEntity {
   enableDiscount: boolean;
   verifyStatus: VerifyStatus;
   isDraft: boolean;
-  creator: UserEntity;
+  creator: AccountEntity;
   isDeleted: boolean;
   previewVideoId: string;
   includes: string;
@@ -127,19 +127,19 @@ export interface CourseTargetEntity {
 
 export interface EnrolledInfoEntity {
   enrolledId: string;
-  userId: string;
+  accountId: string;
   courseId: string;
   enrolledAt: Date;
   course: CourseEntity;
-  user: UserEntity;
+  account: AccountEntity;
   enrolled: boolean;
 }
 
-export interface LectureEntity {
-  lectureId: string;
+export interface LessonEntity {
+  lessonId: string;
   title: string;
   thumbnailId?: string;
-  lectureVideoId?: string;
+  lessonVideoId?: string;
   sectionId: string;
   processStatus: ProcessStatus;
   videoType: VideoType;
@@ -153,10 +153,10 @@ export interface LectureEntity {
 
 export interface PostCommentLikeEntity {
   postCommentLikeId: string;
-  userId: string;
+  accountId: string;
   postId: string;
   createdAt: Date;
-  user: UserEntity;
+  account: AccountEntity;
   postComment: PostCommentEntity;
 }
 
@@ -167,7 +167,7 @@ export interface PostCommentEntity {
   createdAt: Date;
   updatedAt: Date;
   post: PostEntity;
-  creator: UserEntity;
+  creator: AccountEntity;
   html: string;
   postCommentMedias: Array<PostCommentMediaEntity>;
   postCommentLikes: Array<PostCommentLikeEntity>;
@@ -187,7 +187,7 @@ export interface PostCommentReplyEntity {
   updatedAt: Date;
   content: string;
   postComment: PostCommentEntity;
-  creator: UserEntity;
+  creator: AccountEntity;
 }
 
 export interface SectionEntity {
@@ -196,36 +196,36 @@ export interface SectionEntity {
   courseId: string;
   createdAt: Date;
   course: CourseEntity;
-  lectures: Array<LectureEntity>;
+  lessons: Array<LessonEntity>;
 }
 
 export interface ResourceEntity {
   resourceId: string;
   name: string;
   fileId: string;
-  lectureId: string;
+  lessonId: string;
   createdAt: Date;
   updatedAt: Date;
-  lecture: LectureEntity;
+  lesson: LessonEntity;
 }
 
 export interface SessionEntity {
   sessionId: string;
-  userId: string;
+  accountId: string;
   createdAt: Date;
   isDisabled: boolean;
   clientId: string;
-  user: UserEntity;
+  account: AccountEntity;
 }
 
 export interface PostReactEntity {
   postReactId: string;
-  userId: string;
+  accountId: string;
   postId: string;
   liked: boolean;
   createdAt: Date;
   updatedAt: Date;
-  user: UserEntity;
+  account: AccountEntity;
   post: PostEntity;
 }
 
@@ -324,4 +324,34 @@ export interface TransactionEntity {
   createdAt: Date;
   updatedAt: Date;
   log: LogsOutput;
+}
+
+export interface CartEntity {
+  cartId: string
+  cartCourses: Array<CartCourseEntity>
+  isDeleted: boolean
+  createdAt: Date
+  updatedAt: Date
+  account: AccountEntity
+}
+export interface CartCourseEntity {
+  cartCourseId: string
+  cartId: string
+  courseId: string
+  createdAt: Date
+  updatedAt: Date
+  course: CourseEntity
+  cart: CartEntity
+}
+export interface CourseReviewEntity {
+  courseReviewId: string
+  content: string
+  courseId: string
+  course?: CourseEntity
+  createdAt: Date
+  updatedAt: Date
+  rating: number
+  accountId: string
+  account: AccountEntity
+  
 }

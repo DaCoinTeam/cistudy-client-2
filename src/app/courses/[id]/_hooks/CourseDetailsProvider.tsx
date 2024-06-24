@@ -27,14 +27,14 @@ export const WrappedCourseDetailsProvider = ({
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { data: profile } = profileSwr
-    const { userId } = { ...profile }
+    const { accountId } = { ...profile }
 
     const fetchCourse = useCallback(async () => {
         return await findOneCourse(
             {
                 params: {
                     courseId,
-                    userId
+                    accountId,
                 },
             },
             {
@@ -55,42 +55,43 @@ export const WrappedCourseDetailsProvider = ({
                 sections: {
                     sectionId: true,
                     title: true,
-                    lectures: {
-                        lectureId: true,
+                    lessons: {
+                        lessonId: true,
                         thumbnailId: true,
-                        lectureVideoId: true,
+                        lessonVideoId: true,
                         title: true,
                     },
                 },
-                category: {
-                    categoryId: true,
-                    name: true
-                },
-                courseSubcategories: {
-                    subcategory: {
-                        subcategoryId: true,
-                        name: true
-                    }
-                },
-                courseTopics: {
-                    topic: {
-                        topicId: true,
-                        name: true,
-                        svgId: true
-                    }
-                },
+                // category: {
+                //     categoryId: true,
+                //     name: true
+                // },
+                // courseSubcategories: {
+                //     subcategory: {
+                //         subcategoryId: true,
+                //         name: true
+                //     }
+                // },
+                // courseTopics: {
+                //     topic: {
+                //         topicId: true,
+                //         name: true,
+                //         svgId: true
+                //     }
+                // },
                 creator: {
                     avatarId: true,
                     username: true,
                     numberOfFollowers: true,
                     avatarUrl: true,
-                    kind: true
+                    kind: true,
+                    accountId: true
                 }
             }
         )
-    }, [userId])
+    }, [])
 
-    const courseSwr = useSWR(["COURSE", userId], fetchCourse, {
+    const courseSwr = useSWR(["COURSE", accountId], fetchCourse, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
     })

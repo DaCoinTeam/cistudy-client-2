@@ -25,17 +25,17 @@ export const Sections = () => {
                     selectionMode="multiple"
                 >
                     {sections
-                        ? sections.map(({ sectionId, title, lectures }) => (
+                        ? sections.map(({ sectionId, title, lessons }) => (
                             <AccordionItem
                                 key={sectionId}
                                 aria-label="Sections"
                                 subtitle={
-                                    `${lectures.length} lectures`
+                                    `${lessons.length} lessons`
                                 }
                                 title={title}
                             >
-                                {lectures.map(({lectureId, title, description, thumbnailId}) => (
-                                    <div key={lectureId} className="flex gap-3">
+                                {lessons.map(({lessonId, title, description, thumbnailId}) => (
+                                    <div key={lessonId} className="flex gap-3">
                                         <InteractiveThumbnail isPressable src={getAssetUrl(thumbnailId)} className="w-40 h-fit" />
                                         <div>
                                             <div>

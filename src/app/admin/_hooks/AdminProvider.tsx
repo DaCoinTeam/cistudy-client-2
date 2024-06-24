@@ -30,7 +30,7 @@ const WrappedAdminProvider = ({ children }: { children: ReactNode }) => {
     const searchParams = useSearchParams()
 
     const tab = (searchParams.get("tab") ??
-    PanelSelected.Users) as PanelSelected
+    PanelSelected.Accounts) as PanelSelected
 
     useEffect(() => {
         dispatch({

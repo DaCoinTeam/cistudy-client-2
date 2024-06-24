@@ -46,30 +46,30 @@ export const CourseFloat = () => {
     }
     const { account, provider } = useSDK()
 
-    const { disclosures, socket } = useContext(RootContext)!
+    const { disclosures } = useContext(RootContext)!
     const { notConnectWalletModalDisclosure } = disclosures
     const { onOpen } = notConnectWalletModalDisclosure
 
-    useEffect(() => {
-        if (socket === null) return
-        socket.on(
-            TRANSACTION_VERIFIED,
-            async ({ code }: TransactionVerifiedMessage) => {
-                console.log("C")
-                if (!courseId) return
-                // await enrollCourse({
-                //     data: {
-                //         courseId,
-                //         code,
-                //     },
-                // })
-                // await mutate()
-            }
-        )
-        return () => {
-            socket.removeListener(TRANSACTION_VERIFIED)
-        }
-    }, [socket, courseId])
+    // useEffect(() => {
+    //     if (socket === null) return
+    //     socket.on(
+    //         TRANSACTION_VERIFIED,
+    //         async ({ code }: TransactionVerifiedMessage) => {
+    //             console.log("C")
+    //             if (!courseId) return
+    //             // await enrollCourse({
+    //             //     data: {
+    //             //         courseId,
+    //             //         code,
+    //             //     },
+    //             // })
+    //             // await mutate()
+    //         }
+    //     )
+    //     return () => {
+    //         socket.removeListener(TRANSACTION_VERIFIED)
+    //     }
+    // }, [socket, courseId])
 
     const getPrice = () => {
         if (!price) return BigInt(0)
@@ -165,7 +165,7 @@ export const CourseFloat = () => {
                     <div className="flex text-foreground-400 flex-col gap-2">
                         <div className="flex gap-2">
                             <PlaySquareIcon size={20} strokeWidth={3 / 2} />
-                            <div className="text-sm"> 4 lectures</div>
+                            <div className="text-sm"> 4 lessons</div>
                         </div>
                         <div className="flex text-foreground-400 gap-2">
                             <FolderOpenIcon size={20} strokeWidth={3 / 2} />

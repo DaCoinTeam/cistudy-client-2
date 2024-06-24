@@ -1,7 +1,7 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"
 import { Input, Link } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { RootContext } from "../../../_hooks"
+import { HiMagnifyingGlass } from "react-icons/hi2";
 
 interface SearchInputProps {
   className?: string;
@@ -15,7 +15,7 @@ export const SearchInput = (props: SearchInputProps) => {
         formik.setFieldValue("searchValue", value)
     }
 
-    console.log(formik.values)
+    // console.log(formik.values)
     
     const onSubmit = () => {
         formik.submitForm()
@@ -38,7 +38,7 @@ export const SearchInput = (props: SearchInputProps) => {
             onKeyDown={onKeyDown}
             startContent={
                 <Link color="foreground" as="button" onPress={onSubmit}>
-                    <MagnifyingGlassIcon height={20} width={20} />
+                    <HiMagnifyingGlass height={20} width={20} />
                 </Link>
             }
         />

@@ -8,7 +8,7 @@ import React, {
 } from "react"
 
 import { findManyCreatedCourses } from "@services"
-import { UserDetailsContext } from "../../../_hooks"
+import { AccountDetailsContext } from "../../../_hooks"
 import useSWR, { SWRResponse } from "swr"
 import { CourseEntity, ErrorResponse } from "@common"
 
@@ -29,18 +29,18 @@ export const CoursesTabContentProvider = ({
 }: {
   children: ReactNode;
 }) => {
-    const { swrs } = useContext(UserDetailsContext)!
-    const { userSwr } = swrs
-    const { data: user } = userSwr
+    const { swrs } = useContext(AccountDetailsContext)!
+    const { accountSwr } = swrs
+    const { data: account } = accountSwr
 
     const fetchCreatedCourses = useCallback(async () => {
-        if (!user) return
-        const { userId } = user
+        if (!account) return
+        const { accountId } = account
 
         return findManyCreatedCourses(
             {
                 params: {
-                    userId,
+                    accountId,
                 }
             },
             {
@@ -50,7 +50,7 @@ export const CoursesTabContentProvider = ({
                 title: true,
             }
         )
-    }, [user?.userId])
+    }, [account?.accountId])
 
     const createdCoursesSwr = useSWR(
         ["CREATED_COURSES"],

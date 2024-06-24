@@ -1,10 +1,10 @@
 import React from "react"
-import { UserEntity } from "@common"
+import { AccountEntity } from "@common"
 import { Card, CardBody, User } from "@nextui-org/react"
 import { getAssetUrl } from "@services"
 
 interface FollowerCardProps {
-  follower: UserEntity;
+  follower: AccountEntity;
   className?: string;
 }
 

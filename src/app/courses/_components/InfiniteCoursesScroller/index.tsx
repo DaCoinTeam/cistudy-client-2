@@ -18,7 +18,7 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
     const { swrs } = useContext(RootContext)!
     const { coursesSwr } = swrs
     const { data, size, setSize, isValidating } = coursesSwr
-    
+    console.log("data", data)
     const router = useRouter()
 
     const onLoadMore = () => {

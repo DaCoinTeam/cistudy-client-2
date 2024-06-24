@@ -13,11 +13,11 @@ import { ClapperboardIcon, ImageIcon } from "lucide-react"
 import { VideoTab } from "./VideoTab"
 import { ThumbnailTab } from "./ThumbailTab"
 
-export interface LectureModalRefSelectors {
+export interface LessonModalRefSelectors {
   onOpen: () => void;
 }
 
-export const LectureModalRef = forwardRef<LectureModalRefSelectors | null>(
+export const LessonModalRef = forwardRef<LessonModalRefSelectors | null>(
     (_, ref) => {
         const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -29,7 +29,7 @@ export const LectureModalRef = forwardRef<LectureModalRefSelectors | null>(
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
                 <ModalContent>
                     <ModalHeader className="p-4 pb-2 text-xl">
-                Lecture
+                Lesson
                     </ModalHeader>
                     <ModalBody className="p-4 pt-2 gap-0">
                         <Tabs

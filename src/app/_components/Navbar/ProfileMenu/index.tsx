@@ -6,7 +6,7 @@ import {
     Avatar,
 } from "@nextui-org/react"
 import React, { useContext, useRef } from "react"
-import { UserRole, removeTokens } from "@common"
+import { AccountRole, removeTokens } from "@common"
 import { RootContext } from "../../../_hooks"
 import { getAvatarUrl } from "@services"
 import { useRouter } from "next/navigation"
@@ -23,7 +23,7 @@ export const ProfileMenu = () => {
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { mutate, data: profile } = profileSwr
-    const { avatarId, username, userId, avatarUrl, kind, userRole } = {
+    const { avatarId, username, accountId, avatarUrl, kind, accountRole } = {
         ...profile,
     }
 
@@ -35,7 +35,7 @@ export const ProfileMenu = () => {
     }
 
     const router = useRouter()
-    const onProfilePress = () => router.push(`/users/${userId}`)
+    const onProfilePress = () => router.push(`/accounts/${accountId}`)
     const onManagementPress = () => router.push("/management")
     const onEnrolledCouresPress = () => router.push("/enrolled-courses")
     const onAdminDashboardPress = () => router.push("/admin")
@@ -44,7 +44,7 @@ export const ProfileMenu = () => {
     const onWalletPress = () => walletModalRef.current?.onOpen()
 
     const items: Array<Item> = 
-    userRole === UserRole.Administrator ?
+    accountRole === AccountRole.Administrator ?
         [
             {
                 key: "base",
@@ -152,7 +152,7 @@ export const ProfileMenu = () => {
                         className="transition-transform"
                     />
                 </DropdownTrigger>
-                <DropdownMenu aria-label="User Actions" variant="flat">
+                <DropdownMenu aria-label="Account Actions" variant="flat">
                     {
                         items.map(({content, key, onPress, color}) => (
                             <DropdownItem key={key} onPress={onPress} color={color}>

@@ -9,7 +9,7 @@ import React, {
     useRef,
 } from "react"
 import { updateProfile } from "@services"
-import { UserDetailsContext } from "../../../../_hooks"
+import { AccountDetailsContext } from "../../../../_hooks"
 import { parseISODateString } from "@common"
 import { RootContext } from "../../../../../../_hooks"
 import * as Yup from "yup"
@@ -46,10 +46,10 @@ const WrappedEditProfileModalProvider = ({
   formik: FormikProps<FormikValues>;
   children: ReactNode;
 }) => {
-    const { swrs } = useContext(UserDetailsContext)!
-    const { userSwr } = swrs
-    const { data: user } = userSwr
-    const { username, birthdate } = { ...user }
+    const { swrs } = useContext(AccountDetailsContext)!
+    const { accountSwr } = swrs
+    const { data: account } = accountSwr
+    const { username, birthdate } = { ...account }
 
     const usernamePreviousRef = useRef(false)
     useEffect(() => {

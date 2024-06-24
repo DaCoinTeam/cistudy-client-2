@@ -4,7 +4,7 @@ import { AdminContext, PanelSelected } from "../../../_hooks"
 import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
 import { BanknoteIcon, BookOpenIcon } from "lucide-react"
-import { UserCircleIcon } from "@heroicons/react/24/outline"
+import { AccountCircleIcon } from "@heroicons/react/24/outline"
 
 interface MenuProps {
   className?: string;
@@ -39,11 +39,11 @@ export const Menu = (props: MenuProps) => {
     const items = [
         {
             startContent: (
-                <UserCircleIcon height={24} width={24}/>
+                <AccountCircleIcon height={24} width={24}/>
             ),
-            key: "users",
-            content: "Users",
-            panelSelected: PanelSelected.Users,
+            key: "accounts",
+            content: "Accounts",
+            panelSelected: PanelSelected.Accounts,
         },
         {
             startContent: (

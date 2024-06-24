@@ -40,7 +40,7 @@ export const Heading = () => {
                     <div className="grid grid-cols-3">
                         <div className="grid place-items-center">
                             <div className="text-xl">
-                            Total Users
+                            Total Accounts
                             </div>
                             <div className="text-4xl font-bold">
                             123
