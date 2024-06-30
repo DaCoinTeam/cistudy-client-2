@@ -56,7 +56,7 @@ export const WalletModalRef = forwardRef<WalletModalRefSelectors, WalletModalRef
 // $2323
 // </div>
 // <div className="border border-divider rounded-medium p-4">
-// <User className="flex justify-start" name={"STARCI Token"} description={"0 STARCI"} avatarProps={{
+// <Account className="flex justify-start" name={"STARCI Token"} description={"0 STARCI"} avatarProps={{
 // src: "/starci-logo.svg"
 // }} />
 // {/* <div className="flex items-center gap-2">
@@ -65,7 +65,7 @@ export const WalletModalRef = forwardRef<WalletModalRefSelectors, WalletModalRef
 // </div>   */}
 // </div>
 // <div className="border border-divider rounded-medium p-3">
-// <User className="flex justify-start" name={"STARCI2 Token"} description={"0 STARCI2"} avatarProps={{
+// <Account className="flex justify-start" name={"STARCI2 Token"} description={"0 STARCI2"} avatarProps={{
 // src: "/starci-logo.svg"
 // }} />
 // <Spacer y={4}/>

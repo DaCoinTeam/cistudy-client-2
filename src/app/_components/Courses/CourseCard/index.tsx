@@ -1,20 +1,9 @@
-import { faStar } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
 import { Card, CardFooter, CardHeader, Image, User } from "@nextui-org/react"
-// import { BriefcaseIcon, UserIcon } from "@heroicons/react/24/outline"
 import { CourseEntity } from "@common"
 import { getAssetUrl, getAvatarUrl } from "../../../../services/server"
+import { HiStar } from "react-icons/hi";
 
-// interface CourseInterface {
-//   id?: number;
-//   title?: string;
-//   thumbnail?: string;
-//   price?: string;
-//   authorImg?: string;
-//   authorName?: string;
-//   rating?: number;
-//   level?: string;
-// }
 export const CourseCard = (props: CourseEntity) => {
     const { title, creator, courseTopics, courseSubcategories, category, thumbnailId, price, } = { ...props }
     const { avatarId, avatarUrl, kind, username, numberOfFollowers } = {
@@ -55,14 +44,15 @@ export const CourseCard = (props: CourseEntity) => {
                                
                 <div className='flex flex-grow gap-2 w-full justify-between'>
                     <div className='flex items-center'>
-                        <FontAwesomeIcon
+                        {/* <FontAwesomeIcon
                             icon={faStar}
                             className='text-yellow-500 w-4 h-4 me-2  p-1 '
-                        />
+                        /> */}
+                        <HiStar size={20} className='text-yellow-500 w-4 h-4 me-2  p-1 ' />
                         <span className='text-sm font-semibold'>5.0</span>
                     </div>
                     {/* <div className='flex items-center  '>
-                        <UserIcon className='w-4 h-4 me-2 ' />
+                        <AccountIcon className='w-4 h-4 me-2 ' />
                         <span className='text-sm font-semibold'>{}</span>
                     </div> */}
                     <div className='flex items-center'>

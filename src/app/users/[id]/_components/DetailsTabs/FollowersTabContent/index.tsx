@@ -15,7 +15,7 @@ const WrappedFollowersTabContent = () => {
     const renderFollowers = () => (
         <div className="grid grid-cols-3 gap-4">
             {followers?.map((follower) => (
-                <FollowerCard key={follower.userId} follower={follower} />
+                <FollowerCard key={follower.accountId} follower={follower} />
             ))}
         </div>
     )

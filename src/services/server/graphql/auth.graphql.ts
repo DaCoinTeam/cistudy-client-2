@@ -1,8 +1,8 @@
 import { DeepPartial } from "@apollo/client/utilities"
 import {
     Schema,
-    UserEntity,
-    UserKind,
+    AccountEntity,
+    AccountKind,
     buildAuthPayloadString,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
@@ -10,8 +10,8 @@ import { gql } from "@apollo/client"
 import { getAssetUrl } from ".."
 
 export const init = async (
-    schema: Schema<DeepPartial<UserEntity>>,
-): Promise<UserEntity> => {
+    schema: Schema<DeepPartial<AccountEntity>>,
+): Promise<AccountEntity> => {
     const payload = buildAuthPayloadString(schema)
     const { data: graphqlData } = await authClient.query({
         query: gql`
@@ -37,8 +37,8 @@ export interface SignInInputData {
 
 export const signIn = async (
     data: SignInInputData,
-    schema: Schema<DeepPartial<UserEntity>>
-): Promise<UserEntity> => {
+    schema: Schema<DeepPartial<AccountEntity>>
+): Promise<AccountEntity> => {
     const payload = buildAuthPayloadString(schema)
     const { data: graphqlData } = await client.query({
         query: gql`
@@ -67,8 +67,8 @@ export interface VerifyGoogleAccessTokenInputData {
 
 export const verifyGoogleAccessToken = async (
     data: VerifyGoogleAccessTokenInputData,
-    schema: Schema<DeepPartial<UserEntity>>
-): Promise<UserEntity> => {
+    schema: Schema<DeepPartial<AccountEntity>>
+): Promise<AccountEntity> => {
     const payload = buildAuthPayloadString(schema)
     const { data: graphqlData } = await client.query({
         query: gql`
@@ -91,8 +91,8 @@ export const verifyGoogleAccessToken = async (
 export const getAvatarUrl = (params: {
   avatarId?: string;
   avatarUrl?: string;
-  kind?: UserKind;
+  kind?: AccountKind;
 }) => {
     const { avatarId, avatarUrl, kind } = params
-    return (avatarId || kind === UserKind.Local) ? getAssetUrl(avatarId) : avatarUrl
+    return (avatarId || kind === AccountKind.Local) ? getAssetUrl(avatarId) : avatarUrl
 }

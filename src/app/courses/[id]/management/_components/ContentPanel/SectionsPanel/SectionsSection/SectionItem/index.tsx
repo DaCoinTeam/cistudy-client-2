@@ -1,8 +1,8 @@
 import React, { createContext, useCallback, useMemo } from "react"
-import { ErrorResponse, LectureEntity, SectionEntity } from "@common"
-import { findManyLectures } from "@services"
-import { AddLectureItem } from "./AddLectureItem"
-import { LectureItem } from "./LectureItem"
+import { ErrorResponse, LessonEntity, SectionEntity } from "@common"
+import { findManyLessons } from "@services"
+import { AddLessonItem } from "./AddLessonItem"
+import { LessonItem } from "./LessonItem"
 import useSWR, { SWRConfig, SWRResponse } from "swr"
 
 interface SectionItemProps {
@@ -12,7 +12,7 @@ interface SectionItemProps {
 interface SectionItemContextValue {
   props: SectionItemProps;
   swrs: {
-    lecturesSwr: SWRResponse<Array<LectureEntity>, ErrorResponse>;
+    lessonsSwr: SWRResponse<Array<LessonEntity>, ErrorResponse>;
   };
 }
 
@@ -24,16 +24,16 @@ const WrappedSectionItem = (props: SectionItemProps) => {
     const { section } = props
     const { sectionId } = section
 
-    const fetchLectures = useCallback(async () => {
-        return await findManyLectures(
+    const fetchLessons = useCallback(async () => {
+        return await findManyLessons(
             {
                 params: {
                     sectionId,
                 }
             },
             {
-                lectureId: true,
-                lectureVideoId: true,
+                lessonId: true,
+                lessonVideoId: true,
                 title: true,
                 description: true,
                 thumbnailId: true,
@@ -47,25 +47,25 @@ const WrappedSectionItem = (props: SectionItemProps) => {
         )
     }, [props])
 
-    const lecturesSwr = useSWR("LECTURES", fetchLectures)
+    const lessonsSwr = useSWR("LESSONS", fetchLessons)
 
     const sectionItemContextValue: SectionItemContextValue = useMemo(
         () => ({
             props,
             swrs: {
-                lecturesSwr,
+                lessonsSwr,
             },
         }),
-        [props, lecturesSwr]
+        [props, lessonsSwr]
     )
 
     return (
         <SectionItemContext.Provider value={sectionItemContextValue}>
             <>
-                {lecturesSwr.data?.map((lecture) => (
-                    <LectureItem key={lecture.lectureId} lecture={lecture} />
+                {lessonsSwr.data?.map((lesson) => (
+                    <LessonItem key={lesson.lessonId} lesson={lesson} />
                 ))}
-                <AddLectureItem key="addLecture" />
+                <AddLessonItem key="addLesson" />
             </>
         </SectionItemContext.Provider>
     )

@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { CoverPhoto, DetailsTabs, UnderAvatarSection, UserAvatar } from "./_components"
+import { CoverPhoto, DetailsTabs, UnderAvatarSection, AccountAvatar } from "./_components"
 import { Spacer } from "@nextui-org/react"
 
 const Page = () => {
@@ -9,7 +9,7 @@ const Page = () => {
             <div className="relative h-fit pb-12">
                 <CoverPhoto className="absolute w-full h-[300px]" />
                 <div className="max-w-[1920px] mx-auto h-[300px] relative">
-                    <UserAvatar className="z-20 absolute -bottom-12 left-12" />
+                    <AccountAvatar className="z-20 absolute -bottom-12 left-12" />
                 </div>
             </div>
             <Spacer y={4}/>

@@ -55,8 +55,8 @@ export const useSocketClient = () => {
             reason, 
             details
         ) => {
-            console.log(reason)
-            console.log(details)
+            // console.log(reason)
+            // console.log(details)
         })
 
         socket.emit("initialize")

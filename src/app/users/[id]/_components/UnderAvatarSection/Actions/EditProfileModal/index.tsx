@@ -38,7 +38,7 @@ export const WrappedEditProfileModal = () => {
                             classNames={{
                                 inputWrapper: "input-input-wrapper"
                             }} 
-                            label="Username"
+                            label="Accountname"
                             id="username"
                             labelPlacement="outside"
                             value={formik.values.username}

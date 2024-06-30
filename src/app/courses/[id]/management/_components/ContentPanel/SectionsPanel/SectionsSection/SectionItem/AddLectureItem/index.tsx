@@ -1,20 +1,20 @@
 "use client"
 import { Link } from "@nextui-org/react"
 import React, { useContext } from "react"
-import { createLecture } from "@services"
+import { createLesson } from "@services"
 import { SectionItemContext } from ".."
 import { PlusIcon } from "@heroicons/react/24/outline"
 
-export const AddLectureItem = () => {
+export const AddLessonItem = () => {
     const { swrs, props } = useContext(SectionItemContext)!
-    const { lecturesSwr } = swrs
-    const { mutate } = lecturesSwr
+    const { lessonsSwr } = swrs
+    const { mutate } = lessonsSwr
 
     const { section } = props
     const { sectionId } = section
 
     const onPress = async () => {
-        await createLecture({
+        await createLesson({
             data: {
                 sectionId,
                 title: "Nguyen Van Tu Cuong",
@@ -32,7 +32,7 @@ export const AddLectureItem = () => {
         >
             <div className="gap-2 flex">
                 <PlusIcon width={20} height={20}/>
-                <div className="text-sm">Add lecture </div>
+                <div className="text-sm">Add lesson </div>
             </div>
     
         </Link>

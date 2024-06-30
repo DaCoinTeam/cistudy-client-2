@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { CoursesManagementPanel } from "./CoursesManagementPanel"
 import { AdminContext, PanelSelected } from "../../_hooks"
-import { UsersManagementPanel } from "./UsersManagmentPanel"
+import { AccountsManagementPanel } from "./AccountsManagmentPanel"
 import { TransactionsManagementPanel } from "./TransactionsManagementPanel"
 
 interface ContentPanelProps {
@@ -17,8 +17,8 @@ export const ContentPanel = (props: ContentPanelProps) => {
 
     const render = () => {
         const panelSelectedToComponent: Record<PanelSelected, JSX.Element> = {
-            [PanelSelected.Users]: (
-                <UsersManagementPanel className={`${className}`}/>
+            [PanelSelected.Accounts]: (
+                <AccountsManagementPanel className={`${className}`}/>
             ),
             [PanelSelected.Courses]: (
                 <CoursesManagementPanel className={`${className}`} />

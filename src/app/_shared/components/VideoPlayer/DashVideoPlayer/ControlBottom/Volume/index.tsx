@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { DashVideoPlayerContext } from "../.."
 import { Link, Slider } from "@nextui-org/react"
-import { SpeakerWaveIcon, SpeakerXMarkIcon } from "@heroicons/react/24/solid"
+import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
 
 export const Volume = () => {
     const { player, state, dispatch } = useContext(DashVideoPlayerContext)!
@@ -42,11 +42,11 @@ export const Volume = () => {
         <div className="items-center flex gap-2">
             {isMuted ? (
                 <Link as="button" onPress={onUnmute}>
-                    <SpeakerXMarkIcon className="w-6 h-6" />
+                    <HiSpeakerXMark className="w-6 h-6" />
                 </Link>
             ) : (
                 <Link as="button" onPress={onMute}>
-                    <SpeakerWaveIcon className="w-6 h-6" />
+                    <HiSpeakerWave className="w-6 h-6" />
                 </Link>
             )}
             <Slider

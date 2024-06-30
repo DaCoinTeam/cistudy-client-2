@@ -8,13 +8,13 @@ import React, {
 } from "react"
 
 import { findManyFollowers } from "@services"
-import { UserDetailsContext } from "../../../_hooks"
+import { AccountDetailsContext } from "../../../_hooks"
 import useSWR, { SWRConfig, SWRResponse } from "swr"
-import { ErrorResponse, UserEntity } from "@common"
+import { ErrorResponse, AccountEntity } from "@common"
 
 export interface FollowersTabContentContextValue {
   swrs: {
-    followersSwr: SWRResponse<Array<UserEntity> | undefined, ErrorResponse>
+    followersSwr: SWRResponse<Array<AccountEntity> | undefined, ErrorResponse>
   }
 }
 
@@ -26,29 +26,29 @@ export const WrappedFollowersTabContentProvider = ({
 }: {
   children: ReactNode;
 }) => {
-    const { swrs } = useContext(UserDetailsContext)!
-    const { userSwr } = swrs
-    const { data: user } = userSwr
-    const { userId } = { ...user }
+    const { swrs } = useContext(AccountDetailsContext)!
+    const { accountSwr } = swrs
+    const { data: account } = accountSwr
+    const { accountId } = { ...account }
 
     const fetchFollowers = useCallback(async () => {
-        if (!userId) return
+        if (!accountId) return
         return await findManyFollowers(
             {
                 params: {
-                    userId,
+                    accountId,
                 }
             },
             {
-                userId: true,
+                accountId: true,
                 username: true,
                 avatarId: true,
                 coverPhotoId: true,
             }
         )
-    }, [userId])
+    }, [accountId])
 
-    const followersSwr = useSWR(userId ? ["FOLLOWERS"] : null, fetchFollowers)
+    const followersSwr = useSWR(accountId ? ["FOLLOWERS"] : null, fetchFollowers)
 
     const followersTabContentContextValue: FollowersTabContentContextValue =
     useMemo(

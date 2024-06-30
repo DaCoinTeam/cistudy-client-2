@@ -1,8 +1,5 @@
-import {
-    ChatBubbleBottomCenterTextIcon,
-    PlayCircleIcon,
-} from "@heroicons/react/24/outline"
-import { Cog6ToothIcon } from "@heroicons/react/24/solid"
+import { HiCog } from "react-icons/hi";
+import { HiOutlineChatBubbleBottomCenterText, HiPlayCircle  } from "react-icons/hi2";
 
 import {
     Dropdown,
@@ -19,18 +16,18 @@ export const Settings = () => {
         <Dropdown placement="top-end">
             <DropdownTrigger>
                 <Link as="button">
-                    <Cog6ToothIcon className="w-6 h-6" />
+                    <HiCog className="w-6 h-6" />
                 </Link>
             </DropdownTrigger>
             <DropdownMenu aria-label="Settings">
                 <DropdownItem
-                    startContent={<ChatBubbleBottomCenterTextIcon className="w-6 h-6" />}
+                    startContent={<HiOutlineChatBubbleBottomCenterText className="w-6 h-6" />}
                     key="subtitle"
                 >
           Subtitle
                 </DropdownItem>
                 <DropdownItem
-                    startContent={<PlayCircleIcon className="w-6 h-6" />}
+                    startContent={<HiPlayCircle className="w-6 h-6" />}
                     key="playbackSpeed"
                 >
           Playback speed

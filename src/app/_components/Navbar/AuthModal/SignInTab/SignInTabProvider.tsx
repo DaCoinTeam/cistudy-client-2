@@ -60,7 +60,7 @@ export const SignInTabProvider = ({ children }: { children: ReactNode }) => {
                 avatarId: true,
                 coverPhotoId: true,
                 email: true,
-                userId: true,
+                accountId: true,
                 birthdate: true
             })
             await mutate(response)

@@ -19,9 +19,9 @@ import {
     ResourcesModalRef,
     ResourcesModalRefSelectors,
 } from "./ResourcesModalRef"
-import { LectureModalRef, LectureModalRefSelectors } from "./LectureModalRef"
-import { LectureItemContext } from ".."
-import { deleteLecture } from "@services"
+import { LessonModalRef, LessonModalRefSelectors } from "./LessonModalRef"
+import { LessonItemContext } from ".."
+import { deleteLesson } from "@services"
 import { SectionItemContext } from "../.."
 import {
     ConfirmDeleteModalRef,
@@ -33,18 +33,18 @@ interface ManageThumbnailButtonProps {
 }
 
 export const MoreButton = (props: ManageThumbnailButtonProps) => {
-    const { props: lectureItemProps } = useContext(LectureItemContext)!
-    const { lecture } = lectureItemProps
-    const { lectureId } = lecture
+    const { props: lessonItemProps } = useContext(LessonItemContext)!
+    const { lesson } = lessonItemProps
+    const { lessonId } = lesson
 
     const { swrs } = useContext(SectionItemContext)!
-    const { lecturesSwr } = swrs
-    const { mutate } = lecturesSwr
+    const { lessonsSwr } = swrs
+    const { mutate } = lessonsSwr
 
     const onDeletePress = async () => {
-        await deleteLecture({
+        await deleteLesson({
             data: {
-                lectureId,
+                lessonId,
             },
         })
         await mutate()
@@ -55,8 +55,8 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
     const editModalRef = useRef<EditModalRefSelectors | null>(null)
     const onEditModalOpen = () => editModalRef.current?.onOpen()
 
-    const lectureModalRef = useRef<LectureModalRefSelectors | null>(null)
-    const onLectureModalOpen = () => lectureModalRef.current?.onOpen()
+    const lessonModalRef = useRef<LessonModalRefSelectors | null>(null)
+    const onLessonModalOpen = () => lessonModalRef.current?.onOpen()
 
     const resourcesModalRef = useRef<ResourcesModalRefSelectors | null>(null)
     const onResourcesModalOpen = () => resourcesModalRef.current?.onOpen()
@@ -95,10 +95,10 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
                     </DropdownItem>
                     <DropdownItem
                         startContent={<PlaySquareIcon size={20} strokeWidth={3/2} />}
-                        onPress={onLectureModalOpen}
-                        key="lecture"
+                        onPress={onLessonModalOpen}
+                        key="lesson"
                     >
-            Lecture
+            Lesson
                     </DropdownItem>
                     <DropdownItem
                         startContent={<PenLineIcon size={20} strokeWidth={3/2} />}
@@ -120,13 +120,13 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
             </Dropdown>
             <div className="hidden">
                 <ResourcesModalRef ref={resourcesModalRef} />
-                <LectureModalRef ref={lectureModalRef} />
+                <LessonModalRef ref={lessonModalRef} />
                 <EditModalRef ref={editModalRef} />
                 <ConfirmDeleteModalRef
                     ref={confirmDeleteModalRef}
                     onDeletePress={onDeletePress}
-                    title="Delete Lecture"
-                    content="Are you sure you want to delete this lecture? All references will be lost, and you cannot undo this action."
+                    title="Delete Lesson"
+                    content="Are you sure you want to delete this lesson? All references will be lost, and you cannot undo this action."
                 />
             </div>       
         </>

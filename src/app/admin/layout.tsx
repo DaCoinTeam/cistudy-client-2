@@ -3,15 +3,15 @@ import { ReactNode, Suspense, useContext } from "react"
 import { AdminProvider } from "./_hooks"
 import { RootContext } from "../_hooks"
 import { useAuthorization } from "../_shared"
-import { UserRole } from "../../common/types"
+import { AccountRole } from "../../common/types"
 
 const Layout = ({ children }: { children: ReactNode }) => {
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { data : profile } = profileSwr
-    const { userRole } = { ...profile }
+    const { accountRole } = { ...profile }
 
-    useAuthorization([UserRole.Administrator], userRole)
+    useAuthorization([AccountRole.Administrator], accountRole)
 
     return (
         <Suspense>

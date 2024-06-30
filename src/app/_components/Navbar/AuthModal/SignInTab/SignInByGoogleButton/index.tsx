@@ -21,7 +21,7 @@ export const SignInByGoogleIcon = () => {
        
          
         const credential = await signInWithPopup(firebaseAuth, provider)
-        const token = await credential.user.getIdToken()
+        const token = await credential.account.getIdToken()
         await verifyGoogleAccessToken(
             { params: { token } },
             {

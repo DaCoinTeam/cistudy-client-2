@@ -58,10 +58,10 @@ const WrappedHomeProvider = ({ children }: { children: ReactNode }) => {
                 sections: {
                     sectionId: true,
                     title: true,
-                    lectures: {
-                        lectureId: true,
+                    lessons: {
+                        lessonId: true,
                         thumbnailId: true,
-                        lectureVideoId: true,
+                        lessonVideoId: true,
                         title: true,
                     },
                 },

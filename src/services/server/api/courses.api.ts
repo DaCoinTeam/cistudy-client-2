@@ -126,38 +126,38 @@ export const deleteCourseTarget = async (
     return await authAxios.delete(url)
 }
 
-export interface CreateLectureInput {
+export interface CreateLessonInput {
   data: {
     sectionId: string;
     title: string;
   };
 }
 
-export const createLecture = async (
-    input: CreateLectureInput
+export const createLesson = async (
+    input: CreateLessonInput
 ): Promise<string> => {
     const { data } = input
-    const url = `${BASE_URL}/create-lecture`
+    const url = `${BASE_URL}/create-lesson`
 
     return await authAxios.post(url, data)
 }
 
-export interface UpdateLectureInput {
+export interface UpdateLessonInput {
   data: {
-    lectureId: string;
+    lessonId: string;
     title?: string;
     description?: string;
     thumbnailIndex?: number;
-    lectureVideoIndex?: number;
+    lessonVideoIndex?: number;
   };
   files?: Array<File>;
 }
 
-export const updateLecture = async (
-    input: UpdateLectureInput
+export const updateLesson = async (
+    input: UpdateLessonInput
 ): Promise<string> => {
     const { data, files } = input
-    const url = `${BASE_URL}/update-lecture`
+    const url = `${BASE_URL}/update-lesson`
     const formData = new FormData()
 
     formData.append("data", JSON.stringify(data))
@@ -174,25 +174,25 @@ export const updateLecture = async (
     })
 }
 
-export interface DeleteLectureInput {
+export interface DeleteLessonInput {
   data: {
-    lectureId: string;
+    lessonId: string;
   };
 }
 
-export const deleteLecture = async (
-    input: DeleteLectureInput
+export const deleteLesson = async (
+    input: DeleteLessonInput
 ): Promise<string> => {
     const { data } = input
-    const { lectureId } = data
-    const url = `${BASE_URL}/delete-lecture/${lectureId}`
+    const { lessonId } = data
+    const url = `${BASE_URL}/delete-lesson/${lessonId}`
 
     return await authAxios.delete(url)
 }
 
 export interface CreateResourcesInput {
   data: {
-    lectureId: string;
+    lessonId: string;
   };
   files: Array<File>;
 }
@@ -278,3 +278,42 @@ export const deleteResource = async (
     return await authAxios.delete(url)
 }
 
+export interface CreateCourseReviewInput {
+  data: {
+      courseId: string
+      content: string
+      rating: number
+  }
+}
+export const createCourseReview = async (
+  input: CreateCourseReviewInput
+): Promise<string> => {
+  const { data } = input
+  const url = `${BASE_URL}/create-course-review`
+  return await authAxios.post(url, data)
+}
+
+export interface UpdateCourseReviewInput {
+  data: {
+      courseReviewId: string
+      content: string
+      rating: number
+  }
+}
+export const updateCourseReview = async (
+  input: UpdateCourseReviewInput
+): Promise<string> => {
+  const { data } = input
+  const url = `${BASE_URL}/update-course-review`
+  return await authAxios.patch(url, data)
+}
+export interface DeleteCourseReviewInput {
+  courseReviewId: string
+}
+
+export const deleteCourseReview = async (
+  courseReviewId : DeleteCourseReviewInput
+): Promise<string> => {
+  const url = `${BASE_URL}/delete-course-review/${courseReviewId}`
+  return await authAxios.delete(url)
+}

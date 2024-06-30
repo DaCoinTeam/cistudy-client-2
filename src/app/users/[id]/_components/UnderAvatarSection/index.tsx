@@ -1,6 +1,6 @@
 import { Spacer } from "@nextui-org/react"
 import React, { useContext } from "react"
-import { UserDetailsContext } from "../../_hooks"
+import { AccountDetailsContext } from "../../_hooks"
 import { Actions } from "./Actions"
 
 interface UnderAvatarSectionProps {
@@ -10,10 +10,10 @@ interface UnderAvatarSectionProps {
 export const UnderAvatarSection = (props: UnderAvatarSectionProps) => {
     const { className } = props
 
-    const { swrs } = useContext(UserDetailsContext)!
-    const { userSwr } = swrs
-    const { data: user } = userSwr
-    const { username, numberOfFollowers } = { ...user }
+    const { swrs } = useContext(AccountDetailsContext)!
+    const { accountSwr } = swrs
+    const { data: account } = accountSwr
+    const { username, numberOfFollowers } = { ...account }
 
     return (
         <div className={`${className} flex justify-between items-center`}>
