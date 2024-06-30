@@ -39,7 +39,7 @@ export const VideoQuality = () => {
                             bitrateInfo.qualityIndex,
                             true
                         )
-                        console.log(bitrateInfo.qualityIndex)
+                        // console.log(bitrateInfo.qualityIndex)
                     }}
                 >
                     {bitrateInfo.height}p

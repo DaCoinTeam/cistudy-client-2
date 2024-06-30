@@ -98,7 +98,7 @@ export const CourseFloat = () => {
             getPrice()
         )
 
-        console.log(transaction)
+        // console.log(transaction)
 
         if (transaction === null) return
         const { transactionHash } = transaction
