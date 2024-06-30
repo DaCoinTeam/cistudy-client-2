@@ -37,8 +37,7 @@ const WrappedCourseReview = () => {
     // })
   };
   return (
-    <div className='px-4'>
-      <div className='text-xl mb-2'>Reviews</div>
+    <div>
 
       {/* <div className="mb-2">
                 <RatingDisplay rating={5.0} size="large" />
@@ -64,7 +63,7 @@ const WrappedCourseReview = () => {
         className='mb-2'
         onClick={() => handleNavigateAllReviewsScreen(courseId)}
       >
-        <div className='text-blue-500 text-base'>div all reviews</div>
+        <div className='text-blue-500 text-base'>All reviews</div>
       </div>
     </div>
   );

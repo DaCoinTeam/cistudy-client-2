@@ -4,6 +4,7 @@ import {
     AccountEntity,
     AccountKind,
     buildAuthPayloadString,
+    buildAuthPayloadVoidString,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
 import { gql } from "@apollo/client"
@@ -36,10 +37,9 @@ export interface SignInInputData {
 }
 
 export const signIn = async (
-    data: SignInInputData,
-    schema: Schema<DeepPartial<AccountEntity>>
+    data: SignInInputData
 ): Promise<AccountEntity> => {
-    const payload = buildAuthPayloadString(schema)
+    const payload = buildAuthPayloadVoidString()
     const { data: graphqlData } = await client.query({
         query: gql`
             query SignIn($data: SignInInputData!) {
@@ -67,9 +67,9 @@ export interface VerifyGoogleAccessTokenInputData {
 
 export const verifyGoogleAccessToken = async (
     data: VerifyGoogleAccessTokenInputData,
-    schema: Schema<DeepPartial<AccountEntity>>
 ): Promise<AccountEntity> => {
-    const payload = buildAuthPayloadString(schema)
+  console.log('data', data)
+    const payload = buildAuthPayloadVoidString()
     const { data: graphqlData } = await client.query({
         query: gql`
            query VerifyGoogleAccessToken($data: VerifyGoogleAccessTokenData!) {

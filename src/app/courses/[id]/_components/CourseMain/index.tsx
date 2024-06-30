@@ -5,6 +5,7 @@ import { Sections } from "./Sections"
 import { Instructor } from "./Instructor"
 import { Reviews } from "./Reviews"
 import { CourseTargets } from "./CourseTargets"
+import { CourseReview } from "./CourseReview"
 export const CourseMain = () => {
     return (
         <div className="max-w-[1920px] mx-auto w-full px-12">
@@ -21,7 +22,8 @@ export const CourseMain = () => {
                     </div>
                     <Stars />
                     <Spacer y={4} />
-                    <Reviews />
+                    {/* <Reviews /> */}
+                    <CourseReview />
                 </div>
             </div>
         </div>

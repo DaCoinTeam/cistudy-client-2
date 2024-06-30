@@ -29,7 +29,7 @@ interface CreatePostModalProps {
 
 export const WrappedCreatePostModal = () => {
     const { formik } = useContext(CreatePostModalContext)!
-    console.log(formik.errors)
+    // console.log(formik.errors)
     const onPress = () => formik.handleSubmit()
 
     const setHtml = useCallback(

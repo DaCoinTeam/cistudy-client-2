@@ -55,13 +55,6 @@ export const SignInTabProvider = ({ children }: { children: ReactNode }) => {
                     email,
                     password
                 }
-
-            }, {
-                avatarId: true,
-                coverPhotoId: true,
-                email: true,
-                accountId: true,
-                birthdate: true
             })
             await mutate(response)
             onClose()

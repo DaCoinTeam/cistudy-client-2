@@ -74,10 +74,13 @@ const WrappedRootProvider = forwardRef<
                 coverPhotoId: true,
                 kind: true,
                 balance: true,
-                accountRole: true
+                roles: {
+                    roleId: true,
+                    name: true,
+                },
             })
         } catch (ex) {
-            console.log(ex)
+            // console.log(ex)
             return null
         }
     }, [])
@@ -152,7 +155,8 @@ const WrappedRootProvider = forwardRef<
             notify: toastRef.current?.notify
         }),
         [profileSwr, coursesSwr, reducer,
-            //  notConnectWalletModalDisclosure, socket
+             notConnectWalletModalDisclosure,
+            //   socket
             ]
     )
 

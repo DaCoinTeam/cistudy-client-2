@@ -12,7 +12,7 @@ interface CourseInterface {
   rating?: number;
 }
 export const CourseCard = (props: CourseInterface) => {
-    console.log(props)
+    // console.log(props)
     return (
     // <Card className='col-span-12 sm:col-span-4 h-[310px]'>
     //     <Image

@@ -1,8 +1,10 @@
 "use client"
 import React from "react"
 import { Rating } from "react-simple-star-rating"
-import { StarIcon } from "react-simple-star-rating/dist/components/StarIcon"
+// import { HiStar } from "react-icons/hi";
+// import { HiOutlineStar } from "react-icons/hi2";
 
+import {StarIcon} from "@heroicons/react/24/solid"
 interface StarsProps {
     className?: string
     readonly?: boolean
@@ -18,11 +20,11 @@ export const Stars = (props: StarsProps) => {
 
 
     return (
-        <div>
+        <div >
             <Rating
-                fillIcon={<StarIcon size={20}  SVGstrokeColor="yellow" />}
-                emptyIcon={<StarIcon size={20}  />}
-                className={`${className ?? ""}`}
+                fillIcon={<StarIcon width={20} height={20}  className="inline"/>}
+                emptyIcon={<StarIcon width={20} height={20} className="inline" />}
+                className={`${className ?? ""} `}
                 onPointerEnter={onPointerEnter}
                 onPointerLeave={onPointerLeave}
                 onPointerMove={onPointerMove}

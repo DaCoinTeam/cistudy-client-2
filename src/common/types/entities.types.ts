@@ -33,7 +33,15 @@ export enum VideoType {
   MP4 = "mp4",
   DASH = "dash",
 }
-
+export interface RoleEntity {
+  roleId: string
+  name: string
+  accountId: string
+  accountRoles: AccountEntity
+  createdAt: Date
+  isDisabled: boolean
+  updatedAt: Date
+}
 export interface AccountEntity {
   accountId: string;
   email: string;
@@ -42,7 +50,7 @@ export interface AccountEntity {
   avatarUrl?: string;
   phoneNumber?: string;
   balance: number;
-  accountRole: AccountRole;
+  roles: Array<RoleEntity>;
   walletId?: string;
   firstName?: string;
   lastName?: string;

@@ -51,7 +51,9 @@ export const buildAuthPayloadString = <T extends object>(
     const data = buildPayloadString(schema)
     return `data { ${data} } tokens { accessToken, refreshToken }`
 }
-
+export const buildAuthPayloadVoidString = () => {
+    return "tokens { accessToken, refreshToken }"
+}
 export const isErrorResponse = (
     response: unknown
 ): response is ErrorResponse => {

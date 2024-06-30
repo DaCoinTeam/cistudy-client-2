@@ -19,23 +19,21 @@ export const SignInByGoogleIcon = () => {
 
     const onPress = async () => {
        
-         
+         console.log("run ne")
         const credential = await signInWithPopup(firebaseAuth, provider)
-        const token = await credential.account.getIdToken()
+        console.log("run ne 2")
+
+        const token = await credential.user.getIdToken()
+        console.log("token", token)
         await verifyGoogleAccessToken(
-            { params: { token } },
-            {
-                username: true,
-                email: true,
-                avatarUrl: true
-            }
+            { params: { token } }
         )
         await mutate()
         onClose()
     }
 
     return (
-        <Button onPress={onPress} isIconOnly variant="flat" className="w-12 h-12">
+        <Button onClick={onPress} isIconOnly variant="flat" className="w-12 h-12">
             <GoogleIcon size={40} />
         </Button>
     )

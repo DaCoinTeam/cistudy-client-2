@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.4",
+    "@heroicons/react": "^2.1.4",
     "@metamask/sdk-react": "^0.16.0",
     "@next/third-parties": "^14.2.1",
     "@nextui-org/react": "^2.3.6",
@@ -26,7 +27,6 @@
     "@tiptap/react": "^2.2.4",
     "@tiptap/starter-kit": "^2.2.4",
     "@types/numeral": "^2.0.5",
-    "@heroicons/react": "^2.1.1",
     "axios": "^1.6.7",
     "dashjs": "^4.7.3",
     "dayjs": "^1.11.10",

@@ -9,7 +9,7 @@ interface CoverPhotoProps {
   className?: string;
 }
 export const CoverPhoto = (props: CoverPhotoProps) => {
-    console.log("Recalled")
+    // console.log("Recalled")
     const { className } = props
 
     const fileInputRef = useRef<HTMLInputElement>(null)

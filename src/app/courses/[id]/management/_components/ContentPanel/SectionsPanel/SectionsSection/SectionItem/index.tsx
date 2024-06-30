@@ -1,9 +1,10 @@
 import React, { createContext, useCallback, useMemo } from "react"
 import { ErrorResponse, LessonEntity, SectionEntity } from "@common"
 import { findManyLessons } from "@services"
-import { AddLessonItem } from "./AddLessonItem"
-import { LessonItem } from "./LessonItem"
+
 import useSWR, { SWRConfig, SWRResponse } from "swr"
+import { LessonItem } from "./LessonItem";
+import { AddLessonItem } from "./AddLessonItem";
 
 interface SectionItemProps {
   section: SectionEntity;
