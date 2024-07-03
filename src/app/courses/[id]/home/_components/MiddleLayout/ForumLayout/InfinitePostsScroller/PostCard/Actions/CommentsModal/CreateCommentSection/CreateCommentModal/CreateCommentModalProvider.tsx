@@ -68,7 +68,7 @@ export const CreateCommentModalProvider = ({ children, onClose }: { children: Re
                     return result
                 })
 
-                const { earnAmount } = await createPostComment({
+                const { others } = await createPostComment({
                     data: {
                         postId,
                         html,
@@ -80,7 +80,7 @@ export const CreateCommentModalProvider = ({ children, onClose }: { children: Re
                 notify!({
                     type: ToastType.Earn,
                     data: {
-                        earnAmount: earnAmount ?? 0
+                        earnAmount: others.earnAmount
                     }
                 })
 

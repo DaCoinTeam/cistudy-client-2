@@ -179,12 +179,11 @@ export interface PostCommentEntity {
   html: string;
   postCommentMedias: Array<PostCommentMediaEntity>;
   postCommentLikes: Array<PostCommentLikeEntity>;
-  childComments: Array<PostCommentEntity>;
-
   //graphql
   numberOfLikes?: number;
   numberOfReplies?: number;
   liked?: number;
+  isRewarded: boolean
 }
 
 export interface PostCommentReplyEntity {

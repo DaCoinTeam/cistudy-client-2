@@ -17,7 +17,14 @@ export interface CreatePostInput {
   files?: Array<File>;
 }
 
-export interface CreatePostOutput {}
+export interface CreatePostOutput {
+  message: string,
+  others: {
+      postId: string,
+      earnAmount: number
+  }
+  
+}
 
 export const createPost = async (
     input: CreatePostInput
@@ -107,8 +114,12 @@ export interface CreatePostCommentInput {
 }
 
 export interface CreatePostCommentOutput {
-  postCommentId: string;
-  earnAmount: number;
+  message: string,
+  others: {
+      alreadyRewarded: boolean
+      postLikeId: string,
+      earnAmount: number
+  }
 }
 
 export const createPostComment = async (
@@ -191,8 +202,11 @@ export interface ToggleLikePostInput {
   };
 }
 export interface ToggleLikePostOutputData {
-  postLikeId: string;
-  earnAmount?: number;
+  message: string,
+  others: {
+      postLikeId: string,
+      earnAmount: number
+  }
 }
 
 export const toggleLikePost = async (

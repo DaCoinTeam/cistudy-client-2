@@ -1,20 +1,21 @@
 "use client"
 import React, { forwardRef, useImperativeHandle } from "react"
-
-import { ToastContainer, toast } from "react-toastify"
-import "./ReactToastify.css"
+import toast, { Toaster } from "react-hot-toast";
 
 export enum ToastType {
   Earn = "earn",
+  Error = "error"
 }
 
-export interface EarnNotifyData {
-  earnAmount: number;
-}
 
+export interface NotifyData {
+  error?: string;
+  earnAmount?: number;
+
+}
 export type NotifyParams = {
-  data: EarnNotifyData;
-  type: ToastType.Earn;
+  data: NotifyData ;
+  type: ToastType.Earn | ToastType.Error;
 };
 
 export type NotifyFn = (params: NotifyParams) => void;
@@ -29,13 +30,19 @@ export const ToastRef = forwardRef<ToastRefSelectors>((_, ref) => {
         switch (params.type) {
         case ToastType.Earn:
             content = <div> Earned {params.data.earnAmount} STARCI2 </div>
+            toast.success(content)
+            break;
+        case ToastType.Error:
+              content = <div> {params.data.error}</div>
+            toast.error(content)
+            break;
         }
-        toast(content)
     }
 
     useImperativeHandle(ref, () => ({
         notify,
     }))
 
-    return <ToastContainer  />
+    return <Toaster position='top-right' />
+
 })

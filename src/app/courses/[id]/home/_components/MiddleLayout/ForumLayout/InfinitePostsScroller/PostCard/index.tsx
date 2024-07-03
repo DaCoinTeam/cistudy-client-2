@@ -6,7 +6,7 @@ import {
     CardBody,
     CardFooter,
     CardHeader,
-    Account,
+    User,
 } from "@nextui-org/react"
 import { MediaGroup, TextRenderer } from "../../../../../../../../_shared"
 import { Actions } from "./Actions"
@@ -39,7 +39,7 @@ export const PostCard = (props: PostCardProps) => {
             <Card shadow="none" className="border border-divider rounded-medium">
                 <CardHeader className="p-4 pb-2 inline">
                     <div className="flex items-center justify-between">
-                        <Account
+                        <User
                             classNames={{
                                 name: "text-base",
                             }}

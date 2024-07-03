@@ -8,6 +8,7 @@ import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline"
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid"
 import { RootContext } from "../../../../../../../../../_hooks"
 import { ToastType } from "../../../../../../../../../_components"
+import toast, { Toaster } from 'react-hot-toast';
 
 export const Actions = () => {
     const { notify } = useContext(RootContext)!
@@ -22,17 +23,20 @@ export const Actions = () => {
 
     const onPress = async () => {
 
-        const { earnAmount } = await toggleLikePost({
+        const { others } = await toggleLikePost({
             data: {
                 postId,
             },
         })
-        notify!({
-            type: ToastType.Earn,
-            data: {
-                earnAmount: earnAmount ?? 0
-            }
-        })
+        if(others.earnAmount) {                    
+            notify!({
+                type: ToastType.Earn,
+                data: {
+                    earnAmount: others.earnAmount 
+                }
+            })
+        }
+     
         mutate()
     }
 

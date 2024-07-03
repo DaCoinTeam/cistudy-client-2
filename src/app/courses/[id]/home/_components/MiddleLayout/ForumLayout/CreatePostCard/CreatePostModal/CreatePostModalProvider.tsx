@@ -5,6 +5,8 @@ import { AppendKey, Media } from "@common"
 import { createPost } from "@services"
 import { ForumLayoutContext } from "../../ForumLayoutProvider"
 import { HomeContext } from "../../../../../_hooks"
+import { RootContext } from "../../../../../../../../_hooks"
+import { ToastType } from "../../../../../../../../_components"
 
 interface CreatePostModalProps {
   formik: FormikProps<FormikValues>;
@@ -51,6 +53,7 @@ export const CreatePostModalProvider = ({
     const { swrs: middleLayoutSwrs } = useContext(ForumLayoutContext)!
     const { postsSwr } = middleLayoutSwrs
     const { mutate } = postsSwr
+    const { notify } = useContext(RootContext)!
 
     return (
         <Formik
@@ -73,7 +76,7 @@ export const CreatePostModalProvider = ({
 
                     return result
                 })
-                await createPost({
+                const {others} = await createPost({
                     data: {
                         courseId,
                         title,
@@ -82,6 +85,15 @@ export const CreatePostModalProvider = ({
                     },
                     files,
                 })
+                if(others.earnAmount){
+                   
+                notify!({
+                    type: ToastType.Earn,
+                    data: {
+                        earnAmount: others.earnAmount
+                    }
+                })
+                }
                 await mutate()
                 resetForm()
                 onClose()
