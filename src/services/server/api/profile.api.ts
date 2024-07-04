@@ -9,6 +9,7 @@ export interface UpdateProfileInput {
         birthdate?: string;
         avatarIndex?: number;
         coverPhotoIndex?: number;
+        walletAddress?: string;
     };
     files?: Array<File>;
 }
@@ -33,3 +34,19 @@ export const updateProfile = async (
         },
     })
 }
+
+export interface WithdrawInput {
+    data: {
+      withdrawAmount: number
+    };
+  }
+  
+export const withdraw = async (
+    input: WithdrawInput
+): Promise<string> => {
+    const { data } = input
+    const url = `${BASE_URL}/withdraw`
+  
+    return await authAxios.patch(url, data)
+}
+  

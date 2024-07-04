@@ -11,7 +11,12 @@ import {
     useRef,
 } from "react"
 import React from "react"
-import { Disclosure, ErrorResponse, AccountEntity, generateClientId } from "@common"
+import {
+    Disclosure,
+    ErrorResponse,
+    AccountEntity,
+    generateClientId,
+} from "@common"
 import { FindManyCoursesOutputData, findManyCourses, init } from "@services"
 import useSWR, { SWRResponse } from "swr"
 import { RootAction, RootState, useRootReducer } from "./useRootReducer"
@@ -41,8 +46,8 @@ interface RootContextValue {
   disclosures: {
     notConnectWalletModalDisclosure: Disclosure;
   };
-//   socket: Socket | null,
-  notify?: NotifyFn
+  socket: Socket | null;
+  notify?: NotifyFn;
 }
 
 export const RootContext = createContext<RootContextValue | null>(null)
@@ -61,7 +66,7 @@ const WrappedRootProvider = forwardRef<
     const { children, formik } = props
 
     const notConnectWalletModalDisclosure = useDisclosure()
-    // const socket = useSocketClient()
+    const socket = useSocketClient()
 
     const fetchProfile = useCallback(async () => {
         try {
@@ -73,6 +78,7 @@ const WrappedRootProvider = forwardRef<
                 avatarUrl: true,
                 coverPhotoId: true,
                 kind: true,
+                walletAddress: true,
                 balance: true,
                 roles: {
                     roleId: true,
@@ -85,44 +91,47 @@ const WrappedRootProvider = forwardRef<
         }
     }, [])
 
-    const fetchCourses = useCallback(async ([key]: [number, string]) => {
-        return await findManyCourses(
-            {
-                options: {
-                    searchValue: "",
-                    skip: COLUMNS_PER_PAGE * key,
-                    take: COLUMNS_PER_PAGE,
-                },
-            },
-            {
-                results: {
-                    courseId: true,
-                    title: true,
-                    creator: {
-                        avatarId: true,
-                        username: true,
-                        avatarUrl: true,
-                        kind: true,
+    const fetchCourses = useCallback(
+        async ([key]: [number, string]) => {
+            return await findManyCourses(
+                {
+                    options: {
+                        searchValue: "",
+                        skip: COLUMNS_PER_PAGE * key,
+                        take: COLUMNS_PER_PAGE,
                     },
-                    thumbnailId: true,
-                    description: true,
-                    price: true,
+                },
+                {
+                    results: {
+                        courseId: true,
+                        title: true,
+                        creator: {
+                            avatarId: true,
+                            username: true,
+                            avatarUrl: true,
+                            kind: true,
+                        },
+                        thumbnailId: true,
+                        description: true,
+                        price: true,
 
-                },
-                metadata: {
-                    count: true,
-                    categories: {
-                        categoryId: true,
-                        name: true,
                     },
-                    // topics: {
-                    //     name: true,
-                    //     topicId: true
-                    // },
-                },
-            }
-        )
-    }, [reducer])
+                    metadata: {
+                        count: true,
+                        categories: {
+                            categoryId: true,
+                            name: true,
+                        },
+                        // topics: {
+                        //     name: true,
+                        //     topicId: true
+                        // },
+                    },
+                }
+            )
+        },
+        [reducer]
+    )
 
     const profileSwr = useSWR(["PROFILE"], fetchProfile)
 
@@ -149,21 +158,18 @@ const WrappedRootProvider = forwardRef<
             formik,
             reducer,
             disclosures: {
-                notConnectWalletModalDisclosure
+                notConnectWalletModalDisclosure,
             },
-            // socket,
-            notify: toastRef.current?.notify
+            socket,
+            notify: toastRef.current?.notify,
         }),
-        [profileSwr, coursesSwr, reducer,
-             notConnectWalletModalDisclosure,
-            //   socket
-            ]
+        [profileSwr, coursesSwr, reducer, notConnectWalletModalDisclosure, socket]
     )
 
     return (
         <RootContext.Provider value={rootContextValue}>
             {children}
-            <ToastRef ref={toastRef}/>
+            <ToastRef ref={toastRef} />
         </RootContext.Provider>
     )
 })

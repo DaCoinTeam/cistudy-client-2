@@ -51,7 +51,7 @@ export interface AccountEntity {
   phoneNumber?: string;
   balance: number;
   roles: Array<RoleEntity>;
-  walletId?: string;
+  walletAddress?: string;
   firstName?: string;
   lastName?: string;
   birthdate?: Date;

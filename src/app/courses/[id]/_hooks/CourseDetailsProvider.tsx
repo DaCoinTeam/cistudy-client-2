@@ -62,30 +62,14 @@ export const WrappedCourseDetailsProvider = ({
                         title: true,
                     },
                 },
-                // category: {
-                //     categoryId: true,
-                //     name: true
-                // },
-                // courseSubcategories: {
-                //     subcategory: {
-                //         subcategoryId: true,
-                //         name: true
-                //     }
-                // },
-                // courseTopics: {
-                //     topic: {
-                //         topicId: true,
-                //         name: true,
-                //         svgId: true
-                //     }
-                // },
                 creator: {
                     avatarId: true,
                     username: true,
                     numberOfFollowers: true,
                     avatarUrl: true,
                     kind: true,
-                    accountId: true
+                    accountId: true,
+                    walletAddress: true
                 }
             }
         )

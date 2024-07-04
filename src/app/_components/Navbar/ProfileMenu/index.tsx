@@ -23,7 +23,7 @@ export const ProfileMenu = () => {
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { mutate, data: profile } = profileSwr
-    const { avatarId, username, accountId, avatarUrl, kind, accountRole } = {
+    const { avatarId, username, accountId, avatarUrl, kind, roles } = {
         ...profile,
     }
 
@@ -43,99 +43,99 @@ export const ProfileMenu = () => {
     const walletModalRef = useRef<WalletModalRefSelectors | null>(null)
     const onWalletPress = () => walletModalRef.current?.onOpen()
 
-    const items: Array<Item> = 
-    accountRole === AccountRole.Administrator ?
-        [
-            {
-                key: "base",
-                content: [
-                    <div key="signedInAs" className="font-semibold">
-          Signed in as
-                    </div>,
-                    <div key="username" className="font-semibold">
-                        {username}
-                    </div>,
-                ],
-            },
-            {
-                key: "profile",
-                onPress: onProfilePress,
-                content: "Profile",
-            },
-            {
-                key: "enrolledCourses",
-                onPress: onEnrolledCouresPress,
-                content: "Enrolled courses",
-            },
-            {
-                key: "wallet",
-                onPress: onWalletPress,
-                content: "Wallet",
-            },
-            {
-                key: "management",
-                onPress: onManagementPress,
-                content: "Management",
-            },
-            {
-                key: "help_and_feedback",
-                content: "Help & Feedback",
-            },
-            { 
-                key: "adminDashboard",
-                onPress: onAdminDashboardPress,
-                content: "Admin dashboard"
-            },
-            {
-                key: "logout",
-                onPress: onSignOutPress,
-                content: "Sign Out",
-                color: "danger",
-            },
-        ] : 
-        [
-            {
-                key: "base",
-                content: [
-                    <div key="signedInAs" className="font-semibold">
-          Signed in as
-                    </div>,
-                    <div key="username" className="font-semibold">
-                        {username}
-                    </div>,
-                ],
-            },
-            {
-                key: "profile",
-                onPress: onProfilePress,
-                content: "Profile",
-            },
-            {
-                key: "enrolledCourses",
-                onPress: onEnrolledCouresPress,
-                content: "Enrolled courses",
-            },
-            {
-                key: "wallet",
-                onPress: onWalletPress,
-                content: "Wallet",
-            },
-            {
-                key: "management",
-                onPress: onManagementPress,
-                content: "Management",
-            },
-            {
-                key: "help_and_feedback",
-                content: "Help & Feedback",
-            },
-            {
-                key: "logout",
-                onPress: onSignOutPress,
-                content: "Sign Out",
-                color: "danger",
-            },
-        ]
+    const items: Array<Item> =
+        roles?.map(role => role.name).includes(AccountRole.Administrator) ?
+            [
+                {
+                    key: "base",
+                    content: [
+                        <div key="signedInAs" className="font-semibold">
+                            Signed in as
+                        </div>,
+                        <div key="username" className="font-semibold">
+                            {username}
+                        </div>,
+                    ],
+                },
+                {
+                    key: "profile",
+                    onPress: onProfilePress,
+                    content: "Profile",
+                },
+                {
+                    key: "enrolledCourses",
+                    onPress: onEnrolledCouresPress,
+                    content: "Enrolled courses",
+                },
+                {
+                    key: "wallet",
+                    onPress: onWalletPress,
+                    content: "Wallet",
+                },
+                {
+                    key: "management",
+                    onPress: onManagementPress,
+                    content: "Management",
+                },
+                {
+                    key: "help_and_feedback",
+                    content: "Help & Feedback",
+                },
+                {
+                    key: "adminDashboard",
+                    onPress: onAdminDashboardPress,
+                    content: "Admin dashboard"
+                },
+                {
+                    key: "logout",
+                    onPress: onSignOutPress,
+                    content: "Sign Out",
+                    color: "danger",
+                },
+            ] :
+            [
+                {
+                    key: "base",
+                    content: [
+                        <div key="signedInAs" className="font-semibold">
+                            Signed in as
+                        </div>,
+                        <div key="username" className="font-semibold">
+                            {username}
+                        </div>,
+                    ],
+                },
+                {
+                    key: "profile",
+                    onPress: onProfilePress,
+                    content: "Profile",
+                },
+                {
+                    key: "enrolledCourses",
+                    onPress: onEnrolledCouresPress,
+                    content: "Enrolled courses",
+                },
+                {
+                    key: "wallet",
+                    onPress: onWalletPress,
+                    content: "Wallet",
+                },
+                {
+                    key: "management",
+                    onPress: onManagementPress,
+                    content: "Management",
+                },
+                {
+                    key: "help_and_feedback",
+                    content: "Help & Feedback",
+                },
+                {
+                    key: "logout",
+                    onPress: onSignOutPress,
+                    content: "Sign Out",
+                    color: "danger",
+                },
+            ]
 
     return (
         <>
@@ -154,7 +154,7 @@ export const ProfileMenu = () => {
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Account Actions" variant="flat">
                     {
-                        items.map(({content, key, onPress, color}) => (
+                        items.map(({ content, key, onPress, color }) => (
                             <DropdownItem key={key} onPress={onPress} color={color}>
                                 {content}
                             </DropdownItem>

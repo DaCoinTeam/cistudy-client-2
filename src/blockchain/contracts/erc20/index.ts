@@ -1,6 +1,6 @@
 import { GAS_LIMIT, GAS_PRICE } from "../../gas"
 import Web3, { Address, Contract, EthExecutionAPI, SupportedProviders } from "web3"
-import abi from "./abi"
+import { abi } from "./abi"
 import { ChainId } from "../../chains"
 import { getHttpProvider } from "../../providers"
 
@@ -48,12 +48,11 @@ export class ERC20Contract {
         }
     }
 
-    async balanceOf(owner: Address) {
-        try {
-            return await this.contract.methods.balanceOf(owner).call<bigint>()
-        } catch (ex) {
-            console.log(ex)
-            return null
+    balanceOf() {
+        return {
+            call: async (owner: Address) => {
+                return await this.contract.methods.balanceOf(owner).call<bigint>()
+            }
         }
     }
 
@@ -66,29 +65,28 @@ export class ERC20Contract {
         }
     }
 
-    async approve(spender: Address, value: bigint) {
-        try {
-            return this.contract.methods.approve(spender, value).send({
-                from: this.sender,
-                gas: GAS_LIMIT,
-                gasPrice: GAS_PRICE,
-            })
-        } catch (ex) {
-            console.log(ex)
-            return null
+    approve() {
+        return {
+            send: async (spender: Address, value: bigint) => {
+                return this.contract.methods.approve(spender, value).send({
+                    from: this.sender,
+                    gas: GAS_LIMIT,
+                    gasPrice: GAS_PRICE,
+                })
+            }
         }
+        
     }
 
-    async transfer(recipient: Address, amount: bigint) {
-        try {
-            return this.contract.methods.transfer(recipient, amount).send({
-                from: this.sender,
-                gas: GAS_LIMIT,
-                gasPrice: GAS_PRICE,
-            })
-        } catch (ex) {
-            console.log(ex)
-            return null
+    transfer() {
+        return {
+            send: async (recipient: Address, amount: bigint) => {
+                return this.contract.methods.transfer(recipient, amount).send({
+                    from: this.sender,
+                    gas: GAS_LIMIT,
+                    gasPrice: GAS_PRICE,
+                })
+            }
         }
     }
 }
