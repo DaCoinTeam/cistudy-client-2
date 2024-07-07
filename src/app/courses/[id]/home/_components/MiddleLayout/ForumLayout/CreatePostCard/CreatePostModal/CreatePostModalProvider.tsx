@@ -76,7 +76,7 @@ export const CreatePostModalProvider = ({
 
                     return result
                 })
-                const {others} = await createPost({
+                const {others, message} = await createPost({
                     data: {
                         courseId,
                         title,
@@ -85,14 +85,31 @@ export const CreatePostModalProvider = ({
                     },
                     files,
                 })
-                if(others.earnAmount){
-                notify!({
-                    type: ToastType.Earn,
-                    data: {
-                        earnAmount: others.earnAmount
+                if(others){
+                    if(others.earnAmount ) {
+                        notify!({
+                            type: ToastType.Earn,
+                            data: {
+                                earnAmount: others.earnAmount
+                            }
+                        })
+                    } else {
+                        notify!({
+                            type: ToastType.Success,
+                            data: {
+                                message: message
+                            }
+                        })
                     }
-                })
+                } else {
+                    notify!({
+                        type: ToastType.Error,
+                        data: {
+                            message: message
+                        }
+                    })
                 }
+                
                 await mutate()
                 resetForm()
                 onClose()

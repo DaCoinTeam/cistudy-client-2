@@ -43,10 +43,12 @@ export const PostCard = (props: PostCardProps) => {
       <Card shadow='none' className='border border-divider rounded-medium'>
         <CardHeader className='p-4 pb-2 inline'>
           <div className='flex items-center justify-between'>
-            <div className='flex gap-4'>
+            <div className='flex gap-6 items-center'>
             <User
-              classNames={{
+              classNames={
+                {
                 name: 'text-base',
+                
               }}
               name={username}
               description={
@@ -73,7 +75,7 @@ export const PostCard = (props: PostCardProps) => {
              </Chip>
             ): (
               <>
-              {isRewardable ? (
+              {isRewardable && (
                  <Chip
                  startContent={<GiftIcon size={18} />}
                  variant="flat"
@@ -81,8 +83,7 @@ export const PostCard = (props: PostCardProps) => {
                >
                   Rewardable
                </Chip>
-              ) : [
-              ]}
+              )}
               </>
             )}
             </div>

@@ -1,6 +1,6 @@
 import { Button, Tooltip } from '@nextui-org/react';
 import { CheckIcon } from 'lucide-react';
-import React, { useContext, useRef } from 'react';
+import React, { use, useContext, useRef } from 'react';
 import {
   ConfirmModalRef,
   ConfirmModalRefSelectors,
@@ -9,6 +9,7 @@ import { markPostCommentAsSolution } from '@services';
 import { RootContext } from '../../../../../../../../../../../../../_hooks';
 import { CommentsModalContext } from '../../../CommentsModalProvider';
 import { ToastType } from '../../../../../../../../../../../../../_components';
+import { ForumLayoutContext } from '../../../../../../../ForumLayoutProvider';
 
 interface RewardButtonProps {
   postCommentId: string;
@@ -20,6 +21,11 @@ export const MarkAsSolutionButton = ({
   const { swrs } = useContext(CommentsModalContext)!;
   const { postCommentsSwr } = swrs;
   const { mutate } = postCommentsSwr;
+
+  const {swrs: ForumLayoutContextSwrs} = useContext(ForumLayoutContext)!
+  const { postsSwr } = ForumLayoutContextSwrs
+  const { mutate: mutatePosts } = postsSwr
+
   const confirmModalRef = useRef<ConfirmModalRefSelectors | null>(null);
   const onConfirmModalOpen = () => confirmModalRef.current?.onOpen();
 
@@ -38,6 +44,7 @@ export const MarkAsSolutionButton = ({
           },
         });
         await mutate();
+        await mutatePosts();
       })
       .catch((ex) => {
         notify!({
@@ -50,7 +57,7 @@ export const MarkAsSolutionButton = ({
   };
   return (
     <>
-        <Tooltip content='Reward comment'>
+        <Tooltip content='Mark this comment as solution' className='text-xs'>
           <Button
             isIconOnly
             aria-label='Like'
