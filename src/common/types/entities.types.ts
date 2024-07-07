@@ -86,10 +86,17 @@ export interface PostEntity {
   postMedias: Array<PostMediaEntity>;
   postComments: Array<PostCommentEntity>;
   postReacts: Array<PostReactEntity>;
+  
   //graphql
   numberOfLikes?: number;
   numberOfComments?: number;
-  liked?: number;
+  liked?: boolean;
+  isRewardable: boolean;
+  isCompleted: boolean;
+  isPostOwner: boolean;
+  numberOfRewardableCommentsLeft: number;
+  numberOfRewardableLikesLeft: number;
+
 }
 
 export interface CourseEntity {
@@ -179,12 +186,13 @@ export interface PostCommentEntity {
   html: string;
   postCommentMedias: Array<PostCommentMediaEntity>;
   postCommentLikes: Array<PostCommentLikeEntity>;
-  childComments: Array<PostCommentEntity>;
-
   //graphql
   numberOfLikes?: number;
   numberOfReplies?: number;
-  liked?: number;
+  liked?: boolean;
+  isRewardable: boolean;
+  isCommentOwner: boolean;
+  isSolution: boolean;
 }
 
 export interface PostCommentReplyEntity {

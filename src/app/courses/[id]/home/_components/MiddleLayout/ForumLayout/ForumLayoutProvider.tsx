@@ -63,6 +63,7 @@ const WrappedForumLayoutProvider = ({
                         numberOfLikes: true,
                         numberOfComments: true,
                         creator: {
+                            accountId: true,
                             avatarId: true,
                             username: true,
                             avatarUrl: true,
@@ -71,6 +72,13 @@ const WrappedForumLayoutProvider = ({
                         createdAt: true,
                         updatedAt: true,
                         liked: true,
+                        isRewardable: true,
+                        isCompleted: true,
+                        isPostOwner: true,
+                        numberOfRewardableCommentsLeft: true,
+                        numberOfRewardableLikesLeft: true,
+
+
                     },
                     metadata: {
                         count: true

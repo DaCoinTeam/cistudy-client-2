@@ -1,15 +1,18 @@
-import React, { createContext, useMemo } from "react"
-import { PostCommentEntity, parseTimeAgo } from "@common"
-import { Avatar, Spacer, useDisclosure } from "@nextui-org/react"
-import { getAvatarUrl } from "@services"
+import { PostCommentEntity, parseTimeAgo } from '@common';
+import { Avatar, Chip, Spacer, useDisclosure } from '@nextui-org/react';
+import { getAvatarUrl } from '@services';
+import { CheckIcon } from 'lucide-react';
+import { createContext, useContext, useMemo } from 'react';
 import {
-    TextRenderer,
-    MediaGroup,
-} from "../../../../../../../../../../../../_shared"
-import { Actions } from "./Actions"
-import { Replies } from "./Replies"
-import { MoreButton } from "./MoreButton"
-
+  MediaGroup,
+  TextRenderer,
+} from '../../../../../../../../../../../../_shared';
+import { Actions } from './Actions';
+import { MoreButton } from './MoreButton';
+import { Replies } from './Replies';
+import { MarkAsSolutionButton } from './MarkSolutionButton';
+import { PostCardContext } from '../../../..';
+import { RootContext } from '../../../../../../../../../../../../_hooks';
 interface CommentItemProps {
   postComment: PostCommentEntity;
 }
@@ -27,67 +30,137 @@ interface CommentItemContextValue {
 }
 
 export const CommentItemContext = createContext<CommentItemContextValue | null>(
-    null
-)
+  null
+);
 
 export const CommentItem = (props: CommentItemProps) => {
-    const { postComment } = props
-    const { html, postCommentMedias, creator, createdAt, updatedAt } =
-    postComment
-    const { avatarId, username, avatarUrl, kind } = creator
+  const { postComment } = props;
+  const {
+    html,
+    postCommentMedias,
+    creator,
+    createdAt,
+    updatedAt,
+    postCommentId,
+    isRewardable,
+    isCommentOwner,
+    isSolution,
+  } = postComment;
+  const { swrs } = useContext(RootContext)!;
+  const { profileSwr } = swrs;
+  const { data } = { ...profileSwr };
+  const { accountId: profileAccountId } = { ...data };
 
-    const commentDisclosure = useDisclosure()
+  const { props: postCardContextProps } = useContext(PostCardContext)!;
+  const { post } = postCardContextProps;
+  const {
+    postId,
+    liked,
+    numberOfLikes,
+    isCompleted,
+    creator: postCreator,
+  } = post;
+  const { accountId: postCreatorAccountId } = postCreator;
+  const {
+    avatarId,
+    username,
+    avatarUrl,
+    kind,
+    accountId: commentCreatorAccountId,
+  } = creator;
+  const commentDisclosure = useDisclosure();
+  const commentItemContextValue: CommentItemContextValue = useMemo(
+    () => ({
+      props,
+      disclosures: {
+        commentDisclosure,
+      },
+    }),
+    [props, commentDisclosure]
+  );
 
-    const commentItemContextValue: CommentItemContextValue = useMemo(
-        () => ({
-            props,
-            disclosures: {
-                commentDisclosure,
-            },
-        }),
-        [props, commentDisclosure]
-    )
+  const isEdited = createdAt !== updatedAt;
 
-    const isEdited = createdAt !== updatedAt
-
-    return (
-        <CommentItemContext.Provider value={commentItemContextValue}>
-            <div className="flex gap-2 group/comment">
-                <Avatar src={getAvatarUrl({
-                    avatarId,
-                    avatarUrl,
-                    kind
-                })} />
-                <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <div className="font-semibold"> {username} </div>
-                            <div className="text-xs text-foreground-400 flex gap-2 items-center">
-                                <div>{parseTimeAgo(updatedAt)}</div>
-                                {isEdited ? <div>Edited</div> : null}
-                            </div>
-                        </div>
-                        <MoreButton className="transition-opacity opacity-0 group-hover/comment:opacity-100" />
-                    </div>
-                    <Spacer y={2} />
-                    <div className="bg-content2 rounded-medium p-2.5">
-                        <TextRenderer html={html} />
-                        <MediaGroup
-                            className="mt-4"
-                            medias={postCommentMedias?.map(
-                                ({ postCommentMediaId, mediaId, mediaType }) => ({
-                                    key: postCommentMediaId,
-                                    mediaId,
-                                    mediaType,
-                                })
-                            )}
-                        />
-                    </div>
-                    <Spacer y={2} />
-                    <Actions />
-                    <Replies className="mt-3" />
+  return (
+    <CommentItemContext.Provider value={commentItemContextValue}>
+      <div
+        className={`flex group/comment rounded-xl p-2 ${
+          isSolution ? 'bg-blue-50' : ''
+        }`}
+      >
+        <Avatar
+          src={getAvatarUrl({
+            avatarId,
+            avatarUrl,
+            kind,
+          })}
+        />
+        <div className='flex-1'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center'>
+              <div className='mr-4'>
+                {postCreatorAccountId === commentCreatorAccountId ? (
+                  <div className='font-semibold bg-default-600 text-white dark:text-black py-0.3 px-2 rounded-xl mb-1'>
+                    {username}
+                  </div>
+                ) : (
+                  <div className='font-semibold px-2'>{username}</div>
+                )}
+                <div className='text-xs text-foreground-400 flex gap-2 items-center px-2'>
+                  <div>{parseTimeAgo(updatedAt)}</div>
+                  {isEdited ? <div>Edited</div> : null}
                 </div>
+              </div>
+
+              {isSolution && (
+                <Chip
+                  startContent={<CheckIcon size={18} />}
+                  variant='flat'
+                  color='primary'
+                >
+                  Solution
+                </Chip>
+              )}
             </div>
-        </CommentItemContext.Provider>
-    )
-}
+
+            <div className='items-center flex'>
+              <div className='mr-4'>
+                {!isSolution && (
+                  <>
+                    {isRewardable && (
+                      <>
+                        {postCreatorAccountId === profileAccountId && (
+                          <MarkAsSolutionButton postCommentId={postCommentId} />
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
+              </div>
+              {isCommentOwner && (
+                <MoreButton className='transition-opacity opacity-0 group-hover/comment:opacity-100' />
+              )}
+            </div>
+          </div>
+          <Spacer y={2} />
+          <div className='bg-content2 rounded-medium p-2.5'>
+            <TextRenderer html={html} />
+            <MediaGroup
+              className='mt-4'
+              medias={postCommentMedias?.map(
+                ({ postCommentMediaId, mediaId, mediaType }) => ({
+                  key: postCommentMediaId,
+                  mediaId,
+                  mediaType,
+                })
+              )}
+            />
+          </div>
+          <Spacer y={1} />
+          <Actions />
+          <Replies className='mt-3' />
+        </div>
+      </div>
+    </CommentItemContext.Provider>
+  );
+};

@@ -7,6 +7,7 @@ import { PostCardContext } from "../../../.."
 import { CommentsModalContext } from "../../CommentsModalProvider"
 import { RootContext } from "../../../../../../../../../../../../_hooks"
 import { ToastType } from "../../../../../../../../../../../../_components"
+import { ForumLayoutContext } from "../../../../../../ForumLayoutProvider"
 
 interface FormikValues {
     html: string
@@ -47,6 +48,9 @@ export const CreateCommentModalProvider = ({ children, onClose }: { children: Re
     const { postCommentsSwr } = swrs
     const { mutate } = postCommentsSwr
 
+    const {swrs: ForumLayoutContextSwrs} = useContext(ForumLayoutContext)!
+    const { postsSwr } = ForumLayoutContextSwrs
+    const { mutate: mutatePosts } = postsSwr
     const { notify } = useContext(RootContext)!
 
     return (
@@ -68,7 +72,7 @@ export const CreateCommentModalProvider = ({ children, onClose }: { children: Re
                     return result
                 })
 
-                const { earnAmount } = await createPostComment({
+                const { others } = await createPostComment({
                     data: {
                         postId,
                         html,
@@ -76,15 +80,17 @@ export const CreateCommentModalProvider = ({ children, onClose }: { children: Re
                     },
                     files
                 })
-
-                notify!({
-                    type: ToastType.Earn,
-                    data: {
-                        earnAmount: earnAmount ?? 0
-                    }
-                })
+                if(others.earnAmount){
+                    notify!({
+                        type: ToastType.Earn,
+                        data: {
+                            earnAmount: others.earnAmount
+                        }
+                    })
+                }
 
                 await mutate()
+                await mutatePosts()
                 helpers.resetForm()
                 onClose()
             }}

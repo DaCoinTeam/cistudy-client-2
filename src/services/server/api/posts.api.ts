@@ -17,7 +17,14 @@ export interface CreatePostInput {
   files?: Array<File>;
 }
 
-export interface CreatePostOutput {}
+export interface CreatePostOutput {
+  message: string,
+  others: {
+      postId: string,
+      earnAmount: number
+  }
+  
+}
 
 export const createPost = async (
     input: CreatePostInput
@@ -107,8 +114,12 @@ export interface CreatePostCommentInput {
 }
 
 export interface CreatePostCommentOutput {
-  postCommentId: string;
-  earnAmount: number;
+  message: string,
+  others: {
+      alreadyRewarded: boolean
+      postLikeId: string,
+      earnAmount: number
+  }
 }
 
 export const createPostComment = async (
@@ -191,8 +202,11 @@ export interface ToggleLikePostInput {
   };
 }
 export interface ToggleLikePostOutputData {
-  postLikeId: string;
-  earnAmount?: number;
+  message: string,
+  others: {
+      postLikeId: string,
+      earnAmount: number
+  }
 }
 
 export const toggleLikePost = async (
@@ -209,8 +223,10 @@ export interface ToggleLikePostCommentInput {
   };
 }
 export interface ToggleLikePostCommentOutput {
-    postCommentLikeId: string,
-    earnAmount?: number
+    message: string,
+    others: {
+      postCommentLikeId: string,
+    }
 }
 export const toggleLikePostComment = async (
     input: ToggleLikePostCommentInput
@@ -265,4 +281,21 @@ export const deletePostCommentReply = async (
     const { postCommentReplyId } = data
     const url = `${BASE_URL}/delete-post-comment-reply/${postCommentReplyId}`
     return await authAxios.delete(url)
+}
+
+export interface MarkPostCommentRewardedInput {
+  data: {
+    postCommentId: string;
+  };
+}
+export interface MarkPostCommentRewardedOutput {
+  message: string,
+}
+
+export const markPostCommentAsSolution= async (
+    input: MarkPostCommentRewardedInput
+): Promise<MarkPostCommentRewardedOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/mark-post-comment-as-solution`
+    return await authAxios.patch(url, data)
 }

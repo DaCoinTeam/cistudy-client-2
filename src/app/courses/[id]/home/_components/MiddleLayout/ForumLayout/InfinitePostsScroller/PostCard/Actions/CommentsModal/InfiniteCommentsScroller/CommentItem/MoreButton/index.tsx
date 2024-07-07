@@ -40,14 +40,14 @@ export const MoreButton = (props: MoreButtonProps) => {
     const editCommentModalRef = useRef<EditCommentModalRefSelectors | null>(null)
     const onEditCommentModalOpen = () => editCommentModalRef.current?.onOpen()
 
-    const onDeletePress = async () => {
-        await deletePostComment({
-            data: {
-                postCommentId,
-            },
-        })
-        await mutate()
-    }
+    // const onDeletePress = async () => {
+    //     await deletePostComment({
+    //         data: {
+    //             postCommentId,
+    //         },
+    //     })
+    //     await mutate()
+    // }
 
     return (
         <>
@@ -84,12 +84,12 @@ export const MoreButton = (props: MoreButtonProps) => {
             </Dropdown>
             <div className="hidden">
                 <EditCommentModalRef ref={editCommentModalRef}/>
-                <ConfirmDeleteModalRef
+                {/* <ConfirmDeleteModalRef
                     ref={confirmDeleteModalRef}
                     title="Delete Comment"
                     content="Are you sure you want to delete this comment? All references will be lost, and you cannot undo this action."
                     onDeletePress={onDeletePress}
-                />
+                /> */}
             </div> 
         </>
     )
