@@ -15,7 +15,7 @@ export const Actions = () => {
 
     const { props } = useContext(PostCardContext)!
     const { post } = props
-    const { postId, liked, numberOfLikes } = post
+    const { postId, liked, numberOfLikes, isCompleted } = post
 
     const { swrs } = useContext(ForumLayoutContext)!
     const { postsSwr } = swrs
@@ -56,9 +56,10 @@ export const Actions = () => {
                         color="primary"
                         variant="light"
                         onPress={onPress}
+                        disabled={isCompleted}
                     >
                         {numberOfLikes}
-                    </Button>
+                    </Button>   
                     <CommentsModal />
                 </div>
             </div>

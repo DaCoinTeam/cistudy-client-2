@@ -86,7 +86,6 @@ export const CreatePostModalProvider = ({
                     files,
                 })
                 if(others.earnAmount){
-                   
                 notify!({
                     type: ToastType.Earn,
                     data: {

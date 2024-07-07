@@ -60,6 +60,7 @@ const WrappedCommentsModalProvider = ({
                     },
                     numberOfLikes: true,
                     creator: {
+                        accountId: true,
                         avatarId: true,
                         username: true,
                         avatarUrl: true,
@@ -68,7 +69,10 @@ const WrappedCommentsModalProvider = ({
                     updatedAt: true,
                     liked: true,
                     createdAt: true,
-                    numberOfReplies: true
+                    numberOfReplies: true,
+                    isRewardable: true,
+                    isCommentOwner: true,
+                    isSolution: true,
                 },
                 metadata: {
                     count: true,

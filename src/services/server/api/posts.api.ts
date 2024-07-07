@@ -223,8 +223,10 @@ export interface ToggleLikePostCommentInput {
   };
 }
 export interface ToggleLikePostCommentOutput {
-    postCommentLikeId: string,
-    earnAmount?: number
+    message: string,
+    others: {
+      postCommentLikeId: string,
+    }
 }
 export const toggleLikePostComment = async (
     input: ToggleLikePostCommentInput
@@ -279,4 +281,21 @@ export const deletePostCommentReply = async (
     const { postCommentReplyId } = data
     const url = `${BASE_URL}/delete-post-comment-reply/${postCommentReplyId}`
     return await authAxios.delete(url)
+}
+
+export interface MarkPostCommentRewardedInput {
+  data: {
+    postCommentId: string;
+  };
+}
+export interface MarkPostCommentRewardedOutput {
+  message: string,
+}
+
+export const markPostCommentAsSolution= async (
+    input: MarkPostCommentRewardedInput
+): Promise<MarkPostCommentRewardedOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/mark-post-comment-as-solution`
+    return await authAxios.patch(url, data)
 }

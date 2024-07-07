@@ -14,6 +14,7 @@ import { toggleLikePostComment } from "@services"
 import { CommentsModalContext } from "../../../CommentsModalProvider"
 import { RootContext } from "../../../../../../../../../../../../../_hooks"
 import { ToastType } from "../../../../../../../../../../../../../_components"
+import { PostCardContext } from "../../../../.."
 
 export const Actions = () => {
     const { props, disclosures } = useContext(CommentItemContext)!
@@ -22,6 +23,10 @@ export const Actions = () => {
     const { commentDisclosure } = disclosures
     const { onOpenChange, isOpen } = commentDisclosure
 
+    const { props: postCardContextProps} = useContext(PostCardContext)!
+    const { post } = postCardContextProps
+    const { isRewarded } = post
+
     const { swrs } = useContext(CommentsModalContext)!
     const { postCommentsSwr } = swrs
     const { mutate } = postCommentsSwr
@@ -29,18 +34,12 @@ export const Actions = () => {
     const { notify } = useContext(RootContext)!
 
     const onLikePress = async () => {
-        const { earnAmount } = await toggleLikePostComment({
+        await toggleLikePostComment({
             data: {
                 postCommentId,
             },
         })
 
-    notify!({
-        type: ToastType.Earn,
-        data: {
-            earnAmount: earnAmount ?? 0,
-        },
-    })
 
     await mutate()
     }
@@ -53,6 +52,7 @@ export const Actions = () => {
                     variant="light"
                     onPress={onLikePress}
                     className="px-2.5 min-w-0"
+                    disabled={isRewarded}
                     startContent={
                         <>
                             {liked ? (

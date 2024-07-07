@@ -90,6 +90,10 @@ export interface PostEntity {
   numberOfLikes?: number;
   numberOfComments?: number;
   liked?: number;
+  isRewardable: boolean;
+  isCompleted: boolean;
+  isPostOwner: boolean;
+
 }
 
 export interface CourseEntity {
@@ -183,7 +187,9 @@ export interface PostCommentEntity {
   numberOfLikes?: number;
   numberOfReplies?: number;
   liked?: number;
-  isRewarded: boolean
+  isRewardable: boolean;
+  isCommentOwner: boolean;
+  isSolution: boolean;
 }
 
 export interface PostCommentReplyEntity {
