@@ -1,33 +1,25 @@
 import { useReducer } from "react"
-
-export enum CurrentContent {
-    Home = "home",
-    STARCI = "starci",
-    STARCI2 = "starci2"
-}
+import { v4 as uuidv4 } from "uuid"
 
 export interface WalletModalRefState {
-    currentContent: CurrentContent
+  refreshBalanceKey?: string;
 }
 
-export interface SetCurrentContentAction {
-    type: "SET_CURRENT_CONTENT";
-    payload: CurrentContent
+export interface SetRefreshBalanceKeyAction {
+  type: "TRIGGER_REFRESH_BALANCE_KEY";
 }
 
-export type WalletModalRefAction = SetCurrentContentAction;
+export type WalletModalRefAction = SetRefreshBalanceKeyAction;
 
-export const state: WalletModalRefState = {
-    currentContent: CurrentContent.Home,
-}
+export const state: WalletModalRefState = {}
 
 export const reducer = (
     state: WalletModalRefState,
     action: WalletModalRefAction
 ) => {
     switch (action.type) {
-    case "SET_CURRENT_CONTENT":
-        return { ...state, currentContent: action.payload }
+    case "TRIGGER_REFRESH_BALANCE_KEY":
+        return { ...state, refreshBalanceKey: uuidv4() }
     default:
         return state
     }

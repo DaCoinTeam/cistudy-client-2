@@ -1,24 +1,108 @@
 "use client"
-import React, {
-    forwardRef,
-    useImperativeHandle,
-} from "react"
+import React, { forwardRef, useContext, useImperativeHandle } from "react"
 import {
+    Button,
+    Link,
     Modal,
+    ModalBody,
     ModalContent,
+    ModalFooter,
     ModalHeader,
+    Spacer,
     useDisclosure,
 } from "@nextui-org/react"
-import { WalletModalRefProvider } from "./WalletModalRefProvider"
-import { BodyContent } from "./BodyContent"
+import { WalletModalRefContext, WalletModalRefProvider } from "./WalletModalRefProvider"
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
+import {
+    truncateHex,
+    computeDenomination,
+    computeRaw,
+    formatNumber,
+} from "../../../../../common/utils"
+import { DepositModal } from "./DepositModal"
+import { RootContext } from "../../../../_hooks"
+import { MetamaskButton } from "./MetamaskButton"
+import { DisconnectWalletButton } from "./DisconnectWalletButton"
+import { RefreshCcw } from "lucide-react"
+import { WithdrawModal } from "./WithdrawModal"
 
 export const WrappedWalletModalRef = () => {
+    const { reducer, swrs } = useContext(RootContext)!
+    const { profileSwr } = swrs
+    const { data } = profileSwr
+    const { balance } = { ...data }
+
+    const [state] = reducer
+    const { wallets } = state
+    const { metamask } = wallets
+    const { starciBalance, address } = metamask
+
+    const { reducer: walletModalRefReducer } = useContext(WalletModalRefContext)!
+    const [, walletModalRefDispatch ] = walletModalRefReducer
     return (
         <>
-            <ModalHeader className="p-4 font-semibold pb-2">
-        Wallet
-            </ModalHeader>
-            <BodyContent/>
+            <ModalHeader className="p-4 font-semibold pb-2">Wallet</ModalHeader>
+            <ModalBody className="p-4">
+                <div className="grid place-items-center">
+                    {address ? (
+                        <>
+                            <Link color="foreground" as="button" showAnchorIcon>
+                                {truncateHex(address)}
+                            </Link>
+                            <Spacer y={4} />
+                            <div className="flex gap-4 items-center w-full">
+                                <Button className="flex-1">Buy</Button>
+                                <DepositModal />
+                                <WithdrawModal />
+                            </div>
+                            <Spacer y={6} />
+                        </>
+                    ) : null}
+
+                    <div className="border border-divider rounded-medium w-full p-4">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <span className="text-4xl">
+                                    {computeDenomination(
+                                        address
+                                            ? starciBalance + computeRaw(balance ?? 0)
+                                            : computeRaw(balance ?? 0)
+                                    )}
+                                </span>
+                                <span className="text-sm"> STARCI </span>
+                            </div>
+                            <Link as="button" onPress={() => walletModalRefDispatch({
+                                type: "TRIGGER_REFRESH_BALANCE_KEY"
+                            })}><RefreshCcw className="w-5 h-5"/></Link>
+                        </div>
+                        {address ? (
+                            <>
+                                <Spacer y={2} />
+                                <div>
+                                    <div className="text-xs flex gap-1">
+                                        <div className="min-w-[100px] text-foreground-400 items-center flex gap-1">
+                      Deposited
+                                            <QuestionMarkCircleIcon className="w-3.5 h-3.5" />
+                                        </div>
+                                        <div>{formatNumber(balance)} STARCI</div>
+                                    </div>
+                                    <div className="text-xs flex gap-1">
+                                        <div className="min-w-[100px] text-foreground-400 items-center flex gap-1">
+                      On-chain
+                                            <QuestionMarkCircleIcon className="w-3.5 h-3.5" />
+                                        </div>
+                                        <div>{computeDenomination(starciBalance)} STARCI</div>
+                                    </div>
+                                </div>
+                            </>
+                        ) : null}
+                    </div>
+                </div>
+            </ModalBody>
+
+            <ModalFooter className="p-4 pt-2">
+                {!address ? <MetamaskButton /> : <DisconnectWalletButton />}
+            </ModalFooter>
         </>
     )
 }
@@ -28,52 +112,32 @@ export interface WalletModalRefSelectors {
 }
 
 interface WalletModalRefProps {
-    className?: string
+  className?: string;
 }
 
-export const WalletModalRef = forwardRef<WalletModalRefSelectors, WalletModalRefProps>(
-    (props, ref) => {
-        const { isOpen, onOpen, onOpenChange } = useDisclosure()
-        const { className } = props
+export const WalletModalRef = forwardRef<
+  WalletModalRefSelectors,
+  WalletModalRefProps
+>((props, ref) => {
+    const { isOpen, onOpen, onOpenChange } = useDisclosure()
+    const { className } = props
 
-        useImperativeHandle(ref, () => ({
-            onOpen,
-        }))
+    useImperativeHandle(ref, () => ({
+        onOpen,
+    }))
 
-        return (
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="sm" className={`${className}`}>
-                <ModalContent>
-                    <WalletModalRefProvider>
-                        <WrappedWalletModalRef />
-                    </WalletModalRefProvider>
-                </ModalContent>
-            </Modal>
-        )
-    }
-)
-
-// <div className="text-5xl font-semibold py-2 text-center">
-// $2323
-// </div>
-// <div className="border border-divider rounded-medium p-4">
-// <Account className="flex justify-start" name={"STARCI Token"} description={"0 STARCI"} avatarProps={{
-// src: "/starci-logo.svg"
-// }} />
-// {/* <div className="flex items-center gap-2">
-//  <Button startContent={<CoinsIcon size={20} strokeWidth={3/2} />}> Swap  </Button>
-// <Button startContent={<SendIcon size={20} strokeWidth={3/2} />}> Transfer </Button>
-// </div>   */}
-// </div>
-// <div className="border border-divider rounded-medium p-3">
-// <Account className="flex justify-start" name={"STARCI2 Token"} description={"0 STARCI2"} avatarProps={{
-// src: "/starci-logo.svg"
-// }} />
-// <Spacer y={4}/>
-// <Divider />
-// <Spacer y={4}/>
-// <div className="flex items-center gap-2">
-// {/* <Button startContent={<HandCoinsIcon size={20} strokeWidth={3/2} />}> Claim  </Button>
-// <Button startContent={<CoinsIcon size={20} strokeWidth={3/2} />}> Swap  </Button>
-// <Button startContent={<SendIcon size={20} strokeWidth={3/2} />}> Transfer </Button> */}
-// </div>
-// </div>
+    return (
+        <Modal
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            size="sm"
+            className={`${className}`}
+        >
+            <ModalContent>
+                <WalletModalRefProvider>
+                    <WrappedWalletModalRef />
+                </WalletModalRefProvider>
+            </ModalContent>
+        </Modal>
+    )
+})

@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/react"
 
 import { enrollCourse, getAssetUrl } from "@services"
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
 import { VideoPlayer } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
 import {
@@ -23,12 +23,12 @@ import {
 import { useSDK } from "@metamask/sdk-react"
 import { RootContext } from "../../../../_hooks"
 import { computePercentage, computeRaw } from "@common"
-import { ChainId, ERC20Contract, chainInfos } from "@blockchain"
-import { EVM_ADDRESS } from "@config"
+import {
+    ChainId,
+    ERC20Contract,
+    chainInfos,
+} from "@blockchain"
 import { usePathname, useRouter } from "next/navigation"
-
-const VERIFY_TRANSACTION = "verify-transaction"
-const TRANSACTION_VERIFIED = "transaction-verified"
 
 export const CourseFloat = () => {
     const { swrs } = useContext(CourseDetailsContext)!
@@ -41,9 +41,12 @@ export const CourseFloat = () => {
         discountPrice,
         courseId,
         enrolled,
+        creator,
     } = {
         ...course,
     }
+    const { walletAddress } = { ...creator }
+
     const { account, provider } = useSDK()
 
     const { disclosures } = useContext(RootContext)!
@@ -72,6 +75,10 @@ export const CourseFloat = () => {
     // }, [socket, courseId])
 
     const getPrice = () => {
+        return (enableDiscount ? discountPrice : price) ?? 0
+    }
+
+    const getPriceRaw = () => {
         if (!price) return BigInt(0)
         return enableDiscount ? computeRaw(discountPrice ?? 0) : computeRaw(price)
     }
@@ -83,34 +90,23 @@ export const CourseFloat = () => {
         }
         if (!courseId) return
 
-        if (!account) {
-            onOpen()
+        console.log(walletAddress)
+        if (!walletAddress) {
             return
         }
-        const primaryTokenContract = new ERC20Contract(
+
+        const tokenContract = new ERC20Contract(
             ChainId.KalytnTestnet,
-            chainInfos[ChainId.KalytnTestnet].primaryToken,
+            chainInfos[ChainId.KalytnTestnet].tokenAddress,
             provider,
             account
         )
-        const transaction = await primaryTokenContract.transfer(
-            EVM_ADDRESS,
-            getPrice()
-        )
-
-        // console.log(transaction)
-
-        if (transaction === null) return
-        const { transactionHash } = transaction
-
-        // socket?.emit(VERIFY_TRANSACTION, {
-        //     transactionHash,
-        // })
 
         await enrollCourse({
             data: {
                 courseId,
-                code: "ABCXYZ",
+                numberOfQueries: 10,
+                queryInterval: 0.5,
             },
         })
         await mutate()
@@ -215,8 +211,4 @@ export const CourseFloat = () => {
             </CardFooter>
         </Card>
     )
-}
-
-interface TransactionVerifiedMessage {
-  code: string;
 }

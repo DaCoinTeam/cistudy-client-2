@@ -15,7 +15,8 @@ export const createCourse = async (): Promise<CreateCourseOutput> => {
 export interface EnrollCourseInput {
   data: {
     courseId: string;
-    code: string;
+    numberOfQueries?: number
+    queryInterval?: number
   };
 }
 
@@ -74,6 +75,32 @@ export const updateCourse = async (
         signal
     })
 }
+
+export interface CheckCumulativeAmountInput {
+  data: {
+    creatorWalletAddress: string,
+    price: string
+  };
+}
+
+export interface CheckCumulativeAmountOutput {
+  message: string,
+  others: {
+    enough: boolean
+    cummulativeAmount: string
+    differentAmounts: string
+  }
+}
+
+export const checkCumulativeAmount = async (
+    input: CheckCumulativeAmountInput
+): Promise<CheckCumulativeAmountOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/check-cumulative-amount`
+
+    return await authAxios.patch(url, data)
+}
+
 
 export interface CreateCourseTargetInput {
   data: {
@@ -286,11 +313,11 @@ export interface CreateCourseReviewInput {
   }
 }
 export const createCourseReview = async (
-  input: CreateCourseReviewInput
+    input: CreateCourseReviewInput
 ): Promise<string> => {
-  const { data } = input
-  const url = `${BASE_URL}/create-course-review`
-  return await authAxios.post(url, data)
+    const { data } = input
+    const url = `${BASE_URL}/create-course-review`
+    return await authAxios.post(url, data)
 }
 
 export interface UpdateCourseReviewInput {
@@ -301,19 +328,19 @@ export interface UpdateCourseReviewInput {
   }
 }
 export const updateCourseReview = async (
-  input: UpdateCourseReviewInput
+    input: UpdateCourseReviewInput
 ): Promise<string> => {
-  const { data } = input
-  const url = `${BASE_URL}/update-course-review`
-  return await authAxios.patch(url, data)
+    const { data } = input
+    const url = `${BASE_URL}/update-course-review`
+    return await authAxios.patch(url, data)
 }
 export interface DeleteCourseReviewInput {
   courseReviewId: string
 }
 
 export const deleteCourseReview = async (
-  courseReviewId : DeleteCourseReviewInput
+    courseReviewId : DeleteCourseReviewInput
 ): Promise<string> => {
-  const url = `${BASE_URL}/delete-course-review/${courseReviewId}`
-  return await authAxios.delete(url)
+    const url = `${BASE_URL}/delete-course-review/${courseReviewId}`
+    return await authAxios.delete(url)
 }
