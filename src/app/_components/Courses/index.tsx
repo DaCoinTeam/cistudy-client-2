@@ -14,18 +14,15 @@ export const Courses = () => {
         const coursesReturn: Array<CourseEntity> = []
         data.forEach((element) => {
             if (!element) return
-            const { results } = element
-            coursesReturn.push(...results)
+            const { metadata } = element
+            coursesReturn.push(...metadata.highRateCourses)
         })
         return coursesReturn.slice(start, end)
     }
     return (
         <div>
-            <div className="ms-8 text-2xl font-semibold "> Featured Courses</div>
-            <Carousel  courses={getCourses(0,9)} />
-            <Spacer y={8} />
             <div className="ms-8 text-2xl font-semibold "> High Rating Courses</div>
-            <Carousel  courses={getCourses(7,14)} />
+            <Carousel  courses={getCourses(0, 20)} />
         </div>
     )
 }

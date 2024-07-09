@@ -1,68 +1,63 @@
-
-import { Card, CardFooter, CardHeader, Image, User } from "@nextui-org/react"
-import { CourseEntity } from "@common"
-import { getAssetUrl, getAvatarUrl } from "../../../../services/server"
-import { HiStar } from "react-icons/hi";
+import { Card, CardFooter, CardHeader, Image, User } from '@nextui-org/react';
+import { CourseEntity } from '@common';
+import { getAssetUrl, getAvatarUrl } from '../../../../services/server';
+import { StarIcon } from '@heroicons/react/24/solid';
 
 export const CourseCard = (props: CourseEntity) => {
-    const { title, creator, courseTopics, courseSubcategories, category, thumbnailId, price, } = { ...props }
-    const { avatarId, avatarUrl, kind, username, numberOfFollowers } = {
-        ...creator,
-    }
-    return (
-        <Card
-            // isFooterBlurred
-            className='col-span-12 sm:col-span-7 h-[280px] border border-divider'
-        >
-            <CardHeader className="p-0">
-                <Image
-                    removeWrapper
-                    alt='Relaxing app background'
-                    className='z-0 w-full h-full object-cover'
-                    src={getAssetUrl(thumbnailId)}
-                />
-            </CardHeader>
-            
-            <div className='absolute bottom-28 left-4 flex items-center'>
-            </div>
-            <CardFooter className='absolute bottom-0 z-10 bg-content1 h-[130px] flex-col px-4 justify-start'>
-                <p className='text-base font-bold line-clamp-2'>{title}</p>                
-                
-             
-                <User
-                    className= "w-full justify-start py-1"
-                    avatarProps={{
-                        src: getAvatarUrl({
-                            avatarId,
-                            avatarUrl,
-                            kind,
-                        }),
-                        className: "w-7 h-7 justify-start"
-                    }}
-                    name={username}
-                />
-                               
-                <div className='flex flex-grow gap-2 w-full justify-between'>
-                    <div className='flex items-center'>
-                        {/* <FontAwesomeIcon
-                            icon={faStar}
-                            className='text-yellow-500 w-4 h-4 me-2  p-1 '
-                        /> */}
-                        <HiStar size={20} className='text-yellow-500 w-4 h-4 me-2  p-1 ' />
-                        <span className='text-sm font-semibold'>5.0</span>
-                    </div>
-                    {/* <div className='flex items-center  '>
-                        <AccountIcon className='w-4 h-4 me-2 ' />
-                        <span className='text-sm font-semibold'>{}</span>
-                    </div> */}
-                    <div className='flex items-center'>
-                        {/* <BriefcaseIcon className=' w-4 h-4 me-2 ' /> */}
-                        <span className='text-base font-semibold'>{price} STARCI</span>
-                    </div>
-                    
-                </div>
-            </CardFooter>
-        </Card>
- 
-    )
-}
+  const {
+    title,
+    creator,
+    courseTopics,
+    courseSubcategories,
+    category,
+    thumbnailId,
+    price,
+  } = { ...props };
+  const { avatarId, avatarUrl, kind, username, numberOfFollowers } = {
+    ...creator,
+  };
+  return (
+    <div className='col-span-12 sm:col-span-7 h-auto min-h-[17.5rem] border border-divider shadow-none rounded-xl'>
+      <div className='w-full h-auto min-h-[10rem] bg-lime-600 rounded-t-xl'>
+        <img
+          className='z-0 w-full h-[10rem] object-cover  rounded-t-xl'
+          src={getAssetUrl(thumbnailId)}
+        />
+      </div>
+
+      <div className=' h-auto min-h-[7rem] p-3 justify-start items-start '>
+        <div className='text-sm font-semibold line-clamp-2 pb-1 h-auto min-h-[2.5rem]'>{title}</div>
+        <div className='flex flex-col'>
+        <div className='flex pb-1 '>
+          <User
+            avatarProps={{
+              src: getAvatarUrl({
+                avatarId,
+                avatarUrl,
+                kind,
+              }),
+              className: 'w-7 h-7 ',
+            }}
+            name={username}
+          />
+        </div>
+
+        <div className='flex  gap-2 w-full justify-between items-end'>
+          <div className='flex items-center'>
+            <StarIcon
+              width={24}
+              height={24}
+              className='text-yellow-500 me-2 p-1 '
+            />
+            <span className='text-sm font-semibold'>5.0</span>
+          </div>
+          <div className='flex items-center'>
+            <span className='text-sm font-semibold'>{price} STARCI</span>
+          </div>
+        </div>
+        </div>
+       
+      </div>
+    </div>
+  );
+};

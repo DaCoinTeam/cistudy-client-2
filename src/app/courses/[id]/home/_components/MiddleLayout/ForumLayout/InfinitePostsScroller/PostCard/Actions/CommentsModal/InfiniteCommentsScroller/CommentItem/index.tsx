@@ -1,7 +1,7 @@
 import { PostCommentEntity, parseTimeAgo } from '@common';
 import { Avatar, Chip, Spacer, useDisclosure } from '@nextui-org/react';
 import { getAvatarUrl } from '@services';
-import { CheckIcon } from 'lucide-react';
+import { CheckIcon, PencilIcon, UserIcon } from 'lucide-react';
 import { createContext, useContext, useMemo } from 'react';
 import {
   MediaGroup,
@@ -84,10 +84,7 @@ export const CommentItem = (props: CommentItemProps) => {
   return (
     <CommentItemContext.Provider value={commentItemContextValue}>
       <div
-        className={`flex group/comment rounded-xl p-2 ${
-          isSolution ? 'bg-blue-50' : ''
-        }`}
-      >
+        className={`flex group/comment rounded-xl p-2`}   >
         <Avatar
           src={getAvatarUrl({
             avatarId,
@@ -99,24 +96,28 @@ export const CommentItem = (props: CommentItemProps) => {
           <div className='flex items-center justify-between'>
             <div className='flex items-center'>
               <div className='mr-4'>
-                {postCreatorAccountId === commentCreatorAccountId ? (
-                  <div className='font-semibold bg-default-600 text-white dark:text-black py-0.3 px-2 rounded-xl mb-1'>
-                    {username}
-                  </div>
-                ) : (
+                
                   <div className='font-semibold px-2'>{username}</div>
-                )}
+                
                 <div className='text-xs text-foreground-400 flex gap-2 items-center px-2'>
                   <div>{parseTimeAgo(updatedAt)}</div>
                   {isEdited ? <div>Edited</div> : null}
                 </div>
               </div>
-
+              {postCreatorAccountId === commentCreatorAccountId && (
+                <Chip
+                startContent={<PencilIcon size={17} />}
+                variant='flat'
+                color='default'
+              >
+                Author
+              </Chip>
+              )}
               {isSolution && (
                 <Chip
                   startContent={<CheckIcon size={18} />}
                   variant='flat'
-                  color='primary'
+                  color='success'
                 >
                   Solution
                 </Chip>
