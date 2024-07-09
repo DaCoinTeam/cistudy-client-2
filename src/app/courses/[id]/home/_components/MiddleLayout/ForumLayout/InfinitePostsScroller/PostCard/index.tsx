@@ -65,7 +65,7 @@ export const PostCard = (props: PostCardProps) => {
                 }),
               }}
             />
-            {isCompleted ? (
+            {isCompleted && (
                <Chip
                startContent={<CheckIcon size={18} />}
                variant="flat"
@@ -73,8 +73,8 @@ export const PostCard = (props: PostCardProps) => {
              >
                Completed
              </Chip>
-            ): (
-              <>
+            )} 
+        
               {isRewardable && (
                  <Chip
                  startContent={<GiftIcon size={18} />}
@@ -84,8 +84,8 @@ export const PostCard = (props: PostCardProps) => {
                   Rewardable
                </Chip>
               )}
-              </>
-            )}
+              
+          
             </div>
             <MoreButton />
           </div>

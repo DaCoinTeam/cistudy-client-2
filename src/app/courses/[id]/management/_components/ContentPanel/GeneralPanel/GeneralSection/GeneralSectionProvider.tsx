@@ -10,15 +10,15 @@ import React, {
 } from "react"
 import { updateCourse } from "@services"
 import { ManagementContext } from "../../../../_hooks"
-import { SubcategoryEntity, TopicEntity } from "@common"
+import { CategoryEntity, SubcategoryEntity, TopicEntity } from "@common"
 
 interface GeneralSectionContextValue {
   formik: FormikProps<FormikValues>;
   functions: {
     hasChanged: () => boolean;
     discardChanges: () => void;
-    addTopic: (topic: TopicEntity) => void;
-    deleteTopic: (topicId: string) => void;
+    addTopic: (topic: CategoryEntity) => void;
+    deleteTopic: (categoryId: string) => void;
   };
 }
 
@@ -29,13 +29,13 @@ interface FormikValues {
   title: string;
   description: string;
   categoryId?: string;
-  subcategories: Array<SubcategoryEntity>;
-  topics: Array<TopicEntity>;
+  subcategories: Array<CategoryEntity>;
+  topics: Array<CategoryEntity>;
   titlePrevious: string;
   descriptionPrevious: string;
   categoryIdPrevious?: string;
-  subcategoriesPrevious: Array<SubcategoryEntity>;
-  topicsPrevious: Array<TopicEntity>;
+  subcategoriesPrevious: Array<CategoryEntity>;
+  topicsPrevious: Array<CategoryEntity>;
 }
 
 const initialValues: FormikValues = {
@@ -130,16 +130,16 @@ const WrappedGeneralSectionProvider = ({
         formik.values.title !== formik.values.titlePrevious ||
     formik.values.description !== formik.values.descriptionPrevious ||
     formik.values.categoryId !== formik.values.categoryIdPrevious ||
-    JSON.stringify(formik.values.topics.map(({ topicId }) => topicId)) !==
+    JSON.stringify(formik.values.topics.map(({ categoryId }) => categoryId)) !==
       JSON.stringify(
-          formik.values.topicsPrevious.map(({ topicId }) => topicId)
+          formik.values.topicsPrevious.map(({ categoryId }) => categoryId)
       ) ||
     JSON.stringify(
-        formik.values.subcategories.map(({ subcategoryId }) => subcategoryId)
+        formik.values.subcategories.map(({ categoryId }) => categoryId)
     ) !==
       JSON.stringify(
           formik.values.subcategoriesPrevious.map(
-              ({ subcategoryId }) => subcategoryId
+              ({ categoryId }) => categoryId
           )
       )
 
@@ -151,15 +151,15 @@ const WrappedGeneralSectionProvider = ({
         formik.setFieldValue("topics", formik.values.topicsPrevious)
     }
 
-    const addTopic = (topic: TopicEntity) => {
-        if (formik.values.topics.some(({ topicId }) => topicId === topic.topicId))
+    const addTopic = (topic: CategoryEntity) => {
+        if (formik.values.topics.some(({ categoryId }) => categoryId === topic.categoryId))
             return
         formik.setFieldValue("topics", [...formik.values.topics, topic].sort((prev, next) => prev.name.localeCompare(next.name)))
     }
 
-    const deleteTopic = (topicId: string) => {
+    const deleteTopic = (categoryId: string) => {
         const deleted = formik.values.topics.filter(
-            (topic) => topicId !== topic.topicId
+            (topic) => categoryId !== topic.categoryId
         )
         formik.setFieldValue("topics", deleted)
     }
@@ -209,10 +209,10 @@ export const GeneralSectionProvider = ({
                         description,
                         categoryId,
                         subcategoryIds: subcategories.length
-                            ? subcategories.map(({ subcategoryId }) => subcategoryId)
+                            ? subcategories.map(({ categoryId }) => categoryId)
                             : undefined,
                         topicIds: topics.length
-                            ? topics.map(({ topicId }) => topicId)
+                            ? topics.map(({ categoryId }) => categoryId)
                             : undefined,
                     },
                 })

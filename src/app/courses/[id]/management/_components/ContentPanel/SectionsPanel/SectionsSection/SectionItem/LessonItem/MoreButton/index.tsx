@@ -19,7 +19,6 @@ import {
     ResourcesModalRef,
     ResourcesModalRefSelectors,
 } from "./ResourcesModalRef"
-import { LessonModalRef, LessonModalRefSelectors } from "./LessonModalRef"
 import { LessonItemContext } from ".."
 import { deleteLesson } from "@services"
 import { SectionItemContext } from "../.."
@@ -27,6 +26,7 @@ import {
     ConfirmDeleteModalRef,
     ConfirmDeleteModalRefSelectors,
 } from "../../../../../../../../../../_shared"
+import { LessonModalRef, LessonModalRefSelectors } from "./LessonModalRef"
 
 interface ManageThumbnailButtonProps {
   className?: string;

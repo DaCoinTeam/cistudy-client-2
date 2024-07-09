@@ -4,7 +4,7 @@ import "./_css/globals.css"
 import { ReduxProvider, RootState } from "@redux"
 import { NextUIProvider } from "@nextui-org/react"
 import { RootProvider } from "./_hooks"
-import { Navbar } from "./_components"
+import { Footer, Navbar } from "./_components"
 import { ReactNode, useEffect } from "react"
 import { MetaMaskProvider } from "@metamask/sdk-react"
 import { useSelector } from "react-redux"
@@ -37,6 +37,7 @@ const WrappedLayout = ({ children }: { children: ReactNode }) => {
                         >
                             <Navbar />
                             {children}
+                            <Footer />
                             <NotConnectWalletModal />
                         </MetaMaskProvider>
                     </RootProvider>

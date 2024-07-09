@@ -58,7 +58,7 @@ const WrappedNavbar = (props: NavbarProps) => {
                         <span className="text-primary">
                         Ci
                         </span>
-                        <span className="text-success">
+                        <span className="text-secondary">
                         Study
                         </span>
                     </div>

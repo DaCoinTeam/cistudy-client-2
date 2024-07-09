@@ -1,46 +1,46 @@
-import { Address, LogsOutput } from "web3"
+import { Address, LogsOutput } from 'web3';
 
 export enum AccountKind {
-  Local = "local",
-  Google = "google",
-  Facebook = "facebook",
+  Local = 'local',
+  Google = 'google',
+  Facebook = 'facebook',
 }
 
 export enum AccountRole {
-  Account = "account",
-  Moderator = "moderator",
-  Administrator = "administrator",
+  Account = 'account',
+  Moderator = 'moderator',
+  Administrator = 'administrator',
 }
 
 export enum VerifyStatus {
-  Pending = "pending",
-  Approved = "approved",
-  Rejected = "rejected",
+  Pending = 'pending',
+  Approved = 'approved',
+  Rejected = 'rejected',
 }
 
 export enum ProcessStatus {
-  Pending = "pending",
-  Processing = "processing",
-  Completed = "completed",
+  Pending = 'pending',
+  Processing = 'processing',
+  Completed = 'completed',
 }
 
 export enum MediaType {
-  Image = "image",
-  Video = "video",
+  Image = 'image',
+  Video = 'video',
 }
 
 export enum VideoType {
-  MP4 = "mp4",
-  DASH = "dash",
+  MP4 = 'mp4',
+  DASH = 'dash',
 }
 export interface RoleEntity {
-  roleId: string
-  name: string
-  accountId: string
-  accountRoles: AccountEntity
-  createdAt: Date
-  isDisabled: boolean
-  updatedAt: Date
+  roleId: string;
+  name: string;
+  accountId: string;
+  accountRoles: AccountEntity;
+  createdAt: Date;
+  isDisabled: boolean;
+  updatedAt: Date;
 }
 export interface AccountEntity {
   accountId: string;
@@ -86,7 +86,7 @@ export interface PostEntity {
   postMedias: Array<PostMediaEntity>;
   postComments: Array<PostCommentEntity>;
   postReacts: Array<PostReactEntity>;
-  
+
   //graphql
   numberOfLikes?: number;
   numberOfComments?: number;
@@ -96,7 +96,6 @@ export interface PostEntity {
   isPostOwner: boolean;
   numberOfRewardableCommentsLeft: number;
   numberOfRewardableLikesLeft: number;
-
 }
 
 export interface CourseEntity {
@@ -121,6 +120,7 @@ export interface CourseEntity {
   category: CategoryEntity;
   courseSubcategories: Array<CourseSubcategoryEntity>;
   courseTargets: Array<CourseTargetEntity>;
+  courseReview: CourseReviewEntity;
   posts: Array<PostEntity>;
   enrolledInfos: Array<EnrolledInfoEntity>;
   sections: Array<SectionEntity>;
@@ -263,12 +263,36 @@ export interface PostCommentMediaEntity {
   postComment: PostCommentEntity;
 }
 
+export interface CategoryRelationEntity {
+  categoryRelationId: string;
+  categoryId: string;
+  category: CategoryEntity;
+  categoryParentId: string;
+  categoryParent: CategoryEntity;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface CategoryEntity {
   categoryId: string;
   name: string;
+  imageId: string;
+  level: number;
   createdAt: Date;
   updatedAt: Date;
-  subcategories: Array<SubcategoryEntity>;
+  categoryParentRelations: Array<CategoryRelationEntity>;
+  categoryRelations: Array<CategoryRelationEntity>;
+  courseCategories: Array<CourseCategoryEntity>;
+}
+
+export interface CourseCategoryEntity {
+  courseCategoryId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  courseId: string;
+  categoryId: string;
+  course: CourseEntity;
+  category: CategoryEntity;
 }
 
 export interface SubcategoryEntity {
@@ -343,31 +367,30 @@ export interface TransactionEntity {
 }
 
 export interface CartEntity {
-  cartId: string
-  cartCourses: Array<CartCourseEntity>
-  isDeleted: boolean
-  createdAt: Date
-  updatedAt: Date
-  account: AccountEntity
+  cartId: string;
+  cartCourses: Array<CartCourseEntity>;
+  isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  account: AccountEntity;
 }
 export interface CartCourseEntity {
-  cartCourseId: string
-  cartId: string
-  courseId: string
-  createdAt: Date
-  updatedAt: Date
-  course: CourseEntity
-  cart: CartEntity
+  cartCourseId: string;
+  cartId: string;
+  courseId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  course: CourseEntity;
+  cart: CartEntity;
 }
 export interface CourseReviewEntity {
-  courseReviewId: string
-  content: string
-  courseId: string
-  course?: CourseEntity
-  createdAt: Date
-  updatedAt: Date
-  rating: number
-  accountId: string
-  account: AccountEntity
-  
+  courseReviewId: string;
+  content: string;
+  courseId: string;
+  course?: CourseEntity;
+  createdAt: Date;
+  updatedAt: Date;
+  rating: number;
+  accountId: string;
+  account: AccountEntity;
 }
