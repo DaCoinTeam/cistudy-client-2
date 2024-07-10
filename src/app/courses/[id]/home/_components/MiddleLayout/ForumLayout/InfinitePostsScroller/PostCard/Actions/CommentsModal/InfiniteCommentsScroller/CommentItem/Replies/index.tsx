@@ -2,12 +2,11 @@ import { PostCommentReplyEntity } from '@common';
 import { Link } from '@nextui-org/react';
 import { useContext } from 'react';
 import { CommentItemContext } from '..';
-import { PostCardContext } from '../../../../..';
 import { CreateReply } from './CreateReply';
 import {
-    COLUMNS_PER_PAGE,
-    RepliesContext,
-    RepliesProvider,
+  COLUMNS_PER_PAGE,
+  RepliesContext,
+  RepliesProvider,
 } from './RepliesProvider';
 import { ReplyItem } from './ReplyItem';
 
@@ -17,11 +16,6 @@ interface RepliesProps {
 
 const WrappedReplies = (props: RepliesProps) => {
   const { className } = props;
-  const { props: postCardContextProps } = useContext(PostCardContext)!;
-  console.log("postCardContextProps", postCardContextProps)
-  const { post } = postCardContextProps;
-  const { isCompleted } = post;
-  console.log("create Reply comment", isCompleted)
   const { swrs } = useContext(RepliesContext)!;
   const { postCommentRepliesSwr } = swrs;
   const { data, size, setSize } = postCommentRepliesSwr;
@@ -68,7 +62,7 @@ const WrappedReplies = (props: RepliesProps) => {
         />
       ))}
       {renderLoadMoreButton()}
-      {!isCompleted && <CreateReply />}
+      <CreateReply />
     </div>
   );
 };

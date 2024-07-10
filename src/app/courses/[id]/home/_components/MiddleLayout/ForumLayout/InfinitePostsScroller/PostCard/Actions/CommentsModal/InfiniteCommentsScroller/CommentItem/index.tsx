@@ -1,7 +1,7 @@
 import { PostCommentEntity, parseTimeAgo } from '@common';
 import { Avatar, Chip, Spacer, useDisclosure } from '@nextui-org/react';
 import { getAvatarUrl } from '@services';
-import { CheckIcon, PencilIcon, UserIcon } from 'lucide-react';
+import { CheckIcon, GiftIcon, PencilIcon, UserIcon } from 'lucide-react';
 import { createContext, useContext, useMemo } from 'react';
 import {
   MediaGroup,
@@ -106,18 +106,32 @@ export const CommentItem = (props: CommentItemProps) => {
               </div>
               {postCreatorAccountId === commentCreatorAccountId && (
                 <Chip
-                startContent={<PencilIcon size={17} />}
+                startContent={<PencilIcon size={18} className='ml-1'/>}
                 variant='flat'
-                color='default'
+                color='primary'
+                className='mr-2'
+
               >
                 Author
               </Chip>
               )}
+              {isRewardable && (
+                <Chip
+                  startContent={<GiftIcon size={18} className='ml-1'/>}
+                  variant='flat'
+                  color='warning'
+                  className='mr-2'
+                >
+                  Rewardable
+                </Chip>
+              )}
               {isSolution && (
                 <Chip
-                  startContent={<CheckIcon size={18} />}
+                  startContent={<CheckIcon size={18} className='ml-1'/>}
                   variant='flat'
                   color='success'
+                  className='mr-2'
+
                 >
                   Solution
                 </Chip>

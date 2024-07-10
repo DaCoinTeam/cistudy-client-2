@@ -21,6 +21,7 @@ export const Actions = () => {
     liked,
     numberOfLikes,
     isCompleted,
+    isRewardable,
     numberOfRewardableCommentsLeft,
     numberOfRewardableLikesLeft,
   } = post;
@@ -52,7 +53,7 @@ export const Actions = () => {
       <div className='flex gap-2 items-center'>
         <div className='flex items-center gap-2'>
           <Tooltip
-          isDisabled={liked || isCompleted || numberOfRewardableLikesLeft === 0}
+          isDisabled={liked || isCompleted || !isRewardable || numberOfRewardableLikesLeft === 0}
             content={
               <div className='px-1 py-2'>
                 <div className='text-small font-bold flex text-yellow-500'>
@@ -80,7 +81,7 @@ export const Actions = () => {
               color='primary'
               variant='light'
               onPress={onPress}
-              isDisabled={isCompleted}
+              isDisabled={isCompleted || liked}
             >
               {numberOfLikes}
             </Button>

@@ -52,7 +52,6 @@ export const Actions = () => {
                     variant="light"
                     onPress={onLikePress}
                     className="px-2.5 min-w-0"
-                    isDisabled={isCompleted}
                     startContent={
                         <>
                             {liked ? (
@@ -69,7 +68,6 @@ export const Actions = () => {
                     color="primary"
                     variant="light"
                     className="px-2.5 min-w-0"
-                    isDisabled={isCompleted && numberOfReplies === 0}
                     onPress={onOpenChange}
                     startContent={
                         <>

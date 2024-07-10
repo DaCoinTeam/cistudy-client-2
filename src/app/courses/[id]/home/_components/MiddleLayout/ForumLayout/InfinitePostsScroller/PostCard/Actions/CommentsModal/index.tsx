@@ -21,13 +21,13 @@ export const CommentsModal = () => {
 
   const { props } = useContext(PostCardContext)!;
   const { post } = props;
-  const { numberOfComments, isCompleted, numberOfRewardableCommentsLeft } =
+  const { numberOfComments, isCompleted, isRewardable, numberOfRewardableCommentsLeft } =
     post;
 
   return (
     <>
       <Tooltip
-        isDisabled={isCompleted || numberOfRewardableCommentsLeft === 0}
+        isDisabled={isCompleted || !isRewardable || numberOfRewardableCommentsLeft === 0}
         content={
           <div className='px-1 py-2'>
             <div className='text-small font-bold text-yellow-500 flex'>

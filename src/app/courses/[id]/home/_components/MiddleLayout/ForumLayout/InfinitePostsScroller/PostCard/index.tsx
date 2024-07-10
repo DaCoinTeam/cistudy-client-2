@@ -27,8 +27,17 @@ export const PostCardContext = createContext<PostCardContextValue | null>(null);
 
 export const PostCard = (props: PostCardProps) => {
   const { post } = props;
-  const { title, html, postMedias, creator, createdAt, updatedAt, isRewardable, isCompleted, isPostOwner } =
-    post;
+  const {
+    title,
+    html,
+    postMedias,
+    creator,
+    createdAt,
+    updatedAt,
+    isRewardable,
+    isCompleted,
+    isPostOwner,
+  } = post;
   const { avatarId, username, avatarUrl, kind } = creator;
 
   const postCardContextValue: PostCardContextValue = useMemo(
@@ -43,49 +52,49 @@ export const PostCard = (props: PostCardProps) => {
       <Card shadow='none' className='border border-divider rounded-medium'>
         <CardHeader className='p-4 pb-2 inline'>
           <div className='flex items-center justify-between'>
-            <div className='flex gap-6 items-center'>
-            <User
-              classNames={
-                {
-                name: 'text-base',
-                
-              }}
-              name={username}
-              description={
-                <div className='flex gap-2 items-center'>
-                  <div>{parseTimeAgo(updatedAt)}</div>
-                  {isEdited ? <div> Edited </div> : null}
-                </div>
-              }
-              avatarProps={{
-                src: getAvatarUrl({
-                  avatarId,
-                  avatarUrl,
-                  kind,
-                }),
-              }}
-            />
-            {isCompleted && (
-               <Chip
-               startContent={<CheckIcon size={18} />}
-               variant="flat"
-               color="success"
-             >
-               Completed
-             </Chip>
-            )} 
-        
-              {isRewardable && (
-                 <Chip
-                 startContent={<GiftIcon size={18} />}
-                 variant="flat"
-                 color="warning"
-               >
-                  Rewardable
-               </Chip>
+            <div className='flex items-center'>
+              <div className='mr-4'>
+                <User
+                  classNames={{
+                    name: 'text-base',
+                  }}
+                  name={username}
+                  description={
+                    <div className='flex gap-2 items-center'>
+                      <div>{parseTimeAgo(updatedAt)}</div>
+                      {isEdited ? <div> Edited </div> : null}
+                    </div>
+                  }
+                  avatarProps={{
+                    src: getAvatarUrl({
+                      avatarId,
+                      avatarUrl,
+                      kind,
+                    }),
+                  }}
+                />
+              </div>
+
+              {isCompleted && (
+                <Chip
+                  startContent={<CheckIcon size={18} className='ml-1'/>}
+                  variant='flat'
+                  color='success'
+                  className='mr-2'
+                >
+                  Completed
+                </Chip>
               )}
-              
-          
+              {isRewardable && (
+                <Chip
+                  startContent={<GiftIcon size={18} className='ml-1'/>}
+                  variant='flat'
+                  color='warning'
+                  className='mr-2'
+                >
+                  Rewardable
+                </Chip>
+              )}
             </div>
             <MoreButton />
           </div>

@@ -4,6 +4,7 @@ import React, { ReactNode, createContext, useContext } from "react"
 import { createPostCommentReply } from "@services"
 import { RepliesContext } from "../RepliesProvider"
 import { CommentItemContext } from "../.."
+import { CommentsModalContext } from "../../../../CommentsModalProvider"
 
 interface CreateReplyProps {
   formik: FormikProps<FormikValues>;
