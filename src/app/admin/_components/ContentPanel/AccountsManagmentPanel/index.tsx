@@ -1,8 +1,8 @@
 import { Spacer } from "@nextui-org/react"
 import React from "react"
 import { Actions } from "./Actions"
-import { AccountsTable } from "./AccountsTable"
 import { AccountsManagementPanelProvider } from "./AccountsManagementPanelProvider"
+import { AccountsTable } from "./AccountsTable"
 
 interface AccountsManagementPanelProps {
   className?: string;

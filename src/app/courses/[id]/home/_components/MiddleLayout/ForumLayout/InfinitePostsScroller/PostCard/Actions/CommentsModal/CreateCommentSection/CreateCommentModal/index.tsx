@@ -1,4 +1,5 @@
-import React, { useCallback, useContext } from "react"
+import { AppendKey, Media } from "@common"
+import { ArrowPathIcon, PlusIcon } from "@heroicons/react/24/outline"
 import {
     Button,
     Modal,
@@ -8,17 +9,15 @@ import {
     ModalHeader,
     useDisclosure,
 } from "@nextui-org/react"
+import { useCallback, useContext } from "react"
+import {
+    MediaUploader,
+    TextEditor,
+} from "../../../../../../../../../../../../_shared"
 import {
     CreateCommentModalContext,
     CreateCommentModalProvider,
 } from "./CreateCommentModalProvider"
-import { AppendKey, Media } from "@common"
-import {
-    TextEditor,
-    MediaUploader,
-} from "../../../../../../../../../../../../_shared"
-import { ArrowPathIcon, PlusIcon } from "@heroicons/react/24/outline"
-import { RootContext } from "../../../../../../../../../../../../_hooks"
 
 export const WrappedCreateCommentModal = () => {
     const { formik } = useContext(CreateCommentModalContext)!

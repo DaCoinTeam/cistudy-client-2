@@ -1,7 +1,6 @@
 import { Button, Image, Link, Spacer } from "@nextui-org/react"
 import React from "react"
 import { STARCI_COIN } from "@config"
-// import { Courses } from "../Courses"
 
 interface EcosystemProps {
   className?: string;

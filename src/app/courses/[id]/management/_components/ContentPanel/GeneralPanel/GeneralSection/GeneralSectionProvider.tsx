@@ -10,7 +10,7 @@ import React, {
 } from "react"
 import { updateCourse } from "@services"
 import { ManagementContext } from "../../../../_hooks"
-import { CategoryEntity, SubcategoryEntity, TopicEntity } from "@common"
+import { CategoryEntity } from "@common"
 
 interface GeneralSectionContextValue {
   formik: FormikProps<FormikValues>;
@@ -59,7 +59,7 @@ const WrappedGeneralSectionProvider = ({
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data: courseManagement } = courseManagementSwr
-    const { title, description, categoryId, courseSubcategories, courseTopics } =
+    const { title, description, courseCategories } =
     { ...courseManagement }
 
     const titlePreviousRef = useRef(false)
@@ -87,44 +87,44 @@ const WrappedGeneralSectionProvider = ({
     }, [description])
 
     const categoryPreviousRef = useRef(false)
-    useEffect(() => {
-        if (!categoryId) return
-        if (!categoryPreviousRef.current) {
-            categoryPreviousRef.current = true
-            formik?.setFieldValue("categoryIdPrevious", categoryId)
-        }
-        formik?.setFieldValue("categoryId", categoryId)
-    }, [categoryId])
+    // useEffect(() => {
+    //     if (!courseCategories) return
+    //     if (!categoryPreviousRef.current) {
+    //         categoryPreviousRef.current = true
+    //         formik?.setFieldValue("categoryIdPrevious", courseCategories)
+    //     }
+    //     formik?.setFieldValue("categoryId", categoryId)
+    // }, [categoryId])
 
     const courseSubcategoriesPreviousRef = useRef(false)
-    useEffect(() => {
-        if (!courseSubcategories?.length) return
+    // useEffect(() => {
+    //     if (!courseSubcategories?.length) return
 
-        const subcategories = courseSubcategories
-            .map(({ subcategory }) => subcategory)
-            .sort((prev, next) => prev.name.localeCompare(next.name))
+    //     const subcategories = courseSubcategories
+    //         .map(({ subcategory } : {subcategory : CategoryEntity}) => subcategory)
+    //         .sort((prev, next) => prev.name.localeCompare(next.name))
 
-        if (!courseSubcategoriesPreviousRef.current) {
-            courseSubcategoriesPreviousRef.current = true
-            formik.setFieldValue("subcategoriesPrevious", subcategories)
-        }
-        formik.setFieldValue("subcategories", subcategories)
-    }, [courseSubcategories])
+    //     if (!courseSubcategoriesPreviousRef.current) {
+    //         courseSubcategoriesPreviousRef.current = true
+    //         formik.setFieldValue("subcategoriesPrevious", subcategories)
+    //     }
+    //     formik.setFieldValue("subcategories", subcategories)
+    // }, [courseSubcategories])
 
     const courseTopicsPreviousRef = useRef(false)
-    useEffect(() => {
-        if (!courseTopics?.length) return
+    // useEffect(() => {
+    //     if (!courseTopics?.length) return
 
-        const topics = courseTopics
-            .map(({ topic }) => topic)
-            .sort((prev, next) => prev.name.localeCompare(next.name))
+    //     const topics = courseTopics
+    //         .map(({ topic }) => topic)
+    //         .sort((prev, next) => prev.name.localeCompare(next.name))
 
-        if (!courseTopicsPreviousRef.current) {
-            courseTopicsPreviousRef.current = true
-            formik.setFieldValue("topicsPrevious", topics)
-        }
-        formik.setFieldValue("topics", topics)
-    }, [courseTopics])
+    //     if (!courseTopicsPreviousRef.current) {
+    //         courseTopicsPreviousRef.current = true
+    //         formik.setFieldValue("topicsPrevious", topics)
+    //     }
+    //     formik.setFieldValue("topics", topics)
+    // }, [courseTopics])
 
     const hasChanged = () =>
         formik.values.title !== formik.values.titlePrevious ||
@@ -200,8 +200,13 @@ export const GeneralSectionProvider = ({
                 { title, description, categoryId, topics, subcategories },
                 { setFieldValue }
             ) => {
+                console.log("submit")
                 if (!courseManagement) return
+                console.log("submit 2")
+
                 const { courseId } = courseManagement
+                console.log("courseId on Submit", courseId)
+                console.log("categoryId on Submit", categoryId, subcategories.length, topics.length)
                 await updateCourse({
                     data: {
                         courseId,

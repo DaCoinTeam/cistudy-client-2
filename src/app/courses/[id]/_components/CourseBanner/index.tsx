@@ -1,8 +1,16 @@
-import { BreadcrumbItem, Breadcrumbs, Chip, Image, Spacer, User } from "@nextui-org/react"
-import { CourseDetailsContext } from "../../_hooks"
-import { useContext } from "react"
+import { CategoryEntity } from "@common"
+import {
+    BreadcrumbItem,
+    Breadcrumbs,
+    Chip,
+    Image,
+    Spacer,
+    User,
+} from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "@services"
+import { useCallback, useContext, useMemo } from "react"
 import { Stars } from "../../../../_shared"
+import { CourseDetailsContext } from "../../_hooks"
 
 interface CourseBannerProps {
   className?: string;
@@ -13,30 +21,51 @@ export const CourseBanner = (props: CourseBannerProps) => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
-    const { title, creator, description, courseTopics, courseSubcategories, category } = { ...course }
+    const { title, creator, description, courseCategories } = { ...course }
     const { avatarId, avatarUrl, kind, username, numberOfFollowers } = {
         ...creator,
     }
-    const { name } = { ...category }
+    const getCategories = useCallback(() => {
+        if (!courseCategories) return {}
+        const categoryLevel0: Array<CategoryEntity> = []
+        const categoryLevel1: Array<CategoryEntity> = []
+        const categoryLevel2: Array<CategoryEntity> = []
+        courseCategories.forEach((element) => {
+            if (!element) return
+            const { category } = element
+            if (category.level == 0) categoryLevel0.push(category)
+            else if (category.level == 1) categoryLevel1.push(category)
+            else if (category.level == 2) categoryLevel2.push(category)
+        })
+        return { categoryLevel0, categoryLevel1, categoryLevel2 }
+    }, [courseCategories])
 
-    const subcategories = courseSubcategories?.map(({ subcategory }) => subcategory)
-    const topics = courseTopics?.map(({ topic }) => topic)
+    const categories = useMemo(getCategories, [courseCategories])
 
     return (
         <div
             className={`${className} h-auto object-cover bg-content3 justify-start`}
         >
-            <div className="p-12 w-full max-w-[1920px] m-auto">
-                <div className="w-2/3">
+            <div className='p-12 w-full max-w-[1920px] m-auto'>
+                <div className='w-2/3'>
                     <Breadcrumbs>
-                        <BreadcrumbItem>{name}</BreadcrumbItem>
-                        <BreadcrumbItem>{subcategories?.map(({name}) => name).join(", ")}</BreadcrumbItem>
+                        <BreadcrumbItem>
+                            {categories.categoryLevel0?.map(({ name }) => name).join(", ")}
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            {categories.categoryLevel1?.map(({ name }) => name).join(", ")}
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            {categories.categoryLevel2?.map(({ name }) => name).join(", ")}
+                        </BreadcrumbItem>
                     </Breadcrumbs>
                     <Spacer y={4} />
-                    <div className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 to-30% from-sky-400 md:text-4xl py-1">
+                    <div className='text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 to-30% from-sky-400 md:text-4xl py-1'>
                         {title}
                     </div>
-                    <div className="text-foreground-400 text-lg line-clamp-2">{description}</div>
+                    <div className='text-foreground-400 text-lg line-clamp-2'>
+                        {description}
+                    </div>
                     <Spacer y={4} />
                     <User
                         avatarProps={{
@@ -52,15 +81,15 @@ export const CourseBanner = (props: CourseBannerProps) => {
                     <Spacer y={3} />
                     <Stars readonly />
                     <Spacer y={4} />
-                    <div className="flex gap-2 items-center">
-                        {topics?.map(({ topicId, name, svgId }) => (
+                    <div className='flex gap-2 items-center'>
+                        {categories.categoryLevel2?.map(({ categoryId, name, imageId }) => (
                             <Chip
-                                className="bg-content2"
-                                key={topicId}
+                                className='bg-content2'
+                                key={categoryId}
                                 startContent={
                                     <Image
-                                        alt="topicSvg"
-                                        src={getAssetUrl(svgId)}
+                                        alt='topicSvg'
+                                        src={getAssetUrl(imageId)}
                                         height={20}
                                         width={20}
                                     />

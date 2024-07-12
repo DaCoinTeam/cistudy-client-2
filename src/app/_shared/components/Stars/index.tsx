@@ -9,13 +9,12 @@ interface StarsProps {
     className?: string
     readonly?: boolean
     initialValue?: number
+    onClick?: (value: number) => void
 }
 
 export const Stars = (props: StarsProps) => {
-    const { className, readonly, initialValue } = props
+    const { className, readonly, initialValue, onClick } = props
 
-    const onPointerEnter = () => console.log("Enter")
-    const onPointerLeave = () => console.log("Leave")
     const onPointerMove = (value: number, index: number) => console.log(value, index)
 
 
@@ -25,8 +24,7 @@ export const Stars = (props: StarsProps) => {
                 fillIcon={<StarIcon width={20} height={20}  className="inline"/>}
                 emptyIcon={<StarIcon width={20} height={20} className="inline" />}
                 className={`${className ?? ""} `}
-                onPointerEnter={onPointerEnter}
-                onPointerLeave={onPointerLeave}
+                onClick={onClick}
                 onPointerMove={onPointerMove}
                 transition
                 readonly={readonly}
