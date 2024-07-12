@@ -2,10 +2,13 @@ import React, { useContext } from "react"
 import { TargetItem } from "./TargetItem"
 import { AddTargetItem } from "./AddTargetItem"
 import { Divider, Spacer } from "@nextui-org/react"
-import { TargetsSectionContext, TargetsSectionProvider } from "./TargetsSectionProvider"
+import {
+    TargetsSectionContext,
+    TargetsSectionProvider,
+} from "./TargetsSectionProvider"
 
 interface TargetsSectionProps {
-    className?: string
+  className?: string;
 }
 
 export const WrappedTargetsSection = (props: TargetsSectionProps) => {
@@ -13,19 +16,16 @@ export const WrappedTargetsSection = (props: TargetsSectionProps) => {
 
     const { swrs } = useContext(TargetsSectionContext)!
     const { courseTargetsSwr } = swrs
-    const { data : targetsCard } = courseTargetsSwr
+    const { data: targetsCard } = courseTargetsSwr
 
     const renderTargetCards = () => {
         return (
             <>
                 {targetsCard?.map((courseTarget) => (
-                    <>
-                        <TargetItem
-                            key={courseTarget.courseTargetId}
-                            courseTarget={courseTarget}
-                        />
+                    <div key={courseTarget.courseTargetId}>
+                        <TargetItem courseTarget={courseTarget} />
                         <Divider />
-                    </>
+                    </div>
                 ))}
             </>
         )
@@ -33,11 +33,11 @@ export const WrappedTargetsSection = (props: TargetsSectionProps) => {
 
     return (
         <div className={`${className}`}>
-            <div className="text-2xl"> Targets </div>
-            <Spacer y={4}/>
-            <div className="border border-divider rounded-medium">
+            <div className='text-2xl'> Targets </div>
+            <Spacer y={4} />
+            <div className='border border-divider rounded-medium'>
                 {renderTargetCards()}
-                <AddTargetItem key="addTarget"/>
+                <AddTargetItem key='addTarget' />
             </div>
         </div>
     )

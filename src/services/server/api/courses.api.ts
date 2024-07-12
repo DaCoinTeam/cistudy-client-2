@@ -45,9 +45,7 @@ export interface UpdateCourseInput {
     previewVideoIndex?: number;
     targets?: Array<string>;
     receivedWalletAddress?: string;
-    categoryId?: string;
-    subcategoryIds?: Array<string>;
-    topicIds?: Array<string>;
+    categoryIds?: Array<string>;
   };
   files?: Array<File>;
   signal?: AbortSignal;
