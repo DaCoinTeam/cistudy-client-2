@@ -12,14 +12,10 @@ export const CourseBanner = (props: CourseBannerProps) => {
     const { swrs } = useContext(CoursePreviewContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
-    const { title, creator, description, courseTopics, courseSubcategories, category } = { ...course }
+    const { title, creator, description } = { ...course }
     const { avatarId, avatarUrl, kind, username } = {
         ...creator,
     }
-    const { name } = { ...category }
-
-    const subcategories = courseSubcategories?.map(({ subcategory }) => subcategory)
-    const topics = courseTopics?.map(({ topic }) => topic)
 
     return (
         <div
@@ -27,10 +23,10 @@ export const CourseBanner = (props: CourseBannerProps) => {
         >
             <div className="p-12 w-full max-w-[1920px] m-auto">
                 <div className="w-2/3">
-                    <Breadcrumbs>
+                    {/* <Breadcrumbs>
                         <BreadcrumbItem>{name}</BreadcrumbItem>
                         <BreadcrumbItem>{subcategories?.map(({name}) => name).join(", ")}</BreadcrumbItem>
-                    </Breadcrumbs>
+                    </Breadcrumbs> */}
                     <Spacer y={4} />
                     <div className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 to-30% from-sky-400 md:text-4xl py-1">
                         {title}
@@ -50,7 +46,7 @@ export const CourseBanner = (props: CourseBannerProps) => {
                     <Spacer y={3} />
                     <Spacer y={4} />
                     <div className="flex gap-2 items-center">
-                        {topics?.map(({ topicId, name, svgId }) => (
+                        {/* {topics?.map(({ topicId, name, svgId }) => (
                             <Chip
                                 className="bg-content2"
                                 key={topicId}
@@ -65,7 +61,7 @@ export const CourseBanner = (props: CourseBannerProps) => {
                             >
                                 {name}
                             </Chip>
-                        ))}
+                        ))} */}
                     </div>
                 </div>
             </div>
