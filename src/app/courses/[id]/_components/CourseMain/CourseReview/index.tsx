@@ -64,8 +64,7 @@ const WrappedCourseReview = () => {
                 {totalRating} ratings
             </p>
             <Spacer y={2} />
-
-            <ReviewInput />
+            {enrolled && <ReviewInput />}
 
             <div className='grid grid-cols-2 gap-2'>
                 {getReviews()?.map((item) => {

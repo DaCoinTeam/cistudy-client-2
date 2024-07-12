@@ -21,7 +21,8 @@ export const CourseBanner = (props: CourseBannerProps) => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
-    const { title, creator, description, courseCategories } = { ...course }
+    const { title, creator, description, courseCategories, courseRatings } = { ...course }
+    const {overallCourseRating} = { ...courseRatings }
     const { avatarId, avatarUrl, kind, username, numberOfFollowers } = {
         ...creator,
     }
@@ -79,7 +80,7 @@ export const CourseBanner = (props: CourseBannerProps) => {
                         description={`${numberOfFollowers} followers`}
                     />
                     <Spacer y={3} />
-                    <Stars readonly />
+                    <Stars readonly initialValue={overallCourseRating} />
                     <Spacer y={4} />
                     <div className='flex gap-2 items-center'>
                         {categories.categoryLevel2?.map(({ categoryId, name, imageId }) => (
