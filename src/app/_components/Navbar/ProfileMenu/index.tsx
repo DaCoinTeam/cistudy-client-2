@@ -39,6 +39,7 @@ export const ProfileMenu = () => {
     const onManagementPress = () => router.push("/management")
     const onEnrolledCouresPress = () => router.push("/enrolled-courses")
     const onAdminDashboardPress = () => router.push("/admin")
+    const onModeratorDashboardPress = () => router.push("/moderator")
 
     const walletModalRef = useRef<WalletModalRefSelectors | null>(null)
     const onWalletPress = () => walletModalRef.current?.onOpen()
@@ -92,50 +93,98 @@ export const ProfileMenu = () => {
                     content: "Sign Out",
                     color: "danger",
                 },
-            ] :
-            [
-                {
-                    key: "base",
-                    content: [
-                        <div key="signedInAs" className="font-semibold">
-                            Signed in as
-                        </div>,
-                        <div key="username" className="font-semibold">
-                            {username}
-                        </div>,
-                    ],
-                },
-                {
-                    key: "profile",
-                    onPress: onProfilePress,
-                    content: "Profile",
-                },
-                {
-                    key: "enrolledCourses",
-                    onPress: onEnrolledCouresPress,
-                    content: "Enrolled courses",
-                },
-                {
-                    key: "wallet",
-                    onPress: onWalletPress,
-                    content: "Wallet",
-                },
-                {
-                    key: "management",
-                    onPress: onManagementPress,
-                    content: "Management",
-                },
-                {
-                    key: "help_and_feedback",
-                    content: "Help & Feedback",
-                },
-                {
-                    key: "logout",
-                    onPress: onSignOutPress,
-                    content: "Sign Out",
-                    color: "danger",
-                },
-            ]
+            ] : roles?.map(role => role.name).includes(AccountRole.Moderator) ?
+                [
+                    {
+                        key: "base",
+                        content: [
+                            <div key="signedInAs" className="font-semibold">
+                                Signed in as
+                            </div>,
+                            <div key="username" className="font-semibold">
+                                {username}
+                            </div>,
+                        ],
+                    },
+                    {
+                        key: "profile",
+                        onPress: onProfilePress,
+                        content: "Profile",
+                    },
+                    {
+                        key: "enrolledCourses",
+                        onPress: onEnrolledCouresPress,
+                        content: "Enrolled courses",
+                    },
+                    {
+                        key: "wallet",
+                        onPress: onWalletPress,
+                        content: "Wallet",
+                    },
+                    {
+                        key: "moderatorDashboard",
+                        onPress: onModeratorDashboardPress,
+                        content: "Moderator dashboard"
+                    },
+                    {
+                        key: "management",
+                        onPress: onManagementPress,
+                        content: "Management",
+                    },
+                    {
+                        key: "help_and_feedback",
+                        content: "Help & Feedback",
+                    },
+                    {
+                        key: "logout",
+                        onPress: onSignOutPress,
+                        content: "Sign Out",
+                        color: "danger",
+                    },
+                ] :
+                [
+                    {
+                        key: "base",
+                        content: [
+                            <div key="signedInAs" className="font-semibold">
+                                Signed in as
+                            </div>,
+                            <div key="username" className="font-semibold">
+                                {username}
+                            </div>,
+                        ],
+                    },
+                    {
+                        key: "profile",
+                        onPress: onProfilePress,
+                        content: "Profile",
+                    },
+                    {
+                        key: "enrolledCourses",
+                        onPress: onEnrolledCouresPress,
+                        content: "Enrolled courses",
+                    },
+                    {
+                        key: "wallet",
+                        onPress: onWalletPress,
+                        content: "Wallet",
+                    },
+                    {
+                        key: "management",
+                        onPress: onManagementPress,
+                        content: "Management",
+                    },
+                    {
+                        key: "help_and_feedback",
+                        content: "Help & Feedback",
+                    },
+                    {
+                        key: "logout",
+                        onPress: onSignOutPress,
+                        content: "Sign Out",
+                        color: "danger",
+                    },
+                ]
 
     return (
         <>
