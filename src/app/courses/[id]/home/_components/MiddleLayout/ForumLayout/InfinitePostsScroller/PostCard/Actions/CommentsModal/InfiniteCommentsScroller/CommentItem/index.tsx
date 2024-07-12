@@ -1,18 +1,18 @@
-import { PostCommentEntity, parseTimeAgo } from '@common';
-import { Avatar, Chip, Spacer, useDisclosure } from '@nextui-org/react';
-import { getAvatarUrl } from '@services';
-import { CheckIcon } from 'lucide-react';
-import { createContext, useContext, useMemo } from 'react';
+import { PostCommentEntity, parseTimeAgo } from "@common"
+import { Avatar, Chip, Spacer, useDisclosure } from "@nextui-org/react"
+import { getAvatarUrl } from "@services"
+import { CheckIcon, GiftIcon, PencilIcon } from "lucide-react"
+import { createContext, useContext, useMemo } from "react"
 import {
-  MediaGroup,
-  TextRenderer,
-} from '../../../../../../../../../../../../_shared';
-import { Actions } from './Actions';
-import { MoreButton } from './MoreButton';
-import { Replies } from './Replies';
-import { MarkAsSolutionButton } from './MarkSolutionButton';
-import { PostCardContext } from '../../../..';
-import { RootContext } from '../../../../../../../../../../../../_hooks';
+    MediaGroup,
+    TextRenderer,
+} from "../../../../../../../../../../../../_shared"
+import { Actions } from "./Actions"
+import { MoreButton } from "./MoreButton"
+import { Replies } from "./Replies"
+import { MarkAsSolutionButton } from "./MarkSolutionButton"
+import { PostCardContext } from "../../../.."
+import { RootContext } from "../../../../../../../../../../../../_hooks"
 interface CommentItemProps {
   postComment: PostCommentEntity;
 }
@@ -30,137 +30,142 @@ interface CommentItemContextValue {
 }
 
 export const CommentItemContext = createContext<CommentItemContextValue | null>(
-  null
-);
+    null
+)
 
 export const CommentItem = (props: CommentItemProps) => {
-  const { postComment } = props;
-  const {
-    html,
-    postCommentMedias,
-    creator,
-    createdAt,
-    updatedAt,
-    postCommentId,
-    isRewardable,
-    isCommentOwner,
-    isSolution,
-  } = postComment;
-  const { swrs } = useContext(RootContext)!;
-  const { profileSwr } = swrs;
-  const { data } = { ...profileSwr };
-  const { accountId: profileAccountId } = { ...data };
+    const { postComment } = props
+    const {
+        html,
+        postCommentMedias,
+        creator,
+        createdAt,
+        updatedAt,
+        postCommentId,
+        isRewardable,
+        isCommentOwner,
+        isSolution,
+    } = postComment
+    const { swrs } = useContext(RootContext)!
+    const { profileSwr } = swrs
+    const { data } = { ...profileSwr }
+    const { accountId: profileAccountId } = { ...data }
 
-  const { props: postCardContextProps } = useContext(PostCardContext)!;
-  const { post } = postCardContextProps;
-  const {
-    postId,
-    liked,
-    numberOfLikes,
-    isCompleted,
-    creator: postCreator,
-  } = post;
-  const { accountId: postCreatorAccountId } = postCreator;
-  const {
-    avatarId,
-    username,
-    avatarUrl,
-    kind,
-    accountId: commentCreatorAccountId,
-  } = creator;
-  const commentDisclosure = useDisclosure();
-  const commentItemContextValue: CommentItemContextValue = useMemo(
-    () => ({
-      props,
-      disclosures: {
-        commentDisclosure,
-      },
-    }),
-    [props, commentDisclosure]
-  );
+    const { props: postCardContextProps } = useContext(PostCardContext)!
+    const { post } = postCardContextProps
+    const { creator: postCreator } = post
+    const { accountId: postCreatorAccountId } = postCreator
+    const {
+        avatarId,
+        username,
+        avatarUrl,
+        kind,
+        accountId: commentCreatorAccountId,
+    } = creator
+    const commentDisclosure = useDisclosure()
+    const commentItemContextValue: CommentItemContextValue = useMemo(
+        () => ({
+            props,
+            disclosures: {
+                commentDisclosure,
+            },
+        }),
+        [props, commentDisclosure]
+    )
 
-  const isEdited = createdAt !== updatedAt;
+    const isEdited = createdAt !== updatedAt
 
-  return (
-    <CommentItemContext.Provider value={commentItemContextValue}>
-      <div
-        className={`flex group/comment rounded-xl p-2 ${
-          isSolution ? 'bg-blue-50' : ''
-        }`}
-      >
-        <Avatar
-          src={getAvatarUrl({
-            avatarId,
-            avatarUrl,
-            kind,
-          })}
-        />
-        <div className='flex-1'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center'>
-              <div className='mr-4'>
-                {postCreatorAccountId === commentCreatorAccountId ? (
-                  <div className='font-semibold bg-default-600 text-white dark:text-black py-0.3 px-2 rounded-xl mb-1'>
-                    {username}
-                  </div>
-                ) : (
-                  <div className='font-semibold px-2'>{username}</div>
-                )}
-                <div className='text-xs text-foreground-400 flex gap-2 items-center px-2'>
-                  <div>{parseTimeAgo(updatedAt)}</div>
-                  {isEdited ? <div>Edited</div> : null}
-                </div>
-              </div>
+    return (
+        <CommentItemContext.Provider value={commentItemContextValue}>
+            <div className={"flex group/comment rounded-xl p-2"}>
+                <Avatar
+                    src={getAvatarUrl({
+                        avatarId,
+                        avatarUrl,
+                        kind,
+                    })}
+                />
+                <div className='flex-1'>
+                    <div className='flex items-center justify-between'>
+                        <div className='flex items-center'>
+                            <div className='mr-4'>
+                                <div className='font-semibold px-2'>{username}</div>
 
-              {isSolution && (
-                <Chip
-                  startContent={<CheckIcon size={18} />}
-                  variant='flat'
-                  color='primary'
-                >
+                                <div className='text-xs text-foreground-400 flex gap-2 items-center px-2'>
+                                    <div>{parseTimeAgo(updatedAt)}</div>
+                                    {isEdited ? <div>Edited</div> : null}
+                                </div>
+                            </div>
+                            {postCreatorAccountId === commentCreatorAccountId && (
+                                <Chip
+                                    startContent={<PencilIcon size={18} className='ml-1' />}
+                                    variant='flat'
+                                    color='primary'
+                                    className='mr-2'
+                                >
+                  Author
+                                </Chip>
+                            )}
+                            {isRewardable && (
+                                <Chip
+                                    startContent={<GiftIcon size={18} className='ml-1' />}
+                                    variant='flat'
+                                    color='warning'
+                                    className='mr-2'
+                                >
+                  Rewardable
+                                </Chip>
+                            )}
+                            {isSolution && (
+                                <Chip
+                                    startContent={<CheckIcon size={18} className='ml-1' />}
+                                    variant='flat'
+                                    color='success'
+                                    className='mr-2'
+                                >
                   Solution
-                </Chip>
-              )}
-            </div>
+                                </Chip>
+                            )}
+                        </div>
 
-            <div className='items-center flex'>
-              <div className='mr-4'>
-                {!isSolution && (
-                  <>
-                    {isRewardable && (
-                      <>
-                        {postCreatorAccountId === profileAccountId && (
-                          <MarkAsSolutionButton postCommentId={postCommentId} />
-                        )}
-                      </>
-                    )}
-                  </>
-                )}
-              </div>
-              {isCommentOwner && (
-                <MoreButton className='transition-opacity opacity-0 group-hover/comment:opacity-100' />
-              )}
+                        <div className='items-center flex'>
+                            <div className='mr-4'>
+                                {!isSolution && (
+                                    <>
+                                        {isRewardable && (
+                                            <>
+                                                {postCreatorAccountId === profileAccountId && (
+                                                    <MarkAsSolutionButton postCommentId={postCommentId} />
+                                                )}
+                                            </>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                            {isCommentOwner && (
+                                <MoreButton className='transition-opacity opacity-0 group-hover/comment:opacity-100' />
+                            )}
+                        </div>
+                    </div>
+                    <Spacer y={2} />
+                    <div className='bg-content2 rounded-medium p-2.5'>
+                        <TextRenderer html={html} />
+                        <MediaGroup
+                            className='mt-4'
+                            medias={postCommentMedias?.map(
+                                ({ postCommentMediaId, mediaId, mediaType }) => ({
+                                    key: postCommentMediaId,
+                                    mediaId,
+                                    mediaType,
+                                })
+                            )}
+                        />
+                    </div>
+                    <Spacer y={1} />
+                    <Actions />
+                    <Replies className='mt-3' />
+                </div>
             </div>
-          </div>
-          <Spacer y={2} />
-          <div className='bg-content2 rounded-medium p-2.5'>
-            <TextRenderer html={html} />
-            <MediaGroup
-              className='mt-4'
-              medias={postCommentMedias?.map(
-                ({ postCommentMediaId, mediaId, mediaType }) => ({
-                  key: postCommentMediaId,
-                  mediaId,
-                  mediaType,
-                })
-              )}
-            />
-          </div>
-          <Spacer y={1} />
-          <Actions />
-          <Replies className='mt-3' />
-        </div>
-      </div>
-    </CommentItemContext.Provider>
-  );
-};
+        </CommentItemContext.Provider>
+    )
+}

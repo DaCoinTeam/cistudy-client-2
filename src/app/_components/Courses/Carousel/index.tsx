@@ -11,7 +11,6 @@ type CarouselProps = {
 export const Carousel = (props: CarouselProps) => {
     const OPTIONS: EmblaOptionsType = { align: "start" }
     const {courses} = props
-    console.log("courses",courses)
     return (
         <div>
             <EmblaCarousel  slides={courses} options={OPTIONS} />

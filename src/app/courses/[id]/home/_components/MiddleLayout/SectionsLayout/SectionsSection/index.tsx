@@ -1,8 +1,8 @@
 "use client"
 import { Accordion, AccordionItem } from "@nextui-org/react"
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { HomeContext } from "../../../../_hooks"
-import { LessonItem } from "./LessonItem";
+import { LessonItem } from "./LessonItem"
 
 interface SectionsSectionProps {
   className?: string;
@@ -37,11 +37,11 @@ export const SectionsSection = (props: SectionsSectionProps) => {
 
     return (
         <div className={`${className}`}>
-            <div className="border border-divider rounded-medium">
+            <div className='border border-divider rounded-medium'>
                 <Accordion
-                    selectionMode="multiple"
-                    variant="light"
-                    className="!px-0"
+                    selectionMode='multiple'
+                    variant='light'
+                    className='!px-0'
                     itemClasses={{
                         base: "!shadow-none gap-4 px-4",
                     }}

@@ -9,9 +9,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { data : profile } = profileSwr
-    const { accountRole } = { ...profile }
+    // const { roles } = { ...profile }
 
-    useAuthorization([AccountRole.Administrator], accountRole)
+    // useAuthorization([AccountRole.Administrator], roles)
 
     return (
         <Suspense>

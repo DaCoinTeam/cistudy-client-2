@@ -16,7 +16,7 @@ export interface FindManyPostsInputData {
     options?: {
         skip?: number,
         take?: number
-    }
+    } 
 } 
 
 export interface FindManyPostsOutputData {

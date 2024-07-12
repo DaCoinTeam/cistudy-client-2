@@ -1,45 +1,33 @@
-// import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline"
 import { Avatar, Card, CardBody, Spacer } from "@nextui-org/react"
 import { Stars } from "../../../../../../../_shared"
 const itemClasses = {
-    // base: "py-0 w-full",
-    // title: "font-normal text-medium",
-    // trigger:
-    // "px-2 py-0 data-[hover=true]:bg-default-100 rounded-lg h-14 flex items-center",
     indicator: "text-medium",
     content: "text-small px-2 ",
     trigger: "!py-3",
     base: "border border-divider gap-2 bg-slate-50 dark:bg-content1",
-    
 }
 type ReviewProps = {
-    review: {
-        reviewId: string
-        title: string
-        content: string
-        rating: number
-        date: string
-        account: {
-            accountId: string
-            firstName: string
-            lastName: string
-            avatarId: string
-        }
-    }
-}
-const Review = ({review} : ReviewProps) => {
-    const star = Array(Math.floor(review.rating)).fill(0)
-    const outlinedStar = Array(5 - Math.floor(review.rating)).fill(0)
-    
+  review: {
+    reviewId: string;
+    title: string;
+    content: string;
+    rating: number;
+    date: string;
+    account: {
+      accountId: string;
+      firstName: string;
+      lastName: string;
+      avatarId: string;
+    };
+  };
+};
+const Review = ({ review }: ReviewProps) => {
     return (
-        <Card className="p-2" shadow="none" classNames={itemClasses}  >
-            <CardBody >
+        <Card className='p-2' shadow='none' classNames={itemClasses}>
+            <CardBody>
                 <div className='flex justify-between'>
                     <div>
-                        <Avatar
-                            className='w-12 h-12'
-                            src={review.account.avatarId}
-                        />
+                        <Avatar className='w-12 h-12' src={review.account.avatarId} />
                     </div>
                     <div>
                         <div className=' text-xs text-gray-500 dark:text-gray-400 flex justify-end'>
@@ -49,31 +37,17 @@ const Review = ({review} : ReviewProps) => {
 
                         <div className='flex items-center mb-1 space-x-1 rtl:space-x-reverse'>
                             <Stars initialValue={review.rating} readonly />
-                            {/* {star.map((_, index) => (
-                                <FontAwesomeIcon key={index + "star"} icon={faStar}  className="text-yellow-500 w-4 h-4 me-0.5" />
-                            ))}
-                            {outlinedStar.map((_, index) => (
-                                <StarIconOutline key={index + "starOutlined"} className='text-yellow-400 w-5 h-5 ' />
-                            ))} */}
-                            {/* <FontAwesomeIcon icon={faStar}  className="text-yellow-500 w-4 h-4 me-0.5" />
-                            <FontAwesomeIcon icon={faStar}  className="text-yellow-500 w-4 h-4 me-0.5" />
-                            <FontAwesomeIcon icon={faStar}  className="text-yellow-500 w-4 h-4 me-0.5" />
-                            <FontAwesomeIcon icon={faStar}  className="text-yellow-500 w-4 h-4 me-0.5" />
-                            <StarIconOutline className='text-yellow-400 w-5 h-5 ' /> */}
                         </div>
-                    
                     </div>
-                   
                 </div>
                 <Spacer y={2} />
 
                 <div className='font-bold dark:text-white items-center'>
-                    <p>{review.account.firstName} {review.account.lastName}</p>
-                   
+                    <p>
+                        {review.account.firstName} {review.account.lastName}
+                    </p>
                 </div>
                 <Spacer y={1} />
-
-                
 
                 <Spacer y={2} />
 
@@ -87,9 +61,8 @@ const Review = ({review} : ReviewProps) => {
                     href='#'
                     className='block mb-5 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500'
                 >
-        Read more
+          Read more
                 </a>
-                
             </CardBody>
             {/* <aside>
                 <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>

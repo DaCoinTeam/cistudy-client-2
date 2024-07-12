@@ -34,13 +34,13 @@ export enum VideoType {
   DASH = "dash",
 }
 export interface RoleEntity {
-  roleId: string
-  name: string
-  accountId: string
-  accountRoles: AccountEntity
-  createdAt: Date
-  isDisabled: boolean
-  updatedAt: Date
+  roleId: string;
+  name: string;
+  accountId: string;
+  accountRoles: AccountEntity;
+  createdAt: Date;
+  isDisabled: boolean;
+  updatedAt: Date;
 }
 export interface AccountEntity {
   accountId: string;
@@ -86,7 +86,7 @@ export interface PostEntity {
   postMedias: Array<PostMediaEntity>;
   postComments: Array<PostCommentEntity>;
   postReacts: Array<PostReactEntity>;
-  
+
   //graphql
   numberOfLikes?: number;
   numberOfComments?: number;
@@ -96,7 +96,6 @@ export interface PostEntity {
   isPostOwner: boolean;
   numberOfRewardableCommentsLeft: number;
   numberOfRewardableLikesLeft: number;
-
 }
 
 export interface CourseEntity {
@@ -116,16 +115,15 @@ export interface CourseEntity {
   includes: string;
   createdAt: Date;
   updatedAt: Date;
-  courseTopics: Array<CourseTopicEntity>;
-  categoryId: string;
-  category: CategoryEntity;
-  courseSubcategories: Array<CourseSubcategoryEntity>;
+  courseCategories: Array<CourseCategoryEntity>;
   courseTargets: Array<CourseTargetEntity>;
+  courseReview: CourseReviewEntity;
   posts: Array<PostEntity>;
   enrolledInfos: Array<EnrolledInfoEntity>;
   sections: Array<SectionEntity>;
   receivedWalletAddress?: string;
-
+  courseRate: number;
+  courseRatings: CourseRatingDTO;
   //graphql
   numberOfEnrollments?: number;
   enrolled?: boolean;
@@ -138,6 +136,15 @@ export interface CourseTargetEntity {
   position: number;
   courseId: string;
   course: CourseEntity;
+}
+
+export interface CourseRatingDTO {
+  numberOf1StarRatings: number;
+  numberOf2StarRatings: number;
+  numberOf3StarRatings: number;
+  numberOf4StarRatings: number;
+  numberOf5StarRatings: number;
+  overallCourseRating: number;
 }
 
 export interface EnrolledInfoEntity {
@@ -263,73 +270,39 @@ export interface PostCommentMediaEntity {
   postComment: PostCommentEntity;
 }
 
+export interface CategoryRelationEntity {
+  categoryRelationId: string;
+  categoryId: string;
+  category: CategoryEntity;
+  categoryParentId: string;
+  categoryParent: CategoryEntity;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface CategoryEntity {
   categoryId: string;
   name: string;
+  imageId: string;
+  level: number;
   createdAt: Date;
   updatedAt: Date;
-  subcategories: Array<SubcategoryEntity>;
+  categoryParentRelations: Array<CategoryRelationEntity>;
+  categoryRelations: Array<CategoryRelationEntity>;
+  courseCategories: Array<CourseCategoryEntity>;
 }
 
-export interface SubcategoryEntity {
-  subcategoryId: string;
-  name: string;
+export interface CourseCategoryEntity {
+  courseCategoryId: string;
   createdAt: Date;
   updatedAt: Date;
+  courseId: string;
   categoryId: string;
+  course: CourseEntity;
   category: CategoryEntity;
-  subcategoryTopics: Array<SubcategoryTopicEntity>;
 }
 
-export interface SubcategoryTopicEntity {
-  subcategoryTopicId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  subcategoryId: string;
-  topicId: string;
-  subcategory: SubcategoryEntity;
-  topic: TopicEntity;
-}
 
-export interface TopicEntity {
-  topicId: string;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-  svgId: string;
-  courseTopics: Array<CourseTopicEntity>;
-  subcategoryTopics: Array<SubcategoryTopicEntity>;
-}
-
-export interface CourseTopicEntity {
-  courseTopicId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  courseId: string;
-  topicId: string;
-  course: CourseEntity;
-  topic: TopicEntity;
-}
-
-export interface CourseSubcategoryEntity {
-  courseSubcategoryId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  courseId: string;
-  subcategoryId: string;
-  course: CourseEntity;
-  subcategory: SubcategoryEntity;
-}
-
-export interface CourseTopicEntity {
-  courseTopicId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  courseId: string;
-  topicId: string;
-  course: CourseEntity;
-  topic: TopicEntity;
-}
 
 export interface TransactionEntity {
   transactionHash: string;
@@ -343,21 +316,21 @@ export interface TransactionEntity {
 }
 
 export interface CartEntity {
-  cartId: string
-  cartCourses: Array<CartCourseEntity>
-  isDeleted: boolean
-  createdAt: Date
-  updatedAt: Date
-  account: AccountEntity
+  cartId: string;
+  cartCourses: Array<CartCourseEntity>;
+  isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  account: AccountEntity;
 }
 export interface CartCourseEntity {
-  cartCourseId: string
-  cartId: string
-  courseId: string
-  createdAt: Date
-  updatedAt: Date
-  course: CourseEntity
-  cart: CartEntity
+  cartCourseId: string;
+  cartId: string;
+  courseId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  course: CourseEntity;
+  cart: CartEntity;
 }
 export interface CourseReviewEntity {
   courseReviewId: string

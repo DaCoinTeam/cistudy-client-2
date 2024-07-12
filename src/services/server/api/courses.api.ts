@@ -344,3 +344,4 @@ export const deleteCourseReview = async (
     const url = `${BASE_URL}/delete-course-review/${courseReviewId}`
     return await authAxios.delete(url)
 }
+

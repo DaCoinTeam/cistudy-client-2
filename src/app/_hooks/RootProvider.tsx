@@ -114,7 +114,6 @@ const WrappedRootProvider = forwardRef<
                         thumbnailId: true,
                         description: true,
                         price: true,
-
                     },
                     metadata: {
                         count: true,
@@ -122,10 +121,19 @@ const WrappedRootProvider = forwardRef<
                             categoryId: true,
                             name: true,
                         },
-                        // topics: {
-                        //     name: true,
-                        //     topicId: true
-                        // },
+                        highRateCourses: {
+                            courseId: true,
+                            title: true,
+                            creator: {
+                                avatarId: true,
+                                username: true,
+                                avatarUrl: true,
+                                kind: true,
+                            },
+                            thumbnailId: true,
+                            description: true,
+                            price: true,
+                        },
                     },
                 }
             )

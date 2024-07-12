@@ -77,19 +77,19 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                             <div className="flex gap-3 items-center">
                                 <div>Subcategories</div>
                                 <div className="text-foreground-400">
-                                    {getMetadata()?.subcategories?.length ?? 0}
+                                    {/* {getMetadata()?.subcategories?.length ?? 0} */}
                                 </div>
                             </div>
                         }
                     >
                         <div className="flex flex-col gap-3">
-                            {getMetadata()?.subcategories?.map(({ subcategoryId, name }) => (
+                            {/* {getMetadata()?.subcategories?.map(({ subcategoryId, name }) => (
                                 <div key={subcategoryId}>
                                     <Checkbox size="sm">
                                         <div>{name}</div>
                                     </Checkbox>               
                                 </div>
-                            ))}
+                            ))} */}
                         </div>
                     </AccordionItem>
                     <AccordionItem
@@ -99,13 +99,13 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                             <div className="flex gap-3 items-center">
                                 <div>Topics</div>
                                 <div className="text-foreground-400">
-                                    {getMetadata()?.topics?.length ?? 0}
+                                    {/* {getMetadata()?.topics?.length ?? 0} */}
                                 </div>
                             </div>
                         }
                     >
                         <div className="flex flex-col gap-3">
-                            {getMetadata()?.topics?.map(({ topicId, name, svgId }) => (
+                            {/* {getMetadata()?.topics?.map(({ topicId, name, svgId }) => (
                                 <div key={topicId}>
                                     <Checkbox size="sm">
                                         <div className="flex gap-2 items-center">
@@ -114,7 +114,7 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                                         </div>
                                     </Checkbox>               
                                 </div>
-                            ))}
+                            ))} */}
                         </div>
                       
                     </AccordionItem>

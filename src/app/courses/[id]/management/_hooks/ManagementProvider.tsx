@@ -70,30 +70,13 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                         },
                     },
                 },
-                categoryId: true,
-                courseSubcategories: {
-                    courseSubcategoryId: true,
-                    subcategory: {
-                        subcategoryId: true,
+                courseCategories:{
+                    category: {
+                        categoryId: true,
                         name: true,
-                        subcategoryTopics: {
-                            subcategoryTopicId: true,
-                            topic: {
-                                topicId: true,
-                                name: true,
-                                svgId: true,
-                            }
-                        }
+                        level: true,
                     }
-                },
-                courseTopics: {
-                    courseTopicId: true,
-                    topic: {
-                        topicId: true, 
-                        name: true,
-                        svgId: true,
-                    }
-                },
+                },                
                 courseTargets: {
                     courseTargetId: true,
                     content: true,

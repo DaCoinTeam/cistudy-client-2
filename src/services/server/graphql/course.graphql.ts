@@ -7,8 +7,6 @@ import {
     buildAuthPayloadString,
     CourseTargetEntity,
     CategoryEntity,
-    SubcategoryEntity,
-    TopicEntity,
     CourseReviewEntity,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
@@ -79,6 +77,7 @@ export interface FindManyCoursesInputData {
     take?: number;
     skip?: number;
     searchValue?: string;
+    categoryId?: string;
   };
 }
 
@@ -87,8 +86,7 @@ export interface FindManyCoursesOutputData {
   metadata: {
     count: number;
     categories: Array<CategoryEntity>,
-    subcategories: Array<SubcategoryEntity>,
-    topics: Array<TopicEntity>
+    highRateCourses: Array<CourseEntity>,
   };
 }
 
@@ -209,6 +207,7 @@ export const findManyResources = async (
         isAuth: true,
     })
 }
+    
 
 export interface FindManyCourseTargetsInputData {
   params: {
@@ -239,18 +238,19 @@ export const findManyCourseTargets = async (
     })
 }
 
+
 export const findManyCategories = async (
     schema: Schema<DeepPartial<CategoryEntity>>
 ): Promise<Array<CategoryEntity>> => {
     const payload = buildPayloadString(schema)
     const { data: graphqlData } = await client.query({
         query: gql`
-            query FindManyCategories {
-                findManyCategories {
+           query FindManyCategories {
+            findManyCategories {
       ${payload}
     }
   }
-          `,
+  `,
     })
 
     return getGraphqlResponseData({
