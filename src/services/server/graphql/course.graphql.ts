@@ -7,8 +7,6 @@ import {
     buildAuthPayloadString,
     CourseTargetEntity,
     CategoryEntity,
-    SubcategoryEntity,
-    TopicEntity,
     CourseReviewEntity,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
@@ -279,24 +277,24 @@ metadata: {
 }
 
 export const findManyCourseReviews = async (
-  data: FindManyCourseReviewsInputData,
-  schema: Schema<FindManyCourseReviewsOutputData>
+    data: FindManyCourseReviewsInputData,
+    schema: Schema<FindManyCourseReviewsOutputData>
 ): Promise<FindManyCourseReviewsOutputData> => {
-  const payload = buildPayloadString(schema)
-  const { data: graphqlData } = await client.query({
-      query: gql`
+    const payload = buildPayloadString(schema)
+    const { data: graphqlData } = await client.query({
+        query: gql`
       query FindManyCourseReviews($data: FindManyCourseReviewsInputData!) {
         findManyCourseReviews(data: $data) {       
 ${payload}
 }
 }
     `,
-      variables: {
-          data,
-      },
-  })
-  return getGraphqlResponseData({
-      data: graphqlData,
-      isAuth: false,
-  })
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: false,
+    })
 }

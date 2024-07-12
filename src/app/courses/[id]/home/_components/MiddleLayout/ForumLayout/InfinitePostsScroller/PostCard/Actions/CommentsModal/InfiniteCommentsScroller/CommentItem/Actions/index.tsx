@@ -1,20 +1,17 @@
 "use client"
 import {
-    ChatBubbleOvalLeftEllipsisIcon as SolidChatBubbleOvalLeftEllipsisIcon,
-    HeartIcon as SolidHeartIcon,
-} from "@heroicons/react/24/solid"
-import {
     ChatBubbleOvalLeftEllipsisIcon,
     HeartIcon,
 } from "@heroicons/react/24/outline"
+import {
+    ChatBubbleOvalLeftEllipsisIcon as SolidChatBubbleOvalLeftEllipsisIcon,
+    HeartIcon as SolidHeartIcon,
+} from "@heroicons/react/24/solid"
 import { Button } from "@nextui-org/react"
-import React, { useContext } from "react"
-import { CommentItemContext } from ".."
 import { toggleLikePostComment } from "@services"
+import { useContext } from "react"
+import { CommentItemContext } from ".."
 import { CommentsModalContext } from "../../../CommentsModalProvider"
-import { RootContext } from "../../../../../../../../../../../../../_hooks"
-import { ToastType } from "../../../../../../../../../../../../../_components"
-import { PostCardContext } from "../../../../.."
 
 export const Actions = () => {
     const { props, disclosures } = useContext(CommentItemContext)!
@@ -23,15 +20,10 @@ export const Actions = () => {
     const { commentDisclosure } = disclosures
     const { onOpenChange, isOpen } = commentDisclosure
 
-    const { props: postCardContextProps} = useContext(PostCardContext)!
-    const { post } = postCardContextProps
-    const { isCompleted } = post
-
     const { swrs } = useContext(CommentsModalContext)!
     const { postCommentsSwr } = swrs
     const { mutate } = postCommentsSwr
 
-    const { notify } = useContext(RootContext)!
 
     const onLikePress = async () => {
         await toggleLikePostComment({
@@ -40,8 +32,7 @@ export const Actions = () => {
             },
         })
 
-
-    await mutate()
+        await mutate()
     }
 
     return (

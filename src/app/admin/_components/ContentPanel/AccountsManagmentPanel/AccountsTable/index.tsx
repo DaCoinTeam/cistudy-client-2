@@ -1,24 +1,24 @@
 "use client"
-import React, { useContext } from "react"
+import { parseISODateString } from "@common"
 import {
-    Table,
-    TableHeader,
-    TableColumn,
-    TableBody,
-    TableRow,
-    TableCell,
+    Chip,
     Pagination,
     Spinner,
-    Chip,
-    Account,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+    User,
 } from "@nextui-org/react"
+import { getAvatarUrl } from "@services"
+import { useRouter } from "next/navigation"
+import { useContext } from "react"
 import {
     AccountsManagementPanelContext,
     ROWS_PER_PAGE,
 } from "../AccountsManagementPanelProvider"
-import { useRouter } from "next/navigation"
-import { VerifyStatus, parseISODateString } from "@common"
-import { getAvatarUrl } from "@services"
 
 export const AccountsTable = () => {
     const router = useRouter()
@@ -124,7 +124,7 @@ export const AccountsTable = () => {
                     <TableRow key={accountId}>
                         <TableCell>
                             <div className="flex gap-3 py-2">
-                                <Account avatarProps={{
+                                <User avatarProps={{
                                     src : getAvatarUrl({
                                         avatarId,
                                         avatarUrl,

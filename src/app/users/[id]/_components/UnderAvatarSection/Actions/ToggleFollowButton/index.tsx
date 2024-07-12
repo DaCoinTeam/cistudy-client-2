@@ -1,5 +1,5 @@
 import { Button } from "@nextui-org/react"
-import { AccountMinus2Icon, AccountPlus2Icon } from "lucide-react"
+import { UserMinus2Icon, UserPlus2Icon } from "lucide-react"
 import React, { useContext } from "react"
 import { AccountDetailsContext } from "../../../../_hooks"
 import { toggleFollow } from "@services"
@@ -28,9 +28,9 @@ export const ToggleFollowButton = () => {
             className="bg-content2"
             startContent={
                 account?.followed ? (
-                    <AccountMinus2Icon className="21" strokeWidth={3/2} />
+                    <UserMinus2Icon className="21" strokeWidth={3/2} />
                 ) : (
-                    <AccountPlus2Icon className="21" strokeWidth={3/2} />
+                    <UserPlus2Icon className="21" strokeWidth={3/2} />
                 )
             }
         >

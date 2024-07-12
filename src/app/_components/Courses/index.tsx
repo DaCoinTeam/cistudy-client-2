@@ -1,9 +1,8 @@
 "use client"
-import { Spacer } from "@nextui-org/react"
-import { Carousel } from "./Carousel"
-import { RootContext } from "../../_hooks"
 import { useContext } from "react"
 import { CourseEntity } from "../../../common/types"
+import { RootContext } from "../../_hooks"
+import { Carousel } from "./Carousel"
 
 export const Courses = () => {
     const { swrs } = useContext(RootContext)!

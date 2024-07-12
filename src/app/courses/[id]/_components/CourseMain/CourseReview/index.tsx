@@ -1,78 +1,91 @@
-import { CourseReviewEntity } from '@common';
-import { useContext } from 'react';
+import { CourseReviewEntity } from "@common"
+import { useContext } from "react"
 import {
-  CourseReviewsContext,
-  CourseReviewsProvider,
-} from './CourseReviewProvider';
-import { CourseReviewItem } from './CourseReviewItem';
-import { CourseDetailsContext } from '../../../_hooks';
+    CourseReviewsContext,
+    CourseReviewsProvider,
+} from "./CourseReviewProvider"
+import { CourseReviewItem } from "./CourseReviewItem"
+import { CourseDetailsContext } from "../../../_hooks"
+import { AllCourseReviewsModal } from "./AllCourseReviewsModal"
+import { Spacer } from "@nextui-org/react"
+import { ReviewInput } from "./ReviewInput"
+import { Stars } from "../../../../../_shared"
 
 const WrappedCourseReview = () => {
-  const { swrs } = useContext(CourseReviewsContext)!;
-  const { data } = swrs.courseReviewsSwr;
-  const { swrs: courseDetailSwrs } = useContext(CourseDetailsContext)!;
-  const { courseSwr } = courseDetailSwrs;
-  const { data: course } = courseSwr;
-  const courseId = course?.courseId ?? '';
+    const { swrs } = useContext(CourseReviewsContext)!
+    const { data } = swrs.courseReviewsSwr
+    const { swrs: courseDetailSwrs } = useContext(CourseDetailsContext)!
+    const { courseSwr } = courseDetailSwrs
+    const { data: course } = courseSwr
+    const { enrolled, courseRatings } = { ...course }
+    const {
+        numberOf1StarRatings,
+        numberOf2StarRatings,
+        numberOf3StarRatings,
+        numberOf4StarRatings,
+        numberOf5StarRatings,
+        overallCourseRating,
+    } = { ...courseRatings }
+    const totalRating =
+    numberOf1StarRatings! +
+    numberOf2StarRatings! +
+    numberOf3StarRatings! +
+    numberOf4StarRatings! +
+    numberOf5StarRatings!
+    const getReviews = () => {
+        if (!data) return []
+        const reviewsReturn: Array<CourseReviewEntity> = []
+        data.forEach((element) => {
+            if (!element) return
+            const { results } = element
+            reviewsReturn.push(...results)
+        })
+        return reviewsReturn
+    }
 
-  const getReviews = () => {
-    if (!data) return [];
-    const reviewsReturn: Array<CourseReviewEntity> = [];
-    data.forEach((element) => {
-      if (!element) return;
-      const { results } = element;
-      reviewsReturn.push(...results);
-    });
-    return reviewsReturn;
-  };
+    return (
+        <div>
+            <div className='text-2xl'>Reviews</div>
+            <Spacer y={4} />
 
-  const handleNavigateCourseReviewScreen = (courseId: string) => {
-    // navigate(AppScreen.CourseReviewScreen, {
-    //     courseId,
-    // })
-  };
-  const handleNavigateAllReviewsScreen = (courseId: string) => {
-    // navigate(AppScreen.AllReviewsScreen, {
-    //     courseId,
-    // })
-  };
-  return (
-    <div>
+            <div className='flex items-end text-center mb-2'>
+                <Stars initialValue={overallCourseRating} className='mr-2' readonly />
+                <p className='ms-1 text-sm font-medium text-gray-500 dark:text-gray-400'>
+                    {overallCourseRating}
+                </p>
+                <p className='ms-1 text-sm font-medium text-gray-500 dark:text-gray-400'>
+          out of
+                </p>
+                <p className='ms-1 text-sm font-medium text-gray-500 dark:text-gray-400'>
+          5
+                </p>
+            </div>
+            <p className='text-sm font-medium text-gray-500 dark:text-gray-400'>
+                {totalRating} ratings
+            </p>
+            <Spacer y={2} />
 
-      {/* <div className="mb-2">
-                <RatingDisplay rating={5.0} size="large" />
-            </div> */}
+            <ReviewInput />
 
-      <div
-        className='mb-2'
-        onClick={() => handleNavigateCourseReviewScreen(courseId)}
-      >
-        <div className='text-blue-500 text-base'>Leave your review</div>
-      </div>
-
-      {getReviews()?.map((item) => {
-        console.log('item', item);
-        return (
-          <div key={item.courseReviewId} >
-            <CourseReviewItem review={item} />
-          </div>
-        );
-      })}
-
-      <div
-        className='mb-2'
-        onClick={() => handleNavigateAllReviewsScreen(courseId)}
-      >
-        <div className='text-blue-500 text-base'>All reviews</div>
-      </div>
-    </div>
-  );
-};
+            <div className='grid grid-cols-2 gap-2'>
+                {getReviews()?.map((item) => {
+                    return (
+                        <div key={item.courseReviewId}>
+                            <CourseReviewItem review={item} />
+                        </div>
+                    )
+                })}
+            </div>
+            <Spacer y={2} />
+            <AllCourseReviewsModal />
+        </div>
+    )
+}
 
 export const CourseReview = () => {
-  return (
-    <CourseReviewsProvider>
-      <WrappedCourseReview />
-    </CourseReviewsProvider>
-  );
-};
+    return (
+        <CourseReviewsProvider>
+            <WrappedCourseReview />
+        </CourseReviewsProvider>
+    )
+}

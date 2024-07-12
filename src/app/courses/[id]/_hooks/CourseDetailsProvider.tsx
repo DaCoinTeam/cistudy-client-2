@@ -47,6 +47,14 @@ export const WrappedCourseDetailsProvider = ({
                 discountPrice: true,
                 enableDiscount: true,
                 enrolled: true,
+                courseRatings: {
+                    numberOf1StarRatings: true,
+                    numberOf2StarRatings:true,
+                    numberOf3StarRatings: true,
+                    numberOf4StarRatings: true,
+                    numberOf5StarRatings: true,
+                    overallCourseRating: true
+                },
                 courseTargets: {
                     courseTargetId: true,
                     content: true,
