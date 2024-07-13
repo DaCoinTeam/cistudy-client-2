@@ -19,3 +19,12 @@ export const signUp = async (input: SignUpInput): Promise<string> => {
 export interface VerifyGoogleAccessTokenInput {
     token: string;
 }
+
+export interface VerifyRegistrationInput {
+  token: string;
+}
+
+export const verifyRegistration = async (input: VerifyRegistrationInput): Promise<string> => {
+    const url = `${BASE_URL}/verify-registration`
+    return await baseAxios.patch(url, input)
+}
