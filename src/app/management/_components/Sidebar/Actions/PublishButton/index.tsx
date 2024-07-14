@@ -5,7 +5,7 @@ import React from "react"
 export const PublishButton = () => {
     return (
         <Button
-            color="primary"
+            color="secondary"
             size="lg"
             fullWidth
             startContent={<ArrowUpFromLineIcon size={24} strokeWidth={3/2} />}

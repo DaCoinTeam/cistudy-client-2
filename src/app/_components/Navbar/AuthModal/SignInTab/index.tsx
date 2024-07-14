@@ -75,7 +75,7 @@ const WrappedSignInTab = () => {
                         type="submit"
                         isDisabled={!!Object.keys(formik.errors).length}
                         className="w-full"
-                        color="primary"
+                        color="secondary"
                     >
             Sign In
                     </Button>

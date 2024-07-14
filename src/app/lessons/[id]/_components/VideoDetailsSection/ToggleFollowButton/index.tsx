@@ -36,7 +36,7 @@ export const ToggleFollowButton = () => {
     return (
         <Button
             onPress={onPress}
-            color="primary"
+            color="secondary"
             startContent={
                 creator?.followed ? (
                     <UserMinus2Icon className="21" strokeWidth={3/2} />

@@ -17,7 +17,7 @@ export const AddLessonItem = () => {
         await createLesson({
             data: {
                 sectionId,
-                title: "Nguyen Van Tu Cuong",
+                title: "Untitled lesson",
             },
         })
         await mutate()

@@ -37,7 +37,7 @@ export const LessonModalRef = forwardRef<LessonModalRefSelectors | null>(
                                 panel: "p-0 pt-4",
                             }}
                             variant="underlined"
-                            color="primary"
+                            color="secondary"
                         >
                             <Tab
                                 key="video"

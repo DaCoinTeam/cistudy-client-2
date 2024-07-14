@@ -4,7 +4,7 @@ import type { Config } from "tailwindcss"
 const config: Config = {
     content: [
         "./src/**/*.{js,ts,jsx,tsx,mdx}",
-        "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
+        "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
         extend: {
@@ -15,33 +15,34 @@ const config: Config = {
             backgroundImage: {
                 "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
                 "gradient-conic":
-                    "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
             },
         },
     },
     darkMode: "class",
-    plugins: [nextui({
-        themes: {
-            light: {
-                colors: {
-                    primary: "rgb(20 184 166)",
-                    secondary: "rgb(17 94 89)",
-                    success: "rgb(74, 222, 123)",
-                    default: {
-                        DEFAULT: "rgb(244 244 245)"
+    plugins: [
+        nextui({
+            themes: {
+                light: {
+                    colors: {
+                        primary: "rgb(3,4,94)",
+                        secondary: "rgb(184,251,60)",
+                        success: "rgb(74, 222, 123)",
+                        default: {
+                            DEFAULT: "rgb(244 244 245)",
+                        },
+                        content3: "rgb(228 228 231)",
                     },
-                    content3: "rgb(228 228 231)"
+                },
+                dark: {
+                    colors: {
+                        primary: "rgb(3,4,94)",
+                        secondary: "rgb(162,221,65)",
+                        success: "rgb(74, 222, 123)",
+                    },
                 },
             },
-            dark: {
-                colors: {
-                    primary: "rgb(20 184 166)",
-                    secondary: "rgb(153 246 228)",  
-                    success: "rgb(74, 222, 123)",
-                },
-            }
-        }
-    }),
-    ]
+        }),
+    ],
 }
 export default config
