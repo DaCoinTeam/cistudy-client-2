@@ -16,7 +16,7 @@ export const CourseApprove = () => {
     return (
         <div className={`w-full p-4 fixed z-50 bottom-0 flex items-center justify-center ${isDarkMode? "" : "bg-white"} bg-white border-t-2`}>
             <Button color="primary" size="md" onClick={() => openCourseApproveModal("approved")}>Approve</Button>
-            <Button color="danger" size="md" onClick={() => openCourseApproveModal("rejected")} className="ml-4">Reject</Button>
+            <Button size="md" onClick={() => openCourseApproveModal("rejected")} className="ml-4 bg-transparent text-red-400 border-red-400 border-2">Reject</Button>
             <CourseApproveModalRef
                 ref={courseApproveModalRef}
             />

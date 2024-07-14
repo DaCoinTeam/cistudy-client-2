@@ -12,6 +12,8 @@ import {
 import React, { useContext } from "react"
 import { RootContext } from "../../../_hooks"
 import { getAssetUrl } from "@services"
+import { MdCategory } from "react-icons/md"
+import { FilterIcon, Hash, ListTree } from "lucide-react"
 
 interface CourseFiltersProps {
   className?: string;
@@ -36,7 +38,10 @@ export const CourseFilters = (props: CourseFiltersProps) => {
             shadow="none"
             className={`${className} border border-divider rounded-medium h-fit`}
         >
-            <CardHeader className="p-4 text-xl font-semibold"> Filters </CardHeader>
+            <CardHeader className="p-4">
+                <FilterIcon size={20} className="text-primary mr-4" />
+                <div className="text-xl font-semibold">Filters</div>
+            </CardHeader>
             <Divider />
             <CardBody className="p-0">
                 <Accordion
@@ -51,6 +56,9 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                     <AccordionItem
                         key="categories"
                         aria-label="Categories"
+                        startContent={
+                            <MdCategory size={20} className="text-primary" />
+                        }
                         title={
                             <div className="flex gap-3 items-center">
                                 <div>Categories</div>
@@ -73,6 +81,9 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                     <AccordionItem
                         key="subcategories"
                         aria-label="Subcategories"
+                        startContent={
+                            <ListTree size={20} className="text-primary" />
+                        }
                         title={
                             <div className="flex gap-3 items-center">
                                 <div>Subcategories</div>
@@ -95,6 +106,9 @@ export const CourseFilters = (props: CourseFiltersProps) => {
                     <AccordionItem
                         key="topics"
                         aria-label="Topics"
+                        startContent={
+                            <Hash fontSize={20} className="text-primary" />
+                        }
                         title={
                             <div className="flex gap-3 items-center">
                                 <div>Topics</div>

@@ -141,7 +141,6 @@ export const CourseFloat = () => {
 
     return (
         <Card
-            shadow="none"
             radius="md"
             className="w-full border border-divider rounded-medium"
         >
