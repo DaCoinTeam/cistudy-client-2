@@ -96,7 +96,7 @@ export const AccountsTable = () => {
                                 isCompact
                                 showControls
                                 showShadow
-                                color="primary"
+                                color="secondary"
                                 page={page}
                                 total={pages}
                                 onChange={onPageChange}

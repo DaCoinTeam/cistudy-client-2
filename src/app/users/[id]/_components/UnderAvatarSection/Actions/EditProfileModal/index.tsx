@@ -25,7 +25,7 @@ export const WrappedEditProfileModal = () => {
         <>
             <Button
                 onPress={onOpen}
-                color="primary"
+                color="secondary"
                 startContent={<PenIcon size={20} strokeWidth={3 / 2} />}
             >
         Edit
@@ -69,7 +69,7 @@ export const WrappedEditProfileModal = () => {
                         <Button
                             onPress={onPress}
                             startContent={<CheckIcon height={20} width={20} />}
-                            color="primary"
+                            color="secondary"
                         >
               Save
                         </Button>

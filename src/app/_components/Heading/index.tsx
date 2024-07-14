@@ -8,13 +8,13 @@ export const Heading = () => {
         <div className="relative overflow-hidden">
             <div className="h-[800px] -rotate-6 w-[200%] bg-primary/10 absolute -top-[50%] -left-[50%]"> </div>
             <div className="mt-12 max-w-[960px] px-6 mx-auto">
-                <div className="grid grid-cols-2 gap-6 items-center">
+                <div className="grid grid-cols-2 gap-6 items-center h-[25rem]">
                     <div className="col-span-1">
                         <div className="text-[5rem] font-bold text-primary"> 
                             <span className="text-primary">
                         Ci
                             </span>
-                            <span className="text-success">
+                            <span className="text-secondary">
                         Study
                             </span>
                         </div>
@@ -26,7 +26,7 @@ export const Heading = () => {
                         className="col-span-1"
                         alt="starciTeach"
                         src={STARCI_TEACH}
-                    />
+                    /> 
                 </div>
                 <Spacer y={12} />
                 <div>

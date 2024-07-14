@@ -57,7 +57,7 @@ export const WrappedWithdrawModal = () => {
                     <ModalFooter className="p-4 pt-2">
                         <Button
                             fullWidth
-                            color="primary"
+                            color="secondary"
                             onPress={formik.submitForm}
                             isDisabled={withdrawSwrMutation.isMutating}
                             endContent={

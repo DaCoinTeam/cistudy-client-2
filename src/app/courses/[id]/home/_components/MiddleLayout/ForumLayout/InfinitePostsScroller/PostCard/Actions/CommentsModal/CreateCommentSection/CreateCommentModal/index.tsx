@@ -53,7 +53,7 @@ export const WrappedCreateCommentModal = () => {
                     </Button>
                     <Button
                         onPress={onPress}
-                        color="primary"
+                        color="secondary"
 
                         startContent={<PlusIcon height={20} width={20} />}
                     >

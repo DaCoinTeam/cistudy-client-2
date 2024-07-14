@@ -1,7 +1,6 @@
 import React, { useContext } from "react"
-import { Stars } from "../../../../../../_shared"
-import { CourseDetailsContext } from "../../../../_hooks"
-
+import { CourseDetailsContext } from "../../../../../_hooks"
+import { Stars } from "../../../../../../../_shared"
 export const CourseRatingChart = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
@@ -21,10 +20,10 @@ export const CourseRatingChart = () => {
     numberOf3StarRatings! +
     numberOf4StarRatings! +
     numberOf5StarRatings!
-    console.log("numberOf5StarRatings", numberOf5StarRatings)
-    console.log("totalRating", totalRating)
     const caculatePercentage = (rating: number) => {
-        return (rating / totalRating) * 100 + "%"
+        const precent =  (rating / totalRating) * 100
+        console.log("percent", precent)
+        return precent.toString() + "%"
     }
 
     return (
@@ -47,15 +46,15 @@ export const CourseRatingChart = () => {
             <div className='flex items-center mt-4'>
                 <a
                     href='#'
-                    className='text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                    className='text-sm font-medium  hover:underline'
                 >
           5 star
                 </a>
-                <div className='w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700'>
+                <div className='w-2/4 h-4 mx-4 bg-gray-200 rounded-xl dark:bg-gray-700'>
                     <div
-                        className='h-5 bg-yellow-300 rounded '
+                        className='h-4 bg-yellow-300 rounded-xl '
                         style={{
-                            width: caculatePercentage(numberOf5StarRatings! / totalRating),
+                            width: caculatePercentage(numberOf5StarRatings!),
                         }}
                     ></div>
                 </div>
@@ -66,15 +65,16 @@ export const CourseRatingChart = () => {
             <div className='flex items-center mt-2'>
                 <a
                     href='#'
-                    className='text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                    className='text-sm font-medium hover:underline'
                 >
           4 star
                 </a>
-                <div className='w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700'>
+                <div className='w-2/4 h-4 mx-4 bg-gray-200 rounded-xl dark:bg-gray-700'>
+                    
                     <div
-                        className='h-5 bg-yellow-300 rounded'
+                        className='h-4 bg-yellow-300 rounded-xl '
                         style={{
-                            width: caculatePercentage(numberOf4StarRatings! / totalRating),
+                            width: caculatePercentage(numberOf4StarRatings!),
                         }}
                     ></div>
                 </div>
@@ -85,15 +85,15 @@ export const CourseRatingChart = () => {
             <div className='flex items-center mt-2'>
                 <a
                     href='#'
-                    className='text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                    className='text-sm font-medium  hover:underline'
                 >
           3 star
                 </a>
-                <div className='w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700'>
+                <div className='w-2/4 h-4 mx-4 bg-gray-200 rounded-xl dark:bg-gray-700'>
                     <div
-                        className='h-5 bg-yellow-300 rounded'
+                        className='h-4 bg-yellow-300 rounded-xl'
                         style={{
-                            width: caculatePercentage(numberOf3StarRatings! / totalRating),
+                            width: caculatePercentage(numberOf3StarRatings!),
                         }}
                     ></div>
                 </div>
@@ -104,15 +104,15 @@ export const CourseRatingChart = () => {
             <div className='flex items-center mt-2'>
                 <a
                     href='#'
-                    className='text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                    className='text-sm font-medium  hover:underline'
                 >
           2 star
                 </a>
-                <div className='w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700'>
+                <div className='w-2/4 h-4 mx-4 bg-gray-200 rounded-xl dark:bg-gray-700'>
                     <div
-                        className='h-5 bg-yellow-300 rounded'
+                        className='h-4 bg-yellow-300 rounded-xl'
                         style={{
-                            width: caculatePercentage(numberOf2StarRatings! / totalRating),
+                            width: caculatePercentage(numberOf2StarRatings!),
                         }}
                     ></div>
                 </div>
@@ -123,15 +123,15 @@ export const CourseRatingChart = () => {
             <div className='flex items-center mt-2'>
                 <a
                     href='#'
-                    className='text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                    className='text-sm font-medium  hover:underline'
                 >
           1 star
                 </a>
-                <div className='w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700'>
+                <div className='w-2/4 h-4 mx-4 bg-gray-200 rounded-xl dark:bg-gray-700'>
                     <div
-                        className='h-5 bg-yellow-300 rounded'
+                        className='h-4 bg-yellow-300 rounded-xl'
                         style={{
-                            width: caculatePercentage(numberOf1StarRatings! / totalRating),
+                            width: caculatePercentage(numberOf1StarRatings!),
                         }}
                     ></div>
                 </div>

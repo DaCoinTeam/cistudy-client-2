@@ -7,7 +7,7 @@ const ReviewInputWrapped = () => {
     const { formik } = useContext(ReviewInputContext)!
 
     return (
-        <div className=''>
+        <div className='mb-2'>
             <div className='mb-2'>
                 <Stars
                     key={formik.values.rating}

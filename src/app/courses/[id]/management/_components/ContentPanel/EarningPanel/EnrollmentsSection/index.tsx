@@ -28,7 +28,7 @@ const WrappedEnrollmentsSection = () => {
             <div className="text-2xl"> Enrollments </div>
             <Spacer y={4}/>
             <div className="flex justify-between items-center">
-                <Tabs variant="underlined" color="primary" selectedKey={intervalSelected} onSelectionChange={onSelectionChange}>
+                <Tabs variant="underlined" color="secondary" selectedKey={intervalSelected} onSelectionChange={onSelectionChange}>
                     <Tab key="oneDay" title="1 Day"/>
                     <Tab key="oneWeek" title="1 Week"/>
                     <Tab key="oneMonth" title="1 Month"/>

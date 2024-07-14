@@ -96,7 +96,7 @@ export const ReplyItem = (props: ReplyItemProps) => {
                                     placeholder="Edit this reply..."
                                     label=""
                                     variant="underlined"
-                                    color="primary"
+                                    color="secondary"
                                     id="content"
                                     value={formik.values.content}
                                     onChange={formik.handleChange}

@@ -151,7 +151,7 @@ export const CourseFloat = () => {
                 />
             </CardHeader>
             <CardBody className="p-4">
-                {enrolled ? <div className="text-primary text-sm">Enrolled</div> : null}
+                {enrolled ? <div className="text-secondary font-semibold text-base mb-2">Enrolled</div> : null}
                 <div>{renderPrice()}</div>
                 <Spacer y={4} />
                 <div>
@@ -172,7 +172,7 @@ export const CourseFloat = () => {
             <CardFooter className="p-4 pt-2 flex-col gap-4">
                 {enrolled ? (
                     <Button
-                        color="primary"
+                        color="secondary"
                         onPress={onEnterCoursePress}
                         startContent={
                             <ArrowRightEndOnRectangleIcon height={20} width={20} />
@@ -192,13 +192,13 @@ export const CourseFloat = () => {
                                 />
                             }
                             onPress={onEnrollPress}
-                            color="primary"
+                            color="secondary"
                             fullWidth
                         >
               Enroll now
                         </Button>
                         <Button
-                            color="primary"
+                            color="secondary"
                             variant="light"
                             startContent={<ShoppingCartIcon height={20} width={20} />}
                             fullWidth

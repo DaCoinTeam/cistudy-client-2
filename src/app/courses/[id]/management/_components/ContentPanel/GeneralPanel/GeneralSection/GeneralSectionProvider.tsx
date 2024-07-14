@@ -3,6 +3,7 @@ import { Form, Formik, FormikProps } from "formik"
 import React, {
     ReactNode,
     createContext,
+    useCallback,
     useContext,
     useEffect,
     useMemo,
@@ -62,6 +63,23 @@ const WrappedGeneralSectionProvider = ({
     const { title, description, courseCategories } =
     { ...courseManagement }
 
+    const getCategories = useCallback(() => {
+        if (!courseCategories) return {}
+        const categoryLevel0: Array<CategoryEntity> = []
+        const categoryLevel1: Array<CategoryEntity> = []
+        const categoryLevel2: Array<CategoryEntity> = []
+        courseCategories.forEach((element) => {
+            if (!element) return
+            const { category } = element
+            if (category.level == 0) categoryLevel0.push(category)
+            else if (category.level == 1) categoryLevel1.push(category)
+            else if (category.level == 2) categoryLevel2.push(category)
+        })
+        return { categoryLevel0, categoryLevel1, categoryLevel2 }
+    }, [courseCategories])
+
+    const {categoryLevel0, categoryLevel1, categoryLevel2} = useMemo(getCategories, [courseCategories])
+
     const titlePreviousRef = useRef(false)
     useEffect(() => {
         if (!title) return
@@ -87,44 +105,44 @@ const WrappedGeneralSectionProvider = ({
     }, [description])
 
     const categoryPreviousRef = useRef(false)
-    // useEffect(() => {
-    //     if (!courseCategories) return
-    //     if (!categoryPreviousRef.current) {
-    //         categoryPreviousRef.current = true
-    //         formik?.setFieldValue("categoryIdPrevious", courseCategories)
-    //     }
-    //     formik?.setFieldValue("categoryId", categoryId)
-    // }, [categoryId])
+    useEffect(() => {
+        if (!categoryLevel0?.length) return
+        if (!categoryPreviousRef.current) {
+            categoryPreviousRef.current = true
+            formik?.setFieldValue("categoryIdPrevious", categoryLevel0[0].categoryId)
+        }
+        formik?.setFieldValue("categoryId", categoryLevel0[0].categoryId)
+    }, [categoryLevel0])
 
     const courseSubcategoriesPreviousRef = useRef(false)
-    // useEffect(() => {
-    //     if (!courseSubcategories?.length) return
+    useEffect(() => {
+        if (!categoryLevel1?.length) return
 
-    //     const subcategories = courseSubcategories
-    //         .map(({ subcategory } : {subcategory : CategoryEntity}) => subcategory)
-    //         .sort((prev, next) => prev.name.localeCompare(next.name))
+        const subcategories = categoryLevel1
+            .map((category) => category)
+            .sort((prev, next) => prev.name.localeCompare(next.name))
 
-    //     if (!courseSubcategoriesPreviousRef.current) {
-    //         courseSubcategoriesPreviousRef.current = true
-    //         formik.setFieldValue("subcategoriesPrevious", subcategories)
-    //     }
-    //     formik.setFieldValue("subcategories", subcategories)
-    // }, [courseSubcategories])
+        if (!courseSubcategoriesPreviousRef.current) {
+            courseSubcategoriesPreviousRef.current = true
+            formik.setFieldValue("subcategoriesPrevious", subcategories)
+        }
+        formik.setFieldValue("subcategories", subcategories)
+    }, [categoryLevel1])
 
     const courseTopicsPreviousRef = useRef(false)
-    // useEffect(() => {
-    //     if (!courseTopics?.length) return
+    useEffect(() => {
+        if (!categoryLevel2?.length) return
 
-    //     const topics = courseTopics
-    //         .map(({ topic }) => topic)
-    //         .sort((prev, next) => prev.name.localeCompare(next.name))
+        const topics = categoryLevel2
+            .map((category) => category)
+            .sort((prev, next) => prev.name.localeCompare(next.name))
 
-    //     if (!courseTopicsPreviousRef.current) {
-    //         courseTopicsPreviousRef.current = true
-    //         formik.setFieldValue("topicsPrevious", topics)
-    //     }
-    //     formik.setFieldValue("topics", topics)
-    // }, [courseTopics])
+        if (!courseTopicsPreviousRef.current) {
+            courseTopicsPreviousRef.current = true
+            formik.setFieldValue("topicsPrevious", topics)
+        }
+        formik.setFieldValue("topics", topics)
+    }, [categoryLevel2])
 
     const hasChanged = () =>
         formik.values.title !== formik.values.titlePrevious ||
@@ -200,25 +218,21 @@ export const GeneralSectionProvider = ({
                 { title, description, categoryId, topics, subcategories },
                 { setFieldValue }
             ) => {
-                console.log("submit")
                 if (!courseManagement) return
-                console.log("submit 2")
-
                 const { courseId } = courseManagement
-                console.log("courseId on Submit", courseId)
-                console.log("categoryId on Submit", categoryId, subcategories.length, topics.length)
+                let categoryIds: string[] = []
+                if(categoryId ) {
+                    const categoriesLevel1 = subcategories.map(({ categoryId }) => categoryId)
+                    const categoriesLevel2 = topics.map(({ categoryId }) => categoryId)
+                    categoryIds = [categoryId, ...categoriesLevel1, ...categoriesLevel2] 
+                }
+                
                 await updateCourse({
                     data: {
                         courseId,
                         title,
                         description,
-                        categoryId,
-                        subcategoryIds: subcategories.length
-                            ? subcategories.map(({ categoryId }) => categoryId)
-                            : undefined,
-                        topicIds: topics.length
-                            ? topics.map(({ categoryId }) => categoryId)
-                            : undefined,
+                        categoryIds: categoryIds
                     },
                 })
                 setFieldValue("titlePrevious", title)

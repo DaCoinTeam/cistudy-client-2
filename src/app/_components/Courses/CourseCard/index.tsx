@@ -11,7 +11,7 @@ export const CourseCard = (props: CourseEntity) => {
     }
     const router = useRouter()
     return (
-        <div onClick={() => router.push(`/courses/${courseId}`)} className='col-span-12 sm:col-span-7 h-auto min-h-[17.5rem] border border-divider shadow-none rounded-xl hover:cursor-pointer'>
+        <div onClick={() => router.push(`/courses/${courseId}`)} className='col-span-12 sm:col-span-7 h-auto max-h-[17.5rem] border border-divider shadow-none rounded-xl hover:cursor-pointer'>
             <div className='w-full h-auto min-h-[10rem] bg-lime-600 rounded-t-xl'>
                 {thumbnailId && (
                     <Image
