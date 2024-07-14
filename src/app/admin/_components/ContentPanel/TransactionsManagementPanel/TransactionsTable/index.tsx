@@ -92,7 +92,7 @@ export const TransactionsTable = () => {
                                 isCompact
                                 showControls
                                 showShadow
-                                color="secondary"y"
+                                color="secondary"
                                 page={page}
                                 total={pages}
                                 onChange={onPageChange}
