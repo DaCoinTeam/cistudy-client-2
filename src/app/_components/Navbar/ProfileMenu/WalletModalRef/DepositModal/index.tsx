@@ -32,7 +32,7 @@ export const WrappedDepositModal = () => {
                         />
                     </ModalBody>
                     <ModalFooter className="p-4 pt-2">
-                        <Button fullWidth color="primary" onPress={formik.submitForm}>
+                        <Button fullWidth color="secondary" onPress={formik.submitForm}>
                   Deposit
                         </Button>
                     </ModalFooter>

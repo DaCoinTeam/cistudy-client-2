@@ -112,7 +112,7 @@ export const WrappedEditPostModalRef = () => {
                 </Button>
                 <Button
                     onPress={onPress}
-                    color="primary"
+                    color="secondary"
                     startContent={<CheckIcon height={20} width={20}/>}
                 >
             Save

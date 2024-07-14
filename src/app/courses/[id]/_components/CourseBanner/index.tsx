@@ -45,7 +45,7 @@ export const CourseBanner = (props: CourseBannerProps) => {
 
     return (
         <div
-            className={`${className} h-auto object-cover bg-content3 justify-start`}
+            className={`${className} h-auto object-cover bg-primary justify-start`}
         >
             <div className='p-12 w-full max-w-[1920px] m-auto'>
                 <div className='w-2/3'>
@@ -61,10 +61,10 @@ export const CourseBanner = (props: CourseBannerProps) => {
                         </BreadcrumbItem>
                     </Breadcrumbs>
                     <Spacer y={4} />
-                    <div className='text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 to-30% from-sky-400 md:text-4xl py-1'>
+                    <div className='text-2xl font-bold text-transparent bg-clip-text text-white md:text-4xl py-1'>
                         {title}
                     </div>
-                    <div className='text-foreground-400 text-lg line-clamp-2'>
+                    <div className='text-slate-300 text-lg line-clamp-2'>
                         {description}
                     </div>
                     <Spacer y={4} />
@@ -77,6 +77,7 @@ export const CourseBanner = (props: CourseBannerProps) => {
                             }),
                         }}
                         name={username}
+                        className="text-white"
                         description={`${numberOfFollowers} followers`}
                     />
                     <Spacer y={3} />

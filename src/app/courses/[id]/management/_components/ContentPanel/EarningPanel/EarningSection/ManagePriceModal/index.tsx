@@ -114,7 +114,7 @@ const WrappedManagePriceModal = () => {
                                 classNames={{
                                     wrapper: "mr-0",
                                 }}
-                                color="primary"
+                                color="secondary"
                             />
                         </div>
                     </ModalBody>
@@ -129,7 +129,7 @@ const WrappedManagePriceModal = () => {
                         <Button
                             isDisabled={!hasChanged()}
                             onPress={onSubmit}
-                            color="primary"
+                            color="secondary"
                             startContent={<CheckIcon height={20} width={20} />}
                         >
               Save

@@ -66,7 +66,7 @@ const WrappedCourseReview = () => {
             <Spacer y={2} />
             {enrolled && <ReviewInput />}
 
-            <div className='grid grid-cols-2 gap-2'>
+            <div className='grid grid-cols-2 gap-4'>
                 {getReviews()?.map((item) => {
                     return (
                         <div key={item.courseReviewId}>
@@ -75,7 +75,7 @@ const WrappedCourseReview = () => {
                     )
                 })}
             </div>
-            <Spacer y={2} />
+            <Spacer y={4} />
             <AllCourseReviewsModal />
         </div>
     )

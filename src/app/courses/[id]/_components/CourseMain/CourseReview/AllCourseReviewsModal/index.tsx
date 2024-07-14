@@ -1,18 +1,16 @@
+import { CourseReviewEntity } from "@common"
 import {
-    Button,
     Modal,
     ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
     Spacer,
-    useDisclosure,
+    useDisclosure
 } from "@nextui-org/react"
-import React, { useContext } from "react"
-import { CourseReviewsContext } from "../CourseReviewProvider"
-import { CourseReviewEntity } from "@common"
+import { useContext } from "react"
+import { CourseRatingChart } from "./CourseRatingChart"
 import { CourseReviewItem } from "../CourseReviewItem"
-import { CourseRatingChart } from "../CourseRatingChart"
+import { CourseReviewsContext } from "../CourseReviewProvider"
 export const AllCourseReviewsModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
     const { swrs } = useContext(CourseReviewsContext)!
@@ -33,39 +31,30 @@ export const AllCourseReviewsModal = () => {
         <>
             <div
                 onClick={onOpen}
-                className=' text-blue-500 text-base hover:cursor-pointer '
+                className='text-primary text-base hover:cursor-pointer  underline'
             >
         Read all reviews
             </div>
             <Modal size='4xl' isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className='flex flex-col gap-1'>Reviews</ModalHeader>
-                            <ModalBody>
-                                <CourseRatingChart />
-                                <Spacer y={4}/>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {getReviews()?.map((item) => {
-                                        return (
-                                            <div key={item.courseReviewId}>
-                                                <CourseReviewItem review={item} />
-                                            </div>
-                                        )
-                                    })}
-                                </div>
+                    <>
+                        <ModalHeader className='flex flex-col gap-1'>Reviews</ModalHeader>
+                        <ModalBody className="mb-4">
+                            <CourseRatingChart />
+                            <Spacer y={4}/>
+                            <div className="grid grid-cols-2 gap-4">
+                                {getReviews()?.map((item) => {
+                                    return (
+                                        <div key={item.courseReviewId}>
+                                            <CourseReviewItem review={item} />
+                                        </div>
+                                    )
+                                })}
+                            </div>
                                
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color='danger' variant='light' onPress={onClose}>
-                  Close
-                                </Button>
-                                <Button color='primary' onPress={onClose}>
-                  Action
-                                </Button>
-                            </ModalFooter>
-                        </>
-                    )}
+                        </ModalBody>
+                            
+                    </>
                 </ModalContent>
             </Modal>
         </>

@@ -16,7 +16,7 @@ export const FollowersManagementPanel = () => {
                 </div>
                 <Button
                     className={isFollowed ? "bg-transparent text-foreground border-default-200" : ""}
-                    color="primary"
+                    color="secondary"
                     radius="full"
                     size="sm"
                     variant={isFollowed ? "bordered" : "solid"}
