@@ -9,11 +9,12 @@ import {
     Button,
 } from "@nextui-org/react"
 
-import { forwardRef, useContext, useImperativeHandle, useRef } from "react"
+import { forwardRef, useCallback, useContext, useImperativeHandle, useRef } from "react"
 import { CourseApproveModalContext, CourseApproveModalProvider } from "./CourseApproveModalProvider"
 import { ToastRef, ToastRefSelectors, ToastType } from "../../../../../../_components"
 import { useParams } from "next/navigation"
 import { verifyCourse } from "@services"
+import useSWRMutation from "swr/mutation"
 
 export interface CourseApproveModalRefSelectors {
     onOpen: () => void;
@@ -41,35 +42,35 @@ const WrappedCourseApproveModalRef = forwardRef<
         handleSaveApproveStatus
     }))
 
-    const fetchVerifyCourse = () => {
-        verifyCourse({
-            data: {
-                courseId,
-                note,
-                verifyStatus: courseApproveStatus
-            }
-        }).then(() => {
-            toastRef.current?.notify({
+    const fetchVerifyCourse = useCallback(
+        async () => {
+            return await verifyCourse({
                 data: {
-                    message: `Course has been ${courseApproveStatus} successfully!`
-                },
-                type: ToastType.Success
-            })
-            onOpenChange()
-        }).catch((err) => {
-            toastRef.current?.notify({
-                data: {
-                    error: err.message
-                },
-                type: ToastType.Error
-            })
-        })
-    }
+                    courseId,
+                    note,
+                    verifyStatus: courseApproveStatus
+                }
+            }).then(() => {
+                toastRef.current?.notify({
+                    data: {
+                        message: `Course has been ${courseApproveStatus} successfully!`
+                    },
+                    type: ToastType.Success
+                })
+                onOpenChange()
+            }).catch((err) => {
+                toastRef.current?.notify({
+                    data: {
+                        error: err.message
+                    },
+                    type: ToastType.Error
+                })
+            }) 
+        },
+        [courseApproveStatus, courseId, note]
+    )
 
-    // const verifyCourseSwr = useSWR(
-    //     ["VERIFY_COURSE"],
-    //     fetchVerifyCourse
-    // )
+    const {trigger, isMutating} = useSWRMutation("VERIFY_COURSE",fetchVerifyCourse)
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="sm">
@@ -90,13 +91,23 @@ const WrappedCourseApproveModalRef = forwardRef<
                                 placeholder="Input note here"
                                 onChange={(e) => dispatch({ type: "SET_NOTE", payload: e.target.value })}
                             />
-                            <Button
-                                color="primary"
-                                className="w-full mt-4"
-                                onClick={() => fetchVerifyCourse()}
-                            >
+                            {
+                                isMutating ? (
+                                    <Button
+                                        color="primary"
+                                        className="w-full mt-4"
+                                        isLoading={true}
+                                    />
+                                ) : (
+                                    <Button
+                                        color="primary"
+                                        className="w-full mt-4"
+                                        onClick={() => trigger()}
+                                    >
                                         Save
-                            </Button>
+                                    </Button>
+                                )
+                            }
                         </ModalBody>
                     </div>
                 )}
