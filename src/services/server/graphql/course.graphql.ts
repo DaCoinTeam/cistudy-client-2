@@ -67,7 +67,7 @@ export const findOneCourseAuth = async (
         },
     })
     return getGraphqlResponseData({
-        data: graphqlData ,
+        data: graphqlData,
         isAuth: true,
     })
 }
@@ -262,19 +262,19 @@ export const findManyCategories = async (
 
 export interface FindManyCourseReviewsInputData {
   params: {
-      courseId: string
+    courseId: string
   },
   options?: {
-      take?: number
-      skip?: number
+    take?: number
+    skip?: number
   }
 }
 
 export interface FindManyCourseReviewsOutputData {
-results: Array<CourseReviewEntity>
-metadata: {
+  results: Array<CourseReviewEntity>
+  metadata: {
     count: number
-}
+  }
 }
 
 export const findManyCourseReviews = async (
@@ -297,5 +297,42 @@ ${payload}
     return getGraphqlResponseData({
         data: graphqlData,
         isAuth: false,
+    })
+}
+
+export interface FindManyUnverifiedCoursesInputData {
+  options?: {
+    take?: number
+    skip?: number
+  }
+}
+
+export interface FindManyUnverifiedCoursesOutputData {
+  results: Array<CourseEntity>
+  metadata: {
+    count: number
+  }
+}
+
+export const findManyUnverifiedCourses = async (
+    data: FindManyUnverifiedCoursesInputData,
+    schema: Schema<DeepPartial<FindManyUnverifiedCoursesOutputData>>
+): Promise<FindManyUnverifiedCoursesOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+      query FindManyUnverifiedCourses($data: FindManyUnverifiedCourseInputData!) {
+        findManyUnverifiedCourses(data: $data) {
+${payload}
+}
+}
+    `,
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
     })
 }

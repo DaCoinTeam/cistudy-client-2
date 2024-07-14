@@ -17,3 +17,19 @@ export const toggleFollow = async (
 
     return await authAxios.patch(url, data)
 }
+
+export interface VerifyCourseInput {
+    data: {
+      courseId: string
+      note: string
+      verifyStatus: string
+    }
+  }
+  
+export const verifyCourse = async (
+    input : VerifyCourseInput
+): Promise<string> => {
+    const {data} = input
+    const url = `${BASE_URL}/verify-course`
+    return await authAxios.patch(url, data)
+}

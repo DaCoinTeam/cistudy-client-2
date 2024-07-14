@@ -1,6 +1,6 @@
 "use client"
 import React, { forwardRef, useImperativeHandle } from "react"
-import toast, { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast"
 
 export enum ToastType {
   Earn = "earn",
@@ -33,16 +33,16 @@ export const ToastRef = forwardRef<ToastRefSelectors>((_, ref) => {
         case ToastType.Earn:
             content = <div> Earned {params.data.earnAmount} STARCI2 </div>
             toast.success(content)
-            break;
+            break
         case ToastType.Error:
-              content = <div> {params.data.error}</div>
+            content = <div> {params.data.error}</div>
             toast.error(content)
-            break;
+            break
 
         case ToastType.Success:
             content = <div> {params.data.message}</div>
             toast.success(content)
-            break;
+            break
         }
     }
 

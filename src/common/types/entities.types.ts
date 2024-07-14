@@ -333,13 +333,66 @@ export interface CartCourseEntity {
   cart: CartEntity;
 }
 export interface CourseReviewEntity {
-  courseReviewId: string;
-  content: string;
-  courseId: string;
-  course?: CourseEntity;
-  createdAt: Date;
-  updatedAt: Date;
-  rating: number;
-  accountId: string;
-  account: AccountEntity;
+  courseReviewId: string
+  content: string
+  courseId: string
+  course?: CourseEntity
+  createdAt: Date
+  updatedAt: Date
+  rating: number
+  accountId: string
+  account: AccountEntity
+  
+}
+
+export interface ReportAccountEntity {
+  reportAccountId: string
+  reportedAccountId: string
+  reporterAccountId: string
+  description: string
+  processNote: string
+  processStatus: string
+  reporterAccount: AccountEntity
+  reportedAccount: AccountEntity
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface ReportCourseEntity {
+  reportCourseId: string
+  reportedCourseId: string
+  reporterAccountId: string
+  description: string
+  processNote: string
+  processStatus: string
+  reporterAccount: AccountEntity
+  reportedCourse: CourseEntity
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface ReportPostEntity {
+  reportPostId: string
+  reportedPostId: string
+  reporterAccountId: string
+  description: string
+  processNote: string
+  processStatus: string
+  reporterAccount: AccountEntity
+  reportedPost: PostEntity
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface ReportPostCommentEntity {
+  reportPostCommentId: string
+  reportedPostCommentId: string
+  reporterAccountId: string
+  description: string
+  processNote: string
+  processStatus: string
+  reporterAccount: AccountEntity
+  reportedPostComment: PostCommentEntity
+  createdAt: Date
+  updatedAt: Date
 }
