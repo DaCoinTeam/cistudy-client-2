@@ -246,7 +246,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 <Button
                     isDisabled={!hasChanged()}
                     type='submit'
-                    color='primary'
+                    color='secondary'
                     startContent={<CheckIcon height={20} width={20} />}
                 >
           Save
