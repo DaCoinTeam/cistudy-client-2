@@ -22,11 +22,11 @@ export const Heading = () => {
             Share-to-Earn: Where Sharing Sparks Earnings!
                         </div>
                     </div>
-                    <Image
+                    {/* <Image
                         className="col-span-1"
                         alt="starciTeach"
                         src={STARCI_TEACH}
-                    /> 
+                    />  */}
                 </div>
                 <Spacer y={12} />
                 <div>
@@ -74,7 +74,7 @@ export const Heading = () => {
                     </div>
                 </div>
                 <Spacer y={6}/>
-                <DeployedChains/> 
+                {/* <DeployedChains/>  */}
             </div>
         </div>
     )

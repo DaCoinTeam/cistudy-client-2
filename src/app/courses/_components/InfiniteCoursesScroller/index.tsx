@@ -1,23 +1,23 @@
 "use client"
-import React, { useContext } from "react"
-import { RootContext } from "../../../_hooks"
 import { CourseEntity } from "@common"
-import { COLUMNS_PER_PAGE } from "../../../_hooks"
-import InfiniteScroll from "react-infinite-scroller"
-import { Card, CardBody, CardFooter, CardHeader, CircularProgress, Divider, Spacer, User } from "@nextui-org/react"
-import { InteractiveThumbnail, Stars } from "../../../_shared"
+import { CircularProgress, Divider, Pagination, Spacer, User } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "@services"
+import { Grid3X3Icon, List } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { ArrowUpDown, Grid3X3Icon, List } from "lucide-react"
+import React, { useContext } from "react"
+import InfiniteScroll from "react-infinite-scroller"
+import { CourseCard } from "../../../_components/Courses/CourseCard"
+import { InteractiveThumbnail, Stars } from "../../../_shared"
+import { AllCoursesContext, COLUMNS_PER_PAGE } from "../../_hooks"
 
 interface InfiniteCoursesScrollerProps {
     className?: string
 }
 
 export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => {
-    const [viewType, setViewType] = React.useState<"grid" | "list">("list")
+    const [viewType, setViewType] = React.useState<"grid" | "list">("grid")
     const { className } = props
-    const { swrs } = useContext(RootContext)!
+    const { swrs } = useContext(AllCoursesContext)!
     const { coursesSwr } = swrs
     const { data, size, setSize, isValidating } = coursesSwr
     console.log("data", data)
@@ -55,41 +55,30 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                     
                 </div>
                 <div className="flex flex-row gap-2 mb-4">
-                    <List size={30} className="cursor-pointer text-primary" onClick={() => setViewType("list")} />
                     <Grid3X3Icon size={30} className="cursor-pointer text-primary" onClick={() => setViewType("grid") } />
+                    <List size={30} className="cursor-pointer text-primary" onClick={() => setViewType("list")} />
                 </div>
             </div>
             <div>
                 {
                     viewType === "grid" ? (
-                        <div className="grid grid-cols-3 gap-6">
-                            {getCourses().map(({ courseId, title, thumbnailId, description, creator }) => (
-                                <Card key={courseId} className="w-full">
-                                    <InteractiveThumbnail isPressable className="h-60" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
-                                    <CardHeader>
-                                        <div className="text-lg"> {title} </div>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <div className="text-sm text-foreground-400 line-clamp-2"> {description} </div>
-                                    </CardBody>
-                                    <CardFooter>
-                                        <div className="flex gap-4 h-10 items-center">
-                                            <User classNames={{
-                                                name: "text-base"
-                                            }} avatarProps={{
-                                                src: getAvatarUrl({
-                                                    avatarUrl: creator.avatarUrl,
-                                                    avatarId: creator.avatarId,
-                                                    kind: creator.kind
-                                                })
-                                            }} name={creator.username} description={"2 followers"}/>
-                                            <Divider orientation="vertical"/>
-                                            <Stars />
-                                        </div>
-                                    </CardFooter>
-                                </Card>
-                            ))}
+                        <div>
+                            <div className="grid grid-cols-3 gap-6">
+                                {getCourses().map((course)  => (
+                                    <div key={course.courseId}>
+                                        <CourseCard {...course}/>
+
+                                    </div>
+                                ))}
+
+
+                            </div>
+                            <div className="mt-12">
+                                <Pagination total={10} initialPage={size} color="secondary" />
+                            </div>
+
                         </div>
+                       
                     ) : (
                         <InfiniteScroll
                             className="flex flex-col gap-6"

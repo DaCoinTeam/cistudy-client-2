@@ -1,11 +1,11 @@
 "use client"
 import { useContext } from "react"
 import { CourseEntity } from "../../../common/types"
-import { RootContext } from "../../_hooks"
 import { Carousel } from "./Carousel"
+import { AllCoursesContext } from "../../courses/_hooks"
 
 export const Courses = () => {
-    const { swrs } = useContext(RootContext)!
+    const { swrs } = useContext(AllCoursesContext)!
     const { coursesSwr } = swrs
     const { data } = coursesSwr
     const getCourses = (start : number, end : number) => {
