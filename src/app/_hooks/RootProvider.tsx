@@ -36,7 +36,6 @@ const initialValues: FormikValues = {
 interface RootContextValue {
   swrs: {
     profileSwr: SWRResponse<AccountEntity | null, ErrorResponse>;
-    highlightsSwr: SWRResponse<any, ErrorResponse>;
   };
   formik: FormikProps<FormikValues>;
   reducer: [RootState, React.Dispatch<RootAction>];
