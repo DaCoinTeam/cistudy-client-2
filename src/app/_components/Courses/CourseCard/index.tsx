@@ -2,7 +2,7 @@ import { CourseEntity } from "@common"
 import { Card, CardBody, CardFooter, Divider, Image, User } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "../../../../services/server"
 import { Stars } from "../../../_shared"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 
 export const CourseCard = (props: CourseEntity) => {
     const { title, creator, thumbnailId, description, price, courseId, courseRatings } = { ...props }

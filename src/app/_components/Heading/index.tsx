@@ -71,12 +71,6 @@ export const Heading = () => {
                     <div>
 
                     </div>
-
-                    {/* <Image
-                        className="col-span-1"
-                        alt="starciTeach"
-                        src={STARCI_TEACH}
-                    />  */}
                 </div>
                 <Spacer y={12} />
                 <div className='flex justify-center bg-primary border mx-0 mb-20 py-12 px-6 text-white' >
@@ -190,7 +184,7 @@ export const Heading = () => {
                     Interact
                                     </div>
                                     <div className='font-semibold'>
-                    Actively sharing and communicating on course forum
+                                    Actively participating in the course forum
                                     </div>
                                 </div>
                                 <div className='items-center'>
@@ -201,54 +195,12 @@ export const Heading = () => {
                             </div>
                             
                         </div>
-                        <div className="col-span-1 px-4">
-                            <div className='text-4xl font-semibold text-primary mb-6'>Easy step to learn and earn.</div>
+                        <div className="col-span-1 px-4 bg-amber-400">
+                            <div className='text-4xl font-semibold text-primary mb-6'>Easy steps to learn and earn.</div>
                             <div>Lorem ipsum dolor sit amet consectetur adipisicing elit </div>
                         </div>
                     </div>
                 </div>
-
-                {/* <div>
-                    <div className='text-center'>
-                        <div className='text-2xl font-bold'>
-              Shaping the Future of Decentralized Sharing
-                        </div>
-                        <div className='text-2xl font-bold'>
-              CiStudy Unstoppable Expansion
-                        </div>
-                    </div>
-                    <Spacer y={6} />
-                    <div className='grid grid-cols-3'>
-                        <div className='grid place-items-center'>
-                            <div className='text-xl'>Total Accounts</div>
-                            <div className='text-4xl font-bold'>123</div>
-                            <div className='text-foreground-400'>in the last 30 days</div>
-                        </div>
-                        <div className='grid place-items-center'>
-                            <div className='text-xl'>Total Courses</div>
-                            <div className='text-4xl font-bold'>123</div>
-                            <div className='text-foreground-400'>in the last 30 days</div>
-                        </div>
-                        <div className='grid place-items-center'>
-                            <div className='text-xl'>Total Posts</div>
-                            <div className='text-4xl font-bold'>123</div>
-                            <div className='text-foreground-400'>in the last 30 days</div>
-                        </div>
-                    </div>
-                </div> */}
-                {/* <div className="col-span-2">
-                   <div>
-                        <div className='text-4xl font-semibold text-primary mb-6 col-span-2'>
-                Share To Earn:
-                            <div className='mt-3'>Where Sharing Sparks Earnings!</div>
-                        </div>
-                        <div className='text-xl font-medium  text-slate-600 leading-8'>
-                We aim for a vibrant, interactive learning community where
-                everyone benefits from active participation.
-                        </div>
-
-                    </div>
-                   </div> */}
                 <Spacer y={6} />
                 {/* <DeployedChains/>  */}
             </div>
