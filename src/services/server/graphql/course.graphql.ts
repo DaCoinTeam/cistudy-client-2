@@ -8,6 +8,7 @@ import {
     CourseTargetEntity,
     CategoryEntity,
     CourseReviewEntity,
+    AccountEntity,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
 import { gql } from "@apollo/client"
@@ -85,8 +86,8 @@ export interface FindManyCoursesOutputData {
   results: Array<CourseEntity>;
   metadata: {
     count: number;
-    categories: Array<CategoryEntity>,
-    highRateCourses: Array<CourseEntity>,
+    categories: Array<CategoryEntity>;
+    highRateCourses: Array<CourseEntity>;
   };
 }
 
@@ -207,7 +208,6 @@ export const findManyResources = async (
         isAuth: true,
     })
 }
-    
 
 export interface FindManyCourseTargetsInputData {
   params: {
@@ -238,7 +238,6 @@ export const findManyCourseTargets = async (
     })
 }
 
-
 export const findManyCategories = async (
     schema: Schema<DeepPartial<CategoryEntity>>
 ): Promise<Array<CategoryEntity>> => {
@@ -255,26 +254,25 @@ export const findManyCategories = async (
 
     return getGraphqlResponseData({
         data: graphqlData,
-        isAuth: false
+        isAuth: false,
     })
 }
 
-
 export interface FindManyCourseReviewsInputData {
   params: {
-    courseId: string
-  },
+    courseId: string;
+  };
   options?: {
-    take?: number
-    skip?: number
-  }
+    take?: number;
+    skip?: number;
+  };
 }
 
 export interface FindManyCourseReviewsOutputData {
-  results: Array<CourseReviewEntity>
+  results: Array<CourseReviewEntity>;
   metadata: {
-    count: number
-  }
+    count: number;
+  };
 }
 
 export const findManyCourseReviews = async (
@@ -302,16 +300,16 @@ ${payload}
 
 export interface FindManyUnverifiedCoursesInputData {
   options?: {
-    take?: number
-    skip?: number
-  }
+    take?: number;
+    skip?: number;
+  };
 }
 
 export interface FindManyUnverifiedCoursesOutputData {
-  results: Array<CourseEntity>
+  results: Array<CourseEntity>;
   metadata: {
-    count: number
-  }
+    count: number;
+  };
 }
 
 export const findManyUnverifiedCourses = async (
@@ -334,5 +332,35 @@ ${payload}
     return getGraphqlResponseData({
         data: graphqlData,
         isAuth: true,
+    })
+}
+
+export interface HighlightDTO {
+  highRatedCourses: Array<CourseEntity>;
+  highRatedInstructors: Array<AccountEntity>;
+  mostEnrolledCourses: Array<CourseEntity>;
+  recentlyAddedCourses: Array<CourseEntity>;
+  totalNumberOfAvailableCourses: number;
+  totalNumberOfPosts: number;
+  totalNumberOfVerifiedAccounts: number;
+}
+
+export const initLandingPage = async (
+    schema: Schema<DeepPartial<HighlightDTO>>
+): Promise<HighlightDTO> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await client.query({
+        query: gql`
+          query InitLandingPage() {
+            initLandingPage() {
+  ${payload}
+}
+}
+      `,
+    })
+
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: false,
     })
 }

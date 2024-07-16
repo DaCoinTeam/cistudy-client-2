@@ -7,7 +7,7 @@ import {
     generateClientId,
 } from "@common"
 import { useDisclosure } from "@nextui-org/react"
-import { init } from "@services"
+import { HighlightDTO, init, initLandingPage } from "@services"
 import { Formik, FormikProps } from "formik"
 import { useRouter } from "next/navigation"
 import React, {
@@ -29,6 +29,7 @@ interface FormikValues {
   searchValue: string;
 }
 
+
 const initialValues: FormikValues = {
     searchValue: "",
 }
@@ -36,6 +37,7 @@ const initialValues: FormikValues = {
 interface RootContextValue {
   swrs: {
     profileSwr: SWRResponse<AccountEntity | null, ErrorResponse>;
+    highlightSwr: SWRResponse<HighlightDTO | null, ErrorResponse>;
   };
   formik: FormikProps<FormikValues>;
   reducer: [RootState, React.Dispatch<RootAction>];
@@ -90,6 +92,67 @@ const WrappedRootProvider = forwardRef<
 
     const profileSwr = useSWR(["PROFILE"], fetchProfile)
 
+    const fetchHighlight = useCallback(async () => {
+        try {
+            return await initLandingPage({
+                totalNumberOfVerifiedAccounts: true,
+                totalNumberOfAvailableCourses: true, 
+                totalNumberOfPosts: true,
+                highRatedCourses: {
+                    courseId: true,
+                    price: true,
+                    title: true,
+                    description: true,
+                    courseRatings: {
+                        overallCourseRating: true
+                    },
+                    creator: {
+                        accountId: true,
+                        username: true, 
+                        email: true,
+                        avatarId: true,
+                        avatarUrl: true
+                    }
+                },
+                mostEnrolledCourses: {
+                    courseId: true,
+                    price: true,
+                    title: true,
+                    description: true,
+                    courseRatings: {
+                        overallCourseRating: true
+                    },
+                    creator: {
+                        accountId: true,
+                        username: true, 
+                        email: true,
+                        avatarId: true,
+                        avatarUrl: true
+                    }
+                },
+                recentlyAddedCourses: {
+                    courseId: true,
+                    price: true,
+                    title: true,
+                    description: true,
+                    courseRatings: {
+                        overallCourseRating: true
+                    },
+                    creator: {
+                        accountId: true,
+                        username: true, 
+                        email: true,
+                        avatarId: true,
+                        avatarUrl: true
+                    }
+                },
+            })
+        } catch (ex) {
+            // console.log(ex)
+            return null
+        }
+    }, [])
+    const highlightSwr = useSWR(["HIGHLIGHT"], fetchHighlight)
 
 
     // useImperativeHandle(ref, () => ({
@@ -106,6 +169,7 @@ const WrappedRootProvider = forwardRef<
         () => ({
             swrs: {
                 profileSwr,
+                highlightSwr
             },
             formik,
             reducer,

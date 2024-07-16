@@ -1,6 +1,6 @@
 "use client"
 import { CourseEntity } from "@common"
-import { CircularProgress, Divider, Pagination, Spacer, User } from "@nextui-org/react"
+import { CircularProgress, Divider, Pagination, Spacer, Tab, Tabs, User } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "@services"
 import { Grid3X3Icon, List } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -15,7 +15,8 @@ interface InfiniteCoursesScrollerProps {
 }
 
 export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => {
-    const [viewType, setViewType] = React.useState<"grid" | "list">("grid")
+    const [viewType, setViewType] = React.useState<React.Key>("grid")
+    
     const { className } = props
     const { swrs } = useContext(AllCoursesContext)!
     const { coursesSwr } = swrs
@@ -54,13 +55,86 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                 <div>
                     
                 </div>
-                <div className="flex flex-row gap-2 mb-4">
+                {/* <div className="flex flex-row gap-2 mb-4">
                     <Grid3X3Icon size={30} className="cursor-pointer text-primary" onClick={() => setViewType("grid") } />
                     <List size={30} className="cursor-pointer text-primary" onClick={() => setViewType("list")} />
-                </div>
+                </div> */}
             </div>
             <div>
-                {
+                <Tabs
+                    size="md"
+                    aria-label="Tabs"
+                    selectedKey={viewType.toString()}
+                    onSelectionChange={setViewType}
+                >
+                    <Tab key="grid"  
+                        title={
+                            <div className="flex items-center space-x-2">
+                                <Grid3X3Icon size={20} className="cursor-pointer text-primary" onClick={() => setViewType("grid") } />
+                                <span>Grid</span>
+                            </div>
+                        }>
+                        <div>
+                            <div className="grid grid-cols-3 gap-6">
+                                {getCourses().map((course)  => (
+                                    <div key={course.courseId}>
+                                        <CourseCard {...course}/>
+
+                                    </div>
+                                ))}
+
+
+                            </div>
+                            <div className="mt-12">
+                                <Pagination total={10} initialPage={size} color="secondary" />
+                            </div>
+
+                        </div>
+                    </Tab>
+                    <Tab key="list" title={
+                        <div className="flex items-center space-x-2">
+                            <List size={20} className="cursor-pointer text-primary" onClick={() => setViewType("list")} />
+                            <span>List</span>
+                        </div>
+                    }>
+                        <InfiniteScroll
+                            className="flex flex-col gap-6"
+                            pageStart={0}
+                            initialLoad={false}
+                            loadMore={onLoadMore}
+                            hasMore={size < getPages() && !isValidating}
+                            loader={<CircularProgress key={0} aria-label="Loading..." />}
+                        >
+                            {getCourses().map(({ courseId, title, thumbnailId, description, creator }) => (
+                                <div className="flex gap-4" key={courseId}>
+                                    <InteractiveThumbnail isPressable className="min-w-60 w-60 h-fit" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
+                                    <div className="flex-1">
+                                        <div className="text-lg"> {title} </div>
+                                        <div className="text-sm text-foreground-400 line-clamp-2"> {description} </div>
+                                        <Spacer y={4}/>
+                                        <div className="flex gap-4 h-10 items-center">
+                                            <User classNames={{
+                                                name: "text-base"
+                                            }} avatarProps={{
+                                                src: getAvatarUrl({
+                                                    avatarUrl: creator.avatarUrl,
+                                                    avatarId: creator.avatarId,
+                                                    kind: creator.kind
+                                                })
+                                            }} name={creator.username} description={"2 followers"}/>
+                                            <Divider orientation="vertical"/>
+                                            <Stars />
+                                        </div>
+                       
+                                    </div>           
+                                </div>
+                            ))}
+                        </InfiniteScroll>
+                    </Tab>
+
+                </Tabs>
+                
+                {/* {
                     viewType === "grid" ? (
                         <div>
                             <div className="grid grid-cols-3 gap-6">
@@ -114,7 +188,7 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                             ))}
                         </InfiniteScroll>
                     )
-                }
+                } */}
             </div>
         </div>
     )

@@ -153,7 +153,7 @@ const WrappedGeneralSectionProvider = ({
           formik.values.topicsPrevious.map(({ categoryId }) => categoryId)
       ) ||
     JSON.stringify(
-        formik.values.subcategories.map(({ categoryId }) => categoryId)
+        formik.values.subcategories.map((category) => category?.categoryId)
     ) !==
       JSON.stringify(
           formik.values.subcategoriesPrevious.map(
