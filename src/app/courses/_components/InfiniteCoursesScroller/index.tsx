@@ -77,7 +77,7 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                         <div>
                             <div className="grid grid-cols-3 gap-6">
                                 {getCourses().map((course)  => (
-                                    <div key={course.courseId}>
+                                    <div key={course.courseId} onClick={() => router.push(`/courses/${course.courseId}`)}>
                                         <CourseCard {...course}/>
 
                                     </div>

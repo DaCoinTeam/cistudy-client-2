@@ -12,12 +12,13 @@ export const Courses = () => {
 
     return (
         <div>
-            <div className="ms-8 text-2xl font-semibold "> High Rating Courses</div>
+            <div className="w-full text-center text-xl">Try our course</div>
+            <div className="ms-8 text-2xl font-semibold ">High Rating Courses</div>
             {highRatedCourses && (
                 <Carousel  courses={highRatedCourses} />
             )}
             <Spacer y={4}/>
-            <div className="ms-8 text-2xl font-semibold "> High Rating Courses</div>
+            <div className="ms-8 text-2xl font-semibold ">Newest Courses</div>
             {recentlyAddedCourses && (
                 <Carousel  courses={recentlyAddedCourses} />
 

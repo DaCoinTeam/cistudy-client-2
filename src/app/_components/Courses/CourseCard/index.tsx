@@ -1,7 +1,6 @@
 import { CourseEntity } from "@common"
 import { Card, CardBody, CardFooter, Divider, Image, User } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "../../../../services/server"
-import { useRouter } from "next/navigation"
 import { Stars } from "../../../_shared"
 
 export const CourseCard = (props: CourseEntity) => {
@@ -9,9 +8,8 @@ export const CourseCard = (props: CourseEntity) => {
     const { avatarId, avatarUrl, kind, username } = {
         ...creator,
     }
-    const router = useRouter()
     return (
-        <Card key={courseId} onClick={() => router.push(`/courses/${courseId}`)} className="w-full">
+        <Card key={courseId}  className="w-full hover:cursor-pointer">
             {thumbnailId && (
                 <Image
                     alt='course image'
