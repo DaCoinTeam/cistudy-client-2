@@ -55,7 +55,7 @@ const WrappedNavbar = (props: NavbarProps) => {
             }}>
                 <NavbarBrand>
                     <div className="font-semibold text-primary cursor-pointer"  onClick={() => router.push("/")}> 
-                        <span className="text-primary  dark:text-blue-900">
+                        <span className="text-primary dark:text-blue-900">
                         Ci
                         </span>
                         <span className="text-secondary">
