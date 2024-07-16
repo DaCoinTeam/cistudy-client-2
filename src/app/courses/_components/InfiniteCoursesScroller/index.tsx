@@ -55,10 +55,6 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                 <div>
                     
                 </div>
-                {/* <div className="flex flex-row gap-2 mb-4">
-                    <Grid3X3Icon size={30} className="cursor-pointer text-primary" onClick={() => setViewType("grid") } />
-                    <List size={30} className="cursor-pointer text-primary" onClick={() => setViewType("list")} />
-                </div> */}
             </div>
             <div>
                 <Tabs
@@ -77,7 +73,7 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                         <div>
                             <div className="grid grid-cols-3 gap-6">
                                 {getCourses().map((course)  => (
-                                    <div key={course.courseId} onClick={() => router.push(`/courses/${course.courseId}`)}>
+                                    <div key={course.courseId} >
                                         <CourseCard {...course}/>
 
                                     </div>
