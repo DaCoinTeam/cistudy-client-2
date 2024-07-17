@@ -80,9 +80,9 @@ const WrappedEditModalRefProvider = ({
 }
 
 export const EditModalRefProvider = ({
-    children,
+    children
 }: {
-  children: ReactNode;
+  children: ReactNode
 }) => {
     const { props } = useContext(MoreButtonContext)!
     const { section } = props

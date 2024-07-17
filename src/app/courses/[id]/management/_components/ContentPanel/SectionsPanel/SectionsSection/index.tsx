@@ -23,7 +23,10 @@ export const SectionsSection = (props: SectionsSectionProps) => {
     const { courseManagementSwr } = swrs
     const { data: courseManagement } = courseManagementSwr
     const handleSortSection = (sections: Array<SectionEntity>) => {
-        return sections.sort((prev: SectionEntity, next: SectionEntity) => Date.parse(prev.createdAt.toString()) - Date.parse(next.createdAt.toString()))
+        if(!sections) return []
+        return sections.sort((prev: SectionEntity, next: SectionEntity) => {
+            return new Date(prev.createdAt).getTime() - new Date(next.createdAt).getTime()
+        })
     }
 
     const renderSections = () => {
