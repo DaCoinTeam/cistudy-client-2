@@ -26,13 +26,14 @@ export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
 
     return (
         <div className={className}>
-            <div className="text-2xl">{title}</div>
+            <div className="text-2xl font-bold">{title}</div>
             <Spacer y={4} />
             <div className="justify-between flex items-center">
                 <div className="flex items-center gap-8">
                     <User
                         classNames={{
-                            name: "text-base",
+                            name: "text-base font-semibold",
+                            description: "font-semibold",
                         }}
                         name={username}
                         description={`${numberOfFollowers} followers`}
@@ -60,7 +61,7 @@ export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
                 </div>
                 <Spacer y={2}/>
                 <div className="text-sm">
-                    {description} 13 32 132 13 123 1222222222222222222222222222233333333333333333333333333333333 1222222222222222222222222222233333333333333333333333333333333 1222222222222222222222222222233333333333333333333333333333333
+                    {description? description : "No description available"}
                 </div>
             </div>
         </div>

@@ -38,7 +38,7 @@ export const AllCourseReviewsModal = () => {
             <Modal size='4xl' isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <>
-                        <ModalHeader className='flex flex-col gap-1'>Reviews</ModalHeader>
+                        <ModalHeader className='flex flex-col gap-1 font-bold'>Reviews</ModalHeader>
                         <ModalBody className="mb-4">
                             <CourseRatingChart />
                             <Spacer y={4}/>

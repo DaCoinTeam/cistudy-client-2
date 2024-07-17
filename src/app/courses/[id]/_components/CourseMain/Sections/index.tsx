@@ -13,7 +13,7 @@ export const Sections = () => {
 
     return (
         <div>
-            <div className="text-2xl">Sections</div>
+            <div className="text-2xl font-bold">Sections</div>
             <Spacer y={4}/>
             <div className="border border-divider rounded-medium">
                 <Accordion
@@ -28,6 +28,10 @@ export const Sections = () => {
                         ? sections.map(({ sectionId, title, lessons }) => (
                             <AccordionItem
                                 key={sectionId}
+                                classNames={{
+                                    title: "text-lg font-bold text-primary",
+                                    subtitle: "font-semibold",
+                                }}
                                 aria-label="Sections"
                                 subtitle={
                                     `${lessons.length} lessons`
@@ -38,13 +42,13 @@ export const Sections = () => {
                                     <div key={lessonId} className="flex gap-3">
                                         <InteractiveThumbnail isPressable src={getAssetUrl(thumbnailId)} className="w-40 h-fit" />
                                         <div>
-                                            <div>
+                                            <div className="font-bold text-primary">
                                                 {title}
                                             </div>
-                                            <div className="text-xs text-foreground-400">
+                                            <div className="text-xs font-semibold text-foreground-400">
                                                 15m
                                             </div>
-                                            <div className="text-xs text-foreground-400">
+                                            <div className="text-xs font-semibold text-foreground-400">
                                                 {description}
                                             </div>
                                         </div>

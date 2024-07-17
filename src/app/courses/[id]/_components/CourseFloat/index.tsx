@@ -114,7 +114,7 @@ export const CourseFloat = () => {
 
     const renderDiscountPercentage = () => {
         if (!discountPrice || !price) return 0
-        return 100 - computePercentage(discountPrice, price)
+        return (100 - computePercentage(discountPrice, price)).toFixed(2)
     }
     const renderPrice = () => {
         if (isLoading) return null
@@ -126,11 +126,11 @@ export const CourseFloat = () => {
             <div>
                 <div className="flex gap-2 items-center">
                     <div className="text-3xl font-semibold">{discountPrice} STARCI</div>
-                    <div className="line-through text-foreground-400 text-sm">
+                    <div className="line-through font-semibold text-foreground-400 text-sm">
                         {price} STARCI
                     </div>
                 </div>
-                <div className="text-sm">{renderDiscountPercentage()}% off</div>
+                <div className="text-sm font-semibold">{renderDiscountPercentage()}% off</div>
             </div>
         )
     }
@@ -155,16 +155,16 @@ export const CourseFloat = () => {
                 <div>{renderPrice()}</div>
                 <Spacer y={4} />
                 <div>
-                    <div className="text-sm">This course included</div>
+                    <div className="text-sm font-semibold">This course included</div>
                     <Spacer y={2} />
                     <div className="flex text-foreground-400 flex-col gap-2">
                         <div className="flex gap-2">
                             <PlaySquareIcon size={20} strokeWidth={3 / 2} />
-                            <div className="text-sm"> 4 lessons</div>
+                            <div className="text- font-semibold"> 4 lessons</div>
                         </div>
                         <div className="flex text-foreground-400 gap-2">
                             <FolderOpenIcon size={20} strokeWidth={3 / 2} />
-                            <div className="text-sm"> 7 downloadable resources </div>
+                            <div className="text-base font-semibold"> 7 downloadable resources </div>
                         </div>
                     </div>
                 </div>
@@ -173,6 +173,7 @@ export const CourseFloat = () => {
                 {enrolled ? (
                     <Button
                         color="secondary"
+                        className="font-semibold"
                         onPress={onEnterCoursePress}
                         startContent={
                             <ArrowRightEndOnRectangleIcon height={20} width={20} />
@@ -191,6 +192,7 @@ export const CourseFloat = () => {
                                     strokeWidth={3 / 2}
                                 />
                             }
+                            className="font-semibold"
                             onPress={onEnrollPress}
                             color="secondary"
                             fullWidth
@@ -199,6 +201,7 @@ export const CourseFloat = () => {
                         </Button>
                         <Button
                             color="secondary"
+                            className="font-semibold"
                             variant="light"
                             startContent={<ShoppingCartIcon height={20} width={20} />}
                             fullWidth

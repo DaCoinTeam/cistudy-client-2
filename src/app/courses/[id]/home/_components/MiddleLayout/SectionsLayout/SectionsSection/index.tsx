@@ -24,6 +24,8 @@ export const SectionsSection = (props: SectionsSectionProps) => {
                 key={sectionId}
                 classNames={{
                     content: "flex flex-col gap-4 py-4",
+                    title: "text-lg font-bold text-primary",
+                    subtitle: "font-semibold",
                 }}
                 title={title}
                 subtitle={`${lessons.length} lessons`}

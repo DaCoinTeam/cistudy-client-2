@@ -125,6 +125,7 @@ export interface CourseEntity {
   receivedWalletAddress?: string;
   courseRate: number;
   courseRatings: CourseRatingDTO;
+  duration: number;
   //graphql
   numberOfEnrollments?: number;
   enrolled?: boolean;
@@ -164,14 +165,85 @@ export interface LessonEntity {
   thumbnailId?: string;
   lessonVideoId?: string;
   sectionId: string;
+  accountProgresses: ProgressEntity;
   processStatus: ProcessStatus;
   videoType: VideoType;
   createdAt: Date;
   updatedAt: Date;
   section: SectionEntity;
+  quiz: QuizEntity;
   resources: Array<ResourceEntity>;
   numberOfViews: number;
   description: string;
+}
+
+export interface ProgressEntity {
+  progressId: string
+  account: AccountEntity
+  accountId: string
+  isCompleted: boolean
+  lesson: LessonEntity
+  lessonId: string
+}
+
+export interface QuizEntity {
+  quizId: string
+  timeLimit: number
+  createdAt: Date
+  updatedAt: Date
+  lesson: LessonEntity
+  highestScoreRecorded: number
+  totalNumberOfAttempts: number
+  lastAttemptScore: number
+  questions: Array<QuizQuestionEntity>
+  quizAttempts: QuizAttemptEntity
+}
+
+export interface QuizQuestionEntity {
+  quizQuestionId: string
+  quizId: string
+  quiz: QuizEntity
+  createdAt: Date
+  updatedAt: Date
+  question: string
+  point: number
+  answers: Array<QuizQuestionAnswerEntity>
+  questionMedias: Array<QuizQuestionMediaEntity>
+}
+
+export interface QuizQuestionAnswerEntity {
+  quizQuestionAnswerId: string
+  quizQuestionId: string
+  quizQuestion: QuizQuestionEntity
+  createdAt: Date
+  updatedAt: Date
+  content: string
+  isCorrect: boolean
+  attempt: QuizAttemptEntity
+}
+
+export interface QuizAttemptEntity {
+  quizAttemptId: string
+  quizId: string
+  score: number
+  account: AccountEntity
+  accountId: string
+  attemptStatus: string
+  createdAt: Date
+  updatedAt: Date
+  quiz: QuizEntity
+  questionAnswers: Array<QuizQuestionAnswerEntity>
+}
+
+export interface QuizQuestionMediaEntity {
+  quizQuestionMediaId: string
+  quizQuestionId: string
+  quizQuestion: QuizQuestionEntity
+  mediaId: string
+  mediaType: MediaType
+  position: number
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface PostCommentLikeEntity {

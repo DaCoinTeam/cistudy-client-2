@@ -86,7 +86,7 @@ export const Menu = (props: MenuProps) => {
                 {items.map(({ key, startContent, panelSelected, content }) => (
                     <ListboxItem
                         classNames={{
-                            title: "text-base",
+                            title: "text-base font-bold",
                             base: `items-center rounded-none text-foreground-400 !p-3 !bg-transparent ${isSelected(
                                 panelSelected
                             )}`,

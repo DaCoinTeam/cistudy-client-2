@@ -43,6 +43,8 @@ export const SectionsCard = (props: SectionsCardProps) => {
         setSelectedKeys(new Set(values))
     }
 
+    console.log(lesson)
+
     const renderSections = () => {
         if (!sections) return []
         return sections.map(({ sectionId, title, lessons }) => (
@@ -50,6 +52,8 @@ export const SectionsCard = (props: SectionsCardProps) => {
                 key={sectionId}
                 classNames={{
                     content: "flex flex-col pt-0 pb-2",
+                    title: "font-bold text-primary",
+                    subtitle: "font-semibold text-sm",
                     trigger: "!px-4"
                 }}
                 title={title}
@@ -64,7 +68,7 @@ export const SectionsCard = (props: SectionsCardProps) => {
 
     return (
         <Card shadow="none" className={`${className} rounded-medium bg-transparent border border-divider`}>
-            <CardHeader className="text-xl p-4 pb-4 font-semibold"> Sections </CardHeader>
+            <CardHeader className="text-xl p-4 pb-4 font-bold"> Sections </CardHeader>
             <Divider/>
             <CardBody className="p-0">
                 <ScrollShadow className="h-full">
