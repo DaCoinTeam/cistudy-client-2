@@ -18,20 +18,10 @@ const WrappedCourseReview = () => {
     const { courseSwr } = courseDetailSwrs
     const { data: course } = courseSwr
     const { enrolled, courseRatings } = { ...course }
-    const {
-        numberOf1StarRatings,
-        numberOf2StarRatings,
-        numberOf3StarRatings,
-        numberOf4StarRatings,
-        numberOf5StarRatings,
-        overallCourseRating,
+    const {overallCourseRating,
+        totalNumberOfRatings
     } = { ...courseRatings }
-    const totalRating =
-    numberOf1StarRatings! +
-    numberOf2StarRatings! +
-    numberOf3StarRatings! +
-    numberOf4StarRatings! +
-    numberOf5StarRatings!
+
     const getReviews = () => {
         if (!data) return []
         const reviewsReturn: Array<CourseReviewEntity> = []
@@ -61,7 +51,7 @@ const WrappedCourseReview = () => {
                 </p>
             </div>
             <p className='text-sm font-medium text-gray-500 dark:text-gray-400'>
-                {totalRating} ratings
+                {totalNumberOfRatings} ratings
             </p>
             <Spacer y={2} />
             {enrolled && <ReviewInput />}

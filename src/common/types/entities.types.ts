@@ -146,6 +146,7 @@ export interface CourseRatingDTO {
   numberOf4StarRatings: number;
   numberOf5StarRatings: number;
   overallCourseRating: number;
+  totalNumberOfRatings: number;
 }
 
 export interface EnrolledInfoEntity {

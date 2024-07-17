@@ -75,8 +75,8 @@ export const findOneCourseAuth = async (
 
 export interface FindManyCoursesInputData {
   options?: {
-    take?: number;
-    skip?: number;
+    take?: number | null;
+    skip?: number | null;
     searchValue?: string;
     categoryId?: string;
   };

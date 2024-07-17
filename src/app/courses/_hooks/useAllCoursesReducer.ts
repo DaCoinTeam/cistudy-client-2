@@ -1,18 +1,25 @@
-import { useReducer } from "react"
+import React, { useReducer } from "react"
 
 export interface AllCoursesState {
-    searchValue: string
+    searchValue: string,
+    viewType: React.Key
 }
 
+export interface ViewTypeAction {
+    type: "SET_VIEW_TYPE"
+    payload: React.Key
+
+}
 export interface SearchAction {
     type: "SET_SEARCH_VALUE"
     payload: string
   }
 
-export type AllCoursesAction = SearchAction;
+export type AllCoursesAction = SearchAction | ViewTypeAction;
 
 export const state: AllCoursesState = {
-    searchValue: ""
+    searchValue: "",
+    viewType: "grid",
 }
 
 export const reducer = (
@@ -22,6 +29,8 @@ export const reducer = (
     switch (action.type) {
     case "SET_SEARCH_VALUE":
         return { ...state, searchValue: action.payload }
+    case "SET_VIEW_TYPE":
+        return { ...state, viewType: action.payload }
     default:
         return state
     }

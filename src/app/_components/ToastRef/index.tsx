@@ -31,7 +31,7 @@ export const ToastRef = forwardRef<ToastRefSelectors>((_, ref) => {
         let content: JSX.Element
         switch (params.type) {
         case ToastType.Earn:
-            content = <div> Earned {params.data.earnAmount} STARCI2 </div>
+            content = <div> Earned {params.data.earnAmount} STARCI </div>
             toast.success(content)
             break
         case ToastType.Error:

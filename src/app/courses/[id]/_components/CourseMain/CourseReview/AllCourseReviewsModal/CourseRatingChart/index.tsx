@@ -13,16 +13,12 @@ export const CourseRatingChart = () => {
         numberOf4StarRatings,
         numberOf5StarRatings,
         overallCourseRating,
+        totalNumberOfRatings
     } = { ...courseRatings }
-    const totalRating =
-    numberOf1StarRatings! +
-    numberOf2StarRatings! +
-    numberOf3StarRatings! +
-    numberOf4StarRatings! +
-    numberOf5StarRatings!
+
     const caculatePercentage = (rating: number) => {
-        const precent =  (rating / totalRating) * 100
-        console.log("percent", precent)
+        if(totalNumberOfRatings === 0) return "0%"
+        const precent =  (rating / totalNumberOfRatings!) * 100
         return precent.toString() + "%"
     }
 
@@ -41,7 +37,7 @@ export const CourseRatingChart = () => {
                 </p>
             </div>
             <p className='text-sm font-medium text-gray-500 dark:text-gray-400'>
-                {totalRating} ratings
+                {totalNumberOfRatings} ratings
             </p>
             <div className='flex items-center mt-4'>
                 <a
