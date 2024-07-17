@@ -39,7 +39,7 @@ const WrappedFormikProvider = ({
     <DepositModalContext.Provider
         value={{ formik, discloresures: { baseDiscloresure } }}
     >
-        <Form onSubmit={formik.handleSubmit}>{children}</Form>
+        <Form className="w-full" onSubmit={formik.handleSubmit}>{children}</Form>
     </DepositModalContext.Provider>
 )
 

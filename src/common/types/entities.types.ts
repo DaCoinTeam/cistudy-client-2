@@ -42,6 +42,7 @@ export interface RoleEntity {
   isDisabled: boolean;
   updatedAt: Date;
 }
+
 export interface AccountEntity {
   accountId: string;
   email: string;

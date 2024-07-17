@@ -36,7 +36,7 @@ const config: Config = {
                 },
                 dark: {
                     colors: {
-                        primary: "rgb(3,4,94)",
+                        primary: "rgb(0,2,161)",
                         secondary: "rgb(162,221,65)",
                         success: "rgb(74, 222, 123)",
                     },

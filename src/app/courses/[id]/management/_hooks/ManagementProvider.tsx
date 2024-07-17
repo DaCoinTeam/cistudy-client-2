@@ -58,6 +58,7 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                 sections: {
                     sectionId: true,
                     title: true,
+                    createdAt: true,
                     lessons: {
                         lessonId: true,
                         thumbnailId: true,
@@ -68,6 +69,7 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                             name: true,
                             fileId: true,
                         },
+                        createdAt: true
                     },
                 },
                 courseCategories:{
@@ -87,6 +89,7 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                     username: true
                 },
                 numberOfEnrollments: true,
+                createdAt: true,
             }
         )
     }, [courseId])

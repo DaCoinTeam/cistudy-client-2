@@ -3,8 +3,8 @@ import { ErrorResponse, LessonEntity, SectionEntity } from "@common"
 import { findManyLessons } from "@services"
 
 import useSWR, { SWRConfig, SWRResponse } from "swr"
-import { LessonItem } from "./LessonItem";
-import { AddLessonItem } from "./AddLessonItem";
+import { LessonItem } from "./LessonItem"
+import { AddLessonItem } from "./AddLessonItem"
 
 interface SectionItemProps {
   section: SectionEntity;
@@ -59,11 +59,17 @@ const WrappedSectionItem = (props: SectionItemProps) => {
         }),
         [props, lessonsSwr]
     )
+    const handleSortLesson = (lessons: Array<LessonEntity>) => {
+        if (!lessons) return []
+        return lessons.sort((prev: LessonEntity, next: LessonEntity) => {
+            return new Date(prev.createdAt).getTime() - new Date(next.createdAt).getTime()
+        })
+    }
 
     return (
         <SectionItemContext.Provider value={sectionItemContextValue}>
             <>
-                {lessonsSwr.data?.map((lesson) => (
+                {lessonsSwr.data && handleSortLesson(lessonsSwr.data)?.map((lesson) => (
                     <LessonItem key={lesson.lessonId} lesson={lesson} />
                 ))}
                 <AddLessonItem key="addLesson" />

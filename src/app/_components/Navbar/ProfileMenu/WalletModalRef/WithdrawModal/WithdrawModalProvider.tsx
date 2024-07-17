@@ -58,7 +58,7 @@ const WrappedFormikProvider = ({
             swrs: { withdrawSwrMutation },
         }}
     >
-        <Form onSubmit={formik.handleSubmit}>{children}</Form>
+        <Form className="w-full" onSubmit={formik.handleSubmit}>{children}</Form>
     </WithdrawModalContext.Provider>
 )
 

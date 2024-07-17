@@ -1,36 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import {
+    AccountEntity,
+    Disclosure,
+    ErrorResponse,
+    generateClientId,
+} from "@common"
+import { useDisclosure } from "@nextui-org/react"
+import { HighlightDTO, init, initLandingPage } from "@services"
+import { Formik, FormikProps } from "formik"
+import { useRouter } from "next/navigation"
+import React, {
     ReactNode,
     createContext,
     forwardRef,
     useCallback,
     useEffect,
-    useImperativeHandle,
     useMemo,
-    useRef,
+    useRef
 } from "react"
-import React from "react"
-import {
-    Disclosure,
-    ErrorResponse,
-    AccountEntity,
-    generateClientId,
-} from "@common"
-import { FindManyCoursesOutputData, findManyCourses, init } from "@services"
-import useSWR, { SWRResponse } from "swr"
-import { RootAction, RootState, useRootReducer } from "./useRootReducer"
-import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
-import { Formik, FormikProps } from "formik"
-import { useRouter } from "next/navigation"
-import { useDisclosure } from "@nextui-org/react"
-import { useSocketClient } from "./useSocketClient"
 import { Socket } from "socket.io-client"
+import useSWR, { SWRResponse } from "swr"
 import { NotifyFn, ToastRef, ToastRefSelectors } from "../_components"
+import { RootAction, RootState, useRootReducer } from "./useRootReducer"
+import { useSocketClient } from "./useSocketClient"
 
 interface FormikValues {
   searchValue: string;
 }
+
 
 const initialValues: FormikValues = {
     searchValue: "",
@@ -39,7 +37,7 @@ const initialValues: FormikValues = {
 interface RootContextValue {
   swrs: {
     profileSwr: SWRResponse<AccountEntity | null, ErrorResponse>;
-    coursesSwr: SWRInfiniteResponse<FindManyCoursesOutputData, ErrorResponse>;
+    highlightSwr: SWRResponse<HighlightDTO | null, ErrorResponse>;
   };
   formik: FormikProps<FormikValues>;
   reducer: [RootState, React.Dispatch<RootAction>];
@@ -52,7 +50,6 @@ interface RootContextValue {
 
 export const RootContext = createContext<RootContextValue | null>(null)
 
-export const COLUMNS_PER_PAGE = 5
 
 interface WrappedRootProviderSelectors {
   mutate: any;
@@ -61,7 +58,7 @@ interface WrappedRootProviderSelectors {
 const WrappedRootProvider = forwardRef<
   WrappedRootProviderSelectors,
   { children: ReactNode; formik: FormikProps<FormikValues> }
->((props, ref) => {
+>((props) => {
     const reducer = useRootReducer()
     const { children, formik } = props
 
@@ -91,65 +88,76 @@ const WrappedRootProvider = forwardRef<
         }
     }, [])
 
-    const fetchCourses = useCallback(
-        async ([key]: [number, string]) => {
-            return await findManyCourses(
-                {
-                    options: {
-                        searchValue: "",
-                        skip: COLUMNS_PER_PAGE * key,
-                        take: COLUMNS_PER_PAGE,
-                    },
-                },
-                {
-                    results: {
-                        courseId: true,
-                        title: true,
-                        creator: {
-                            avatarId: true,
-                            username: true,
-                            avatarUrl: true,
-                            kind: true,
-                        },
-                        thumbnailId: true,
-                        description: true,
-                        price: true,
-                    },
-                    metadata: {
-                        count: true,
-                        categories: {
-                            categoryId: true,
-                            name: true,
-                        },
-                        highRateCourses: {
-                            courseId: true,
-                            title: true,
-                            creator: {
-                                avatarId: true,
-                                username: true,
-                                avatarUrl: true,
-                                kind: true,
-                            },
-                            thumbnailId: true,
-                            description: true,
-                            price: true,
-                        },
-                    },
-                }
-            )
-        },
-        [reducer]
-    )
+   
 
     const profileSwr = useSWR(["PROFILE"], fetchProfile)
 
-    const coursesSwr = useSWRInfinite((key) => [key, "COURSES"], fetchCourses, {
-        revalidateFirstPage: false,
-    })
+    const fetchHighlight = useCallback(async () => {
+        try {
+            return await initLandingPage({
+                totalNumberOfVerifiedAccounts: true,
+                totalNumberOfAvailableCourses: true, 
+                totalNumberOfPosts: true,
+                highRatedCourses: {
+                    courseId: true,
+                    price: true,
+                    title: true,
+                    description: true,
+                    courseRatings: {
+                        overallCourseRating: true
+                    },
+                    creator: {
+                        accountId: true,
+                        username: true, 
+                        email: true,
+                        avatarId: true,
+                        avatarUrl: true
+                    }
+                },
+                mostEnrolledCourses: {
+                    courseId: true,
+                    price: true,
+                    title: true,
+                    description: true,
+                    courseRatings: {
+                        overallCourseRating: true
+                    },
+                    creator: {
+                        accountId: true,
+                        username: true, 
+                        email: true,
+                        avatarId: true,
+                        avatarUrl: true
+                    }
+                },
+                recentlyAddedCourses: {
+                    courseId: true,
+                    price: true,
+                    title: true,
+                    description: true,
+                    courseRatings: {
+                        overallCourseRating: true
+                    },
+                    creator: {
+                        accountId: true,
+                        username: true, 
+                        email: true,
+                        avatarId: true,
+                        avatarUrl: true
+                    }
+                },
+            })
+        } catch (ex) {
+            // console.log(ex)
+            return null
+        }
+    }, [])
+    const highlightSwr = useSWR(["HIGHLIGHT"], fetchHighlight)
 
-    useImperativeHandle(ref, () => ({
-        mutate: coursesSwr.mutate,
-    }))
+
+    // useImperativeHandle(ref, () => ({
+    //     mutate: coursesSwr.mutate,
+    // }))
 
     useEffect(() => {
         generateClientId()
@@ -161,7 +169,7 @@ const WrappedRootProvider = forwardRef<
         () => ({
             swrs: {
                 profileSwr,
-                coursesSwr,
+                highlightSwr
             },
             formik,
             reducer,
@@ -171,7 +179,7 @@ const WrappedRootProvider = forwardRef<
             socket,
             notify: toastRef.current?.notify,
         }),
-        [profileSwr, coursesSwr, reducer, notConnectWalletModalDisclosure, socket]
+        [profileSwr, reducer, notConnectWalletModalDisclosure, socket]
     )
 
     return (

@@ -1,25 +1,25 @@
+import { Key } from "@common"
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import {
     Autocomplete,
     AutocompleteItem,
     Button,
     Chip,
+    Image,
     Input,
     Select,
+    Selection,
     SelectItem,
     Spacer,
     Textarea,
-    Selection,
-    Image,
 } from "@nextui-org/react"
-import React, { useCallback, useContext } from "react"
-import {
-    GeneralSectionProvider,
-    GeneralSectionContext,
-} from "./GeneralSectionProvider"
-import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
-import { CategoryEntity, Key } from "@common"
-import useSWR from "swr"
 import { findManyCategories, getAssetUrl } from "@services"
+import { useCallback, useContext } from "react"
+import useSWR from "swr"
+import {
+    GeneralSectionContext,
+    GeneralSectionProvider,
+} from "./GeneralSectionProvider"
 
 interface GeneralSectionProps {
   className?: string;
@@ -72,9 +72,9 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
     const onSubcategoryChange = (selection: Selection) =>
         formik.setFieldValue(
             "subcategories",
-            Array.from(selection).map((subcategoryId) =>
+            Array.from(selection).map((catgoryId) =>
                 subcategories.find(
-                    (subcategory) => subcategoryId === subcategory.categoryId
+                    (subcategory) => catgoryId === subcategory.categoryId
                 )
             )
         )
@@ -82,18 +82,22 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
     const getTopics = () => {
         if (!formik.values.subcategories.length) return []
         const topics = formik.values.subcategories.flatMap((subcategory) =>
-            subcategory.categoryParentRelations.flatMap(({ category }) => category)
+            subcategory?.categoryParentRelations?.flatMap(({ category }) => category)
         )
-        return topics.reduce((prevs: Array<CategoryEntity>, next) => {
-            if (!prevs.some(({ categoryId }) => categoryId === next.categoryId)) {
-                prevs.push(next)
-            }
-            return prevs
-        }, [])
-    }
+        return topics
 
+        // return topics.reduce((prevs: Array<CategoryEntity>, next) => {
+        //     if (!prevs.some(({ categoryId }) => categoryId === next.categoryId)) {
+        //         prevs.push(next)
+        //     }
+        //     console.log("prevs", prevs)
+        //     return prevs
+        // }, [])
+
+    }
+    
     const onTopicChange = (key: Key | null) => {
-        const topic = getTopics().find(({ categoryId }) => categoryId === key)
+        const topic = getTopics().find((category) => category?.categoryId === key)
         if (!topic) return
         addTopic(topic)
         formik.setFieldValue("topicInputValue", "")
@@ -166,8 +170,8 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 placeholder='Select subcategory'
                 labelPlacement='outside'
                 items={subcategories}
-                selectedKeys={formik.values.subcategories.map(
-                    ({ categoryId }) => categoryId
+                selectedKeys={formik.values.subcategories?.map(
+                    (category) =>  category?.categoryId
                 )}
                 onSelectionChange={onSubcategoryChange}
             >
@@ -246,7 +250,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 <Button
                     isDisabled={!hasChanged()}
                     type='submit'
-                    color='primary'
+                    color='secondary'
                     startContent={<CheckIcon height={20} width={20} />}
                 >
           Save

@@ -10,6 +10,7 @@ import { AddSectionItem } from "./AddSectionItem"
 import { ManagementContext } from "../../../../_hooks"
 import { SectionItem } from "./SectionItem"
 import { MoreButton } from "./MoreButton"
+import { SectionEntity } from "@common"
 
 interface SectionsSectionProps {
     className?: string
@@ -21,10 +22,18 @@ export const SectionsSection = (props: SectionsSectionProps) => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data: courseManagement } = courseManagementSwr
+    const handleSortSection = (sections: Array<SectionEntity>) => {
+        if(!sections) return []
+        return sections.sort((prev: SectionEntity, next: SectionEntity) => {
+            return new Date(prev.createdAt).getTime() - new Date(next.createdAt).getTime()
+        })
+    }
 
     const renderSections = () => {
         if (!courseManagement) return []
-        const { sections } = courseManagement
+        let { sections } = courseManagement
+        sections = handleSortSection(sections)
+        
 
         return (
             <Accordion

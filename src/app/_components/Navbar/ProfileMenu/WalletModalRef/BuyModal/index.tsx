@@ -1,0 +1,129 @@
+import React, { useContext } from "react"
+import {
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    Button,
+    Input,
+    Spacer,
+    Tooltip,
+    ModalFooter,
+} from "@nextui-org/react"
+import { BuyModalContext, BuyModalProvider } from "./BuyModalProvider"
+import numeral from "numeral"
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
+import { captureOrder, createOrder } from "@services"
+
+const WrappedBuyModal = () => {
+    const { discloresures, formik } = useContext(BuyModalContext)!
+    const { baseDiscloresure } = discloresures
+    const { isOpen, onOpenChange, onOpen } = baseDiscloresure
+    // const { createOrderMutation } = swrs
+
+    const price = Number.parseFloat(
+        numeral(formik.values.buyAmount).format("0.00")
+    )
+    console.log(formik.values.buyAmount)
+
+    return (
+        <>
+            <Button fullWidth className="flex-1" onPress={onOpen}>
+        Buy
+            </Button>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                    <ModalHeader className="p-4 pb-2">Buy</ModalHeader>
+                    <ModalBody className="p-4">
+                        <div>
+                            <Input
+                                label="Buy Amount"
+                                id="buyAmount"
+                                isRequired
+                                classNames={{
+                                    inputWrapper: "input-input-wrapper",
+                                }}
+                                labelPlacement="outside"
+                                placeholder="Input deposit amount here"
+                                value={formik.values.buyAmount.toString()}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                isInvalid={
+                                    !!(formik.touched.buyAmount && formik.errors.buyAmount)
+                                }
+                                errorMessage={
+                                    formik.touched.buyAmount && formik.errors.buyAmount
+                                }
+                                endContent={
+                                    <div className="text-sm text-foreground-400">STARCI</div>
+                                }
+                            />
+                            <Spacer y={4} />
+                            <div>
+                                <div className="text-primary text-lg font-semibold"></div>
+                                <Spacer y={2} />
+                                <div className="flex gap-1 items-center text-primary font-semibold">
+                                    <div>Price: {price} USD</div>
+                                    <Tooltip content="1 STARCI = 1 USD">
+                                        <QuestionMarkCircleIcon className="w-4 h-4 text-primary" />
+                                    </Tooltip>
+                                </div>
+                            </div>
+                        </div>
+                    </ModalBody>
+                    <ModalFooter className="p-4 pt-2 flex flex-col">
+                        <div className="w-full">
+                            <PayPalScriptProvider
+                                options={{
+                                    clientId: process.env.NEXT_PUBLIC_PAYPAL_API_KEY ?? "test",
+                                    currency: "USD",
+                                    intent: "capture",
+                                }}
+                            >
+                                <PayPalButtons
+                                    style={{
+                                        shape: "rect",
+                                        layout: "horizontal",
+                                        color: "gold",
+                                        label: "paypal",
+                                    }}
+                                    forceReRender={[formik.values.buyAmount]}
+                                    createOrder={async () => {
+
+                                        const { others } = await createOrder({
+                                            data: {
+                                                amount: formik.values.buyAmount,
+                                                isSandbox: true,
+                                            },
+                                        })
+
+                                        const { orderId } = others
+                                        return orderId
+                                    }}
+                                    onApprove={async (data) => {
+                                        const { message } = await captureOrder({
+                                            data: {
+                                                orderId: data.orderID,
+                                                isSandbox: true,
+                                            },
+                                        })
+                                        console.log(message)
+                                    }} 
+                                />
+                            </PayPalScriptProvider>
+                        </div>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
+    )
+}
+
+export const BuyModal = () => {
+    return (
+        <BuyModalProvider>
+            <WrappedBuyModal />
+        </BuyModalProvider>
+    )
+}

@@ -1,23 +1,24 @@
 "use client"
-import React, { useContext } from "react"
-import { RootContext } from "../../../_hooks"
 import { CourseEntity } from "@common"
-import { COLUMNS_PER_PAGE } from "../../../_hooks"
-import InfiniteScroll from "react-infinite-scroller"
-import { Card, CardBody, CardFooter, CardHeader, CircularProgress, Divider, Spacer, User } from "@nextui-org/react"
-import { InteractiveThumbnail, Stars } from "../../../_shared"
+import { CircularProgress, Divider, Pagination, Spacer, Tab, Tabs, User } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "@services"
+import { Grid3X3Icon, List } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { ArrowUpDown, Grid3X3Icon, List } from "lucide-react"
+import React, { useContext } from "react"
+import InfiniteScroll from "react-infinite-scroller"
+import { CourseCard } from "../../../_components/Courses/CourseCard"
+import { InteractiveThumbnail, Stars } from "../../../_shared"
+import { AllCoursesContext, COLUMNS_PER_PAGE } from "../../_hooks"
 
 interface InfiniteCoursesScrollerProps {
     className?: string
 }
 
 export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => {
-    const [viewType, setViewType] = React.useState<"grid" | "list">("list")
+    const [viewType, setViewType] = React.useState<React.Key>("grid")
+    
     const { className } = props
-    const { swrs } = useContext(RootContext)!
+    const { swrs } = useContext(AllCoursesContext)!
     const { coursesSwr } = swrs
     const { data, size, setSize, isValidating } = coursesSwr
     console.log("data", data)
@@ -54,25 +55,60 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                 <div>
                     
                 </div>
-                <div className="flex flex-row gap-2 mb-4">
-                    <List size={30} className="cursor-pointer text-primary" onClick={() => setViewType("list")} />
-                    <Grid3X3Icon size={30} className="cursor-pointer text-primary" onClick={() => setViewType("grid") } />
-                </div>
             </div>
             <div>
-                {
-                    viewType === "grid" ? (
-                        <div className="grid grid-cols-3 gap-6">
+                <Tabs
+                    size="md"
+                    aria-label="Tabs"
+                    selectedKey={viewType.toString()}
+                    onSelectionChange={setViewType}
+                    variant="underlined"
+                >
+                    <Tab key="grid"  
+                        title={
+                            <div className="flex items-center space-x-2">
+                                <Grid3X3Icon size={20} className="cursor-pointer text-primary" onClick={() => setViewType("grid") } />
+                                <span>Grid</span>
+                            </div>
+                        }>
+                        <div>
+                            <div className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-6">
+                                {getCourses().map((course)  => (
+                                    <div key={course.courseId}  >
+                                        <CourseCard {...course}/>
+
+                                    </div>
+                                ))}
+
+
+                            </div>
+                            <div className="mt-16">
+                                <Pagination total={getPages()} initialPage={size} color="secondary" />
+                            </div>
+
+                        </div>
+                    </Tab>
+                    <Tab key="list" title={
+                        <div className="flex items-center space-x-2">
+                            <List size={20} className="cursor-pointer text-primary" onClick={() => setViewType("list")} />
+                            <span>List</span>
+                        </div>
+                    }>
+                        <InfiniteScroll
+                            className="flex flex-col gap-6"
+                            pageStart={0}
+                            initialLoad={false}
+                            loadMore={onLoadMore}
+                            hasMore={size < getPages() && !isValidating}
+                            loader={<CircularProgress key={0} aria-label="Loading..." />}
+                        >
                             {getCourses().map(({ courseId, title, thumbnailId, description, creator }) => (
-                                <Card key={courseId} className="w-full">
-                                    <InteractiveThumbnail isPressable className="h-60" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
-                                    <CardHeader>
+                                <div className="flex gap-4" key={courseId}>
+                                    <InteractiveThumbnail isPressable className="min-w-60 w-60 h-fit" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
+                                    <div className="flex-1">
                                         <div className="text-lg"> {title} </div>
-                                    </CardHeader>
-                                    <CardBody>
                                         <div className="text-sm text-foreground-400 line-clamp-2"> {description} </div>
-                                    </CardBody>
-                                    <CardFooter>
+                                        <Spacer y={4}/>
                                         <div className="flex gap-4 h-10 items-center">
                                             <User classNames={{
                                                 name: "text-base"
@@ -86,10 +122,34 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                                             <Divider orientation="vertical"/>
                                             <Stars />
                                         </div>
-                                    </CardFooter>
-                                </Card>
+                       
+                                    </div>           
+                                </div>
                             ))}
+                        </InfiniteScroll>
+                    </Tab>
+
+                </Tabs>
+                
+                {/* {
+                    viewType === "grid" ? (
+                        <div>
+                            <div className="grid grid-cols-3 gap-6">
+                                {getCourses().map((course)  => (
+                                    <div key={course.courseId}>
+                                        <CourseCard {...course}/>
+
+                                    </div>
+                                ))}
+
+
+                            </div>
+                            <div className="mt-12">
+                                <Pagination total={10} initialPage={size} color="secondary" />
+                            </div>
+
                         </div>
+                       
                     ) : (
                         <InfiniteScroll
                             className="flex flex-col gap-6"
@@ -125,7 +185,7 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                             ))}
                         </InfiniteScroll>
                     )
-                }
+                } */}
             </div>
         </div>
     )

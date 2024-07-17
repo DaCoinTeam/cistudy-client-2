@@ -20,7 +20,7 @@ export const PreviewSection = (props: PreviewSectionProps) => {
                     panel: "p-0 pt-4",
                 }}
                 variant="underlined"
-                color="secondary"
+                color="primary"
             >
                 <Tab
                     key="video"
