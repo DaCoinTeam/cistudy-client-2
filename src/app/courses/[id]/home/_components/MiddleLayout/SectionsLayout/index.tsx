@@ -9,7 +9,7 @@ export const SectionsLayout = (props: SectionsLayoutProps) => {
     const { className } = props
     return (
         <div className={`${className}`}>
-            <div className="text-2xl"> Sections </div>
+            <div className="text-2xl font-bold"> Sections </div>
             <Spacer y={4}/>
             <SectionsSection/>
         </div>

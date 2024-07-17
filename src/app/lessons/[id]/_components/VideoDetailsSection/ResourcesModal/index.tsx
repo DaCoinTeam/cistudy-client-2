@@ -28,7 +28,7 @@ export const ResourcesModal = (props: ResourcesModalProps) => {
     return (
         <>
             <Button
-                className={`${className} bg-content2`}
+                className={`${className} bg-content2 font-semibold`}
                 onPress={onOpen}
                 startContent={<FolderIcon size={20} strokeWidth={3 / 2} />}
             >

@@ -161,6 +161,7 @@ export const findOneLesson = async (
     schema: Schema<DeepPartial<LessonEntity>>
 ): Promise<LessonEntity> => {
     const payload = buildAuthPayloadString(schema)
+    console.log(payload)
     const { data: graphqlData } = await authClient.query({
         query: gql`
             query FindOneLesson($data: FindOneLessonInputData!) {

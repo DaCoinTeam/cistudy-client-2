@@ -343,3 +343,45 @@ export const deleteCourseReview = async (
     return await authAxios.delete(url)
 }
 
+export interface CreateQuizAttemptInput {
+  data: {
+    quizId: string
+  }
+}
+
+export interface CreateQuizAttemptOutput {
+  message: string
+  others: {
+    quizAttemptId: string
+  }
+}
+
+export const createQuizAttempt = async (
+    input: CreateQuizAttemptInput
+): Promise<CreateQuizAttemptOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/create-quiz-attempt`
+    return await authAxios.post(url, data)
+}
+
+export interface FinishQuizAttemptInput {
+  data: {
+    quizAttemptId: string
+    quizQuestionAnswerIds: string[]
+  }
+}
+
+export interface FinishQuizAttemptOutput {
+  message: string,
+  others: {
+    score: number
+  }
+}
+
+export const finishQuizAttempt = async (
+    input: FinishQuizAttemptInput
+): Promise<FinishQuizAttemptOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/finish-quiz-attempt`
+    return await authAxios.post(url, data)
+}

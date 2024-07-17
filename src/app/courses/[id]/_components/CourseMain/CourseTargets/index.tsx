@@ -12,7 +12,7 @@ export const CourseTargets = () => {
 
     return (
         <div>
-            <div className="text-2xl">What you will learn</div>
+            <div className="text-2xl font-bold">What you will learn</div>
             <Spacer y={4} />
             <div className="grid grid-cols-2 gap-2">
                 {courseTargets?.map(({courseTargetId, content}) => (
@@ -20,8 +20,8 @@ export const CourseTargets = () => {
                         key={courseTargetId}
                         className="flex gap-2 items-center"
                     >
-                        <CheckIcon height={20} width={20} />
-                        <div className="text-sm">{content}</div>
+                        <CheckIcon height={26} width={26} />
+                        <div className="text-sm font-semibold">{content}</div>
                     </div>
                 ))}
             </div>

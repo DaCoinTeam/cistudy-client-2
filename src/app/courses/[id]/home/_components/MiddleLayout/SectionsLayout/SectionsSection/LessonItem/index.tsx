@@ -25,10 +25,10 @@ export const LessonItem = (props: LessonItemProps) => {
             />
             <div>
                 <div>
-                    <div className="truncate text-sm"> {title} </div>
-                    <div className="flex gap-1 items-center text-foreground-400">
-                        <div className="text-xs text-foreground-400">15m</div>
-                        <div className="text-xs text-foreground-400">{description}</div>
+                    <div className="truncate text-sm text-primary font-bold"> {title} </div>
+                    <div className="flex flex-col gap-1 text-foreground-400">
+                        <div className="text-xs text-foreground-400 font-semibold">15m</div>
+                        <div className="text-xs text-foreground-400 font-semibold line-clamp-3">{description}</div>
                     </div>
                 </div>
             </div>

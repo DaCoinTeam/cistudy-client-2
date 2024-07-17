@@ -63,6 +63,7 @@ const WrappedHomeProvider = ({ children }: { children: ReactNode }) => {
                         thumbnailId: true,
                         lessonVideoId: true,
                         title: true,
+                        description: true,
                     },
                 },
                 creator: {

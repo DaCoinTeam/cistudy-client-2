@@ -50,12 +50,22 @@ export const LessonDetailsProvider = ({
             {
                 lessonId: true,
                 title: true,
-                lessonVideoId: true,
+                lessonVideoId: true,     
                 thumbnailId: true,
                 videoType: true,
                 description: true,
                 numberOfViews: true,
                 createdAt: true,
+                quiz: {
+                    quizId: true,
+                    timeLimit: true,
+                    highestScoreRecorded: true,
+                    totalNumberOfAttempts: true,
+                    lastAttemptScore: true,
+                    questions: {
+                        quizQuestionId: true,
+                    },
+                },
                 resources: {
                     resourceId: true,
                     fileId: true,
@@ -77,7 +87,13 @@ export const LessonDetailsProvider = ({
                             lessons: {
                                 lessonId: true,
                                 thumbnailId: true,
-                                title: true
+                                title: true,
+                                quiz: {
+                                    quizId: true,
+                                    timeLimit: true,
+                                    highestScoreRecorded: true,
+                                    totalNumberOfAttempts: true,
+                                },
                             }
                         }
                     },
