@@ -9,7 +9,7 @@ export const WrappedDepositModal = () => {
 
     return (
         <>
-            <Button className="flex-1" onPress={onOpen}>Deposit</Button>
+            <Button fullWidth onPress={onOpen}>Deposit</Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <ModalHeader className="p-4 pb-2">Deposit</ModalHeader>
