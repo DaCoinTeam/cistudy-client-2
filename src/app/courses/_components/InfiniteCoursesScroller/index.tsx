@@ -62,6 +62,7 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                     aria-label="Tabs"
                     selectedKey={viewType.toString()}
                     onSelectionChange={setViewType}
+                    variant="underlined"
                 >
                     <Tab key="grid"  
                         title={
@@ -71,9 +72,9 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                             </div>
                         }>
                         <div>
-                            <div className="grid grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-6">
                                 {getCourses().map((course)  => (
-                                    <div key={course.courseId} >
+                                    <div key={course.courseId}  >
                                         <CourseCard {...course}/>
 
                                     </div>
@@ -81,8 +82,8 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
 
 
                             </div>
-                            <div className="mt-12">
-                                <Pagination total={10} initialPage={size} color="secondary" />
+                            <div className="mt-16">
+                                <Pagination total={getPages()} initialPage={size} color="secondary" />
                             </div>
 
                         </div>

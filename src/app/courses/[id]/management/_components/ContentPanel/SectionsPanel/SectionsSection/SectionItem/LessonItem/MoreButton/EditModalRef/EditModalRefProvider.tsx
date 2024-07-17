@@ -95,7 +95,7 @@ const WrappedEditModalRefProvider = ({
 }
 
 export const EditModalRefProvider = ({
-    children,
+    children
 }: {
   children: ReactNode;
 }) => {

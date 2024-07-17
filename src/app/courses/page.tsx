@@ -20,9 +20,9 @@ const WrappedPage = () => {
     }
 
     return (
-        <div className='p-12 max-w-[1920px] w-full mx-auto grid grid-cols-4 gap-16'>
-            <div >
-                <div className='text-3xl'>
+        <div className='p-12 max-w-[1920px] w-full mx-auto grid grid-row md:grid-cols-5 lg:grid-cols-4 gap-12'>
+            <div className="md:col-span-2 lg:col-span-1" >
+                <div className='text-3xl '>
                     {getCount()} results for {searchParams.get("searchValue")}
                 </div>
                 <Spacer y={6} />

@@ -11,30 +11,33 @@ export const CourseCard = (props: CourseEntity) => {
     }
     const router = useRouter()
     return (
-        <Card key={courseId} onPress={() => router.push(`/courses/${courseId}`)} className="w-full hover:cursor-pointer" >
+        <Card key={courseId} role="button" onPress={() => router.push(`/courses/${courseId}`)} className="w-full hover:cursor-pointer" >
             {thumbnailId && (
                 <Image
                     alt='course image'
-                    width={400}
-                    className='z-10  rounded-b-none object-cover  max-h-[10rem]'
+                    className='z-10 rounded-b-none object-cover max-h-[9.6rem] min-h-[9.6rem]'
                     src={getAssetUrl(thumbnailId)!}
                 />
+                
             )}
-            <CardBody className="pb-1">
+            <CardBody className="pb-1 w-full min-h-32">
                 <div className="text-lg mb-2 line-clamp-2"> {title} </div>
                 <div className="text-sm text-foreground-400  line-clamp-2"> {description} </div>
             </CardBody>
-            <CardFooter >
-                <div className="flex gap-4 h-8 items-center mb-2">
-                    <User classNames={{
-                        name: "text-sm"
-                    }} avatarProps={{
-                        src: getAvatarUrl({
-                            avatarUrl: avatarUrl,
-                            avatarId: avatarId,
-                            kind: kind
-                        })
-                    }} name={username} description={"2 followers"}/>
+            <CardFooter className="w-full" >
+                <div className="flex justify-between gap-4 h-8 items-center mb-2 w-full">
+                    <div >
+                        <User classNames={{
+                            name: "text-sm"
+                        }} avatarProps={{
+                            src: getAvatarUrl({
+                                avatarUrl: avatarUrl,
+                                avatarId: avatarId,
+                                kind: kind
+                            })
+                        }} name={username} description={"2 followers"}/>
+                    </div>
+                   
                     <Divider orientation="vertical"/>
                     <div className="flex flex-col items-end">
                         <div className="text-sm font-semibold text-primary p-0 ms-1">{price} STARCI</div>

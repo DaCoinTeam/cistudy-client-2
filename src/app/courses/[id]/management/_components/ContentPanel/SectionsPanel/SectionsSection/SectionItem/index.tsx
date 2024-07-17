@@ -60,7 +60,10 @@ const WrappedSectionItem = (props: SectionItemProps) => {
         [props, lessonsSwr]
     )
     const handleSortLesson = (lessons: Array<LessonEntity>) => {
-        return lessons.sort((prev: LessonEntity, next: LessonEntity) => Date.parse(prev.createdAt.toString()) - Date.parse(next.createdAt.toString()))
+        if (!lessons) return []
+        return lessons.sort((prev: LessonEntity, next: LessonEntity) => {
+            return new Date(prev.createdAt).getTime() - new Date(next.createdAt).getTime()
+        })
     }
 
     return (
