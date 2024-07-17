@@ -20,7 +20,7 @@ export const Instructor = (props: InstructorProps) => {
     }
     return (
         <div className={`${className}`}>
-            <div className="text-2xl">Instructor</div>
+            <div className="text-2xl font-bold">Instructor</div>
             <Spacer y={4} />
             <div className="flex items-center gap-3">
                 <Avatar
@@ -32,25 +32,25 @@ export const Instructor = (props: InstructorProps) => {
                 />
                 <div>
                     <div className="text-lg font-semibold">{username}</div>
-                    <div className="text-sm text-foreground-400">
+                    <div className="text-sm text-foreground-400 font-semibold">
                         {numberOfFollowers} follower
                     </div>
                     <div className="flex items-center">
                         <MdVideoLibrary className="text-gray-500 dark:text-gray-400" />
-                        <p className="ms-2 text-sm font-normal text-gray-500 dark:text-gray-400">
+                        <p className="ms-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
               4 courses
                         </p>
                     </div>
                     <div className="flex items-center">
                         <MdGroups className="text-gray-500 dark:text-gray-400" />
-                        <p className="ms-2 text-sm font-normal text-gray-500 dark:text-gray-400">
+                        <p className="ms-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
               425,000 students
                         </p>
                     </div>
                 </div>
             </div>
             <div className="my-2">
-                <p className="mb-3 text-sm text-gray-900 dark:text-gray-400">
+                <p className="mb-3 text-sm font-semibold text-gray-900 dark:text-gray-400">
           Track work across the enterprise through an open, collaborative
           platform. Link issues across Jira and ingest data from other software
           development tools, so your IT support and operations teams have richer

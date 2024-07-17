@@ -1,7 +1,6 @@
 "use client"
 import React, { forwardRef, useContext, useImperativeHandle } from "react"
 import {
-    Button,
     Link,
     Modal,
     ModalBody,
@@ -25,6 +24,7 @@ import { MetamaskButton } from "./MetamaskButton"
 import { DisconnectWalletButton } from "./DisconnectWalletButton"
 import { RefreshCcw } from "lucide-react"
 import { WithdrawModal } from "./WithdrawModal"
+import { BuyModal } from "./BuyModal"
 
 export const WrappedWalletModalRef = () => {
     const { reducer, swrs } = useContext(RootContext)!
@@ -50,8 +50,8 @@ export const WrappedWalletModalRef = () => {
                                 {truncateHex(address)}
                             </Link>
                             <Spacer y={4} />
-                            <div className="flex gap-4 items-center w-full">
-                                <Button className="flex-1">Buy</Button>
+                            <div className="grid grid-cols-3 gap-4 w-full">
+                                <BuyModal/>
                                 <DepositModal />
                                 <WithdrawModal />
                             </div>

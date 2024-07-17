@@ -35,7 +35,7 @@ const WrappedCourseReview = () => {
 
     return (
         <div>
-            <div className='text-2xl'>Reviews</div>
+            <div className='text-2xl font-bold'>Reviews</div>
             <Spacer y={4} />
 
             <div className='flex items-end text-center mb-2'>

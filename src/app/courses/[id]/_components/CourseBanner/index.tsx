@@ -64,7 +64,7 @@ export const CourseBanner = (props: CourseBannerProps) => {
                     <div className='text-2xl font-bold text-transparent bg-clip-text text-white md:text-4xl py-1'>
                         {title}
                     </div>
-                    <div className='text-slate-300 text-lg line-clamp-2'>
+                    <div className='text-slate-300 font-semibold text-lg'>
                         {description}
                     </div>
                     <Spacer y={4} />
@@ -75,6 +75,10 @@ export const CourseBanner = (props: CourseBannerProps) => {
                                 avatarUrl,
                                 kind,
                             }),
+                        }}
+                        classNames={{
+                            name: "font-semibold",
+                            description: "font-semibold"
                         }}
                         name={username}
                         className="text-white"

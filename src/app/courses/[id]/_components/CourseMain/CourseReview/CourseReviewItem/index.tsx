@@ -31,7 +31,7 @@ export const CourseReviewItem = ({ review }: ReviewItemProps) => {
                         />
                     </div>
                     <div>
-                        <div className=' text-xs text-gray-500 dark:text-gray-400 flex justify-end'>
+                        <div className=' text-xs font-semibold text-gray-500 dark:text-gray-400 flex justify-end'>
                             <time dateTime='2017-03-03 19:00'>
                                 {parseISODateString(updatedAt)}
                             </time>
@@ -51,7 +51,7 @@ export const CourseReviewItem = ({ review }: ReviewItemProps) => {
                 <Spacer y={1} />
 
                 <Spacer y={2} />
-                <p className='mb-2 text-sm  text-gray-900 dark:text-gray-400'>
+                <p className='mb-2 text-sm font-semibold  text-gray-900 dark:text-gray-400'>
                     {content}
                 </p>
             </CardBody>

@@ -64,7 +64,7 @@ const WrappedNavbar = (props: NavbarProps) => {
                     </div>
                 </NavbarBrand>
                 <NavbarContent justify="center">
-                    <NavbarItem  className="px-4 cursor-pointer" onClick={() => router.push("/courses")}>
+                    <NavbarItem  className="px-4 cursor-pointer font-semibold" onClick={() => router.push("/courses")}>
                         Courses
                     </NavbarItem>
                     <SearchInput className="w-[500px]"/>
