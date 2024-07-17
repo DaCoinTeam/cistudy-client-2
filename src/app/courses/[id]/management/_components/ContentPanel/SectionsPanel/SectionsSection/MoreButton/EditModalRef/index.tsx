@@ -22,7 +22,7 @@ export interface EditModalRefSelectors {
 
 export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
     (_, ref) => {
-        const { isOpen, onOpen, onOpenChange } = useDisclosure()
+        const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
         useImperativeHandle(ref, () => ({
             onOpen,
@@ -31,7 +31,10 @@ export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
         const { formik, functions } = useContext(EditModalRefContext)!
         const { discardChanges, hasChanged } = functions
         const onCancelPress = () => discardChanges()
-        const onSubmit = () => formik.handleSubmit()
+        const onSubmit = () => {
+            formik.handleSubmit()
+            onClose()
+        }
 
         return (
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
