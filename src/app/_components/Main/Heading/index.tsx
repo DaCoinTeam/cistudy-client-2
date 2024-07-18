@@ -43,8 +43,8 @@ export const Heading = () => {
                         <Image alt='img1' className='rounded-b-none ' src={BG_IMG_1} />
                     </div>
                 </div>
-                <div className='relative w-[69.7738%] mt-[-25.672%] ml-[-15%] overflow-hidden bg-white border border-gray-300/60 rounded-bl-[75%] z-20'>
-                    <div className='border-[10px] border-white overflow-hidden rounded-bl-[75%]'>
+                <div className='relative w-[69.7738%] mt-[-25.672%] ml-[-15%] overflow-hidden  border border-gray-300/60 rounded-bl-[75%] z-20'>
+                    <div className='border-[8px] border-white dark:border-black overflow-hidden dark:bg-black rounded-bl-[75%]'>
                         <Image alt='img2' className='rounded-none' src={BG_IMG_2} />
                     </div>
                 </div>
