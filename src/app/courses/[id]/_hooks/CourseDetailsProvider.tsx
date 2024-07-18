@@ -82,7 +82,7 @@ export const WrappedCourseDetailsProvider = ({
                 }
             }
         )
-    }, [])
+    }, [accountId])
 
     const courseSwr = useSWR(["COURSE", accountId], fetchCourse, {
         revalidateIfStale: false,
