@@ -62,6 +62,7 @@ export const WrappedAllCoursesProvider = ({
                         price: true,
                         courseRatings: {
                             overallCourseRating: true,
+                            totalNumberOfRatings: true,
                         }
                     },
                     metadata: {

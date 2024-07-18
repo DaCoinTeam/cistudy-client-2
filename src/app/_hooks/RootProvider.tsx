@@ -87,11 +87,7 @@ const WrappedRootProvider = forwardRef<
             return null
         }
     }, [])
-
-   
-
-    const profileSwr = useSWR(["PROFILE"], fetchProfile)
-
+    
     const fetchHighlight = useCallback(async () => {
         try {
             return await initLandingPage({
@@ -101,8 +97,10 @@ const WrappedRootProvider = forwardRef<
                 highRatedCourses: {
                     courseId: true,
                     price: true,
+                    discountPrice: true,
                     title: true,
                     description: true,
+                    thumbnailId: true,
                     courseRatings: {
                         overallCourseRating: true
                     },
@@ -117,8 +115,11 @@ const WrappedRootProvider = forwardRef<
                 mostEnrolledCourses: {
                     courseId: true,
                     price: true,
+                    discountPrice: true,
                     title: true,
                     description: true,
+                    thumbnailId: true,
+
                     courseRatings: {
                         overallCourseRating: true
                     },
@@ -133,8 +134,10 @@ const WrappedRootProvider = forwardRef<
                 recentlyAddedCourses: {
                     courseId: true,
                     price: true,
+                    discountPrice: true,
                     title: true,
                     description: true,
+                    thumbnailId: true,
                     courseRatings: {
                         overallCourseRating: true
                     },
@@ -152,7 +155,12 @@ const WrappedRootProvider = forwardRef<
             return null
         }
     }, [])
+    const profileSwr = useSWR(["PROFILE"], fetchProfile)
+
     const highlightSwr = useSWR(["HIGHLIGHT"], fetchHighlight)
+
+   
+
 
 
     // useImperativeHandle(ref, () => ({
@@ -179,7 +187,7 @@ const WrappedRootProvider = forwardRef<
             socket,
             notify: toastRef.current?.notify,
         }),
-        [profileSwr, reducer, notConnectWalletModalDisclosure, socket]
+        [profileSwr, highlightSwr, reducer, notConnectWalletModalDisclosure, socket]
     )
 
     return (

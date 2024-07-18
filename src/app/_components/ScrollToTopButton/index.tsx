@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { Button } from "@nextui-org/react"
 import classNames from "classnames"
-import { ArrowUpIcon } from "lucide-react"
+import { ArrowLongUpIcon } from "@heroicons/react/24/solid"
 
 export const ScrollToTopButton = () => {
     const [showButton, setShowButton] = useState(false)
@@ -39,11 +39,12 @@ export const ScrollToTopButton = () => {
             <Button
                 color="primary"
                 isIconOnly 
+                size="lg"
                 aria-label="ScrollToTop"
                 onClick={scrollToTop}
-                className="bg-blue-500 hover:bg-blue-700 text-white rounded-full p-6"
+                className="bg-primary hover:bg-secondary text-white rounded-full "
             >
-                <ArrowUpIcon color="white" className="h-5 w-5" />
+                <ArrowLongUpIcon className="h-5 w-5 " />
             </Button>
             
         </div>

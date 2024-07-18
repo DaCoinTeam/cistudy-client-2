@@ -4,7 +4,7 @@ import { CircularProgress, Divider, Pagination, Spacer, Tab, Tabs, User } from "
 import { getAssetUrl, getAvatarUrl } from "@services"
 import { Grid3X3Icon, List } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useCallback, useContext } from "react"
+import { useContext, useMemo } from "react"
 import InfiniteScroll from "react-infinite-scroller"
 import { CourseCard } from "../../../_components/Courses/CourseCard"
 import { InteractiveThumbnail, Stars } from "../../../_shared"
@@ -29,11 +29,10 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
         setSize(size + 1)
     }
     const onLoadPage = (page: number) => {
-
         setSize(page)
     }
 
-    const getCourses = useCallback(() => {
+    const getCourses = useMemo(() => {
         if (!data) return []
         const coursesReturn: Array<CourseEntity> = []
         data.forEach((element) => {
@@ -45,7 +44,7 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
         
     }, [data])
     
-    const getCoursesPage = useCallback(() => {
+    const getCoursesPage = useMemo(() => {
         if (!data) return []
         const coursesReturn: Array<CourseEntity> = []
         const results = data[size - 1]?.results
@@ -53,12 +52,12 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
         return coursesReturn
     }, [data])
 
-    const getPages = () => {
+    const getPages = useMemo(() => {
         if (!data) return 0
         const last = data.at(-1)
         if (!last) return 0
         return Math.ceil(last.metadata.count / COLUMNS_PER_PAGE)
-    }
+    }, [data]) 
 
     return (
         <div className={`${className}`}>
@@ -92,7 +91,7 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                         }>
                         <div>
                             <div className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-6">
-                                {getCoursesPage().map((course)  => (
+                                {getCoursesPage.map((course)  => (
                                     <div key={course.courseId}  >
                                         <CourseCard {...course}/>
 
@@ -102,7 +101,8 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
 
                             </div>
                             <div className="mt-16">
-                                <Pagination total={getPages()} initialPage={size} onChange={onLoadPage} color="secondary" />
+                                {getPages && <Pagination initialPage={1} total={getPages}  onChange={onLoadPage} color="secondary" />
+                                }
                             </div>
 
                         </div>
@@ -123,10 +123,10 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                             pageStart={0}
                             initialLoad={false}
                             loadMore={onLoadMore}
-                            hasMore={size < getPages() && !isValidating}
+                            hasMore={size < getPages && !isValidating}
                             loader={<CircularProgress key={0} aria-label="Loading..." />}
                         >
-                            {getCourses().map(({ courseId, title, thumbnailId, description, creator }) => (
+                            {getCourses.map(({ courseId, title, thumbnailId, description, creator }) => (
                                 <div className="flex gap-4" key={courseId}>
                                     <InteractiveThumbnail isPressable className="min-w-60 w-60 h-fit" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
                                     <div className="flex-1">

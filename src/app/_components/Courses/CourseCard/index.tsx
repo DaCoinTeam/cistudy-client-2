@@ -5,7 +5,7 @@ import { Stars } from "../../../_shared"
 import { useRouter } from "next/navigation"
 
 export const CourseCard = (props: CourseEntity) => {
-    const { title, creator, thumbnailId, description, price, courseId, courseRatings } = { ...props }
+    const { title, creator, thumbnailId, description, price, discountPrice, courseId, courseRatings } = { ...props }
     const { avatarId, avatarUrl, kind, username } = {
         ...creator,
     }
@@ -13,7 +13,7 @@ export const CourseCard = (props: CourseEntity) => {
     const router = useRouter()
     return (
         <div onClick={() => router.push(`/courses/${courseId}`)}>
-            <Card id="cardd" key={courseId} role="button"  className="w-full hover:cursor-pointer" >
+            <Card id="cardd" key={courseId} role="button"  className="w-full hover:cursor-pointer"  >
                 <div id="div id" className="w-full">
                     {thumbnailId && (
                         <Image
@@ -47,11 +47,11 @@ export const CourseCard = (props: CourseEntity) => {
                    
                         <Divider orientation="vertical"/>
                         <div className="flex flex-col items-end">
-                            <div className="text-sm font-semibold text-primary p-0 ms-1">{price} STARCI</div>
+                            <div className="text-sm font-semibold text-primary p-0 ms-1">{discountPrice ? discountPrice : price} STARCI</div>
 
                             <div className="flex flex-row justify-center items-end leading-4">
                                 <Stars  readonly size={18} initialValue={overallCourseRating} />
-                                <div className="text-xs text-foreground-400 ms-1">({totalNumberOfRatings ?? 0})</div>
+                                <div className="text-xs text-foreground-400 ms-1">({totalNumberOfRatings | 0})</div>
                             </div>
                         </div>
                     
