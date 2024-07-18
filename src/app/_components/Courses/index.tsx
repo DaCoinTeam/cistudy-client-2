@@ -9,7 +9,6 @@ export const Courses = () => {
     const { highlightSwr } = swrs
     const { data } = highlightSwr
     const {highRatedCourses, recentlyAddedCourses, mostEnrolledCourses} = {...data}
-    console.log(data)
     return (
         <div>
             <div className="w-full text-center text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white mb-6">Try our courses</div>

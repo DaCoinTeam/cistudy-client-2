@@ -4,6 +4,7 @@ import {
     buildAuthPayloadString,
     CourseEntity,
     Schema,
+    TransactionEntity,
 } from "@common"
 import { authClient, getGraphqlResponseData } from "./client"
 
@@ -71,6 +72,46 @@ export const findManyEnrolledCourses = async (
     }
   }
             `,
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
+    })
+}
+
+
+
+
+export interface FindManyTransactionsInputData {
+  options?: {
+    skip?: number;
+    take?: number;
+  };
+}
+
+export interface FindManyTransactionsOutputData {
+  results: Array<TransactionEntity>;
+  metadata: {
+    count: number;
+  };
+}
+
+export const findManyTransactions = async (
+    data: FindManyTransactionsInputData,
+    schema: Schema<DeepPartial<FindManyTransactionsOutputData>>
+): Promise<FindManyTransactionsOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query FindManyTransactions($data: FindManyTransactionsInputData!) {
+                findManyTransactions(data: $data) {
+        ${payload}
+    }
+  }
+            `,  
         variables: {
             data,
         },

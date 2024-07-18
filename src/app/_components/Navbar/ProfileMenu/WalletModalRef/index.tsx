@@ -13,7 +13,7 @@ import {
 import { WalletModalRefContext, WalletModalRefProvider } from "./WalletModalRefProvider"
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
 import {
-    truncateHex,
+    truncate,
     computeDenomination,
     computeRaw,
     formatNumber,
@@ -25,6 +25,7 @@ import { DisconnectWalletButton } from "./DisconnectWalletButton"
 import { RefreshCcw } from "lucide-react"
 import { WithdrawModal } from "./WithdrawModal"
 import { BuyModal } from "./BuyModal"
+import { TransactionsModal } from "./TransactionsModal"
 
 export const WrappedWalletModalRef = () => {
     const { reducer, swrs } = useContext(RootContext)!
@@ -47,7 +48,7 @@ export const WrappedWalletModalRef = () => {
                     {address ? (
                         <>
                             <Link color="foreground" as="button" showAnchorIcon>
-                                {truncateHex(address)}
+                                {truncate(address)}
                             </Link>
                             <Spacer y={4} />
                             <div className="grid grid-cols-3 gap-4 w-full">
@@ -98,6 +99,8 @@ export const WrappedWalletModalRef = () => {
                         ) : null}
                     </div>
                 </div>
+                <Spacer y={4}/>
+                <TransactionsModal/>
             </ModalBody>
 
             <ModalFooter className="p-4 pt-2">
@@ -128,6 +131,7 @@ export const WalletModalRef = forwardRef<
 
     return (
         <Modal
+            isDismissable={false}
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             size="sm"
