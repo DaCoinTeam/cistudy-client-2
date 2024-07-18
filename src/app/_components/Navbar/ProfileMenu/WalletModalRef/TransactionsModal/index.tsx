@@ -185,7 +185,7 @@ const WrappedTransactionsModal = () => {
                                             <div className="flex gap-1 items-center">
                                                 <div>Paypal Order Id:</div>
                                                 <Link as="button">
-                                                    {truncate(payPalOrderId) ?? "N/A"}
+                                                    {payPalOrderId ? truncate(payPalOrderId) : "N/A"}
                                                 </Link>
                                             </div>
                                             <div className="flex gap-1 items-center">

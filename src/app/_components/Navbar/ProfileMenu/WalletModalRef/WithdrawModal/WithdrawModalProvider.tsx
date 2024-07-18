@@ -1,12 +1,14 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
-import React, { ReactNode, createContext } from "react"
+import React, { ReactNode, createContext, useContext } from "react"
 import * as Yup from "yup"
 import { useDisclosure } from "@nextui-org/react"
 import { Disclosure } from "@common"
 
 import useSWRMutation, { SWRMutationResponse } from "swr/mutation"
-import { WithdrawInput, withdraw } from "@services"
+import { WithdrawInput, WithdrawOutput, withdraw } from "@services"
+import { RootContext } from "../../../../../_hooks"
+import { ToastType } from "../../../../ToastRef"
 
 interface WithdrawContextValue {
   discloresures: {
@@ -15,7 +17,7 @@ interface WithdrawContextValue {
   formik: FormikProps<FormikValues>;
   swrs: {
     withdrawSwrMutation: SWRMutationResponse<
-      string,
+      WithdrawOutput,
       unknown,
       "WITHDRAW",
       WithdrawInput
@@ -44,7 +46,7 @@ const WrappedFormikProvider = ({
   formik: FormikProps<FormikValues>;
   baseDiscloresure: Disclosure;
   withdrawSwrMutation: SWRMutationResponse<
-    string,
+    WithdrawOutput,
     unknown,
     "WITHDRAW",
     WithdrawInput
@@ -68,17 +70,18 @@ export const WithdrawModalProvider = ({
   children: ReactNode;
 }) => {
     const baseDisclosure = useDisclosure()
+    const { notify } = useContext(RootContext)!
 
     const withdrawSwrMutation = useSWRMutation(
         "WITHDRAW",
-        (
+        async (
             _,
             {
                 arg,
             }: {
         arg: WithdrawInput;
       }
-        ) => withdraw(arg)
+        ) => await withdraw(arg)
     )
 
     return (
@@ -90,11 +93,17 @@ export const WithdrawModalProvider = ({
                     .required("Withdraw amount is required"),
             })}
             onSubmit={async ({ withdrawAmount }) => {
-                await withdrawSwrMutation.trigger({
+                const { message } = await withdrawSwrMutation.trigger({
                     data: {
                         withdrawAmount,
                     },
                 })
+                notify!({
+                    data: {
+                        message
+                    },
+                    type: ToastType.Success
+                },)
             }}
         >
             {(formik) => (

@@ -1,52 +1,74 @@
-import { ENDPOINT_API } from "@config"
-import { authAxios } from "./axios-instances"
+import { ENDPOINT_API } from "@config";
+import { authAxios } from "./axios-instances";
 
-const BASE_URL = `${ENDPOINT_API}/profile`
+const BASE_URL = `${ENDPOINT_API}/profile`;
 
 export interface UpdateProfileInput {
-    data: {
-        username?: string;
-        birthdate?: string;
-        avatarIndex?: number;
-        coverPhotoIndex?: number;
-        walletAddress?: string;
-    };
-    files?: Array<File>;
+  data: {
+    username?: string;
+    birthdate?: string;
+    avatarIndex?: number;
+    coverPhotoIndex?: number;
+    walletAddress?: string;
+  };
+  files?: Array<File>;
 }
 
 export const updateProfile = async (
-    input: UpdateProfileInput
+  input: UpdateProfileInput
 ): Promise<string> => {
-    const { data, files } = input
-    const url = `${BASE_URL}/update-profile`
-    const formData = new FormData()
+  const { data, files } = input;
+  const url = `${BASE_URL}/update-profile`;
+  const formData = new FormData();
 
-    formData.append("data", JSON.stringify(data))
-    if (files) {
-        for (const file of files) {
-            formData.append("files", file)
-        }
+  formData.append("data", JSON.stringify(data));
+  if (files) {
+    for (const file of files) {
+      formData.append("files", file);
     }
+  }
 
-    return await authAxios.put(url, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
-    })
-}
+  return await authAxios.put(url, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
 
 export interface WithdrawInput {
-    data: {
-      withdrawAmount: number
-    };
-  }
-  
-export const withdraw = async (
-    input: WithdrawInput
-): Promise<string> => {
-    const { data } = input
-    const url = `${BASE_URL}/withdraw`
-  
-    return await authAxios.patch(url, data)
+  data: {
+    withdrawAmount: number;
+  };
 }
-  
+
+export interface WithdrawOutput {
+  message: string;
+}
+
+export const withdraw = async (
+  input: WithdrawInput
+): Promise<WithdrawOutput> => {
+  const { data } = input;
+  const url = `${BASE_URL}/withdraw`;
+
+  return await authAxios.patch(url, data);
+};
+
+export interface DepositInput {
+  data: {
+    transactionHash: string;
+    maxQueries?: number;
+    queryIntervalMs?: number;
+  };
+}
+
+export interface DepositOutput {
+  message: string;
+}
+
+export const deposit = async (input: DepositInput): Promise<DepositOutput> => {
+  const { data } = input;
+  const url = `${BASE_URL}/deposit`;
+
+  return await authAxios.patch(url, data);
+};
