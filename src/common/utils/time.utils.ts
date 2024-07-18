@@ -36,3 +36,16 @@ export const parseDuration = (seconds: number) => {
 export const parseTimeAgo = (date: Date) => dayjs.utc().from(date, true)
 
 export const parseDateStringFrom = (date?: Date) => date ? dayjs.utc(date).format("h:mm:ss A, D MMM YYYY") : null
+
+export const parseMillisecondsTime = (milliseconds : number) => {
+    const totalSeconds = Math.floor(milliseconds / 1000)
+    let hours = Math.floor(totalSeconds / 3600)
+    let minutes = Math.floor((totalSeconds % 3600) / 60)
+    let seconds = totalSeconds % 60
+
+    hours = Number(String(hours).padStart(2, "0"))
+    minutes = Number(String(minutes).padStart(2, "0"))
+    seconds = Number(String(seconds).padStart(2, "0"))
+
+    return `${hours}:${minutes}:${seconds}`
+}
