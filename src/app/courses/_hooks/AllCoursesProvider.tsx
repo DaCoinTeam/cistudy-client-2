@@ -11,7 +11,7 @@ import {
 } from "./useAllCoursesReducer"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
 
-export const COLUMNS_PER_PAGE = 5
+export const COLUMNS_PER_PAGE = 9
 
 export interface AllCoursesContextValue {
     reducer: [AllCoursesState, React.Dispatch<AllCoursesAction>]
@@ -62,6 +62,7 @@ export const WrappedAllCoursesProvider = ({
                         price: true,
                         courseRatings: {
                             overallCourseRating: true,
+                            totalNumberOfRatings: true,
                         }
                     },
                     metadata: {

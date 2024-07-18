@@ -90,6 +90,7 @@ export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
             <Divider />
             <CardBody className='p-0'>
                 <Accordion
+                    
                     selectionMode='multiple'
                     className='!px-0'
                     itemClasses={{
@@ -97,6 +98,7 @@ export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
                         title: "!text-base",
                         content: "pt-2 pb-4",
                     }}
+                    defaultExpandedKeys={["categories"]}
                 >
                     <AccordionItem
                         key="categories"

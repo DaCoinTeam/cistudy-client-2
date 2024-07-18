@@ -65,11 +65,12 @@ const WrappedSectionItem = (props: SectionItemProps) => {
             return new Date(prev.createdAt).getTime() - new Date(next.createdAt).getTime()
         })
     }
+    const {data} = lessonsSwr
 
     return (
         <SectionItemContext.Provider value={sectionItemContextValue}>
             <>
-                {lessonsSwr.data && handleSortLesson(lessonsSwr.data)?.map((lesson) => (
+                {data && handleSortLesson(data)?.map((lesson) => (
                     <LessonItem key={lesson.lessonId} lesson={lesson} />
                 ))}
                 <AddLessonItem key="addLesson" />

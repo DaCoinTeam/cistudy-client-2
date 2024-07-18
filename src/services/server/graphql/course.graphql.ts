@@ -75,8 +75,8 @@ export const findOneCourseAuth = async (
 
 export interface FindManyCoursesInputData {
   options?: {
-    take?: number;
-    skip?: number;
+    take?: number | null;
+    skip?: number | null;
     searchValue?: string;
     categoryId?: string;
   };
@@ -349,11 +349,11 @@ export interface HighlightDTO {
 export const initLandingPage = async (
     schema: Schema<DeepPartial<HighlightDTO>>
 ): Promise<HighlightDTO> => {
-    const payload = buildAuthPayloadString(schema)
+    const payload = buildPayloadString(schema)
     const { data: graphqlData } = await client.query({
         query: gql`
-          query InitLandingPage() {
-            initLandingPage() {
+          query InitLandingPage {
+            initLandingPage {
   ${payload}
 }
 }

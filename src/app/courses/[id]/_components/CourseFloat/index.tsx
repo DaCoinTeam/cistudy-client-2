@@ -200,7 +200,7 @@ export const CourseFloat = () => {
               Enroll now
                         </Button>
                         <Button
-                            color="secondary"
+                            color="primary"
                             className="font-semibold"
                             variant="light"
                             startContent={<ShoppingCartIcon height={20} width={20} />}
