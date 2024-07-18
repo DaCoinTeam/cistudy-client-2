@@ -16,7 +16,7 @@ export const CourseTargets = () => {
             <div className='grid grid-cols-2 gap-4 items-start'>
                 {courseTargets?.map(({ courseTargetId, content }) => (
                     <div key={courseTargetId} className='flex flex-row items-start'>
-                        <div className='w-5 h-5 mr-2'>
+                        <div className='w-5 h-5 mr-3'>
                             <CheckIcon />
                         </div>
                         <div className='text-sm font-semibold'>{content}</div>
