@@ -90,6 +90,7 @@ const WrappedQuizProvider = ({
 
     useEffect(() => {
         if (quizSwr.isLoading === false && quizSwr.data) {
+            localStorage.setItem("quizTimeLimit", quizSwr.data.quiz.timeLimit.toString())
             trigger({data: {quizId: lessonId}}).then((res) => {
                 dispatch({type: "SET_QUIZ_ATTEMPT_ID", payload: res.others.quizAttemptId})
             })
