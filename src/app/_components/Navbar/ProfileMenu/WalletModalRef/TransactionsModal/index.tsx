@@ -72,7 +72,7 @@ const WrappedTransactionsModal = () => {
 
     return (
         <>
-            <Link onPress={onOpen}>View Transactions</Link>
+            <Link size="sm" as="button" onPress={onOpen}>View Transactions</Link>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
                 <ModalContent>
                     <ModalHeader className="p-4 pb-2">Transactions</ModalHeader>
@@ -143,7 +143,7 @@ const WrappedTransactionsModal = () => {
                                             <Snippet
                                                 hideSymbol
                                                 classNames={{
-                                                    pre: "bg-inhenrit",
+                                                    base: "!bg-inherit",
                                                 }}
                                                 codeString={transactionId}
                                             >
@@ -159,7 +159,7 @@ const WrappedTransactionsModal = () => {
                                                     <div>Deposited: </div>
                                                     {amountDepositedChange >= 0 ? (
                                                         <div className="text-success">
-                              + {amountDepositedChange} STARCI
+                              +{amountDepositedChange} STARCI
                                                         </div>
                                                     ) : (
                                                         <div className="text-danger">
@@ -171,7 +171,7 @@ const WrappedTransactionsModal = () => {
                                                     <div>On-chain: </div>
                                                     {amountOnChainChange >= 0 ? (
                                                         <div className="text-success">
-                              + {amountOnChainChange} STARCI
+                              +{amountOnChainChange} STARCI
                                                         </div>
                                                     ) : (
                                                         <div className="text-danger">
