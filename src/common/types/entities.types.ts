@@ -301,6 +301,7 @@ export interface PostCommentReplyEntity {
 export interface SectionEntity {
   sectionId: string;
   title: string;
+  position: number;
   courseId: string;
   createdAt: Date;
   course: CourseEntity;
@@ -386,8 +387,6 @@ export interface CourseCategoryEntity {
   course: CourseEntity;
   category: CategoryEntity;
 }
-
-
 
 export interface TransactionEntity {
   transactionHash: string;
@@ -480,4 +479,23 @@ export interface ReportPostCommentEntity {
   reportedPostComment: PostCommentEntity
   createdAt: Date
   updatedAt: Date
+}
+
+export enum TransactionType {
+  Buy = "buy",
+  Deposit = "deposit",
+  Withdraw = "withdraw"
+}
+
+export interface TransactionEntity {
+      transactionId: string
+      type: TransactionType
+      accountId: string
+      amountDepositedChange: number
+      amountOnChainChange: number
+      transactionHash: string
+      payPalOrderId: string
+      account: AccountEntity
+      createdAt: Date
+      updatedAt: Date
 }

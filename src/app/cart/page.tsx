@@ -1,9 +1,9 @@
 "use client"
 import { Button, Checkbox } from "@nextui-org/react"
 import React, { useContext, useMemo } from "react"
-import { CourseCard } from "../_components/Courses/CourseCard"
 import { RootContext } from "../_hooks"
 import { useCartReducer } from "./_hooks/useCartReducer"
+import { CourseCard } from "../_shared/components/CourseCard"
 
 const Cart = () => {
     const [state, dispatch] = useCartReducer()

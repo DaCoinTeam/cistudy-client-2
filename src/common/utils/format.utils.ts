@@ -4,7 +4,7 @@ import numeral from "numeral"
 
 export const getSetValues = (set: Set<Key>) => Array.from(set.values())
 
-export const truncateHex = (address: Address): string => {
+export const truncate = (address: Address): string => {
     const beginning = address.slice(0, 4)
     const ending = address.slice(-2)
     return `${beginning}...${ending}`
@@ -19,5 +19,5 @@ export const sanitizeNumericInput = (input: string): string | null => {
 }
 
 export const formatNumber = (number: number | undefined): string => {
-    return numeral(number).format("0.0a")
+    return numeral(number).format("0.00a")
 }

@@ -9,7 +9,7 @@ export const computeDenomination = (amount: bigint, decimals = 18, fractionDigit
     const decimalMultiplier = 10 ** fractionDigits
     const divisor = 10 ** decimals
     const result = Number(amount * BigInt(decimalMultiplier) / BigInt(divisor))
-    return numeral(result / decimalMultiplier).format("0.0a")
+    return numeral(result / decimalMultiplier).format("0.00a")
 }
 
 export const computeRaw = (amount: number, decimals = 18) : bigint => {

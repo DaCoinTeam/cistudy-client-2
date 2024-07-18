@@ -15,24 +15,25 @@ import numeral from "numeral"
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
 import { captureOrder, createOrder } from "@services"
+import { RootContext } from "../../../../../_hooks"
+import { ToastType } from "../../../../ToastRef"
 
 const WrappedBuyModal = () => {
     const { discloresures, formik } = useContext(BuyModalContext)!
     const { baseDiscloresure } = discloresures
-    const { isOpen, onOpenChange, onOpen } = baseDiscloresure
-    // const { createOrderMutation } = swrs
+    const { isOpen, onOpenChange, onOpen, onClose } = baseDiscloresure
+    const { notify } = useContext(RootContext)!
 
     const price = Number.parseFloat(
         numeral(formik.values.buyAmount).format("0.00")
     )
-    console.log(formik.values.buyAmount)
 
     return (
         <>
             <Button fullWidth className="flex-1" onPress={onOpen}>
         Buy
             </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <Modal isDismissable={false} isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <ModalHeader className="p-4 pb-2">Buy</ModalHeader>
                     <ModalBody className="p-4">
@@ -73,7 +74,7 @@ const WrappedBuyModal = () => {
                         </div>
                     </ModalBody>
                     <ModalFooter className="p-4 pt-2 flex flex-col">
-                        <div className="w-full">
+                        <div className="w-full h-[60px]">
                             <PayPalScriptProvider
                                 options={{
                                     clientId: process.env.NEXT_PUBLIC_PAYPAL_API_KEY ?? "test",
@@ -108,7 +109,13 @@ const WrappedBuyModal = () => {
                                                 isSandbox: true,
                                             },
                                         })
-                                        console.log(message)
+                                        notify!({
+                                            data: {
+                                                message
+                                            },
+                                            type: ToastType.Success
+                                        })
+                                        onClose()
                                     }} 
                                 />
                             </PayPalScriptProvider>

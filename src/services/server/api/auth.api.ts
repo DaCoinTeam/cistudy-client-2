@@ -11,7 +11,11 @@ export interface SignUpInput {
     birthdate: string;
 }
 
-export const signUp = async (input: SignUpInput): Promise<string> => {
+export interface SignUpOutput {
+    message: string;
+}
+
+export const signUp = async (input: SignUpInput): Promise<SignUpOutput> => {
     const url = `${BASE_URL}/sign-up`
     return await baseAxios.post(url, input)
 }

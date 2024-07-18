@@ -3,20 +3,20 @@ import React, { ReactNode, createContext, useCallback, useMemo } from "react"
 
 import {
     FindManyTransactionsOutputData,
-    findManyTransactions
+    findManyTransactions,
 } from "@services"
 import { ErrorResponse } from "@common"
 import useSWR, { SWRConfig, SWRResponse } from "swr"
 import {
-    TransactionsManagementPanelAction,
-    TransactionsManagementPanelState,
-    useTransactionsManagementPanelReducer,
-} from "./useTransactionsManagementPanelReducer"
+    TransactionsModalAction,
+    TransactionsModalState,
+    useTransactionsModalReducer,
+} from "./useTransactionsModalReducer"
 
-export interface TransactionsManagementPanelContextValue {
+export interface TransactionsModalContextValue {
   reducer: [
-    TransactionsManagementPanelState,
-    React.Dispatch<TransactionsManagementPanelAction>
+    TransactionsModalState,
+    React.Dispatch<TransactionsModalAction>
   ];
   swrs: {
     transactionsSwr: SWRResponse<FindManyTransactionsOutputData, ErrorResponse>;
@@ -25,15 +25,15 @@ export interface TransactionsManagementPanelContextValue {
 
 export const ROWS_PER_PAGE = 5
 
-export const TransactionsManagementPanelContext =
-  createContext<TransactionsManagementPanelContextValue | null>(null)
+export const TransactionsModalContext =
+  createContext<TransactionsModalContextValue | null>(null)
 
-const WrappedTransactionsManagementPanelProvider = ({
+const WrappedTransactionsModalProvider = ({
     children,
 }: {
   children: ReactNode;
 }) => {
-    const reducer = useTransactionsManagementPanelReducer()
+    const reducer = useTransactionsModalReducer()
 
     const fetchTransactions = useCallback(
         async ([key]: [number, string]) => {
@@ -46,11 +46,13 @@ const WrappedTransactionsManagementPanelProvider = ({
                 },
                 {
                     results: {
-                        transactionHash: true,
+                        amountDepositedChange: true,
+                        amountOnChainChange: true,
+                        payPalOrderId:true,
                         createdAt: true,
-                        from: true,
-                        to: true,
-                        value: true
+                        transactionHash: true,
+                        transactionId: true,
+                        type: true
                     },
                     metadata: {
                         count: true
@@ -72,7 +74,7 @@ const WrappedTransactionsManagementPanelProvider = ({
         }
     )
 
-    const manageTransactionsPanelContextValue: TransactionsManagementPanelContextValue =
+    const transactionModalContextValue: TransactionsModalContextValue =
     useMemo(
         () => ({
             reducer,
@@ -84,22 +86,22 @@ const WrappedTransactionsManagementPanelProvider = ({
     )
 
     return (
-        <TransactionsManagementPanelContext.Provider
-            value={manageTransactionsPanelContextValue}
+        <TransactionsModalContext.Provider
+            value={transactionModalContextValue}
         >
             {children}
-        </TransactionsManagementPanelContext.Provider>
+        </TransactionsModalContext.Provider>
     )
 }
 
-export const TransactionsManagementPanelProvider = ({
+export const TransactionsModalProvider = ({
     children,
 }: {
   children: ReactNode;
 }) => (
     <SWRConfig value={{ provider: () => new Map() }}>
-        <WrappedTransactionsManagementPanelProvider>
+        <WrappedTransactionsModalProvider>
             {children}
-        </WrappedTransactionsManagementPanelProvider>
+        </WrappedTransactionsModalProvider>
     </SWRConfig>
 )

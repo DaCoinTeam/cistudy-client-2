@@ -7,6 +7,8 @@ import { ChainId, ERC20Contract, chainInfos } from "@blockchain"
 import { useSDK } from "@metamask/sdk-react"
 import { RootContext } from "../../../../../_hooks"
 import { Disclosure, computeRaw } from "@common"
+import { deposit } from "@services"
+import { ToastType } from "../../../../ToastRef"
 
 interface DepositContextValue {
   discloresures: {
@@ -24,7 +26,7 @@ interface FormikValues {
 }
 
 const initialValues: FormikValues = {
-    depositAmount: 0,
+    depositAmount: 0
 }
 
 const WrappedFormikProvider = ({
@@ -39,7 +41,9 @@ const WrappedFormikProvider = ({
     <DepositModalContext.Provider
         value={{ formik, discloresures: { baseDiscloresure } }}
     >
-        <Form className="w-full" onSubmit={formik.handleSubmit}>{children}</Form>
+        <Form className="w-full" onSubmit={formik.handleSubmit}>
+            {children}
+        </Form>
     </DepositModalContext.Provider>
 )
 
@@ -54,6 +58,7 @@ export const DepositModalProvider = ({ children }: { children: ReactNode }) => {
     const { metamask } = wallets
     const { address } = metamask
 
+    const { notify } = useContext(RootContext)!
     return (
         <Formik
             initialValues={initialValues}
@@ -62,7 +67,10 @@ export const DepositModalProvider = ({ children }: { children: ReactNode }) => {
                     .min(0)
                     .required("Deposit amount is required"),
             })}
-            onSubmit={async ({ depositAmount }) => {
+            onSubmit={async ({ depositAmount }, {
+                setFieldValue
+            }) => {
+                setFieldValue("isSubmitting", true)
                 const erc20Contract = new ERC20Contract(
                     ChainId.KalytnTestnet,
                     chainInfos[ChainId.KalytnTestnet].tokenAddress,
@@ -70,13 +78,25 @@ export const DepositModalProvider = ({ children }: { children: ReactNode }) => {
                     address
                 )
 
-                const transaction = await erc20Contract
+                const { transactionHash } = await erc20Contract
                     .transfer()
                     .send(
                         chainInfos[ChainId.KalytnTestnet].serverAddress,
                         computeRaw(depositAmount)
                     )
-                console.log(transaction)
+                const { message } = await deposit({
+                    data: {
+                        transactionHash,
+                        maxQueries: 10,
+                    },
+                })
+
+                notify!({
+                    data: {
+                        message
+                    },
+                    type: ToastType.Success
+                })
             }}
         >
             {(formik) => (

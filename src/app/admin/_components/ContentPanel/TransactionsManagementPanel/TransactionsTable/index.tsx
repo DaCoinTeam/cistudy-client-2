@@ -16,7 +16,7 @@ import {
     ROWS_PER_PAGE,
 } from "../TransactionsManagementPanelProvider"
 import { useRouter } from "next/navigation"
-import { VerifyStatus, computeDenomination, parseDateStringFrom, truncateHex } from "@common"
+import { VerifyStatus, computeDenomination, parseDateStringFrom, truncate } from "@common"
 
 export const TransactionsTable = () => {
     const router = useRouter()
@@ -119,10 +119,10 @@ export const TransactionsTable = () => {
                 {({ transactionHash, from, to, createdAt, value }) => (
                     <TableRow key={transactionHash}>
                         <TableCell>
-                            {truncateHex(transactionHash)}
+                            {truncate(transactionHash)}
                         </TableCell>
-                        <TableCell>{truncateHex(from)}</TableCell>
-                        <TableCell>{truncateHex(to)}</TableCell>
+                        <TableCell>{truncate(from)}</TableCell>
+                        <TableCell>{truncate(to)}</TableCell>
                         <TableCell>{computeDenomination(BigInt(value))} STARCI</TableCell>
                         <TableCell>{parseDateStringFrom(createdAt)}</TableCell>
                     </TableRow>

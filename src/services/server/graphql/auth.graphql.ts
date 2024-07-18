@@ -36,9 +36,13 @@ export interface SignInInputData {
   };
 }
 
+export interface SignInOutputData {
+  message: string
+}
+
 export const signIn = async (
     data: SignInInputData
-): Promise<AccountEntity> => {
+): Promise<SignInOutputData> => {
     const payload = buildAuthPayloadVoidString()
     const { data: graphqlData } = await client.query({
         query: gql`
@@ -68,7 +72,6 @@ export interface VerifyGoogleAccessTokenInputData {
 export const verifyGoogleAccessToken = async (
     data: VerifyGoogleAccessTokenInputData,
 ): Promise<AccountEntity> => {
-  console.log('data', data)
     const payload = buildAuthPayloadVoidString()
     const { data: graphqlData } = await client.query({
         query: gql`

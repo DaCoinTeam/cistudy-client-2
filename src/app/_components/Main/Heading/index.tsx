@@ -7,14 +7,14 @@ import { useRouter } from "next/navigation"
 export const Heading = () => {
     const router = useRouter()
     return (
-        <div className='grid grid-cols-5 gap-16 items-center justify-between h-[35rem] max-w-[1120px] mx-auto'>
+        <div className='grid grid-cols-5 gap-16 items-center justify-between h-[35rem] max-w-[1120px] mx-auto '>
             <div className='col-span-3 z-10'>
                 <div>
                     <div className='text-4xl tracking-tight font-extrabold text-primary mb-6'>
             Share To Earn:
                         <div className='mt-3'>Where Sharing Sparks Earnings!</div>
                     </div>
-                    <div className='text-xl font-medium  text-slate-600 leading-8'>
+                    <div className='text-xl font-medium  text-slate-700 leading-8'>
             We aim for a vibrant, interactive learning community where everyone
             benefits from active participation.
                     </div>

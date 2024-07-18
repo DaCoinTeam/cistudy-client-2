@@ -1,10 +1,9 @@
 "use client"
-import { Button, Divider, Spacer } from "@nextui-org/react"
+import { Button, Spacer, Link, Card, CardBody } from "@nextui-org/react"
 import { useContext } from "react"
 import { LessonDetailsContext } from "../../_hooks"
-import { parseISODateString } from "@common"
 import { LockClosedIcon } from "@heroicons/react/24/outline"
-import { useRouter } from "next/navigation"
+import { parseISODateString } from "@common"
 
 export const QuizSection = () => {
     const isWatched = true
@@ -13,73 +12,72 @@ export const QuizSection = () => {
     const { data: lesson } = lessonsSwr
     const { quiz } = { ...lesson }
 
-    const router = useRouter()
-
     return (
         <div>
-            <div className="text-2xl font-bold">Quiz</div>
+            <div className="text-2xl font-bold text-primary">Quiz</div>
             <Spacer y={4} />
-            <div className="bg-content2 rounded-large p-4">
-                <div className="flex flex-row justify-between">
-                    <div>
-                        <div className="font-bold text-base">Quiz Details</div>
-                        <div className="p-4">
-                            <div className="flex">
-                                <li className="font-semibold">Number of Questions: {quiz?.questions.length}</li>
-                            </div>
+            {quiz ? (
+                <>
+                    <Card shadow="none" className="border divider">
+                        <CardBody className="p-4">
+                            <div className="font-bold">Details</div>
                             <Spacer y={2} />
-                            <div className="flex">
-                                <li className="font-semibold">Time Limit: {quiz?.timeLimit} minutes</li>
+                            <div>
+                                <div className="text-sm">
+              Number of questions: {quiz?.questions.length}
+                                </div>
+                                <div className="text-sm">Time Limit: {quiz?.timeLimit} minutes</div>
+                                <div className="text-sm">
+              Created on: {parseISODateString(quiz?.createdAt)}
+                                </div>
                             </div>
-                            <Spacer y={2} />
-                            <div className="flex">
-                                <li className="font-semibold">Created on: {parseISODateString(quiz?.createdAt)}</li>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div className="font-bold text-base">Your Performance</div>
-                        <div className="p-4">
-                            <div className="flex">
-                                <li className="font-semibold">Last Attempt Score: {(quiz?.lastAttemptScore ?? 0) >= 0 && (quiz?.lastAttemptScore ?? 0) < 10 ? `${quiz?.lastAttemptScore ?? 0}/10` : "You have not taken the quiz yet"}</li>
-                            </div>
-                            <Spacer y={2} />
-                            <div className="flex">
-                                <li className="font-semibold">Number of Attempts: {(quiz?.totalNumberOfAttempts ?? 0) >= 0 ? quiz?.totalNumberOfAttempts : 0}</li>
-                            </div>
-                            <Spacer y={2} />
-                            <div className="flex">
-                                <li className="font-semibold">Highest Score: {quiz?.highestScoreRecorded ? (
-                                    <span>
-                                        {quiz?.highestScoreRecorded}/10
-                                    </span>
-                                ) : (
-                                    <span>
-                                        You have not taken the quiz yet
-                                    </span>
-                                )}</li>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-
-                    <div>
-                        <Divider />
-                        <Spacer y={4} />
-                        <div className = "flex gap-2 items-center">
-                            <Button onPress={() => router.push(`/quiz/${quiz?.quizId}`)} startContent={!isWatched ? <LockClosedIcon className="w-5 h-5" /> : undefined} isDisabled={!isWatched} color="secondary">
-                                Take Quiz
-                            </Button>
                             {
-                                !isWatched ? <div className="text-danger text-sm">Please watch the course first.</div> : null
-                            }                     
-                        </div>             
-                    </div>
-                </div>
-            </div>
+                                <>
+                                    <Spacer y={4} />
+                                    <div className="font-bold">Your Performance</div>
+                                    <Spacer y={2} />
+                                    <div>
+                                        <div className="text-sm">
+                  Last Attempt Score: {quiz?.lastAttemptScore}
+                                        </div>
+                                        <div className="text-sm">
+                  Time Limit: {quiz?.totalNumberOfAttempts} minutes
+                                        </div>
+                                        <div className="text-sm">
+                  Created on: {quiz?.highestScoreRecorded}/10
+                                        </div>
+                                    </div>
+                                </>
+                            }
+                            <Spacer y={4} />
+                            <div className="flex gap-2 items-center">
+                                <Link isExternal href={`/quiz/${lesson?.lessonId}`}>
+                                    <Button
+                                        startContent={
+                                            !isWatched ? (
+                                                <LockClosedIcon className="w-5 h-5" />
+                                            ) : undefined
+                                        }
+                                        isDisabled={!isWatched}
+                                        color="secondary"
+                                    >
+                Take Quiz
+                                    </Button>
+                                </Link>
+                                {!isWatched ? (
+                                    <div className="text-danger text-sm">
+                Please watch the course first.
+                                    </div>
+                                ) : null}
+                            </div>
+                        </CardBody>
+                    </Card>
+
+        
+                </>
+            ) : (
+                <div>The lesson does not have any quiz yet.</div>
+            )}
         </div>
     )
 }

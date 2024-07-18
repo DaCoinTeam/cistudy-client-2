@@ -1,6 +1,17 @@
 import React, { useContext } from "react"
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input} from "@nextui-org/react"
-import { DepositModalContext, DepositModalProvider } from "./DepositModalProvider"
+import {
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Button,
+    Input,
+} from "@nextui-org/react"
+import {
+    DepositModalContext,
+    DepositModalProvider,
+} from "./DepositModalProvider"
 
 export const WrappedDepositModal = () => {
     const { discloresures, formik } = useContext(DepositModalContext)!
@@ -9,8 +20,10 @@ export const WrappedDepositModal = () => {
 
     return (
         <>
-            <Button fullWidth onPress={onOpen}>Deposit</Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <Button fullWidth onPress={onOpen}>
+        Deposit
+            </Button>
+            <Modal isDismissable={false} isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <ModalHeader className="p-4 pb-2">Deposit</ModalHeader>
                     <ModalBody className="p-4">
@@ -19,21 +32,33 @@ export const WrappedDepositModal = () => {
                             id="depositAmount"
                             isRequired
                             classNames={{
-                                inputWrapper: "input-input-wrapper"
-                            }} 
+                                inputWrapper: "input-input-wrapper",
+                            }}
                             labelPlacement="outside"
                             placeholder="Input deposit amount here"
                             value={formik.values.depositAmount.toString()}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            isInvalid={!!(formik.touched.depositAmount && formik.errors.depositAmount)}
-                            errorMessage={formik.touched.depositAmount && formik.errors.depositAmount}
-                            endContent={<div className="text-sm text-foreground-400">STARCI</div>}
+                            isInvalid={
+                                !!(formik.touched.depositAmount && formik.errors.depositAmount)
+                            }
+                            errorMessage={
+                                formik.touched.depositAmount && formik.errors.depositAmount
+                            }
+                            endContent={
+                                <div className="text-sm text-foreground-400">STARCI</div>
+                            }
                         />
                     </ModalBody>
                     <ModalFooter className="p-4 pt-2">
-                        <Button fullWidth color="secondary" onPress={formik.submitForm}>
-                  Deposit
+                        <Button
+                            fullWidth
+                            color="secondary"
+                            isDisabled={formik.isSubmitting}
+                            isLoading={formik.isSubmitting}
+                            onPress={formik.submitForm}
+                        >
+              Deposit
                         </Button>
                     </ModalFooter>
                 </ModalContent>

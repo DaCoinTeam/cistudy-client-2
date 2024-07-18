@@ -6,8 +6,8 @@ import { Grid3X3Icon, List } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useContext, useMemo } from "react"
 import InfiniteScroll from "react-infinite-scroller"
-import { CourseCard } from "../../../_components/Courses/CourseCard"
 import { CardListHorizontalSkeleton, CardListSkeleton, InteractiveThumbnail, Stars } from "../../../_shared"
+import { CourseCard } from "../../../_shared/components/CourseCard" 
 import { AllCoursesContext, COLUMNS_PER_PAGE, useAllCoursesReducer } from "../../_hooks"
 
 interface InfiniteCoursesScrollerProps {

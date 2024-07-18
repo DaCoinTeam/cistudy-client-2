@@ -16,6 +16,7 @@ const useCountdown = (initialTime : number) => {
     useEffect(() => {
         const intervalId = setInterval(() => {
             setRemainingTime((prevTime) => Math.max(prevTime - 1000, 0))
+            localStorage.setItem("quizRemainingTime", remainingTime.toString())
             if (remainingTime === 0) {
                 trigger({data: {quizAttemptId: state.quizAttemptId, quizQuestionAnswerIds: state.quizQuestionAnswerIds}}).then(() => {
                     route.push(`/lessons/${lessonId}`)
@@ -30,7 +31,7 @@ const useCountdown = (initialTime : number) => {
 }
 
 const CountdownTimer = ({ initialTime } : { initialTime : number}) => {
-    const remainingTime = useCountdown(initialTime)
+    const remainingTime = useCountdown(initialTime * 60 * 1000)
 
     const getTimeComponents = (time : number) => {
         const days = Math.floor(time / (1000 * 60 * 60 * 24))
