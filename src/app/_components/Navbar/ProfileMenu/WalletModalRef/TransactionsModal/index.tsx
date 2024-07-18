@@ -159,7 +159,7 @@ const WrappedTransactionsModal = () => {
                                                     <div>Deposited: </div>
                                                     {amountDepositedChange >= 0 ? (
                                                         <div className="text-success">
-                              +{amountDepositedChange} STARCI
+                              + {amountDepositedChange} STARCI
                                                         </div>
                                                     ) : (
                                                         <div className="text-danger">
@@ -171,7 +171,7 @@ const WrappedTransactionsModal = () => {
                                                     <div>On-chain: </div>
                                                     {amountOnChainChange >= 0 ? (
                                                         <div className="text-success">
-                              +{amountOnChainChange} STARCI
+                              + {amountOnChainChange} STARCI
                                                         </div>
                                                     ) : (
                                                         <div className="text-danger">
