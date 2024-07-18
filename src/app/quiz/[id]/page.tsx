@@ -8,6 +8,8 @@ import { Button, Chip } from "@nextui-org/react"
 import { FaRegCircle, FaRegDotCircle } from "react-icons/fa"
 import { ConfirmModalRef, ConfirmModalRefSelectors } from "../../_shared"
 import { useRouter } from "next/navigation"
+import { ResultModalRef, ResultModalRefSelectors } from "./components"
+import { ToastRef, ToastRefSelectors, ToastType } from "../../_components"
 
 
 const Page = () => {
@@ -18,13 +20,13 @@ const Page = () => {
     const [state, dispatch] = reducer
     const {quizSwr, finishQuizAttemptSwrMutation} = swrs
     const {data} = quizSwr
+    const {section, quiz} = {...data}
     const {trigger : finishTrigger, isMutating} = finishQuizAttemptSwrMutation
     const confirmModalRef = useRef<ConfirmModalRefSelectors>(null)
-
-    if (!data) return null
+    const resultModalRef = useRef<ResultModalRefSelectors>(null)
+    const toastRef = useRef<ToastRefSelectors>(null)
 
     const handleSelectedAnswer = ({questionIndex, answerIndex} : {questionIndex: number, answerIndex: string}) => {
-        console.log(questionIndex, answerIndex)
         const answer = [{
             questionIndex: questionIndex.toString(),
             answerIndex: [answerIndex],
@@ -44,8 +46,15 @@ const Page = () => {
                 quizAttemptId: state.quizAttemptId,
                 quizQuestionAnswerIds
             }
-        }).then(() => {
-            route.push(`/lessons/${lessonId}`)
+        }).then((res) => {
+            localStorage.setItem("quizScore", res.others.score.toString())
+            toastRef.current?.notify({
+                data: {
+                    message: res.message
+                },
+                type: ToastType.Success 
+            })
+            resultModalRef.current?.onOpen()
         })
     }
 
@@ -53,33 +62,32 @@ const Page = () => {
         confirmModalRef.current?.onOpen()
     }
 
-    // window.onbeforeunload = () => {
-    //     handleSubmitQuiz()
-    //     return true
-    // }
+    const handleNavigateToLesson = () => {
+        route.push(`/lessons/${lessonId}`)
+    }
 
     return (
         <div>
             <div className="flex items-center flex-row p-4 border-b-2">
                 <div className="flex flex-row">
-                    <div className="flex flex-row items-center cursor-pointer" onClick={handleConfirmSubmit}>
+                    <div className="flex flex-row items-center cursor-pointer ml-7" onClick={handleConfirmSubmit}>
                         <ArrowLeft className="text-primary" size={20} />
                         <span className="ml-2 text-primary font-semibold">Back</span>
                     </div>
                     <div className="ml-2">
-                        <div className="font-semibold">{data.section.title}</div>
-                        <div className="opacity-50">{data.quiz.timeLimit} min</div>
+                        <div className="font-semibold">{section?.title}</div>
+                        <div className="opacity-50">{quiz?.timeLimit} min</div>
                     </div>
                 </div>
                 <div className="ml-auto">
-                    <CountdownTimer initialTime={data.quiz.timeLimit * 60 * 1000} />
+                    <CountdownTimer initialTime={quiz?.timeLimit as number} />
                 </div>
             </div>
 
             <div className="flex justify-center">
                 <div className="w-1/2">
                     {
-                        data.quiz.questions.map((question, questionIndex) => (
+                        quiz?.questions.map((question, questionIndex) => (
                             <div key={question.quizQuestionId} className="mt-16">
                                 <div className="flex justify-between">
                                     <div className="text-lg font-semibold line-clamp-3">{questionIndex+1}. {question.question}</div>
@@ -108,6 +116,8 @@ const Page = () => {
                 </div>
             </div>
             <ConfirmModalRef ref={confirmModalRef} title="Submit your answers" content="Continue to submit?" onOKPress={handleSubmitQuiz} />
+            <ResultModalRef ref={resultModalRef} onOKPress={handleNavigateToLesson} />
+            <ToastRef ref={toastRef} />
         </div>
     )
 }
