@@ -2,7 +2,7 @@
 import React, { useContext } from "react"
 import { EnrolledCoursesSectionContext, EnrolledCoursesSectionProvider } from "./EnrolledCoursesSectionProvider"
 import { Spacer } from "@nextui-org/react"
-import { CourseCard } from "./CourseCard"
+import { CourseCard } from "../../../_shared/components/CourseCard"
 
 interface EnrolledCoursesSectionProps {
     className?: string
@@ -25,7 +25,7 @@ const WrappedEnrolledCoursesSection = (props: EnrolledCoursesSectionProps) => {
             <div className="grid grid-cols-4 gap-4">
                 {
                     results?.map((course) => (
-                        <CourseCard key={course.courseId} course={course} />
+                        <CourseCard key={course.courseId} {...course} />
                     ))
                 }
             </div>

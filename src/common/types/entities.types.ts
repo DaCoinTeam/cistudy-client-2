@@ -290,6 +290,7 @@ export interface PostCommentReplyEntity {
 export interface SectionEntity {
   sectionId: string;
   title: string;
+  position: number;
   courseId: string;
   createdAt: Date;
   course: CourseEntity;

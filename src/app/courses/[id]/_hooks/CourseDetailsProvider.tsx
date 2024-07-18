@@ -64,6 +64,7 @@ export const WrappedCourseDetailsProvider = ({
                 sections: {
                     sectionId: true,
                     title: true,
+                    position: true,
                     lessons: {
                         lessonId: true,
                         thumbnailId: true,

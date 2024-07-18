@@ -7,7 +7,7 @@ import {
     usePrevNextButtons
 } from "./EmblaCarouselArrowButtons"
 import useEmblaCarousel from "embla-carousel-react"
-import { CourseCard } from "../../CourseCard"
+import { CourseCard } from "../../../../_shared/components/CourseCard" 
 import { CourseEntity } from "@common"
 
 type PropType = {
