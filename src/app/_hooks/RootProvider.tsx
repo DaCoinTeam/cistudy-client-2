@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation"
 import React, {
     ReactNode,
     createContext,
-    forwardRef,
     useCallback,
     useEffect,
     useMemo,
@@ -55,10 +54,7 @@ interface WrappedRootProviderSelectors {
   mutate: any;
 }
 
-const WrappedRootProvider = forwardRef<
-  WrappedRootProviderSelectors,
-  { children: ReactNode; formik: FormikProps<FormikValues> }
->((props) => {
+const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps<FormikValues> }) => {
     const reducer = useRootReducer()
     const { children, formik } = props
 
@@ -159,13 +155,6 @@ const WrappedRootProvider = forwardRef<
 
     const highlightSwr = useSWR(["HIGHLIGHT"], fetchHighlight)
 
-   
-
-
-
-    // useImperativeHandle(ref, () => ({
-    //     mutate: coursesSwr.mutate,
-    // }))
 
     useEffect(() => {
         generateClientId()
@@ -215,7 +204,7 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
             }}
         >
             {(formik) => (
-                <WrappedRootProvider ref={ref} formik={formik}>
+                <WrappedRootProvider formik={formik}>
                     {children}
                 </WrappedRootProvider>
             )}

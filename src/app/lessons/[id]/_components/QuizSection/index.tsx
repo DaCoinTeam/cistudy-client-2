@@ -76,7 +76,7 @@ export const QuizSection = () => {
         
                 </>
             ) : (
-                <div>The lession do not have any quiz yet.</div>
+                <div>The lesson does not have any quiz yet.</div>
             )}
         </div>
     )

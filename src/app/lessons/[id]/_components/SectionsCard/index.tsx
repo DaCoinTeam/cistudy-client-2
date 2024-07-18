@@ -43,8 +43,6 @@ export const SectionsCard = (props: SectionsCardProps) => {
         setSelectedKeys(new Set(values))
     }
 
-    console.log(lesson)
-
     const renderSections = () => {
         if (!sections) return []
         return sections.map(({ sectionId, title, lessons }) => (
