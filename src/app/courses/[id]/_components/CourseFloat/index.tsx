@@ -7,28 +7,29 @@ import {
     Spacer,
 } from "@nextui-org/react"
 
-import { enrollCourse, getAssetUrl } from "@services"
-import { useContext } from "react"
-import { VideoPlayer } from "../../../../_shared"
-import { CourseDetailsContext } from "../../_hooks"
-import {
-    ArrowRightEndOnRectangleIcon,
-    ShoppingCartIcon,
-} from "@heroicons/react/24/outline"
-import {
-    ClipboardPenLineIcon,
-    FolderOpenIcon,
-    PlaySquareIcon,
-} from "lucide-react"
-import { useSDK } from "@metamask/sdk-react"
-import { RootContext } from "../../../../_hooks"
-import { computePercentage, computeRaw } from "@common"
 import {
     ChainId,
     ERC20Contract,
     chainInfos,
 } from "@blockchain"
+import { computePercentage } from "@common"
+import {
+    ArrowRightEndOnRectangleIcon,
+    ShoppingCartIcon,
+} from "@heroicons/react/24/outline"
+import { useSDK } from "@metamask/sdk-react"
+import { enrollCourse, getAssetUrl } from "@services"
+import {
+    ClipboardPenLineIcon,
+    FileQuestion,
+    ListVideo,
+    PlaySquareIcon
+} from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
+import { useContext, useMemo } from "react"
+import { RootContext } from "../../../../_hooks"
+import { VideoPlayer } from "../../../../_shared"
+import { CourseDetailsContext } from "../../_hooks"
 
 export const CourseFloat = () => {
     const { swrs } = useContext(CourseDetailsContext)!
@@ -42,6 +43,7 @@ export const CourseFloat = () => {
         courseId,
         enrolled,
         creator,
+        sections
     } = {
         ...course,
     }
@@ -74,14 +76,19 @@ export const CourseFloat = () => {
     //     }
     // }, [socket, courseId])
 
-    const getPrice = () => {
-        return (enableDiscount ? discountPrice : price) ?? 0
-    }
+    const {numberOfSection, numberOfLesson, numberOfQuiz} = useMemo(() => {
+        const numberOfSection = sections?.length
+        let numberOfLesson = 0
+        let numberOfQuiz = 0
 
-    const getPriceRaw = () => {
-        if (!price) return BigInt(0)
-        return enableDiscount ? computeRaw(discountPrice ?? 0) : computeRaw(price)
-    }
+        sections?.map((section) => {
+            numberOfLesson = numberOfLesson + section.lessons.length
+            section.lessons?.map((lesson) => {
+                if(lesson.quiz) numberOfQuiz++
+            })
+        })
+        return {numberOfSection, numberOfLesson, numberOfQuiz}
+    }, [sections])
 
     const onEnrollPress = async () => {
         if (!account) {
@@ -150,26 +157,30 @@ export const CourseFloat = () => {
                     src={getAssetUrl(previewVideoId)}
                 />
             </CardHeader>
-            <CardBody className="p-4">
+            <CardBody className="px-6 py-3">
                 {enrolled ? <div className="text-secondary font-semibold text-base mb-2">Enrolled</div> : null}
                 <div>{renderPrice()}</div>
                 <Spacer y={4} />
                 <div>
-                    <div className="text-sm font-semibold">This course included</div>
+                    <div className="text-base font-semibold">This course included</div>
                     <Spacer y={2} />
-                    <div className="flex text-foreground-400 flex-col gap-2">
+                    <div className="flex text-foreground-500 flex-col gap-2">
+                        <div className="flex gap-2">
+                            <ListVideo size={20} strokeWidth={3 / 2} />
+                            <div className="text-sm font-semibold"> {numberOfSection} sections</div>
+                        </div>
                         <div className="flex gap-2">
                             <PlaySquareIcon size={20} strokeWidth={3 / 2} />
-                            <div className="text- font-semibold"> 4 lessons</div>
+                            <div className="text-sm font-semibold"> {numberOfLesson} lessons</div>
                         </div>
-                        <div className="flex text-foreground-400 gap-2">
-                            <FolderOpenIcon size={20} strokeWidth={3 / 2} />
-                            <div className="text-base font-semibold"> 7 downloadable resources </div>
+                        <div className="flex gap-2">
+                            <FileQuestion size={20} strokeWidth={3 / 2} />
+                            <div className="text-sm font-semibold"> {numberOfQuiz} quizzes</div>
                         </div>
                     </div>
                 </div>
             </CardBody>
-            <CardFooter className="p-4 pt-2 flex-col gap-4">
+            <CardFooter className="p-4 pt-2 flex-col gap-2">
                 {enrolled ? (
                     <Button
                         color="secondary"

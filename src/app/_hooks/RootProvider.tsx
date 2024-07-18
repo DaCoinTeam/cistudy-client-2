@@ -77,6 +77,19 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                     roleId: true,
                     name: true,
                 },
+                cart: {
+                    cartId: true,
+                    cartCourses: {
+                        cartCourseId: true,
+                        course: {
+                            courseId: true,
+                            title: true,
+                            price: true,
+                            discountPrice: true,
+                            thumbnailId: true,
+                        }
+                    }
+                }
             })
         } catch (ex) {
             // console.log(ex)
@@ -98,14 +111,16 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                     description: true,
                     thumbnailId: true,
                     courseRatings: {
-                        overallCourseRating: true
+                        overallCourseRating: true,
+                        totalNumberOfRatings: true
                     },
                     creator: {
                         accountId: true,
                         username: true, 
                         email: true,
                         avatarId: true,
-                        avatarUrl: true
+                        avatarUrl: true,
+                        
                     }
                 },
                 mostEnrolledCourses: {
@@ -117,7 +132,8 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                     thumbnailId: true,
 
                     courseRatings: {
-                        overallCourseRating: true
+                        overallCourseRating: true,
+                        totalNumberOfRatings: true
                     },
                     creator: {
                         accountId: true,
@@ -135,7 +151,8 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                     description: true,
                     thumbnailId: true,
                     courseRatings: {
-                        overallCourseRating: true
+                        overallCourseRating: true,
+                        totalNumberOfRatings: true
                     },
                     creator: {
                         accountId: true,
@@ -145,6 +162,17 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                         avatarUrl: true
                     }
                 },
+                highRatedInstructors: {
+                    accountId: true,
+                    username: true,
+                    email: true,
+                    avatarId: true,
+                    avatarUrl: true,
+                    kind: true,
+                    accountRatings: {
+                        overallAccountRating: true,
+                    }
+                }
             })
         } catch (ex) {
             // console.log(ex)
