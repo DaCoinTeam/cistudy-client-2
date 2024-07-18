@@ -42,6 +42,15 @@ export interface RoleEntity {
   isDisabled: boolean;
   updatedAt: Date;
 }
+export interface AccountRatingDTO {
+  numberOf1StarRatings: number;
+  numberOf2StarRatings: number;
+  numberOf3StarRatings: number;
+  numberOf4StarRatings: number;
+  numberOf5StarRatings: number;
+  overallAccountRating: number;
+  totalNumberOfRatings: number;
+}
 
 export interface AccountEntity {
   accountId: string;
@@ -51,6 +60,7 @@ export interface AccountEntity {
   avatarUrl?: string;
   phoneNumber?: string;
   balance: number;
+  cart: CartEntity;
   roles: Array<RoleEntity>;
   walletAddress?: string;
   firstName?: string;
@@ -72,6 +82,7 @@ export interface AccountEntity {
   //graphql
   followed?: boolean;
   numberOfFollowers?: number;
+  accountRatings?: AccountRatingDTO;
 }
 
 export interface PostEntity {

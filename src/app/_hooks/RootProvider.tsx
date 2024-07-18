@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation"
 import React, {
     ReactNode,
     createContext,
-    forwardRef,
     useCallback,
     useEffect,
     useMemo,
@@ -55,10 +54,7 @@ interface WrappedRootProviderSelectors {
   mutate: any;
 }
 
-const WrappedRootProvider = forwardRef<
-  WrappedRootProviderSelectors,
-  { children: ReactNode; formik: FormikProps<FormikValues> }
->((props) => {
+const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps<FormikValues> }) => {
     const reducer = useRootReducer()
     const { children, formik } = props
 
@@ -81,6 +77,19 @@ const WrappedRootProvider = forwardRef<
                     roleId: true,
                     name: true,
                 },
+                cart: {
+                    cartId: true,
+                    cartCourses: {
+                        cartCourseId: true,
+                        course: {
+                            courseId: true,
+                            title: true,
+                            price: true,
+                            discountPrice: true,
+                            thumbnailId: true,
+                        }
+                    }
+                }
             })
         } catch (ex) {
             // console.log(ex)
@@ -102,14 +111,16 @@ const WrappedRootProvider = forwardRef<
                     description: true,
                     thumbnailId: true,
                     courseRatings: {
-                        overallCourseRating: true
+                        overallCourseRating: true,
+                        totalNumberOfRatings: true
                     },
                     creator: {
                         accountId: true,
                         username: true, 
                         email: true,
                         avatarId: true,
-                        avatarUrl: true
+                        avatarUrl: true,
+                        
                     }
                 },
                 mostEnrolledCourses: {
@@ -121,7 +132,8 @@ const WrappedRootProvider = forwardRef<
                     thumbnailId: true,
 
                     courseRatings: {
-                        overallCourseRating: true
+                        overallCourseRating: true,
+                        totalNumberOfRatings: true
                     },
                     creator: {
                         accountId: true,
@@ -139,7 +151,8 @@ const WrappedRootProvider = forwardRef<
                     description: true,
                     thumbnailId: true,
                     courseRatings: {
-                        overallCourseRating: true
+                        overallCourseRating: true,
+                        totalNumberOfRatings: true
                     },
                     creator: {
                         accountId: true,
@@ -149,6 +162,17 @@ const WrappedRootProvider = forwardRef<
                         avatarUrl: true
                     }
                 },
+                highRatedInstructors: {
+                    accountId: true,
+                    username: true,
+                    email: true,
+                    avatarId: true,
+                    avatarUrl: true,
+                    kind: true,
+                    accountRatings: {
+                        overallAccountRating: true,
+                    }
+                }
             })
         } catch (ex) {
             // console.log(ex)
@@ -159,13 +183,6 @@ const WrappedRootProvider = forwardRef<
 
     const highlightSwr = useSWR(["HIGHLIGHT"], fetchHighlight)
 
-   
-
-
-
-    // useImperativeHandle(ref, () => ({
-    //     mutate: coursesSwr.mutate,
-    // }))
 
     useEffect(() => {
         generateClientId()
@@ -215,7 +232,7 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
             }}
         >
             {(formik) => (
-                <WrappedRootProvider ref={ref} formik={formik}>
+                <WrappedRootProvider formik={formik}>
                     {children}
                 </WrappedRootProvider>
             )}

@@ -12,9 +12,9 @@ export const CourseCard = (props: CourseEntity) => {
     const {totalNumberOfRatings, overallCourseRating} = {...courseRatings}
     const router = useRouter()
     return (
-        <div onClick={() => router.push(`/courses/${courseId}`)}>
-            <Card id="cardd" key={courseId} role="button"  className="w-full hover:cursor-pointer"  >
-                <div id="div id" className="w-full">
+        <div role="button" onClick={() => router.push(`/courses/${courseId}`)}>
+            <Card  isPressable className="w-full hover:cursor-pointer"  >
+                <div className="w-full">
                     {thumbnailId && (
                         <Image
                             alt='course image'

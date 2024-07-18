@@ -54,7 +54,7 @@ const WrappedNavbar = (props: NavbarProps) => {
                 wrapper: "!max-w-full px-12"
             }}>
                 <NavbarBrand>
-                    <div className="font-semibold text-primary cursor-pointer"  onClick={() => router.push("/")}> 
+                    <div className="font-semibold text-primary cursor-pointer" role="button"  onClick={() => router.push("/")}> 
                         <span className="text-primary dark:text-blue-900">
                         Ci
                         </span>

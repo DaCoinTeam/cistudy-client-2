@@ -11,7 +11,7 @@ export const Courses = () => {
     const {highRatedCourses, recentlyAddedCourses, mostEnrolledCourses} = {...data}
     console.log(data)
     return (
-        <div>
+        <div className="flex flex-col max-w-[1660px] mx-auto">
             <div className="w-full text-center text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white mb-6">Try our courses</div>
             <div className="ms-8 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white ">High Rating Courses</div>
             {highRatedCourses && (
