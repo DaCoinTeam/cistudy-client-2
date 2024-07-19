@@ -1,3 +1,4 @@
+
 import React, { useContext } from "react"
 import {
     Modal,
@@ -39,7 +40,7 @@ export const ConfirmEnrollModal = () => {
 
     const { trigger, isMutating } = useSWRMutation(
         "ENROLL",
-        async (
+        (
             _,
             {
                 arg,
@@ -49,7 +50,7 @@ export const ConfirmEnrollModal = () => {
         };
       }
         ) =>
-            await enrollCourse({
+            enrollCourse({
                 data: {
                     courseId: arg.courseId,
                 },
@@ -79,13 +80,13 @@ export const ConfirmEnrollModal = () => {
                   Sorry, your balance are not enough.
                                 </div>
                                 <Spacer y={4} />
-                                <div className="text-sm">
+                                <div className="text-sm flex gap-2 items-center">
                                     <div>Paid amount:</div>
                                     <span className="text-primary font-semibold">
                                         {getPrice()} STARCI
                                     </span>
                                 </div>
-                                <div className="text-sm">
+                                <div className="text-sm flex gap-2 items-center">
                                     <div>Your balance:</div>
                                     <span className="text-primary font-semibold">
                                         {balance} STARCI
@@ -98,25 +99,25 @@ export const ConfirmEnrollModal = () => {
                   Are you sure to enroll this course?
                                 </div>
                                 <Spacer y={4} />
-                                <div className="text-sm">
+                                <div className="text-sm flex gap-2 items-center">
                                     <div>Paid amount:</div>
                                     <span className="text-primary font-semibold">
                                         {getPrice()} STARCI
                                     </span>
                                 </div>
-                                <div className="text-sm">
+                                <div className="text-sm flex gap-2 items-center">
                                     <div> Your balance:</div>
                                     <span className="text-primary font-semibold">
                                         {balance} STARCI
                                     </span>
                                 </div>
                             </div>
-                        )}
+                        )} 
                     </ModalBody>
                     <ModalFooter className="p-4 pt-2">
                         <Button
                             isLoading={isMutating}
-                            isDisabled={(balanceLeft < 0) || isMutating}
+                            isDisabled={(balanceLeft < 0) && isMutating}
                             color="secondary"
                             onPress={async () => {
                                 if (!courseId) return

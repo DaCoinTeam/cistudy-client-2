@@ -1,3 +1,4 @@
+
 import {
     Button,
     Card,
@@ -7,113 +8,38 @@ import {
     Spacer,
 } from "@nextui-org/react"
 
-import {
-    ChainId,
-    ERC20Contract,
-    chainInfos,
-} from "@blockchain"
-import { CartCourseEntity, computePercentage } from "@common"
+import { computePercentage } from "@common"
 import {
     ArrowRightEndOnRectangleIcon,
     ShoppingCartIcon,
-    BuildingStorefrontIcon
 } from "@heroicons/react/24/outline"
-import { useSDK } from "@metamask/sdk-react"
-import { addToCart, enrollCourse, getAssetUrl } from "@services"
+import { getAssetUrl } from "@services"
 import {
-    BookOpen,
-    ClipboardPenLineIcon,
     FileQuestion,
     ListVideo,
     PlaySquareIcon
 } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
-import { useCallback, useContext, useMemo } from "react"
-import { RootContext } from "../../../../_hooks"
+import { useContext, useMemo } from "react"
 import { VideoPlayer } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
-import useSWRMutation from "swr/mutation"
-import { ToastType } from "../../../../_components"
+import { ConfirmEnrollModal } from "./ConfirmEnrollModal"
 
 export const CourseFloat = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
-    const { data: course, isLoading, mutate } = courseSwr
+    const { data: course, isLoading } = courseSwr
     const {
         previewVideoId,
         price,
         enableDiscount,
         discountPrice,
-        courseId,
         enrolled,
-        creator,
-        sections,
-        isCreator
+        sections
     } = {
         ...course,
     }
-    const { walletAddress } = { ...creator }
 
-    const { account, provider } = useSDK()
-
-    const { disclosures, swrs : RootContextSwrs, notify } = useContext(RootContext)!
-    const { notConnectWalletModalDisclosure } = disclosures
-    const { onOpen } = notConnectWalletModalDisclosure
-    const { profileSwr } = RootContextSwrs
-    const {cart} = {...profileSwr?.data}
-
-    const isAddedToCart = useMemo(() => {
-        if (cart) {
-            let added = -1
-            const { cartCourses } = cart
-            if (cartCourses && cartCourses.length) {
-                added = cartCourses.findIndex(
-                    (cartCourse: CartCourseEntity) =>
-                        cartCourse.course.courseId === courseId
-                )
-            }
-            return added !== -1
-        }
-        return false
-    }, [profileSwr.data])
-
-    const fetchAddToCart = async (_: string, { arg }: { arg: string }) => {
-        const res = await addToCart({
-            data: {
-                courseId: arg,
-            },
-        })
-        if(res.others) {
-            await mutate()
-            notify!({
-                data: {
-                    message: res.message
-                },
-                type: ToastType.Success
-            })
-        } else {
-            notify!({
-                data: {
-                    error: res.message,
-                },
-                type: ToastType.Error
-            })
-        }
-            
-    }
-
-    const { trigger, isMutating } = useSWRMutation(
-        "ADD_TO_CART",
-        fetchAddToCart
-    )
-    
-    const handleAddToCart = async (courseId: string) => {
-        try {
-            await trigger(courseId)
-        } catch (ex) {
-            console.log(ex)
-        }
-    }
     // useEffect(() => {
     //     if (socket === null) return
     //     socket.on(
@@ -149,35 +75,6 @@ export const CourseFloat = () => {
         return {numberOfSection, numberOfLesson, numberOfQuiz}
     }, [sections])
 
-    const onEnrollPress = async () => {
-        if (!account) {
-            onOpen()
-            return
-        }
-        if (!courseId) return
-
-        console.log(walletAddress)
-        if (!walletAddress) {
-            return
-        }
-
-        const tokenContract = new ERC20Contract(
-            ChainId.KalytnTestnet,
-            chainInfos[ChainId.KalytnTestnet].tokenAddress,
-            provider,
-            account
-        )
-
-        await enrollCourse({
-            data: {
-                courseId,
-                numberOfQueries: 10,
-                queryInterval: 0.5,
-            },
-        })
-        await mutate()
-    }
-
     const renderDiscountPercentage = () => {
         if (!discountPrice || !price) return 0
         return (100 - computePercentage(discountPrice, price)).toFixed(2)
@@ -204,7 +101,6 @@ export const CourseFloat = () => {
     const path = usePathname()
     const router = useRouter()
     const onEnterCoursePress = () => router.push(`${path}/home`)
-    const onManageCoursePress = () => router.push("/management")
 
     return (
         <Card
@@ -241,7 +137,7 @@ export const CourseFloat = () => {
                 </div>
             </CardBody>
             <CardFooter className="p-4 pt-2 flex-col gap-2">
-                {enrolled && isCreator === false ? (
+                {enrolled ? (
                     <Button
                         color="secondary"
                         className="font-semibold"
@@ -253,56 +149,20 @@ export const CourseFloat = () => {
                     >
             Enter course
                     </Button>
-                ) : isCreator === false? (
+                ) : (
                     <>
+                        <ConfirmEnrollModal/>
                         <Button
-                            startContent={
-                                <ClipboardPenLineIcon
-                                    height={20}
-                                    width={20}
-                                    strokeWidth={3 / 2}
-                                />
-                            }
-                            className="font-semibold"
-                            onPress={onEnrollPress}
-                            color="secondary"
-                            fullWidth
-                        >
-              Enroll now
-                        </Button>
-                        {isAddedToCart ?  (<Button
-                            color="primary"
-                            className="font-semibold"
-                            variant="flat"
-                            onPress={() => router.push("/cart")}
-                            startContent={<ShoppingCartIcon height={20} width={20} />}
-                            fullWidth
-                        >
-                    Go to cart
-                        </Button> )  : (<Button
                             color="primary"
                             className="font-semibold"
                             variant="light"
-                            onPress={() => {console.log("adddd"), handleAddToCart(courseId || "")}}
                             startContent={<ShoppingCartIcon height={20} width={20} />}
                             fullWidth
-                            isLoading={isMutating}
                         >
               Add to cart
-                        </Button>) }
-                        
+                        </Button>
                     </>
-                ) : <>
-                    <Button
-                        color="secondary"
-                        className="font-semibold"
-                        startContent={<BookOpen height={20} width={20} strokeWidth={3 / 2} />}
-                        fullWidth
-                        onPress={onManageCoursePress}
-                    >
-                        Manage Course
-                    </Button>
-                </>}
+                )}
             </CardFooter>
         </Card>
     )
