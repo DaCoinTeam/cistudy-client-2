@@ -26,6 +26,7 @@ import { RefreshCcw } from "lucide-react"
 import { WithdrawModal } from "./WithdrawModal"
 import { BuyModal } from "./BuyModal"
 import { TransactionsModal } from "./TransactionsModal"
+import { BuyOutsideModal } from "./BuyOutsideModal"
 
 export const WrappedWalletModalRef = () => {
     const { reducer, swrs } = useContext(RootContext)!
@@ -101,7 +102,11 @@ export const WrappedWalletModalRef = () => {
                         </div>
                     </div>
                     <Spacer y={4}/>
-                    <TransactionsModal/>
+                    <div className="flex gap-2 items-center">
+                        <BuyOutsideModal/>
+                        <TransactionsModal/>
+                    </div>
+                    
                 </div>
             </ModalBody>
 
