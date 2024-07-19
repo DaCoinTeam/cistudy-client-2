@@ -39,7 +39,7 @@ export const ConfirmEnrollModal = () => {
 
     const { trigger, isMutating } = useSWRMutation(
         "ENROLL",
-        (
+        async (
             _,
             {
                 arg,
@@ -49,7 +49,7 @@ export const ConfirmEnrollModal = () => {
         };
       }
         ) =>
-            enrollCourse({
+            await enrollCourse({
                 data: {
                     courseId: arg.courseId,
                 },

@@ -17,6 +17,7 @@ import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
 import { captureOrder, createOrder } from "@services"
 import { RootContext } from "../../../../../_hooks"
 import { ToastType } from "../../../../ToastRef"
+import { WalletModalRefContext } from "../WalletModalRefProvider"
 
 const WrappedBuyModal = () => {
     const { discloresures, formik } = useContext(BuyModalContext)!
@@ -27,6 +28,9 @@ const WrappedBuyModal = () => {
     const price = Number.parseFloat(
         numeral(formik.values.buyAmount).format("0.00")
     )
+
+    const { reducer : walletReducer } = useContext(WalletModalRefContext)!
+    const [ , dispatch ] = walletReducer
 
     return (
         <>
@@ -115,7 +119,11 @@ const WrappedBuyModal = () => {
                                             },
                                             type: ToastType.Success
                                         })
+                                        
                                         onClose()
+                                        dispatch({
+                                            type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
+                                        })
                                     }} 
                                 />
                             </PayPalScriptProvider>

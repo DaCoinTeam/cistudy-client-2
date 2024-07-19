@@ -38,6 +38,10 @@ export const WalletModalRefProvider = (props: { children: ReactNode }) => {
     const { metamask } = wallets
     const { address } = metamask
 
+    const { swrs } = useContext(RootContext)!
+    const { profileSwr } = swrs
+    const { mutate } = profileSwr
+
     useEffect(() => {
         const handleEffect = async () => {
             if (!address) return

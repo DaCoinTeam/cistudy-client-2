@@ -9,6 +9,7 @@ import { RootContext } from "../../../../../_hooks"
 import { Disclosure, computeRaw } from "@common"
 import { deposit } from "@services"
 import { ToastType } from "../../../../ToastRef"
+import { WalletModalRefContext } from "../WalletModalRefProvider"
 
 interface DepositContextValue {
   discloresures: {
@@ -59,6 +60,10 @@ export const DepositModalProvider = ({ children }: { children: ReactNode }) => {
     const { address } = metamask
 
     const { notify } = useContext(RootContext)!
+
+    const { reducer : walletReducer } = useContext(WalletModalRefContext)!
+    const [ , dispatch ] = walletReducer
+    
     return (
         <Formik
             initialValues={initialValues}
@@ -96,6 +101,10 @@ export const DepositModalProvider = ({ children }: { children: ReactNode }) => {
                         message
                     },
                     type: ToastType.Success
+                })
+
+                dispatch({
+                    type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
                 })
             }}
         >
