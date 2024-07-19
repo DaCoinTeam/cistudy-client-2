@@ -6,7 +6,7 @@ import { Grid3X3Icon, List } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useContext, useMemo } from "react"
 import InfiniteScroll from "react-infinite-scroller"
-import { CardListHorizontalSkeleton, CardListSkeleton, InteractiveThumbnail, Stars } from "../../../_shared"
+import { CardListHorizontalSkeleton, CardListSkeleton, CourseCardHorizontal, InteractiveThumbnail, Stars } from "../../../_shared"
 import { CourseCard } from "../../../_shared/components/CourseCard" 
 import { AllCoursesContext, COLUMNS_PER_PAGE, useAllCoursesReducer } from "../../_hooks"
 
@@ -89,16 +89,18 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                             </div>
                         }>
                         <div>
-                            <div className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-6">
-                                {isLoading ? <CardListSkeleton/> : (
-                                    getCoursesPage.map((course)  => (
+                            {isLoading ? <CardListSkeleton/> : (
+
+                                <div className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-6">
+                                    {getCoursesPage.map((course)  => (
                                         <div key={course.courseId}  >
                                             <CourseCard {...course}/>
                                         </div>
-                                    ))
-                                )}
+                                    )) }
 
-                            </div>
+                                </div>
+                            )}
+
                             <div className="mt-16">
                                 {getPages ? <Pagination initialPage={1} total={getPages}  onChange={onLoadPage} color="secondary" /> : null
                                 }
@@ -126,29 +128,8 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                             loader={<CircularProgress key={0} aria-label="Loading..." />}
                         >
                             {isLoading ? <CardListHorizontalSkeleton/> : (
-                                getCourses.map(({ courseId, title, thumbnailId, description, creator }) => (
-                                    <div className="flex gap-4" key={courseId}>
-                                        <InteractiveThumbnail isPressable className="min-w-60 w-60 h-fit" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
-                                        <div className="flex-1">
-                                            <div className="text-lg"> {title} </div>
-                                            <div className="text-sm text-foreground-400 line-clamp-2"> {description} </div>
-                                            <Spacer y={4}/>
-                                            <div className="flex gap-4 h-10 items-center">
-                                                <User classNames={{
-                                                    name: "text-base"
-                                                }} avatarProps={{
-                                                    src: getAvatarUrl({
-                                                        avatarUrl: creator.avatarUrl,
-                                                        avatarId: creator.avatarId,
-                                                        kind: creator.kind
-                                                    })
-                                                }} name={creator.username} description={"2 followers"}/>
-                                                <Divider orientation="vertical"/>
-                                                <Stars />
-                                            </div>
-                       
-                                        </div>           
-                                    </div>
+                                getCourses.map((course) => (
+                                    <CourseCardHorizontal key={course.courseId} {...course} />
                                 )))}
                         </InfiniteScroll>
                     </Tab>

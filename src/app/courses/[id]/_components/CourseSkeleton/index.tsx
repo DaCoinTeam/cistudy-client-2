@@ -12,33 +12,21 @@ export const CourseSkeleton = () => {
                     <div className="h-6 w-1/5 rounded-lg bg-default-200"></div>
                 </Skeleton>
                 <div className="grid grid-cols-2 gap-4 gap-y-8">
-                    <Skeleton className=" rounded-lg ">
-                        <div className="h-3 rounded-lg bg-default-200"/>
-                    </Skeleton>
-                    <Skeleton className="rounded-lg">
-                        <div className="h-3 rounded-lg bg-default-200"/>
-                    </Skeleton>
-                    <Skeleton className=" rounded-lg">
-                        <div className="h-3rounded-lg bg-default-200"/>
-                    </Skeleton>
-                    <Skeleton className="rounded-lg">
-                        <div className="h-3 rounded-lg bg-default-200"/>
-                    </Skeleton>
+                    {Array.from({ length: 4 }).map((_, index: number) => (
+                        <Skeleton key={index} className=" rounded-lg ">
+                            <div className="h-3 rounded-lg bg-default-200"/>
+                        </Skeleton>
+                    ))}
                 </div>
             </div>
             <div className="space-y-4 px-12 w-4/5">
                 <Skeleton className="w-2/5 rounded-lg mb-8">
                     <div className="h-6 rounded-lg bg-default-200"></div>
                 </Skeleton>
-                <Skeleton className="rounded-lg">
+                {Array.from({ length: 4 }).map((_, index: number) => (  <Skeleton key={`infor ${index}`} className="rounded-lg">
                     <div className="h-3 rounded-lg bg-default-200"></div>
-                </Skeleton>
-                <Skeleton className="rounded-lg">
-                    <div className="h-3 rounded-lg bg-default-200"></div>
-                </Skeleton>
-                <Skeleton className="rounded-lg">
-                    <div className="h-3 rounded-lg bg-default-200"></div>
-                </Skeleton>
+                </Skeleton>))}
+
             </div>
         </div>
 
