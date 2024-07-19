@@ -10,6 +10,7 @@ import {
 } from "../../../../../../../../../../../../../_shared"
 import { ForumLayoutContext } from "../../../../../../../ForumLayoutProvider"
 import { CommentsModalContext } from "../../../CommentsModalProvider"
+import { ErrorResponse } from "@common"
 
 interface RewardButtonProps {
   postCommentId: string;
@@ -30,30 +31,32 @@ export const MarkAsSolutionButton = ({
     const onConfirmModalOpen = () => confirmModalRef.current?.onOpen()
 
     const onOKPress = async () => {
-
-        await markPostCommentAsSolution({
-            data: {
-                postCommentId,
-            },
-        })
-            .then(async (res) => {
-        notify!({
-            type: ToastType.Success,
-            data: {
-                error: res.message,
-            },
-        })
+        try {
+            const { message } = await markPostCommentAsSolution({
+                data: {
+                    postCommentId,
+                },
+            })
+            notify!({
+                type: ToastType.Success,
+                data: {
+                    message,
+                },
+            })
+        } catch (ex) {
+            const { message} = ex as ErrorResponse
+            notify!({
+                type: ToastType.Error,
+                data: {
+                    error: message as string,
+                },
+            })
+        }
+     
         await mutate()
         await mutatePosts()
-            })
-            .catch((ex) => {
-        notify!({
-            type: ToastType.Error,
-            data: {
-                error: ex.message,
-            },
-        })
-            })
+    
+            
     }
     return (
         <>
