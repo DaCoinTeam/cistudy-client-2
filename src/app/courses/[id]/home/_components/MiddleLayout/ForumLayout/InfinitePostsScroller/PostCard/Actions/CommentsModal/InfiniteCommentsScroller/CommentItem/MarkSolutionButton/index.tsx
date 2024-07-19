@@ -32,7 +32,7 @@ export const MarkAsSolutionButton = ({
 
     const onOKPress = async () => {
         try {
-            const { message } = await markPostCommentAsSolution({
+            const res = await markPostCommentAsSolution({
                 data: {
                     postCommentId,
                 },
@@ -40,7 +40,7 @@ export const MarkAsSolutionButton = ({
             notify!({
                 type: ToastType.Success,
                 data: {
-                    message,
+                    message: "Comment has been marked as a solution and no more comments are allowed to this post"
                 },
             })
         } catch (ex) {
