@@ -368,6 +368,7 @@ export interface FinishQuizAttemptInput {
   data: {
     quizAttemptId: string
     quizQuestionAnswerIds: string[]
+    timeTaken: number
   }
 }
 
