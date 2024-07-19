@@ -12,13 +12,14 @@ import {
     ERC20Contract,
     chainInfos,
 } from "@blockchain"
-import { computePercentage } from "@common"
+import { CartCourseEntity, computePercentage } from "@common"
 import {
     ArrowRightEndOnRectangleIcon,
     ShoppingCartIcon,
+    BuildingStorefrontIcon
 } from "@heroicons/react/24/outline"
 import { useSDK } from "@metamask/sdk-react"
-import { enrollCourse, getAssetUrl } from "@services"
+import { addToCart, enrollCourse, getAssetUrl } from "@services"
 import {
     ClipboardPenLineIcon,
     FileQuestion,
@@ -26,10 +27,12 @@ import {
     PlaySquareIcon
 } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
-import { useContext, useMemo } from "react"
+import { useCallback, useContext, useMemo } from "react"
 import { RootContext } from "../../../../_hooks"
 import { VideoPlayer } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
+import useSWRMutation from "swr/mutation"
+import { ToastType } from "../../../../_components"
 
 export const CourseFloat = () => {
     const { swrs } = useContext(CourseDetailsContext)!
@@ -51,10 +54,64 @@ export const CourseFloat = () => {
 
     const { account, provider } = useSDK()
 
-    const { disclosures } = useContext(RootContext)!
+    const { disclosures, swrs : RootContextSwrs, notify } = useContext(RootContext)!
     const { notConnectWalletModalDisclosure } = disclosures
     const { onOpen } = notConnectWalletModalDisclosure
+    const { profileSwr } = RootContextSwrs
+    const {cart} = {...profileSwr?.data}
 
+    const isAddedToCart = useMemo(() => {
+        if (cart) {
+            let added = -1
+            const { cartCourses } = cart
+            if (cartCourses && cartCourses.length) {
+                added = cartCourses.findIndex(
+                    (cartCourse: CartCourseEntity) =>
+                        cartCourse.course.courseId === courseId
+                )
+            }
+            return added !== -1
+        }
+        return false
+    }, [profileSwr.data])
+
+    const fetchAddToCart = async (_: string, { arg }: { arg: string }) => {
+        const res = await addToCart({
+            data: {
+                courseId: arg,
+            },
+        })
+        if(res.others) {
+            await mutate()
+            notify!({
+                data: {
+                    message: res.message
+                },
+                type: ToastType.Success
+            })
+        } else {
+            notify!({
+                data: {
+                    error: res.message,
+                },
+                type: ToastType.Error
+            })
+        }
+            
+    }
+
+    const { trigger, isMutating } = useSWRMutation(
+        "ADD_TO_CART",
+        fetchAddToCart
+    )
+    
+    const handleAddToCart = async (courseId: string) => {
+        try {
+            await trigger(courseId)
+        } catch (ex) {
+            console.log(ex)
+        }
+    }
     // useEffect(() => {
     //     if (socket === null) return
     //     socket.on(
@@ -210,15 +267,27 @@ export const CourseFloat = () => {
                         >
               Enroll now
                         </Button>
-                        <Button
+                        {isAddedToCart ?  (<Button
                             color="primary"
                             className="font-semibold"
-                            variant="light"
+                            variant="flat"
+                            onPress={() => router.push("/cart")}
                             startContent={<ShoppingCartIcon height={20} width={20} />}
                             fullWidth
                         >
+                    Go to cart
+                        </Button> )  : (<Button
+                            color="primary"
+                            className="font-semibold"
+                            variant="light"
+                            onPress={() => {console.log("adddd"), handleAddToCart(courseId || "")}}
+                            startContent={<ShoppingCartIcon height={20} width={20} />}
+                            fullWidth
+                            isLoading={isMutating}
+                        >
               Add to cart
-                        </Button>
+                        </Button>) }
+                        
                     </>
                 )}
             </CardFooter>
