@@ -117,7 +117,7 @@ export const ConfirmEnrollModal = () => {
                     <ModalFooter className="p-4 pt-2">
                         <Button
                             isLoading={isMutating}
-                            isDisabled={(balanceLeft < 0) && isMutating}
+                            isDisabled={(balanceLeft < 0) || isMutating}
                             color="secondary"
                             onPress={async () => {
                                 if (!courseId) return
