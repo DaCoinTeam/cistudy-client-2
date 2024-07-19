@@ -31,7 +31,8 @@ const useCountdown = (initialTime : number) => {
 }
 
 const CountdownTimer = ({ initialTime } : { initialTime : number}) => {
-    const remainingTime = useCountdown(initialTime * 60 * 1000)
+    const convertedInitialTime = initialTime * 60 * 1000
+    const remainingTime = useCountdown(convertedInitialTime)
 
     const getTimeComponents = (time : number) => {
         const days = Math.floor(time / (1000 * 60 * 60 * 24))
