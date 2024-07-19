@@ -366,9 +366,10 @@ export const createQuizAttempt = async (
 
 export interface FinishQuizAttemptInput {
   data: {
-    quizAttemptId: string;
-    quizQuestionAnswerIds: string[];
-  };
+    quizAttemptId: string
+    quizQuestionAnswerIds: string[]
+    timeTaken: number
+  }
 }
 
 export interface FinishQuizAttemptOutput {

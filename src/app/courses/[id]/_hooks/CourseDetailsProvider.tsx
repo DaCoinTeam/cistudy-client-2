@@ -71,6 +71,9 @@ export const WrappedCourseDetailsProvider = ({
                         thumbnailId: true,
                         lessonVideoId: true,
                         title: true,
+                        quiz: {
+                            quizId: true
+                        }
                     },
                 },
                 creator: {

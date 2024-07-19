@@ -16,6 +16,7 @@ const Page = () => {
     const route = useRouter()
     const params = useParams()
     const lessonId = params.id as string
+    const timemilliseconds = Number(localStorage.getItem("quizTimeLimit")) * 60 * 1000 - Number(localStorage.getItem("quizRemainingTime"))
     const {reducer, swrs} = useContext(QuizContext)!
     const [state, dispatch] = reducer
     const {quizSwr, finishQuizAttemptSwrMutation} = swrs
@@ -44,7 +45,8 @@ const Page = () => {
         finishTrigger({
             data: {
                 quizAttemptId: state.quizAttemptId,
-                quizQuestionAnswerIds
+                quizQuestionAnswerIds,
+                timeTaken: timemilliseconds
             }
         }).then((res) => {
             localStorage.setItem("quizScore", res.others.score.toString())

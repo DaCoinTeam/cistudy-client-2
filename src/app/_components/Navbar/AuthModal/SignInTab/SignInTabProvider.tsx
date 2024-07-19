@@ -1,7 +1,7 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext, useMemo, useRef, } from "react"
-import { signIn, SignInInputData, SignInOutputData } from "@services"
+import { SignInInput, signInWithRestful } from "@services"
 import * as Yup from "yup"
 import { RootContext } from "../../../../_hooks"
 import { NavbarContext } from "../../NavbarProvider"
@@ -12,7 +12,7 @@ import { ErrorResponse } from "@common"
 interface SignInTabContextValue {
     formik: FormikProps<FormikValues>
     swrs: {
-        signInTabSwrMutation: SWRMutationResponse<SignInOutputData, ErrorResponse, "SIGN_IN", SignInInputData>
+        signInTabSwrMutation: SWRMutationResponse<string, ErrorResponse, "SIGN_IN", SignInInput>
     }
 }
 
@@ -34,7 +34,7 @@ const WrappedFormikProvider = ({ formik, children, swrs }: {
     formik: FormikProps<FormikValues>;
     children: ReactNode;
     swrs: {
-        signInTabSwrMutation: SWRMutationResponse<SignInOutputData, ErrorResponse, "SIGN_IN", SignInInputData>
+        signInTabSwrMutation: SWRMutationResponse<string, ErrorResponse, "SIGN_IN", SignInInput>
     }
 }) => {
     const signInTabContextValue: SignInTabContextValue = useMemo(
@@ -62,8 +62,8 @@ export const SignInTabProvider = ({ children }: { children: ReactNode }) => {
     const { authModalDisclosure } = disclosures
     const { onClose } = authModalDisclosure
 
-    const fetchSignInTabMutation = async (_: string, { arg } : {arg : SignInInputData}) => {
-        return await signIn(arg)
+    const fetchSignInTabMutation = async (_: string, { arg } : {arg : SignInInput}) => {
+        return await signInWithRestful(arg)
     }
 
     const signInTabSwrMutation = useSWRMutation(
@@ -88,10 +88,8 @@ export const SignInTabProvider = ({ children }: { children: ReactNode }) => {
             //     }
             // })
             const credential = {
-                params: {
-                    email,
-                    password
-                }
+                email,
+                password
             }
             trigger(credential).then(async() => {
                 toastRef.current?.notify({

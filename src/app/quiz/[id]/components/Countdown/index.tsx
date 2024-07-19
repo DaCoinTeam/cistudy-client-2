@@ -11,6 +11,7 @@ const useCountdown = (initialTime : number) => {
     const [state] = reducer
     const {finishQuizAttemptSwrMutation} = swrs
     const {trigger} = finishQuizAttemptSwrMutation
+    const timemilliseconds = Number(localStorage.getItem("quizTimeLimit")) * 60 * 1000 - Number(localStorage.getItem("quizRemainingTime"))
     const [remainingTime, setRemainingTime] = useState(initialTime)
 
     useEffect(() => {
@@ -18,7 +19,7 @@ const useCountdown = (initialTime : number) => {
             setRemainingTime((prevTime) => Math.max(prevTime - 1000, 0))
             localStorage.setItem("quizRemainingTime", remainingTime.toString())
             if (remainingTime === 0) {
-                trigger({data: {quizAttemptId: state.quizAttemptId, quizQuestionAnswerIds: state.quizQuestionAnswerIds}}).then(() => {
+                trigger({data: {quizAttemptId: state.quizAttemptId, quizQuestionAnswerIds: state.quizQuestionAnswerIds, timeTaken: timemilliseconds}}).then(() => {
                     route.push(`/lessons/${lessonId}`)
                 })
             }
