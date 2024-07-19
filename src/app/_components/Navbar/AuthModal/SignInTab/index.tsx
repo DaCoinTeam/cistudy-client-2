@@ -15,7 +15,9 @@ import { SignInByGoogleIcon } from "./SignInByGoogleButton"
 import { SignInByFacebookIcon } from "./SignInByFacebookButton"
 
 const WrappedSignInTab = () => {
-    const { formik } = useContext(SignInTabContext)!
+    const { formik, swrs } = useContext(SignInTabContext)!
+    const {signInTabSwrMutation} = swrs
+    const {isMutating} = signInTabSwrMutation
     const { reducer } = useContext(NavbarContext)!
     const [, dispatch] = reducer
 
@@ -76,8 +78,9 @@ const WrappedSignInTab = () => {
                         isDisabled={!!Object.keys(formik.errors).length}
                         className="w-full"
                         color="secondary"
+                        isLoading={isMutating}
                     >
-            Sign In
+                        {isMutating? "Signing..." : "Sign In"}
                     </Button>
                     <Spacer y={4} />
                     <div className="flex items-center gap-2">

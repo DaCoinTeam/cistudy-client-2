@@ -80,7 +80,7 @@ const Page = () => {
                     </div>
                 </div>
                 <div className="ml-auto">
-                    <CountdownTimer initialTime={quiz?.timeLimit as number} />
+                    {quiz?.timeLimit && <CountdownTimer initialTime={quiz.timeLimit} />}
                 </div>
             </div>
 

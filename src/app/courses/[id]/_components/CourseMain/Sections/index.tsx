@@ -1,15 +1,18 @@
 "use client"
-import React, { useContext } from "react"
+import React, { useContext, useMemo } from "react"
 import { Accordion, AccordionItem, Spacer } from "@nextui-org/react"
 import { CourseDetailsContext } from "../../../_hooks"
 import { InteractiveThumbnail } from "../../../../../_shared"
 import { getAssetUrl } from "@services"
+import { sortSections } from "@common"
 
 export const Sections = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
     const { sections } = { ...course }
+
+    const sortedSections = useMemo(() => sortSections(sections), [sections])
 
     return (
         <div>
@@ -24,8 +27,8 @@ export const Sections = () => {
                     className="!p-0 gap-4"
                     selectionMode="multiple"
                 >
-                    {sections
-                        ? sections.map(({ sectionId, title, lessons }) => (
+                    {sortedSections
+                        ? sortedSections.map(({ sectionId, title, lessons }) => (
                             <AccordionItem
                                 key={sectionId}
                                 classNames={{

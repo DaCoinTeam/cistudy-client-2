@@ -13,8 +13,9 @@ import { NavbarContext } from "../../NavbarProvider"
 
 const WrappedSignUpTab = () => {
 
-    const { formik } = useContext(SignUpTabContext)!
-
+    const { formik, swrs } = useContext(SignUpTabContext)!
+    const {signUpTabSwrMutation} = swrs
+    const {isMutating} = signUpTabSwrMutation
     const { reducer } = useContext(NavbarContext)!
     const [, dispatch] = reducer
 
@@ -119,7 +120,6 @@ const WrappedSignUpTab = () => {
                         label="Birthdate"
                         id="birthdate"
                         type="date"
-                        disableAnimation
                         isRequired
                         labelPlacement="outside"
                         placeholder="Input birthdate here"
@@ -144,8 +144,9 @@ const WrappedSignUpTab = () => {
                     type="submit"
                     className="w-full"
                     color="secondary"
+                    isLoading={isMutating}
                 >
-          Sign Up
+                    {isMutating? "Signing up..." : "Sign Up"}
                 </Button>
             </ModalFooter>
         </>

@@ -1,9 +1,8 @@
-import React, { useContext } from "react"
 import { Avatar, Spacer } from "@nextui-org/react"
-import { MdVideoLibrary } from "react-icons/md"
-import { MdGroups } from "react-icons/md"
-import { CourseDetailsContext } from "../../../_hooks"
+import { useContext } from "react"
 import { getAvatarUrl } from "../../../../../../services/server"
+import { Stars } from "../../../../../_shared"
+import { CourseDetailsContext } from "../../../_hooks"
 
 interface InstructorProps {
   className?: string;
@@ -31,22 +30,14 @@ export const Instructor = (props: InstructorProps) => {
                     })}
                 />
                 <div>
-                    <div className="text-lg font-semibold">{username}</div>
-                    <div className="text-sm text-foreground-400 font-semibold">
-                        {numberOfFollowers} follower
+                    <div className="ml-1">
+                        <div className="text-lg font-semibold">{username}</div>
+                        <div className="text-sm text-foreground-400 font-semibold">
+                            {numberOfFollowers} follower
+                        </div>
                     </div>
-                    <div className="flex items-center">
-                        <MdVideoLibrary className="text-gray-500 dark:text-gray-400" />
-                        <p className="ms-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
-              4 courses
-                        </p>
-                    </div>
-                    <div className="flex items-center">
-                        <MdGroups className="text-gray-500 dark:text-gray-400" />
-                        <p className="ms-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
-              425,000 students
-                        </p>
-                    </div>
+                    
+                    <Stars initialValue={5} readonly />
                 </div>
             </div>
             <div className="my-2">

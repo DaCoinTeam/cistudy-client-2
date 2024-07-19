@@ -1,14 +1,19 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
-import React, { ReactNode, createContext, useContext } from "react"
-import { signUp } from "@services"
-import { parseISODateString } from "@common"
+import React, { ReactNode, createContext, useContext, useMemo, useRef } from "react"
+import { signUp, SignUpInput, SignUpOutput } from "@services"
+import { ErrorResponse, parseISODateString } from "@common"
 
 import * as Yup from "yup"
 import { NavbarContext } from "../../NavbarProvider"
+import useSWRMutation, { SWRMutationResponse } from "swr/mutation"
+import { ToastRef, ToastRefSelectors, ToastType } from "../../../ToastRef"
 
 export interface SignUpTabContextValue {
   formik: FormikProps<FormikValues>;
+  swrs: {
+    signUpTabSwrMutation: SWRMutationResponse<SignUpOutput, ErrorResponse, "SIGN_UP", SignUpInput>
+  }
 }
 
 export const SignUpTabContext = createContext<SignUpTabContextValue | null>(
@@ -36,20 +41,46 @@ const initialValues: FormikValues = {
 const WrappedSignUpTabProvider = ({
     formik,
     children,
+    swrs
 }: {
   formik: FormikProps<FormikValues>;
   children: ReactNode;
-}) => (
-    <SignUpTabContext.Provider value={{ formik }}>
-        <Form onSubmit={formik?.handleSubmit}>{children}</Form>
-    </SignUpTabContext.Provider>
-)
+  swrs: {
+    signUpTabSwrMutation: SWRMutationResponse<SignUpOutput, ErrorResponse, "SIGN_UP", SignUpInput>
+  }
+}) => {
+
+    const signUpTabContextValue: SignUpTabContextValue = useMemo(
+        () => ({
+            formik,
+            swrs
+        }),
+        [formik, swrs]
+    )
+
+    return (
+        <SignUpTabContext.Provider value={signUpTabContextValue}>
+            <Form onSubmit={formik.handleSubmit}>{children}</Form>
+        </SignUpTabContext.Provider>
+    )
+}
 
 export const SignUpTabProvider = ({ children }: { children: ReactNode }) => {
-    
+    const toastRef = useRef<ToastRefSelectors>(null)
     const { disclosures } = useContext(NavbarContext)!
     const { authModalDisclosure } = disclosures
     const { onClose } = authModalDisclosure
+
+    const fetchSignUpTabMutation = async (_: string, { arg } : {arg : SignUpInput}) => {
+        return await signUp(arg)
+    }
+
+    const signUpTabSwrMutation = useSWRMutation(
+        "SIGN_UP",
+        fetchSignUpTabMutation
+    )
+
+    const {trigger} = signUpTabSwrMutation
 
     return (
         <Formik
@@ -68,19 +99,44 @@ export const SignUpTabProvider = ({ children }: { children: ReactNode }) => {
                 birthdate: Yup.date().max(new Date(), "Birthdate must be in the past"),
             })}
             onSubmit={async ({ email, password, firstName, lastName, birthdate }) => {
-                await signUp({
+                const signUpData = {
                     email,
                     password,
                     firstName,
                     lastName,
-                    birthdate,
+                    birthdate
+                }
+
+                trigger(signUpData).then(() => {
+                    toastRef.current?.notify({
+                        data: {
+                            message: "Sign up successfully"
+                        },
+                        type: ToastType.Success
+                    })
+                    onClose()
+                }).catch(() => {
+                    toastRef.current?.notify({
+                        data: {
+                            error: "Sign up failed"
+                        },
+                        type: ToastType.Error
+                    })
                 })
-                onClose()
+                // await signUp({
+                //     email,
+                //     password,
+                //     firstName,
+                //     lastName,
+                //     birthdate,
+                // })
+                // onClose()
             }}
         >
             {(formik) => (
-                <WrappedSignUpTabProvider formik={formik}>
+                <WrappedSignUpTabProvider formik={formik} swrs={{signUpTabSwrMutation}}>
                     {children}
+                    <ToastRef ref={toastRef} />
                 </WrappedSignUpTabProvider>
             )}
         </Formik>

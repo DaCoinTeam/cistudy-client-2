@@ -1,5 +1,5 @@
 export * from "./Navbar"
-export * from "./Heading"
+export * from "./Main"
 export * from "./Ecosystem"
 export * from "./Courses"
 export * from "./ToastRef"

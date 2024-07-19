@@ -41,10 +41,10 @@ export const QuizSection = () => {
                   Last Attempt Score: {quiz?.lastAttemptScore}
                                         </div>
                                         <div className="text-sm">
-                  Time Limit: {quiz?.totalNumberOfAttempts} minutes
+                  Number of attempts: {quiz?.totalNumberOfAttempts}
                                         </div>
                                         <div className="text-sm">
-                  Created on: {quiz?.highestScoreRecorded}/10
+                  Highest score: {quiz?.highestScoreRecorded}/10
                                         </div>
                                     </div>
                                 </>
@@ -76,7 +76,7 @@ export const QuizSection = () => {
         
                 </>
             ) : (
-                <div>The lession do not have any quiz yet.</div>
+                <div>The lesson does not have any quiz yet.</div>
             )}
         </div>
     )

@@ -84,8 +84,10 @@ export const LessonDetailsProvider = ({
                         sections: {
                             sectionId: true,
                             title: true,
+                            position: true,
                             lessons: {
                                 lessonId: true,
+                                position: true,
                                 thumbnailId: true,
                                 title: true,
                                 quiz: {

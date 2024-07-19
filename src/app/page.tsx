@@ -1,10 +1,10 @@
 
 import { Spacer } from "@nextui-org/react"
-import {  Courses, Heading, ScrollToTopButton } from "./_components"
+import {  Courses, Main, ScrollToTopButton } from "./_components"
 const Page = () => {
     return (
         <div className="relative">
-            <Heading/>
+            <Main/>
             <Spacer y={12}/>
             <Courses/>
             <ScrollToTopButton/>

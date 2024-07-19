@@ -4,6 +4,8 @@ export const STARCI_COIN = "/starci-coin.svg"
 export const BG_IMG_1 = "/bg1.jpg"
 export const BG_IMG_2 = "/bg2.avif"
 export const BG_DECORATION = "./background.svg"
+export const BG_DECORATION_DARK = "./background-dark.svg"
+
 
 const TOPIC_URL = "/topics"
 export const TOPIC_JAVA = `${TOPIC_URL}/java.svg`
