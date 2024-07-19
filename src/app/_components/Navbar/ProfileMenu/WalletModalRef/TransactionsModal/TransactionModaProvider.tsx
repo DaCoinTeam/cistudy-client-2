@@ -1,5 +1,5 @@
 "use client"
-import React, { ReactNode, createContext, useCallback, useMemo } from "react"
+import React, { ReactNode, createContext, useCallback, useContext, useMemo } from "react"
 
 import {
     FindManyTransactionsOutputData,
@@ -12,6 +12,7 @@ import {
     TransactionsModalState,
     useTransactionsModalReducer,
 } from "./useTransactionsModalReducer"
+import { WalletModalRefContext } from "../WalletModalRefProvider"
 
 export interface TransactionsModalContextValue {
   reducer: [
@@ -66,8 +67,11 @@ const WrappedTransactionsModalProvider = ({
     const [state] = reducer
     const { page } = state
 
+    const { reducer: walletReducer } = useContext(WalletModalRefContext)!
+    const [walletState] = walletReducer
+
     const transactionsSwr = useSWR(
-        [page, "TRANSACTIONS"],
+        [page, walletState.refreshTransactionsKey, "TRANSACTIONS"],
         fetchTransactions,
         {
             keepPreviousData: true,

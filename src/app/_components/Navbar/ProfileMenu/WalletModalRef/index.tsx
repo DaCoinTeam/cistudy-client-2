@@ -10,7 +10,10 @@ import {
     Spacer,
     useDisclosure,
 } from "@nextui-org/react"
-import { WalletModalRefContext, WalletModalRefProvider } from "./WalletModalRefProvider"
+import {
+    WalletModalRefContext,
+    WalletModalRefProvider,
+} from "./WalletModalRefProvider"
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
 import {
     truncate,
@@ -26,6 +29,7 @@ import { RefreshCcw } from "lucide-react"
 import { WithdrawModal } from "./WithdrawModal"
 import { BuyModal } from "./BuyModal"
 import { TransactionsModal } from "./TransactionsModal"
+import { BuyOutsideModal } from "./BuyOutsideModal"
 
 export const WrappedWalletModalRef = () => {
     const { reducer, swrs } = useContext(RootContext)!
@@ -39,7 +43,7 @@ export const WrappedWalletModalRef = () => {
     const { starciBalance, address } = metamask
 
     const { reducer: walletModalRefReducer } = useContext(WalletModalRefContext)!
-    const [, walletModalRefDispatch ] = walletModalRefReducer
+    const [, walletModalRefDispatch] = walletModalRefReducer
     return (
         <>
             <ModalHeader className="p-4 font-semibold pb-2">Wallet</ModalHeader>
@@ -53,7 +57,7 @@ export const WrappedWalletModalRef = () => {
                                 </Link>
                                 <Spacer y={4} />
                                 <div className="grid grid-cols-3 gap-4 w-full">
-                                    <BuyModal/>
+                                    <BuyModal />
                                     <DepositModal />
                                     <WithdrawModal />
                                 </div>
@@ -62,20 +66,29 @@ export const WrappedWalletModalRef = () => {
                         ) : null}
 
                         <div className="border border-divider rounded-medium w-full p-4">
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <span className="text-4xl">
-                                        {computeDenomination(
-                                            address
-                                                ? starciBalance + computeRaw(balance ?? 0)
-                                                : computeRaw(balance ?? 0)
-                                        )}
-                                    </span>
-                                    <span className="text-sm"> STARCI </span>
+                            <div>
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <span className="text-4xl">
+                                            {computeDenomination(
+                                                address
+                                                    ? starciBalance + computeRaw(balance ?? 0)
+                                                    : computeRaw(balance ?? 0)
+                                            )}
+                                        </span>
+                                        <span className="text-sm"> STARCI </span>
+                                    </div>
+                                    <Link
+                                        as="button"
+                                        onPress={() =>
+                                            walletModalRefDispatch({
+                                                type: "TRIGGER_REFRESH_BALANCE_KEY",
+                                            })
+                                        }
+                                    >
+                                        <RefreshCcw className="w-5 h-5" />
+                                    </Link>
                                 </div>
-                                <Link as="button" onPress={() => walletModalRefDispatch({
-                                    type: "TRIGGER_REFRESH_BALANCE_KEY"
-                                })}><RefreshCcw className="w-5 h-5"/></Link>
                             </div>
                             {address ? (
                                 <>
@@ -83,14 +96,14 @@ export const WrappedWalletModalRef = () => {
                                     <div>
                                         <div className="text-xs flex gap-1">
                                             <div className="min-w-[100px] text-foreground-400 items-center flex gap-1">
-                      Deposited
+                        Deposited
                                                 <QuestionMarkCircleIcon className="w-3.5 h-3.5" />
                                             </div>
                                             <div>{formatNumber(balance)} STARCI</div>
                                         </div>
                                         <div className="text-xs flex gap-1">
                                             <div className="min-w-[100px] text-foreground-400 items-center flex gap-1">
-                      On-chain
+                        On-chain
                                                 <QuestionMarkCircleIcon className="w-3.5 h-3.5" />
                                             </div>
                                             <div>{computeDenomination(starciBalance)} STARCI</div>
@@ -100,11 +113,13 @@ export const WrappedWalletModalRef = () => {
                             ) : null}
                         </div>
                     </div>
-                    <Spacer y={4}/>
-                    <TransactionsModal/>
+                    <Spacer y={4} />
+                    <div className="flex gap-2 items-center">
+                        {!address ? <BuyOutsideModal /> : null}
+                        <TransactionsModal />
+                    </div>
                 </div>
             </ModalBody>
-
             <ModalFooter className="p-4 pt-2">
                 {!address ? <MetamaskButton /> : <DisconnectWalletButton />}
             </ModalFooter>

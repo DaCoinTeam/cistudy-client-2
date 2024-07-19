@@ -4,13 +4,13 @@ import {
     ModalContent,
     ModalHeader,
     ModalBody,
-    Button,
     Input,
     Spacer,
     Tooltip,
     ModalFooter,
+    Link,
 } from "@nextui-org/react"
-import { BuyModalContext, BuyModalProvider } from "./BuyModalProvider"
+import { BuyOutsideModalContext, BuyOutsideModalProvider } from "./BuyOutsideModalProvider"
 import numeral from "numeral"
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
@@ -19,8 +19,8 @@ import { RootContext } from "../../../../../_hooks"
 import { ToastType } from "../../../../ToastRef"
 import { WalletModalRefContext } from "../WalletModalRefProvider"
 
-const WrappedBuyModal = () => {
-    const { discloresures, formik } = useContext(BuyModalContext)!
+const WrappedBuyOutsideModal = () => {
+    const { discloresures, formik } = useContext(BuyOutsideModalContext)!
     const { baseDiscloresure } = discloresures
     const { isOpen, onOpenChange, onOpen, onClose } = baseDiscloresure
     const { notify } = useContext(RootContext)!
@@ -34,9 +34,7 @@ const WrappedBuyModal = () => {
 
     return (
         <>
-            <Button fullWidth className="flex-1" onPress={onOpen}>
-        Buy
-            </Button>
+            <Link as="button" size="sm" onPress={onOpen}> Buy </Link>
             <Modal isDismissable={false} isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <ModalHeader className="p-4 pb-2">Buy</ModalHeader>
@@ -123,7 +121,6 @@ const WrappedBuyModal = () => {
                                         dispatch({
                                             type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
                                         })
- 
                                     }} 
                                 />
                             </PayPalScriptProvider>
@@ -135,10 +132,10 @@ const WrappedBuyModal = () => {
     )
 }
 
-export const BuyModal = () => {
+export const BuyOutsideModal = () => {
     return (
-        <BuyModalProvider>
-            <WrappedBuyModal/>
-        </BuyModalProvider>
+        <BuyOutsideModalProvider>
+            <WrappedBuyOutsideModal/>
+        </BuyOutsideModalProvider>
     )
 }

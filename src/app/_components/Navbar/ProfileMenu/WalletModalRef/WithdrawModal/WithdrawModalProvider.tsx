@@ -9,6 +9,7 @@ import useSWRMutation, { SWRMutationResponse } from "swr/mutation"
 import { WithdrawInput, WithdrawOutput, withdraw } from "@services"
 import { RootContext } from "../../../../../_hooks"
 import { ToastType } from "../../../../ToastRef"
+import { WalletModalRefContext } from "../WalletModalRefProvider"
 
 interface WithdrawContextValue {
   discloresures: {
@@ -84,6 +85,9 @@ export const WithdrawModalProvider = ({
         ) => await withdraw(arg)
     )
 
+    const { reducer: walletReducer } = useContext(WalletModalRefContext)!
+    const [ , walletDispatch ] = walletReducer
+
     return (
         <Formik
             initialValues={initialValues}
@@ -103,7 +107,13 @@ export const WithdrawModalProvider = ({
                         message
                     },
                     type: ToastType.Success
-                },)
+                })
+
+                baseDisclosure.onClose()
+
+                walletDispatch({
+                    type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
+                })
             }}
         >
             {(formik) => (
