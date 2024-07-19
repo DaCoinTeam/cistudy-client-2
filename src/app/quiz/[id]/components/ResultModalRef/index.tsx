@@ -1,6 +1,6 @@
 import { parseMillisecondsTime } from "@common"
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react"
-import { CheckIcon } from "lucide-react"
+import { X  } from "lucide-react"
 import { forwardRef, useImperativeHandle } from "react"
 
 export interface ResultModalRefProps {
@@ -36,11 +36,11 @@ ResultModalRefProps
                             </div>
                         </ModalBody>
                         <ModalFooter className="p-4 pt-2">
-                            <Button startContent={<CheckIcon size={20} strokeWidth={3/2}/>} color="secondary" onPress={() => {
+                            <Button startContent={<X size={20} strokeWidth={3/2}/>} color="secondary" onPress={() => {
                                 onOKPress()
                                 onClose()
                             }}>
-                OK
+                Close
                             </Button>
                         </ModalFooter>
                     </>

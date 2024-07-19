@@ -29,40 +29,6 @@ export const init = async (
     })
 }
 
-export interface SignInInputData {
-  params: {
-    email: string;
-    password: string;
-  };
-}
-
-export interface SignInOutputData {
-  message: string
-}
-
-export const signIn = async (
-    data: SignInInputData
-): Promise<SignInOutputData> => {
-    const payload = buildAuthPayloadVoidString()
-    const { data: graphqlData } = await client.query({
-        query: gql`
-            query SignIn($data: SignInInputData!) {
-                signIn(data: $data) {
-      ${payload}
-    }
-  }
-          `,
-        variables: {
-            data,
-        },
-    })
-
-    return getGraphqlResponseData({
-        data : graphqlData,
-        isAuth: true,
-    })
-}
-
 export interface VerifyGoogleAccessTokenInputData {
   params: {
     token: string;

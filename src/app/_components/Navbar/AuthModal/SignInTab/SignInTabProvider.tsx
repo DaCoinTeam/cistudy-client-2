@@ -1,12 +1,12 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
-import React, { ReactNode, createContext, useContext, useMemo, useRef, } from "react"
-import { SignInInput, signInWithRestful } from "@services"
+import React, { ReactNode, createContext, useContext, useMemo } from "react"
+import { SignInInput, signIn } from "@services"
 import * as Yup from "yup"
 import { RootContext } from "../../../../_hooks"
 import { NavbarContext } from "../../NavbarProvider"
 import useSWRMutation, { SWRMutationResponse } from "swr/mutation"
-import { ToastRef, ToastRefSelectors, ToastType } from "../../../ToastRef"
+import { ToastType } from "../../../ToastRef"
 import { ErrorResponse } from "@common"
 
 interface SignInTabContextValue {
@@ -53,7 +53,6 @@ const WrappedFormikProvider = ({ formik, children, swrs }: {
 }
 
 export const SignInTabProvider = ({ children }: { children: ReactNode }) => {
-    const toastRef = useRef<ToastRefSelectors>(null)
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { mutate } = profileSwr
@@ -62,8 +61,10 @@ export const SignInTabProvider = ({ children }: { children: ReactNode }) => {
     const { authModalDisclosure } = disclosures
     const { onClose } = authModalDisclosure
 
+    const { notify } = useContext(RootContext)!
+
     const fetchSignInTabMutation = async (_: string, { arg } : {arg : SignInInput}) => {
-        return await signInWithRestful(arg)
+        return await signIn(arg)
     }
 
     const signInTabSwrMutation = useSWRMutation(
@@ -81,33 +82,28 @@ export const SignInTabProvider = ({ children }: { children: ReactNode }) => {
             })
         }
         onSubmit={async ({ email, password }) => {
-            // const response = await signIn({
-            //     params: {
-            //         email,
-            //         password
-            //     }
-            // })
-            const credential = {
-                email,
-                password
-            }
-            trigger(credential).then(async() => {
-                toastRef.current?.notify({
+            try {
+                await trigger({
+                    email,
+                    password
+                })
+                notify!({
                     data: {
-                        message: "Sign in successfully" //response.message
+                        message: "Signed in successfully!"
                     },
                     type: ToastType.Success
                 })
                 await mutate()
                 onClose()
-            }).catch(() => {
-                toastRef.current?.notify({
+            } catch (ex) {
+                const { message } = ex as ErrorResponse
+                notify!({
                     data: {
-                        error: "Check your email or password" //ex.message
+                        error: message as string
                     },
                     type: ToastType.Error
                 })
-            })
+            }
             // await mutate(response)
             // onClose()
         }}
@@ -115,7 +111,6 @@ export const SignInTabProvider = ({ children }: { children: ReactNode }) => {
             {(formik) => (
                 <WrappedFormikProvider formik={formik} swrs={{signInTabSwrMutation}}>
                     {children}
-                    <ToastRef ref={toastRef} />
                 </WrappedFormikProvider>
             )}
         </Formik>

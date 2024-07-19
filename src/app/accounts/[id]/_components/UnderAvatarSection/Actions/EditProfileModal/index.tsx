@@ -1,6 +1,7 @@
 import { CheckIcon } from "@heroicons/react/24/outline"
 import {
     Button,
+    DatePicker,
     Input,
     Modal,
     ModalBody,
@@ -13,6 +14,7 @@ import {
 import { PenIcon, RefreshCcw } from "lucide-react"
 import React, { useContext } from "react"
 import { EditProfileModalContext, EditProfileModalProvider } from "./EditProfileModalProvider"
+import { parseDate } from "@internationalized/date"
 
 export const WrappedEditProfileModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -46,18 +48,7 @@ export const WrappedEditProfileModal = () => {
                             onChange={formik.handleChange}
                         />
                         <Spacer y={4}/>
-                        <Input
-                            classNames={{
-                                inputWrapper: "input-input-wrapper"
-                            }} 
-                            label="Birthdate"
-                            id="birthdate"
-                            labelPlacement="outside"
-                            value={formik.values.birthdate}
-                            placeholder="Input title here"
-                            onChange={formik.handleChange}
-                            type="date"
-                        />
+                        <DatePicker label="Birthdate" id="birthdate" value={parseDate(formik.values.birthdate)} className="max-w-[284px]" labelPlacement="outside" onChange={formik.handleChange} />
                     </ModalBody>
                     <ModalFooter className="p-6 gap-2 pt-0">
                         <Button

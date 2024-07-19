@@ -3,7 +3,7 @@ import { useContext, useRef } from "react"
 import { AccountDetailsContext } from "../../_hooks"
 import { RootContext } from "../../../../_hooks"
 import { Avatar, Button } from "@nextui-org/react"
-import { HiCamera } from "react-icons/hi";
+import { HiCamera } from "react-icons/hi"
 
 interface AccountAvatarProps {
   className?: string;
@@ -68,7 +68,7 @@ export const AccountAvatar = (props: AccountAvatarProps) => {
                             isIconOnly
                             className="bg-content2 absolute bottom-0 right-0"
                         >
-                            <HiCamera height={24} width={24} />
+                            <HiCamera height={20} width={20} size={30} />
                         </Button>
                     ) : null}
                 </div>
