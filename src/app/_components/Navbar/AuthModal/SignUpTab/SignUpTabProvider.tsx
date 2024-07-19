@@ -55,12 +55,12 @@ const WrappedSignUpTabProvider = ({
             formik,
             swrs
         }),
-        []
+        [formik, swrs]
     )
 
     return (
         <SignUpTabContext.Provider value={signUpTabContextValue}>
-            <Form onSubmit={formik?.handleSubmit}>{children}</Form>
+            <Form onSubmit={formik.handleSubmit}>{children}</Form>
         </SignUpTabContext.Provider>
     )
 }
