@@ -43,6 +43,7 @@ export const WalletModalRefProvider = (props: { children: ReactNode }) => {
 
     useEffect(() => {
         const handleEffect = async () => {
+            await mutate()
             if (!address) return
             const erc20Contract = new ERC20Contract(
                 ChainId.KalytnTestnet,
@@ -54,11 +55,9 @@ export const WalletModalRefProvider = (props: { children: ReactNode }) => {
                 type: "SET_METAMASK_STARCI_BALANCE",
                 payload: balance
             })
-
-            await mutate()
         }
         handleEffect()
-    }, [refreshBalanceKey, address, profileSwr])
+    }, [refreshBalanceKey, address])
 
     const WalletModalRefContextValue: WalletModalRefContextValue = useMemo(
         () => ({
