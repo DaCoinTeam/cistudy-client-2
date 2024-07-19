@@ -15,13 +15,14 @@ export const createCourse = async (): Promise<CreateCourseOutput> => {
 export interface EnrollCourseInput {
   data: {
     courseId: string;
-    numberOfQueries?: number
-    queryInterval?: number
   };
 }
 
 export interface EnrollCourseOutput {
-  enrolledInfoId: string;
+  message: string;
+  others: {
+    enrolledInfoId: string;
+  };
 }
 
 export const enrollCourse = async (
@@ -70,24 +71,24 @@ export const updateCourse = async (
         headers: {
             "Content-Type": "multipart/form-data",
         },
-        signal
+        signal,
     })
 }
 
 export interface CheckCumulativeAmountInput {
   data: {
-    creatorWalletAddress: string,
-    price: string
+    creatorWalletAddress: string;
+    price: string;
   };
 }
 
 export interface CheckCumulativeAmountOutput {
-  message: string,
+  message: string;
   others: {
-    enough: boolean
-    cummulativeAmount: string
-    differentAmounts: string
-  }
+    enough: boolean;
+    cummulativeAmount: string;
+    differentAmounts: string;
+  };
 }
 
 export const checkCumulativeAmount = async (
@@ -98,7 +99,6 @@ export const checkCumulativeAmount = async (
 
     return await authAxios.patch(url, data)
 }
-
 
 export interface CreateCourseTargetInput {
   data: {
@@ -305,10 +305,10 @@ export const deleteResource = async (
 
 export interface CreateCourseReviewInput {
   data: {
-      courseId: string
-      content: string
-      rating: number
-  }
+    courseId: string;
+    content: string;
+    rating: number;
+  };
 }
 export const createCourseReview = async (
     input: CreateCourseReviewInput
@@ -320,10 +320,10 @@ export const createCourseReview = async (
 
 export interface UpdateCourseReviewInput {
   data: {
-      courseReviewId: string
-      content: string
-      rating: number
-  }
+    courseReviewId: string;
+    content: string;
+    rating: number;
+  };
 }
 export const updateCourseReview = async (
     input: UpdateCourseReviewInput
@@ -333,11 +333,11 @@ export const updateCourseReview = async (
     return await authAxios.patch(url, data)
 }
 export interface DeleteCourseReviewInput {
-  courseReviewId: string
+  courseReviewId: string;
 }
 
 export const deleteCourseReview = async (
-    courseReviewId : DeleteCourseReviewInput
+    courseReviewId: DeleteCourseReviewInput
 ): Promise<string> => {
     const url = `${BASE_URL}/delete-course-review/${courseReviewId}`
     return await authAxios.delete(url)
@@ -345,15 +345,15 @@ export const deleteCourseReview = async (
 
 export interface CreateQuizAttemptInput {
   data: {
-    quizId: string
-  }
+    quizId: string;
+  };
 }
 
 export interface CreateQuizAttemptOutput {
-  message: string
+  message: string;
   others: {
-    quizAttemptId: string
-  }
+    quizAttemptId: string;
+  };
 }
 
 export const createQuizAttempt = async (
@@ -366,16 +366,16 @@ export const createQuizAttempt = async (
 
 export interface FinishQuizAttemptInput {
   data: {
-    quizAttemptId: string
-    quizQuestionAnswerIds: string[]
-  }
+    quizAttemptId: string;
+    quizQuestionAnswerIds: string[];
+  };
 }
 
 export interface FinishQuizAttemptOutput {
-  message: string,
+  message: string;
   others: {
-    score: number
-  }
+    score: number;
+  };
 }
 
 export const finishQuizAttempt = async (

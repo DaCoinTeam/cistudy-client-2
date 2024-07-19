@@ -7,53 +7,37 @@ import {
     Spacer,
 } from "@nextui-org/react"
 
-import {
-    ChainId,
-    ERC20Contract,
-    chainInfos,
-} from "@blockchain"
 import { computePercentage } from "@common"
 import {
     ArrowRightEndOnRectangleIcon,
     ShoppingCartIcon,
 } from "@heroicons/react/24/outline"
-import { useSDK } from "@metamask/sdk-react"
-import { enrollCourse, getAssetUrl } from "@services"
+import { getAssetUrl } from "@services"
 import {
-    ClipboardPenLineIcon,
     FileQuestion,
     ListVideo,
     PlaySquareIcon
 } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { useContext, useMemo } from "react"
-import { RootContext } from "../../../../_hooks"
 import { VideoPlayer } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
+import { ConfirmEnrollModal } from "./ConfirmEnrollModal"
 
 export const CourseFloat = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
-    const { data: course, isLoading, mutate } = courseSwr
+    const { data: course, isLoading } = courseSwr
     const {
         previewVideoId,
         price,
         enableDiscount,
         discountPrice,
-        courseId,
         enrolled,
-        creator,
         sections
     } = {
         ...course,
     }
-    const { walletAddress } = { ...creator }
-
-    const { account, provider } = useSDK()
-
-    const { disclosures } = useContext(RootContext)!
-    const { notConnectWalletModalDisclosure } = disclosures
-    const { onOpen } = notConnectWalletModalDisclosure
 
     // useEffect(() => {
     //     if (socket === null) return
@@ -89,35 +73,6 @@ export const CourseFloat = () => {
         })
         return {numberOfSection, numberOfLesson, numberOfQuiz}
     }, [sections])
-
-    const onEnrollPress = async () => {
-        if (!account) {
-            onOpen()
-            return
-        }
-        if (!courseId) return
-
-        console.log(walletAddress)
-        if (!walletAddress) {
-            return
-        }
-
-        const tokenContract = new ERC20Contract(
-            ChainId.KalytnTestnet,
-            chainInfos[ChainId.KalytnTestnet].tokenAddress,
-            provider,
-            account
-        )
-
-        await enrollCourse({
-            data: {
-                courseId,
-                numberOfQueries: 10,
-                queryInterval: 0.5,
-            },
-        })
-        await mutate()
-    }
 
     const renderDiscountPercentage = () => {
         if (!discountPrice || !price) return 0
@@ -195,21 +150,7 @@ export const CourseFloat = () => {
                     </Button>
                 ) : (
                     <>
-                        <Button
-                            startContent={
-                                <ClipboardPenLineIcon
-                                    height={20}
-                                    width={20}
-                                    strokeWidth={3 / 2}
-                                />
-                            }
-                            className="font-semibold"
-                            onPress={onEnrollPress}
-                            color="secondary"
-                            fullWidth
-                        >
-              Enroll now
-                        </Button>
+                        <ConfirmEnrollModal/>
                         <Button
                             color="primary"
                             className="font-semibold"
