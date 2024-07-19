@@ -1,38 +1,18 @@
 "use client"
-import React, { useContext } from "react"
+import React, { useContext, useMemo } from "react"
 import { Accordion, AccordionItem, Spacer } from "@nextui-org/react"
 import { CourseDetailsContext } from "../../../_hooks"
 import { InteractiveThumbnail } from "../../../../../_shared"
 import { getAssetUrl } from "@services"
+import { sortSections } from "@common"
 
 export const Sections = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
     const { sections } = { ...course }
-    // const enableTempFix = false
 
-    // const extractNumber = (title : string) => {
-    //     const numberPart = title.slice(0, title.length).match(/\d+/)
-    //     return numberPart ? Number(numberPart[0]) : 0
-    // }
-
-    // const sortSections = () => {
-    //     sections?.sort((a, b) => {
-    //         return extractNumber(a.title) - extractNumber(b.title)
-    //     })
-    // }
-
-    // const sortLessons = () => {
-    //     sections?.map(section => {
-    //         section.lessons.sort((a, b) => {
-    //             return Number(a.title.slice(7,10)) - Number(b.title.slice(7,10))    
-    //         })
-    //     })
-    // }
-
-    // enableTempFix? sortSections() : null
-    // enableTempFix? sortLessons() : null
+    const sortedSections = useMemo(() => sortSections(sections), [sections])
 
     return (
         <div>
@@ -47,8 +27,8 @@ export const Sections = () => {
                     className="!p-0 gap-4"
                     selectionMode="multiple"
                 >
-                    {sections
-                        ? sections.map(({ sectionId, title, lessons }) => (
+                    {sortedSections
+                        ? sortedSections.map(({ sectionId, title, lessons }) => (
                             <AccordionItem
                                 key={sectionId}
                                 classNames={{

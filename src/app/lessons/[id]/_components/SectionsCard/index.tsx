@@ -1,8 +1,8 @@
 "use client"
 import { Accordion, AccordionItem, Card, CardBody, CardHeader, Divider, ScrollShadow, Selection } from "@nextui-org/react"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useMemo, useState } from "react"
 import { LessonDetailsContext } from "../../_hooks"
-import { getSetValues } from "@common"
+import { getSetValues, sortSections } from "@common"
 import { LessonItem } from "./LessonItem"
 
 interface SectionsCardProps {
@@ -24,6 +24,8 @@ export const SectionsCard = (props: SectionsCardProps) => {
 
     const [selectedKeys, setSelectedKeys] = useState<Selection>("all")
 
+    const sortedSections = useMemo(() => sortSections(sections), [sections])
+
     useEffect(() => {
         if (!sectionId) return
         setSelectedKeys(new Set([sectionId]))
@@ -44,8 +46,8 @@ export const SectionsCard = (props: SectionsCardProps) => {
     }
 
     const renderSections = () => {
-        if (!sections) return []
-        return sections.map(({ sectionId, title, lessons }) => (
+        if (!sortedSections) return []
+        return sortedSections.map(({ sectionId, title, lessons }) => (
             <AccordionItem
                 key={sectionId}
                 classNames={{
