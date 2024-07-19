@@ -21,7 +21,7 @@ export const ResourceItem = (props: ResourceItemProps) => {
                             {name}
                         </div>            
                     </Link>
-                    <Link href={getAssetUrl(fileId)}>
+                    <Link isExternal href={getAssetUrl(fileId)}>
                         <DownloadIcon size={20} strokeWidth={3/2} />
                     </Link>
                 </div>
