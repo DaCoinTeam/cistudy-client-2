@@ -14,7 +14,8 @@ import {
 import { PenIcon, RefreshCcw } from "lucide-react"
 import React, { useContext } from "react"
 import { EditProfileModalContext, EditProfileModalProvider } from "./EditProfileModalProvider"
-import { parseDate } from "@internationalized/date"
+import { parseDate, getLocalTimeZone } from "@internationalized/date"
+import { parseISODateString } from "@common"
 
 export const WrappedEditProfileModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -22,7 +23,6 @@ export const WrappedEditProfileModal = () => {
     const { formik } = useContext(EditProfileModalContext)!
 
     const onPress = () => formik.submitForm()
-
     return (
         <>
             <Button
@@ -30,7 +30,7 @@ export const WrappedEditProfileModal = () => {
                 color="secondary"
                 startContent={<PenIcon size={20} strokeWidth={3 / 2} />}
             >
-        Edit
+                Edit
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
@@ -39,30 +39,40 @@ export const WrappedEditProfileModal = () => {
                         <Input
                             classNames={{
                                 inputWrapper: "input-input-wrapper"
-                            }} 
-                            label="Accountname"
+                            }}
+                            label="Username"
                             id="username"
                             labelPlacement="outside"
                             value={formik.values.username}
                             placeholder="Input title here"
                             onChange={formik.handleChange}
                         />
-                        <Spacer y={4}/>
-                        <DatePicker label="Birthdate" id="birthdate" value={parseDate(formik.values.birthdate)} className="max-w-[284px]" labelPlacement="outside" onChange={formik.handleChange} />
+                        <Spacer y={4} />
+                        <DatePicker
+                            // classNames={{
+                            //     inputWrapper: "input-input-wrapper"
+                            // }}
+                            label="Birthdate" value={parseDate(formik.values.birthdate)} className="w-full" 
+                            labelPlacement="outside" onChange={(value) => {
+                                formik.setFieldValue("birthdate", parseISODateString(value.toDate(getLocalTimeZone())))
+                            }}
+                        />
                     </ModalBody>
                     <ModalFooter className="p-6 gap-2 pt-0">
                         <Button
                             startContent={<RefreshCcw size={20} strokeWidth={3 / 2} />}
                             variant="light"
                         >
-              Reset
+                            Reset
                         </Button>
                         <Button
                             onPress={onPress}
-                            startContent={<CheckIcon height={20} width={20} />}
+                            isDisabled={formik.isSubmitting}
+                            isLoading={formik.isSubmitting}
+                            startContent={!formik.isSubmitting ? <CheckIcon height={20} width={20} /> : undefined}
                             color="secondary"
                         >
-              Save
+                            Save
                         </Button>
                     </ModalFooter>
                 </ModalContent>
