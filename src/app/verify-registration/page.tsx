@@ -15,7 +15,7 @@ const Page = () => {
                 <div className="text-4xl font-bold">Congratulations!</div>
 
                 <div>You have verified your account successfully!</div>
-                <Button color="primary" onPress={() => router.push("/")}> Continue </Button>
+                <Button color="secondary" onPress={() => router.push("/")}> Continue </Button>
             </div>)}
         </div>
     )

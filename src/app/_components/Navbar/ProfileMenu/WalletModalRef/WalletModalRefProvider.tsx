@@ -55,6 +55,13 @@ export const WalletModalRefProvider = (props: { children: ReactNode }) => {
         handleEffect()
     }, [refreshBalanceKey, address])
 
+    useEffect(() => {
+        const handleEffect = async () => {
+            await mutate()
+        }
+        handleEffect()
+    }, [refreshBalanceKey, address])
+
     const WalletModalRefContextValue: WalletModalRefContextValue = useMemo(
         () => ({
             reducer,

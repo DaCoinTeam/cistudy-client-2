@@ -101,6 +101,6 @@ const WrappedNavbar = (props: NavbarProps) => {
 
 export const Navbar = (props: NavbarProps) => (
     <NavbarProvider>
-        <WrappedNavbar {...props} />{" "}
+        <WrappedNavbar {...props} />
     </NavbarProvider>
 )
