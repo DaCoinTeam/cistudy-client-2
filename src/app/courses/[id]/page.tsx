@@ -10,7 +10,7 @@ const Page = () => {
     const { isLoading} = courseSwr
     return (
         <div className="h-fit w-full pb-12 max-w-[1920px]">
-            {isLoading  ? <CourseSkeleton /> : 
+            {!courseSwr.data || isLoading  ? <CourseSkeleton /> : 
                 <div className="relative w-full">
                     <div className="fixed h-[100%] w-1/4 top-[7rem] right-12">
                         <CourseFloat/>
