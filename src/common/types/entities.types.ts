@@ -174,6 +174,7 @@ export interface EnrolledInfoEntity {
 export interface LessonEntity {
   lessonId: string;
   title: string;
+  position: number;
   thumbnailId?: string;
   lessonVideoId?: string;
   sectionId: string;

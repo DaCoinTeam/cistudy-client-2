@@ -1,8 +1,9 @@
 "use client"
 import { Accordion, AccordionItem } from "@nextui-org/react"
-import { useContext } from "react"
+import { useContext, useMemo } from "react"
 import { HomeContext } from "../../../../_hooks"
 import { LessonItem } from "./LessonItem"
+import { sortSections } from "@common"
 
 interface SectionsSectionProps {
   className?: string;
@@ -17,9 +18,11 @@ export const SectionsSection = (props: SectionsSectionProps) => {
 
     const { sections } = { ...courseHome }
 
+    const sortedSections = useMemo(() => sortSections(sections), [sections])
+
     const renderSections = () => {
-        if (!sections) return []
-        return sections.map(({ sectionId, title, lessons }) => (
+        if (!sortedSections) return []
+        return sortedSections.map(({ sectionId, title, lessons }) => (
             <AccordionItem
                 key={sectionId}
                 classNames={{
