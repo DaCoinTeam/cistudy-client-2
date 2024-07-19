@@ -18,13 +18,8 @@ export const SignInByGoogleIcon = () => {
     const { onClose } = authModalDisclosure
 
     const onPress = async () => {
-       
-         console.log("run ne")
         const credential = await signInWithPopup(firebaseAuth, provider)
-        console.log("run ne 2")
-
         const token = await credential.user.getIdToken()
-        console.log("token", token)
         await verifyGoogleAccessToken(
             { params: { token } }
         )

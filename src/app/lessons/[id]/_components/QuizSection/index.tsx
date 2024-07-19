@@ -32,22 +32,24 @@ export const QuizSection = () => {
                                 </div>
                             </div>
                             {
-                                <>
-                                    <Spacer y={4} />
-                                    <div className="font-bold">Your Performance</div>
-                                    <Spacer y={2} />
-                                    <div>
-                                        <div className="text-sm">
+                                quiz.totalNumberOfAttempts? (
+                                    <>
+                                        <Spacer y={4} />
+                                        <div className="font-bold">Your Performance</div>
+                                        <Spacer y={2} />
+                                        <div>
+                                            <div className="text-sm">
                   Last Attempt Score: {quiz?.lastAttemptScore}
-                                        </div>
-                                        <div className="text-sm">
+                                            </div>
+                                            <div className="text-sm">
                   Number of attempts: {quiz?.totalNumberOfAttempts}
-                                        </div>
-                                        <div className="text-sm">
+                                            </div>
+                                            <div className="text-sm">
                   Highest score: {quiz?.highestScoreRecorded}/10
+                                            </div>
                                         </div>
-                                    </div>
-                                </>
+                                    </>
+                                ) : <></>
                             }
                             <Spacer y={4} />
                             <div className="flex gap-2 items-center">

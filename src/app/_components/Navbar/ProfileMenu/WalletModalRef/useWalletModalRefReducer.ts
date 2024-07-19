@@ -3,18 +3,18 @@ import { v4 as uuidv4 } from "uuid"
 
 export interface WalletModalRefState {
   refreshBalanceKey?: string;
-  refreshTransactionsKey?: string;
+  refreshTransactionsKey?: string
 }
 
 export interface SetRefreshBalanceKeyAction {
   type: "TRIGGER_REFRESH_BALANCE_KEY";
 }
 
-export interface SetRefresTransactionsKeyAction {
+export interface SetRefreshTransactionsKeyAction {
     type: "TRIGGER_REFRESH_TRANSACTIONS_KEY";
   }
 
-export type WalletModalRefAction = SetRefreshBalanceKeyAction | SetRefresTransactionsKeyAction;
+export type WalletModalRefAction = SetRefreshBalanceKeyAction | SetRefreshTransactionsKeyAction;
 
 export const state: WalletModalRefState = {}
 

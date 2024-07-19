@@ -27,7 +27,7 @@ export const CourseRatingChart = () => {
             <div className='flex items-end text-center mb-2'>
                 <Stars initialValue={overallCourseRating} className='mr-2' readonly />
                 <p className='ms-1 text-sm font-medium text-gray-500 dark:text-gray-400'>
-                    {overallCourseRating}
+                    {overallCourseRating?.toFixed(2)}
                 </p>
                 <p className='ms-1 text-sm font-medium text-gray-500 dark:text-gray-400'>
           out of

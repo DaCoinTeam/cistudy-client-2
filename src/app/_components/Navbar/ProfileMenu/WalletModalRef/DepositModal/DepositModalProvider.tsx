@@ -59,10 +59,11 @@ export const DepositModalProvider = ({ children }: { children: ReactNode }) => {
     const { metamask } = wallets
     const { address } = metamask
 
-    const { reducer: walletReducer } = useContext(WalletModalRefContext)!
-    const [ , walletDispatch ] = walletReducer
-
     const { notify } = useContext(RootContext)!
+
+    const { reducer : walletReducer } = useContext(WalletModalRefContext)!
+    const [ , dispatch ] = walletReducer
+    
     return (
         <Formik
             initialValues={initialValues}
@@ -102,8 +103,7 @@ export const DepositModalProvider = ({ children }: { children: ReactNode }) => {
                     type: ToastType.Success
                 })
 
-                baseDisclosure.onClose()
-                walletDispatch({
+                dispatch({
                     type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
                 })
             }}

@@ -38,6 +38,10 @@ export const WalletModalRefProvider = (props: { children: ReactNode }) => {
     const { metamask } = wallets
     const { address } = metamask
 
+    const { swrs } = useContext(RootContext)!
+    const { profileSwr } = swrs
+    const { mutate } = profileSwr
+
     useEffect(() => {
         const handleEffect = async () => {
             if (!address) return
@@ -51,6 +55,13 @@ export const WalletModalRefProvider = (props: { children: ReactNode }) => {
                 type: "SET_METAMASK_STARCI_BALANCE",
                 payload: balance
             })
+        }
+        handleEffect()
+    }, [refreshBalanceKey, address])
+
+    useEffect(() => {
+        const handleEffect = async () => {
+            await mutate()
         }
         handleEffect()
     }, [refreshBalanceKey, address])

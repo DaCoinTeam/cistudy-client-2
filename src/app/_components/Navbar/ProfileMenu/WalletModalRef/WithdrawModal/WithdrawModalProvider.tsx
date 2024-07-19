@@ -72,6 +72,10 @@ export const WithdrawModalProvider = ({
 }) => {
     const baseDisclosure = useDisclosure()
     const { notify } = useContext(RootContext)!
+    
+    const { reducer : walletReducer } = useContext(WalletModalRefContext)!
+    const [ , dispatch ] = walletReducer
+    
 
     const withdrawSwrMutation = useSWRMutation(
         "WITHDRAW",
@@ -84,9 +88,6 @@ export const WithdrawModalProvider = ({
       }
         ) => await withdraw(arg)
     )
-
-    const { reducer: walletReducer } = useContext(WalletModalRefContext)!
-    const [ , walletDispatch ] = walletReducer
 
     return (
         <Formik
@@ -108,10 +109,7 @@ export const WithdrawModalProvider = ({
                     },
                     type: ToastType.Success
                 })
-
-                baseDisclosure.onClose()
-
-                walletDispatch({
+                dispatch({
                     type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
                 })
             }}

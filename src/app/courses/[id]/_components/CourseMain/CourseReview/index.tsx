@@ -17,7 +17,7 @@ const WrappedCourseReview = () => {
     const { swrs: courseDetailSwrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = courseDetailSwrs
     const { data: course } = courseSwr
-    const { enrolled, courseRatings } = { ...course }
+    const { enrolled, courseRatings, isCreator } = { ...course }
     const {overallCourseRating,
         totalNumberOfRatings
     } = { ...courseRatings }
@@ -41,7 +41,7 @@ const WrappedCourseReview = () => {
             <div className='flex items-end text-center mb-2'>
                 <Stars initialValue={overallCourseRating} className='mr-2' readonly />
                 <p className='ms-1 text-sm font-medium text-gray-500 dark:text-gray-400'>
-                    {overallCourseRating}
+                    {overallCourseRating?.toFixed(2)}
                 </p>
                 <p className='ms-1 text-sm font-medium text-gray-500 dark:text-gray-400'>
           out of
@@ -54,7 +54,7 @@ const WrappedCourseReview = () => {
                 {totalNumberOfRatings} ratings
             </p>
             <Spacer y={2} />
-            {enrolled && <ReviewInput />}
+            {enrolled && isCreator === false && <ReviewInput />}
 
             <div className='grid grid-cols-2 gap-4'>
                 {getReviews()?.map((item) => {

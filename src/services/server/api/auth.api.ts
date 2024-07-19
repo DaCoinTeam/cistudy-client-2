@@ -3,6 +3,16 @@ import { baseAxios } from "./axios-instances"
 
 const BASE_URL = `${ENDPOINT_API}/auth`
 
+export interface SignInInput {
+    email: string;
+    password: string;
+}
+
+export const signIn = async (input: SignInInput): Promise<string> => {
+    const url = `${BASE_URL}/sign-in`
+    return await baseAxios.post(url, input)
+}
+
 export interface SignUpInput {
     email: string;
     password: string;

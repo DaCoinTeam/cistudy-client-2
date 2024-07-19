@@ -2,7 +2,8 @@ import { Tab, Tabs } from "@nextui-org/react"
 import React from "react"
 import { FollowersTabContent } from "./FollowersTabContent"
 import { CoursesTabContent } from "./CoursesTabContent"
-import { BookOpenIcon, MessagesSquareIcon, RssIcon } from "lucide-react"
+import { BookOpenIcon, MessagesSquareIcon, MonitorPlay, RssIcon } from "lucide-react"
+import { EnrolledCoursesTabContent } from "./EnrolledCoursesTabContent"
 
 export const DetailsTabs = () => {
     return (
@@ -26,6 +27,14 @@ export const DetailsTabs = () => {
                 }>
                     <CoursesTabContent/>
                     <div/>
+                </Tab>
+                <Tab key="enrolledCourses" title={
+                    <div className="flex items-center gap-2">
+                        <MonitorPlay size={20} strokeWidth={3/2}/>
+                        <div> Enrolled Courses </div>
+                    </div>
+                }>
+                    <EnrolledCoursesTabContent />
                 </Tab>
                 <Tab key="feedback" title={
                     <div className="flex items-center gap-2">

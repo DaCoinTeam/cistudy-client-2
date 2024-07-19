@@ -11,8 +11,9 @@ import React, {
 import { updateProfile } from "@services"
 import { AccountDetailsContext } from "../../../../_hooks"
 import { parseISODateString } from "@common"
-import { RootContext } from "../../../../../../_hooks"
 import * as Yup from "yup"
+import { RootContext } from "../../../../../../_hooks"
+import { ToastType } from "../../../../../../_components"
 
 interface EditProfileModalContextValue {
   formik: FormikProps<FormikValues>;
@@ -107,9 +108,10 @@ export const EditProfileModalProvider = ({
 }: {
   children: ReactNode;
 }) => {
-    const { swrs } = useContext(RootContext)!
-    const { profileSwr } = swrs
-    const { mutate } = profileSwr
+    const { swrs } = useContext(AccountDetailsContext)!
+    const { accountSwr } = swrs
+    const { mutate } = accountSwr
+    const { notify } = useContext(RootContext)!
     return (
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({
@@ -118,11 +120,17 @@ export const EditProfileModalProvider = ({
             })
         }
         onSubmit={async ({ birthdate, username }) => {
-            await updateProfile({
+            const { message } = await updateProfile({
                 data: {
                     username,
                     birthdate
                 }
+            })
+            notify!({
+                data: {
+                    message
+                },
+                type: ToastType.Success
             })
             await mutate()
         }}

@@ -46,6 +46,7 @@ export const WrappedCourseDetailsProvider = ({
                 price: true,
                 discountPrice: true,
                 enableDiscount: true,
+                isCreator: true,
                 enrolled: true,
                 courseRatings: {
                     numberOf1StarRatings: true,
@@ -71,6 +72,9 @@ export const WrappedCourseDetailsProvider = ({
                         thumbnailId: true,
                         lessonVideoId: true,
                         title: true,
+                        quiz: {
+                            quizId: true
+                        }
                     },
                 },
                 creator: {

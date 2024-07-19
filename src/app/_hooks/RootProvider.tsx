@@ -18,11 +18,10 @@ import React, {
     useMemo,
     useRef
 } from "react"
-import { Socket } from "socket.io-client"
 import useSWR, { SWRResponse } from "swr"
 import { NotifyFn, ToastRef, ToastRefSelectors } from "../_components"
 import { RootAction, RootState, useRootReducer } from "./useRootReducer"
-import { useSocketClient } from "./useSocketClient"
+import { useFirebaseMessaging } from "./useFirebaseMessaging"
 
 interface FormikValues {
   searchValue: string;
@@ -36,14 +35,13 @@ const initialValues: FormikValues = {
 interface RootContextValue {
   swrs: {
     profileSwr: SWRResponse<AccountEntity | null, ErrorResponse>;
-    highlightSwr: SWRResponse<HighlightDTO | null, ErrorResponse>;
+    highlightSwr: SWRResponse<HighlightDTO, ErrorResponse>;
   };
   formik: FormikProps<FormikValues>;
   reducer: [RootState, React.Dispatch<RootAction>];
   disclosures: {
     notConnectWalletModalDisclosure: Disclosure;
   };
-  socket: Socket | null;
   notify?: NotifyFn;
 }
 
@@ -59,7 +57,6 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
     const { children, formik } = props
 
     const notConnectWalletModalDisclosure = useDisclosure()
-    const socket = useSocketClient()
 
     const fetchProfile = useCallback(async () => {
         try {
@@ -104,92 +101,86 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                 }
             })
         } catch (ex) {
-            // console.log(ex)
             return null
         }
     }, [])
     
     const fetchHighlight = useCallback(async () => {
-        try {
-            return await initLandingPage({
-                totalNumberOfVerifiedAccounts: true,
-                totalNumberOfAvailableCourses: true, 
-                totalNumberOfPosts: true,
-                highRatedCourses: {
-                    courseId: true,
-                    price: true,
-                    discountPrice: true,
-                    title: true,
-                    description: true,
-                    thumbnailId: true,
-                    courseRatings: {
-                        overallCourseRating: true,
-                        totalNumberOfRatings: true
-                    },
-                    creator: {
-                        accountId: true,
-                        username: true, 
-                        email: true,
-                        avatarId: true,
-                        avatarUrl: true,
-                        
-                    }
+        return await initLandingPage({
+            totalNumberOfVerifiedAccounts: true,
+            totalNumberOfAvailableCourses: true, 
+            totalNumberOfPosts: true,
+            highRatedCourses: {
+                courseId: true,
+                price: true,
+                discountPrice: true,
+                title: true,
+                description: true,
+                thumbnailId: true,
+                courseRatings: {
+                    overallCourseRating: true,
+                    totalNumberOfRatings: true
                 },
-                mostEnrolledCourses: {
-                    courseId: true,
-                    price: true,
-                    discountPrice: true,
-                    title: true,
-                    description: true,
-                    thumbnailId: true,
-
-                    courseRatings: {
-                        overallCourseRating: true,
-                        totalNumberOfRatings: true
-                    },
-                    creator: {
-                        accountId: true,
-                        username: true, 
-                        email: true,
-                        avatarId: true,
-                        avatarUrl: true
-                    }
-                },
-                recentlyAddedCourses: {
-                    courseId: true,
-                    price: true,
-                    discountPrice: true,
-                    title: true,
-                    description: true,
-                    thumbnailId: true,
-                    courseRatings: {
-                        overallCourseRating: true,
-                        totalNumberOfRatings: true
-                    },
-                    creator: {
-                        accountId: true,
-                        username: true, 
-                        email: true,
-                        avatarId: true,
-                        avatarUrl: true
-                    }
-                },
-                highRatedInstructors: {
+                creator: {
                     accountId: true,
-                    username: true,
+                    username: true, 
                     email: true,
                     avatarId: true,
                     avatarUrl: true,
-                    kind: true,
-                    accountRatings: {
-                        overallAccountRating: true,
-                    }
+                        
                 }
-            })
-        } catch (ex) {
-            // console.log(ex)
-            return null
-        }
+            },
+            mostEnrolledCourses: {
+                courseId: true,
+                price: true,
+                discountPrice: true,
+                title: true,
+                description: true,
+                thumbnailId: true,
+
+                courseRatings: {
+                    overallCourseRating: true,
+                    totalNumberOfRatings: true
+                },
+                creator: {
+                    accountId: true,
+                    username: true, 
+                    email: true,
+                    avatarId: true,
+                    avatarUrl: true
+                }
+            },
+            recentlyAddedCourses: {
+                courseId: true,
+                price: true,
+                discountPrice: true,
+                title: true,
+                description: true,
+                thumbnailId: true,
+                courseRatings: {
+                    overallCourseRating: true,
+                    totalNumberOfRatings: true
+                },
+                creator: {
+                    accountId: true,
+                    username: true, 
+                    email: true,
+                    avatarId: true,
+                    avatarUrl: true
+                }
+            },
+            highRatedInstructors: {
+                accountId: true,
+                username: true,
+                email: true,
+                avatarId: true,
+                avatarUrl: true,
+                kind: true,
+                accountRatings: {
+                    overallAccountRating: true,
+                }
+            }
+        })
     }, [])
     const profileSwr = useSWR(["PROFILE"], fetchProfile)
 
@@ -202,6 +193,8 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
 
     const toastRef = useRef<ToastRefSelectors | null>(null)
 
+    useFirebaseMessaging()
+
     const rootContextValue: RootContextValue = useMemo(
         () => ({
             swrs: {
@@ -213,10 +206,9 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
             disclosures: {
                 notConnectWalletModalDisclosure,
             },
-            socket,
             notify: toastRef.current?.notify,
         }),
-        [profileSwr, highlightSwr, reducer, notConnectWalletModalDisclosure, socket]
+        [profileSwr, highlightSwr, reducer, notConnectWalletModalDisclosure]
     )
 
     return (
@@ -231,7 +223,7 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
     const ref = useRef<WrappedRootProviderSelectors | null>(null)
 
     const router = useRouter()
-
+    
     return (
         <Formik
             initialValues={initialValues}

@@ -21,6 +21,7 @@ import {
 import { useSDK } from "@metamask/sdk-react"
 import { addToCart, enrollCourse, getAssetUrl } from "@services"
 import {
+    BookOpen,
     ClipboardPenLineIcon,
     FileQuestion,
     ListVideo,
@@ -46,7 +47,8 @@ export const CourseFloat = () => {
         courseId,
         enrolled,
         creator,
-        sections
+        sections,
+        isCreator
     } = {
         ...course,
     }
@@ -202,6 +204,7 @@ export const CourseFloat = () => {
     const path = usePathname()
     const router = useRouter()
     const onEnterCoursePress = () => router.push(`${path}/home`)
+    const onManageCoursePress = () => router.push("/management")
 
     return (
         <Card
@@ -238,7 +241,7 @@ export const CourseFloat = () => {
                 </div>
             </CardBody>
             <CardFooter className="p-4 pt-2 flex-col gap-2">
-                {enrolled ? (
+                {enrolled && isCreator === false ? (
                     <Button
                         color="secondary"
                         className="font-semibold"
@@ -250,7 +253,7 @@ export const CourseFloat = () => {
                     >
             Enter course
                     </Button>
-                ) : (
+                ) : isCreator === false? (
                     <>
                         <Button
                             startContent={
@@ -289,7 +292,17 @@ export const CourseFloat = () => {
                         </Button>) }
                         
                     </>
-                )}
+                ) : <>
+                    <Button
+                        color="secondary"
+                        className="font-semibold"
+                        startContent={<BookOpen height={20} width={20} strokeWidth={3 / 2} />}
+                        fullWidth
+                        onPress={onManageCoursePress}
+                    >
+                        Manage Course
+                    </Button>
+                </>}
             </CardFooter>
         </Card>
     )

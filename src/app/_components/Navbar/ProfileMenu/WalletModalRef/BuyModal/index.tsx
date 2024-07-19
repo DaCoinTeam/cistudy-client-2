@@ -29,8 +29,8 @@ const WrappedBuyModal = () => {
         numeral(formik.values.buyAmount).format("0.00")
     )
 
-    const { reducer } = useContext(WalletModalRefContext)!
-    const [ , dispatch ] = reducer
+    const { reducer : walletReducer } = useContext(WalletModalRefContext)!
+    const [ , dispatch ] = walletReducer
 
     return (
         <>
@@ -119,11 +119,11 @@ const WrappedBuyModal = () => {
                                             },
                                             type: ToastType.Success
                                         })
+                                        
                                         onClose()
                                         dispatch({
                                             type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
                                         })
- 
                                     }} 
                                 />
                             </PayPalScriptProvider>
@@ -138,7 +138,7 @@ const WrappedBuyModal = () => {
 export const BuyModal = () => {
     return (
         <BuyModalProvider>
-            <WrappedBuyModal/>
+            <WrappedBuyModal />
         </BuyModalProvider>
     )
 }

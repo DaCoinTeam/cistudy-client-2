@@ -16,6 +16,7 @@ const Page = () => {
     const route = useRouter()
     const params = useParams()
     const lessonId = params.id as string
+    const timemilliseconds = Number(localStorage.getItem("quizTimeLimit")) * 60 * 1000 - Number(localStorage.getItem("quizRemainingTime"))
     const {reducer, swrs} = useContext(QuizContext)!
     const [state, dispatch] = reducer
     const {quizSwr, finishQuizAttemptSwrMutation} = swrs
@@ -44,7 +45,8 @@ const Page = () => {
         finishTrigger({
             data: {
                 quizAttemptId: state.quizAttemptId,
-                quizQuestionAnswerIds
+                quizQuestionAnswerIds,
+                timeTaken: timemilliseconds
             }
         }).then((res) => {
             localStorage.setItem("quizScore", res.others.score.toString())
@@ -69,12 +71,12 @@ const Page = () => {
     return (
         <div>
             <div className="flex items-center flex-row p-4 border-b-2">
-                <div className="flex flex-row">
-                    <div className="flex flex-row items-center cursor-pointer ml-7" onClick={handleConfirmSubmit}>
+                <div className="flex flex-row ml-7">
+                    <div className="flex flex-row items-center cursor-pointer" onClick={handleConfirmSubmit}>
                         <ArrowLeft className="text-primary" size={20} />
-                        <span className="ml-2 text-primary font-semibold">Back</span>
+                        <span className="text-primary font-semibold ml-4">Back</span>
                     </div>
-                    <div className="ml-2">
+                    <div className="ml-4">
                         <div className="font-semibold">{section?.title}</div>
                         <div className="opacity-50">{quiz?.timeLimit} min</div>
                     </div>
