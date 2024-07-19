@@ -35,7 +35,7 @@ export const ProfileMenu = () => {
     }
 
     const router = useRouter()
-    const onProfilePress = () => router.push(`/users/${accountId}`)
+    const onProfilePress = () => router.push(`/accounts/${accountId}`)
     const onManagementPress = () => router.push("/management")
     const onEnrolledCouresPress = () => router.push("/enrolled-courses")
     const onAdminDashboardPress = () => router.push("/admin")

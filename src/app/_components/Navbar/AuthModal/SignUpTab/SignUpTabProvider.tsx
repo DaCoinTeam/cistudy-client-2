@@ -1,13 +1,14 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
-import React, { ReactNode, createContext, useContext, useMemo, useRef } from "react"
+import React, { ReactNode, createContext, useContext, useMemo } from "react"
 import { signUp, SignUpInput, SignUpOutput } from "@services"
 import { ErrorResponse, parseISODateString } from "@common"
 
 import * as Yup from "yup"
 import { NavbarContext } from "../../NavbarProvider"
 import useSWRMutation, { SWRMutationResponse } from "swr/mutation"
-import { ToastRef, ToastRefSelectors, ToastType } from "../../../ToastRef"
+import { ToastType } from "../../../ToastRef"
+import { RootContext } from "../../../../_hooks"
 
 export interface SignUpTabContextValue {
   formik: FormikProps<FormikValues>;
@@ -66,10 +67,11 @@ const WrappedSignUpTabProvider = ({
 }
 
 export const SignUpTabProvider = ({ children }: { children: ReactNode }) => {
-    const toastRef = useRef<ToastRefSelectors>(null)
     const { disclosures } = useContext(NavbarContext)!
     const { authModalDisclosure } = disclosures
     const { onClose } = authModalDisclosure
+
+    const { notify } = useContext(RootContext)!
 
     const fetchSignUpTabMutation = async (_: string, { arg } : {arg : SignUpInput}) => {
         return await signUp(arg)
@@ -106,23 +108,25 @@ export const SignUpTabProvider = ({ children }: { children: ReactNode }) => {
                     lastName,
                     birthdate
                 }
-
-                trigger(signUpData).then(() => {
-                    toastRef.current?.notify({
+                try {
+                    const { message } = await trigger(signUpData)
+                    console.log(message)
+                    notify!({
                         data: {
-                            message: "Sign up successfully"
+                            message
                         },
                         type: ToastType.Success
                     })
                     onClose()
-                }).catch(() => {
-                    toastRef.current?.notify({
+                } catch (ex) {
+                    const { message } = ex as ErrorResponse
+                    notify!({
                         data: {
-                            error: "Sign up failed"
+                            error: message as string
                         },
                         type: ToastType.Error
                     })
-                })
+                }
                 // await signUp({
                 //     email,
                 //     password,
@@ -136,7 +140,6 @@ export const SignUpTabProvider = ({ children }: { children: ReactNode }) => {
             {(formik) => (
                 <WrappedSignUpTabProvider formik={formik} swrs={{signUpTabSwrMutation}}>
                     {children}
-                    <ToastRef ref={toastRef} />
                 </WrappedSignUpTabProvider>
             )}
         </Formik>

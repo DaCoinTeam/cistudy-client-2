@@ -8,7 +8,7 @@ export interface SignInInput {
     password: string;
 }
 
-export const signInWithRestful = async (input: SignInInput): Promise<string> => {
+export const signIn = async (input: SignInInput): Promise<string> => {
     const url = `${BASE_URL}/sign-in`
     return await baseAxios.post(url, input)
 }

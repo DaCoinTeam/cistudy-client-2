@@ -25,6 +25,7 @@ export const AuthModal = (props: AuthModalProps) => {
         <Modal
             isOpen={isOpen}
             onOpenChange={onOpenChange}
+            isDismissable={false}
             className={`${props.className}`}
         >
             <ModalContent>

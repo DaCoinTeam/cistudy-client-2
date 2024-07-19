@@ -122,6 +122,7 @@ export interface CourseEntity {
   verifyStatus: VerifyStatus;
   isDraft: boolean;
   creator: AccountEntity;
+  isCreator: boolean;
   isDeleted: boolean;
   previewVideoId: string;
   includes: string;
