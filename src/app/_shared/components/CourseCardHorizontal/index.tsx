@@ -1,9 +1,9 @@
 import { CourseEntity } from "@common"
 import { Divider, Spacer, User } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "@services"
-import router from "next/router"
 import { InteractiveThumbnail } from "../InteractiveThumbnail"
 import { Stars } from "../Stars"
+import { useRouter } from "next/navigation"
 
 export const CourseCardHorizontal = (props: CourseEntity) => {
     const { title, creator, thumbnailId, description, courseId, courseRatings } = { ...props }
@@ -11,6 +11,7 @@ export const CourseCardHorizontal = (props: CourseEntity) => {
         ...creator,
     }
     const { overallCourseRating} = {...courseRatings}
+    const router = useRouter()
     return (
         <div className="flex gap-4" key={courseId}>
             <InteractiveThumbnail isPressable className="min-w-60 w-60 h-fit" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
