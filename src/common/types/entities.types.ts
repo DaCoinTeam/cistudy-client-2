@@ -192,72 +192,91 @@ export interface LessonEntity {
 }
 
 export interface ProgressEntity {
-  progressId: string
-  account: AccountEntity
-  accountId: string
-  isCompleted: boolean
-  lesson: LessonEntity
-  lessonId: string
+  progressId: string;
+  account: AccountEntity;
+  accountId: string;
+  isCompleted: boolean;
+  lesson: LessonEntity;
+  lessonId: string;
+}
+
+export enum SectionContentType {
+  Lesson = "lesson",
+  Quiz = "quiz",
+}
+
+export interface SectionContentEntity {
+  sectionContentId: string;
+  sectionId: string;
+  lessonId: string;
+  quizId: string;
+  type: SectionContentType;
+  position: number;
+  createdAt: Date;
+  updatedAt: Date;
+  section: SectionEntity;
+  lesson: LessonEntity;
+  quiz: QuizEntity;
 }
 
 export interface QuizEntity {
-  quizId: string
-  timeLimit: number
-  createdAt: Date
-  updatedAt: Date
-  lesson: LessonEntity
-  highestScoreRecorded: number
-  totalNumberOfAttempts: number
-  lastAttemptScore: number
-  questions: Array<QuizQuestionEntity>
-  quizAttempts: QuizAttemptEntity
+  quizId: string;
+  timeLimit: number;
+  createdAt: Date;
+  updatedAt: Date;
+  sectionContent: SectionContentEntity;
+  highestScoreRecorded: number;
+  totalNumberOfAttempts: number;
+  lastAttemptScore: number;
+  questions: Array<QuizQuestionEntity>;
+  quizAttempts: QuizAttemptEntity;
 }
 
 export interface QuizQuestionEntity {
-  quizQuestionId: string
-  quizId: string
-  quiz: QuizEntity
-  createdAt: Date
-  updatedAt: Date
-  question: string
-  point: number
-  answers: Array<QuizQuestionAnswerEntity>
-  questionMedias: Array<QuizQuestionMediaEntity>
+  quizQuestionId: string;
+  quizId: string;
+  quiz: QuizEntity;
+  createdAt: Date;
+  updatedAt: Date;
+  question: string;
+  point: number;
+  answers: Array<QuizQuestionAnswerEntity>;
+  questionMedias: Array<QuizQuestionMediaEntity>;
 }
 
 export interface QuizQuestionAnswerEntity {
-  quizQuestionAnswerId: string
-  quizQuestionId: string
-  quizQuestion: QuizQuestionEntity
-  createdAt: Date
-  updatedAt: Date
-  content: string
-  isCorrect: boolean
-  attempt: QuizAttemptEntity
+  quizQuestionAnswerId: string;
+  quizQuestionId: string;
+  quizQuestion: QuizQuestionEntity;
+  createdAt: Date;
+  updatedAt: Date;
+  content: string;
+  isCorrect: boolean;
+  attempt: QuizAttemptEntity;
 }
 
 export interface QuizAttemptEntity {
-  quizAttemptId: string
-  quizId: string
-  score: number
-  account: AccountEntity
-  accountId: string
-  attemptStatus: string
-  createdAt: Date
-  updatedAt: Date
-  quiz: QuizEntity
-  questionAnswers: Array<QuizQuestionAnswerEntity>
+  quizAttemptId: string;
+  quizId: string;
+  score: number;
+  account: AccountEntity;
+  accountId: string;
+  attemptStatus: string;
+  createdAt: Date;
+  updatedAt: Date;
+  quiz: QuizEntity;
+  questionAnswers: Array<QuizQuestionAnswerEntity>;
 }
 
 export interface QuizQuestionMediaEntity {
-  quizQuestionMediaId: string
-  quizQuestionId: string
-  quizQuestion: QuizQuestionEntity
-  mediaId: string
-  mediaType: MediaType
-  position: number
-  createdAt: Date
-  updatedAt: Date
+  quizQuestionMediaId: string;
+  quizQuestionId: string;
+  quizQuestion: QuizQuestionEntity;
+  mediaId: string;
+  mediaType: MediaType;
+  position: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface PostCommentLikeEntity {
@@ -419,85 +438,84 @@ export interface CartCourseEntity {
   cart: CartEntity;
 }
 export interface CourseReviewEntity {
-  courseReviewId: string
-  content: string
-  courseId: string
-  course?: CourseEntity
-  createdAt: Date
-  updatedAt: Date
-  rating: number
-  accountId: string
-  account: AccountEntity
-  
+  courseReviewId: string;
+  content: string;
+  courseId: string;
+  course?: CourseEntity;
+  createdAt: Date;
+  updatedAt: Date;
+  rating: number;
+  accountId: string;
+  account: AccountEntity;
 }
 
 export interface ReportAccountEntity {
-  reportAccountId: string
-  reportedAccountId: string
-  reporterAccountId: string
-  description: string
-  processNote: string
-  processStatus: string
-  reporterAccount: AccountEntity
-  reportedAccount: AccountEntity
-  createdAt: Date
-  updatedAt: Date
+  reportAccountId: string;
+  reportedAccountId: string;
+  reporterAccountId: string;
+  description: string;
+  processNote: string;
+  processStatus: string;
+  reporterAccount: AccountEntity;
+  reportedAccount: AccountEntity;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ReportCourseEntity {
-  reportCourseId: string
-  reportedCourseId: string
-  reporterAccountId: string
-  description: string
-  processNote: string
-  processStatus: string
-  reporterAccount: AccountEntity
-  reportedCourse: CourseEntity
-  createdAt: Date
-  updatedAt: Date
+  reportCourseId: string;
+  reportedCourseId: string;
+  reporterAccountId: string;
+  description: string;
+  processNote: string;
+  processStatus: string;
+  reporterAccount: AccountEntity;
+  reportedCourse: CourseEntity;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ReportPostEntity {
-  reportPostId: string
-  reportedPostId: string
-  reporterAccountId: string
-  description: string
-  processNote: string
-  processStatus: string
-  reporterAccount: AccountEntity
-  reportedPost: PostEntity
-  createdAt: Date
-  updatedAt: Date
+  reportPostId: string;
+  reportedPostId: string;
+  reporterAccountId: string;
+  description: string;
+  processNote: string;
+  processStatus: string;
+  reporterAccount: AccountEntity;
+  reportedPost: PostEntity;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ReportPostCommentEntity {
-  reportPostCommentId: string
-  reportedPostCommentId: string
-  reporterAccountId: string
-  description: string
-  processNote: string
-  processStatus: string
-  reporterAccount: AccountEntity
-  reportedPostComment: PostCommentEntity
-  createdAt: Date
-  updatedAt: Date
+  reportPostCommentId: string;
+  reportedPostCommentId: string;
+  reporterAccountId: string;
+  description: string;
+  processNote: string;
+  processStatus: string;
+  reporterAccount: AccountEntity;
+  reportedPostComment: PostCommentEntity;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export enum TransactionType {
   Buy = "buy",
   Deposit = "deposit",
-  Withdraw = "withdraw"
+  Withdraw = "withdraw",
 }
 
 export interface TransactionEntity {
-      transactionId: string
-      type: TransactionType
-      accountId: string
-      amountDepositedChange: number
-      amountOnChainChange: number
-      transactionHash: string
-      payPalOrderId: string
-      account: AccountEntity
-      createdAt: Date
-      updatedAt: Date
+  transactionId: string;
+  type: TransactionType;
+  accountId: string;
+  amountDepositedChange: number;
+  amountOnChainChange: number;
+  transactionHash: string;
+  payPalOrderId: string;
+  account: AccountEntity;
+  createdAt: Date;
+  updatedAt: Date;
 }
