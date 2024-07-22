@@ -3,16 +3,19 @@ import React, {
     ReactNode,
     createContext,
     useCallback,
+    useContext,
     useEffect,
     useMemo,
 } from "react"
 
 import { createQuizAttempt, CreateQuizAttemptInput, CreateQuizAttemptOutput, findOneLesson, finishQuizAttempt, FinishQuizAttemptInput, FinishQuizAttemptOutput } from "@services"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { ErrorResponse, LessonEntity } from "@common"
 import useSWR, { SWRResponse } from "swr"
 import { QuizAction, QuizState, useQuizReducer } from "./useQuizReducer"
 import useSWRMutation, { SWRMutationResponse } from "swr/mutation"
+import { RootContext } from "../../../_hooks"
+import { ToastType } from "../../../_components"
 
 export interface QuizContextValue {
     reducer: [QuizState, React.Dispatch<QuizAction>];
@@ -30,6 +33,24 @@ export interface QuizResponse {
     }
 }
 
+export interface QuizAnswer {
+    questionIndex: string
+    answerIndex: string[]
+    isAnswered: boolean
+}
+
+export interface QuizProgressState {
+    quizAttemptId: string
+    score: number
+    selectedAnswers: QuizAnswer[]
+    quizQuestionAnswerIds: string[]
+}
+
+export interface QuizTimeState {
+    timeLimit: string
+    remainingTime: string
+}
+
 export const QuizContext =
     createContext<QuizContextValue | null>(null)
 
@@ -38,9 +59,10 @@ const WrappedQuizProvider = ({
 }: {
     children: ReactNode;
 }) => {
+    const { notify } = useContext(RootContext)!
     const reducer = useQuizReducer()
-    const [, dispatch] = reducer
     const params = useParams()
+    const route = useRouter()
     const lessonId = params.id as string
 
     const fetchQuiz = useCallback(async () => {
@@ -87,14 +109,48 @@ const WrappedQuizProvider = ({
     const finishQuizAttemptSwrMutation = useSWRMutation("FINISH_QUIZ_ATTEMPT", fetchFinishQuizAttemptSwrMutation)
 
     const {trigger} = createQuizAttemptSwrMutation
+    // const {data} = quizSwr
+    // const {quiz} = {...data}
+
+    // const randomizeQuizQuestions = () => {
+    //     quiz?.questions.sort(() => Math.random() - 0.5)
+    //     quiz?.questions.map(question => {
+    //         question.answers.sort(() => Math.random() - 0.5)
+    //     })
+    //     console.log(quiz)
+    // }
+
+    const handleCreateQuizAttempt = async() => { 
+        if (!localStorage.getItem("quizProgressState") && quizSwr.isLoading === false && quizSwr.data) {
+            try {
+                const res = await trigger({data: {quizId: lessonId}})
+                const quizProgressState : QuizProgressState = {
+                    quizAttemptId: res.others.quizAttemptId,
+                    score: 0,
+                    selectedAnswers: [],
+                    quizQuestionAnswerIds: []
+                }
+                const quizTimeState : QuizTimeState = {
+                    timeLimit: (quizSwr.data.quiz.timeLimit * 60 * 100).toString(),
+                    remainingTime: (quizSwr.data.quiz.timeLimit * 60 * 100).toString()
+                }
+                localStorage.setItem("quizProgressState", JSON.stringify(quizProgressState))
+                localStorage.setItem("quizTimeState", JSON.stringify(quizTimeState))
+            } catch (ex) {
+                const { message } = ex as ErrorResponse
+                notify!({
+                    data: {
+                        error: message as string
+                    },
+                    type: ToastType.Error
+                })
+                route.push(`/lessons/${lessonId}`)
+            }
+        }
+    }
 
     useEffect(() => {
-        if (quizSwr.isLoading === false && quizSwr.data) {
-            localStorage.setItem("quizTimeLimit", quizSwr.data.quiz.timeLimit.toString())
-            trigger({data: {quizId: lessonId}}).then((res) => {
-                dispatch({type: "SET_QUIZ_ATTEMPT_ID", payload: res.others.quizAttemptId})
-            })
-        }
+        handleCreateQuizAttempt()
     }, [quizSwr.isLoading === false && quizSwr.data])
 
     const quizContextValue: QuizContextValue = useMemo(

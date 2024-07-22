@@ -1,6 +1,6 @@
 "use client"
 import React, { useContext, useRef } from "react"
-import { QuizContext } from "./hooks"
+import { QuizContext, QuizProgressState, QuizTimeState } from "./hooks"
 import { ArrowLeft } from "lucide-react"
 import { useParams } from "next/navigation"
 import CountdownTimer from "./components/Countdown"
@@ -10,15 +10,19 @@ import { ConfirmModalRef, ConfirmModalRefSelectors } from "../../_shared"
 import { useRouter } from "next/navigation"
 import { ResultModalRef, ResultModalRefSelectors } from "./components"
 import { ToastRef, ToastRefSelectors, ToastType } from "../../_components"
-
+import { ErrorResponse } from "@common"
+import { RootContext } from "../../_hooks"
 
 const Page = () => {
+    const quizProgressState: QuizProgressState = JSON.parse(localStorage.getItem("quizProgressState") as string)
+    const quizTimeState: QuizTimeState = JSON.parse(localStorage.getItem("quizTimeState") as string)
     const route = useRouter()
     const params = useParams()
     const lessonId = params.id as string
-    const timemilliseconds = Number(localStorage.getItem("quizTimeLimit")) * 60 * 1000 - Number(localStorage.getItem("quizRemainingTime"))
-    const {reducer, swrs} = useContext(QuizContext)!
+    const timemilliseconds = Number(quizTimeState?.timeLimit) - Number(quizTimeState?.remainingTime)
+    const {swrs, reducer} = useContext(QuizContext)!
     const [state, dispatch] = reducer
+    const {notify} = useContext(RootContext)!
     const {quizSwr, finishQuizAttemptSwrMutation} = swrs
     const {data} = quizSwr
     const {section, quiz} = {...data}
@@ -28,36 +32,56 @@ const Page = () => {
     const toastRef = useRef<ToastRefSelectors>(null)
 
     const handleSelectedAnswer = ({questionIndex, answerIndex} : {questionIndex: number, answerIndex: string}) => {
-        const answer = [{
+        const selectedAnswer = {
             questionIndex: questionIndex.toString(),
             answerIndex: [answerIndex],
             isAnswered: true
-        }]
+        }
 
         dispatch({
             type: "SET_SELECTED_OPTION_FOR_QUESTION",
-            payload: answer
+            payload: [selectedAnswer]
         })
     }
 
-    const handleSubmitQuiz = () => {
-        const quizQuestionAnswerIds = state.answer.map(a => a.answerIndex).flat()
-        finishTrigger({
-            data: {
-                quizAttemptId: state.quizAttemptId,
-                quizQuestionAnswerIds,
-                timeTaken: timemilliseconds
-            }
-        }).then((res) => {
-            localStorage.setItem("quizScore", res.others.score.toString())
+    const handleSubmitQuiz = async() => {
+        const quizQuestionAnswerIds = quizProgressState.selectedAnswers.map(a => a.answerIndex).flat()
+        try {
+            const res = await finishTrigger({
+                data: {
+                    quizAttemptId: quizProgressState.quizAttemptId,
+                    quizQuestionAnswerIds,
+                    timeTaken: timemilliseconds
+                }
+            })
+            localStorage.setItem("quizProgressState", JSON.stringify(quizProgressState))
             toastRef.current?.notify({
                 data: {
                     message: res.message
                 },
                 type: ToastType.Success 
             })
+            dispatch({
+                type: "SET_SCORE",
+                payload: res.others.score
+            })
+            dispatch({
+                type: "SET_FINISH_TIME",
+                payload: timemilliseconds
+            })
             resultModalRef.current?.onOpen()
-        })
+            localStorage.removeItem("quizProgressState")
+            localStorage.removeItem("quizTimeState")
+        } catch (ex) {
+            const { message } = ex as ErrorResponse
+            notify!({
+                data: {
+                    error: message as string
+                },
+                type: ToastType.Error
+            })
+            route.push(`/lessons/${lessonId}`)
+        }
     }
 
     const handleConfirmSubmit = () => {
@@ -72,7 +96,7 @@ const Page = () => {
         <div>
             <div className="flex items-center flex-row p-4 border-b-2">
                 <div className="flex flex-row ml-7">
-                    <div className="flex flex-row items-center cursor-pointer" onClick={handleConfirmSubmit}>
+                    <div className="flex flex-row items-center cursor-pointer" onClick={handleNavigateToLesson}>
                         <ArrowLeft className="text-primary" size={20} />
                         <span className="text-primary font-semibold ml-4">Back</span>
                     </div>
@@ -82,14 +106,14 @@ const Page = () => {
                     </div>
                 </div>
                 <div className="ml-auto">
-                    {quiz?.timeLimit && <CountdownTimer initialTime={quiz.timeLimit} />}
+                    <CountdownTimer initialTime={Number(quizTimeState?.remainingTime)} />
                 </div>
             </div>
 
             <div className="flex justify-center">
                 <div className="w-1/2">
                     {
-                        quiz?.questions.map((question, questionIndex) => (
+                        quiz && quiz.questions?.map((question, questionIndex) => (
                             <div key={question.quizQuestionId} className="mt-16">
                                 <div className="flex justify-between">
                                     <div className="text-lg font-semibold line-clamp-3">{questionIndex+1}. {question.question}</div>
@@ -100,7 +124,7 @@ const Page = () => {
                                         question.answers.map((answer) => (
                                             <div key={answer.quizQuestionAnswerId} className="flex ml-4 gap-2 cursor-pointer" onClick={() => handleSelectedAnswer({questionIndex, answerIndex: answer.quizQuestionAnswerId})}>
                                                 {
-                                                    state.answer.some(a => a.questionIndex === questionIndex.toString() && a.answerIndex.includes(answer.quizQuestionAnswerId)) ?
+                                                    state.selectedAnswers?.some(a => a.questionIndex === questionIndex.toString() && a.answerIndex.includes(answer.quizQuestionAnswerId)) ?
                                                         <FaRegDotCircle size={20} /> :
                                                         <FaRegCircle size={20} color="#D1D5DB" />
                                                 }
