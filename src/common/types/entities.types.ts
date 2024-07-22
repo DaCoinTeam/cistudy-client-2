@@ -210,12 +210,14 @@ export interface SectionContentEntity {
   lessonId: string;
   title: string;
   quizId: string;
+  resourceId: string;
   type: SectionContentType;
   position: number;
   createdAt: Date;
   updatedAt: Date;
   section: SectionEntity;
   lesson: LessonEntity;
+  resource: ResourceEntity;
   quiz: QuizEntity;
 }
 

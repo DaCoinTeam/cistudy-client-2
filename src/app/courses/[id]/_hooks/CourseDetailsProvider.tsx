@@ -67,6 +67,7 @@ export const WrappedCourseDetailsProvider = ({
                     title: true,
                     position: true,
                     contents: {
+                        position: true,
                         sectionContentId: true,
                         title: true,
                         type: true,
@@ -79,6 +80,11 @@ export const WrappedCourseDetailsProvider = ({
                         quiz: {
                             questions: {
                                 quizQuestionId: true
+                            }
+                        },
+                        resource: {
+                            attachments: {
+                                createdAt: true
                             }
                         }
                     }
