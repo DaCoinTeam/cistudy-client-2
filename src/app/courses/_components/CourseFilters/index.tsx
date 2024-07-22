@@ -81,7 +81,7 @@ export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
     return (
         <Card
             shadow='none'
-            className={`${className} border border-divider rounded-medium h-fit w-[240px]`}
+            className={`${className} border border-divider rounded-medium h-fit w-[280px]`}
         >
             <CardHeader className="p-4">
                 <FilterIcon size={20} className="text-primary mr-4" />

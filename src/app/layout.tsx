@@ -1,5 +1,5 @@
 "use client"
-import { Open_Sans } from "next/font/google"
+import { Inter } from "next/font/google"
 import "./_css/globals.css"
 import { ReduxProvider, RootState } from "@redux"
 import { NextUIProvider } from "@nextui-org/react"
@@ -11,7 +11,7 @@ import { useSelector } from "react-redux"
 import { NotConnectWalletModal } from "./_components/NotConnectWalletModal"
 import { pageView } from "./google-analytics"
 import { usePathname } from "next/navigation"
-const font = Open_Sans({ subsets: ["latin"] })
+const font = Inter({ subsets: ["latin"] })
 import { GoogleAnalytics } from "@next/third-parties/google"
 
 const GA_ID = "G-M0WSRMVZLX"
