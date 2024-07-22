@@ -15,12 +15,13 @@ import {
 } from "@heroicons/react/24/outline"
 import { getAssetUrl } from "@services"
 import {
-    FileQuestion,
+    FileQuestionIcon,
     ListVideo,
-    PlaySquareIcon
+    PackageIcon,
+    VideoIcon
 } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
-import { useContext, useMemo } from "react"
+import { useContext } from "react"
 import { VideoPlayer } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
 import { ConfirmEnrollModal } from "./ConfirmEnrollModal"
@@ -35,45 +36,13 @@ export const CourseFloat = () => {
         enableDiscount,
         discountPrice,
         enrolled,
-        sections
+        numberOfLessons,
+        sections,
+        numberOfQuizzes,
+        numberOfResources
     } = {
         ...course,
     }
-
-    // useEffect(() => {
-    //     if (socket === null) return
-    //     socket.on(
-    //         TRANSACTION_VERIFIED,
-    //         async ({ code }: TransactionVerifiedMessage) => {
-    //             console.log("C")
-    //             if (!courseId) return
-    //             // await enrollCourse({
-    //             //     data: {
-    //             //         courseId,
-    //             //         code,
-    //             //     },
-    //             // })
-    //             // await mutate()
-    //         }
-    //     )
-    //     return () => {
-    //         socket.removeListener(TRANSACTION_VERIFIED)
-    //     }
-    // }, [socket, courseId])
-
-    const {numberOfSection, numberOfLesson, numberOfQuiz} = useMemo(() => {
-        const numberOfSection = sections?.length
-        let numberOfLesson = 0
-        let numberOfQuiz = 0
-
-        // sections?.forEach((section) => {
-        //     numberOfLesson = numberOfLesson + section.contents..length
-        //     section.lessons?.forEach((lesson) => {
-        //         if(lesson.quiz) numberOfQuiz++
-        //     })
-        // })
-        return {numberOfSection, numberOfLesson, numberOfQuiz}
-    }, [sections])
 
     const renderDiscountPercentage = () => {
         if (!discountPrice || !price) return 0
@@ -123,15 +92,19 @@ export const CourseFloat = () => {
                     <div className="flex text-foreground-500 flex-col gap-2">
                         <div className="flex gap-2">
                             <ListVideo size={20} strokeWidth={3 / 2} />
-                            <div className="text-sm"> {numberOfSection} sections</div>
+                            <div className="text-sm"> {sections?.length} sections</div>
                         </div>
                         <div className="flex gap-2">
-                            <PlaySquareIcon size={20} strokeWidth={3 / 2} />
-                            <div className="text-sm font-semibold"> {numberOfLesson} lessons</div>
+                            <VideoIcon size={20} strokeWidth={3 / 2} />
+                            <div className="text-sm"> {numberOfLessons} lesson{numberOfQuizzes ?? 0 > 1 ? "s" : ""}</div>
                         </div>
                         <div className="flex gap-2">
-                            <FileQuestion size={20} strokeWidth={3 / 2} />
-                            <div className="text-sm font-semibold"> {numberOfQuiz} quizzes</div>
+                            <FileQuestionIcon size={20} strokeWidth={3 / 2} />
+                            <div className="text-sm"> {numberOfQuizzes} quizz{(numberOfQuizzes ?? 0) > 1 ? "es" : ""}</div>
+                        </div>
+                        <div className="flex gap-2">
+                            <PackageIcon size={20} strokeWidth={3 / 2} />
+                            <div className="text-sm"> {numberOfResources} resource{(numberOfResources ?? 0) > 1 ? "s" : ""}</div>
                         </div>
                     </div>
                 </div>

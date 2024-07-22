@@ -97,7 +97,10 @@ export const WrappedCourseDetailsProvider = ({
                     kind: true,
                     accountId: true,
                     walletAddress: true
-                }
+                },
+                numberOfLessons: true,
+                numberOfQuizzes: true,
+                numberOfResources: true
             }
         )
     }, [accountId])

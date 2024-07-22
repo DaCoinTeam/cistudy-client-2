@@ -141,6 +141,10 @@ export interface CourseEntity {
   //graphql
   numberOfEnrollments?: number;
   enrolled?: boolean;
+  numberOfQuizzes?: number
+  numberOfLessons?: number
+  numberOfResources?: number
+
 }
 export interface CourseTargetEntity {
   courseTargetId: string;

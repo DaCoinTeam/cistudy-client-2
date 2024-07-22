@@ -4,7 +4,6 @@ import { Accordion, AccordionItem, Spacer } from "@nextui-org/react"
 import { CourseDetailsContext } from "../../../_hooks"
 
 import {
-    sortSections,
     LessonEntity,
     parseDuration,
     QuizEntity,
@@ -35,7 +34,7 @@ export const Sections = () => {
         return (
             <>
                 <div>
-                    <VideoIcon className="w-7.5 h-7.5" strokeWidth={3 / 2} />
+                    <VideoIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
                 </div>
                 <div>
                     <div className="flex gap-1 items-center text-primary">
@@ -63,7 +62,7 @@ export const Sections = () => {
         return (
             <>
                 <div>
-                    <FileQuestionIcon className="w-7.5 h-7.5" strokeWidth={3 / 2} />
+                    <FileQuestionIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
                 </div>
                 <div>
                     <div className="flex gap-1 items-center text-primary">
@@ -82,7 +81,7 @@ export const Sections = () => {
         return (
             <>
                 <div>
-                    <PackageIcon className="w-7.5 h-7.5" strokeWidth={3 / 2} />
+                    <PackageIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
                 </div>
                 <div>
                     <div className="flex gap-1 items-center text-primary">
@@ -119,7 +118,7 @@ export const Sections = () => {
                     selectionMode="multiple"
                 >
                     {sortedSections
-                        ? sortedSections.map(({ sectionId, contents, title }) => (
+                        ? sortedSections.map(({ sectionId, contents, title }, index) => (
                             <AccordionItem
                                 key={sectionId}
                                 classNames={{
@@ -128,7 +127,7 @@ export const Sections = () => {
                                 }}
                                 aria-label="Sections"
                                 subtitle={`${contents.length} contents`}
-                                title={title}
+                                title={`Section ${index+1}: ${title}`}
                             >
                                 {sortByPosition(contents).map((sectionContent: SectionContentEntity) => (
                                     <div
