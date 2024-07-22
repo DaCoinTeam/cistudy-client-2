@@ -100,7 +100,7 @@ export const CourseFloat = () => {
                         </div>
                         <div className="flex gap-2">
                             <FileQuestionIcon size={20} strokeWidth={3 / 2} />
-                            <div className="text-sm"> {numberOfQuizzes} quizz{(numberOfQuizzes ?? 0) > 1 ? "es" : ""}</div>
+                            <div className="text-sm"> {numberOfQuizzes} quiz{(numberOfQuizzes ?? 0) > 1 ? "zes" : ""}</div>
                         </div>
                         <div className="flex gap-2">
                             <PackageIcon size={20} strokeWidth={3 / 2} />
