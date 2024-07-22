@@ -6,11 +6,11 @@ import { Stars } from "../Stars"
 import { useRouter } from "next/navigation"
 
 export const CourseCardHorizontal = (props: CourseEntity) => {
-    const { title, creator, thumbnailId, description, courseId, courseRatings } = { ...props }
+    const { title, creator, thumbnailId, description, courseId, courseRatings, discountPrice, price,  } = { ...props }
     const { avatarId, avatarUrl, kind, username } = {
         ...creator,
     }
-    const { overallCourseRating} = {...courseRatings}
+    const { overallCourseRating, totalNumberOfRatings} = {...courseRatings}
     const router = useRouter()
     return (
         <div className="flex gap-4" key={courseId}>
@@ -30,7 +30,13 @@ export const CourseCardHorizontal = (props: CourseEntity) => {
                         })
                     }} name={username} description={"2 followers"}/>
                     <Divider orientation="vertical"/>
-                    <Stars readonly initialValue={overallCourseRating} />
+                    <div>
+                        <div className="text-sm font-semibold text-primary p-0 ms-1">{discountPrice ? discountPrice : price} STARCI</div>
+                        <div className="flex flex-row justify-center items-end leading-4">
+                            <Stars  readonly size={18} initialValue={overallCourseRating} />
+                            <div className="text-xs text-foreground-400 ms-1">({totalNumberOfRatings | 0})</div>
+                        </div>
+                    </div>
                 </div>
 
             </div>           

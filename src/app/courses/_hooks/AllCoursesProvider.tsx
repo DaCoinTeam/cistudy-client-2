@@ -60,6 +60,12 @@ export const WrappedAllCoursesProvider = ({
                         thumbnailId: true,
                         description: true,
                         price: true,
+                        discountPrice: true,
+                        enableDiscount: true,
+                        courseTargets: {
+                            courseTargetId: true,
+                            content: true,
+                        },
                         courseRatings: {
                             overallCourseRating: true,
                             totalNumberOfRatings: true,

@@ -24,10 +24,11 @@ export const Stars = (props: StarsProps) => {
             <Rating
                 fillIcon={<StarIcon width={size ? size : 20} height={size ? size :20}  className="inline"/>}
                 emptyIcon={<StarIcon width={size ? size : 20} height={size ? size : 20} className="inline" />}
+                allowFraction
                 className={`${className ?? ""} `}
                 onClick={onClick}
                 onPointerMove={onPointerMove}
-                transition
+                transition                
                 readonly={readonly}
                 initialValue={initialValue}
 

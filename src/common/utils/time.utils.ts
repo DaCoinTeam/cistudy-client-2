@@ -49,3 +49,4 @@ export const parseMillisecondsTime = (milliseconds : number) => {
 
     return `${hours}:${minutes}:${seconds}`
 }
+export const parseDateToString = (date: Date) => dayjs(date).format("DD MMM, YYYY")

@@ -16,3 +16,7 @@ export const computeRaw = (amount: number, decimals = 18) : bigint => {
     const mutiplier = 10 ** decimals
     return BigInt(amount * mutiplier)
 }
+export const discountPercentageString = (discountPrice: number, price: number) => {
+    if (!discountPrice || !price) return 0
+    return (100 - computePercentage(discountPrice, price)).toFixed(0)
+}

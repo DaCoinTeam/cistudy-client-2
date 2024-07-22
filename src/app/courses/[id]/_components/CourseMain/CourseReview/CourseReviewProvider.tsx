@@ -63,6 +63,7 @@ export const WrappedCourseReviewsProvider = ({
                             avatarId: true,
                             avatarUrl: true,
                             kind: true,
+                            // numberOfFollowers: true,
                         },
                     },
                     metadata: {
