@@ -45,6 +45,7 @@ const WrappedAccountDetailsProvider = ({ children }: { children: ReactNode }) =>
                 username: true,
                 email: true,
                 avatarId: true,
+                birthdate: true,
                 coverPhotoId: true,
                 followed: true,
                 numberOfFollowers: true,
