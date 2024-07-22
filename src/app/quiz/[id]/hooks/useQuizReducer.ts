@@ -1,4 +1,7 @@
 import { useReducer } from "react"
+import { QuizProgressState } from "./QuizProvider"
+
+const quizProgressState: QuizProgressState = JSON.parse(localStorage.getItem("quizProgressState") as string)
 
 export interface QuizAnswer {
     questionIndex: string
@@ -7,9 +10,9 @@ export interface QuizAnswer {
 }
 
 export interface QuizState {
-    answer: QuizAnswer[]
-    quizAttemptId: string
-    quizQuestionAnswerIds: string[]
+    selectedAnswers: QuizAnswer[]
+    score: number
+    finishTime: number
 }
 
 export interface SetSelectedOptionForQuestionAction {
@@ -17,42 +20,66 @@ export interface SetSelectedOptionForQuestionAction {
     payload: QuizAnswer[]
 }
 
-export interface SetQuizAttemptIdAction {
-    type: "SET_QUIZ_ATTEMPT_ID"
-    payload: string
+export interface setScore {
+    type: "SET_SCORE"
+    payload: number
 }
 
-export interface SetQuizQuestionAnswerIdsAction {
-    type: "SET_QUIZ_QUESTION_ANSWER_IDS"
-    payload: string[]
+export interface setFinishTime {
+    type: "SET_FINISH_TIME"
+    payload: number
 }
 
-export type QuizAction = SetSelectedOptionForQuestionAction | SetQuizAttemptIdAction | SetQuizQuestionAnswerIdsAction
+export type QuizAction = SetSelectedOptionForQuestionAction | setScore | setFinishTime
 
 export const state: QuizState = {
-    answer: [],
-    quizAttemptId: "",
-    quizQuestionAnswerIds: []
+    selectedAnswers: quizProgressState?.selectedAnswers ?? [],
+    score: 0,
+    finishTime: 0
 }
 
 export const reducer = (state: QuizState, action: QuizAction): QuizState => {
+    
     switch (action.type) {
-    case "SET_SELECTED_OPTION_FOR_QUESTION":
-        return {
-            ...state,
-            answer: state.answer.some(answer => answer.questionIndex === action.payload[0].questionIndex) ?
-                state.answer.map(answer => answer.questionIndex === action.payload[0].questionIndex ? action.payload[0] : answer) :
-                [...state.answer, action.payload[0]]
+    case "SET_SELECTED_OPTION_FOR_QUESTION": {
+        const getUpdatedSelectedAnswer = () => {
+            const updatedSelectedAnswers = state.selectedAnswers.map(answer => {
+                const payloadAnswer = action.payload.find(p => p.questionIndex === answer.questionIndex)
+                return payloadAnswer ? payloadAnswer : answer
+            })
+
+            action.payload.forEach(payloadAnswer => {
+                if (!state.selectedAnswers.some(answer => answer.questionIndex === payloadAnswer.questionIndex)) {
+                    updatedSelectedAnswers.push(payloadAnswer)
+                }
+            })
+
+            return {
+                ...state,
+                selectedAnswers: updatedSelectedAnswers
+            }
         }
-    case "SET_QUIZ_ATTEMPT_ID":
-        return {
-            ...state,
-            quizAttemptId: action.payload
+
+        const updatedQuizProgressState = {
+            ...quizProgressState,
+            selectedAnswers: getUpdatedSelectedAnswer().selectedAnswers
         }
-    case "SET_QUIZ_QUESTION_ANSWER_IDS":
+
+        console.log(updatedQuizProgressState)
+
+        localStorage.setItem("quizProgressState", JSON.stringify(updatedQuizProgressState))
+        return getUpdatedSelectedAnswer()
+    }
+
+    case "SET_SCORE":
         return {
             ...state,
-            quizQuestionAnswerIds: action.payload
+            score: action.payload
+        }
+    case "SET_FINISH_TIME":
+        return {
+            ...state,
+            finishTime: action.payload
         }
     default:
         return state
