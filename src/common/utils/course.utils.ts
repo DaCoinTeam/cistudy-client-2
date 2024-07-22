@@ -8,7 +8,7 @@ export const sortSections = (sections : SectionEntity[] | undefined) => {
     })
 
     sortedSections?.map((section) => {
-        section.lessons.sort((a, b) => {
+        section.contents.sort((a, b) => {
             return a.position - b.position
         })
     })

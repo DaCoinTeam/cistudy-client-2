@@ -66,12 +66,12 @@ export const CourseFloat = () => {
         let numberOfLesson = 0
         let numberOfQuiz = 0
 
-        sections?.map((section) => {
-            numberOfLesson = numberOfLesson + section.lessons.length
-            section.lessons?.map((lesson) => {
-                if(lesson.quiz) numberOfQuiz++
-            })
-        })
+        // sections?.forEach((section) => {
+        //     numberOfLesson = numberOfLesson + section.contents..length
+        //     section.lessons?.forEach((lesson) => {
+        //         if(lesson.quiz) numberOfQuiz++
+        //     })
+        // })
         return {numberOfSection, numberOfLesson, numberOfQuiz}
     }, [sections])
 

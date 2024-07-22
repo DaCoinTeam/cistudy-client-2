@@ -174,18 +174,16 @@ export interface EnrolledInfoEntity {
 
 export interface LessonEntity {
   lessonId: string;
-  title: string;
-  position: number;
   thumbnailId?: string;
   lessonVideoId?: string;
   sectionId: string;
   accountProgresses: ProgressEntity;
   processStatus: ProcessStatus;
   videoType: VideoType;
+  durationInSeconds: number; 
   createdAt: Date;
   updatedAt: Date;
   section: SectionEntity;
-  quiz: QuizEntity;
   resources: Array<ResourceEntity>;
   numberOfViews: number;
   description: string;
@@ -209,6 +207,7 @@ export interface SectionContentEntity {
   sectionContentId: string;
   sectionId: string;
   lessonId: string;
+  title: string;
   quizId: string;
   type: SectionContentType;
   position: number;
@@ -326,7 +325,7 @@ export interface SectionEntity {
   courseId: string;
   createdAt: Date;
   course: CourseEntity;
-  lessons: Array<LessonEntity>;
+  contents: Array<SectionContentEntity>;
 }
 
 export interface ResourceEntity {

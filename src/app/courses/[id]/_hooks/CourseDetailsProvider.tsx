@@ -66,16 +66,22 @@ export const WrappedCourseDetailsProvider = ({
                     sectionId: true,
                     title: true,
                     position: true,
-                    lessons: {
-                        lessonId: true,
-                        position: true,
-                        thumbnailId: true,
-                        lessonVideoId: true,
+                    contents: {
+                        sectionContentId: true,
                         title: true,
+                        type: true,
+                        lesson: {
+                            thumbnailId: true,
+                            lessonVideoId: true,
+                            description: true,
+                            durationInSeconds: true
+                        },
                         quiz: {
-                            quizId: true
+                            questions: {
+                                quizQuestionId: true
+                            }
                         }
-                    },
+                    }
                 },
                 creator: {
                     avatarId: true,

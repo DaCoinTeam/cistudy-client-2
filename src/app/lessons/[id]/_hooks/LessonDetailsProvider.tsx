@@ -85,18 +85,21 @@ export const LessonDetailsProvider = ({
                             sectionId: true,
                             title: true,
                             position: true,
-                            lessons: {
-                                lessonId: true,
-                                position: true,
-                                thumbnailId: true,
-                                title: true,
-                                quiz: {
-                                    quizId: true,
-                                    timeLimit: true,
-                                    highestScoreRecorded: true,
-                                    totalNumberOfAttempts: true,
-                                },
+                            contents: {
+                                lesson: {
+                                    lessonId: true,
+                                    position: true,
+                                    thumbnailId: true,
+                                    title: true,
+                                    // quiz: {
+                                    //     quizId: true,
+                                    //     timeLimit: true,
+                                    //     highestScoreRecorded: true,
+                                    //     totalNumberOfAttempts: true,
+                                    // },
+                                }
                             }
+                            
                         }
                     },
                 },
