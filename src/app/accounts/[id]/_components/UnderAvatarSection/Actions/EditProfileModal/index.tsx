@@ -72,7 +72,7 @@ export const WrappedEditProfileModal = () => {
                             startContent={!formik.isSubmitting ? <CheckIcon height={20} width={20} /> : undefined}
                             color="secondary"
                         >
-                            Save
+                            {formik.isSubmitting ? "Saving" : "Save"}
                         </Button>
                     </ModalFooter>
                 </ModalContent>
