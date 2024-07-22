@@ -1,9 +1,9 @@
 "use client"
 import { Accordion, AccordionItem, Card, CardBody, CardHeader, Divider, ScrollShadow, Selection } from "@nextui-org/react"
 import React, { useContext, useEffect, useMemo, useState } from "react"
-import { LessonDetailsContext } from "../../_hooks"
-import { getSetValues, sortSections } from "@common"
-import { LessonItem } from "./LessonItem"
+import { ContentDetailsContext } from "../../_hooks"
+import { getSetValues, sortByPosition } from "@common"
+import { SectionContentItem } from "./SectionContentItem"
 
 interface SectionsCardProps {
   className?: string;
@@ -12,11 +12,11 @@ interface SectionsCardProps {
 export const SectionsCard = (props: SectionsCardProps) => {
     const { className } = props
 
-    const { swrs } = useContext(LessonDetailsContext)!
-    const { lessonsSwr } = swrs
-    const { data: lesson } = lessonsSwr
+    const { swrs } = useContext(ContentDetailsContext)!
+    const { sectionContentSwr } = swrs
+    const { data: sectionContent } = sectionContentSwr
 
-    const { section: thisSection } = { ...lesson }
+    const { section: thisSection } = { ...sectionContent }
     const { sectionId } = { ...thisSection }
 
     const { course } = { ...thisSection }
@@ -24,7 +24,7 @@ export const SectionsCard = (props: SectionsCardProps) => {
 
     const [selectedKeys, setSelectedKeys] = useState<Selection>("all")
 
-    const sortedSections = useMemo(() => sortSections(sections), [sections])
+    const sortedSections = useMemo(() => sortByPosition(sections ?? []), [sections])
 
     useEffect(() => {
         if (!sectionId) return
@@ -47,7 +47,7 @@ export const SectionsCard = (props: SectionsCardProps) => {
 
     const renderSections = () => {
         if (!sortedSections) return []
-        return sortedSections.map(({ sectionId, title, lessons }) => (
+        return sortedSections.map(({ sectionId, title, contents }) => (
             <AccordionItem
                 key={sectionId}
                 classNames={{
@@ -57,10 +57,10 @@ export const SectionsCard = (props: SectionsCardProps) => {
                     trigger: "!px-4"
                 }}
                 title={title}
-                subtitle={`${lessons.length} lessons`}
+                subtitle={`${contents.length} contents`}
             >
-                {lessons.map((lesson) => (
-                    <LessonItem key={lesson.lessonId} lesson={lesson} />
+                {contents.map((content) => (
+                    <SectionContentItem key={content.sectionContentId} sectionContent={content} />
                 ))}
             </AccordionItem>
         ))

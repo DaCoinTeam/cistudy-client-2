@@ -1,28 +1,28 @@
 import React, { useContext } from "react"
-import { LessonEntity } from "@common"
+import { LessonEntity, SectionContentEntity } from "@common"
 import { InteractiveThumbnail } from "../../../../../_shared"
 import { getAssetUrl } from "../../../../../../services/server"
 import { useRouter } from "next/navigation"
 import { ClockIcon } from "lucide-react"
-import { LessonDetailsContext } from "../../../_hooks"
+import { ContentDetailsContext } from "../../../_hooks"
 import { HiPlay } from "react-icons/hi"
 
-interface LessonItemProps {
-    lesson: LessonEntity;
+interface SectionContentItemProps {
+    sectionContent: SectionContentEntity;
 }
 
-export const LessonItem = (props: LessonItemProps) => {
-    const { lesson } = props
-    const { lessonId, title, thumbnailId } = lesson
+export const SectionContentItem = (props: SectionContentItemProps) => {
+    const { sectionContent } = props
+    const { lesson, quiz, resource, position, sectionContentId } = sectionContent
 
-    const { swrs } = useContext(LessonDetailsContext)!
-    const { lessonsSwr } = swrs
-    const { data: currentLesson } = lessonsSwr
+    const { swrs } = useContext(ContentDetailsContext)!
+    const { sectionContentSwr } = swrs
+    const { data: currentSectionContent } = sectionContentSwr
 
-    const differentFromThisLesson = currentLesson?.lessonId !== lessonId
+    const differentFromThisLesson = currentSectionContent?.sectionContentId !== sectionContentId
 
     const router = useRouter()
-    const onPress = () => differentFromThisLesson ? router.push(`/lessons/${lessonId}`) : undefined
+    //const onPress = () => differentFromThisLesson ? router.push(`/lessons/${lessonId}`) : undefined
 
     return (
         <div
@@ -31,7 +31,7 @@ export const LessonItem = (props: LessonItemProps) => {
         >
             <HiPlay height={20} width={20} className={`${!differentFromThisLesson ? "opacity-100" : "opacity-0"}`} />
             <div className="flex gap-3">
-                <InteractiveThumbnail
+                {/* <InteractiveThumbnail
                     isPressable
                     src={getAssetUrl(thumbnailId)}
                     onPress={onPress}
@@ -43,7 +43,7 @@ export const LessonItem = (props: LessonItemProps) => {
                         <ClockIcon strokeWidth={3 / 2} size={12} />
                         <div className="text-xs font-semibold">15m</div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     )

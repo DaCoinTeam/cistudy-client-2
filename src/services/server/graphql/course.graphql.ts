@@ -9,6 +9,7 @@ import {
     CategoryEntity,
     CourseReviewEntity,
     AccountEntity,
+    SectionContentEntity,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
 import { gql } from "@apollo/client"
@@ -148,25 +149,24 @@ export const findManyLessons = async (
     })
 }
 
-export interface FindOneLessonInputData {
+export interface FindOneSectionContentInputData {
   params: {
-    lessonId: string;
+    sectionContentId: string;
   };
-  options?: {
-    followerId?: string;
-  };
+  // options?: {
+  //   followerId?: string;
+  // };
 }
 
-export const findOneLesson = async (
-    data: FindOneLessonInputData,
-    schema: Schema<DeepPartial<LessonEntity>>
-): Promise<LessonEntity> => {
+export const findOneSectionContent = async (
+    data: FindOneSectionContentInputData,
+    schema: Schema<DeepPartial<SectionContentEntity>>
+): Promise<SectionContentEntity> => {
     const payload = buildAuthPayloadString(schema)
-    console.log(payload)
     const { data: graphqlData } = await authClient.query({
         query: gql`
-            query FindOneLesson($data: FindOneLessonInputData!) {
-                findOneLesson(data: $data) {              
+            query FindOneSectionContent($data: FindOneSectionContentInputData!) {
+                findOneSectionContent(data: $data) {              
       ${payload}
     }
   }
