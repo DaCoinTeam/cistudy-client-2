@@ -63,6 +63,7 @@ export const Sections = () => {
     }
 
     const renderContent = (content: SectionContentEntity) => {
+        console.log(content.type)
         const map: Record<SectionContentType, JSX.Element> = {
             [SectionContentType.Lesson]: renderLession(content.lesson, content),
             [SectionContentType.Quiz]: renderQuiz(content.quiz),

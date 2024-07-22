@@ -123,7 +123,7 @@ export const CourseFloat = () => {
                     <div className="flex text-foreground-500 flex-col gap-2">
                         <div className="flex gap-2">
                             <ListVideo size={20} strokeWidth={3 / 2} />
-                            <div className="text-sm font-semibold"> {numberOfSection} sections</div>
+                            <div className="text-sm"> {numberOfSection} sections</div>
                         </div>
                         <div className="flex gap-2">
                             <PlaySquareIcon size={20} strokeWidth={3 / 2} />

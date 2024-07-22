@@ -180,7 +180,7 @@ export interface LessonEntity {
   accountProgresses: ProgressEntity;
   processStatus: ProcessStatus;
   videoType: VideoType;
-  durationInSeconds: number; 
+  durationInSeconds: number;
   createdAt: Date;
   updatedAt: Date;
   section: SectionEntity;
@@ -201,6 +201,7 @@ export interface ProgressEntity {
 export enum SectionContentType {
   Lesson = "lesson",
   Quiz = "quiz",
+  Resource = "resource"
 }
 
 export interface SectionContentEntity {
@@ -330,12 +331,20 @@ export interface SectionEntity {
 
 export interface ResourceEntity {
   resourceId: string;
-  name: string;
-  fileId: string;
-  lessonId: string;
-  createdAt: Date;
+  attachments: Array<ResourceAttachmentEntity>;
   updatedAt: Date;
   lesson: LessonEntity;
+  sectionContent: SectionContentEntity;
+}
+
+export interface ResourceAttachmentEntity {
+  resourceAttachmentId: string;
+  resourceId: string;
+  name: string;
+  fileId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  resource: ResourceEntity;
 }
 
 export interface SessionEntity {
