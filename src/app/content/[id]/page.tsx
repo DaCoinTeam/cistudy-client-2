@@ -12,7 +12,7 @@ const Page = () => {
             {!sectionContentSwr.data || isLoading ?  <LessonSkeleton/> :  (
                 <div className="grid grid-cols-7 max-w-[1920px] gap-12 p-12 mx-auto">
                     <SectionsCard className="col-span-2 h-fit"/> 
-                    <Content/>        
+                    <Content className="col-span-5"/>        
                 </div>
             )
             }
