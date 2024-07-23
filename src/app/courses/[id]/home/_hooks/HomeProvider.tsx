@@ -16,6 +16,7 @@ import useSWR, { SWRConfig, SWRResponse } from "swr"
 import { CourseEntity, ErrorResponse } from "@common"
 import { findOneCourseAuth } from "../../../../../services/server"
 import { CourseDetailsContext } from "../../_hooks"
+import { RootContext } from "../../../../_hooks"
 
 export interface HomeContextValue {
   reducer: [HomeState, React.Dispatch<HomeAction>];
@@ -36,12 +37,18 @@ const WrappedHomeProvider = ({ children }: { children: ReactNode }) => {
     const { data : course } = courseSwr
     const { courseId } = { ...course }
 
+    const { swrs: rootSwrs } = useContext(RootContext)!
+    const { profileSwr } = rootSwrs
+    const { data: profile } = profileSwr
+    const { accountId } = { ...profile }
+
     const fetchCourseHome = useCallback(async () => {
         if (!courseId) return
         return await findOneCourseAuth(
             {
                 params: {
                     courseId,
+                    accountId: accountId as string,
                 } 
             },
             {
@@ -50,6 +57,20 @@ const WrappedHomeProvider = ({ children }: { children: ReactNode }) => {
                 description: true,
                 previewVideoId: true,
                 thumbnailId: true,
+                price: true,
+                discountPrice: true,
+                enableDiscount: true,
+                isCreator: true,
+                enrolled: true,
+                courseRatings: {
+                    numberOf1StarRatings: true,
+                    numberOf2StarRatings:true,
+                    numberOf3StarRatings: true,
+                    numberOf4StarRatings: true,
+                    numberOf5StarRatings: true,
+                    overallCourseRating: true,
+                    totalNumberOfRatings: true,
+                },
                 courseTargets: {
                     courseTargetId: true,
                     content: true,
@@ -59,20 +80,41 @@ const WrappedHomeProvider = ({ children }: { children: ReactNode }) => {
                     sectionId: true,
                     title: true,
                     position: true,
-                    lessons: {
-                        lessonId: true,
+                    contents: {
                         position: true,
-                        thumbnailId: true,
-                        lessonVideoId: true,
+                        sectionContentId: true,
                         title: true,
-                        description: true,
-                    },
+                        type: true,
+                        lesson: {
+                            thumbnailId: true,
+                            lessonVideoId: true,
+                            description: true,
+                            durationInSeconds: true
+                        },
+                        quiz: {
+                            questions: {
+                                quizQuestionId: true
+                            }
+                        },
+                        resource: {
+                            attachments: {
+                                createdAt: true
+                            }
+                        }
+                    }
                 },
                 creator: {
                     avatarId: true,
                     username: true,
-                    numberOfFollowers: true
-                }
+                    numberOfFollowers: true,
+                    avatarUrl: true,
+                    kind: true,
+                    accountId: true,
+                    walletAddress: true
+                },
+                numberOfLessons: true,
+                numberOfQuizzes: true,
+                numberOfResources: true
             }
         )
     }, [courseId])

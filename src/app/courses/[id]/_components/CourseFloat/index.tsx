@@ -11,6 +11,7 @@ import {
 import { computePercentage } from "@common"
 import {
     ArrowRightEndOnRectangleIcon,
+    BookOpenIcon,
     ShoppingCartIcon,
 } from "@heroicons/react/24/outline"
 import { getAssetUrl } from "@services"
@@ -39,7 +40,8 @@ export const CourseFloat = () => {
         numberOfLessons,
         sections,
         numberOfQuizzes,
-        numberOfResources
+        numberOfResources,
+        isCreator
     } = {
         ...course,
     }
@@ -70,6 +72,7 @@ export const CourseFloat = () => {
     const path = usePathname()
     const router = useRouter()
     const onEnterCoursePress = () => router.push(`${path}/home`)
+    const onEnterManageCoursePress = () => router.push("/management")
 
     return (
         <Card
@@ -110,7 +113,7 @@ export const CourseFloat = () => {
                 </div>
             </CardBody>
             <CardFooter className="p-4 pt-2 flex-col gap-2">
-                {enrolled ? (
+                {enrolled && !isCreator ? (
                     <Button
                         color="secondary"
                         className="font-semibold"
@@ -122,7 +125,7 @@ export const CourseFloat = () => {
                     >
             Enter course
                     </Button>
-                ) : (
+                ) : !isCreator? (
                     <>
                         <ConfirmEnrollModal/>
                         <Button
@@ -135,7 +138,15 @@ export const CourseFloat = () => {
               Add to cart
                         </Button>
                     </>
-                )}
+                ) : <Button
+                    color="secondary"
+                    className="font-semibold"
+                    onPress={onEnterManageCoursePress}
+                    startContent={
+                        <BookOpenIcon height={20} width={20} />
+                    }
+                    fullWidth
+                >Manage course</Button>}
             </CardFooter>
         </Card>
     )
