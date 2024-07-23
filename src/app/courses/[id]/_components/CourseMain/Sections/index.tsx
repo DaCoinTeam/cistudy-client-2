@@ -37,9 +37,9 @@ export const Sections = () => {
                     <VideoIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
                 </div>
                 <div>
-                    <div className="flex gap-1 items-center text-primary">
-                        <div className="font-bold">Lesson: </div>
-                        <div>{title}</div>
+                    <div className="text-primary">
+                        <span className="font-bold">Lesson: </span>
+                        <span>{title}</span>
                     </div>
                     <div className="flex gap-1 items-center">
                         <Clock2Icon className="w-3 h-3" strokeWidth={3 / 2} />
@@ -65,9 +65,9 @@ export const Sections = () => {
                     <FileQuestionIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
                 </div>
                 <div>
-                    <div className="flex gap-1 items-center text-primary">
-                        <div className="font-bold">Quiz: </div>
-                        <div>{title}</div>
+                    <div className="text-primary">
+                        <span className="font-bold">Quiz: </span>
+                        <span>{title}</span>
                     </div>
                 </div>
             </>
@@ -84,9 +84,9 @@ export const Sections = () => {
                     <PackageIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
                 </div>
                 <div>
-                    <div className="flex gap-1 items-center text-primary">
-                        <div className="font-bold">Resource: </div>
-                        <div>{title}</div>
+                    <div className="text-primary">
+                        <span className="font-bold">Resource: </span>
+                        <span>{title}</span>
                     </div>
                 </div>
             </>

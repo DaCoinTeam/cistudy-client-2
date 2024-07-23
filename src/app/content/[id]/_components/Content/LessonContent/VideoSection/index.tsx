@@ -1,9 +1,9 @@
 "use client"
 import { getAssetManifestUrl, getAssetUrl } from "@services"
 import React, { useContext } from "react"
-import { VideoPlayer } from "../../../../_shared"
-import { LessonDetailsContext } from "../../_hooks"
+import { VideoPlayer } from "../../../../../../_shared"
 import { VideoType } from "@common"
+import { ContentDetailsContext } from "../../../../_hooks"
 
 interface VideoSectionProps {
   className?: string;
@@ -12,10 +12,10 @@ interface VideoSectionProps {
 export const VideoSection = (props: VideoSectionProps) => {
     const { className } = props
 
-    const { swrs } = useContext(LessonDetailsContext)!
-    const { lessonsSwr } = swrs
-    const { data: lesson } = lessonsSwr
-    const { lessonVideoId, videoType } = { ...lesson }
+    const { swrs } = useContext(ContentDetailsContext)!
+    const { sectionContentSwr } = swrs
+    const { data: sectionContent } = sectionContentSwr
+    const { lessonVideoId, videoType } = { ...sectionContent?.lesson }
 
     return (
         <div className={className}>

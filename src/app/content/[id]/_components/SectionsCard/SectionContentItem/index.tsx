@@ -1,11 +1,9 @@
 import React, { useContext } from "react"
-import { LessonEntity, SectionContentEntity } from "@common"
-import { InteractiveThumbnail } from "../../../../../_shared"
-import { getAssetUrl } from "../../../../../../services/server"
+import { LessonEntity, QuizEntity, ResourceEntity, SectionContentEntity, SectionContentType, parseDuration } from "@common"
 import { useRouter } from "next/navigation"
-import { ClockIcon } from "lucide-react"
+import { Clock2Icon, FileQuestionIcon, PackageIcon, VideoIcon } from "lucide-react"
 import { ContentDetailsContext } from "../../../_hooks"
-import { HiPlay } from "react-icons/hi"
+import { Spacer } from "@nextui-org/react"
 
 interface SectionContentItemProps {
     sectionContent: SectionContentEntity;
@@ -13,37 +11,101 @@ interface SectionContentItemProps {
 
 export const SectionContentItem = (props: SectionContentItemProps) => {
     const { sectionContent } = props
-    const { lesson, quiz, resource, position, sectionContentId } = sectionContent
+    const { sectionContentId } = sectionContent
 
     const { swrs } = useContext(ContentDetailsContext)!
     const { sectionContentSwr } = swrs
     const { data: currentSectionContent } = sectionContentSwr
 
-    const differentFromThisLesson = currentSectionContent?.sectionContentId !== sectionContentId
+    const differentFromThisSection = currentSectionContent?.sectionContentId !== sectionContentId
 
     const router = useRouter()
-    //const onPress = () => differentFromThisLesson ? router.push(`/lessons/${lessonId}`) : undefined
+    const onPress = () => differentFromThisSection ? router.push(`/content/${sectionContentId}`) : undefined
+
+    const renderLession = (
+        { description, durationInSeconds }: LessonEntity,
+        { title }: SectionContentEntity
+    ) => {
+        return (
+            <>
+                <div>
+                    <VideoIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                </div>
+                <div>
+                    <div className="text-primary">
+                        <span className="font-bold">Lesson: </span>
+                        <span>{title}</span>
+                    </div>
+                    <div className="flex gap-1 items-center">
+                        <Clock2Icon className="w-3 h-3" strokeWidth={3 / 2} />
+                        <div className="text-xs">
+                            {parseDuration(durationInSeconds ?? 0)}
+                        </div>
+                    </div>
+                    <Spacer y={1} />
+
+                    <div className="text-xs text-foreground-400">{description}</div>
+                </div>
+            </>
+        )
+    }
+
+    const renderQuiz = (
+        { }: QuizEntity,
+        { title }: SectionContentEntity
+    ) => {
+        return (
+            <>
+                <div>
+                    <FileQuestionIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                </div>
+                <div>
+                    <div className="text-primary">
+                        <span className="font-bold">Quiz:</span>
+                        <span>{title}</span>
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+    const renderResource = (
+        resource: ResourceEntity,
+        { title }: SectionContentEntity
+    ) => {
+        return (
+            <>
+                <div>
+                    <PackageIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                </div>
+                <div>
+                    <div className="text-primary">
+                        <span className="font-bold">Resource: </span>
+                        <span>{title}</span>
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+    const renderContent = (content: SectionContentEntity) => {
+        switch (content.type) {
+        case SectionContentType.Lesson:
+            return renderLession(content.lesson, content)
+        case SectionContentType.Quiz:
+            return renderQuiz(content.quiz, content)
+        case SectionContentType.Resource:
+            return renderResource(content.resource, content)
+        }
+    }
 
     return (
-        <div
-            className={`flex gap-3 p-3 pr-4 items-center z-10 ${!differentFromThisLesson ? "bg-content2" : ""
+        <div onClick={onPress}
+            className={`cursor-pointer flex gap-3 p-3 pr-4 z-10 ${!differentFromThisSection ? "bg-content2" : ""
             }`}
         >
-            <HiPlay height={20} width={20} className={`${!differentFromThisLesson ? "opacity-100" : "opacity-0"}`} />
             <div className="flex gap-3">
-                {/* <InteractiveThumbnail
-                    isPressable
-                    src={getAssetUrl(thumbnailId)}
-                    onPress={onPress}
-                    className="w-28 h-fit"
-                />
-                <div>
-                    <div className="truncate text-sm font-bold text-primary"> {title} </div>
-                    <div className="flex gap-1 items-center text-foreground-400">
-                        <ClockIcon strokeWidth={3 / 2} size={12} />
-                        <div className="text-xs font-semibold">15m</div>
-                    </div>
-                </div> */}
+                {renderContent(sectionContent)}
             </div>
         </div>
     )

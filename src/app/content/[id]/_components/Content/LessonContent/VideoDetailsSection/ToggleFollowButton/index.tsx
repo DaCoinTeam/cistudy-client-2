@@ -2,21 +2,21 @@ import { Button } from "@nextui-org/react"
 import { UserMinus2Icon, UserPlus2Icon } from "lucide-react"
 import React, { useContext } from "react"
 import { toggleFollow } from "@services"
-import { LessonDetailsContext } from "../../../_hooks"
-import { RootContext } from "../../../../../_hooks"
+import { ContentDetailsContext } from "../../../../../_hooks"
+import { RootContext } from "../../../../../../../_hooks"
 
 export const ToggleFollowButton = () => {
-    const { swrs } = useContext(LessonDetailsContext)!
-    const { lessonsSwr } = swrs
-    const { data: lesson , mutate } = lessonsSwr
-
-    const { swrs : rootSwrs } = useContext(RootContext)!
-    const { profileSwr } = rootSwrs
-    const { data: profile } = profileSwr
-
+    const { swrs } = useContext(ContentDetailsContext)!
+    const { sectionContentSwr } = swrs
+    const { data: sectionContent, mutate } = sectionContentSwr
+    const { lesson } = { ...sectionContent }
     const { section } = { ...lesson }
     const { course } = { ...section }
     const { creator } = { ...course }
+    
+    const { swrs : rootSwrs } = useContext(RootContext)!
+    const { profileSwr } = rootSwrs
+    const { data: profile } = profileSwr
 
     const onPress = async () => {
         if (!creator) return

@@ -91,6 +91,9 @@ export const ContentDetailsProvider = ({
                             title: true,
                             position: true,
                             contents: {
+                                sectionContentId: true,
+                                title: true,
+                                type: true,
                                 quiz: {
                                     quizId: true,
                                     timeLimit: true,
@@ -124,7 +127,7 @@ export const ContentDetailsProvider = ({
         )
     }, [profile?.accountId])
 
-    const sectionContentSwr = useSWR(profile?.accountId ? ["SECTION_CONTENT"] : null, fetchSectionContent)
+    const sectionContentSwr = useSWR(profile?.accountId ? ["SECTION_CONTENT", sectionContentId] : null, fetchSectionContent)
 
     const contentDetailsContextValue: ContentDetailsContextValue = useMemo(
         () => ({

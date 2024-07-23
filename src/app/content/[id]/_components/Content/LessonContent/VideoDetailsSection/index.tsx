@@ -5,8 +5,7 @@ import { Spacer, User } from "@nextui-org/react"
 import { MoreButton } from "./MoreButton"
 import { parseDateStringFrom } from "@common"
 import { ToggleFollowButton } from "./ToggleFollowButton"
-import { ResourcesModal } from "./ResourcesModal"
-import { LessonDetailsContext } from "../../_hooks"
+import { ContentDetailsContext } from "../../../../_hooks"
 
 interface VideoDetailsSectionProps {
   className?: string;
@@ -15,11 +14,11 @@ interface VideoDetailsSectionProps {
 export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
     const { className } = props
 
-    const { swrs } = useContext(LessonDetailsContext)!
-    const { lessonsSwr } = swrs
-    const { data: lesson } = lessonsSwr
-
-    const { section, title, numberOfViews, description, createdAt } = { ...lesson }
+    const { swrs } = useContext(ContentDetailsContext)!
+    const { sectionContentSwr } = swrs
+    const { data: sectionContent } = sectionContentSwr
+    const { title } = { ...sectionContent }
+    const { section, numberOfViews, description, createdAt } = { ...sectionContent?.lesson }
     const { course } = { ...section }
     const { creator } = { ...course }
     const { username, avatarId, numberOfFollowers } = { ...creator }
@@ -44,7 +43,6 @@ export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
                     <ToggleFollowButton />
                 </div>
                 <div className="gap-2 flex items-center">
-                    <ResourcesModal />
                     <MoreButton />
                 </div>
               
