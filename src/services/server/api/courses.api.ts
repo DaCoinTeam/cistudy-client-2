@@ -388,3 +388,21 @@ export const finishQuizAttempt = async (
     const url = `${BASE_URL}/finish-quiz-attempt`
     return await authAxios.post(url, data)
 }
+
+export interface MarkContentCompleteInput {
+  data: {
+    sectionContentId: string;
+  };
+}
+
+export interface MarkContentCompleteOutput {
+  message: string;
+}
+
+export const markContentComplete = async (
+    input: MarkContentCompleteInput
+): Promise<MarkContentCompleteOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/mark-content-complete`
+    return await authAxios.post(url, data)
+}
