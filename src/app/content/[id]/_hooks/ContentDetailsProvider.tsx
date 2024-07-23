@@ -94,6 +94,8 @@ export const ContentDetailsProvider = ({
                             numberOfFollowers: true,
                             accountId: true,
                             followed: true,
+                            avatarUrl: true,
+                            kind: true,
                         },
                         sections: {
                             sectionId: true,

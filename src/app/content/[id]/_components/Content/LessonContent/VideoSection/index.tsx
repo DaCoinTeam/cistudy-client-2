@@ -16,8 +16,7 @@ export const VideoSection = (props: VideoSectionProps) => {
     const { sectionContentSwr } = swrs
     const { data: sectionContent } = sectionContentSwr
     const { lessonVideoId, videoType } = { ...sectionContent?.lesson }
-
-    console.log(getAssetManifestUrl(lessonVideoId))
+    
     return (
         <div className={className}>
             <VideoPlayer
