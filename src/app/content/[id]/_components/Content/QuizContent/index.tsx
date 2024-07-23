@@ -69,13 +69,13 @@ export const QuizContent = () => {
     return (
         <div className="w-full">
             <Card>
-                <CardHeader className="font-semibold text-2xl p-6">{sectionContentData?.title}</CardHeader>
+                <CardHeader className="text-3xl font-bold text-primary p-6">{sectionContentData?.title}</CardHeader>
                 <CardBody className="mt-16 p-6">
                     <div className="text-primary font-semibold cursor-pointer">Review Learning Object</div>
                     <div className="flex flex-row items-center justify-between mt-16">
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-row items-center gap-2">
-                                <CheckCircle2 size={20} color="#03045e" />
+                                <CheckCircle2 size={20} color={quiz?.isPassed? "#1F8354":"#03045e"}  />
                                 <span className="font-semibold">Submit your assignment</span>
                             </div>
                             <div className="flex flex-row gap-4">
@@ -104,12 +104,12 @@ export const QuizContent = () => {
                     <div className="flex flex-row justify-between mt-4">
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-row items-center gap-2">
-                                <CheckCircle2 size={20} color="#03045e" />
+                                <CheckCircle2 size={20} color={quiz?.isPassed? "#1F8354":"#03045e"} />
                                 <span className="font-semibold">Receive grade</span>
                             </div>
                             <div className="flex flex-row gap-2">
                                 <div className="font-semibold">To Pass</div>
-                                <span>70% or Higher</span>
+                                <span>{quiz?.passingScore}% or Higher</span>
                             </div>
                         </div>
                         <div className="flex flex-row items-center gap-6">

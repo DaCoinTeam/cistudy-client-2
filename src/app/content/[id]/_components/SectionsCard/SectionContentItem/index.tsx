@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { LessonEntity, QuizEntity, ResourceEntity, SectionContentEntity, SectionContentType, parseDuration } from "@common"
 import { useRouter } from "next/navigation"
-import { Clock2Icon, FileQuestionIcon, PackageIcon, VideoIcon } from "lucide-react"
+import { CheckCircle2, Clock2Icon, FileQuestionIcon, PackageIcon, VideoIcon } from "lucide-react"
 import { ContentDetailsContext } from "../../../_hooks"
 import { Spacer } from "@nextui-org/react"
 
@@ -24,12 +24,18 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
 
     const renderLession = (
         { description, durationInSeconds }: LessonEntity,
-        { title }: SectionContentEntity
+        { title, isCompleted }: SectionContentEntity
     ) => {
         return (
             <>
                 <div>
-                    <VideoIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                    {
+                        isCompleted? (
+                            <CheckCircle2 className="w-7.5 h-7.5" color="#1F8354" strokeWidth={3 / 2} />
+                        ) : (
+                            <VideoIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                        )
+                    }
                 </div>
                 <div>
                     <div className="text-primary">
@@ -52,12 +58,18 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
 
     const renderQuiz = (
         { }: QuizEntity,
-        { title }: SectionContentEntity
+        { title, isCompleted }: SectionContentEntity
     ) => {
         return (
             <>
                 <div>
-                    <FileQuestionIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                    {
+                        isCompleted? (
+                            <CheckCircle2 className="w-7.5 h-7.5" color="#1F8354" strokeWidth={3 / 2} />
+                        ) : (
+                            <FileQuestionIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                        )
+                    }
                 </div>
                 <div>
                     <div className="text-primary">
@@ -71,12 +83,18 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
 
     const renderResource = (
         resource: ResourceEntity,
-        { title }: SectionContentEntity
+        { title, isCompleted }: SectionContentEntity
     ) => {
         return (
             <>
                 <div>
-                    <PackageIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                    {
+                        isCompleted? (
+                            <CheckCircle2 className="w-7.5 h-7.5" color="#1F8354" strokeWidth={3 / 2} />
+                        ) : (
+                            <PackageIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                        )
+                    }
                 </div>
                 <div>
                     <div className="text-primary">

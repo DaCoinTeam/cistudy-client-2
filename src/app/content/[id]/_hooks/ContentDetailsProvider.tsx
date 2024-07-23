@@ -52,12 +52,15 @@ export const ContentDetailsProvider = ({
                 title: true,
                 type: true,
                 createdAt: true,
+                isCompleted: true,
                 quiz: {
                     quizId: true,
                     timeLimit: true,
                     highestScoreRecorded: true,
                     totalNumberOfAttempts: true,
                     lastAttemptScore: true,
+                    passingScore: true,
+                    isPassed: true,
                     questions: {
                         quizQuestionId: true,
                         question: true,
@@ -103,6 +106,7 @@ export const ContentDetailsProvider = ({
                                 sectionContentId: true,
                                 title: true,
                                 type: true,
+                                isCompleted: true,
                                 quiz: {
                                     quizId: true,
                                     timeLimit: true,
