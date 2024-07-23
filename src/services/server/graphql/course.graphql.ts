@@ -48,6 +48,7 @@ export const findOneCourse = async (
 export interface FindOneCourseAuthInputData {
   params: {
     courseId: string;
+    accountId: string;
   };
 }
 
