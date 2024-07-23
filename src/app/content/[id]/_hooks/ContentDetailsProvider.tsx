@@ -72,7 +72,9 @@ export const ContentDetailsProvider = ({
                 resource: {
                     attachments: {
                         resourceAttachmentId: true,
-                        fileId: true
+                        resourceId: true,
+                        fileId: true,
+                        name: true,
                     }
                 },
                 lesson: {
