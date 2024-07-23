@@ -338,6 +338,9 @@ export interface SectionEntity {
   createdAt: Date;
   course: CourseEntity;
   contents: Array<SectionContentEntity>;
+  isLocked: boolean;
+  //graphql
+  unlocked?: boolean;
 }
 
 export interface ResourceEntity {

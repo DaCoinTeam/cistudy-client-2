@@ -103,6 +103,7 @@ export const ContentDetailsProvider = ({
                         sections: {
                             sectionId: true,
                             title: true,
+                            unlocked: true,
                             position: true,
                             contents: {
                                 sectionContentId: true,

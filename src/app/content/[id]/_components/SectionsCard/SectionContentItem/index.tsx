@@ -1,16 +1,19 @@
 import React, { useContext } from "react"
-import { LessonEntity, QuizEntity, ResourceEntity, SectionContentEntity, SectionContentType, parseDuration } from "@common"
+import { LessonEntity, QuizEntity, ResourceEntity, SectionContentEntity, SectionContentType, SectionEntity, parseDuration } from "@common"
 import { useRouter } from "next/navigation"
-import { CheckCircle2, Clock2Icon, FileQuestionIcon, PackageIcon, VideoIcon } from "lucide-react"
+import { Clock2Icon, FileQuestionIcon, PackageIcon, VideoIcon } from "lucide-react"
+import { CheckCircleIcon } from "@heroicons/react/24/solid"
+import { LockClosedIcon } from "@heroicons/react/24/outline"
 import { ContentDetailsContext } from "../../../_hooks"
 import { Spacer } from "@nextui-org/react"
 
 interface SectionContentItemProps {
     sectionContent: SectionContentEntity;
+    section: SectionEntity;
 }
 
 export const SectionContentItem = (props: SectionContentItemProps) => {
-    const { sectionContent } = props
+    const { sectionContent, section } = props
     const { sectionContentId } = sectionContent
 
     const { swrs } = useContext(ContentDetailsContext)!
@@ -20,7 +23,11 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
     const differentFromThisSection = currentSectionContent?.sectionContentId !== sectionContentId
 
     const router = useRouter()
-    const onPress = () => differentFromThisSection ? router.push(`/content/${sectionContentId}`) : undefined
+    const onPress = () => (
+        section.unlocked ?
+            differentFromThisSection ? router.push(`/content/${sectionContentId}`) : undefined
+            : undefined
+    )
 
     const renderLession = (
         { description, durationInSeconds }: LessonEntity,
@@ -29,12 +36,14 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
         return (
             <>
                 <div>
-                    {
-                        isCompleted? (
-                            <CheckCircle2 className="w-7.5 h-7.5" color="#1F8354" strokeWidth={3 / 2} />
-                        ) : (
-                            <VideoIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
-                        )
+                    {   
+                        section.unlocked ?
+                            (
+                                isCompleted? (
+                                    <CheckCircleIcon className="w-6 h-6 text-success" />
+                                ) : (
+                                    <VideoIcon className="w-6 h-6 text-primary" strokeWidth={3 / 2} />
+                                )) : <LockClosedIcon className="w-6 h-6 text-primary"/>
                     }
                 </div>
                 <div>
@@ -57,19 +66,20 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
     }
 
     const renderQuiz = (
-        { }: QuizEntity,
+        _: QuizEntity,
         { title, isCompleted }: SectionContentEntity
     ) => {
         return (
             <>
                 <div>
                     {
-                        isCompleted? (
-                            <CheckCircle2 className="w-7.5 h-7.5" color="#1F8354" strokeWidth={3 / 2} />
-                        ) : (
-                            <FileQuestionIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
-                        )
-                    }
+                        section.unlocked ?  
+                            isCompleted ? (
+                                <CheckCircleIcon className="w-6 h-6 text-success" />
+                            ) : (
+                                <FileQuestionIcon className="w-6 h-6 text-primary" strokeWidth={3 / 2} />
+                            ): <LockClosedIcon className="w-6 h-6 text-primary"/>
+                    }       
                 </div>
                 <div>
                     <div className="text-primary">
@@ -89,11 +99,12 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
             <>
                 <div>
                     {
-                        isCompleted? (
-                            <CheckCircle2 className="w-7.5 h-7.5" color="#1F8354" strokeWidth={3 / 2} />
-                        ) : (
-                            <PackageIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
-                        )
+                        section.unlocked ?  
+                            isCompleted? (
+                                <CheckCircleIcon className="w-6 h-6 text-success" />
+                            ) : (
+                                <PackageIcon className="w-6 h-6 text-primary" strokeWidth={3 / 2} />
+                            ) : <LockClosedIcon className="w-6 h-6 text-primary"/>
                     }
                 </div>
                 <div>
@@ -119,7 +130,7 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
 
     return (
         <div onClick={onPress}
-            className={`cursor-pointer flex gap-3 p-3 pr-4 z-10 ${!differentFromThisSection ? "bg-content2" : ""
+            className={`cursor-pointer flex gap-3 p-3 px-4 z-10 ${!differentFromThisSection ? "bg-content2" : ""
             }`}
         >
             <div className="flex gap-3">

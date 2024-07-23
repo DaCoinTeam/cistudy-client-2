@@ -1,9 +1,19 @@
 "use client"
-import { Accordion, AccordionItem, Card, CardBody, CardHeader, Divider, ScrollShadow, Selection } from "@nextui-org/react"
+import {
+    Accordion,
+    AccordionItem,
+    Card,
+    CardBody,
+    CardHeader,
+    Divider,
+    ScrollShadow,
+    Selection,
+} from "@nextui-org/react"
 import React, { useContext, useEffect, useMemo, useState } from "react"
 import { ContentDetailsContext } from "../../_hooks"
 import { getSetValues, sortByPosition } from "@common"
 import { SectionContentItem } from "./SectionContentItem"
+import { CheckCircleIcon, LockClosedIcon } from "@heroicons/react/24/outline"
 
 interface SectionsCardProps {
   className?: string;
@@ -24,7 +34,10 @@ export const SectionsCard = (props: SectionsCardProps) => {
 
     const [selectedKeys, setSelectedKeys] = useState<Selection>("all")
 
-    const sortedSections = useMemo(() => sortByPosition(sections ?? []), [sections])
+    const sortedSections = useMemo(
+        () => sortByPosition(sections ?? []),
+        [sections]
+    )
 
     useEffect(() => {
         if (!sectionId) return
@@ -47,29 +60,37 @@ export const SectionsCard = (props: SectionsCardProps) => {
 
     const renderSections = () => {
         if (!sortedSections) return []
-        return sortedSections.map(({ sectionId, title, contents }) => (
+        return sortedSections.map((section) => (
             <AccordionItem
-                key={sectionId}
+                key={section.sectionId}
                 classNames={{
                     content: "flex flex-col pt-0 pb-2",
                     title: "font-bold text-primary",
                     subtitle: "font-semibold text-sm",
-                    trigger: "!px-4"
+                    trigger: "!px-4",
                 }}
-                title={title}
-                subtitle={`${contents.length} contents`}
+                startContent={!section.unlocked ? <LockClosedIcon className="text-primary w-6 h-6"/> : <CheckCircleIcon className="w-6 h-6 text-primary"/>}
+                title={section.title}
+                subtitle={`${section.contents.length} contents`}
             >
-                {contents.map((content) => (
-                    <SectionContentItem key={content.sectionContentId} sectionContent={content} />
+                {section.contents.map((content) => (
+                    <SectionContentItem
+                        key={content.sectionContentId}
+                        section={section}
+                        sectionContent={content}
+                    />
                 ))}
             </AccordionItem>
         ))
     }
 
     return (
-        <Card shadow="none" className={`${className} rounded-medium bg-transparent border border-divider`}>
+        <Card
+            shadow="none"
+            className={`${className} rounded-medium bg-transparent border border-divider`}
+        >
             <CardHeader className="text-xl p-4 pb-4 font-bold"> Sections </CardHeader>
-            <Divider/>
+            <Divider />
             <CardBody className="p-0">
                 <ScrollShadow className="h-full">
                     <Accordion
@@ -83,7 +104,7 @@ export const SectionsCard = (props: SectionsCardProps) => {
                     >
                         {renderSections()}
                     </Accordion>
-                </ScrollShadow>   
+                </ScrollShadow>
             </CardBody>
         </Card>
     )
