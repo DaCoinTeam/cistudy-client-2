@@ -1,23 +1,18 @@
 import React, { useState, useEffect, useContext} from "react"
-import { QuizContext, QuizProgressState, QuizTimeState } from "../../hooks"
-import { useRouter } from "next/navigation"
-import { useParams } from "next/navigation"
 import { ErrorResponse } from "@common"
-import { ToastType } from "../../../../_components"
-import { RootContext } from "../../../../_hooks"
+import { ToastType } from "../../../../../../../_components" 
+import { RootContext } from "../../../../../../../_hooks" 
+import { StartQuizContext } from "../StartQuizProvider"
 
 const useCountdown = (initialTime : number) => {
-    const route = useRouter()
-    const params = useParams()
-    const lessonId = params.id as string
-    const {swrs} = useContext(QuizContext)!
     const { notify } = useContext(RootContext)!
+    const {swrs} = useContext(StartQuizContext)!
     const {finishQuizAttemptSwrMutation} = swrs
-    const {trigger} = finishQuizAttemptSwrMutation
-    const quizProgressState: QuizProgressState = JSON.parse(localStorage.getItem("quizProgressState") as string)
-    const quizTimeState: QuizTimeState = JSON.parse(localStorage.getItem("quizTimeState") as string)
-    const timemilliseconds = Number(quizTimeState?.timeLimit) - Number(quizTimeState?.remainingTime)
+    const { trigger } = finishQuizAttemptSwrMutation
     const [remainingTime, setRemainingTime] = useState(initialTime)
+    const quizProgressState = JSON.parse(localStorage.getItem("quizProgressState") ?? "{}")
+    const quizTimeState = JSON.parse(localStorage.getItem("quizTimeState") ?? "{}")
+    const timemilliseconds = Number(quizTimeState.timeLimit) - Number(quizTimeState.remainingTime)
 
     useEffect(() => {
         const intervalId = setInterval(async() => {
@@ -27,7 +22,6 @@ const useCountdown = (initialTime : number) => {
             if (Number(quizTimeState.remainingTime) === 0) {
                 try {
                     await trigger({data: {quizAttemptId: quizProgressState.quizAttemptId, quizQuestionAnswerIds: quizProgressState.quizQuestionAnswerIds, timeTaken: timemilliseconds}})
-                    route.push(`/lessons/${lessonId}`)
                 } catch (ex) {
                     const { message } = ex as ErrorResponse
                     notify!({
@@ -36,7 +30,6 @@ const useCountdown = (initialTime : number) => {
                         },
                         type: ToastType.Error
                     })
-                    route.push(`/lessons/${lessonId}`)
                 }
             }
         }, 1000)
@@ -48,8 +41,7 @@ const useCountdown = (initialTime : number) => {
 }
 
 const CountdownTimer = ({ initialTime } : { initialTime : number}) => {
-    const convertedInitialTime = initialTime
-    const remainingTime = useCountdown(convertedInitialTime)
+    const remainingTime = useCountdown(initialTime)
 
     const getTimeComponents = (time : number) => {
         const days = Math.floor(time / (1000 * 60 * 60 * 24))
@@ -66,9 +58,9 @@ const CountdownTimer = ({ initialTime } : { initialTime : number}) => {
         <div className="flex flex-row mr-7">
             {days > 0 && <div className="text-xl">{days}d </div>}
             {hours > 0 || days > 0 && <div>:</div>}
-            <div className="text-xl">{hours.toString().padStart(2, "0")}:</div>
-            <div className="text-xl">{minutes.toString().padStart(2, "0")}:</div>
-            <div className="text-xl">{seconds.toString().padStart(2, "0")}</div>
+            <div className="text-4xl">{hours.toString().padStart(2, "0")}:</div>
+            <div className="text-4xl">{minutes.toString().padStart(2, "0")}:</div>
+            <div className="text-4xl">{seconds.toString().padStart(2, "0")}</div>
         </div>
     )
 }

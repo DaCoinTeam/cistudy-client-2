@@ -1,8 +1,8 @@
 import { useReducer } from "react"
-import { QuizProgressState } from "./QuizProvider"
+import { QuizProgressState } from "./StartQuizProvider"
 
-const quizProgressState: QuizProgressState = JSON.parse(localStorage.getItem("quizProgressState") as string)
-
+const ISSERVER = typeof window === "undefined"
+let quizProgressState: QuizProgressState = !ISSERVER ? JSON.parse(localStorage.getItem("quizProgressState") ?? "{}") : {}
 export interface QuizAnswer {
     questionIndex: string
     answerIndex: string[]
@@ -10,9 +10,15 @@ export interface QuizAnswer {
 }
 
 export interface QuizState {
+    currentQuestionIndex: number
     selectedAnswers: QuizAnswer[]
     score: number
     finishTime: number
+}
+
+export interface SetCurrentQuestionIndex {
+    type: "SET_CURRENT_QUESTION_INDEX"
+    payload: number
 }
 
 export interface SetSelectedOptionForQuestionAction {
@@ -20,19 +26,24 @@ export interface SetSelectedOptionForQuestionAction {
     payload: QuizAnswer[]
 }
 
-export interface setScore {
+export interface SetScore {
     type: "SET_SCORE"
     payload: number
 }
 
-export interface setFinishTime {
+export interface SetFinishTime {
     type: "SET_FINISH_TIME"
     payload: number
 }
 
-export type QuizAction = SetSelectedOptionForQuestionAction | setScore | setFinishTime
+export interface SetReset {
+    type: "RESET"
+}
+
+export type QuizAction = SetCurrentQuestionIndex | SetSelectedOptionForQuestionAction | SetScore | SetFinishTime | SetReset
 
 export const state: QuizState = {
+    currentQuestionIndex: 0,
     selectedAnswers: quizProgressState?.selectedAnswers ?? [],
     score: 0,
     finishTime: 0
@@ -41,7 +52,13 @@ export const state: QuizState = {
 export const reducer = (state: QuizState, action: QuizAction): QuizState => {
     
     switch (action.type) {
+    case "SET_CURRENT_QUESTION_INDEX":
+        return {
+            ...state,
+            currentQuestionIndex: action.payload,
+        }
     case "SET_SELECTED_OPTION_FOR_QUESTION": {
+        quizProgressState = JSON.parse(localStorage.getItem("quizProgressState") ?? "{}")
         const getUpdatedSelectedAnswer = () => {
             const updatedSelectedAnswers = state.selectedAnswers.map(answer => {
                 const payloadAnswer = action.payload.find(p => p.questionIndex === answer.questionIndex)
@@ -60,12 +77,10 @@ export const reducer = (state: QuizState, action: QuizAction): QuizState => {
             }
         }
 
-        const updatedQuizProgressState = {
+        const updatedQuizProgressState: QuizProgressState = {
             ...quizProgressState,
             selectedAnswers: getUpdatedSelectedAnswer().selectedAnswers
         }
-
-        console.log(updatedQuizProgressState)
 
         localStorage.setItem("quizProgressState", JSON.stringify(updatedQuizProgressState))
         return getUpdatedSelectedAnswer()
@@ -80,6 +95,14 @@ export const reducer = (state: QuizState, action: QuizAction): QuizState => {
         return {
             ...state,
             finishTime: action.payload
+        }
+    case "RESET":
+        return {
+            ...state,
+            currentQuestionIndex: 0,
+            selectedAnswers: [],
+            score: 0,
+            finishTime: 0
         }
     default:
         return state
