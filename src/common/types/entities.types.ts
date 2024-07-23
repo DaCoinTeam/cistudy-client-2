@@ -216,9 +216,12 @@ export interface SectionContentEntity {
   quizId: string;
   resourceId: string;
   type: SectionContentType;
+  accountProgresses: ProgressEntity;
+  isCompleted: boolean;
   position: number;
   createdAt: Date;
   updatedAt: Date;
+  
   section: SectionEntity;
   lesson: LessonEntity;
   resource: ResourceEntity;
@@ -233,6 +236,8 @@ export interface QuizEntity {
   sectionContent: SectionContentEntity;
   highestScoreRecorded: number;
   totalNumberOfAttempts: number;
+  passingScore: number;
+  isPassed: boolean;
   lastAttemptScore: number;
   questions: Array<QuizQuestionEntity>;
   quizAttempts: QuizAttemptEntity;
