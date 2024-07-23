@@ -60,6 +60,13 @@ export const ContentDetailsProvider = ({
                     lastAttemptScore: true,
                     questions: {
                         quizQuestionId: true,
+                        question: true,
+                        answers: {
+                            quizQuestionAnswerId: true,
+                            content: true,
+                            isCorrect: true,
+                        },
+                        point: true,
                     },
                 },
                 resource: {
