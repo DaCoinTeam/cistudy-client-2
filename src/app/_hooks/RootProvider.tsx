@@ -2,12 +2,13 @@
 "use client"
 import {
     AccountEntity,
+    CategoryEntity,
     Disclosure,
     ErrorResponse,
     generateClientId,
 } from "@common"
 import { useDisclosure } from "@nextui-org/react"
-import { HighlightDTO, init, initLandingPage } from "@services"
+import { findManyCategories, findManyLevelCategories, Highlight, init, initLandingPage } from "@services"
 import { Formik, FormikProps } from "formik"
 import { useRouter } from "next/navigation"
 import React, {
@@ -35,7 +36,10 @@ const initialValues: FormikValues = {
 interface RootContextValue {
   swrs: {
     profileSwr: SWRResponse<AccountEntity | null, ErrorResponse>;
-    highlightSwr: SWRResponse<HighlightDTO, ErrorResponse>;
+    highlightSwr: SWRResponse<Highlight, ErrorResponse>;
+    categoriesSwr: SWRResponse<Array<CategoryEntity>, ErrorResponse>;
+    topicsSwr: SWRResponse<Array<CategoryEntity>, ErrorResponse>;
+
   };
   formik: FormikProps<FormikValues>;
   reducer: [RootState, React.Dispatch<RootAction>];
@@ -117,6 +121,10 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                 title: true,
                 description: true,
                 thumbnailId: true,
+                courseTargets: {
+                    courseTargetId: true,
+                    content: true,
+                },
                 courseRatings: {
                     overallCourseRating: true,
                     totalNumberOfRatings: true
@@ -137,7 +145,10 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                 title: true,
                 description: true,
                 thumbnailId: true,
-
+                courseTargets: {
+                    courseTargetId: true,
+                    content: true,
+                },
                 courseRatings: {
                     overallCourseRating: true,
                     totalNumberOfRatings: true
@@ -157,6 +168,10 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                 title: true,
                 description: true,
                 thumbnailId: true,
+                courseTargets: {
+                    courseTargetId: true,
+                    content: true,
+                },
                 courseRatings: {
                     overallCourseRating: true,
                     totalNumberOfRatings: true
@@ -182,6 +197,59 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
             }
         })
     }, [])
+
+    
+    const fetchCategories = useCallback(async () => {
+        return await findManyCategories(
+            {
+                categoryId: true,
+                name: true,
+                level: true,
+                categoryParentRelations: {
+                    category: {
+                        categoryId: true,
+                        name: true,
+                        level: true,
+                        categoryParentRelations: {
+                            category: {
+                                categoryId: true,
+                                name: true,
+                                level: true,
+                            },
+                        },
+                    },
+                },
+
+            }
+        )
+    }, [])
+
+    const fetchTopics = useCallback(async () => {
+        return await findManyLevelCategories(
+            {
+                params: {
+                    level: 2,
+                },
+            },
+            {
+                categoryId: true,
+                name: true,
+                level: true,
+            }
+            
+        )
+    }, [])
+
+    const topicsSwr = useSWR(["TOPICS"], fetchTopics, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+    })
+
+    const categoriesSwr = useSWR(["CATEGORIES"], fetchCategories, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+    })
+
     const profileSwr = useSWR(["PROFILE"], fetchProfile)
 
     const highlightSwr = useSWR(["HIGHLIGHT"], fetchHighlight)
@@ -199,7 +267,9 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
         () => ({
             swrs: {
                 profileSwr,
-                highlightSwr
+                highlightSwr,
+                categoriesSwr,
+                topicsSwr
             },
             formik,
             reducer,
@@ -208,7 +278,7 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
             },
             notify: toastRef.current?.notify,
         }),
-        [profileSwr, highlightSwr, reducer, notConnectWalletModalDisclosure]
+        [profileSwr, highlightSwr, categoriesSwr, reducer, notConnectWalletModalDisclosure]
     )
 
     return (
