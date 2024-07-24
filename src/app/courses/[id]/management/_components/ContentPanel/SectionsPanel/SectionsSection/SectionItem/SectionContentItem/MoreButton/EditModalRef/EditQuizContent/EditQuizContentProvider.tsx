@@ -7,6 +7,7 @@ import { ErrorResponse, QuizQuestionEntity } from "@common"
 import { ManagementContext } from "../../../../../../../../../_hooks"
 import { RootContext } from "../../../../../../../../../../../../_hooks"
 import { v4 as uuidv4 } from "uuid"
+import { DeepPartial } from "@apollo/client/utilities"
 
 interface EditQuizContentContextValue {
     formik: FormikProps<FormikValues>
@@ -15,6 +16,8 @@ interface EditQuizContentContextValue {
     },
     functions: {
         addQuestion: () => void
+        removeQuestion: (quizQuestionId: string) => void
+        addAnswer: (quizQuestionId: string) => void
     }
 }
 
@@ -23,7 +26,7 @@ export const EditQuizContentContext = createContext<EditQuizContentContextValue 
 )
 
 interface FormikValues {
-    questions: Array<Partial<QuizQuestionEntity>>
+    questions: Array<DeepPartial<QuizQuestionEntity>>
 }
 
 const initialValues: FormikValues = {
@@ -39,26 +42,66 @@ const WrappedFormikProvider = ({ formik, children, swrs }: {
 }) => {
     const addQuestion = () => {
         const questions = formik.values.questions
-
         const maxPosition = questions.reduce((max, question) => {
             return (question?.position ?? 0 > max) ? question?.position ?? 0 : max
         }, 0)
         
-        const question : Partial<QuizQuestionEntity> = {
-            quizId: uuidv4(),
+        const question : DeepPartial<QuizQuestionEntity> = {
+            quizQuestionId: uuidv4(),
             position: maxPosition + 1,
             question: "Untitled"
         }
 
         formik.setFieldValue("questions", [ ...questions, question ])
-    }      
+    }
+
+    const removeQuestion = (quizQuestionId: string) => {
+        const questions = formik.values.questions
+        const updatedQuestions = questions.filter((question) => {
+            return question.quizQuestionId != quizQuestionId
+        })
+        formik.setFieldValue("questions", [...questions, updatedQuestions])
+    }
+    
+    const addAnswer = (quizQuestionId: string) => {
+        const questions = formik.values.questions
+        const questionIndex = questions.findIndex((question) => {
+            return question.quizQuestionId = quizQuestionId
+        })
+
+        const question = questions[questionIndex]
+
+        if (!question) return 
+
+        const maxPosition = question.answers?.reduce((max, answer) => {
+            return (answer?.position ?? 0 > max) ? answer?.position ?? 0 : max
+        }, 0) ?? 0
+
+        let anwsers = question.answers
+        if (!anwsers) {
+            anwsers = []
+        }
+
+        anwsers?.push({
+            quizQuestionAnswerId: uuidv4(),
+            position: maxPosition + 1,
+            content: "Untitled"
+        })
+
+        question.answers = anwsers
+        questions[questionIndex] = question
+
+        formik.setFieldValue("questions", questions)
+    }
 
     const editQuizContentContextValue: EditQuizContentContextValue = useMemo(
         () => ({
             formik,
             swrs,
             functions: {
-                addQuestion
+                addQuestion,
+                removeQuestion,
+                addAnswer,
             }
             
         }),

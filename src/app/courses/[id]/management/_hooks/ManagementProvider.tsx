@@ -105,7 +105,8 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                             thumbnailId: true,
                             lessonVideoId: true,
                             description: true,
-                            durationInSeconds: true
+                            durationInSeconds: true,
+                            videoType: true,
                         },
                         quiz: {
                             questions: {
@@ -113,8 +114,13 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                             }
                         },
                         resource: {
+                            resourceId: true,
+                            description: true,
                             attachments: {
-                                createdAt: true
+                                createdAt: true,
+                                name: true,
+                                fileId: true,
+                                resourceAttachmentId: true,
                             }
                         }
                     }

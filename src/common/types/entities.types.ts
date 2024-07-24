@@ -268,6 +268,7 @@ export interface QuizQuestionAnswerEntity {
   createdAt: Date;
   updatedAt: Date;
   content: string;
+  position: number;
   isCorrect: boolean;
   attempt: QuizAttemptEntity;
 }
@@ -356,6 +357,7 @@ export interface SectionEntity {
 
 export interface ResourceEntity {
   resourceId: string;
+  description: string;
   attachments: Array<ResourceAttachmentEntity>;
   updatedAt: Date;
   lesson: LessonEntity;

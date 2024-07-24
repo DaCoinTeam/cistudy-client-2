@@ -2,41 +2,56 @@
 import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext, useEffect, useMemo } from "react"
 import * as Yup from "yup"
-import { ManagementContext } from "../../../../../../../../../_hooks"
-import { RootContext } from "../../../../../../../../../../../../_hooks"
-import { updateLesson } from "@services"
+import { ResourceAttachmentEntity } from "@common"
+import { DeepPartial } from "@apollo/client/utilities"
 import { SectionContentItemContext } from "../../.."
+import { updateResource } from "@services"
+import { RootContext } from "../../../../../../../../../../../../_hooks"
+import { ManagementContext } from "../../../../../../../../../_hooks"
 import { ToastType } from "../../../../../../../../../../../../_components"
 
-interface EditLessonContentContextValue {
+interface EditResourceContentContextValue {
     formik: FormikProps<FormikValues>
 }
 
-export const EditLessonContentContext = createContext<EditLessonContentContextValue | null>(
+export const EditResourceContentContext = createContext<EditResourceContentContextValue | null>(
     null
 )
 
 interface FormikValues {
     title: string,
     description: string,
-    lessonVideo?: File
+    attachments: Array<DeepPartial<ResourceAttachmentEntity>>
 }
 
 const initialValues: FormikValues = {
     title: "",
     description: "",
+    attachments: []
 }
 
 const WrappedFormikProvider = ({ formik, children }: {
     formik: FormikProps<FormikValues>;
     children: ReactNode;
 }) => {
+    const editResourceContentContextValue: EditResourceContentContextValue = useMemo(
+        () => ({
+            formik
+        }),
+        [formik]
+    )
 
-    
     const { props } = useContext(SectionContentItemContext)!
     const { sectionContent } = props
-    const { lesson, title } = sectionContent
-    const { description } = lesson
+    const { resource, title } = sectionContent
+    const { attachments, description } = resource
+
+    useEffect(() => {
+        if (!attachments) return
+        formik.setFieldValue("attachments", attachments)
+    }, [
+        attachments
+    ])
 
     useEffect(() => {
         if (!title) return
@@ -52,52 +67,35 @@ const WrappedFormikProvider = ({ formik, children }: {
         description
     ])
 
-    const editLessonContentContextValue: EditLessonContentContextValue = useMemo(
-        () => ({
-            formik
-        }),
-        [formik]
-    )
-    
     return (
-        <EditLessonContentContext.Provider value={editLessonContentContextValue}>
+        <EditResourceContentContext.Provider value={editResourceContentContextValue}>
             <Form onSubmit={formik.handleSubmit}>{children}</Form>
-        </EditLessonContentContext.Provider>
+        </EditResourceContentContext.Provider>
     )
 }
 
-export const EditLessonContentProvider = ({ children }: { children: ReactNode }) => {
+export const EditQuizContentProvider = ({ children }: { children: ReactNode }) => {
+    const { props } = useContext(SectionContentItemContext)!
+    const { sectionContent } = props
+    const { resource } = sectionContent
+    const { resourceId } = resource
+    const { notify } = useContext(RootContext)!
+
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { mutate } = courseManagementSwr
-
-    const { notify } = useContext(RootContext)!
-
-    const { props } = useContext(SectionContentItemContext)!
-    const { sectionContent } = props
-    const { sectionContentId } = sectionContent
 
     return (
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({})
         }
-        onSubmit={async ({ title, description, lessonVideo }) => {
-            const files: Array<File> = []
-            let lessonVideoIndex: number | undefined
-
-            if (lessonVideo) {
-                lessonVideoIndex = 0
-                files.push(lessonVideo)
-            }
-
-            const { message } = await updateLesson({
+        onSubmit={async ({ description, title}) => {
+            const { message } = await updateResource({
                 data: {
-                    lessonId: sectionContentId,
+                    resourceId,
                     title,
-                    lessonVideoIndex,
                     description
-                },
-                files
+                }
             })
 
             await mutate()
@@ -107,6 +105,7 @@ export const EditLessonContentProvider = ({ children }: { children: ReactNode })
                 },
                 type: ToastType.Success
             })
+
         }}
         >
             {(formik) => (
