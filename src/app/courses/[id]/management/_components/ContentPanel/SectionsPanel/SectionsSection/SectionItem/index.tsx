@@ -9,11 +9,10 @@ interface SectionItemProps {
 
 const WrappedSectionItem = (props: SectionItemProps) => {
     const { section } = props
-
     return (
         <>
-            {section.contents.map((sectionContentItem) => (
-                <SectionContentItem key={sectionContentItem.sectionContentId} sectionContentItem={sectionContentItem} />
+            {section.contents.map((sectionContent) => (
+                <SectionContentItem key={sectionContent.sectionContentId} sectionContent={sectionContent} />
             ))}
             <AddSectionContentItem sectionId={section.sectionId} />
         </>
