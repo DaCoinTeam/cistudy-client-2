@@ -256,6 +256,7 @@ export interface QuizQuestionEntity {
   updatedAt: Date;
   question: string;
   point: number;
+  position: number;
   answers: Array<QuizQuestionAnswerEntity>;
   questionMedias: Array<QuizQuestionMediaEntity>;
 }

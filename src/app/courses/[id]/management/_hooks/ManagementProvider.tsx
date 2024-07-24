@@ -95,6 +95,7 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                     sectionId: true,
                     title: true,
                     position: true,
+
                     contents: {
                         position: true,
                         sectionContentId: true,

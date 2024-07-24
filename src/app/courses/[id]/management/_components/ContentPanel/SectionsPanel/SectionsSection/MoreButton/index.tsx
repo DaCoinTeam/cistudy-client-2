@@ -5,7 +5,7 @@ import {
     DropdownMenu,
     DropdownTrigger,
 } from "@nextui-org/react"
-import { MoreVertical, PenLineIcon, XIcon } from "lucide-react"
+import { MoreVerticalIcon, PenLineIcon, XIcon } from "lucide-react"
 import { EditModalRef, EditModalRefSelectors } from "./EditModalRef"
 import { SectionEntity } from "@common"
 import { deleteSection } from "@services"
@@ -78,11 +78,11 @@ export const MoreButton = (props: MoreButtonProps) => {
             >
                 <DropdownTrigger>
                     <Button
-                        className={`${className} bg-transparent`}
+                        className={`${className}`}
                         isIconOnly
-                        variant="flat"
+                        variant="light"
                     >
-                        <MoreVertical size={20} strokeWidth={3/2} />
+                        <MoreVerticalIcon size={20} strokeWidth={3/2} />
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
