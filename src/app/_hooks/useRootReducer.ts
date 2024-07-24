@@ -1,3 +1,4 @@
+import { CategoryEntity } from "@common"
 import { useReducer } from "react"
 import { Address } from "web3"
 
@@ -9,7 +10,8 @@ export interface RootState {
             starciBalance: bigint;
             starci2Balance: bigint;
         };
-    };
+    },
+    categoryFilter: Array<CategoryEntity>;
 }
 
 export interface SetMetamaskAddressAction {
@@ -26,11 +28,19 @@ export interface SetMetamaskStarci2BalanceAction {
     type: "SET_METAMASK_STARCI2_BALANCE";
     payload: bigint;
 }
-
+export interface SetCategoryFilterAction {
+    type: "SET_CATEGORY_FILTER"
+    payload: Array<CategoryEntity>
+  }
+export interface ResetCategoryFilterAction {
+    type: "RESET_CATEGORY_FILTER"
+  }
 export type RootAction =
     | SetMetamaskAddressAction
     | SetMetamaskStarciBalanceAction
     | SetMetamaskStarci2BalanceAction
+    | SetCategoryFilterAction
+    | ResetCategoryFilterAction
 
 const initialState: RootState = {
     wallets: {
@@ -39,7 +49,8 @@ const initialState: RootState = {
             starciBalance: BigInt(0),
             starci2Balance: BigInt(0)
         }
-    }
+    },
+    categoryFilter: [],
 }
 
 export const reducer = (state: RootState = initialState, action: RootAction): RootState => {
@@ -76,6 +87,17 @@ export const reducer = (state: RootState = initialState, action: RootAction): Ro
                     starci2Balance: action.payload
                 }
             }
+        }
+    case "SET_CATEGORY_FILTER":
+        return {
+            ...state,
+            categoryFilter: action.payload
+        }
+
+    case "RESET_CATEGORY_FILTER":
+        return {
+            ...state,
+            categoryFilter: []
         }
     default:
         return state

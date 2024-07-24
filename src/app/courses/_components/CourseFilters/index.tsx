@@ -15,9 +15,9 @@ import { MdCategory } from "react-icons/md"
 import { FilterIcon, Hash, ListTree } from "lucide-react"
 import { useCallback, useContext, useMemo } from "react"
 import {
-    CourseFiltersContext,
     CourseFiltersProvider,
 } from "./CourseFiltersProvider"
+import { RootContext } from "../../../_hooks"
 
 interface CourseFiltersProps {
   className?: string;
@@ -26,7 +26,7 @@ interface CourseFiltersProps {
 export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
     const { className } = props
 
-    const { swrs } = useContext(CourseFiltersContext)!
+    const { swrs } = useContext(RootContext)!
     const { categoriesSwr } = swrs
     const { data } = categoriesSwr
 
