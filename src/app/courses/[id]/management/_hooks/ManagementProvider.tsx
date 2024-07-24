@@ -47,49 +47,89 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
             },
             {
                 courseId: true,
-                description: true,
                 title: true,
+                description: true,
                 previewVideoId: true,
                 thumbnailId: true,
                 price: true,
                 discountPrice: true,
                 enableDiscount: true,
-                receivedWalletAddress: true,
-                sections: {
-                    sectionId: true,
-                    title: true,
-                    createdAt: true,
-                    lessons: {
-                        lessonId: true,
-                        thumbnailId: true,
-                        lessonVideoId: true,
-                        title: true,
-                        resources: {
-                            resourceId: true,
-                            name: true,
-                            fileId: true,
-                        },
-                        createdAt: true
-                    },
-                },
-                courseCategories:{
+                isCreator: true,
+                courseCategories: {
                     category: {
                         categoryId: true,
                         name: true,
                         level: true,
+                        categoryParentRelations: {
+                            category: {
+                                categoryId: true,
+                                name: true,
+                                level: true,
+                                categoryParentRelations: {
+                                    category: {
+                                        categoryId: true,
+                                        name: true,
+                                        level: true,
+                                    }
+                                }
+                            }
+                        }
                     }
-                },                
+                },
+                enrolled: true,
+                courseRatings: {
+                    numberOf1StarRatings: true,
+                    numberOf2StarRatings:true,
+                    numberOf3StarRatings: true,
+                    numberOf4StarRatings: true,
+                    numberOf5StarRatings: true,
+                    overallCourseRating: true,
+                    totalNumberOfRatings: true,
+                },
                 courseTargets: {
                     courseTargetId: true,
                     content: true,
+                    position: true,
+                },
+                sections: {
+                    sectionId: true,
+                    title: true,
+                    position: true,
+                    contents: {
+                        position: true,
+                        sectionContentId: true,
+                        title: true,
+                        type: true,
+                        lesson: {
+                            thumbnailId: true,
+                            lessonVideoId: true,
+                            description: true,
+                            durationInSeconds: true
+                        },
+                        quiz: {
+                            questions: {
+                                quizQuestionId: true
+                            }
+                        },
+                        resource: {
+                            attachments: {
+                                createdAt: true
+                            }
+                        }
+                    }
                 },
                 creator: {
                     avatarId: true,
+                    username: true,
                     numberOfFollowers: true,
-                    username: true
+                    avatarUrl: true,
+                    kind: true,
+                    accountId: true,
+                    walletAddress: true
                 },
-                numberOfEnrollments: true,
-                createdAt: true,
+                numberOfLessons: true,
+                numberOfQuizzes: true,
+                numberOfResources: true
             }
         )
     }, [courseId])

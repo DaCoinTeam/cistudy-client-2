@@ -1,10 +1,14 @@
 import { ENDPOINT_API } from "@config"
 import { authAxios } from "./axios-instances"
+import { SectionContentType } from "@common"
 
 const BASE_URL = `${ENDPOINT_API}/courses`
 
 export interface CreateCourseOutput {
-  courseId: string;
+    message: string;
+    others: {
+      courseId: string;
+    }
 }
 
 export const createCourse = async (): Promise<CreateCourseOutput> => {
@@ -253,6 +257,26 @@ export const createSection = async (
 ): Promise<string> => {
     const { data } = input
     const url = `${BASE_URL}/create-section`
+
+    return await authAxios.post(url, data)
+}
+
+export interface CreateSectionContentInput {
+  data: {
+    sectionId: string;
+    type: SectionContentType;
+  };
+}
+
+export interface CreateSectionContentOutput {
+  message: string;
+} 
+
+export const createSectionContent = async (
+    input: CreateSectionContentInput
+): Promise<CreateSectionContentOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/create-section-content`
 
     return await authAxios.post(url, data)
 }

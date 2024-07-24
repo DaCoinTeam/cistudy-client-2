@@ -143,6 +143,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 label='Category'
                 placeholder='Select category'
                 labelPlacement='outside'
+                value={formik.values.categoryId}
                 classNames={{
                     trigger: "px-4 !border !border-divider bg-transparent shadow-none",
                     popoverContent: "shadow-none border border-divider rounded-medium",
@@ -251,9 +252,13 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                     isDisabled={!hasChanged()}
                     type='submit'
                     color='secondary'
-                    startContent={<CheckIcon height={20} width={20} />}
+                    startContent={formik.isSubmitting? "" : <CheckIcon height={20} width={20} />}
+                    onPress={() => formik.handleSubmit()}
+                    isLoading={formik.isSubmitting}
                 >
-          Save
+                    {
+                        formik.isSubmitting ? "Saving" : "Save"
+                    }
                 </Button>
                 <Button
                     variant='light'
