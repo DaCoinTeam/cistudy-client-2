@@ -52,7 +52,7 @@ export const ContentDetailsProvider = ({
                 title: true,
                 type: true,
                 createdAt: true,
-                isCompleted: true,
+                completeState: true,
                 quiz: {
                     quizId: true,
                     timeLimit: true,
@@ -103,13 +103,13 @@ export const ContentDetailsProvider = ({
                         sections: {
                             sectionId: true,
                             title: true,
-                            unlocked: true,
+                            lockState: true,
                             position: true,
                             contents: {
                                 sectionContentId: true,
                                 title: true,
                                 type: true,
-                                isCompleted: true,
+                                completeState: true,
                                 quiz: {
                                     quizId: true,
                                     timeLimit: true,

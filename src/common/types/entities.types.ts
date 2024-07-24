@@ -197,7 +197,6 @@ export interface ProgressEntity {
   progressId: string;
   account: AccountEntity;
   accountId: string;
-  isCompleted: boolean;
   lesson: LessonEntity;
   lessonId: string;
 }
@@ -206,6 +205,12 @@ export enum SectionContentType {
   Lesson = "lesson",
   Quiz = "quiz",
   Resource = "resource"
+}
+
+export enum CompleteState {
+  Completed = "completed",
+  Failed = "failed",
+  Undone = "undone"
 }
 
 export interface SectionContentEntity {
@@ -217,7 +222,6 @@ export interface SectionContentEntity {
   resourceId: string;
   type: SectionContentType;
   accountProgresses: ProgressEntity;
-  isCompleted: boolean;
   position: number;
   createdAt: Date;
   updatedAt: Date;
@@ -226,6 +230,7 @@ export interface SectionContentEntity {
   lesson: LessonEntity;
   resource: ResourceEntity;
   quiz: QuizEntity;
+  completeState: CompleteState;
 }
 
 export interface QuizEntity {
@@ -330,6 +335,12 @@ export interface PostCommentReplyEntity {
   creator: AccountEntity;
 }
 
+export enum LockState {
+  Completed = "completed",
+  InProgress = "inProgress",
+  Locked = "locked"
+}
+
 export interface SectionEntity {
   sectionId: string;
   title: string;
@@ -338,9 +349,8 @@ export interface SectionEntity {
   createdAt: Date;
   course: CourseEntity;
   contents: Array<SectionContentEntity>;
-  isLocked: boolean;
   //graphql
-  unlocked?: boolean;
+  lockState?: LockState;
 }
 
 export interface ResourceEntity {

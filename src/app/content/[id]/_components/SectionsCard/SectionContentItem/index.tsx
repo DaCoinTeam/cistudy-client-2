@@ -1,15 +1,50 @@
 import React, { useContext } from "react"
-import { LessonEntity, QuizEntity, ResourceEntity, SectionContentEntity, SectionContentType, SectionEntity, parseDuration } from "@common"
+import {
+    CompleteState,
+    LessonEntity,
+    LockState,
+    QuizEntity,
+    ResourceEntity,
+    SectionContentEntity,
+    SectionContentType,
+    SectionEntity,
+    parseDuration,
+} from "@common"
 import { useRouter } from "next/navigation"
-import { Clock2Icon, FileQuestionIcon, PackageIcon, VideoIcon } from "lucide-react"
-import { CheckCircleIcon } from "@heroicons/react/24/solid"
-import { LockClosedIcon } from "@heroicons/react/24/outline"
+import {
+    Clock2Icon,
+    FileQuestionIcon,
+    PackageIcon,
+    VideoIcon,
+} from "lucide-react"
 import { ContentDetailsContext } from "../../../_hooks"
 import { Spacer } from "@nextui-org/react"
+import {
+    CheckCircleIcon as SolidCheckCircleIcon,
+    XCircleIcon as SolidXCircleIcon,
+} from "@heroicons/react/24/solid"
+import { LockClosedIcon } from "@heroicons/react/24/outline"
 
 interface SectionContentItemProps {
-    sectionContent: SectionContentEntity;
-    section: SectionEntity;
+  sectionContent: SectionContentEntity;
+  section: SectionEntity;
+}
+
+const renderComplete = (lockState: LockState, completeState: CompleteState, base: JSX.Element) => {
+    if (lockState === LockState.Locked) {
+        return <LockClosedIcon className="w-6 h-6 text-primary"/>
+    }
+
+    const map: Record<CompleteState, JSX.Element> = {
+        [CompleteState.Completed]: (
+            <SolidCheckCircleIcon className="w-6 h-6 text-primary" />
+        ),
+        [CompleteState.Failed]: (
+            <SolidXCircleIcon className="w-6 h-6 text-primary" />
+        ),
+        [CompleteState.Undone]: base,
+    }
+    return map[completeState]
 }
 
 export const SectionContentItem = (props: SectionContentItemProps) => {
@@ -20,31 +55,27 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
     const { sectionContentSwr } = swrs
     const { data: currentSectionContent } = sectionContentSwr
 
-    const differentFromThisSection = currentSectionContent?.sectionContentId !== sectionContentId
+    const differentFromThisSection =
+    currentSectionContent?.sectionContentId !== sectionContentId
 
     const router = useRouter()
-    const onPress = () => (
-        section.unlocked ?
-            differentFromThisSection ? router.push(`/content/${sectionContentId}`) : undefined
+    const onPress = () =>
+        section.lockState !== LockState.Locked && differentFromThisSection
+            ? router.push(`/content/${sectionContentId}`)
             : undefined
-    )
 
     const renderLession = (
         { description, durationInSeconds }: LessonEntity,
-        { title, isCompleted }: SectionContentEntity
+        { title, completeState }: SectionContentEntity
     ) => {
         return (
             <>
                 <div>
-                    {   
-                        section.unlocked ?
-                            (
-                                isCompleted? (
-                                    <CheckCircleIcon className="w-6 h-6 text-success" />
-                                ) : (
-                                    <VideoIcon className="w-6 h-6 text-primary" strokeWidth={3 / 2} />
-                                )) : <LockClosedIcon className="w-6 h-6 text-primary"/>
-                    }
+                    {renderComplete(
+                        section.lockState ?? LockState.InProgress,
+                        completeState,
+                        <VideoIcon className="w-6 h-6 text-primary" strokeWidth={3 / 2} />
+                    )}
                 </div>
                 <div>
                     <div className="text-primary">
@@ -67,19 +98,19 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
 
     const renderQuiz = (
         _: QuizEntity,
-        { title, isCompleted }: SectionContentEntity
+        { title, completeState }: SectionContentEntity
     ) => {
         return (
             <>
                 <div>
-                    {
-                        section.unlocked ?  
-                            isCompleted ? (
-                                <CheckCircleIcon className="w-6 h-6 text-success" />
-                            ) : (
-                                <FileQuestionIcon className="w-6 h-6 text-primary" strokeWidth={3 / 2} />
-                            ): <LockClosedIcon className="w-6 h-6 text-primary"/>
-                    }       
+                    {renderComplete(
+                        section.lockState ?? LockState.InProgress,
+                        completeState,
+                        <FileQuestionIcon
+                            className="w-6 h-6 text-primary"
+                            strokeWidth={3 / 2}
+                        />
+                    )}
                 </div>
                 <div>
                     <div className="text-primary">
@@ -93,19 +124,19 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
 
     const renderResource = (
         resource: ResourceEntity,
-        { title, isCompleted }: SectionContentEntity
+        { title, completeState }: SectionContentEntity
     ) => {
         return (
             <>
                 <div>
-                    {
-                        section.unlocked ?  
-                            isCompleted? (
-                                <CheckCircleIcon className="w-6 h-6 text-success" />
-                            ) : (
-                                <PackageIcon className="w-6 h-6 text-primary" strokeWidth={3 / 2} />
-                            ) : <LockClosedIcon className="w-6 h-6 text-primary"/>
-                    }
+                    {renderComplete(
+                        section.lockState ?? LockState.InProgress,
+                        completeState,
+                        <PackageIcon
+                            className="w-6 h-6 text-primary"
+                            strokeWidth={3 / 2}
+                        />
+                    )}
                 </div>
                 <div>
                     <div className="text-primary">
@@ -129,13 +160,13 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
     }
 
     return (
-        <div onClick={onPress}
-            className={`cursor-pointer flex gap-3 p-3 px-4 z-10 ${!differentFromThisSection ? "bg-content2" : ""
+        <div
+            onClick={onPress}
+            className={`cursor-pointer flex gap-3 p-3 px-4 z-10 ${
+                !differentFromThisSection ? "bg-content3" : ""
             }`}
         >
-            <div className="flex gap-3">
-                {renderContent(sectionContent)}
-            </div>
+            <div className="flex gap-3">{renderContent(sectionContent)}</div>
         </div>
     )
 }

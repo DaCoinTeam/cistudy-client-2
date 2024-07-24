@@ -11,9 +11,10 @@ import {
 } from "@nextui-org/react"
 import React, { useContext, useEffect, useMemo, useState } from "react"
 import { ContentDetailsContext } from "../../_hooks"
-import { getSetValues, sortByPosition } from "@common"
+import { LockState, getSetValues, sortByPosition } from "@common"
 import { SectionContentItem } from "./SectionContentItem"
 import { CheckCircleIcon, LockClosedIcon } from "@heroicons/react/24/outline"
+import { CheckCircleIcon as SolidCheckCircleIcon } from "@heroicons/react/24/solid"
 
 interface SectionsCardProps {
   className?: string;
@@ -58,30 +59,49 @@ export const SectionsCard = (props: SectionsCardProps) => {
         setSelectedKeys(new Set(values))
     }
 
+    const renderLock = (lockState: LockState) => {
+        const map: Record<LockState, JSX.Element> = {
+            [LockState.Completed]: (
+                <SolidCheckCircleIcon className="w-6 h-6 text-primary" />
+            ),
+            [LockState.InProgress]: (
+                <CheckCircleIcon className="w-6 h-6 text-primary" />
+            ),
+            [LockState.Locked]: <LockClosedIcon className="w-6 h-6 text-primary" />,
+        }
+        return map[lockState]
+    }
+
     const renderSections = () => {
         if (!sortedSections) return []
-        return sortedSections.map((section) => (
-            <AccordionItem
-                key={section.sectionId}
-                classNames={{
-                    content: "flex flex-col pt-0 pb-2",
-                    title: "font-bold text-primary",
-                    subtitle: "font-semibold text-sm",
-                    trigger: "!px-4",
-                }}
-                startContent={!section.unlocked ? <LockClosedIcon className="text-primary w-6 h-6"/> : <CheckCircleIcon className="w-6 h-6 text-primary"/>}
-                title={section.title}
-                subtitle={`${section.contents.length} contents`}
-            >
-                {section.contents.map((content) => (
-                    <SectionContentItem
-                        key={content.sectionContentId}
-                        section={section}
-                        sectionContent={content}
-                    />
-                ))}
-            </AccordionItem>
-        ))
+        return sortedSections.map((section) => {
+            return (
+                <AccordionItem
+                    key={section.sectionId}
+                    classNames={{
+                        base: `${
+                            section.sectionId === Array.from(selectedKeys).at(0)?.toString()
+                                ? "bg-content2"
+                                : null
+                        }`,
+                        content: "flex flex-col pt-0 pb-2",
+                        title: "font-bold text-primary",
+                        subtitle: "font-semibold text-sm",
+                        trigger: "!px-4",
+                    }}
+                    startContent={renderLock(section.lockState ?? LockState.InProgress)}
+                    title={section.title}
+                    subtitle={`${section.contents.length} contents`}
+                >
+                    {section.contents.map((content) => (
+                        <SectionContentItem
+                            key={content.sectionContentId}
+                            section={section}
+                            sectionContent={content}
+                        />
+                    ))}
+                </AccordionItem>
+            )})
     }
 
     return (
