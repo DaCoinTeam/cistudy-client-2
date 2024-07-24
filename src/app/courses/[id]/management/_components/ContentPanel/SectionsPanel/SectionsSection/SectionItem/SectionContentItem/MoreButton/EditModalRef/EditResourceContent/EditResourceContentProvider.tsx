@@ -3,37 +3,38 @@ import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext, useMemo } from "react"
 import * as Yup from "yup"
 import useSWRMutation, { SWRMutationResponse } from "swr/mutation"
-import { ErrorResponse, QuizQuestionEntity } from "@common"
+import { ErrorResponse, ResourceAttachmentEntity } from "@common"
 import { ManagementContext } from "../../../../../../../../../_hooks"
 import { RootContext } from "../../../../../../../../../../../../_hooks"
+import { DeepPartial } from "@apollo/client/utilities"
 
-interface EditQuizContentContextValue {
+interface EditResourceContentContextValue {
     formik: FormikProps<FormikValues>
     swrs: {
-        updateQuizSwrMutation: SWRMutationResponse<void, ErrorResponse, "UPDATE_QUIZ", unknown>
+        updateResourceSwrMutation: SWRMutationResponse<void, ErrorResponse, "UPDATE_RESOURCE", unknown>
     }
 }
 
-export const EditQuizContentContext = createContext<EditQuizContentContextValue | null>(
+export const EditResourceContentContext = createContext<EditResourceContentContextValue | null>(
     null
 )
 
 interface FormikValues {
-    questions: Array<QuizQuestionEntity>
+    attachments: Array<DeepPartial<ResourceAttachmentEntity>>
 }
 
 const initialValues: FormikValues = {
-    questions: []
+    attachments: []
 }
 
 const WrappedFormikProvider = ({ formik, children, swrs }: {
     formik: FormikProps<FormikValues>;
     children: ReactNode;
     swrs: {
-        updateQuizSwrMutation: SWRMutationResponse<void, ErrorResponse, "UPDATE_QUIZ", unknown>
+        updateResourceSwrMutation: SWRMutationResponse<void, ErrorResponse, "UPDATE_RESOURCE", unknown>
     }
 }) => {
-    const editQuizContentContextValue: EditQuizContentContextValue = useMemo(
+    const editResourceContentContextValue: EditResourceContentContextValue = useMemo(
         () => ({
             formik,
             swrs
@@ -42,9 +43,9 @@ const WrappedFormikProvider = ({ formik, children, swrs }: {
     )
     
     return (
-        <EditQuizContentContext.Provider value={editQuizContentContextValue}>
+        <EditResourceContentContext.Provider value={editResourceContentContextValue}>
             <Form onSubmit={formik.handleSubmit}>{children}</Form>
-        </EditQuizContentContext.Provider>
+        </EditResourceContentContext.Provider>
     )
 }
 
@@ -55,8 +56,8 @@ export const EditQuizContentProvider = ({ children }: { children: ReactNode }) =
 
     const { notify } = useContext(RootContext)!
 
-    const updateQuizSwrMutation = useSWRMutation(
-        "UPDATE_QUIZ",
+    const updateResourceSwrMutation = useSWRMutation(
+        "UPDATE_RESOURCE",
         async (_: string, { arg } : {arg : unknown }) => {
             //return await updateQiz(arg)
         }
@@ -93,7 +94,7 @@ export const EditQuizContentProvider = ({ children }: { children: ReactNode }) =
         }}
         >
             {(formik) => (
-                <WrappedFormikProvider formik={formik} swrs={{updateQuizSwrMutation}}>
+                <WrappedFormikProvider formik={formik} swrs={{updateResourceSwrMutation}}>
                     {children}
                 </WrappedFormikProvider>
             )}

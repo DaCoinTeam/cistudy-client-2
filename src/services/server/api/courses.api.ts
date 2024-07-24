@@ -5,10 +5,10 @@ import { SectionContentType } from "@common"
 const BASE_URL = `${ENDPOINT_API}/courses`
 
 export interface CreateCourseOutput {
-    message: string;
-    others: {
-      courseId: string;
-    }
+  message: string;
+  others: {
+    courseId: string;
+  };
 }
 
 export const createCourse = async (): Promise<CreateCourseOutput> => {
@@ -270,7 +270,7 @@ export interface CreateSectionContentInput {
 
 export interface CreateSectionContentOutput {
   message: string;
-} 
+}
 
 export const createSectionContent = async (
     input: CreateSectionContentInput
@@ -437,4 +437,38 @@ export const markContentComplete = async (
     const { data } = input
     const url = `${BASE_URL}/mark-content-complete`
     return await authAxios.post(url, data)
+}
+
+export interface UpdateResourceInput {
+  data: {
+    resourceId: string;
+    description?: string;
+  };
+  files: Array<File>;
+}
+
+export interface UpdateResourceOutput {
+  message: string;
+}
+
+export const updateResource = async (
+    input: UpdateResourceInput
+): Promise<UpdateResourceOutput> => {
+    const { data, files } = input
+
+    const url = `${BASE_URL}/update-resource`
+    const formData = new FormData()
+
+    formData.append("data", JSON.stringify(data))
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
+        }
+    }
+
+    return await authAxios.patch(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
 }
