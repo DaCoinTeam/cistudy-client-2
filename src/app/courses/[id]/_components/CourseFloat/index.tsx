@@ -72,7 +72,7 @@ export const CourseFloat = () => {
     const path = usePathname()
     const router = useRouter()
     const onEnterCoursePress = () => router.push(`${path}/home`)
-    const onEnterManageCoursePress = () => router.push("/management")
+    const onEnterManageCoursePress = () => router.push(`${path}/management`)
 
     return (
         <Card

@@ -15,7 +15,7 @@ export const UploadButton = (props: UploadButtonProps) => {
 
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
-    const { data : courseManagement, mutate } = courseManagementSwr
+    const { data : courseManagement, mutate, isLoading } = courseManagementSwr
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files
@@ -47,9 +47,10 @@ export const UploadButton = (props: UploadButtonProps) => {
                 color="secondary"
                 onPress={onPress}
                 className={`${className}`}
-                startContent={<ArrowUpTrayIcon height={20} width={20} />}
+                startContent={isLoading? "":<ArrowUpTrayIcon height={20} width={20} /> }
+                isLoading={isLoading}
             >
-          Upload
+                {isLoading? "Uploading" : "Upload"}
             </Button>
             <input
                 type="file"

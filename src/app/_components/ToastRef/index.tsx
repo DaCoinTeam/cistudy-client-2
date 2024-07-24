@@ -90,5 +90,5 @@ export const ToastRef = forwardRef<ToastRefSelectors>((_, ref) => {
         notify,
     }))
 
-    return <Toaster position="top-right" />
+    return <Toaster position="bottom-right" />
 })
