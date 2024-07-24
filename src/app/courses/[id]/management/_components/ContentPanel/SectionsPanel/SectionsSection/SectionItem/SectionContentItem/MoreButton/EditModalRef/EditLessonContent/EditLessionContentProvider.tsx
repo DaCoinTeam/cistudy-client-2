@@ -1,99 +1,116 @@
 "use client"
 import { Form, Formik, FormikProps } from "formik"
-import React, { ReactNode, createContext, useContext, useMemo } from "react"
+import React, { ReactNode, createContext, useContext, useEffect, useMemo } from "react"
 import * as Yup from "yup"
-import useSWRMutation, { SWRMutationResponse } from "swr/mutation"
-import { ErrorResponse, QuizQuestionEntity } from "@common"
 import { ManagementContext } from "../../../../../../../../../_hooks"
 import { RootContext } from "../../../../../../../../../../../../_hooks"
+import { updateLesson } from "@services"
+import { SectionContentItemContext } from "../../.."
+import { ToastType } from "../../../../../../../../../../../../_components"
 
-interface EditQuizContentContextValue {
+interface EditLessonContentContextValue {
     formik: FormikProps<FormikValues>
-    swrs: {
-        updateQuizSwrMutation: SWRMutationResponse<void, ErrorResponse, "UPDATE_QUIZ", unknown>
-    }
 }
 
-export const EditQuizContentContext = createContext<EditQuizContentContextValue | null>(
+export const EditLessonContentContext = createContext<EditLessonContentContextValue | null>(
     null
 )
 
 interface FormikValues {
-    questions: Array<QuizQuestionEntity>
+    title: string,
+    description: string,
+    lessonVideo?: File
 }
 
 const initialValues: FormikValues = {
-    questions: []
+    title: "",
+    description: "",
 }
 
-const WrappedFormikProvider = ({ formik, children, swrs }: {
+const WrappedFormikProvider = ({ formik, children }: {
     formik: FormikProps<FormikValues>;
     children: ReactNode;
-    swrs: {
-        updateQuizSwrMutation: SWRMutationResponse<void, ErrorResponse, "UPDATE_QUIZ", unknown>
-    }
 }) => {
-    const editQuizContentContextValue: EditQuizContentContextValue = useMemo(
+
+    
+    const { props } = useContext(SectionContentItemContext)!
+    const { sectionContent } = props
+    const { lesson, title } = sectionContent
+    const { description } = lesson
+
+    useEffect(() => {
+        if (!title) return
+        formik.setFieldValue("title", title)
+    }, [
+        title
+    ])
+
+    useEffect(() => {
+        if (!description) return
+        formik.setFieldValue("description", description)
+    }, [
+        description
+    ])
+
+    const editLessonContentContextValue: EditLessonContentContextValue = useMemo(
         () => ({
-            formik,
-            swrs
+            formik
         }),
-        [formik, swrs]
+        [formik]
     )
     
     return (
-        <EditQuizContentContext.Provider value={editQuizContentContextValue}>
+        <EditLessonContentContext.Provider value={editLessonContentContextValue}>
             <Form onSubmit={formik.handleSubmit}>{children}</Form>
-        </EditQuizContentContext.Provider>
+        </EditLessonContentContext.Provider>
     )
 }
 
-export const EditQuizContentProvider = ({ children }: { children: ReactNode }) => {
+export const EditLessonContentProvider = ({ children }: { children: ReactNode }) => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { mutate } = courseManagementSwr
 
     const { notify } = useContext(RootContext)!
 
-    const updateQuizSwrMutation = useSWRMutation(
-        "UPDATE_QUIZ",
-        async (_: string, { arg } : {arg : unknown }) => {
-            //return await updateQiz(arg)
-        }
-    )
+    const { props } = useContext(SectionContentItemContext)!
+    const { sectionContent } = props
+    const { sectionContentId } = sectionContent
 
     return (
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({})
         }
-        onSubmit={async ({ questions }) => {
-            //try {
-            //     await trigger({
-            //         email,
-            //         password
-            //     })
-            //     notify!({
-            //         data: {
-            //             message: "Signed in successfully!"
-            //         },
-            //         type: ToastType.Success
-            //     })
-            //     await mutate()
-            //     onClose()
-            // } catch (ex) {
-            //     const { message } = ex as ErrorResponse
-            //     notify!({
-            //         data: {
-            //             error: message as string
-            //         },
-            //         type: ToastType.Error
-            //     })
-            //}
+        onSubmit={async ({ title, description, lessonVideo }) => {
+            const files: Array<File> = []
+            let lessonVideoIndex: number | undefined
+
+            if (lessonVideo) {
+                lessonVideoIndex = 0
+                files.push(lessonVideo)
+            }
+
+            const { message } = await updateLesson({
+                data: {
+                    lessonId: sectionContentId,
+                    title,
+                    lessonVideoIndex,
+                    description
+                },
+                files
+            })
+
             await mutate()
+            notify!({
+                data: {
+                    message
+                },
+                type: ToastType.Success
+            })
         }}
         >
             {(formik) => (
-                <WrappedFormikProvider formik={formik} swrs={{updateQuizSwrMutation}}>
+                <WrappedFormikProvider formik={formik}>
                     {children}
                 </WrappedFormikProvider>
             )}

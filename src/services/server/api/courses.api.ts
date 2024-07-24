@@ -184,9 +184,13 @@ export interface UpdateLessonInput {
   files?: Array<File>;
 }
 
+export interface UpdateLessonOutput {
+  message: string
+}
+
 export const updateLesson = async (
     input: UpdateLessonInput
-): Promise<string> => {
+): Promise<UpdateLessonOutput> => {
     const { data, files } = input
     const url = `${BASE_URL}/update-lesson`
     const formData = new FormData()
@@ -442,9 +446,10 @@ export const markContentComplete = async (
 export interface UpdateResourceInput {
   data: {
     resourceId: string;
+    title?: string;
     description?: string;
   };
-  files: Array<File>;
+  files?: Array<File>;
 }
 
 export interface UpdateResourceOutput {
@@ -471,4 +476,24 @@ export const updateResource = async (
             "Content-Type": "multipart/form-data",
         },
     })
+}
+
+export interface DeleteResourceAttachmentInput {
+  data: {
+    resourceAttachmentId: string;
+  };
+}
+
+export interface DeleteResourceAttachmentOutput {
+  message: string;
+}
+
+export const deleteResourceAttachment = async (
+    input: DeleteResourceAttachmentInput
+): Promise<DeleteResourceAttachmentOutput> => {
+    const { data } = input
+    const { resourceAttachmentId } = data
+    const url = `${BASE_URL}/delete-resource-attachment/${resourceAttachmentId}`
+
+    return await authAxios.delete(url)
 }
