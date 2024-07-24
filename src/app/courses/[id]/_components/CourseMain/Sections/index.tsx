@@ -56,7 +56,7 @@ export const Sections = () => {
     }
 
     const renderQuiz = (
-        { }: QuizEntity,
+        _: QuizEntity,
         { title }: SectionContentEntity
     ) => {
         return (
@@ -75,7 +75,7 @@ export const Sections = () => {
     }
 
     const renderResource = (
-        resource: ResourceEntity,
+        _: ResourceEntity,
         { title }: SectionContentEntity
     ) => {
         return (

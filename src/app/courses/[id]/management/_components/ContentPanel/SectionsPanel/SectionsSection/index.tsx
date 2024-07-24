@@ -22,6 +22,7 @@ export const SectionsSection = (props: SectionsSectionProps) => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data: courseManagement } = courseManagementSwr
+    
     const handleSortSection = (sections: Array<SectionEntity>) => {
         if(!sections) return []
         return sections.sort((prev: SectionEntity, next: SectionEntity) => {
