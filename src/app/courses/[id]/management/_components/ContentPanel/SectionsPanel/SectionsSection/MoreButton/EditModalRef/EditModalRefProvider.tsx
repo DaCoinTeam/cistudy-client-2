@@ -11,6 +11,8 @@ import React, {
 import { updateSection } from "@services"
 import { ManagementContext } from "../../../../../../_hooks"
 import { MoreButtonContext } from ".."
+import { RootContext } from "../../../../../../../../../_hooks"
+import { ToastType } from "../../../../../../../../../_components"
 
 interface EditModalRefContextValue {
   formik: FormikProps<FormikValues>;
@@ -84,6 +86,7 @@ export const EditModalRefProvider = ({
 }: {
   children: ReactNode
 }) => {
+    const {notify} = useContext(RootContext)!
     const { props } = useContext(MoreButtonContext)!
     const { section } = props
     const { sectionId } = section
@@ -96,7 +99,7 @@ export const EditModalRefProvider = ({
         <Formik
             initialValues={initialValues}
             onSubmit={async ({ title }, { setFieldValue }) => {
-                await updateSection({
+                const {message} = await updateSection({
                     data: {
                         sectionId,
                         title,
@@ -104,6 +107,12 @@ export const EditModalRefProvider = ({
                 })
                 setFieldValue("titlePrevious", title)
                 await mutate()
+                notify!({
+                    data: {
+                        message
+                    },
+                    type: ToastType.Success
+                })
             }}
         >
             {(formik) => (

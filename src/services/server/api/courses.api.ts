@@ -288,9 +288,13 @@ export interface UpdateSectionInput {
   };
 }
 
+export interface UpdateSectionOutput {
+  message: string;
+}
+
 export const updateSection = async (
     input: UpdateSectionInput
-): Promise<string> => {
+): Promise<UpdateSectionOutput> => {
     const { data } = input
     const url = `${BASE_URL}/update-section`
 
@@ -303,9 +307,13 @@ export interface DeleteSectionInput {
   };
 }
 
+export interface DeleteSectionOutput {
+  message: string;
+}
+
 export const deleteSection = async (
     input: DeleteSectionInput
-): Promise<string> => {
+): Promise<DeleteSectionOutput> => {
     const { data } = input
     const { sectionId } = data
     const url = `${BASE_URL}/delete-section/${sectionId}`
