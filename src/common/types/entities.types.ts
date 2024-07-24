@@ -268,6 +268,7 @@ export interface QuizQuestionAnswerEntity {
   createdAt: Date;
   updatedAt: Date;
   content: string;
+  position: number;
   isCorrect: boolean;
   attempt: QuizAttemptEntity;
 }
