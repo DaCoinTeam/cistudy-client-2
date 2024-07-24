@@ -15,6 +15,8 @@ import {
     ConfirmDeleteModalRefSelectors,
 } from "../../../../../../../../_shared"
 import { createContext, useContext, useMemo, useRef } from "react"
+import { RootContext } from "../../../../../../../../_hooks"
+import { ToastType } from "../../../../../../../../_components"
 
 interface MoreButtonProps {
   className?: string;
@@ -28,6 +30,7 @@ interface MoreButtonContextValue {
 export const MoreButtonContext = createContext<MoreButtonContextValue | null>(null)
 
 export const MoreButton = (props: MoreButtonProps) => {
+    const {notify} = useContext(RootContext)!
     const { className, section } = props
     const { sectionId } = section
 
@@ -46,12 +49,18 @@ export const MoreButton = (props: MoreButtonProps) => {
     const { mutate } = courseManagementSwr
 
     const onDeletePress = async () => {
-        await deleteSection({
+        const {message} = await deleteSection({
             data: {
                 sectionId,
             },
         })
         await mutate()
+        notify!({
+            data: {
+                message
+            },
+            type: ToastType.Success
+        })
     }
 
     const moreButtonContextValue : MoreButtonContextValue = useMemo(() => ({
