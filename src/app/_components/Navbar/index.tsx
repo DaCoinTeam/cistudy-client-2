@@ -1,33 +1,32 @@
 "use client"
-import React, { useContext } from "react"
 import {
-    Navbar as NextUINavbar,
+    Button,
+    Link,
     NavbarBrand,
     NavbarContent,
     NavbarItem,
-    Link,
-    Button,
+    Navbar as NextUINavbar
 } from "@nextui-org/react"
+import { useRouter } from "next/navigation"
+import { useContext } from "react"
+import { RootContext } from "../../_hooks"
 import { AuthModal } from "./AuthModal"
+import { Categories } from "./Categories"
+import { DarkModeSwitch } from "./DarkModeSwitch"
 import { NavbarContext, NavbarProvider } from "./NavbarProvider"
 import { ProfileMenu } from "./ProfileMenu"
-import { RootContext } from "../../_hooks"
-import { DarkModeSwitch } from "./DarkModeSwitch"
 import { SearchInput } from "./SearchInput"
-import { useRouter } from "next/navigation"
 
 interface NavbarProps {
   className?: string;
 }
 
 const WrappedNavbar = (props: NavbarProps) => {
-    const { className } = props 
-
+    const { className } = props
     const { disclosures, reducer } = useContext(NavbarContext)!
     const { authModalDisclosure } = disclosures
     const { onOpen } = authModalDisclosure
     const [, dispatch] = reducer
-
     const { swrs } = useContext(RootContext)!
     const { profileSwr } = swrs
     const { data: profile } = profileSwr
@@ -37,56 +36,64 @@ const WrappedNavbar = (props: NavbarProps) => {
         onOpen()
         dispatch({
             type: "SET_IS_SIGN_UP",
-            payload: false
+            payload: false,
         })
     }
     const onSignUpPress = () => {
         onOpen()
         dispatch({
             type: "SET_IS_SIGN_UP",
-            payload: true
+            payload: true,
         })
     }
-
+    
+    
     return (
         <>
-            <NextUINavbar className={className} classNames={{
-                wrapper: "!max-w-full px-12"
-            }}>
+            <NextUINavbar
+                className={className}
+                classNames={{
+                    wrapper: "!max-w-full px-12",
+                }}
+            >
                 <NavbarBrand>
-                    <div className="font-semibold text-primary cursor-pointer" role="button"  onClick={() => router.push("/")}> 
-                        <span className="text-primary">
-                        Ci
-                        </span>
-                        <span className="text-secondary">
-                        Study
-                        </span>
+                    <div
+                        className='font-semibold text-primary cursor-pointer'
+                        role='button'
+                        onClick={() => router.push("/")}
+                    >
+                        <span className='text-primary'>Ci</span>
+                        <span className='text-secondary'>Study</span>
                     </div>
                 </NavbarBrand>
-                <NavbarContent justify="center">
-                    <NavbarItem  className="px-4 cursor-pointer font-semibold" onClick={() => router.push("/courses")}>
+                <NavbarContent justify='center' className="space-x-4">
+                    {/* <Link className="font-medium text-base leading-8 text-gray-700 hover:text-primary cursor-pointer" onPress={handleCoursesPress}>  
                         Courses
-                    </NavbarItem>
-                    <SearchInput className="w-[500px]"/>
+                    </Link> */}
+                    <Categories/>
+                    <SearchInput className='w-[500px]' />
                 </NavbarContent>
-                <NavbarContent justify="end">
+                <NavbarContent justify='end'>
                     <NavbarItem>
-                        <DarkModeSwitch/>
+                        <DarkModeSwitch />
                     </NavbarItem>
                     {profile ? (
                         <NavbarItem>
                             <ProfileMenu />
                         </NavbarItem>
-                      
                     ) : (
                         <>
-                            <NavbarItem className="hidden lg:flex">
-                                <Link as="button" onPress={onSignInPress}>
-                  Sign In       
+                            <NavbarItem className='hidden lg:flex'>
+                                <Link as='button' onPress={onSignInPress}>
+                  Sign In
                                 </Link>
                             </NavbarItem>
                             <NavbarItem>
-                                <Button color="secondary" onPress={onSignUpPress} variant="flat">
+                                <Button
+                                    color='secondary'
+                                    onPress={onSignUpPress}
+                                    variant='flat'
+                                >
                   Sign Up
                                 </Button>
                             </NavbarItem>

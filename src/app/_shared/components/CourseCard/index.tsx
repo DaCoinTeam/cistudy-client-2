@@ -5,8 +5,14 @@ import { useRouter } from "next/navigation"
 import { getAssetUrl, getAvatarUrl } from "../../../../services/server"
 import { Stars } from "../../../_shared"
 
-export const CourseCard = (props: CourseEntity) => {
-    const { title, creator, thumbnailId, description, price, discountPrice, courseId, courseRatings, enableDiscount, courseTargets } = { ...props }
+interface CourseCardProps {
+    course: CourseEntity,
+    isBestSeller?: boolean
+}
+
+export const CourseCard = (props: CourseCardProps) => {
+    const {course, isBestSeller} = props
+    const { title, creator, thumbnailId, description, price, discountPrice, courseId, courseRatings, enableDiscount, courseTargets } = {...course}
     const { avatarId, avatarUrl, kind, username } = {
         ...creator,
     }
@@ -20,7 +26,8 @@ export const CourseCard = (props: CourseEntity) => {
                 <Tooltip
                     placement="right-start"
                     showArrow={true}
-                    shadow="sm"
+                    shadow="lg"
+                    className="max-w-64"
                     content={
                         <div className="p-4">
                             {/* <div className="text-small font-bold">The course included</div> */}
@@ -43,18 +50,18 @@ export const CourseCard = (props: CourseEntity) => {
                                 </div>
                                 
                             </div>
-                            <Spacer y={2} />
+                            <Spacer y={4} />
 
                             <div>
                                 <div className='text-base font-semibold'>What you will learn</div>
-                                <Spacer y={4} />
+                                <Spacer y={2} />
                                 <div className='items-start'>
-                                    {courseTargets?.map(({ courseTargetId, content }) => (
+                                    {courseTargets?.slice(0,3)?.map(({ courseTargetId, content }) => (
                                         <div key={courseTargetId} className='flex flex-row items-start mb-1'>
                                             <div className='w-5 h-5 mr-3'>
                                                 <CheckIcon />
                                             </div>
-                                            <div className='text-sm font-semibold'>{content}</div>
+                                            <div className='text-sm '>{content}</div>
                                         </div>
                                     ))}
                                 </div>
@@ -62,7 +69,7 @@ export const CourseCard = (props: CourseEntity) => {
                         </div>
                     }
                 >
-                    <Card   className="w-full hover:cursor-pointer"  isPressable onPress={() => router.push(`/courses/${courseId}`)}>
+                    <Card   className="w-full hover:cursor-pointer h-full"  isPressable onPress={() => router.push(`/courses/${courseId}`)}>
                         <div className="w-full relative z-30">
                             {thumbnailId && (
                                 <Image
@@ -74,19 +81,17 @@ export const CourseCard = (props: CourseEntity) => {
                                 />
                 
                             )}
-                            <div  className="absolute right-4 top-4 z-20">
-                                <Chip color="warning"  size="sm" startContent={<Award className="w-5 h-5"/>}  >Best Seller</Chip>
+                            {isBestSeller &&  <div  className="absolute right-4 top-4 z-20 flex">
+                                <Chip color="warning"  size="sm" startContent={<Award className="w-5 h-5"/>}>Best Seller</Chip>
                             </div>
+                            }
+                           
                         </div>
             
-                        <CardBody className="pb-1 w-full min-h-30">
-                            
-            
-                            <div className="text-lg mb-2 line-clamp-2"> {title} </div>
-                            <div className="text-sm text-foreground-400  line-clamp-2"> {description} </div>
-                        </CardBody>
-                        <CardFooter className="w-full flex-col " >
-                            <div className="flex justify-between gap-4 h-8 items-center mb-2 w-full ">
+                        <CardBody className="pb-1 w-full min-h-42 overflow-hidden">
+                            <div className="text-lg mb-2 line-clamp-2 min-h-13"> {title} </div>
+                            <div className="text-sm text-foreground-400  line-clamp-2 mb-4"> {description} </div>
+                            <div className="flex justify-between gap-4 h-7 items-center mb-2 w-full ">
                                 <div >
                                     <User classNames={{
                                         name: "text-sm"
@@ -110,7 +115,9 @@ export const CourseCard = (props: CourseEntity) => {
                                 </div>
                     
                             </div>
-                            <div className="flex justify-between w-full items-center h-12">
+                        </CardBody>
+                        <CardFooter className="w-full flex-col pt-0" >
+                            <div className="flex justify-between w-full items-center h-11">
                                 <div className="flex flex-col items-start">
                                     <div className="text-lg font-semibold text-primary p-0 ms-1">{enableDiscount ? discountPrice : price} STARCI</div>
                                     {enableDiscount && <div className="text-sm text-foreground-400 line-through ms-1">{price} STARCI</div>}

@@ -136,7 +136,7 @@ export interface CourseEntity {
   sections: Array<SectionEntity>;
   receivedWalletAddress?: string;
   courseRate: number;
-  courseRatings: CourseRatingDTO;
+  courseRatings: CourseRating;
   duration: number;
   //graphql
   numberOfEnrollments?: number;
@@ -156,7 +156,7 @@ export interface CourseTargetEntity {
   course: CourseEntity;
 }
 
-export interface CourseRatingDTO {
+export interface CourseRating {
   numberOf1StarRatings: number;
   numberOf2StarRatings: number;
   numberOf3StarRatings: number;
@@ -268,6 +268,7 @@ export interface QuizQuestionAnswerEntity {
   createdAt: Date;
   updatedAt: Date;
   content: string;
+  position: number;
   isCorrect: boolean;
   attempt: QuizAttemptEntity;
 }
@@ -415,6 +416,7 @@ export interface CategoryRelationEntity {
   categoryId: string;
   category: CategoryEntity;
   categoryParentId: string;
+  categoryParentRelations: Array<CategoryRelationEntity>;
   categoryParent: CategoryEntity;
   createdAt: Date;
   updatedAt: Date;

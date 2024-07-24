@@ -1,30 +1,42 @@
 "use client"
 import { CourseEntity } from "@common"
-import { CircularProgress, Divider, Pagination, Spacer, Tab, Tabs, User } from "@nextui-org/react"
-import { getAssetUrl, getAvatarUrl } from "@services"
+import {
+    CircularProgress,
+    Pagination,
+    Spacer,
+    Tab,
+    Tabs
+} from "@nextui-org/react"
 import { Grid3X3Icon, List } from "lucide-react"
-import { useRouter } from "next/navigation"
-import { useContext, useMemo } from "react"
+import { useSearchParams } from "next/navigation"
+import { useContext, useMemo, useState } from "react"
 import InfiniteScroll from "react-infinite-scroller"
-import { CardListHorizontalSkeleton, CardListSkeleton, CourseCardHorizontal, InteractiveThumbnail, Stars } from "../../../_shared"
-import { CourseCard } from "../../../_shared/components/CourseCard" 
-import { AllCoursesContext, COLUMNS_PER_PAGE, useAllCoursesReducer } from "../../_hooks"
+import {
+    CardListHorizontalSkeleton,
+    CardListSkeleton,
+    CourseCardHorizontal
+} from "../../../_shared"
+import { CourseCard } from "../../../_shared/components/CourseCard"
+import {
+    AllCoursesContext,
+    COLUMNS_PER_PAGE
+} from "../../_hooks"
 
 interface InfiniteCoursesScrollerProps {
-    className?: string
+  className?: string;
 }
 
-export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => {
-    const reducer = useAllCoursesReducer()
-
-    const [state, dispatch] = reducer
-    const { viewType } = state
-
+export const InfiniteCoursesScroller = (
+    props: InfiniteCoursesScrollerProps
+) => {
+    const [viewType, setViewType] = useState<"grid" | "list">("grid")
     const { className } = props
     const { swrs } = useContext(AllCoursesContext)!
     const { coursesSwr } = swrs
     const { data, size, setSize, isValidating, isLoading } = coursesSwr
-    const router = useRouter()
+    const searchParams = useSearchParams()
+    const searchValue = searchParams.get("searchValue")
+
     const onLoadMore = () => {
         setSize(size + 1)
     }
@@ -41,14 +53,13 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
             coursesReturn.push(...results)
         })
         return coursesReturn
-        
     }, [data])
-    
-    const getCoursesPage = useMemo(() => {
+
+    const getCoursesByPage = useMemo(() => {
         if (!data) return []
         const coursesReturn: Array<CourseEntity> = []
         const results = data[size - 1]?.results
-        if(results) coursesReturn.push(...results)
+        if (results) coursesReturn.push(...results)
         return coursesReturn
     }, [data])
 
@@ -57,83 +68,117 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
         const last = data.at(-1)
         if (!last) return 0
         return Math.ceil(last.metadata.count / COLUMNS_PER_PAGE)
-    }, [data]) 
+    }, [data])
 
     return (
         <div className={`${className}`}>
-
             <div>
                 <Tabs
-                    size="md"
-                    aria-label="Tabs"
+                    size='md'
+                    aria-label='Tabs'
                     selectedKey={viewType.toString()}
                     onSelectionChange={() => {
-                        dispatch({
-                            type: "SET_VIEW_TYPE",
-                            payload: viewType === "grid" ? "list" : "grid"
-                        })
+                        setViewType(viewType === "grid" ? "list" : "grid")
                     }}
-                    className="mb-2"
-                    variant="underlined"
+                    className='mb-2'
+                    variant='underlined'
                 >
-                    <Tab key="grid"  
+                    <Tab
+                        key='grid'
                         title={
-                            <div className="flex items-center space-x-2">
-                                <Grid3X3Icon size={20} className="cursor-pointer text-primary" onClick={() => {
-                                    dispatch({
-                                        type: "SET_VIEW_TYPE",
-                                        payload: "grid" 
-                                    })
-                                }} />
+                            <div className='flex items-center space-x-2'>
+                                <Grid3X3Icon
+                                    size={20}
+                                    className='cursor-pointer text-primary'
+                                    onClick={() => {
+                                        setViewType("grid")
+                                    }}
+                                />
                                 <span>Grid</span>
                             </div>
-                        }>
+                        }
+                    >
                         <div>
-                            {isLoading ? <CardListSkeleton/> : (
-
-                                <div className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-6">
-                                    {getCoursesPage.map((course)  => (
-                                        <div key={course.courseId}  >
-                                            <CourseCard {...course}/>
+                            {isLoading ? (
+                                <CardListSkeleton />
+                            ) : (
+                                <div className='grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-6'>
+                                    {getCoursesByPage.map((course) => (
+                                        <div key={course.courseId}>
+                                            <CourseCard course={course} />
                                         </div>
-                                    )) }
-
+                                    ))}
                                 </div>
                             )}
+                            {getCoursesByPage.length == 0 && !isLoading ? (
+                                <div>
+                                    <div className='text-2xl text-primary font-semibold mb-4'>
+                    Sorry we could not find any courses with the result of
+                    &quot;{searchValue}&quot;
+                                    </div>
+                                    <div className='text-lg font-medium'>
+                    Try adjusting your search. Here are some ideas:
+                                    </div>
+                                    <Spacer y={2}/>
 
-                            <div className="mt-16">
-                                {getPages ? <Pagination initialPage={1} total={getPages}  onChange={onLoadPage} color="secondary" /> : null
-                                }
+                                    <ul className='flex flex-col'>
+                                        <li> &#x2022; Make sure all words are spelled correctly</li>
+                                        <Spacer y={2}/>
+
+                                        <li>&#x2022; Try different search terms</li>
+                                        <Spacer y={2}/>
+
+                                        <li> &#x2022; Try more general search terms</li>
+                                    </ul>
+                                </div>
+                            ) : (
+                                <></>
+                            )}
+
+                            <div className='mt-16'>
+                                {getPages ? (
+                                    <Pagination
+                                        initialPage={1}
+                                        total={getPages}
+                                        onChange={onLoadPage}
+                                        color='secondary'
+                                    />
+                                ) : null}
                             </div>
-
                         </div>
                     </Tab>
-                    <Tab key="list" title={
-                        <div className="flex items-center space-x-2">
-                            <List size={20} className="cursor-pointer text-primary" onClick={() => {
-                                dispatch({
-                                    type: "SET_VIEW_TYPE",
-                                    payload: "list" 
-                                })
-                            }} />
-                            <span>List</span>
-                        </div>
-                    }>
+                    <Tab
+                        key='list'
+                        title={
+                            <div className='flex items-center space-x-2'>
+                                <List
+                                    size={20}
+                                    className='cursor-pointer text-primary'
+                                    onClick={() => {
+                                        setViewType("list")
+                                    }}
+                                />
+                                <span>List</span>
+                            </div>
+                        }
+                    >
                         <InfiniteScroll
-                            className="flex flex-col gap-6"
+                            className='flex flex-col gap-6'
                             pageStart={0}
                             initialLoad={false}
                             loadMore={onLoadMore}
                             hasMore={size < getPages && !isValidating}
-                            loader={<CircularProgress key={0} aria-label="Loading..." />}
+                            loader={<CircularProgress key={0} aria-label='Loading...' />}
                         >
-                            {isLoading ? <CardListHorizontalSkeleton/> : (
+                            {isLoading ? (
+                                <CardListHorizontalSkeleton />
+                            ) : (
                                 getCourses.map((course) => (
                                     <CourseCardHorizontal key={course.courseId} {...course} />
-                                )))}
+                                ))
+                            )}
                         </InfiniteScroll>
                     </Tab>
-
                 </Tabs>
                 {/* <div>
                     <Button className={`${className} bg-content2`} isIconOnly>
@@ -143,8 +188,6 @@ export const InfiniteCoursesScroller = (props: InfiniteCoursesScrollerProps) => 
                         <Filter size={20} strokeWidth={3/2} />
                     </Button>
                 </div> */}
-                
-            
             </div>
         </div>
     )

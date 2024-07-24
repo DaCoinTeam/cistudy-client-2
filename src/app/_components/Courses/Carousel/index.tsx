@@ -6,14 +6,15 @@ import EmblaCarousel from "./_component"
 import { CourseEntity } from "@common"
 
 type CarouselProps = {
-    courses: CourseEntity[]
+    courses: CourseEntity[],
+    isBestSeller?: boolean
 }
 export const Carousel = (props: CarouselProps) => {
     const OPTIONS: EmblaOptionsType = { align: "start" }
-    const {courses} = props
+    const {courses, isBestSeller} = props
     return (
         <div>
-            <EmblaCarousel  slides={courses} options={OPTIONS} />
+            <EmblaCarousel  slides={courses} isBestSeller={isBestSeller} options={OPTIONS} />
         </div>
     )
 }
