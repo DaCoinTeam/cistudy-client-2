@@ -11,17 +11,16 @@ export const SearchInput = (props: SearchInputProps) => {
     const { className } = props
     const { formik, swrs, reducer } = useContext(RootContext)!
     const [state, dispatch] = reducer
-    const {categoryFilter} = state
+    const { categoryFilter } = state
     const { topicsSwr } = swrs
     const { data: topics } = topicsSwr
 
     const onValueChange = (value: string) => {
-        console.log("value", value)
         formik.setFieldValue("searchValue", value)
     }
     const onSubmit = () => {
-        if(categoryFilter?.length > 0) {
-            dispatch({type: "RESET_CATEGORY_FILTER"})
+        if (categoryFilter?.length > 0) {
+            dispatch({ type: "RESET_CATEGORY_FILTER" })
         }
 
         formik.submitForm()
@@ -34,9 +33,7 @@ export const SearchInput = (props: SearchInputProps) => {
         onValueChange(topicName)
         onSubmit()
     }
-    const findNonDuplicatedTopics = (
-        arr: CategoryEntity[]
-    ): CategoryEntity[] => {
+    const findNonDuplicatedTopics = (arr: CategoryEntity[]): CategoryEntity[] => {
         const nameToCategoryMap = new Map<string, CategoryEntity>()
 
         arr.forEach((category) => {
@@ -50,7 +47,11 @@ export const SearchInput = (props: SearchInputProps) => {
     const handleSearchRelativeTopic = useMemo(() => {
         if (!formik.values.searchValue) return []
         if (topics && topics?.length !== 0) {
-            const result = topics.filter((topic) => topic.name.toLowerCase().includes(formik.values.searchValue.toLowerCase()))
+            const result = topics.filter((topic) =>
+                topic.name
+                    .toLowerCase()
+                    .includes(formik.values.searchValue.toLowerCase())
+            )
             return findNonDuplicatedTopics(result)
         }
         return []
@@ -60,17 +61,19 @@ export const SearchInput = (props: SearchInputProps) => {
         <Autocomplete
             classNames={{
                 // inputWrapper: "input-input-wrapper"
-                selectorButton: "hidden"
+                selectorButton: "hidden",
             }}
             value={formik.values.searchValue}
-            onValueChange={onValueChange}
+            onInputChange={onValueChange}
             className={`${className}`}
             placeholder='Type to search...'
             labelPlacement='outside'
             label=''
-            aria-label="Search Input"
+            aria-label='Search Input'
             onKeyDown={onKeyDown}
-            onSelectionChange={(value) => {if(value) onPressSearchItem(value.toString()) }}
+            onSelectionChange={(value) => {
+                if (value) onPressSearchItem(value.toString())
+            }}
             startContent={
                 <Link color='foreground' as='button' onPress={onSubmit}>
                     <HiMagnifyingGlass height={20} width={20} />
@@ -78,7 +81,11 @@ export const SearchInput = (props: SearchInputProps) => {
             }
         >
             {handleSearchRelativeTopic?.map((topic: CategoryEntity) => (
-                <AutocompleteItem aria-label="Autocomplete Item" key={topic?.name} className='capitalize' >
+                <AutocompleteItem
+                    aria-label='Autocomplete Item'
+                    key={topic?.name}
+                    className='capitalize'
+                >
                     {topic.name}
                 </AutocompleteItem>
             ))}

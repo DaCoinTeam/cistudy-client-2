@@ -8,16 +8,13 @@ import {
     CardHeader,
     Checkbox,
     Divider,
-    Image,
+    Link,
 } from "@nextui-org/react"
-import { getAssetUrl } from "@services"
-import { MdCategory } from "react-icons/md"
 import { FilterIcon, Hash, ListTree } from "lucide-react"
-import { useCallback, useContext, useMemo } from "react"
-import {
-    CourseFiltersProvider,
-} from "./CourseFiltersProvider"
+import { useContext, useEffect, useState } from "react"
+import { MdCategory } from "react-icons/md"
 import { RootContext } from "../../../_hooks"
+import { CourseFiltersProvider } from "./CourseFiltersProvider"
 
 interface CourseFiltersProps {
   className?: string;
@@ -26,10 +23,15 @@ interface CourseFiltersProps {
 export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
     const { className } = props
 
-    const { swrs } = useContext(RootContext)!
-    const { categoriesSwr } = swrs
+    const { swrs, reducer } = useContext(RootContext)!
+    const { categoriesSwr, topicsSwr } = swrs
     const { data } = categoriesSwr
 
+    const [state, dispatch] = reducer
+    const { categoryFilter } = state
+    const [currentCategory, setCurrentCategory] = useState<CategoryEntity | null>(
+        null
+    )
     const findNonDuplicatedCategories = (
         arr: CategoryEntity[]
     ): CategoryEntity[] => {
@@ -44,53 +46,147 @@ export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
         return Array.from(nameToCategoryMap.values())
     }
 
-    const getCategories = useCallback(() => {
-        const categories = {
-            level0: [] as Array<CategoryEntity>,
-            level1: [] as Array<CategoryEntity>,
-            level2: [] as Array<CategoryEntity>,
+    const [categoryLevel0, setCategoryLevel0] = useState<CategoryEntity[]>([])
+    const [categoryLevel1, setCategoryLevel1] = useState<CategoryEntity[]>([])
+    const [categoryLevel2, setCategoryLevel2] = useState<CategoryEntity[]>([])
+    const [removeCategory, setRemoveCategory] = useState<boolean>(false)
+    const initValue = (data: Array<CategoryEntity>) => {
+        let level0: Array<CategoryEntity> = []
+        let level1: Array<CategoryEntity> = []
+        let level2: Array<CategoryEntity> = []
+
+        if (data && data.length > 0) {
+            level0 = data;
+            (level1 = [
+                ...findNonDuplicatedCategories(
+                    data?.flatMap((category) =>
+                        category?.categoryParentRelations?.map(
+                            (subCategory) => subCategory.category
+                        )
+                    ) || []
+                ),
+            ]),
+            (level2 = [...findNonDuplicatedCategories(topicsSwr?.data || [])])
+        }
+        setCategoryLevel0(level0)
+        setCategoryLevel1(level1)
+        setCategoryLevel2(level2)
+    }
+    useEffect(() => {
+        initValue(data!)
+    }, [data?.length])
+
+    const handleCategory = ({ remove }: { remove: boolean }) => {
+        const subCategories: Array<CategoryEntity> = []
+        const topics: Array<CategoryEntity> = []
+
+        const processCategories = () => {
+            categoryFilter.flatMap((category) => {
+                if (
+                    category.level == 0 &&
+          category.categoryParentRelations.length > 0
+                ) {
+                    category.categoryParentRelations.flatMap((subCategory) =>
+                        subCategories.push(subCategory.category)
+                    )
+                }
+            })
+
+            subCategories.map((category) =>
+                category.categoryParentRelations.map((topic) =>
+                    topics.push(topic.category)
+                )
+            )
+            setCategoryLevel1(subCategories)
+            setCategoryLevel2(topics)
         }
 
-        const processCategory = (category: CategoryEntity, level: number) => {
-            if (!category) return
-
-            if (level === 0) categories.level0.push(category)
-            if (level === 1) categories.level1.push(category)
-            if (level === 2) categories.level2.push(category)
-
-            if (
-                category.categoryParentRelations &&
-        category.categoryParentRelations.length
-            ) {
-                category.categoryParentRelations.forEach((relation) => {
-                    if (!relation || !relation.category) return
-                    processCategory(relation.category, level + 1)
-                })
+        if (remove) {
+            if (categoryFilter.length == 0) {
+                initValue(data!)
+            } else {
+                processCategories()
             }
+        } else {
+            processCategories()
         }
-        if (data) {
-            data.forEach((category) => processCategory(category, 0))
-            categories.level1 = findNonDuplicatedCategories(categories.level1)
-            categories.level2 = findNonDuplicatedCategories(categories.level2)
+    }
+    const handleSubCategory = ({ remove }: { remove: boolean }) => {
+        const topics: Array<CategoryEntity> = []
+        const processSubCategories = () => {
+            categoryFilter.flatMap((category) => {
+                if (
+                    category.level == 1 &&
+          category.categoryParentRelations.length > 0
+                ) {
+                    category.categoryParentRelations.flatMap((top) =>
+                        topics.push(top.category)
+                    )
+                }
+            })
         }
+        if (remove) {
+            if (!(categoryFilter.find((c) => c.level == 1))) {
+                categoryFilter.map((category) => {
+                    category?.categoryParentRelations?.map((subCategory) =>
+                        subCategory?.category?.categoryParentRelations.map((topic) =>
+                            topics.push(topic.category)
+                        )
+                    )
+                })
+            } else {
+                processSubCategories()
+            }
+        } else {
+            processSubCategories()
+        } 
+        setCategoryLevel2(topics)
+           
+    }
 
-        return categories
-    }, [data])
-    const categories = useMemo(getCategories, [getCategories])
 
+    const handleCheckCategory = (category: CategoryEntity) => {
+        setCurrentCategory(category)
+        if (categoryFilter.find((c) => c === category)) {
+            const categoryIds: Array<CategoryEntity> = []
+            categoryIds.push(category)
+            category?.categoryParentRelations?.map(
+                (category) => {
+                    categoryIds.push(category.category)
+                    category?.category?.categoryParentRelations?.map(
+                        (category) => categoryIds.push(category.category)
+                    )
+                }
+            )
+            dispatch({ type: "REMOVE_CATEGORY_FILTER", payload: categoryIds })
+            setRemoveCategory(true)
+        } else {
+            dispatch({ type: "ADD_CATEGORY_FILTER", payload: category })
+            setRemoveCategory(false)
+        }
+    }
+    useEffect(() => {
+        if (removeCategory){
+            if (currentCategory?.level == 0) handleCategory({ remove: true })
+            else if (currentCategory?.level == 1) handleSubCategory({ remove: true })
+        } else {
+            if (currentCategory?.level == 0) handleCategory({ remove: false })
+            else if (currentCategory?.level == 1) handleSubCategory({ remove: false })
+        }
+     
+    }, [categoryFilter])
     return (
         <Card
             shadow='none'
             className={`${className} border border-divider rounded-medium h-fit w-[280px]`}
         >
-            <CardHeader className="p-4">
-                <FilterIcon size={20} className="text-primary mr-4" />
-                <div className="text-xl font-semibold">Filters</div>
+            <CardHeader className='p-4'>
+                <FilterIcon size={20} className='text-primary mr-4' />
+                <div className='text-xl font-semibold'>Filters</div>
             </CardHeader>
             <Divider />
             <CardBody className='p-0'>
                 <Accordion
-                    
                     selectionMode='multiple'
                     className='!px-0'
                     itemClasses={{
@@ -101,82 +197,88 @@ export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
                     defaultExpandedKeys={["categories"]}
                 >
                     <AccordionItem
-                        key="categories"
-                        aria-label="Categories"
-                        startContent={
-                            <MdCategory size={20} className="text-primary" />
-                        }
+                        key='categories'
+                        aria-label='Categories'
+                        startContent={<MdCategory size={20} className='text-primary' />}
                         title={
                             <div className='flex gap-3 items-center'>
                                 <div>Categories</div>
                                 <div className='text-foreground-400'>
-                                    {categories.level0.length ?? 0}
+                                    {categoryLevel0.length ?? 0}
                                 </div>
                             </div>
                         }
                     >
                         <div className='flex flex-col gap-3'>
-                            {categories.level0.map(({ categoryId, name }) => (
-                                <div key={categoryId}>
-                                    <Checkbox size='sm'>
-                                        <div>{name}</div>
+                            {categoryLevel0.map((category) => (
+                                <Link key={category.categoryId}>
+                                    <Checkbox
+                                        size='sm'
+                                        isSelected={categoryFilter.includes(category)}
+                                        onValueChange={() => handleCheckCategory(category)}
+                                    >
+                                        <div>{category.name}</div>
                                     </Checkbox>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </AccordionItem>
                     <AccordionItem
-                        key="subcategories"
-                        aria-label="Subcategories"
-                        startContent={
-                            <ListTree size={20} className="text-primary" />
-                        }
+                        key='subcategories'
+                        aria-label='Subcategories'
+                        startContent={<ListTree size={20} className='text-primary' />}
                         title={
                             <div className='flex gap-3 items-center'>
                                 <div>Subcategories</div>
                                 <div className='text-foreground-400'>
-                                    {categories.level1?.length ?? 0}
+                                    {categoryLevel1?.length ?? 0}
                                 </div>
                             </div>
                         }
                     >
                         <div className='flex flex-col gap-3'>
-                            {categories.level1?.map(({ categoryId, name }) => (
-                                <div key={categoryId}>
-                                    <Checkbox size='sm'>
-                                        <div>{name}</div>
+                            {categoryLevel1?.map((category) => (
+                                <Link key={category.categoryId}>
+                                    <Checkbox
+                                        size='sm'
+                                        isSelected={categoryFilter.includes(category)}
+                                        onValueChange={() => handleCheckCategory(category)}
+                                    >
+                                        <div>{category.name}</div>
                                     </Checkbox>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </AccordionItem>
                     <AccordionItem
-                        key="topics"
-                        aria-label="Topics"
-                        startContent={
-                            <Hash fontSize={20} className="text-primary" />
-                        }
+                        key='topics'
+                        aria-label='Topics'
+                        startContent={<Hash fontSize={20} className='text-primary' />}
                         title={
                             <div className='flex gap-3 items-center'>
                                 <div>Topics</div>
                                 <div className='text-foreground-400'>
-                                    {categories.level2?.length ?? 0}
+                                    {categoryLevel2?.length ?? 0}
                                 </div>
                             </div>
                         }
                     >
                         <div className='flex flex-col gap-3'>
-                            {categories.level2?.map(({ categoryId, name, imageId }) => (
-                                <div key={categoryId}>
-                                    <Checkbox size='sm'>
+                            {categoryLevel2?.map((category) => (
+                                <div key={category.categoryId}>
+                                    <Checkbox
+                                        size='sm'
+                                        isSelected={categoryFilter.includes(category)}
+                                        onValueChange={() => handleCheckCategory(category)}
+                                    >
                                         <div className='flex gap-2 items-center'>
-                                            <Image
+                                            {/* <Image
                                                 src={getAssetUrl(imageId)}
                                                 alt='topic'
                                                 height={14}
                                                 width={14}
-                                            />
-                                            <div>{name}</div>
+                                            /> */}
+                                            <div>{category.name}</div>
                                         </div>
                                     </Checkbox>
                                 </div>
@@ -193,7 +295,7 @@ export const CourseFilters = (props: CourseFiltersProps) => {
     const { className } = props
     return (
         <CourseFiltersProvider>
-            <CourseFiltersWrapped className={className}/>
+            <CourseFiltersWrapped className={className} />
         </CourseFiltersProvider>
     )
 }

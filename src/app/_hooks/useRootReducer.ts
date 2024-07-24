@@ -32,6 +32,14 @@ export interface SetCategoryFilterAction {
     type: "SET_CATEGORY_FILTER"
     payload: Array<CategoryEntity>
   }
+export interface AddCategoryFilterAction {
+    type: "ADD_CATEGORY_FILTER"
+    payload: CategoryEntity
+  }
+export interface RemoveCategoryFilterAction {
+    type: "REMOVE_CATEGORY_FILTER"
+    payload: Array<CategoryEntity>
+  }
 export interface ResetCategoryFilterAction {
     type: "RESET_CATEGORY_FILTER"
   }
@@ -40,6 +48,8 @@ export type RootAction =
     | SetMetamaskStarciBalanceAction
     | SetMetamaskStarci2BalanceAction
     | SetCategoryFilterAction
+    | AddCategoryFilterAction
+    | RemoveCategoryFilterAction
     | ResetCategoryFilterAction
 
 const initialState: RootState = {
@@ -91,9 +101,18 @@ export const reducer = (state: RootState = initialState, action: RootAction): Ro
     case "SET_CATEGORY_FILTER":
         return {
             ...state,
-            categoryFilter: action.payload
+            categoryFilter: action.payload as Array<CategoryEntity>
         }
-
+    case "ADD_CATEGORY_FILTER":
+        return {
+            ...state,
+            categoryFilter: [ ...state.categoryFilter, action.payload ]
+        }
+    case "REMOVE_CATEGORY_FILTER":
+        return {
+            ...state,
+            categoryFilter: state.categoryFilter.filter((c) => !action.payload.includes(c))
+        }
     case "RESET_CATEGORY_FILTER":
         return {
             ...state,
