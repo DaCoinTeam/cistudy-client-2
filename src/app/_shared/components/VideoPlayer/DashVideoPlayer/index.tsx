@@ -133,11 +133,11 @@ export const DashVideoPlayer = (props: DashVideoPlayerProps) => {
     return (
         <DashVideoPlayerContext.Provider value={dashVideoPlayerContextValue}>
             <div
-                className="w-full h-fit relative bg-content2 rounded-large overflow-hidden"
+                className="aspect-video relative bg-content2 rounded-large overflow-hidden"
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
-                <video className="w-full" ref={playerRef} aria-label="playback" />
+                <video className="h-full m-auto" ref={playerRef} aria-label="playback" />
                 <ControlBottom />
             </div>
         </DashVideoPlayerContext.Provider>

@@ -22,6 +22,7 @@ export const SectionsSection = (props: SectionsSectionProps) => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data: courseManagement } = courseManagementSwr
+
     const handleSortSection = (sections: Array<SectionEntity>) => {
         if(!sections) return []
         return sections.sort((prev: SectionEntity, next: SectionEntity) => {
@@ -42,14 +43,14 @@ export const SectionsSection = (props: SectionsSectionProps) => {
                 className="!px-0 gap-4"
                 itemClasses={{
                     base: "!shadow-none gap-4",
+                    title: "font-semibold text-primary"
                 }}
             >
                 {sections.map((section) => (
                     <AccordionItem
                         key={section.sectionId}
                         title={section.title}
-                        startContent={<MoreButton section={section} />}
-                        subtitle={"Add your lessons"}
+                        startContent={<MoreButton className="text-primary" section={section} />}
                         classNames={{
                             content: "flex flex-col gap-4 p-4",
                             heading: "!px-4"

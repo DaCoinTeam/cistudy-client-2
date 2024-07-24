@@ -1,10 +1,14 @@
 import { ENDPOINT_API } from "@config"
 import { authAxios } from "./axios-instances"
+import { SectionContentType } from "@common"
 
 const BASE_URL = `${ENDPOINT_API}/courses`
 
 export interface CreateCourseOutput {
-  courseId: string;
+    message: string;
+    others: {
+      courseId: string;
+    }
 }
 
 export const createCourse = async (): Promise<CreateCourseOutput> => {
@@ -257,6 +261,26 @@ export const createSection = async (
     return await authAxios.post(url, data)
 }
 
+export interface CreateSectionContentInput {
+  data: {
+    sectionId: string;
+    type: SectionContentType;
+  };
+}
+
+export interface CreateSectionContentOutput {
+  message: string;
+} 
+
+export const createSectionContent = async (
+    input: CreateSectionContentInput
+): Promise<CreateSectionContentOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/create-section-content`
+
+    return await authAxios.post(url, data)
+}
+
 export interface UpdateSectionInput {
   data: {
     sectionId: string;
@@ -264,9 +288,13 @@ export interface UpdateSectionInput {
   };
 }
 
+export interface UpdateSectionOutput {
+  message: string;
+}
+
 export const updateSection = async (
     input: UpdateSectionInput
-): Promise<string> => {
+): Promise<UpdateSectionOutput> => {
     const { data } = input
     const url = `${BASE_URL}/update-section`
 
@@ -279,9 +307,13 @@ export interface DeleteSectionInput {
   };
 }
 
+export interface DeleteSectionOutput {
+  message: string;
+}
+
 export const deleteSection = async (
     input: DeleteSectionInput
-): Promise<string> => {
+): Promise<DeleteSectionOutput> => {
     const { data } = input
     const { sectionId } = data
     const url = `${BASE_URL}/delete-section/${sectionId}`
@@ -386,5 +418,23 @@ export const finishQuizAttempt = async (
 ): Promise<FinishQuizAttemptOutput> => {
     const { data } = input
     const url = `${BASE_URL}/finish-quiz-attempt`
+    return await authAxios.post(url, data)
+}
+
+export interface MarkContentCompleteInput {
+  data: {
+    sectionContentId: string;
+  };
+}
+
+export interface MarkContentCompleteOutput {
+  message: string;
+}
+
+export const markContentComplete = async (
+    input: MarkContentCompleteInput
+): Promise<MarkContentCompleteOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/mark-content-complete`
     return await authAxios.post(url, data)
 }

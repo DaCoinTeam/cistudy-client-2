@@ -5,17 +5,17 @@ import { Button } from "@nextui-org/react"
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline"
 
 interface UploadButtonProps {
-    className? : string
+    className?: string
 }
 
 export const UploadButton = (props: UploadButtonProps) => {
-    const {className} = props 
+    const { className } = props
 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
-    const { data : courseManagement, mutate } = courseManagementSwr
+    const { data: courseManagement, mutate, isLoading } = courseManagementSwr
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files
@@ -47,9 +47,10 @@ export const UploadButton = (props: UploadButtonProps) => {
                 onPress={onPress}
                 color="secondary"
                 className={`${className}`}
-                startContent={<ArrowUpTrayIcon height={20} width={20} />}
+                startContent={isLoading ? "" : <ArrowUpTrayIcon height={20} width={20} />}
+                isLoading={isLoading}
             >
-          Upload
+                {isLoading ? "Uploading" : "Upload"}
             </Button>
             <input
                 type="file"

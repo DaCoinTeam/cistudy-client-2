@@ -104,11 +104,11 @@ export const Mp4VideoPlayer = (props: Mp4VideoPlayerProps) => {
     return (
         <Mp4VideoPlayerContext.Provider value={mp4VideoPlayerContextValue}>
             <div
-                className={`w-full h-fit relative bg-content2 rounded-large overflow-hidden ${className ?? ""}`}
+                className={`aspect-video relative bg-content2 rounded-large overflow-hidden ${className ?? ""}`}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
-                <video className="w-full" ref={playerRef} aria-label="Playback" />
+                <video className="h-full m-auto" ref={playerRef} aria-label="Playback" />
                 <ControlBottom />
             </div>
         </Mp4VideoPlayerContext.Provider>

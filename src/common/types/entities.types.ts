@@ -141,6 +141,10 @@ export interface CourseEntity {
   //graphql
   numberOfEnrollments?: number;
   enrolled?: boolean;
+  numberOfQuizzes?: number
+  numberOfLessons?: number
+  numberOfResources?: number
+
 }
 export interface CourseTargetEntity {
   courseTargetId: string;
@@ -180,7 +184,7 @@ export interface LessonEntity {
   accountProgresses: ProgressEntity;
   processStatus: ProcessStatus;
   videoType: VideoType;
-  durationInSeconds: number; 
+  durationInSeconds: number;
   createdAt: Date;
   updatedAt: Date;
   section: SectionEntity;
@@ -193,7 +197,6 @@ export interface ProgressEntity {
   progressId: string;
   account: AccountEntity;
   accountId: string;
-  isCompleted: boolean;
   lesson: LessonEntity;
   lessonId: string;
 }
@@ -201,6 +204,13 @@ export interface ProgressEntity {
 export enum SectionContentType {
   Lesson = "lesson",
   Quiz = "quiz",
+  Resource = "resource"
+}
+
+export enum CompleteState {
+  Completed = "completed",
+  Failed = "failed",
+  Undone = "undone"
 }
 
 export interface SectionContentEntity {
@@ -209,13 +219,18 @@ export interface SectionContentEntity {
   lessonId: string;
   title: string;
   quizId: string;
+  resourceId: string;
   type: SectionContentType;
+  accountProgresses: ProgressEntity;
   position: number;
   createdAt: Date;
   updatedAt: Date;
+  
   section: SectionEntity;
   lesson: LessonEntity;
+  resource: ResourceEntity;
   quiz: QuizEntity;
+  completeState: CompleteState;
 }
 
 export interface QuizEntity {
@@ -226,6 +241,8 @@ export interface QuizEntity {
   sectionContent: SectionContentEntity;
   highestScoreRecorded: number;
   totalNumberOfAttempts: number;
+  passingScore: number;
+  isPassed: boolean;
   lastAttemptScore: number;
   questions: Array<QuizQuestionEntity>;
   quizAttempts: QuizAttemptEntity;
@@ -239,6 +256,7 @@ export interface QuizQuestionEntity {
   updatedAt: Date;
   question: string;
   point: number;
+  position: number;
   answers: Array<QuizQuestionAnswerEntity>;
   questionMedias: Array<QuizQuestionMediaEntity>;
 }
@@ -318,6 +336,12 @@ export interface PostCommentReplyEntity {
   creator: AccountEntity;
 }
 
+export enum LockState {
+  Completed = "completed",
+  InProgress = "inProgress",
+  Locked = "locked"
+}
+
 export interface SectionEntity {
   sectionId: string;
   title: string;
@@ -326,16 +350,26 @@ export interface SectionEntity {
   createdAt: Date;
   course: CourseEntity;
   contents: Array<SectionContentEntity>;
+  //graphql
+  lockState?: LockState;
 }
 
 export interface ResourceEntity {
   resourceId: string;
-  name: string;
-  fileId: string;
-  lessonId: string;
-  createdAt: Date;
+  attachments: Array<ResourceAttachmentEntity>;
   updatedAt: Date;
   lesson: LessonEntity;
+  sectionContent: SectionContentEntity;
+}
+
+export interface ResourceAttachmentEntity {
+  resourceAttachmentId: string;
+  resourceId: string;
+  name: string;
+  fileId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  resource: ResourceEntity;
 }
 
 export interface SessionEntity {

@@ -4,14 +4,20 @@ import { Accordion, AccordionItem, Spacer } from "@nextui-org/react"
 import { CourseDetailsContext } from "../../../_hooks"
 
 import {
-    sortSections,
     LessonEntity,
     parseDuration,
     QuizEntity,
     SectionContentType,
     SectionContentEntity,
+    ResourceEntity,
+    sortByPosition,
 } from "@common"
-import { Clock2Icon, VideoIcon } from "lucide-react"
+import {
+    Clock2Icon,
+    FileQuestionIcon,
+    PackageIcon,
+    VideoIcon,
+} from "lucide-react"
 
 export const Sections = () => {
     const { swrs } = useContext(CourseDetailsContext)!
@@ -19,7 +25,7 @@ export const Sections = () => {
     const { data: course } = courseSwr
     const { sections } = { ...course }
 
-    const sortedSections = useMemo(() => sortSections(sections), [sections])
+    const sortedSections = useMemo(() => sortByPosition(sections ?? []), [sections])
 
     const renderLession = (
         { description, durationInSeconds }: LessonEntity,
@@ -27,47 +33,75 @@ export const Sections = () => {
     ) => {
         return (
             <>
-                <div> <VideoIcon className="w-7.5 h-7.5" strokeWidth={3/2}/></div>
-                {/* <InteractiveThumbnail
-                    isPressable
-                    src={getAssetUrl(thumbnailId)}
-                    className="w-40 h-fit"
-                /> */}
                 <div>
-                    <div className="flex gap-1 items-center text-primary">
-                        <div className="font-bold">Lession: </div>
-                        <div>{title}</div>
+                    <VideoIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                </div>
+                <div>
+                    <div className="text-primary">
+                        <span className="font-bold">Lesson: </span>
+                        <span>{title}</span>
                     </div>
                     <div className="flex gap-1 items-center">
-                        <Clock2Icon className="w-3 h-3" strokeWidth={3/2}/>
+                        <Clock2Icon className="w-3 h-3" strokeWidth={3 / 2} />
                         <div className="text-xs">
                             {parseDuration(durationInSeconds ?? 0)}
                         </div>
                     </div>
-                    <Spacer y={1}/>
-                    
-                    <div className="text-xs text-foreground-400">
-                        {description}
+                    <Spacer y={1} />
+
+                    <div className="text-xs text-foreground-400">{description}</div>
+                </div>
+            </>
+        )
+    }
+
+    const renderQuiz = (
+        _: QuizEntity,
+        { title }: SectionContentEntity
+    ) => {
+        return (
+            <>
+                <div>
+                    <FileQuestionIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                </div>
+                <div>
+                    <div className="text-primary">
+                        <span className="font-bold">Quiz: </span>
+                        <span>{title}</span>
                     </div>
                 </div>
             </>
         )
     }
 
-    const renderQuiz = (QUIZ: QuizEntity) => {
+    const renderResource = (
+        _: ResourceEntity,
+        { title }: SectionContentEntity
+    ) => {
         return (
             <>
-                <div>{/* <div className="font-bold text-primary">{title}</div> */}</div>
+                <div>
+                    <PackageIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                </div>
+                <div>
+                    <div className="text-primary">
+                        <span className="font-bold">Resource: </span>
+                        <span>{title}</span>
+                    </div>
+                </div>
             </>
         )
     }
 
     const renderContent = (content: SectionContentEntity) => {
-        const map: Record<SectionContentType, JSX.Element> = {
-            [SectionContentType.Lesson]: renderLession(content.lesson, content),
-            [SectionContentType.Quiz]: renderQuiz(content.quiz),
+        switch (content.type) {
+        case SectionContentType.Lesson:
+            return renderLession(content.lesson, content)
+        case SectionContentType.Quiz:
+            return renderQuiz(content.quiz, content)
+        case SectionContentType.Resource:
+            return renderResource(content.resource, content)
         }
-        return map[content.type]
     }
 
     return (
@@ -84,7 +118,7 @@ export const Sections = () => {
                     selectionMode="multiple"
                 >
                     {sortedSections
-                        ? sortedSections.map(({ sectionId, contents, title }) => (
+                        ? sortedSections.map(({ sectionId, contents, title }, index) => (
                             <AccordionItem
                                 key={sectionId}
                                 classNames={{
@@ -92,10 +126,10 @@ export const Sections = () => {
                                     subtitle: "font-semibold",
                                 }}
                                 aria-label="Sections"
-                                subtitle={`${contents.length} lessons`}
-                                title={title}
+                                subtitle={`${contents.length} contents`}
+                                title={`Section ${index+1}: ${title}`}
                             >
-                                {contents.map((sectionContent: SectionContentEntity) => (
+                                {sortByPosition(contents).map((sectionContent: SectionContentEntity) => (
                                     <div
                                         key={sectionContent.sectionContentId}
                                         className="flex gap-3"

@@ -8,9 +8,13 @@ import { useRouter } from "next/navigation"
 export const CreateCourseButton = () => {
     const router = useRouter()
 
-    const onPress = async () => {
-        const { courseId } = await createCourse()
-        router.push(`/courses/${courseId}/management`)
+    const onPress = async() => {
+        try {
+            const res = await createCourse()
+            router.push(`/courses/${res.others.courseId}/management`)
+        } catch (ex) {
+            console.log(ex)
+        }
     }
 
     return (

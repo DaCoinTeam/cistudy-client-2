@@ -32,7 +32,7 @@ export const Instructor = (props: InstructorProps) => {
                 <div>
                     <div className="ml-1">
                         <div className="text-lg font-semibold">{username}</div>
-                        <div className="text-sm text-foreground-400 font-semibold">
+                        <div className="text-sm text-foreground-400">
                             {numberOfFollowers} follower
                         </div>
                     </div>
