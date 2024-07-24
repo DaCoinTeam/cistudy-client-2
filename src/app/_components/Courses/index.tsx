@@ -19,7 +19,7 @@ export const Courses = () => {
             <Spacer y={12}/>
             <div className="ms-8 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white ">Best Seller</div>
             {mostEnrolledCourses && (
-                <Carousel  courses={mostEnrolledCourses} />
+                <Carousel isBestSeller={true} courses={mostEnrolledCourses}  />
 
             )}
             <Spacer y={12}/>

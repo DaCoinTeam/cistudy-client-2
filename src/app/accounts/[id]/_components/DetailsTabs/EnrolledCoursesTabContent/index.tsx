@@ -20,7 +20,7 @@ const WrappedEnrolledCoursesTabContent = (props: EnrolledCoursesTabContentProps)
             <div className="grid grid-cols-4 gap-4">
                 {
                     results?.map((course) => (
-                        <CourseCard key={course.courseId} {...course} />
+                        <CourseCard key={course.courseId} course={course} />
                     ))
                 }
             </div>

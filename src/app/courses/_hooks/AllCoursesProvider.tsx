@@ -1,20 +1,15 @@
-import React, { ReactNode, createContext, useCallback, useMemo } from "react"
+import { ReactNode, createContext, useCallback, useContext, useMemo } from "react"
 
 import { ErrorResponse } from "@common"
 import { FindManyCoursesOutputData, findManyCourses } from "@services"
+import { useSearchParams } from "next/navigation"
 import { SWRConfig } from "swr"
-
-import {
-    AllCoursesAction,
-    AllCoursesState,
-    useAllCoursesReducer,
-} from "./useAllCoursesReducer"
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
+import { RootContext } from "../../_hooks"
 
 export const COLUMNS_PER_PAGE = 9
 
 export interface AllCoursesContextValue {
-    reducer: [AllCoursesState, React.Dispatch<AllCoursesAction>]
     swrs: {
         coursesSwr: SWRInfiniteResponse<
             FindManyCoursesOutputData,
@@ -32,17 +27,25 @@ export const WrappedAllCoursesProvider = ({
 }: {
     children: ReactNode
 }) => {
-    const reducer = useAllCoursesReducer()
 
-    const [state] = reducer
-    const { searchValue } = state
+    const searchParams = useSearchParams()
+    const searchValue = searchParams.get("searchValue")
+
+    const {reducer} = useContext(RootContext)!
+    const [state, dispatch] = reducer
+    const { categoryFilter } = state
+    const getCategoryFilterIds = () => {
+        if (categoryFilter.length === 0) return []
+        return categoryFilter.map((category) => category.categoryId)
+    }
 
     const fetchCourses = useCallback(
         async ([key]: [number, string]) => {
             return await findManyCourses(
                 {
                     options: {
-                        searchValue: "",
+                        categoryIds: getCategoryFilterIds(),
+                        searchValue: searchValue || "",
                         skip: COLUMNS_PER_PAGE * key,
                         take: COLUMNS_PER_PAGE,
                     },
@@ -73,32 +76,18 @@ export const WrappedAllCoursesProvider = ({
                     },
                     metadata: {
                         count: true,
-                        categories: {
+                        relativeTopics: {
                             categoryId: true,
                             name: true,
-                        },
-                        highRateCourses: {
-                            courseId: true,
-                            title: true,
-                            creator: {
-                                avatarId: true,
-                                username: true,
-                                avatarUrl: true,
-                                kind: true,
-                            },
-                            thumbnailId: true,
-                            description: true,
-                            price: true,
                         },
                     },
                 }
             )
         },
-        [reducer]
+        [searchValue, categoryFilter]
     )
-
     const coursesSwr = useSWRInfinite(
-        (key) => [key, "COURSES", searchValue],
+        (key) => [key, "COURSES", searchValue, categoryFilter],
         fetchCourses,
         {
             revalidateFirstPage: false,
@@ -108,12 +97,11 @@ export const WrappedAllCoursesProvider = ({
    
     const allCoursesContextValue: AllCoursesContextValue = useMemo(
         () => ({
-            reducer,
             swrs: {
                 coursesSwr,
             },
         }),
-        [searchValue, reducer, coursesSwr]
+        [searchValue, state, dispatch, coursesSwr]
     )
 
     return (

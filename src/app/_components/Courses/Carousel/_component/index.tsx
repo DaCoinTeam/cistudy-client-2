@@ -12,11 +12,12 @@ import { CourseEntity } from "@common"
 
 type PropType = {
   slides: CourseEntity[]
+  isBestSeller?: boolean
   options?: EmblaOptionsType
 }
 
 const EmblaCarousel: React.FC<PropType> = (props) => {
-    const { slides, options } = props
+    const { slides, isBestSeller, options } = props
     const [emblaRef, emblaApi] = useEmblaCarousel(options)
 
     const { selectedIndex, scrollSnaps, onDotButtonClick } =
@@ -37,7 +38,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
                         {slides.map((slide) => (
                             <div className="embla__slide" key={slide.courseId}>
                                 <div className="embla__slide__number">
-                                    <CourseCard {...slide}  />
+                                    <CourseCard course={slide} isBestSeller={isBestSeller}  />
                                 </div>
                             </div>
                         ))}

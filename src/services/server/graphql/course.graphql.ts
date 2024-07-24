@@ -75,10 +75,10 @@ export const findOneCourseAuth = async (
 
 export interface FindManyCoursesInputData {
   options?: {
-    take?: number | null;
-    skip?: number | null;
-    searchValue?: string;
-    categoryId?: string;
+    take?: number
+    skip?: number
+    searchValue?: string
+    categoryIds?: Array<string>
   };
 }
 
@@ -86,8 +86,7 @@ export interface FindManyCoursesOutputData {
   results: Array<CourseEntity>;
   metadata: {
     count: number;
-    categories: Array<CategoryEntity>;
-    highRateCourses: Array<CourseEntity>;
+    relativeTopics: Array<CategoryEntity>;
   };
 }
 
@@ -258,7 +257,35 @@ export const findManyCategories = async (
         isAuth: false,
     })
 }
+export interface FindManyLevelCategoriesInputData {
+  params: {
+    level: number;
+  };
+}
 
+export const findManyLevelCategories  = async (
+    data: FindManyLevelCategoriesInputData,
+    schema: Schema<DeepPartial<CategoryEntity>>
+): Promise<Array<CategoryEntity>> => {
+    const payload = buildPayloadString(schema)
+    const { data: graphqlData } = await client.query({
+        query: gql`
+         query FindManyLevelCategories($data: FindManyLevelCategoriesInputData!) {
+          findManyLevelCategories(data: $data) {
+    ${payload}
+  }
+}
+`,
+        variables: {
+            data,
+        },
+    })
+
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: false,
+    })
+}
 export interface FindManyCourseReviewsInputData {
   params: {
     courseId: string;
@@ -336,7 +363,7 @@ ${payload}
     })
 }
 
-export interface HighlightDTO {
+export interface Highlight {
   highRatedCourses: Array<CourseEntity>;
   highRatedInstructors: Array<AccountEntity>;
   mostEnrolledCourses: Array<CourseEntity>;
@@ -347,8 +374,8 @@ export interface HighlightDTO {
 }
 
 export const initLandingPage = async (
-    schema: Schema<DeepPartial<HighlightDTO>>
-): Promise<HighlightDTO> => {
+    schema: Schema<DeepPartial<Highlight>>
+): Promise<Highlight> => {
     const payload = buildPayloadString(schema)
     const { data: graphqlData } = await client.query({
         query: gql`

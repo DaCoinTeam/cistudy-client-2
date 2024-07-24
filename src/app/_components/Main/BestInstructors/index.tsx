@@ -16,8 +16,7 @@ export const BestInstrutors = () => {
           Best Instructors
                 </h2>
                 <p className='font-light text-gray-500 sm:text-xl dark:text-gray-400'>
-          Explore the whole collection of open-source web components and
-          elements built with the utility classes from Tailwind
+                Meet our top instructors who bring exceptional knowledge and experience to your learning journey
                 </p>
             </div>
 
