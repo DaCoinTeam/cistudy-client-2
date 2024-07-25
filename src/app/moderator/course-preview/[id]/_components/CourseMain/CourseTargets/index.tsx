@@ -12,20 +12,17 @@ export const CourseTargets = () => {
 
     return (
         <div>
-            <div className="text-2xl">What you will learn</div>
+            <div className="text-2xl font-bold">What you will learn</div>
             <Spacer y={4} />
-            <div className="p-4 border border-divider rounded-medium">
-                <div className="grid grid-cols-2 gap-2">
-                    {courseTargets?.map(({courseTargetId, content}) => (
-                        <div
-                            key={courseTargetId}
-                            className="flex gap-2 items-center"
-                        >
-                            <CheckIcon height={20} width={20} />
-                            <div className="text-sm">{content}</div>
+            <div className="grid grid-cols-2 gap-4 items-start p-4 border border-divider rounded-medium">
+                {courseTargets?.map(({ courseTargetId, content }) => (
+                    <div key={courseTargetId} className="flex flex-row items-start">
+                        <div className="mr-3">
+                            <CheckIcon className="w-5 h-5 text-primary" />
                         </div>
-                    ))}
-                </div>
+                        <div className="text-sm font-semibold">{content}</div>
+                    </div>
+                ))}
             </div>
         </div>
     )

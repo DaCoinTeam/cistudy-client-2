@@ -32,6 +32,7 @@ export const ProfileMenu = () => {
             revalidate: false,
         })
         removeTokens()
+        router.push("/")
     }
 
     const router = useRouter()

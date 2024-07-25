@@ -8,7 +8,7 @@ import {
     Cog6ToothIcon,
     ListBulletIcon,
 } from "@heroicons/react/24/outline"
-import { DollarSign } from "lucide-react"
+import { DollarSign, Goal } from "lucide-react"
 
 interface MenuProps {
   className?: string;
@@ -46,6 +46,12 @@ export const Menu = (props: MenuProps) => {
             key: "general",
             content: "General",
             panelSelected: PanelSelected.General,
+        },
+        {
+            startContent: <Goal size={24} strokeWidth={3 / 2} />,
+            key: "target",
+            content: "Target",
+            panelSelected: PanelSelected.Target
         },
         {
             startContent: <ListBulletIcon width={24} height={24} />,

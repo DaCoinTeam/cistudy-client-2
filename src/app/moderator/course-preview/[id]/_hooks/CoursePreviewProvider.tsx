@@ -48,12 +48,29 @@ export const WrappedCoursePreviewProvider = ({
                 sections: {
                     sectionId: true,
                     title: true,
-                    lessons: {
-                        lessonId: true,
-                        thumbnailId: true,
-                        lessonVideoId: true,
+                    position: true,
+                    contents: {
+                        position: true,
+                        sectionContentId: true,
                         title: true,
-                    },
+                        type: true,
+                        lesson: {
+                            thumbnailId: true,
+                            lessonVideoId: true,
+                            description: true,
+                            durationInSeconds: true
+                        },
+                        quiz: {
+                            questions: {
+                                quizQuestionId: true
+                            }
+                        },
+                        resource: {
+                            attachments: {
+                                createdAt: true
+                            }
+                        }
+                    }
                 },
                 creator: {
                     avatarId: true,
