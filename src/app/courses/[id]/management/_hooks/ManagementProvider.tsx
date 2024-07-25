@@ -55,37 +55,7 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                 discountPrice: true,
                 enableDiscount: true,
                 isCreator: true,
-                courseCategories: {
-                    category: {
-                        categoryId: true,
-                        name: true,
-                        level: true,
-                        categoryParentRelations: {
-                            category: {
-                                categoryId: true,
-                                name: true,
-                                level: true,
-                                categoryParentRelations: {
-                                    category: {
-                                        categoryId: true,
-                                        name: true,
-                                        level: true,
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
                 enrolled: true,
-                courseRatings: {
-                    numberOf1StarRatings: true,
-                    numberOf2StarRatings:true,
-                    numberOf3StarRatings: true,
-                    numberOf4StarRatings: true,
-                    numberOf5StarRatings: true,
-                    overallCourseRating: true,
-                    totalNumberOfRatings: true,
-                },
                 courseTargets: {
                     courseTargetId: true,
                     content: true,
@@ -95,7 +65,6 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                     sectionId: true,
                     title: true,
                     position: true,
-
                     contents: {
                         position: true,
                         sectionContentId: true,
@@ -109,8 +78,19 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                             videoType: true,
                         },
                         quiz: {
+                            quizId: true,
+                            timeLimit: true,
+                            passingScore: true,
                             questions: {
-                                quizQuestionId: true
+                                quizQuestionId: true,
+                                position: true,
+                                answers: {
+                                    quizQuestionAnswerId: true,
+                                    content: true,
+                                    isCorrect: true
+                                },
+                                point: true,
+                                question: true,
                             }
                         },
                         resource: {

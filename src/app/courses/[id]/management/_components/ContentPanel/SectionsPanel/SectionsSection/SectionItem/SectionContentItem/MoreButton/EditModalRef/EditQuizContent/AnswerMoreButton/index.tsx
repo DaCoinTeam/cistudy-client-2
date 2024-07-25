@@ -6,7 +6,7 @@ import {
     DropdownTrigger,
 } from "@nextui-org/react"
 import { MoreVerticalIcon, PenLineIcon, XIcon } from "lucide-react"
-import { QuizQuestionEntity } from "@common"
+import { QuizAttemptEntity, QuizQuestionAnswerEntity } from "@common"
 import { ManagementContext } from "../../../../../../../../../../_hooks"
 import { ConfirmDeleteModalRef, ConfirmDeleteModalRefSelectors } from "../../../../../../../../../../../../../_shared"
 import { createContext, useContext, useMemo, useRef } from "react"
@@ -15,22 +15,23 @@ import { ToastType } from "../../../../../../../../../../../../../_components"
 import { DeepPartial } from "@apollo/client/utilities"
 import { EditQuizContentContext } from "../EditQuizContentProvider"
 
-interface MoreButtonProps {
+interface AnswerMoreButtonProps {
   className?: string;
-  question: DeepPartial<QuizQuestionEntity>;
+  answer: DeepPartial<QuizQuestionAnswerEntity>;
+  question: DeepPartial<QuizAttemptEntity>;
 }
 
-interface MoreButtonContextValue {
-    props: MoreButtonProps
+interface AnswerMoreButtonContextValue {
+    props: AnswerMoreButtonProps
 }
 
-export const MoreButtonContext = createContext<MoreButtonContextValue | null>(null)
+export const AnswerMoreButtonContext = createContext<AnswerMoreButtonContextValue | null>(null)
 
-export const MoreButton = (props: MoreButtonProps) => {
+export const AnswerMoreButton = (props: AnswerMoreButtonProps) => {
     const {functions} = useContext(EditQuizContentContext)!
-    const {removeQuestion} = functions
-    const { className, question } = props
-    const { quizQuestionId } = question
+    const {removeAnswer} = functions
+    const { className, answer, question } = props
+    const { quizQuestionAnswerId } = answer
 
     const confirmDeleteModalRef = useRef<ConfirmDeleteModalRefSelectors | null>(
         null
@@ -55,15 +56,19 @@ export const MoreButton = (props: MoreButtonProps) => {
         //     },
         //     type: ToastType.Success
         // })
-        removeQuestion(quizQuestionId?? "")
+        removeAnswer(quizQuestionAnswerId?? "")
     }
 
-    const moreButtonContextValue : MoreButtonContextValue = useMemo(() => ({
+    const onEditPress = () => {
+        
+    }
+
+    const AnswerMoreButtonContextValue : AnswerMoreButtonContextValue = useMemo(() => ({
         props
     }), [props])
 
     return (
-        <MoreButtonContext.Provider value={moreButtonContextValue}>
+        <AnswerMoreButtonContext.Provider value={AnswerMoreButtonContextValue}>
             <Dropdown
                 placement="top-start"
                 backdrop="blur"
@@ -84,6 +89,7 @@ export const MoreButton = (props: MoreButtonProps) => {
                     <DropdownItem
                         startContent={<PenLineIcon size={20} strokeWidth={3/2} />}
                         key="edit"
+                        onPress={onEditPress}
                     >
             Edit
                     </DropdownItem>
@@ -100,10 +106,10 @@ export const MoreButton = (props: MoreButtonProps) => {
             </Dropdown>
             <ConfirmDeleteModalRef
                 ref={confirmDeleteModalRef}
-                title="Delete Section"
-                content="Are you sure you want to delete this section? All references will be lost, and you cannot undo this action."
+                title="Delete answer"
+                content="Are you sure you want to delete this answer? All references will be lost, and you cannot undo this action."
                 onDeletePress={onDeletePress}
             />
-        </MoreButtonContext.Provider>
+        </AnswerMoreButtonContext.Provider>
     )
 }
