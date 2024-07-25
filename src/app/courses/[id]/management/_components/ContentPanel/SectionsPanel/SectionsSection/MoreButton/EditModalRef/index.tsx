@@ -14,7 +14,6 @@ import {
     EditModalRefContext,
     EditModalRefProvider,
 } from "./EditModalRefProvider"
-import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
 
 export interface EditModalRefSelectors {
   onOpen: () => void;
@@ -22,7 +21,7 @@ export interface EditModalRefSelectors {
 
 export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
     (_, ref) => {
-        const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+        const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
         useImperativeHandle(ref, () => ({
             onOpen,
@@ -33,11 +32,10 @@ export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
         const onCancelPress = () => discardChanges()
         const onSubmit = () => {
             formik.handleSubmit()
-            onClose()
         }
 
         return (
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <ModalHeader className="p-4 pb-2 text-xl">
             Edit
@@ -45,6 +43,9 @@ export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                     <ModalBody className="p-4">
                         <Input
                             id="title"
+                            classNames={{
+                                inputWrapper: "input-input-wrapper"
+                            }}
                             value={formik.values.title}
                             onChange={formik.handleChange}
                             isInvalid={!!(formik.touched.title && formik.errors.title)}
@@ -56,17 +57,17 @@ export const WrappedEditModalRef = forwardRef<EditModalRefSelectors | null>(
                     </ModalBody>
                     <ModalFooter className="gap-2 p-4 pt-2">
                         <Button
+                            color="primary"
+                            variant="bordered"
                             isDisabled={!hasChanged()}
                             onPress={onCancelPress}
-                            startContent={<XMarkIcon width={20} height={20} />}
                         >
                   Cancel
                         </Button>
                         <Button
                             isDisabled={!hasChanged()}
                             onPress={onSubmit}
-                            color="secondary"
-                            startContent={formik.isSubmitting? "" : <CheckIcon width={20} height={20} />}
+                            color="primary"
                             isLoading={formik.isSubmitting}
                         >
                             {formik.isSubmitting ? "Saving" : "Save"}

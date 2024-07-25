@@ -1,5 +1,5 @@
 import React from "react"
-import { SectionEntity } from "@common"
+import { SectionEntity, sortByPosition } from "@common"
 import { SectionContentItem } from "./SectionContentItem"
 import { AddSectionContentItem } from "./AddSectionContent"
 
@@ -11,7 +11,7 @@ const WrappedSectionItem = (props: SectionItemProps) => {
     const { section } = props
     return (
         <>
-            {section.contents.map((sectionContent) => (
+            {sortByPosition(section.contents).map((sectionContent) => (
                 <SectionContentItem key={sectionContent.sectionContentId} sectionContent={sectionContent} />
             ))}
             <AddSectionContentItem sectionId={section.sectionId} />

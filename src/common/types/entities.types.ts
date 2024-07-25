@@ -13,6 +13,7 @@ export enum AccountRole {
 }
 
 export enum VerifyStatus {
+  Draft = "draft",
   Pending = "pending",
   Approved = "approved",
   Rejected = "rejected",

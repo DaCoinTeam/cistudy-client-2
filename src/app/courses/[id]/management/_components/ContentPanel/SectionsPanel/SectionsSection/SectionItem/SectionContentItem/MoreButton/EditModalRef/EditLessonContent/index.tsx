@@ -108,9 +108,9 @@ const WrappedEditLessonContent = () => {
                             }
                         />
                         <Spacer y={6} />
-                        <div className="flex gap-4 flex-row-reverse w-full">
+                        <div className="flex gap-2 flex-row-reverse w-full">
                             <Button
-                                color="secondary"
+                                color="primary"
                                 isDisabled={formik.isSubmitting}
                                 isLoading={formik.isSubmitting}
                                 onPress={() => formik.submitForm()}
@@ -131,9 +131,9 @@ const WrappedEditLessonContent = () => {
                     <div>
                         <AddVideoDropzone />
                         <Spacer y={6}/>
-                        <div className="flex gap-4 flex-row-reverse w-full">
+                        <div className="flex gap-2 flex-row-reverse w-full">
                             <Button
-                                color="secondary"
+                                color="primary"
                                 isDisabled={formik.isSubmitting}
                                 isLoading={formik.isSubmitting}
                                 onPress={() => formik.submitForm()}

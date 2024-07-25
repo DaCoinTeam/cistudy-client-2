@@ -10,7 +10,7 @@ import { AddSectionItem } from "./AddSectionItem"
 import { ManagementContext } from "../../../../_hooks"
 import { SectionItem } from "./SectionItem"
 import { MoreButton } from "./MoreButton"
-import { SectionEntity } from "@common"
+import { sortByPosition } from "@common"
 
 interface SectionsSectionProps {
     className?: string
@@ -23,19 +23,11 @@ export const SectionsSection = (props: SectionsSectionProps) => {
     const { courseManagementSwr } = swrs
     const { data: courseManagement } = courseManagementSwr
 
-    const handleSortSection = (sections: Array<SectionEntity>) => {
-        if(!sections) return []
-        return sections.sort((prev: SectionEntity, next: SectionEntity) => {
-            return new Date(prev.createdAt).getTime() - new Date(next.createdAt).getTime()
-        })
-    }
-
     const renderSections = () => {
         if (!courseManagement) return []
         let { sections } = courseManagement
-        sections = handleSortSection(sections)
+        sections = sortByPosition(sections)
         
-
         return (
             <Accordion
                 selectionMode="multiple"
@@ -43,14 +35,16 @@ export const SectionsSection = (props: SectionsSectionProps) => {
                 className="!px-0 gap-4"
                 itemClasses={{
                     base: "!shadow-none gap-4",
-                    title: "font-semibold text-primary"
                 }}
             >
                 {sections.map((section) => (
                     <AccordionItem
                         key={section.sectionId}
-                        title={section.title}
-                        startContent={<MoreButton className="text-primary" section={section} />}
+                        title={<div>
+                            <span className="font-bold">Section {section.position}: </span>
+                            <span> {section.title}</span>
+                        </div>}
+                        startContent={<MoreButton section={section} />}
                         classNames={{
                             content: "flex flex-col gap-4 p-4",
                             heading: "!px-4"
@@ -65,8 +59,8 @@ export const SectionsSection = (props: SectionsSectionProps) => {
 
     return (
         <div>
-            <div className="text-2xl"> Sections </div>
-            <Spacer y={4}/>
+            <div className="text-4xl font-bold"> Sections </div>
+            <Spacer y={6}/>
             <div className={`${className} border border-divider rounded-medium`}>
                 {renderSections()}
                 <Divider/>
