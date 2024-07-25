@@ -29,18 +29,18 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
 
     const renderLession = (
         { description, durationInSeconds, videoType }: LessonEntity,
-        { title }: SectionContentEntity
+        { title, position }: SectionContentEntity
     ) => {
         return (
             <div className="flex gap-3 items-center w-full">
                 <MoreButton/>
                 <div>
-                    <VideoIcon className="w-10 h-10 text-primary" strokeWidth={3 / 2} />
+                    <VideoIcon className="w-10 h-10 text-foreground-400" strokeWidth={3 / 2} />
                 </div>
                 <div>
                     <div className="flex gap-2 items-center">
-                        <div className="text-primary">
-                            <span className="font-semibold">Lesson: </span>
+                        <div>
+                            <span className="font-bold">{position}. Lesson: </span>
                             <span>{title}</span>
                         </div>
                     </div>
@@ -49,9 +49,9 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
                     <div className="flex gap-2">
                         <Chip classNames={{
                             base: "gap-1 px-2",
-                        }} size="sm" startContent={<Clock2Icon className="w-3 h-3" strokeWidth={3 / 2} />}>{parseDuration(durationInSeconds ?? 0)}</Chip>
+                        }} size="sm" color="default" variant="flat" startContent={<Clock2Icon className="w-3 h-3" strokeWidth={3 / 2} />}>{parseDuration(durationInSeconds ?? 0)}</Chip>
                         {
-                            (videoType === VideoType.DASH) ? <Chip size="sm" classNames={{
+                            (videoType === VideoType.DASH) ? <Chip variant="flat" size="sm" classNames={{
                                 base: "gap-1 px-2"
                             }} startContent={<AirplayIcon className="w-3 h-3" strokeWidth={3 / 2} />}>Adaptive Bitrate Streaming</Chip> : null
                         }
@@ -63,18 +63,18 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
 
     const renderQuiz = (
         _: QuizEntity,
-        { title }: SectionContentEntity
+        { title, position }: SectionContentEntity
     ) => {
         return (
             <div className="flex gap-3 items-center w-full">
                 <MoreButton/>
                 <div className="flex gap-3 items-center">
                     <div>
-                        <FileQuestionIcon className="w-10 h-10 text-primary" strokeWidth={3 / 2} />
+                        <FileQuestionIcon className="w-10 h-10 text-foreground-400" strokeWidth={3 / 2} />
                     </div>
                     <div>
-                        <div className="text-primary">
-                            <span className="font-semibold">Quiz: </span>
+                        <div>
+                            <span className="font-bold">{position}. Quiz: </span>
                             <span>{title}</span>
                         </div>
                     </div>
@@ -85,17 +85,17 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
 
     const renderResource = (
         { description, attachments }: ResourceEntity,
-        { title }: SectionContentEntity
+        { title, position }: SectionContentEntity
     ) => {
         return (
             <div className="flex gap-3 items-center w-full">
                 <MoreButton/>
                 <div>
-                    <PackageIcon className="w-10 h-10 text-primary" strokeWidth={3 / 2} />
+                    <PackageIcon className="w-10 h-10 text-foreground-400" strokeWidth={3 / 2} />
                 </div>
                 <div>
-                    <div className="text-primary">
-                        <span className="font-semibold">Resource: </span>
+                    <div>
+                        <span className="font-bold">{position}. Resource: </span>
                         <span>{title}</span>
                     </div>
                     <div className="text-xs text-foreground-400 line-clamp-1">{description}</div>
@@ -103,7 +103,7 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
                     <div className="flex gap-2">
                         <Chip classNames={{
                             base: "gap-1 px-2",
-                        }} size="sm" startContent={<PaperClipIcon className="w-3 h-3" strokeWidth={3 / 2} />}>{attachments.length} attachments</Chip>
+                        }} size="sm" variant="flat" startContent={<PaperClipIcon className="w-3 h-3" strokeWidth={3 / 2} />}>{attachments.length} attachments</Chip>
                     </div>
                 </div>
             </div>

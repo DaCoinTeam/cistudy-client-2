@@ -1,4 +1,4 @@
-import { Card, CardBody, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/react"
+import { Card, CardBody, Modal, ModalBody, ModalContent, ModalHeader, Spacer, useDisclosure } from "@nextui-org/react"
 import { createSectionContent } from "@services"
 import { FileQuestionIcon, PackageIcon, VideoIcon } from "lucide-react"
 import { forwardRef, useContext, useImperativeHandle } from "react"
@@ -63,7 +63,7 @@ export const SelectSectionTypeModal = forwardRef<
     ]
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl">
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
                 <>
                     <ModalHeader className="p-4 pb-2 text-xl">Select Section Type</ModalHeader>
@@ -71,13 +71,16 @@ export const SelectSectionTypeModal = forwardRef<
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             {sectionType.map((type) => (
                                 <Card
+                                    isPressable
+                                    shadow="none"
                                     key={type.key}
-                                    className="p-4 cursor-pointer"
+                                    className="p-4 cursor-pointer border border-divider"
                                 >
                                     <CardBody className="grid place-content-center place-items-center" onClick={() => createSection({type: type.key as SectionContentType })}>
-                                        {type.key === "lesson" && <VideoIcon size={48} />}
-                                        {type.key === "quiz" && <FileQuestionIcon size={48} />}
-                                        {type.key === "resource" && <PackageIcon size={48} />}
+                                        {type.key === "lesson" && <VideoIcon className="text-foreground-400" size={48} />}
+                                        {type.key === "quiz" && <FileQuestionIcon className="text-foreground-400"size={48} />}
+                                        {type.key === "resource" && <PackageIcon className="text-foreground-400" size={48} />}
+                                        <Spacer y={2}/>
                                         <div className="text-center text-sm">{type.title}</div>
                                     </CardBody>
                                 </Card>

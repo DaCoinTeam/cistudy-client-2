@@ -6,6 +6,7 @@ import {
     TargetsSectionContext,
     TargetsSectionProvider,
 } from "./TargetsSectionProvider"
+import { sortByPosition } from "../../../../../../../../common/utils"
 
 interface TargetsSectionProps {
   className?: string;
@@ -21,7 +22,7 @@ export const WrappedTargetsSection = (props: TargetsSectionProps) => {
     const renderTargetCards = () => {
         return (
             <>
-                {targetsCard?.map((courseTarget) => (
+                {sortByPosition(targetsCard ?? [])?.map((courseTarget) => (
                     <div key={courseTarget.courseTargetId}>
                         <TargetItem courseTarget={courseTarget} />
                         <Divider />
@@ -34,7 +35,7 @@ export const WrappedTargetsSection = (props: TargetsSectionProps) => {
     return (
         <div className={`${className}`}>
             <div className='text-4xl font-bold'> Targets </div>
-            <Spacer y={4} />
+            <Spacer y={6} />
             <div className='border border-divider rounded-medium'>
                 {renderTargetCards()}
                 <AddTargetItem key='addTarget' />

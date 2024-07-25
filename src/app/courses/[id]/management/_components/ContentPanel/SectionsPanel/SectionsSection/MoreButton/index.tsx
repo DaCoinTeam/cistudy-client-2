@@ -1,9 +1,9 @@
 import {
-    Button,
     Dropdown,
     DropdownItem,
     DropdownMenu,
     DropdownTrigger,
+    Link,
 } from "@nextui-org/react"
 import { MoreVerticalIcon, PenLineIcon, XIcon } from "lucide-react"
 import { EditModalRef, EditModalRefSelectors } from "./EditModalRef"
@@ -77,13 +77,12 @@ export const MoreButton = (props: MoreButtonProps) => {
                 }}
             >
                 <DropdownTrigger>
-                    <Button
+                    <Link
+                        color="foreground"
                         className={`${className}`}
-                        isIconOnly
-                        variant="light"
                     >
                         <MoreVerticalIcon size={20} strokeWidth={3/2} />
-                    </Button>
+                    </Link>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
                     <DropdownItem

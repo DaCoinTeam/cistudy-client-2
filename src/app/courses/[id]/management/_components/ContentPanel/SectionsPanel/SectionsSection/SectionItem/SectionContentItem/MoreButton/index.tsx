@@ -1,11 +1,11 @@
 import React, { useContext, useRef } from "react"
 
 import {
-    Button,
     Dropdown,
     DropdownItem,
     DropdownMenu,
     DropdownTrigger,
+    Link,
 } from "@nextui-org/react"
 import {
     MoreVerticalIcon,
@@ -62,9 +62,9 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
                 }}
             >
                 <DropdownTrigger>
-                    <Button isIconOnly variant="light">
-                        <MoreVerticalIcon className="w-5 h-5 text-primary" strokeWidth={3/2}/>
-                    </Button>
+                    <Link color="foreground">
+                        <MoreVerticalIcon className="w-5 h-5" strokeWidth={3/2}/>
+                    </Link>
                 </DropdownTrigger>
                 <DropdownMenu>
                     <DropdownItem

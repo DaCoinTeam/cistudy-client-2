@@ -42,6 +42,7 @@ const WrappedTargetsSectionProvider = ({ children }: { children: ReactNode }) =>
             {
                 courseTargetId: true,
                 content: true,
+                position: true
             }
         )
     }, [courseId])

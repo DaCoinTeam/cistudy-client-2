@@ -11,7 +11,7 @@ export const Sidebar = (props: SidebarProps) => {
 
     return (
         <>
-            <Menu className={`${className} sticky top-[7rem]`} />
+            <Menu className={`${className}`} />
         </>
     )
 }   
