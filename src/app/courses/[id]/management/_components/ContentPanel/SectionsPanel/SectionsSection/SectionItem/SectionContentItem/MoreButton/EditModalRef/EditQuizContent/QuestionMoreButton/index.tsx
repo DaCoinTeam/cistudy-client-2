@@ -14,56 +14,64 @@ import { RootContext } from "../../../../../../../../../../../../../_hooks"
 import { ToastType } from "../../../../../../../../../../../../../_components" 
 import { DeepPartial } from "@apollo/client/utilities"
 import { EditQuizContentContext } from "../EditQuizContentProvider"
+import { EditQuizQuestionModalRef, EditQuizQuestionModalRefSelectors } from "./EditQuizQuestionModal"
+import { deleteQuizQuestion, DeleteQuizQuestionInput } from "@services"
+import useSWRMutation from "swr/mutation"
 
-interface MoreButtonProps {
+interface QuestionMoreButtonProps {
   className?: string;
   question: DeepPartial<QuizQuestionEntity>;
 }
 
-interface MoreButtonContextValue {
-    props: MoreButtonProps
+interface QuestionMoreButtonContextValue {
+    props: QuestionMoreButtonProps
 }
 
-export const MoreButtonContext = createContext<MoreButtonContextValue | null>(null)
+export const QuestionMoreButtonContext = createContext<QuestionMoreButtonContextValue | null>(null)
 
-export const MoreButton = (props: MoreButtonProps) => {
-    const {functions} = useContext(EditQuizContentContext)!
-    const {removeQuestion} = functions
+export const QuestionMoreButton = (props: QuestionMoreButtonProps) => {
     const { className, question } = props
     const { quizQuestionId } = question
 
+    const editQuizQuestionModalRef = useRef<EditQuizQuestionModalRefSelectors>(null)
     const confirmDeleteModalRef = useRef<ConfirmDeleteModalRefSelectors | null>(
         null
     )
     const onConfirmDeleteModalOpen = () =>
         confirmDeleteModalRef.current?.onOpen()
-
+    const {notify} = useContext(RootContext)!
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { mutate } = courseManagementSwr
 
+    const deleteQuizQuestionSwrMutation = useSWRMutation(
+        "DELETE_QUIZ_QUESTION",
+        async (_: string, { arg } : {arg : DeleteQuizQuestionInput}) => {
+            return await deleteQuizQuestion(arg)
+        }
+    )
+
     const onDeletePress = async () => {
-        // const {message} = await deleteSection({
-        //     data: {
-        //         sectionId,
-        //     },
-        // })
-        // await mutate()
-        // notify!({
-        //     data: {
-        //         message
-        //     },
-        //     type: ToastType.Success
-        // })
-        removeQuestion(quizQuestionId?? "")
+        const {message} = await deleteQuizQuestionSwrMutation.trigger({data: {quizQuestionId: question.quizQuestionId?? ""}})
+        notify!({
+            data: {
+                message
+            },
+            type: ToastType.Success
+        })
+        mutate()
     }
 
-    const moreButtonContextValue : MoreButtonContextValue = useMemo(() => ({
+    const onEditPress = () => {
+        editQuizQuestionModalRef.current?.onOpen()
+    }
+
+    const questionMoreButtonContextValue : QuestionMoreButtonContextValue = useMemo(() => ({
         props
     }), [props])
 
     return (
-        <MoreButtonContext.Provider value={moreButtonContextValue}>
+        <QuestionMoreButtonContext.Provider value={questionMoreButtonContextValue}>
             <Dropdown
                 placement="top-start"
                 backdrop="blur"
@@ -84,6 +92,7 @@ export const MoreButton = (props: MoreButtonProps) => {
                     <DropdownItem
                         startContent={<PenLineIcon size={20} strokeWidth={3/2} />}
                         key="edit"
+                        onPress={onEditPress}
                     >
             Edit
                     </DropdownItem>
@@ -100,10 +109,14 @@ export const MoreButton = (props: MoreButtonProps) => {
             </Dropdown>
             <ConfirmDeleteModalRef
                 ref={confirmDeleteModalRef}
-                title="Delete Section"
-                content="Are you sure you want to delete this section? All references will be lost, and you cannot undo this action."
+                title="Delete question"
+                content="Are you sure you want to delete this question? All references will be lost, and you cannot undo this action."
                 onDeletePress={onDeletePress}
             />
-        </MoreButtonContext.Provider>
+            <EditQuizQuestionModalRef
+                ref={editQuizQuestionModalRef}
+                question={question as QuizQuestionEntity}
+            />
+        </QuestionMoreButtonContext.Provider>
     )
 }
