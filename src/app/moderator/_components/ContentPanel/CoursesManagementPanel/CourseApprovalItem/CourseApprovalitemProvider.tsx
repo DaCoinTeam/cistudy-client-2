@@ -2,8 +2,8 @@
 import React, { ReactNode, createContext, useCallback, useMemo } from "react"
 
 import {
-    FindManyUnverifiedCoursesOutputData,
-    findManyUnverifiedCourses
+    FindManyPendingCoursesOutputData,
+    findManyPendingCourses,
 } from "@services"
 
 import { ErrorResponse } from "@common"
@@ -13,7 +13,7 @@ import useSWR, { SWRResponse } from "swr"
 export interface CourseApprovalItemContextValue {
     reducer: [CourseApprovalItemState, React.Dispatch<CourseApprovalItemAction>],
     swrs: {
-        unverifiedCoursesSwr: SWRResponse<FindManyUnverifiedCoursesOutputData | undefined, ErrorResponse>
+        pendingCoursesSwr: SWRResponse<FindManyPendingCoursesOutputData | undefined, ErrorResponse>
     },
 }
 
@@ -26,9 +26,9 @@ const WrappedCourseApprovalItem = ({ children }: {
 }) => {
     const reducer = useCourseApprovalItemReducer()
 
-    const fetchUnverifiedCourses = useCallback(
+    const fetchPendingCourses = useCallback(
         async ([key]: [number, string]) => {
-            return await findManyUnverifiedCourses(
+            return await findManyPendingCourses(
                 {
                     options: {
                         skip: ROWS_PER_PAGE * (key - 1),
@@ -58,9 +58,9 @@ const WrappedCourseApprovalItem = ({ children }: {
     const [state] = reducer
     const { page } = state
 
-    const unverifiedCoursesSwr = useSWR<FindManyUnverifiedCoursesOutputData | undefined, ErrorResponse>(
-        [page, "UNVERIFIED_COURSES"],
-        fetchUnverifiedCourses,
+    const pendingCoursesSwr = useSWR<FindManyPendingCoursesOutputData | undefined, ErrorResponse>(
+        [page, "PENDiNG_COURSES"],
+        fetchPendingCourses,
         {
             revalidateOnFocus: true,
         }
@@ -70,10 +70,10 @@ const WrappedCourseApprovalItem = ({ children }: {
         () => ({
             reducer,
             swrs: {
-                unverifiedCoursesSwr,
+                pendingCoursesSwr,
             },
         }),
-        [reducer, unverifiedCoursesSwr]
+        [reducer, pendingCoursesSwr]
     )
 
     return (

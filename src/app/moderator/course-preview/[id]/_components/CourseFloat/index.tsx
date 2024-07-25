@@ -10,8 +10,10 @@ import { useContext } from "react"
 import { VideoPlayer } from "../../../../../_shared" 
 import { CoursePreviewContext } from "../../_hooks"
 import {
-    FolderOpenIcon,
-    PlaySquareIcon,
+    FileQuestionIcon,
+    ListVideo,
+    PackageIcon,
+    VideoIcon,
 } from "lucide-react"
 import { computePercentage } from "@common"
 
@@ -24,6 +26,10 @@ export const CourseFloat = () => {
         price,
         enableDiscount,
         discountPrice,
+        numberOfLessons,
+        sections,
+        numberOfQuizzes,
+        numberOfResources,
     } = {
         ...course,
     }
@@ -53,7 +59,6 @@ export const CourseFloat = () => {
 
     return (
         <Card
-            shadow="none"
             radius="md"
             className="w-full border border-divider rounded-medium"
         >
@@ -63,20 +68,28 @@ export const CourseFloat = () => {
                     src={getAssetUrl(previewVideoId)}
                 />
             </CardHeader>
-            <CardBody className="p-4">
+            <CardBody className="px-6 py-3">
                 <div>{renderPrice()}</div>
                 <Spacer y={4} />
                 <div>
-                    <div className="text-sm">This course included</div>
+                    <div className="text-base font-semibold">This course included</div>
                     <Spacer y={2} />
-                    <div className="flex text-foreground-400 flex-col gap-2">
+                    <div className="flex text-foreground-500 flex-col gap-2">
                         <div className="flex gap-2">
-                            <PlaySquareIcon size={20} strokeWidth={3 / 2} />
-                            <div className="text-sm"> 4 lessons</div>
+                            <ListVideo size={20} strokeWidth={3 / 2} />
+                            <div className="text-sm"> {sections?.length} sections</div>
                         </div>
-                        <div className="flex text-foreground-400 gap-2">
-                            <FolderOpenIcon size={20} strokeWidth={3 / 2} />
-                            <div className="text-sm"> 7 downloadable resources </div>
+                        <div className="flex gap-2">
+                            <VideoIcon size={20} strokeWidth={3 / 2} />
+                            <div className="text-sm"> {numberOfLessons} lesson{numberOfQuizzes ?? 0 > 1 ? "s" : ""}</div>
+                        </div>
+                        <div className="flex gap-2">
+                            <FileQuestionIcon size={20} strokeWidth={3 / 2} />
+                            <div className="text-sm"> {numberOfQuizzes} quiz{(numberOfQuizzes ?? 0) > 1 ? "zes" : ""}</div>
+                        </div>
+                        <div className="flex gap-2">
+                            <PackageIcon size={20} strokeWidth={3 / 2} />
+                            <div className="text-sm"> {numberOfResources} resource{(numberOfResources ?? 0) > 1 ? "s" : ""}</div>
                         </div>
                     </div>
                 </div>

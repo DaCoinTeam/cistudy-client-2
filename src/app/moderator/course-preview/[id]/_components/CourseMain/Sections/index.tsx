@@ -1,20 +1,102 @@
 "use client"
-import React, { useContext } from "react"
+import React, { useContext, useMemo } from "react"
 import { Accordion, AccordionItem, Spacer } from "@nextui-org/react"
 import { CoursePreviewContext } from "../../../_hooks"
-import { LessonItem } from "./LessonItem"
+import { LessonEntity, parseDuration, QuizEntity, ResourceEntity, SectionContentEntity, SectionContentType, sortByPosition } from "@common"
+import { Clock2Icon, FileQuestionIcon, PackageIcon, VideoIcon } from "lucide-react"
+// import { useRouter } from "next/navigation"
 
 
 export const Sections = () => {
+    // const router = useRouter()
     const { swrs } = useContext(CoursePreviewContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
     const { sections } = { ...course }
 
+    const sortedSections = useMemo(() => sortByPosition(sections ?? []), [sections])
+
+    const renderLession = (
+        { description, durationInSeconds }: LessonEntity,
+        { title }: SectionContentEntity
+    ) => {
+        return (
+            <>
+                <div>
+                    <VideoIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                </div>
+                <div>
+                    <div className="text-primary">
+                        <span className="font-bold">Lesson: </span>
+                        <span>{title}</span>
+                    </div>
+                    <div className="flex gap-1 items-center">
+                        <Clock2Icon className="w-3 h-3" strokeWidth={3 / 2} />
+                        <div className="text-xs">
+                            {parseDuration(durationInSeconds ?? 0)}
+                        </div>
+                    </div>
+                    <Spacer y={1} />
+
+                    <div className="text-xs text-foreground-400">{description}</div>
+                </div>
+            </>
+        )
+    }
+
+    const renderQuiz = (
+        _: QuizEntity,
+        { title }: SectionContentEntity
+    ) => {
+        return (
+            <>
+                <div>
+                    <FileQuestionIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                </div>
+                <div>
+                    <div className="text-primary">
+                        <span className="font-bold">Quiz: </span>
+                        <span>{title}</span>
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+    const renderResource = (
+        _: ResourceEntity,
+        { title }: SectionContentEntity
+    ) => {
+        return (
+            <>
+                <div>
+                    <PackageIcon className="w-7.5 h-7.5 text-primary" strokeWidth={3 / 2} />
+                </div>
+                <div>
+                    <div className="text-primary">
+                        <span className="font-bold">Resource: </span>
+                        <span>{title}</span>
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+    const renderContent = (content: SectionContentEntity) => {
+        switch (content.type) {
+        case SectionContentType.Lesson:
+            return renderLession(content.lesson, content)
+        case SectionContentType.Quiz:
+            return renderQuiz(content.quiz, content)
+        case SectionContentType.Resource:
+            return renderResource(content.resource, content)
+        }
+    }
+
     return (
         <div>
-            <div className="text-2xl">Sections</div>
-            <Spacer y={4}/>
+            <div className="text-2xl font-bold">Sections</div>
+            <Spacer y={4} />
             <div className="border border-divider rounded-medium">
                 <Accordion
                     itemClasses={{
@@ -24,18 +106,26 @@ export const Sections = () => {
                     className="!p-0 gap-4"
                     selectionMode="multiple"
                 >
-                    {sections
-                        ? sections.map(({ sectionId, title, lessons }) => (
+                    {sortedSections
+                        ? sortedSections.map(({ sectionId, contents, title }, index) => (
                             <AccordionItem
                                 key={sectionId}
+                                classNames={{
+                                    title: "text-lg font-bold text-primary",
+                                    subtitle: "font-semibold",
+                                }}
                                 aria-label="Sections"
-                                subtitle={
-                                    `${lessons.length} lessons`
-                                }
-                                title={title}
+                                subtitle={`${contents.length} contents`}
+                                title={`Section ${index+1}: ${title}`}
                             >
-                                {lessons.map((lesson) => (
-                                    <LessonItem key={lesson.lessonId} lesson={lesson} />
+                                {sortByPosition(contents).map((sectionContent: SectionContentEntity) => (
+                                    <div
+                                        key={sectionContent.sectionContentId}
+                                        className="flex gap-3 cursor-pointer"
+                                        // onClick={() => router.push(`/moderator/content-preview/${sectionContent.sectionContentId}`)}
+                                    >
+                                        {renderContent(sectionContent)}
+                                    </div>
                                 ))}
                             </AccordionItem>
                         ))

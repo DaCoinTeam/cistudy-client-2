@@ -3,7 +3,9 @@ import { useReducer } from "react"
 export enum PanelSelected {
     General = "general",
     Sections = "sections",
-    Earning = "earning"
+    Earning = "earning",
+    Target = "target",
+    Preview = "preview"
 }
 
 export interface ManagementState {

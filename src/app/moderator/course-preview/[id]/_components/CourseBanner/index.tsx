@@ -1,7 +1,7 @@
-import { BreadcrumbItem, Breadcrumbs, Chip, Image, Spacer, User } from "@nextui-org/react"
+import { Spacer, User } from "@nextui-org/react"
 import { CoursePreviewContext } from "../../_hooks"
 import { useContext } from "react"
-import { getAssetUrl, getAvatarUrl } from "@services"
+import { getAvatarUrl } from "@services"
 
 interface CourseBannerProps {
   className?: string;

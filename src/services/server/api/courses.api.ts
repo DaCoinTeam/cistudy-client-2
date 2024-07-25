@@ -497,3 +497,133 @@ export const deleteResourceAttachment = async (
 
     return await authAxios.delete(url)
 }
+
+export interface PublishCourseInput {
+  data: {
+    courseId: string;
+  };
+}
+
+export interface PublishCourseOutput {
+  message: string;
+}
+
+export const publishCourse = async (
+    input: PublishCourseInput
+): Promise<PublishCourseOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/publish-course`
+    return await authAxios.patch(url, data)
+}
+
+export interface CreateQuizQuestionInput {
+  data: {
+    quizId: string
+  }
+}
+
+export interface CreateQuizQuestionOutput {
+  message: string
+}
+
+export const createQuizQuestion = async (
+    input: CreateQuizQuestionInput
+): Promise<CreateQuizQuestionOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/create-quiz-question`
+    return await authAxios.post(url, data)
+}
+
+export interface UpdateQuizQuestionInput {
+  data: {
+    quizQuestionId: string,
+    question: string,
+    point: number
+  }
+}
+
+export interface UpdateQuizQuestionOutput {
+  message: string
+}
+
+export const updateQuizQuestion = async (
+    input: UpdateQuizQuestionInput
+): Promise<UpdateQuizQuestionOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/update-quiz-question`
+    return await authAxios.patch(url, data)
+}
+
+export interface DeleteQuizQuestionInput {
+  data: {
+    quizQuestionId: string,
+  }
+}
+
+export interface DeleteQuizQuestionOutput {
+  message: string
+}
+
+export const deleteQuizQuestion = async (
+    input: DeleteQuizQuestionInput
+): Promise<DeleteQuizQuestionOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/delete-quiz-question/${data.quizQuestionId}`
+    return await authAxios.delete(url)
+}
+
+export interface CreateQuizQuestionAnswerInput {
+  data: {
+    quizQuestionId: string
+  }
+}
+
+export interface CreateQuizQuestionAnswerOutput {
+  message: string
+}
+
+export const createQuizQuestionAnswer = async (
+    input: CreateQuizQuestionAnswerInput
+): Promise<CreateQuizQuestionAnswerOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/create-quiz-question-answer`
+    return await authAxios.post(url, data)
+}
+
+export interface UpdateQuizQuestionAnswerInput {
+  data: {
+    quizQuestionAnswerId: string
+    content: string
+    isCorrect: true
+  }
+}
+
+export interface UpdateQuizQuestionAnswerOutput {
+  message: string
+}
+
+export const updateQuizQuestionAnswer = async (
+    input: CreateQuizQuestionAnswerInput
+): Promise<CreateQuizQuestionAnswerOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/update-quiz-question-answer`
+    return await authAxios.patch(url, data)
+}
+
+export interface DeleteQuizQuestionAnswerInput {
+  data: {
+    quizQuestionAnswerId: string
+  }
+}
+
+export interface DeleteQuizQuestionAnswerOutput {
+  message: string
+}
+
+export const deleteQuizQuestionAnswer = async (
+    input: DeleteQuizQuestionAnswerInput
+): Promise<DeleteQuizQuestionAnswerOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/delete-quiz-question-answer/${data.quizQuestionAnswerId}`
+    return await authAxios.delete(url)
+}

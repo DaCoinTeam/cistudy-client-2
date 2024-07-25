@@ -7,8 +7,8 @@ import { CourseApprovalItemContext, CourseApprovalItemProvider, ROWS_PER_PAGE } 
 const WrappedCourseApprovalItem = () => {
     const { reducer, swrs } = useContext(CourseApprovalItemContext)!
     const [state, dispatch] = reducer
-    const { unverifiedCoursesSwr } = swrs
-    const { data: unverifiedCourseData, isLoading } = unverifiedCoursesSwr
+    const { pendingCoursesSwr } = swrs
+    const { data: unverifiedCourseData, isLoading } = pendingCoursesSwr
 
     const statusColorMap: Record<string, ChipProps["color"]> = {
         approved: "success",
@@ -48,13 +48,13 @@ const WrappedCourseApprovalItem = () => {
             )
         case "createdAt":
             return (
-                <div className="w-20">
+                <div className="w-24">
                     {parseISODateString(course.createdAt)}
                 </div>
             )
         case "updatedAt":
             return (
-                <div className="w-20">
+                <div className="w-24">
                     {parseISODateString(course.updatedAt)}
                 </div>
             )
@@ -72,7 +72,6 @@ const WrappedCourseApprovalItem = () => {
                             <div className="flex flex-row gap-2">
                                 <Tooltip content="Preview" color="primary">
                                     <Eye
-                                        color="rgb(20,184,166)"
                                         className="cursor-pointer"
                                         onClick={() => window.open(`/moderator/course-preview/${course.courseId}`)}
                                     />

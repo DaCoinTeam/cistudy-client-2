@@ -55,6 +55,12 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                 discountPrice: true,
                 enableDiscount: true,
                 isCreator: true,
+                enrolled: true,
+                courseTargets: {
+                    courseTargetId: true,
+                    content: true,
+                    position: true,
+                },
                 courseCategories: {
                     category: {
                         categoryId: true,
@@ -76,26 +82,10 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                         }
                     }
                 },
-                enrolled: true,
-                courseRatings: {
-                    numberOf1StarRatings: true,
-                    numberOf2StarRatings:true,
-                    numberOf3StarRatings: true,
-                    numberOf4StarRatings: true,
-                    numberOf5StarRatings: true,
-                    overallCourseRating: true,
-                    totalNumberOfRatings: true,
-                },
-                courseTargets: {
-                    courseTargetId: true,
-                    content: true,
-                    position: true,
-                },
                 sections: {
                     sectionId: true,
                     title: true,
                     position: true,
-
                     contents: {
                         position: true,
                         sectionContentId: true,
@@ -109,8 +99,19 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                             videoType: true,
                         },
                         quiz: {
+                            quizId: true,
+                            timeLimit: true,
+                            passingScore: true,
                             questions: {
-                                quizQuestionId: true
+                                quizQuestionId: true,
+                                position: true,
+                                answers: {
+                                    quizQuestionAnswerId: true,
+                                    content: true,
+                                    isCorrect: true
+                                },
+                                point: true,
+                                question: true,
                             }
                         },
                         resource: {
