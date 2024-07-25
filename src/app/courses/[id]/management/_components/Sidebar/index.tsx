@@ -1,7 +1,6 @@
 "use client"
 import React from "react"
 import { Menu } from "./Menu"
-import { Button } from "@nextui-org/react"
 
 interface SidebarProps {
     className?: string

@@ -7,7 +7,7 @@ export enum IntervalSelected {
     ONE_YEAR = "oneYear"
 }
 
-export interface EarningSectionState {
+export interface PriceSectionState {
     intervalSelected: IntervalSelected
 }
 
@@ -16,15 +16,15 @@ export interface SetIntervalSelectedAction {
     payload: IntervalSelected
 }
 
-export type EarningSectionAction = SetIntervalSelectedAction;
+export type PriceSectionAction = SetIntervalSelectedAction;
 
-export const state: EarningSectionState = {
+export const state: PriceSectionState = {
     intervalSelected: IntervalSelected.ONE_DAY,
 }
 
 export const reducer = (
-    state: EarningSectionState,
-    action: EarningSectionAction
+    state: PriceSectionState,
+    action: PriceSectionAction
 ) => {
     switch (action.type) {
     case "SET_INTERVAL_SELECTED":
@@ -34,6 +34,6 @@ export const reducer = (
     }
 }
 
-export const useEarningSectionReducer = () => {
+export const usePriceSectionReducer = () => {
     return useReducer(reducer, state)
 }
