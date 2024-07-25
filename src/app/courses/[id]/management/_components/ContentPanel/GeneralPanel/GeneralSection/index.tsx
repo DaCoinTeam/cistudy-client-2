@@ -1,5 +1,4 @@
 import { CategoryEntity, Key } from "@common"
-import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import {
     Autocomplete,
     AutocompleteItem,
@@ -163,7 +162,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                     trigger: "px-4 !border !border-divider bg-transparent shadow-none",
                     popoverContent: "shadow-none border border-divider rounded-medium",
                 }}
-                items={categories}
+                items={categories ?? []}
                 selectionMode="single"
                 selectedKeys={
                     formik.values.categoryId ? [formik.values.categoryId] : []
@@ -185,7 +184,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 selectionMode="multiple"
                 placeholder="Select subcategory"
                 labelPlacement="outside"
-                items={subcategories}
+                items={subcategories ?? []}
                 selectedKeys={formik.values.subcategories?.map(
                     (category) => category?.categoryId
                 )}

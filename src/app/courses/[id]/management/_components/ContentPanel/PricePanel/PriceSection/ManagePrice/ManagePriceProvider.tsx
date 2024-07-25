@@ -11,7 +11,7 @@ import React, {
 import { ManagementContext } from "../../../../../_hooks"
 import { updateCourse } from "@services"
 
-interface ManagePriceModalContextValue {
+interface ManagePriceContextValue {
   formik: FormikProps<FormikValues>;
   functions: {
     hasChanged: () => boolean;
@@ -19,8 +19,8 @@ interface ManagePriceModalContextValue {
   };
 }
 
-export const ManagePriceModalContext =
-  createContext<ManagePriceModalContextValue | null>(null)
+export const ManagePriceContext =
+  createContext<ManagePriceContextValue | null>(null)
 
 interface FormikValues {
   price: string;
@@ -40,7 +40,7 @@ const initialValues: FormikValues = {
     enableDiscountPrevious: false,
 }
 
-const WrappedManagePriceModalProvider = ({
+const WrappedManagePriceProvider = ({
     formik,
     children,
 }: {
@@ -96,7 +96,7 @@ const WrappedManagePriceModalProvider = ({
         )
     }
 
-    const detailsPanelContextValue: ManagePriceModalContextValue = useMemo(
+    const detailsPanelContextValue: ManagePriceContextValue = useMemo(
         () => ({
             formik,
             functions: {
@@ -108,13 +108,13 @@ const WrappedManagePriceModalProvider = ({
     )
 
     return (
-        <ManagePriceModalContext.Provider value={detailsPanelContextValue}>
+        <ManagePriceContext.Provider value={detailsPanelContextValue}>
             <Form onSubmit={formik?.handleSubmit}>{children}</Form>
-        </ManagePriceModalContext.Provider>
+        </ManagePriceContext.Provider>
     )
 }
 
-export const ManagePriceModalProvider = ({
+export const ManagePriceProvider = ({
     children,
 }: {
   children: ReactNode;
@@ -147,9 +147,9 @@ export const ManagePriceModalProvider = ({
             }}
         >
             {(formik) => (
-                <WrappedManagePriceModalProvider formik={formik}>
+                <WrappedManagePriceProvider formik={formik}>
                     {children}
-                </WrappedManagePriceModalProvider>
+                </WrappedManagePriceProvider>
             )}
         </Formik>
     )

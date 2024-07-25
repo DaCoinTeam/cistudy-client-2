@@ -3,7 +3,7 @@ import { useReducer } from "react"
 export enum PanelSelected {
     General = "general",
     Sections = "sections",
-    Earning = "earning",
+    Price = "price",
     Target = "target",
     Preview = "preview"
 }

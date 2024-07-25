@@ -64,9 +64,9 @@ export const Menu = (props: MenuProps) => {
         },
         {
             startContent: <DollarSign size={24} strokeWidth={3 / 2} />,
-            key: "earning",
-            content: "Earning",
-            panelSelected: PanelSelected.Earning,
+            key: "price",
+            content: "Price",
+            panelSelected: PanelSelected.Price,
         },
     ]
 
