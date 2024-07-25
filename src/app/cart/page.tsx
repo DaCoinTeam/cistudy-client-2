@@ -11,6 +11,7 @@ import {
 import { deleteFromCart } from "@services"
 import { ToastType } from "../_components"
 import { CheckIcon, TrashIcon } from "@heroicons/react/24/outline"
+import { CartItem } from "./_components/CartItem"
 
 const Cart = () => {
     const [state, dispatch] = useCartReducer()
@@ -91,8 +92,8 @@ const Cart = () => {
 
     return (
         <div className='relative h-full flex flex-col mx-auto max-w-[1080px] mt-16 '>
-            <div className='grid grid-cols-3 gap-12'>
-                <div className='col-span-2 flex flex-col '>
+            <div className='grid grid-cols-3 gap-40'>
+                <div className='col-span-2 flex flex-col mr-6 '>
                     <div className='flex justify-between w-full'>
                         <div className='flex flex-row items-center '>
                             <Checkbox
@@ -128,7 +129,7 @@ const Cart = () => {
                                     }}
                                 />
                             </div>
-                            <CourseCardHorizontal {...item.course} />
+                            <CartItem {...item.course} />
                         </div>
                     ))}
                 </div>
