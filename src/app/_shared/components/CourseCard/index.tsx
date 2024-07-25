@@ -27,7 +27,7 @@ export const CourseCard = (props: CourseCardProps) => {
                     placement="right-start"
                     showArrow={true}
                     shadow="lg"
-                    className="max-w-64"
+                    className="max-w-72"
                     content={
                         <div className="p-4">
                             {/* <div className="text-small font-bold">The course included</div> */}
