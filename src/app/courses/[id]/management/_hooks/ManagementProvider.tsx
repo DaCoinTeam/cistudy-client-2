@@ -62,6 +62,27 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                     content: true,
                     position: true,
                 },
+                courseCategories: {
+                    category: {
+                        categoryId: true,
+                        name: true,
+                        level: true,
+                        categoryParentRelations: {
+                            category: {
+                                categoryId: true,
+                                name: true,
+                                level: true,
+                                categoryParentRelations: {
+                                    category: {
+                                        categoryId: true,
+                                        name: true,
+                                        level: true,
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 sections: {
                     sectionId: true,
                     title: true,
