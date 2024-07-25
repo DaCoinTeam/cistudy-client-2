@@ -8,13 +8,13 @@ import {
     ModalFooter,
     Button,
 } from "@nextui-org/react"
-import { XIcon } from "lucide-react"
 import { forwardRef, useImperativeHandle } from "react"
 
 export interface ConfirmDeleteModalRefProps {
   onDeletePress: () => void;
   title: string;
   content: string;
+  isLoading?: boolean
 }
 
 export interface ConfirmDeleteModalRefSelectors {
@@ -25,7 +25,7 @@ export const ConfirmDeleteModalRef = forwardRef<
   ConfirmDeleteModalRefSelectors | null,
   ConfirmDeleteModalRefProps
 >((props, ref) => {
-    const { onDeletePress, title, content } = props
+    const { onDeletePress, title, content, isLoading } = props
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     useImperativeHandle(ref, () => ({
@@ -45,7 +45,7 @@ export const ConfirmDeleteModalRef = forwardRef<
                             <Button variant="light" onPress={onClose}>
                 Cancel
                             </Button>
-                            <Button startContent={<XIcon size={20} strokeWidth={3/2}/>} color="danger" onPress={onDeletePress}>
+                            <Button isLoading={isLoading} color="danger" onPress={onDeletePress}>
                 Delete
                             </Button>
                         </ModalFooter>

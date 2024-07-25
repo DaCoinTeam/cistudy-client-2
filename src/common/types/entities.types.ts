@@ -247,6 +247,7 @@ export interface QuizEntity {
   lastAttemptScore: number;
   questions: Array<QuizQuestionEntity>;
   quizAttempts: QuizAttemptEntity;
+  description: string;
 }
 
 export interface QuizQuestionEntity {

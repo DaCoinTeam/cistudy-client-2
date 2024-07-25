@@ -1,7 +1,7 @@
 import React, { createContext, useMemo } from "react"
 import { LessonEntity, QuizEntity, ResourceEntity, SectionContentEntity, SectionContentType, VideoType, parseDuration } from "@common"
 import { MoreButton } from "./MoreButton"
-import { VideoIcon, Clock2Icon, FileQuestionIcon, PackageIcon, AirplayIcon } from "lucide-react"
+import { VideoIcon, Clock2Icon, FileQuestionIcon, PackageIcon, AirplayIcon, HelpCircleIcon, TrophyIcon } from "lucide-react"
 import { Chip, Spacer } from "@nextui-org/react"
 import { PaperClipIcon } from "@heroicons/react/24/outline"
 
@@ -40,7 +40,7 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
                 <div>
                     <div className="flex gap-2 items-center">
                         <div>
-                            <span className="font-bold">{position}. Lesson: </span>
+                            <span className="font-semibold">{position}. Lesson: </span>
                             <span>{title}</span>
                         </div>
                     </div>
@@ -62,7 +62,7 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
     }
 
     const renderQuiz = (
-        _: QuizEntity,
+        { description, passingScore, questions }: QuizEntity,
         { title, position }: SectionContentEntity
     ) => {
         return (
@@ -74,11 +74,22 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
                     </div>
                     <div>
                         <div>
-                            <span className="font-bold">{position}. Quiz: </span>
+                            <span className="font-semibold">{position}. Quiz: </span>
                             <span>{title}</span>
+                        </div>
+                        <div className="text-xs text-foreground-400 line-clamp-1">{description}</div>
+                        <Spacer y={1}/>
+                        <div className="flex gap-2">
+                            <Chip classNames={{
+                                base: "gap-1 px-2",
+                            }} size="sm" variant="flat" startContent={<TrophyIcon className="w-3 h-3" strokeWidth={3 / 2} />}>{passingScore}/10 to pass</Chip>
+                            <Chip classNames={{
+                                base: "gap-1 px-2",
+                            }} size="sm" variant="flat" startContent={<HelpCircleIcon className="w-3 h-3" strokeWidth={3 / 2} />}>{questions.length} question{questions.length > 1 ? "s" : ""}</Chip>
                         </div>
                     </div>
                 </div>
+                
             </div>
         )
     }
@@ -95,7 +106,7 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
                 </div>
                 <div>
                     <div>
-                        <span className="font-bold">{position}. Resource: </span>
+                        <span className="font-semibold">{position}. Resource: </span>
                         <span>{title}</span>
                     </div>
                     <div className="text-xs text-foreground-400 line-clamp-1">{description}</div>

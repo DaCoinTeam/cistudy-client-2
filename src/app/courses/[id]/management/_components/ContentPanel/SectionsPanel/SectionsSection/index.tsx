@@ -41,7 +41,7 @@ export const SectionsSection = (props: SectionsSectionProps) => {
                     <AccordionItem
                         key={section.sectionId}
                         title={<div>
-                            <span className="font-bold">Section {section.position}: </span>
+                            <span className="font-semibold">Section {section.position}: </span>
                             <span> {section.title}</span>
                         </div>}
                         startContent={<MoreButton section={section} />}

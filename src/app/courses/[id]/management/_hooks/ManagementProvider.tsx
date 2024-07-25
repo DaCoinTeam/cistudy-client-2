@@ -103,13 +103,15 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                             quizId: true,
                             timeLimit: true,
                             passingScore: true,
+                            description: true,
                             questions: {
                                 quizQuestionId: true,
                                 position: true,
                                 answers: {
                                     quizQuestionAnswerId: true,
                                     content: true,
-                                    isCorrect: true
+                                    isCorrect: true,
+                                    position: true
                                 },
                                 point: true,
                                 question: true,

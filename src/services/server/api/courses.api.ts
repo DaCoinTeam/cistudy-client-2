@@ -537,8 +537,7 @@ export const createQuizQuestion = async (
 export interface UpdateQuizQuestionInput {
   data: {
     quizQuestionId: string,
-    question: string,
-    point: number
+    question?: string,
   }
 }
 
@@ -590,26 +589,6 @@ export const createQuizQuestionAnswer = async (
     return await authAxios.post(url, data)
 }
 
-export interface UpdateQuizQuestionAnswerInput {
-  data: {
-    quizQuestionAnswerId: string
-    content: string
-    isCorrect: true
-  }
-}
-
-export interface UpdateQuizQuestionAnswerOutput {
-  message: string
-}
-
-export const updateQuizQuestionAnswer = async (
-    input: CreateQuizQuestionAnswerInput
-): Promise<CreateQuizQuestionAnswerOutput> => {
-    const {data} = input
-    const url = `${BASE_URL}/update-quiz-question-answer`
-    return await authAxios.patch(url, data)
-}
-
 export interface DeleteQuizQuestionAnswerInput {
   data: {
     quizQuestionAnswerId: string
@@ -626,4 +605,46 @@ export const deleteQuizQuestionAnswer = async (
     const {data} = input
     const url = `${BASE_URL}/delete-quiz-question-answer/${data.quizQuestionAnswerId}`
     return await authAxios.delete(url)
+}
+
+export interface UpdateQuizInput {
+  data: {
+      quizId: string
+      timeLimit?: number
+      passingScore?: number
+      title?: string
+      description?: string
+  }
+}
+
+export interface UpdateQuizOutput {
+  message: string
+}
+
+export const updateQuiz = async (
+    input: UpdateQuizInput
+): Promise<UpdateQuizOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/update-quiz`
+    return await authAxios.put(url, data)
+}
+
+export interface UpdateQuizQuestionAnswerInput {
+  data: {
+      quizQuestionAnswerId: string,
+      isCorrect?: boolean,
+      content?: string
+  }
+}
+
+export interface UpdateQuizQuestionAnswerOutput {
+  message: string
+}
+
+export const updateQuizQuestionAnswer = async (
+    input: UpdateQuizQuestionAnswerInput
+): Promise<UpdateQuizQuestionAnswerOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/update-quiz-question-answer`
+    return await authAxios.patch(url, data)
 }
