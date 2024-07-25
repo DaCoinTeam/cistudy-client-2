@@ -1,4 +1,4 @@
-import { Key } from "@common"
+import { CategoryEntity, Key } from "@common"
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import {
     Autocomplete,
@@ -14,7 +14,7 @@ import {
     Textarea,
 } from "@nextui-org/react"
 import { findManyCategories, getAssetUrl } from "@services"
-import { useCallback, useContext } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import useSWR from "swr"
 import {
     GeneralSectionContext,
@@ -33,34 +33,32 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
     const { hasChanged, discardChanges, addTopic, deleteTopic } = functions
 
     const onCancelPress = () => discardChanges()
-
+    const [topics, setTopics] = useState<Array<CategoryEntity>>([])
+    const [topicFocus, setTopicFocus] = useState(false)
     const fetchCategories = useCallback(() => {
-        return findManyCategories(
-            {
-                categoryId: true,
-                name: true,
-                level: true,
-                categoryParentRelations: {
-                    category: {
-                        name: true,
-                        categoryId: true,
-                        level: true,
-                        categoryParentRelations: {
-                            category: {
-                                name: true,
-                                categoryId: true,
-                                level: true,
-                                imageId: true,
-                            },
+        return findManyCategories({
+            categoryId: true,
+            name: true,
+            level: true,
+            categoryParentRelations: {
+                category: {
+                    name: true,
+                    categoryId: true,
+                    level: true,
+                    categoryParentRelations: {
+                        category: {
+                            name: true,
+                            categoryId: true,
+                            level: true,
+                            imageId: true,
                         },
                     },
-                }
-            }
-        )
+                },
+            },
+        })
     }, [])
 
     const { data: categories } = useSWR("FETCH_CATEGORIES", fetchCategories)
-
 
     const onCategoryChange = (selection: Selection) =>
         formik.setFieldValue("categoryId", Array.from(selection).at(0))
@@ -68,36 +66,54 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
     const subcategories =
     categories
         ?.find(({ categoryId }) => categoryId === formik.values.categoryId)
-        ?.categoryParentRelations.map((subCategory) => subCategory.category) ?? []
-    const onSubcategoryChange = (selection: Selection) =>
-        formik.setFieldValue(
-            "subcategories",
-            Array.from(selection).map((catgoryId) =>
-                subcategories.find(
-                    (subcategory) => catgoryId === subcategory.categoryId
-                )
+        ?.categoryParentRelations.map((subCategory) => subCategory.category) ??
+    []
+    const onSubcategoryChange = (selection: Selection) => {
+        const newSubCategories = Array.from(selection).map((catgoryId) =>
+            subcategories.find((subcategory) => catgoryId === subcategory.categoryId)
+        )
+        formik.setFieldValue("subcategories", newSubCategories)
+        const categoriesTopics: Array<CategoryEntity> = []
+        const matchingCategories = subcategories.filter((subcategory) =>
+            newSubCategories
+                .map((category) => category?.categoryId)
+                .includes(subcategory.categoryId)
+        )
+        matchingCategories?.map((subcategory) => {
+            subcategory?.categoryParentRelations?.map((topic) =>
+                categoriesTopics.push(topic.category)
             )
+        })
+        const updateTopics = formik.values.topics.filter((topic) =>
+            categoriesTopics.some((t) => t.categoryId === topic.categoryId)
         )
-
-    const getTopics = () => {
-        if (!formik.values.subcategories.length) return []
-        const topics = formik.values.subcategories.flatMap((subcategory) =>
-            subcategory?.categoryParentRelations?.flatMap(({ category }) => category)
-        )
-        return topics
-
-        // return topics.reduce((prevs: Array<CategoryEntity>, next) => {
-        //     if (!prevs.some(({ categoryId }) => categoryId === next.categoryId)) {
-        //         prevs.push(next)
-        //     }
-        //     console.log("prevs", prevs)
-        //     return prevs
-        // }, [])
-
+        formik.setFieldValue("topics", updateTopics)
     }
-    
+
+    const getTopics = useCallback(() => {
+        if (!formik.values.subcategories.length) return []
+        let topics: Array<CategoryEntity> = []
+        const matchingCategories = subcategories.filter((subcategory) =>
+            formik.values.subcategories
+                .map((category) => category?.categoryId)
+                .includes(subcategory.categoryId)
+        )
+        matchingCategories.map(({ categoryParentRelations }) =>
+            categoryParentRelations.map(({ category }) => topics.push(category))
+        )
+        topics = topics.filter(
+            (topic) =>
+                !formik.values.topics.some((t) => t.categoryId === topic.categoryId)
+        )
+        setTopics(topics)
+    }, [categories, topicFocus])
+
+    useEffect(() => {
+        getTopics()
+    }, [categories, topicFocus])
+
     const onTopicChange = (key: Key | null) => {
-        const topic = getTopics().find((category) => category?.categoryId === key)
+        const topic = topics.find((category) => category?.categoryId === key)
         if (!topic) return
         addTopic(topic)
         formik.setFieldValue("topicInputValue", "")
@@ -111,7 +127,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 classNames={{
                     inputWrapper: "input-input-wrapper",
                 }}
-                label='Title'
+                aria-label='Title'
                 id='title'
                 labelPlacement='outside'
                 value={formik.values.title}
@@ -125,7 +141,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 classNames={{
                     inputWrapper: "input-input-wrapper",
                 }}
-                label='Description'
+                aria-label='Description'
                 id='description'
                 value={formik.values.description}
                 labelPlacement='outside'
@@ -139,8 +155,8 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
 
             <Spacer y={4} />
             <Select
+                aria-label='Category'
                 variant='bordered'
-                label='Category'
                 placeholder='Select category'
                 labelPlacement='outside'
                 value={formik.values.categoryId}
@@ -161,8 +177,8 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             </Select>
             <Spacer y={4} />
             <Select
+                aria-label='Subcategories'
                 variant='bordered'
-                label='Subcategories'
                 classNames={{
                     trigger: "px-4 !border !border-divider bg-transparent shadow-none",
                     popoverContent: "shadow-none border border-divider rounded-medium",
@@ -172,7 +188,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 labelPlacement='outside'
                 items={subcategories}
                 selectedKeys={formik.values.subcategories?.map(
-                    (category) =>  category?.categoryId
+                    (category) => category?.categoryId
                 )}
                 onSelectionChange={onSubcategoryChange}
             >
@@ -186,10 +202,12 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                 <Spacer y={2} />
                 <div className='!border !border-divider rounded-medium'>
                     <Autocomplete
+                        aria-label='Topics'
                         className='w-full'
                         labelPlacement='outside'
                         placeholder='Find a topic'
-                        defaultItems={getTopics()}
+                        items={topics}
+                        menuTrigger='focus'
                         classNames={{
                             popoverContent: "rounded-medium",
                         }}
@@ -198,10 +216,17 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                                 inputWrapper: "px-4 !bg-transparent shadow-none",
                             },
                         }}
+                        onFocus={() => {
+                            setTopicFocus(true)
+                        }}
+                        onBlur={() => {
+                            setTopicFocus(false)
+                        }}
                         onSelectionChange={onTopicChange}
                     >
                         {({ categoryId, name, imageId }) => (
                             <AutocompleteItem
+                                aria-label={name}
                                 startContent={
                                     <Image
                                         alt='topic'
@@ -224,6 +249,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                                 {formik.values.topics.map(({ categoryId, name, imageId }) => (
                                     <Chip
                                         key={categoryId}
+                                        aria-label={name}
                                         radius='md'
                                         variant='light'
                                         className='px-0'
@@ -252,13 +278,13 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                     isDisabled={!hasChanged()}
                     type='submit'
                     color='secondary'
-                    startContent={formik.isSubmitting? "" : <CheckIcon height={20} width={20} />}
+                    startContent={
+                        formik.isSubmitting ? "" : <CheckIcon height={20} width={20} />
+                    }
                     onPress={() => formik.handleSubmit()}
                     isLoading={formik.isSubmitting}
                 >
-                    {
-                        formik.isSubmitting ? "Saving" : "Save"
-                    }
+                    {formik.isSubmitting ? "Saving" : "Save"}
                 </Button>
                 <Button
                     variant='light'

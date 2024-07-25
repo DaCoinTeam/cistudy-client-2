@@ -11,10 +11,10 @@ import {
 import { computePercentage } from "@common"
 import {
     ArrowRightEndOnRectangleIcon,
-    BookOpenIcon,
-    ShoppingCartIcon,
+    BookOpenIcon
 } from "@heroicons/react/24/outline"
 import { getAssetUrl } from "@services"
+
 import {
     FileQuestionIcon,
     ListVideo,
@@ -25,6 +25,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { useContext } from "react"
 import { VideoPlayer } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
+import { AddToCartButton } from "./AddToCartButton"
 import { ConfirmEnrollModal } from "./ConfirmEnrollModal"
 
 export const CourseFloat = () => {
@@ -128,15 +129,7 @@ export const CourseFloat = () => {
                 ) : !isCreator? (
                     <>
                         <ConfirmEnrollModal/>
-                        <Button
-                            color="primary"
-                            className="font-semibold"
-                            variant="light"
-                            startContent={<ShoppingCartIcon height={20} width={20} />}
-                            fullWidth
-                        >
-              Add to cart
-                        </Button>
+                        <AddToCartButton/>
                     </>
                 ) : <Button
                     color="secondary"

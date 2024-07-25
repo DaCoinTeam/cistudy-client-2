@@ -8,7 +8,6 @@ import {
     Tabs
 } from "@nextui-org/react"
 import { Grid3X3Icon, List } from "lucide-react"
-import { useSearchParams } from "next/navigation"
 import { useContext, useMemo, useState } from "react"
 import InfiniteScroll from "react-infinite-scroller"
 import {
@@ -34,8 +33,6 @@ export const InfiniteCoursesScroller = (
     const { swrs } = useContext(AllCoursesContext)!
     const { coursesSwr } = swrs
     const { data, size, setSize, isValidating, isLoading } = coursesSwr
-    const searchParams = useSearchParams()
-    const searchValue = searchParams.get("searchValue")
 
     const onLoadMore = () => {
         setSize(size + 1)
@@ -113,8 +110,7 @@ export const InfiniteCoursesScroller = (
                             {getCoursesByPage.length == 0 && !isLoading ? (
                                 <div>
                                     <div className='text-2xl text-primary font-semibold mb-4'>
-                    Sorry we could not find any courses with the result of
-                    &quot;{searchValue}&quot;
+                                        Sorry we could not find any courses
                                     </div>
                                     <div className='text-lg font-medium'>
                     Try adjusting your search. Here are some ideas:
