@@ -4,6 +4,7 @@ import { SectionsPanel } from "./SectionsPanel"
 import { GeneralPanel } from "./GeneralPanel"
 import { PanelSelected, ManagementContext } from "../../_hooks"
 import { EarningPanel } from "./EarningPanel"
+import { PreviewPanel } from "./PreviewPanel"
 
 interface ContentPanelProps {
   className?: string;
@@ -18,7 +19,8 @@ export const ContentPanel = (props: ContentPanelProps) => {
     const panelSelectedToComponent: Record<PanelSelected, JSX.Element> = {
         [PanelSelected.General]: <GeneralPanel className={`${className}`} />,
         [PanelSelected.Sections]: <SectionsPanel className={`${className}`} />,
-        [PanelSelected.Earning]: <EarningPanel className={`${className}`} />
+        [PanelSelected.Earning]: <EarningPanel className={`${className}`} />,
+        [PanelSelected.Preview]: <PreviewPanel className={`${className}`} />
     }
 
     return <>{panelSelectedToComponent[panelSelected]}</>

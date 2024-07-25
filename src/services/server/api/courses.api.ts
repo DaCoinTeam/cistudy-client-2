@@ -497,3 +497,21 @@ export const deleteResourceAttachment = async (
 
     return await authAxios.delete(url)
 }
+
+export interface PublishCourseInput {
+  data: {
+    courseId: string;
+  };
+}
+
+export interface PublishCourseOutput {
+  message: string;
+}
+
+export const publishCourse = async (
+    input: PublishCourseInput
+): Promise<PublishCourseOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/publish-course`
+    return await authAxios.patch(url, data)
+}

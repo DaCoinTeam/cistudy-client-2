@@ -24,22 +24,22 @@ const config: Config = {
         nextui({
             themes: {
                 light: {
-                    colors: {
-                        primary: "rgb(3,4,94)",
-                        secondary: "rgb(184,251,60)",
-                        success: "rgb(74, 222, 123)",
-                        default: {
-                            DEFAULT: "rgb(244 244 245)",
-                        },
-                        content3: "rgb(228 228 231)",
-                    },
+                    // colors: {
+                    //     primary: "rgb(3,4,94)",
+                    //     secondary: "rgb(184,251,60)",
+                    //     success: "rgb(74, 222, 123)",
+                    //     default: {
+                    //         DEFAULT: "rgb(244 244 245)",
+                    //     },
+                    //     content3: "rgb(228 228 231)",
+                    // },
                 },
                 dark: {
-                    colors: {
-                        primary: "rgb(102,170,249)",
-                        secondary: "rgb(162,221,65)",
-                        success: "rgb(74, 222, 123)",
-                    },
+                    // colors: {
+                    //     primary: "rgb(102,170,249)",
+                    //     secondary: "rgb(162,221,65)",
+                    //     success: "rgb(74, 222, 123)",
+                    // },
                 },
             },
         }),
