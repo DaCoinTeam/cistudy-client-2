@@ -2,20 +2,33 @@ import React, { useContext, useRef } from "react"
 import { updateCourse } from "@services"
 import { ManagementContext } from "../../../../../../_hooks"
 import { Button } from "@nextui-org/react"
-import { ArrowUpTrayIcon } from "@heroicons/react/24/outline"
+import useSWRMutation from "swr/mutation"
 
 interface UploadButtonProps {
-    className?: string
+    className? : string
 }
 
 export const UploadButton = (props: UploadButtonProps) => {
-    const { className } = props
+    const {className} = props 
 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
-    const { data: courseManagement, mutate, isLoading } = courseManagementSwr
+    const { data : courseManagement, mutate } = courseManagementSwr
+    const { courseId } = { ...courseManagement }
+
+    const uploadVideoSwr = useSWRMutation("UPLOAD_VIDEO", async (_: string, { arg } : { arg: { 
+        file: File
+    } }) => {
+        if (!courseId) return
+        await updateCourse({data: {
+            courseId,
+            previewVideoIndex: 0
+        },
+        files: [arg.file]
+        } ) })
+
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files
@@ -23,17 +36,9 @@ export const UploadButton = (props: UploadButtonProps) => {
         const file = files.item(0)
         if (file === null) return
 
-        if (!courseManagement) return
-        const { courseId } = courseManagement
-
-        await updateCourse({
-            data: {
-                courseId,
-                thumbnailIndex: 0,
-            },
-            files: [file],
+        await uploadVideoSwr.trigger({
+            file
         })
-
         await mutate()
     }
 
@@ -44,17 +49,16 @@ export const UploadButton = (props: UploadButtonProps) => {
     return (
         <>
             <Button
+                color="primary"
                 onPress={onPress}
-                color="secondary"
                 className={`${className}`}
-                startContent={isLoading ? "" : <ArrowUpTrayIcon height={20} width={20} />}
-                isLoading={isLoading}
+                isLoading={uploadVideoSwr.isMutating}
             >
-                {isLoading ? "Uploading" : "Upload"}
+                {uploadVideoSwr.isMutating ? "Uploading" : "Upload"}
             </Button>
             <input
                 type="file"
-                accept="image/*"
+                accept="video/*"
                 ref={fileInputRef}
                 onChange={onFileChange}
                 className="hidden"

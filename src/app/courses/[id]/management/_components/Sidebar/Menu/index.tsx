@@ -1,14 +1,15 @@
 "use client"
 import React, { useContext } from "react"
 import { ManagementContext } from "../../../_hooks"
-import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
+import { Button, Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
 import { PanelSelected } from "../../../_hooks"
-import {
-    Cog6ToothIcon,
-    ListBulletIcon,
-} from "@heroicons/react/24/outline"
-import { DollarSign, Goal } from "lucide-react"
+import { Cog6ToothIcon, ListBulletIcon } from "@heroicons/react/24/outline"
+import { DollarSign, ScanEyeIcon, Goal } from "lucide-react"
+import useSWRMutation from "swr/mutation"
+import { publishCourse } from "@services"
+import { RootContext } from "../../../../../../_hooks"
+import { ToastType } from "../../../../../../_components"
 
 interface MenuProps {
   className?: string;
@@ -17,9 +18,13 @@ interface MenuProps {
 export const Menu = (props: MenuProps) => {
     const { className } = props
 
-    const { reducer } = useContext(ManagementContext)!
+    const { reducer, swrs } = useContext(ManagementContext)!
     const [state, dispatch] = reducer
     const { panelSelected } = state
+
+    const { courseManagementSwr } = swrs
+    const { data } = courseManagementSwr
+    const { courseId } = { ...data }
 
     const selectedKeys = new Set([panelSelected])
 
@@ -27,6 +32,8 @@ export const Menu = (props: MenuProps) => {
         Array.from(selectedKeys).includes(panelSelected)
             ? "!bg-content2 !text-foreground rounded-medium"
             : ""
+
+    const { notify } = useContext(RootContext)!
 
     const onSelectionChange = (selection: Selection) => {
         if (typeof selection === "string") return
@@ -48,6 +55,12 @@ export const Menu = (props: MenuProps) => {
             panelSelected: PanelSelected.General,
         },
         {
+            startContent: <ScanEyeIcon size={24} strokeWidth={3 / 2} />,
+            key: "preview",
+            content: "Preview",
+            panelSelected: PanelSelected.Earning,
+        },
+        {
             startContent: <Goal size={24} strokeWidth={3 / 2} />,
             key: "target",
             content: "Target",
@@ -66,6 +79,23 @@ export const Menu = (props: MenuProps) => {
             panelSelected: PanelSelected.Earning,
         },
     ]
+
+    const publishSwr = useSWRMutation(
+        "PUBLISH",
+        async (
+            _,
+            {
+                arg,
+            }: {
+        arg: {
+          courseId: string;
+        };
+      }
+        ) =>
+            await publishCourse({
+                data: arg,
+            })
+    )
 
     return (
         <div className={`${className}`}>
@@ -98,6 +128,24 @@ export const Menu = (props: MenuProps) => {
                     </ListboxItem>
                 ))}
             </Listbox>
+            <Button
+                onPress={async () => {
+                    if (!courseId) return
+                    const { message } = await publishSwr.trigger({
+                        courseId,
+                    })
+          notify!({
+              data: {
+                  message,
+              },
+              type: ToastType.Success,
+          })
+                }}
+                isLoading={publishSwr.isMutating}
+                isDisabled={publishSwr.isMutating}
+            >
+        Publish
+            </Button>
         </div>
     )
 }
