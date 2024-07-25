@@ -58,7 +58,7 @@ export const Menu = (props: MenuProps) => {
             startContent: <ScanEyeIcon size={24} strokeWidth={3 / 2} />,
             key: "preview",
             content: "Preview",
-            panelSelected: PanelSelected.Earning,
+            panelSelected: PanelSelected.Preview,
         },
         {
             startContent: <Goal size={24} strokeWidth={3 / 2} />,
