@@ -6,7 +6,7 @@ import {
     DropdownTrigger,
 } from "@nextui-org/react"
 import { MoreVerticalIcon, PenLineIcon, XIcon } from "lucide-react"
-import { QuizAttemptEntity, QuizQuestionAnswerEntity, QuizQuestionEntity } from "@common"
+import { QuizAttemptEntity, QuizQuestionAnswerEntity } from "@common"
 import { ManagementContext } from "../../../../../../../../../../_hooks"
 import { ConfirmDeleteModalRef, ConfirmDeleteModalRefSelectors } from "../../../../../../../../../../../../../_shared"
 import { createContext, useContext, useMemo, useRef } from "react"
@@ -14,7 +14,6 @@ import { RootContext } from "../../../../../../../../../../../../../_hooks"
 import { ToastType } from "../../../../../../../../../../../../../_components" 
 import { DeepPartial } from "@apollo/client/utilities"
 import { EditQuizContentContext } from "../EditQuizContentProvider"
-import { EditQuizAnswerModalRef, EditQuizAnswerModalRefSelectors } from "./EditQuizAnswerModal"
 
 interface AnswerMoreButtonProps {
   className?: string;
@@ -37,7 +36,6 @@ export const AnswerMoreButton = (props: AnswerMoreButtonProps) => {
     const confirmDeleteModalRef = useRef<ConfirmDeleteModalRefSelectors | null>(
         null
     )
-    const editQuizAnswerModalRef = useRef<EditQuizAnswerModalRefSelectors | null>(null)
     const onConfirmDeleteModalOpen = () =>
         confirmDeleteModalRef.current?.onOpen()
 
@@ -62,7 +60,7 @@ export const AnswerMoreButton = (props: AnswerMoreButtonProps) => {
     }
 
     const onEditPress = () => {
-        editQuizAnswerModalRef.current?.onOpen()
+        
     }
 
     const AnswerMoreButtonContextValue : AnswerMoreButtonContextValue = useMemo(() => ({
@@ -111,11 +109,6 @@ export const AnswerMoreButton = (props: AnswerMoreButtonProps) => {
                 title="Delete answer"
                 content="Are you sure you want to delete this answer? All references will be lost, and you cannot undo this action."
                 onDeletePress={onDeletePress}
-            />
-            <EditQuizAnswerModalRef
-                ref={editQuizAnswerModalRef}
-                answer={answer as QuizQuestionAnswerEntity}
-                question={question as QuizQuestionEntity}
             />
         </AnswerMoreButtonContext.Provider>
     )
