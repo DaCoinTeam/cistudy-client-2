@@ -1,70 +1,57 @@
 import { CourseEntity } from "@common"
-import { Divider, Spacer, Tooltip, User } from "@nextui-org/react"
+import { XMarkIcon } from "@heroicons/react/24/outline"
+import { Spacer, User } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "@services"
-import { CheckIcon, FileQuestion, ListVideo, PlaySquareIcon } from "lucide-react"
+import {
+    FileQuestionIcon,
+    ListVideo,
+    PackageIcon,
+    VideoIcon
+} from "lucide-react"
 import { useRouter } from "next/navigation"
 import { InteractiveThumbnail, Stars } from "../../../_shared"
-
 export const CartItem = (props: CourseEntity) => {
-    const { title, creator, thumbnailId, description, courseId, courseRatings, discountPrice, price, enableDiscount, courseTargets  } = { ...props }
+    const { title, creator, thumbnailId, description, sections, courseId, courseRatings, discountPrice, price, enableDiscount, numberOfLessons, numberOfQuizzes, numberOfResources  } = { ...props }
     const { avatarId, avatarUrl, kind, username } = {
         ...creator,
     }
     const { overallCourseRating, totalNumberOfRatings} = {...courseRatings}
     const router = useRouter()
     return (
-        <Tooltip
-            placement="top"
-            showArrow={true}
-            shadow="lg"
-            className="max-w-96"
-            content={
-                <div className="p-4">
-                    <div >
-                        <div className="text-base font-semibold">This course included</div>
-                        <Spacer y={2} />
-                        <div className="flex text-foreground-500 flex-col gap-2">
+       
+        <div className="flex gap-4 items-center justify-center" key={courseId}>
+            <InteractiveThumbnail  isPressable className="min-w-40 w-40 h-fit relative" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
+            <div className="grid grid-cols-5 gap-4">
+                <div className="col-span-4 mr-2">
+                    <div className="text-lg font-medium"> {title} </div>
+                    <div className="text-sm text-foreground-400 line-clamp-2"> 
+                        {description}
+                    </div>
+                    <Spacer y={2}/>
+
+                    <div className="text-sm text-foreground-400 line-clamp-2"> 
+                        <div className="flex text-foreground-500 flex-row gap-6">
                             <div className="flex gap-2">
                                 <ListVideo size={20} strokeWidth={3 / 2} />
-                                <div className="text-sm font-semibold"> 3 sections</div>
+                                <div className="text-sm"> {sections?.length} sections</div>
                             </div>
                             <div className="flex gap-2">
-                                <PlaySquareIcon size={20} strokeWidth={3 / 2} />
-                                <div className="text-sm font-semibold"> 2 lessons</div>
+                                <VideoIcon size={20} strokeWidth={3 / 2} />
+                                <div className="text-sm"> {numberOfLessons} lesson{numberOfQuizzes ?? 0 > 1 ? "s" : ""}</div>
                             </div>
                             <div className="flex gap-2">
-                                <FileQuestion size={20} strokeWidth={3 / 2} />
-                                <div className="text-sm font-semibold"> 1 quizzes</div>
+                                <FileQuestionIcon size={20} strokeWidth={3 / 2} />
+                                <div className="text-sm"> {numberOfQuizzes} quiz{(numberOfQuizzes ?? 0) > 1 ? "zes" : ""}</div>
+                            </div>
+                            <div className="flex gap-2">
+                                <PackageIcon size={20} strokeWidth={3 / 2} />
+                                <div className="text-sm"> {numberOfResources} resource{(numberOfResources ?? 0) > 1 ? "s" : ""}</div>
                             </div>
                         </div>
-                    
                     </div>
-                    <Spacer y={4} />
+                    <Spacer y={2}/>
 
-                    <div>
-                        <div className='text-base font-semibold'>What you will learn</div>
-                        <Spacer y={2} />
-                        <div className='items-start'>
-                            {courseTargets?.slice(0,3)?.map(({ courseTargetId, content }) => (
-                                <div key={courseTargetId} className='flex flex-row items-start mb-1'>
-                                    <div className='w-5 h-5 mr-3'>
-                                        <CheckIcon />
-                                    </div>
-                                    <div className='text-sm '>{content}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            }
-        >
-            <div className="flex gap-4" key={courseId}>
-                <InteractiveThumbnail  isPressable className="min-w-40 w-40 h-fit relative" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
-                <div className="flex-1">
-                    <div className="text-lg"> {title} </div>
-                    <div className="text-sm text-foreground-400 line-clamp-2"> {description} </div>
-                    <Spacer y={4}/>
-                    <div className="flex gap-4 h-10 items-center ">
+                    <div className="flex w-full gap-4 items-center justify-between ">
                         <User classNames={{
                             name: "text-base",
                             description: "w-20"
@@ -75,26 +62,32 @@ export const CartItem = (props: CourseEntity) => {
                                 kind: kind
                             })
                         }} name={username} description={"2 followers"}/>
-                        <Divider orientation="vertical"/>
                         <div className="flex flex-col items-end">
-                            <div className="flex flex-row justify-center items-end leading-4">
+                            <div className="flex flex-row justify-end items-end leading-4">
                                 <Stars  readonly size={18} initialValue={overallCourseRating} />
-                                <div className="text-sm  ms-1">{overallCourseRating}</div>
+                                <div className="text-sm  ms-1">{overallCourseRating | 0}</div>
                             </div>
-                            <div className="text-xs text-foreground-400 ms-1">({totalNumberOfRatings | 0})</div>
+                            <div className="text-xs text-foreground-400 ms-1">({totalNumberOfRatings | 0} ratings)</div>
 
                         </div>
-                        <Divider orientation="vertical"/>
-                        <div className="flex justify-between w-full items-center h-11">
-                            <div className="flex flex-col items-start">
-                                <div className="text-lg font-semibold text-primary p-0 ms-1">{enableDiscount ? discountPrice : price} STARCI</div>
-                                {enableDiscount && <div className="text-sm text-foreground-400 line-through ms-1">{price} STARCI</div>}
-                            </div>
+                        <div className="flex items-center  text-red-600 cursor-pointer">
+                            <XMarkIcon className="h-6 w-6 mr-1" onClick={() => console.log("remove")}/>
+                            <div className="text-sm  text-red-60">Remove</div>
+                        </div>
+                        
+                    </div>
+                   
+                </div>   
+                <div  className="col-span-1 h-full flex justify-center items-start">
+                    <div className="flex items-center ">
+                        <div className="flex flex-col items-start">
+                            <div className="text-base font-semibold p-0 ms-1">{enableDiscount ? discountPrice : price} STARCI</div>
+                            {enableDiscount && <div className="text-sm text-foreground-400 line-through ms-1">{price} STARCI</div>}
                         </div>
                     </div>
-
-                </div>           
+                </div>
             </div>
-        </Tooltip>
+                    
+        </div>
     )
 }
