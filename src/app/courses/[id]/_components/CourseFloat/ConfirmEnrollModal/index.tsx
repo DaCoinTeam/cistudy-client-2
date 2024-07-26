@@ -65,7 +65,7 @@ export const ConfirmEnrollModal = () => {
                 }
                 className="font-semibold"
                 onPress={onOpen}
-                color="secondary"
+                color="primary"
                 fullWidth
             >
         Enroll
@@ -118,7 +118,7 @@ export const ConfirmEnrollModal = () => {
                         <Button
                             isLoading={isMutating}
                             isDisabled={(balanceLeft < 0) || isMutating}
-                            color="secondary"
+                            color="primary"
                             onPress={async () => {
                                 if (!courseId) return
                                 const { message } = await trigger({

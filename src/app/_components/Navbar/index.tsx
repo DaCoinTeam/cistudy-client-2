@@ -1,7 +1,6 @@
 "use client"
 import {
     Button,
-    Link,
     NavbarBrand,
     NavbarContent,
     NavbarItem,
@@ -63,7 +62,7 @@ const WrappedNavbar = (props: NavbarProps) => {
                         onClick={() => router.push("/")}
                     >
                         <span className='text-primary'>Ci</span>
-                        <span className='text-secondary'>Study</span>
+                        <span className='text-primary'>Study</span>
                     </div>
                 </NavbarBrand>
                 <NavbarContent justify='center' className="space-x-4">
@@ -84,15 +83,15 @@ const WrappedNavbar = (props: NavbarProps) => {
                     ) : (
                         <>
                             <NavbarItem className='hidden lg:flex'>
-                                <Link as='button' onPress={onSignInPress}>
+                                <Button color="primary" variant="solid" onPress={onSignInPress}>
                   Sign In
-                                </Link>
+                                </Button>
                             </NavbarItem>
                             <NavbarItem>
                                 <Button
-                                    color='secondary'
+                                    color='primary'
                                     onPress={onSignUpPress}
-                                    variant='flat'
+                                    variant='bordered'
                                 >
                   Sign Up
                                 </Button>

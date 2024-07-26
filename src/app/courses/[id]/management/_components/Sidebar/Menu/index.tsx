@@ -1,11 +1,10 @@
 "use client"
-import React, { useContext } from "react"
-import { ManagementContext } from "../../../_hooks"
-import { Button, Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
-import { PanelSelected } from "../../../_hooks"
-import { Cog6ToothIcon, ListBulletIcon } from "@heroicons/react/24/outline"
-import { DollarSign, ScanEyeIcon, Goal } from "lucide-react"
+import { Cog6ToothIcon, CurrencyDollarIcon, ListBulletIcon } from "@heroicons/react/24/outline"
+import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
+import { Goal, ScanEyeIcon } from "lucide-react"
+import { useContext } from "react"
+import { ManagementContext, PanelSelected } from "../../../_hooks"
 
 interface MenuProps {
   className?: string;
@@ -63,7 +62,7 @@ export const Menu = (props: MenuProps) => {
             panelSelected: PanelSelected.Sections,
         },
         {
-            startContent: <DollarSign size={24} strokeWidth={3 / 2} />,
+            startContent: <CurrencyDollarIcon  width={24} height={24} />,
             key: "price",
             content: "Price",
             panelSelected: PanelSelected.Price,

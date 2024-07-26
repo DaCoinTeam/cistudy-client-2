@@ -15,7 +15,7 @@ export const NotConnectWalletModal = () => {
                     <div className="text-sm"> Please connect to a wallet first </div>
                 </ModalBody>
                 <ModalFooter className="p-4 pt-2"> 
-                    <Button color="secondary" className="w-full">
+                    <Button color="primary" className="w-full">
                   Connect Wallet
                     </Button>
                 </ModalFooter>

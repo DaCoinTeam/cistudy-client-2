@@ -42,7 +42,7 @@ export const ScrollToTopButton = () => {
                 size="lg"
                 aria-label="ScrollToTop"
                 onClick={scrollToTop}
-                className="bg-primary hover:bg-secondary text-white rounded-full "
+                className="bg-primary hover:bg-primary text-white rounded-full "
             >
                 <ArrowLongUpIcon className="h-5 w-5 " />
             </Button>

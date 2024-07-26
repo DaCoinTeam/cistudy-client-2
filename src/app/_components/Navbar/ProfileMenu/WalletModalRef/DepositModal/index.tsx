@@ -53,7 +53,7 @@ export const WrappedDepositModal = () => {
                     <ModalFooter className="p-4 pt-2">
                         <Button
                             fullWidth
-                            color="secondary"
+                            color="primary"
                             isDisabled={formik.isSubmitting}
                             isLoading={formik.isSubmitting}
                             onPress={formik.submitForm}

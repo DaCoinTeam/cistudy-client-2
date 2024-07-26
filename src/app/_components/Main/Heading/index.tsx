@@ -1,5 +1,5 @@
 "use client"
-import { Button, Image, Link } from "@nextui-org/react"
+import { Button, Image } from "@nextui-org/react"
 import { BG_IMG_1, BG_IMG_2 } from "@config"
 import { ArrowRightIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -21,9 +21,9 @@ export const Heading = () => {
                 </div>
                 <div className='mt-6'>
                     <Button
-                        color='secondary'
+                        color='primary'
                         onClick={() => router.push("/courses")}
-                        className='p-4 py-6 font-medium text-base'
+                        className='px-4 py-6 font-medium text-base'
                         endContent={
                             <div>
                                 <ArrowRightIcon size={20} />
@@ -32,9 +32,9 @@ export const Heading = () => {
                     >
             Explore Courses
                     </Button>
-                    <Link color='primary' className='ms-6 font-medium text-base'>
+                    <Button color='primary' variant="bordered" className='ms-4 px-8 py-6 box-border font-medium text-base'>
             More
-                    </Link>
+                    </Button>
                 </div>
             </div>
             <div className='col-span-2'>

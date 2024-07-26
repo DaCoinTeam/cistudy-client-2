@@ -27,7 +27,7 @@ export const WrappedEditProfileModal = () => {
         <>
             <Button
                 onPress={onOpen}
-                color="secondary"
+                color="primary"
                 startContent={<PenIcon size={20} strokeWidth={3 / 2} />}
             >
                 Edit
@@ -70,7 +70,7 @@ export const WrappedEditProfileModal = () => {
                             isDisabled={formik.isSubmitting}
                             isLoading={formik.isSubmitting}
                             startContent={!formik.isSubmitting ? <CheckIcon height={20} width={20} /> : undefined}
-                            color="secondary"
+                            color="primary"
                         >
                             {formik.isSubmitting ? "Saving" : "Save"}
                         </Button>

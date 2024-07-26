@@ -14,7 +14,7 @@ export const DarkModeSwitch = () => {
         <Switch
             defaultSelected
             size="lg"
-            color="secondary"
+            color="primary"
             onValueChange={onValueChange}
             isSelected={darkMode}
             thumbIcon={({ isSelected, className }) =>
