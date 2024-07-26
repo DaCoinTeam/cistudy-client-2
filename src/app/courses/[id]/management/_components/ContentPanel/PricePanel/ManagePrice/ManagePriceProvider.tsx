@@ -8,8 +8,8 @@ import React, {
     useMemo,
     useRef,
 } from "react"
-import { ManagementContext } from "../../../../../_hooks"
 import { updateCourse } from "@services"
+import { ManagementContext } from "../../../../_hooks"
 
 interface ManagePriceContextValue {
   formik: FormikProps<FormikValues>;

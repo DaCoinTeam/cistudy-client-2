@@ -65,24 +65,25 @@ export const CartItem = (props: CourseEntity) => {
                         <div className="flex flex-col items-end">
                             <div className="flex flex-row justify-end items-end leading-4">
                                 <Stars  readonly size={18} initialValue={overallCourseRating} />
-                                <div className="text-sm  ms-1">{overallCourseRating | 0}</div>
+                                <div className="text-sm  ms-1">{overallCourseRating || 0}</div>
                             </div>
-                            <div className="text-xs text-foreground-400 ms-1">({totalNumberOfRatings | 0} ratings)</div>
+                            <div className="text-xs text-foreground-400 ms-1">{totalNumberOfRatings > 1 ? `(${totalNumberOfRatings } ratings)` : `(${totalNumberOfRatings || 0} rating)`}</div>
 
                         </div>
-                        <div className="flex items-center  text-red-600 cursor-pointer">
-                            <XMarkIcon className="h-6 w-6 mr-1" onClick={() => console.log("remove")}/>
-                            <div className="text-sm  text-red-60">Remove</div>
-                        </div>
+                        
                         
                     </div>
                    
                 </div>   
-                <div  className="col-span-1 h-full flex justify-center items-start">
-                    <div className="flex items-center ">
-                        <div className="flex flex-col items-start">
+                <div  className="col-span-1 h-full flex justify-center items-end">
+                    <div className="grid grid-rows-2 h-full ">
+                        <div className="row-span-1">
                             <div className="text-base font-semibold p-0 ms-1">{enableDiscount ? discountPrice : price} STARCI</div>
                             {enableDiscount && <div className="text-sm text-foreground-400 line-through ms-1">{price} STARCI</div>}
+                        </div>
+                        <div className="flex row-span-1  items-center justify-center  text-red-600 cursor-pointer">
+                            <XMarkIcon className="h-6 w-6 mr-1" onClick={() => console.log("remove")}/>
+                            <div className="text-sm  text-red-60">Remove</div>
                         </div>
                     </div>
                 </div>

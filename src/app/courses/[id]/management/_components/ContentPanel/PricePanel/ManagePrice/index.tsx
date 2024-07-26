@@ -1,20 +1,16 @@
 import { sanitizeNumericInput } from "@common"
 import {
-    CheckIcon,
-    XMarkIcon,
-} from "@heroicons/react/24/outline"
-import {
     Button,
     Input,
     Spacer,
     Switch,
 } from "@nextui-org/react"
-import { useContext } from "react"
+import { useContext, useMemo } from "react"
 import { ManagePriceContext, ManagePriceProvider } from "./ManagePriceProvider"
 
 
 const WrappedManagePrice = () => {
-
+    const PLATFORM_PEE_PERCENT = 0.4
     const { formik, functions } = useContext(ManagePriceContext)!
 
     const { hasChanged, discardChanges } = functions
@@ -41,12 +37,22 @@ const WrappedManagePrice = () => {
             formik.setFieldValue("discountPrice", sanitizeInput)
         }
     }
+    const earnValue = useMemo(
+        () => {
+            if( formik.values.enableDiscount) {
+                return (parseInt(formik.values.discountPrice) * (1 - PLATFORM_PEE_PERCENT)).toFixed(2)
+            } else {
+                return (parseInt(formik.values.price) * (1 - PLATFORM_PEE_PERCENT)).toFixed(2)
+            }
+        }, [formik.values.enableDiscount, formik.values.discountPrice, formik.values.price]
+    ) 
     const onSubmit = () => formik.submitForm()
 
     return (
         
-        <div>
-            <div className="p-4 gap-0">
+        <div className="flex flex-col w-full">
+           
+            <div className="gap-0">
                 <Input
                     variant="bordered"
                     classNames={{
@@ -79,14 +85,14 @@ const WrappedManagePrice = () => {
                     errorMessage={formik.touched.discountPrice && formik.errors.discountPrice}
                     placeholder="Input price here"
                     labelPlacement="outside"
-                    label="Discount price"
+                    label="Discount Price"
                     endContent={
                         <div className="text-foreground-400 text-sm">STARCI</div>
                     }
                 />
                 <Spacer y={4} />
                 <div className="flex justify-between items-center">
-                    <div className="text-sm">Enable discountPrice</div>
+                    <div className="text-sm">Enable Discount</div>
                     <Switch
                         isSelected={formik.values.enableDiscount}
                         onValueChange={onEnableDiscountChange}
@@ -96,8 +102,31 @@ const WrappedManagePrice = () => {
                         color="primary"
                     />
                 </div>
+                <Spacer y={6} />
+                <div className="notification bg-blue-50 dark:bg-blue-800 dark:text-white border-l-4 border-blue-500 dark:border-blue-600 text-primary-500 p-4 mb-4 rounded-md shadow-sm">
+                    <h3 className="font-semibold text-primary dark:text-white"> Platform Fee Notice</h3>
+                    <p className="mt-2 text-sm leading-relaxed">
+        The platform fee is set at <strong>40%</strong> of the course revenue. This fee covers the maintenance and operational costs of the platform. Please consider this when setting the price for your course.
+                    </p>
+                </div>
+                <Spacer y={4} />
+                <Input
+                    variant="bordered"
+                    isReadOnly
+                    classNames={{
+                        inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
+                    }} 
+                    id="earnValue"
+                    value={earnValue.toString()}
+                    labelPlacement="outside"
+                    label="Earnings After Platform Fee"
+                    endContent={
+                        <div className="text-foreground-400 text-sm">STARCI</div>
+                    }
+                />
             </div>
-            <div className="p-4 pt-2 space-x-4">
+            <Spacer y={6} />
+            <div className="pt-2 space-x-2">
                 <Button
                     color="primary"
                     variant="bordered"

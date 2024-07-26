@@ -22,12 +22,14 @@ export const SearchInput = (props: SearchInputProps) => {
         if (categoryFilter?.length > 0) {
             dispatch({ type: "RESET_CATEGORY_FILTER" })
         }
-
         formik.submitForm()
     }
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") onSubmit()
+        if (event.key === "Enter") {
+            onValueChange(formik.values.searchValue)
+            onSubmit()
+        }
     }
     const onPressSearchItem = (topicName: string) => {
         onValueChange(topicName)

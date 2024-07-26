@@ -28,31 +28,24 @@ const WrappedPage = () => {
                 <BreadcrumbItem startContent={<HomeModernIcon />}>Home</BreadcrumbItem>
                 <BreadcrumbItem startContent={<ListIcon />}>Course</BreadcrumbItem>
             </Breadcrumbs> */}
-            <div className='text-2xl flex mb-4'>
+            <div className='text-2xl flex mb-6'>
                 <div className="flex flex-col">
                     <span className="mr-2"> 
-                    </span>
-                    {searchValue && (
-                        <span  className="mr-2">
-                            {getCount()} {getCount() > 1 ? "results" : "result"} for &ldquo;{searchValue}&rdquo;
-                        </span>
-                    )}
-
-
-                    {categoryFilter.length != 0 && (
-                        <span>
-                            <span className="mr-2">{getCount()} {getCount() > 1 ? "results" : "result"} of</span>
-                            {categoryFilter.map((category, index) => (
-                                <span className="font-medium" key={category.categoryId}>
-                                    {category.name}
-                                    {index < categoryFilter.length - 1 && ", "}
-                                </span>
-                            ))}
-                            <span className="ms-2">courses</span>
-                        </span>
+                        {getCount()} {getCount() > 1 ? "results" : "result"} {searchValue && `for "${searchValue}" `}
+                        {categoryFilter.length != 0 && (
+                            <span>
+                                <span className="mr-2">of</span>
+                                {categoryFilter.map((category, index) => (
+                                    <span className="font-medium" key={category.categoryId}>
+                                        {category.name}
+                                        {index < categoryFilter.length - 1 && ", "}
+                                    </span>
+                                ))}
+                                <span className="ms-2">courses</span>
+                            </span>
+                        )}
                     
-                    )}  
-                    {categoryFilter.length == 0 && !searchValue && (<span>{getCount()} {getCount() > 1 ? "results" : "result"}</span>)}
+                    </span>
                 </div>
                
             </div>
