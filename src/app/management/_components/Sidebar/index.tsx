@@ -12,7 +12,7 @@ export const Sidebar = (props: SidebarProps) => {
         <Menu
             className={`${
                 className ?? ""
-            } sticky top-[7rem] rounded-medium`}
+            } rounded-medium`}
         />
     )
 }

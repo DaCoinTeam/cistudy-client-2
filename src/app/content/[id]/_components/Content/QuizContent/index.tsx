@@ -1,5 +1,5 @@
 "use client"
-import { Button, Card, CardBody, CardFooter, CardHeader, Divider } from "@nextui-org/react"
+import { Button, Divider, Spacer } from "@nextui-org/react"
 import { CheckCircle2, Flag, ThumbsDown, ThumbsUp } from "lucide-react"
 import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { ContentDetailsContext } from "../../../_hooks"
@@ -68,87 +68,89 @@ export const QuizContent = () => {
 
     return (
         <div className="w-full">
-            <Card>
-                <CardHeader className="text-3xl font-bold text-primary p-6">{sectionContentData?.title}</CardHeader>
-                <CardBody className="mt-16 p-6">
-                    <div className="text-primary font-semibold cursor-pointer">Review Learning Object</div>
-                    <div className="flex flex-row items-center justify-between mt-16">
-                        <div className="flex flex-col gap-4">
-                            <div className="flex flex-row items-center gap-2">
-                                <CheckCircle2 size={20} color={quiz?.isPassed? "#1F8354":"#03045e"}  />
-                                <span className="font-semibold">Submit your assignment</span>
-                            </div>
-                            <div className="flex flex-row gap-4">
-                                <div className="flex flex-row gap-2">
-                                    <div className="font-semibold">Time Limit</div>
-                                    <span>{quiz?.timeLimit} minutes</span>
-                                </div>
-                                <div className="flex flex-row gap-2">
-                                    <div className="font-semibold">Attempts</div>
-                                    <span>3 every 8 hours</span>
-                                </div>
-                            </div>
+            <div className="text-2xl">{sectionContentData?.title}</div>
+            <Spacer y={12}/>
+            <div>
+                <div className="text-primary font-semibold cursor-pointer">Review Learning Object</div>
+                <Spacer y={8}/>
+                <div className="flex flex-row items-center justify-between">
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-row items-center gap-2">
+                            <CheckCircle2 size={20} color={quiz?.isPassed? "#1F8354":"#03045e"}  />
+                            <span className="font-semibold">Submit your assignment</span>
                         </div>
-                        <Button 
-                            color="primary" 
-                            size="lg" 
-                            className="w-52 text-white"
-                            onPress={() => handleStartQuiz()}
-                        >
-                            {
-                                quizProgressState.quizAttemptId? "Continue Quiz" : "Start Quiz"
-                            }
-                        </Button>
-                    </div>
-                    <Divider className="mt-4" />
-                    <div className="flex flex-row justify-between mt-4">
-                        <div className="flex flex-col gap-4">
-                            <div className="flex flex-row items-center gap-2">
-                                <CheckCircle2 size={20} color={quiz?.isPassed? "#1F8354":"#03045e"} />
-                                <span className="font-semibold">Receive grade</span>
+                        <div className="flex flex-row gap-4">
+                            <div className="flex flex-row gap-2">
+                                <div className="font-semibold">Time Limit</div>
+                                <span>{quiz?.timeLimit} minutes</span>
                             </div>
                             <div className="flex flex-row gap-2">
-                                <div className="font-semibold">To Pass</div>
-                                <span>{quiz?.passingScore}% or Higher</span>
-                            </div>
-                        </div>
-                        <div className="flex flex-row items-center gap-6">
-                            <Divider orientation="vertical" />
-                            <div>
-                                <div className="font-semibold">Your grade</div>
-                                <div className="text-lg text-primary">{quiz?.highestScoreRecorded? `${quiz?.highestScoreRecorded/10*100}%` : "Not yet"}</div>
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <div className="text-primary font-semibold cursor-pointer">View Feedback</div>
-                                <div className="text-xs">We keep your highest score</div>
+                                <div className="font-semibold">Attempts</div>
+                                <span>3 every 8 hours</span>
                             </div>
                         </div>
                     </div>
-                    <Divider className="mt-12" />
-                </CardBody>
-                <CardFooter>
-                    <div className="-mt-4">
-                        <Button
-                            startContent={<ThumbsUp size={20} />}
-                            className="bg-transparent text-primary"
-                        >
+                    <Button 
+                        color="primary" 
+                        size="lg" 
+                        className="w-52 text-white"
+                        onPress={() => handleStartQuiz()}
+                    >
+                        {
+                            quizProgressState.quizAttemptId? "Continue Quiz" : "Start Quiz"
+                        }
+                    </Button>
+                </div>
+                <Spacer y={4}/>
+                <Divider  />
+                <Spacer y={4}/>
+                <div className="flex flex-row justify-between">
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-row items-center gap-2">
+                            <CheckCircle2 size={20} color={quiz?.isPassed? "#1F8354":"#03045e"} />
+                            <span className="font-semibold">Receive grade</span>
+                        </div>
+                        <div className="flex flex-row gap-2">
+                            <div className="font-semibold">To Pass</div>
+                            <span>{`${quiz?.passingScore ?? 0}/10`} or Higher</span>
+                        </div>
+                    </div>
+                    <div className="flex flex-row items-center gap-6">
+                        <Divider orientation="vertical" />
+                        <div>
+                            <div className="font-semibold">Your grade</div>
+                            <div className="text-lg text-primary">{quiz?.highestScoreRecorded? `${quiz?.highestScoreRecorded}/10` : "Not yet"}</div>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <div className="text-primary font-semibold cursor-pointer">View Feedback</div>
+                            <div className="text-xs">We keep your highest score</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <Spacer y={4}/>
+            <Divider  />
+            <Spacer y={4}/>
+            <div>
+                <Button
+                    startContent={<ThumbsUp size={20} />}
+                    className="bg-transparent text-primary"
+                >
                         Like
-                        </Button>
-                        <Button
-                            startContent={<ThumbsDown size={20} />}
-                            className="bg-transparent text-primary"
-                        >
+                </Button>
+                <Button
+                    startContent={<ThumbsDown size={20} />}
+                    className="bg-transparent text-primary"
+                >
                         Dislike
-                        </Button>
-                        <Button
-                            startContent={<Flag size={20} />}
-                            className="bg-transparent text-primary"
-                        >
+                </Button>
+                <Button
+                    startContent={<Flag size={20} />}
+                    className="bg-transparent text-primary"
+                >
                         Report an issue
-                        </Button>
-                    </div>
-                </CardFooter>
-            </Card>
+                </Button>
+            </div>
             <StartQuizModal ref={startQuizModalRef} />
         </div>
     )
