@@ -100,7 +100,7 @@ const Cart = () => {
             <div className='grid grid-cols-7 gap-6'>
                 <div className='mx-auto col-span-5 '>
                     <div className='col-span-2 flex flex-col mr-6 '>
-                        <div className='flex items-center w-full justify-between px-4 py-2 rounded-lg border  border-gray-300 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 '>
+                        <div className='flex items-center w-full justify-between px-4 py-4 rounded-lg border  border-gray-300 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 '>
                             <div className='flex items-center '>
                                 <Checkbox
                                     size='lg'
@@ -115,16 +115,12 @@ const Cart = () => {
                                 />
                                 <span className='text-slate-700 dark:text-slate-200'>All Products</span>
                             </div>
-                            <div className='flex items-end'>
-                                <Button
-                                    variant='light'
-                                    color='danger'
-                                    onPress={onConfirmDeleteModalOpen}
-                                    startContent={<XMarkIcon className='w-5 h-5' />}
-                                    aria-label='Delete'
-                                >
-                  Remove
-                                </Button>
+                            <div className='flex items-end mr-4'>
+                                <Link className=" text-red-600 cursor-pointer" onPress={onConfirmDeleteModalOpen}>
+                                    <XMarkIcon className="h-6 w-6 mr-1"/>
+                                    <div className="text-sm  text-red-60">Remove</div>
+                                </Link>
+                                
                             </div>
                         </div>
                         <Spacer y={4} />
