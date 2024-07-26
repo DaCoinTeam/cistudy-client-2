@@ -1,9 +1,9 @@
 import {
-    Button,
     Dropdown,
     DropdownItem,
     DropdownMenu,
     DropdownTrigger,
+    Link,
 } from "@nextui-org/react"
 import { MoreVerticalIcon, PenLineIcon, XIcon } from "lucide-react"
 import { QuizQuestionEntity } from "@common"
@@ -12,15 +12,13 @@ import { ConfirmDeleteModalRef, ConfirmDeleteModalRefSelectors } from "../../../
 import { createContext, useContext, useMemo, useRef } from "react"
 import { RootContext } from "../../../../../../../../../../../../../_hooks" 
 import { ToastType } from "../../../../../../../../../../../../../_components" 
-import { DeepPartial } from "@apollo/client/utilities"
-import { EditQuizContentContext } from "../EditQuizContentProvider"
 import { EditQuizQuestionModalRef, EditQuizQuestionModalRefSelectors } from "./EditQuizQuestionModal"
 import { deleteQuizQuestion, DeleteQuizQuestionInput } from "@services"
 import useSWRMutation from "swr/mutation"
 
 interface QuestionMoreButtonProps {
   className?: string;
-  question: DeepPartial<QuizQuestionEntity>;
+  question: QuizQuestionEntity;
 }
 
 interface QuestionMoreButtonContextValue {
@@ -30,8 +28,7 @@ interface QuestionMoreButtonContextValue {
 export const QuestionMoreButtonContext = createContext<QuestionMoreButtonContextValue | null>(null)
 
 export const QuestionMoreButton = (props: QuestionMoreButtonProps) => {
-    const { className, question } = props
-    const { quizQuestionId } = question
+    const { question } = props
 
     const editQuizQuestionModalRef = useRef<EditQuizQuestionModalRefSelectors>(null)
     const confirmDeleteModalRef = useRef<ConfirmDeleteModalRefSelectors | null>(
@@ -80,13 +77,11 @@ export const QuestionMoreButton = (props: QuestionMoreButtonProps) => {
                 }}
             >
                 <DropdownTrigger>
-                    <Button
-                        className={`${className}`}
-                        isIconOnly
-                        variant="light"
+                    <Link
+                        color="foreground"
                     >
                         <MoreVerticalIcon size={20} strokeWidth={3/2} />
-                    </Button>
+                    </Link>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
                     <DropdownItem
@@ -115,7 +110,6 @@ export const QuestionMoreButton = (props: QuestionMoreButtonProps) => {
             />
             <EditQuizQuestionModalRef
                 ref={editQuizQuestionModalRef}
-                question={question as QuizQuestionEntity}
             />
         </QuestionMoreButtonContext.Provider>
     )

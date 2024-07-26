@@ -17,7 +17,7 @@ export const AddSectionContentItem = ({sectionId} : {sectionId: string}) => {
                 as="button"
                 className="w-full grid place-content-center h-10"
                 onPress={onPress}
-                color="foreground"
+                color="primary"
             >
                 <div className="gap-2 flex">
                     <PlusIcon width={20} height={20}/>
