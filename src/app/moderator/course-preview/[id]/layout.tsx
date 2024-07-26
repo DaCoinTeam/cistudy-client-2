@@ -1,15 +1,9 @@
 "use client"
-import { ReactNode, Suspense } from "react"
-import { CoursePreviewProvider } from "./_hooks"
+import { ReactNode } from "react"
+import { ManagementProvider } from "./_hooks/ManagementProvider"
 
 const Layout = ({ children }: { children: ReactNode }) => {
-    return (
-        <Suspense>
-            <CoursePreviewProvider>
-                {children}
-            </CoursePreviewProvider>
-        </Suspense>
-    )
+    return <ManagementProvider>{children}</ManagementProvider>
 }
 
 export default Layout
