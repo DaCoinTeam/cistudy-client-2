@@ -6,9 +6,9 @@ import { PriceSectionProvider } from "./PriceSectionProvider"
 const WrappedPriceSection = () => {
     return (
         <div className="h-[30rem] flex flex-col">
-            <div className="text-2xl"> Price</div>
+            <div className="text-4xl font-bold"> Price </div>
             <Spacer y={4}/>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-2/3">
                 <ManagePrice/>
             </div>
            

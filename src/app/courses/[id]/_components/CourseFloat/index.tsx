@@ -87,7 +87,7 @@ export const CourseFloat = () => {
                 />
             </CardHeader>
             <CardBody className="px-6 py-3">
-                {enrolled ? <div className="text-secondary font-semibold text-base mb-2">Enrolled</div> : null}
+                {enrolled ? <div className="text-primary font-semibold text-base mb-2">Enrolled</div> : null}
                 <div>{renderPrice()}</div>
                 <Spacer y={4} />
                 <div>
@@ -116,7 +116,7 @@ export const CourseFloat = () => {
             <CardFooter className="p-4 pt-2 flex-col gap-2">
                 {enrolled && !isCreator ? (
                     <Button
-                        color="secondary"
+                        color="primary"
                         className="font-semibold"
                         onPress={onEnterCoursePress}
                         startContent={
@@ -132,7 +132,7 @@ export const CourseFloat = () => {
                         <AddToCartButton/>
                     </>
                 ) : <Button
-                    color="secondary"
+                    color="primary"
                     className="font-semibold"
                     onPress={onEnterManageCoursePress}
                     startContent={

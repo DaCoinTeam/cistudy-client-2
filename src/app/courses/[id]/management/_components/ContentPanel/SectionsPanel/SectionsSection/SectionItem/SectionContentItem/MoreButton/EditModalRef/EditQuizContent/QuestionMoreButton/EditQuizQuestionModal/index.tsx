@@ -52,7 +52,7 @@ EditQuizQuestionModalRefProps
                     <Button color="default" onPress={() => onHandleDiscard()}>
                         Discard
                     </Button>
-                    <Button color="secondary" onPress={() => onHandleSave()} >
+                    <Button color="primary" onPress={() => onHandleSave()} >
                         Save
                     </Button>
                 </ModalFooter>

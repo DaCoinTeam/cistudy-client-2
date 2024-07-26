@@ -44,17 +44,17 @@ export const Categories = () => {
             onMouseLeave={handleMouseLeave}
             className='relative h-full flex items-center '
         >
-            <Link className="font-medium text-base leading-8 text-gray-700 hover:text-primary cursor-pointer" onPress={handleCoursesPress}>Courses</Link>
+            <Link className="font-medium text-base leading-8 text-gray-700 dark:text-gray-200 hover:text-primary cursor-pointer" onPress={handleCoursesPress}>Courses</Link>
             {isHovered && (
-                <div className='absolute z-10 top-16 -left-12 min-h-[26rem] bg-white shadow-2xl rounded-lg'>
+                <div className='absolute z-10 top-16 -left-12 min-h-[26rem] bg-white dark:bg-slate-800 shadow-2xl rounded-lg'>
                     <div className="flex">
                         <div className=' space-y-4 p-4  w-[15rem] border-r-1 border-gray-200'>
-                            <div className="font-semibold text-lg">Categories</div>
+                            <div className="font-semibold text-gray-700 dark:text-gray-200 text-lg">Categories</div>
 
                             {data?.map((category) => (
                                 <Link
                                     key={category.categoryId}
-                                    className='flex justify-between cursor-pointer'
+                                    className='flex justify-between cursor-pointer text-gray-700 dark:text-gray-200'
                                     onMouseEnter={() => {
                                         setHoveredCategory(category)
                                         setHoveredSubCategory(null)
@@ -72,11 +72,11 @@ export const Categories = () => {
                             <div className="border-r-1 border-gray-200 ">
                                 {hoveredCategory && (
                                     <div className='space-y-4 p-4 w-[15rem] h-full'>
-                                        <div className="font-semibold text-lg">Subcategories</div>
+                                        <div className="font-semibold text-gray-700 dark:text-gray-200 text-lg">Subcategories</div>
 
                                         {hoveredCategory?.categoryParentRelations?.map(subCategory => (
                                             <Link key={subCategory.category.categoryId}
-                                                className='flex justify-between cursor-pointer'
+                                                className='flex justify-between cursor-pointer text-gray-700 dark:text-gray-200'
                                                 onMouseEnter={() => setHoveredSubCategory(subCategory.category)} 
                                                 onPress={() => handleCategoriesClick(subCategory.category)}
                                             >   
@@ -93,10 +93,10 @@ export const Categories = () => {
                             <div>
                                 {hoveredSubCategory && (
                                     <div className='space-y-4 p-4 w-[13rem] '>
-                                        <div className="font-semibold text-lg">Topics</div>
+                                        <div className="font-semibold text-gray-700 dark:text-gray-200 text-lg">Topics</div>
                                         {hoveredSubCategory?.categoryParentRelations?.map(topic => (
                                             <Link key={topic.category.categoryId}
-                                                className='flex justify-between cursor-pointer'
+                                                className='flex justify-between cursor-pointer text-gray-700 dark:text-gray-200'
                                                 onPress={() => handleCategoriesClick(topic.category)}
                                             >
                                                 <h4 className="text-sm">{topic.category.name}</h4>

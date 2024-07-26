@@ -38,7 +38,7 @@ ResultModalRefProps
                             </div>
                         </ModalBody>
                         <ModalFooter className="p-4 pt-2">
-                            <Button startContent={<X size={20} strokeWidth={3/2}/>} color="secondary" onPress={() => {
+                            <Button startContent={<X size={20} strokeWidth={3/2}/>} color="primary" onPress={() => {
                                 onOpenChange(),
                                 onClosePress()
                             }}>

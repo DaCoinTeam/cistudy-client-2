@@ -54,7 +54,7 @@ const WrappedTransactionsModal = () => {
                 </Chip>
             ),
             [TransactionType.Withdraw]: (
-                <Chip color="secondary" variant="flat">
+                <Chip color="primary" variant="flat">
           Withdraw
                 </Chip>
             ),
@@ -106,7 +106,7 @@ const WrappedTransactionsModal = () => {
                                                 isCompact
                                                 showControls
                                                 showShadow
-                                                color="secondary"
+                                                color="primary"
                                                 page={page}
                                                 total={pages}
                                                 onChange={onPageChange}

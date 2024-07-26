@@ -87,7 +87,7 @@ export const AddToCartButton = () => {
                     variant='light'
                     isLoading={isMutating || isLoading}
                     onPress={() => {
-                        console.log("adddd"), handleAddToCart(course?.courseId ?? "")
+                        handleAddToCart(course?.courseId ?? "")
                     }}
                     startContent={<ShoppingCartIcon height={20} width={20} />}
                     fullWidth

@@ -39,7 +39,7 @@ export const Actions = () => {
         <div className="items-center flex justify-between">
             <div className="flex gap-2 items-center">
                 <Button
-                    color="secondary"
+                    color="primary"
                     variant="light"
                     onPress={onLikePress}
                     className="px-2.5 min-w-0"
@@ -56,7 +56,7 @@ export const Actions = () => {
                     {numberOfLikes}
                 </Button>
                 <Button
-                    color="secondary"
+                    color="primary"
                     variant="light"
                     className="px-2.5 min-w-0"
                     onPress={onOpenChange}

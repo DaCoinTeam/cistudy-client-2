@@ -22,12 +22,12 @@ export const LearningSteps = () => (
 
                 <div className='grid grid-cols-2 gap-6'>
                     <div>
-                        <div className='rounded-full p-5 float-end  inline-block bg-secondary transform transition-transform duration-300 hover:scale-130'>
+                        <div className='rounded-full p-5 float-end  inline-block bg-primary transform transition-transform duration-300 hover:scale-130'>
                             <BookCheckIcon size={25} className='text-primary' />
                         </div>
                     </div>
                     <div className=''>
-                        <div className='text-secondary text-3xl font-bold mb-2'>Learn</div>
+                        <div className='text-primary text-3xl font-bold mb-2'>Learn</div>
                         <div className='font-semibold'>
               Learn and access all courses resource
                         </div>

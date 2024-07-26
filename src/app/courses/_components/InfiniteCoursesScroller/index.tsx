@@ -137,7 +137,7 @@ export const InfiniteCoursesScroller = (
                                         initialPage={1}
                                         total={getPages}
                                         onChange={onLoadPage}
-                                        color='secondary'
+                                        color='primary'
                                     />
                                 ) : null}
                             </div>

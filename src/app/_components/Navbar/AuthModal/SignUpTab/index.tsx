@@ -143,7 +143,7 @@ const WrappedSignUpTab = () => {
                     isDisabled={!!Object.keys(formik.errors).length}
                     type="submit"
                     className="w-full"
-                    color="secondary"
+                    color="primary"
                     isLoading={isMutating}
                 >
                     {isMutating? "Signing up..." : "Sign Up"}

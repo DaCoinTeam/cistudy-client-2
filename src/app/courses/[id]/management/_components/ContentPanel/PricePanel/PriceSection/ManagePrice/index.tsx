@@ -46,7 +46,6 @@ const WrappedManagePrice = () => {
     return (
         
         <div>
-            <div className="p-4 pb-2 text-xl">Manage Price</div>
             <div className="p-4 gap-0">
                 <Input
                     variant="bordered"
@@ -94,23 +93,23 @@ const WrappedManagePrice = () => {
                         classNames={{
                             wrapper: "mr-0",
                         }}
-                        color="secondary"
+                        color="primary"
                     />
                 </div>
             </div>
-            <div className="p-4 pt-2">
+            <div className="p-4 pt-2 space-x-4">
                 <Button
+                    color="primary"
+                    variant="bordered"
                     isDisabled={!hasChanged()}
                     onPress={onDiscardChangesPress}
-                    startContent={<XMarkIcon height={20} width={20} />}
                 >
               Cancel
                 </Button>
                 <Button
                     isDisabled={!hasChanged()}
                     onPress={onSubmit}
-                    color="secondary"
-                    startContent={<CheckIcon height={20} width={20} />}
+                    color="primary"
                 >
               Save
                 </Button>

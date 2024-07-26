@@ -45,7 +45,7 @@ export const ConfirmModalRef = forwardRef<
                             <Button variant="light" onPress={onClose}>
                 Cancel
                             </Button>
-                            <Button startContent={<CheckIcon size={20} strokeWidth={3/2}/>} color="secondary" onPress={() => {
+                            <Button startContent={<CheckIcon size={20} strokeWidth={3/2}/>} color="primary" onPress={() => {
                                 onOKPress()
                                 onClose()
                             }}>

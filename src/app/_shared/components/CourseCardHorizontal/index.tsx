@@ -92,7 +92,7 @@ export const CourseCardHorizontal = (props: CourseEntity) => {
                                 {enableDiscount && <div className="text-sm text-foreground-400 line-through ms-1">{price} STARCI</div>}
                             </div>
                        
-                            <Button color="secondary">
+                            <Button color="primary">
                             Add to cart
                             </Button>
                         </div>
