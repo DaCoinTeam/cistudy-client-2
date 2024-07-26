@@ -140,9 +140,6 @@ const WrappedStartQuizModal = forwardRef<
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col">
-                                <div className="text-primary">{sectionContentData?.title}</div>
-                            </ModalHeader>
                             <ModalBody>
                                 <div className="grid grid-cols-7 max-w-[1920px]">
                                     <div className="col-span-2">

@@ -85,8 +85,8 @@ export const SectionsCard = (props: SectionsCardProps) => {
                                 : null
                         }`,
                         content: "flex flex-col pt-0 pb-2",
-                        title: "font-bold text-primary",
-                        subtitle: "font-semibold text-sm",
+                        title: "font-semibold",
+                        subtitle: "text-sm",
                         trigger: "!px-4",
                     }}
                     startContent={renderLock(section.lockState ?? LockState.InProgress)}

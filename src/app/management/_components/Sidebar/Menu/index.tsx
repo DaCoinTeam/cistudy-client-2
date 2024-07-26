@@ -20,7 +20,7 @@ export const Menu = (props: MenuProps) => {
 
     const isSelected = (panelSelected: PanelSelected) =>
         Array.from(selectedKeys).includes(panelSelected)
-            ? "!bg-content2 !text-foreground rounded-medium"
+            ? "!bg-primary/20 !text-primary rounded-medium"
             : ""
 
     const onSelectionChange = (selection: Selection) => {

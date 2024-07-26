@@ -79,11 +79,15 @@ export const WrappedCourseDetailsProvider = ({
                         },
                         quiz: {
                             questions: {
+                                answers: {
+                                    quizQuestionAnswerId: true
+                                },  
                                 quizQuestionId: true
                             }
                         },
                         resource: {
                             attachments: {
+                                resourceAttachmentId: true,
                                 createdAt: true
                             }
                         }

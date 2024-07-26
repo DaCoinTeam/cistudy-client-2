@@ -61,6 +61,7 @@ export const ContentDetailsProvider = ({
                     lastAttemptScore: true,
                     passingScore: true,
                     isPassed: true,
+                    description: true,
                     questions: {
                         quizQuestionId: true,
                         question: true,
@@ -106,6 +107,7 @@ export const ContentDetailsProvider = ({
                             lockState: true,
                             position: true,
                             contents: {
+                                position: true,
                                 sectionContentId: true,
                                 title: true,
                                 type: true,
@@ -116,6 +118,8 @@ export const ContentDetailsProvider = ({
                                     highestScoreRecorded: true,
                                     totalNumberOfAttempts: true,
                                     lastAttemptScore: true,
+                                    passingScore: true,
+                                    description: true,
                                     questions: {
                                         quizQuestionId: true,
                                     },

@@ -97,6 +97,7 @@ export const CoursesTable = () => {
                 </TableColumn>
             </TableHeader>
             <TableBody
+                emptyContent={"You haven't created any course."}
                 items={results}
                 loadingContent={<Spinner />}
                 loadingState={loadingState()}
