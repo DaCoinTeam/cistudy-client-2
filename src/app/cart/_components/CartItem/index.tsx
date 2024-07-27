@@ -1,4 +1,4 @@
-import { CourseEntity } from "@common"
+import { CourseEntity, formatNouns } from "@common"
 import { XMarkIcon } from "@heroicons/react/24/outline"
 import { Spacer, User } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "@services"
@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation"
 import { InteractiveThumbnail, Stars } from "../../../_shared"
 export const CartItem = (props: CourseEntity) => {
     const { title, creator, thumbnailId, description, sections, courseId, courseRatings, discountPrice, price, enableDiscount, numberOfLessons, numberOfQuizzes, numberOfResources  } = { ...props }
-    const { avatarId, avatarUrl, kind, username } = {
+    const { avatarId, avatarUrl, kind, username, numberOfFollowers } = {
         ...creator,
     }
     const { overallCourseRating, totalNumberOfRatings} = {...courseRatings}
@@ -61,7 +61,7 @@ export const CartItem = (props: CourseEntity) => {
                                 avatarId: avatarId,
                                 kind: kind
                             })
-                        }} name={username} description={"2 followers"}/>
+                        }} name={username} description={formatNouns(numberOfFollowers, "follower")}/>
                         <div className="flex flex-col items-end">
                             <div className="flex flex-row justify-end items-end leading-4">
                                 <Stars  readonly size={18} initialValue={overallCourseRating} />

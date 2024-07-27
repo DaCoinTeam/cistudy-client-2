@@ -56,6 +56,7 @@ const WrappedCourseReview = () => {
             <Spacer y={2} />
             {enrolled && isCreator === false && <ReviewInput />}
 
+            <Spacer y={6} />
             <div className='space-y-4'>
                 {getReviews()?.map((item) => {
                     return (
@@ -65,7 +66,7 @@ const WrappedCourseReview = () => {
                     )
                 })}
             </div>
-            <Spacer y={4} />
+            <Spacer y={6} />
             <AllCourseReviewsModal />
         </div>
     )
