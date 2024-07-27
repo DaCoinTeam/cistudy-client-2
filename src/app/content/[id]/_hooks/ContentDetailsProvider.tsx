@@ -64,6 +64,7 @@ export const ContentDetailsProvider = ({
                     isPassed: true,
                     description: true,
                     activeQuizAttempt: {
+                        timeLeft: true,
                         quizAttemptId: true,
                         currentQuestionPosition: true,
                         attemptAnswers: {

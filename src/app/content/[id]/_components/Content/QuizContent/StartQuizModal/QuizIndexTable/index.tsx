@@ -15,7 +15,7 @@ export const QuizIndexTable = () => {
     const { sectionContentSwr } = swrs
     const { data: sectionContentData, mutate } = sectionContentSwr
     const { quiz } = { ...sectionContentData }
-    const { questions, activeQuizAttempt } = { ...quiz }
+    const { questions, activeQuizAttempt, quizId } = { ...quiz }
     const { quizAttemptId, currentQuestionPosition  } = { ...activeQuizAttempt }
 
     const { trigger } = useSWRMutation("UPDATE_QUIZ_ATTEMPT", async (_: string, { arg } : { arg: UpdateQuizAttemptInput}) => {
@@ -43,7 +43,8 @@ export const QuizIndexTable = () => {
                             await trigger({
                                 data: {
                                     quizAttemptId: quizAttemptId ?? "",
-                                    currentQuestionPosition: position
+                                    currentQuestionPosition: position,
+                                    quizId: quizId ?? ""
                                 }
                             })
                             await mutate()
@@ -67,7 +68,8 @@ export const QuizIndexTable = () => {
                     await trigger({
                         data: {
                             quizAttemptId: quizAttemptId ?? "",
-                            currentQuestionPosition: (currentQuestionPosition ?? 0) - 1
+                            currentQuestionPosition: (currentQuestionPosition ?? 0) - 1,
+                            quizId: quizId ?? ""
                         }
                     })
                     await mutate()
@@ -86,7 +88,8 @@ export const QuizIndexTable = () => {
                     await trigger({
                         data: {
                             quizAttemptId: quizAttemptId ?? "",
-                            currentQuestionPosition: (currentQuestionPosition ?? 0) + 1
+                            currentQuestionPosition: (currentQuestionPosition ?? 0) + 1,
+                            quizId: quizId ?? ""
                         }
                     })
                     await mutate()

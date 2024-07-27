@@ -297,6 +297,7 @@ export interface QuizAttemptEntity {
   quiz: QuizEntity;
   currentQuestionPosition: number;
   attemptAnswers: Array<QuizAttemptAnswerEntity>;
+  timeLeft: number;
 }
 
 export interface QuizQuestionMediaEntity {

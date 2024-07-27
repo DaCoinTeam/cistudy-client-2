@@ -654,6 +654,7 @@ export interface UpdateQuizAttemptInput {
   data: {
     quizAttemptId: string
     currentQuestionPosition?: number
+    quizId: string
   }
 }
 
@@ -674,6 +675,7 @@ export interface UpdateQuizAttemptAnswersInput {
       quizAttemptId: string
       quizQuestionId: string
       quizQuestionAnswerIds: Array<string>
+      quizId: string
   }
 }
 
