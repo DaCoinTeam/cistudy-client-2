@@ -93,7 +93,7 @@ export const Sections = () => {
     }
 
     const renderQuiz = (
-        { description, passingScore, questions }: QuizEntity,
+        { description, passingPercent, questions }: QuizEntity,
         { title, position }: SectionContentEntity
     ) => {
         return (
@@ -125,7 +125,7 @@ export const Sections = () => {
                                     <TrophyIcon className="w-3 h-3" strokeWidth={3 / 2} />
                                 }
                             >
-                                {passingScore}/10 to pass
+                                {passingPercent}% to pass
                             </Chip>
                             <Chip
                                 classNames={{

@@ -611,7 +611,7 @@ export interface UpdateQuizInput {
   data: {
       quizId: string
       timeLimit?: number
-      passingScore?: number
+      passingPercent?: number
       title?: string
       description?: string
   }

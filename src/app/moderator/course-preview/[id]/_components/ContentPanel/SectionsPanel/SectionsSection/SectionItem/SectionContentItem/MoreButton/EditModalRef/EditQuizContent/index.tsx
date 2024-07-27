@@ -85,18 +85,18 @@ const WrappedEditQuizContent = () => {
                             inputWrapper: "input-input-wrapper",
                         }}
                         label="Passing Score"
-                        id="passingScore"
+                        id="passingPercent"
                         isRequired
                         labelPlacement="outside"
                         placeholder="Input description here"
-                        value={formik.values.passingScore.toString()}
+                        value={formik.values.passingPercent.toString()}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         isInvalid={
-                            !!(formik.touched.passingScore && formik.errors.passingScore)
+                            !!(formik.touched.passingPercent && formik.errors.passingPercent)
                         }
                         errorMessage={
-                            formik.touched.passingScore && formik.errors.passingScore
+                            formik.touched.passingPercent && formik.errors.passingPercent
                         }
                         endContent={<div className="text-sm text-foreground-400">/10</div>}
                         isReadOnly

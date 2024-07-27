@@ -98,7 +98,7 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                         quiz: {
                             quizId: true,
                             timeLimit: true,
-                            passingScore: true,
+                            passingPercent: true,
                             questions: {
                                 quizQuestionId: true,
                                 position: true,

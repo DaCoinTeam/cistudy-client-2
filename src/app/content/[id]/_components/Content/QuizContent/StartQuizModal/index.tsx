@@ -109,7 +109,7 @@ const WrappedStartQuizModal = forwardRef<
     return (
         <div>
             <Modal
-                size="3xl"
+                size="4xl"
                 isOpen={isOpen}
                 onClose={handleCloseQuiz}
             >
@@ -117,13 +117,12 @@ const WrappedStartQuizModal = forwardRef<
                     {(onClose) => (
                         <>
                             <ModalBody className="p-0">
-                                <div className="flex gap-12 p-6">
+                                <div className="flex gap-6 p-6">
                                     <div>
                                         <QuizIndexTable/>
                                         <Spacer y={6} />
                                         <CountdownTimer/>
                                     </div>
-
                                     <QuestionCheckbox/>
                                 </div>
                                 <LoadingFadeScreen isLoading={state.isLoading}/>

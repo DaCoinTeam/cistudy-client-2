@@ -26,15 +26,15 @@ export const QuizIndexTable = () => {
     const [, dispatch] = reducer
 
     return (
-        <div>
+        <div className="w-[216px]">
             <div className="w-full grid grid-cols-5 gap-1">
-                {sortByPosition(questions ?? []).map(({ quizQuestionId, position }) => (
+                {sortByPosition(questions ?? []).map(({ quizQuestionId, position, answered }) => (
                     <Button
-                        className="!min-w-0"
+                        className="!min-w-10 w-10 col-span-1"
                         color="primary"
                         key={quizQuestionId}
                         //isDisabled={currentQuestionPosition === position}
-                        variant={currentQuestionPosition === position ? "solid" : "flat"}
+                        variant={currentQuestionPosition === position ? "solid" : (answered ? "flat" : "light") }
                         onPress={async () => {
                             dispatch({
                                 type: "SET_LOADING",

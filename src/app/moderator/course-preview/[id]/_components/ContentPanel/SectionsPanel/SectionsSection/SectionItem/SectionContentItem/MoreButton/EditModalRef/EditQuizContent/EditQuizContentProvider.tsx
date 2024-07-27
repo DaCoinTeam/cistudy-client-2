@@ -23,7 +23,7 @@ export const EditQuizContentContext = createContext<EditQuizContentContextValue 
 
 interface FormikValues {
     title: string,
-    passingScore: number
+    passingPercent: number
     timeLimit: number
     description: string
 }
@@ -31,7 +31,7 @@ interface FormikValues {
 const initialValues: FormikValues = {
     title: "",
     description: "",
-    passingScore: 8,
+    passingPercent: 8,
     timeLimit: 60 * 15
 }
 
@@ -54,7 +54,7 @@ const WrappedFormikProvider = ({ formik, children, swrs }: {
     const { props } = useContext(SectionContentItemContext)!
     const { sectionContent } = props
     const { quiz, title } = sectionContent
-    const { passingScore, timeLimit, description } = quiz
+    const { passingPercent, timeLimit, description } = quiz
 
     useEffect(() => {
         if (!title) return
@@ -71,10 +71,10 @@ const WrappedFormikProvider = ({ formik, children, swrs }: {
     ])
 
     useEffect(() => {
-        if (!passingScore) return
-        formik.setFieldValue("passingScore", passingScore)
+        if (!passingPercent) return
+        formik.setFieldValue("passingPercent", passingPercent)
     }, [
-        passingScore
+        passingPercent
     ])
 
     useEffect(() => {
@@ -115,12 +115,12 @@ export const EditQuizContentProvider = ({ children }: { children: ReactNode }) =
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({})
         }
-        onSubmit={async ({ title, timeLimit, passingScore, description }) => {
+        onSubmit={async ({ title, timeLimit, passingPercent, description }) => {
             const { message } = await updateQuizSwrMutation.trigger(
                 {
                     data: {
                         title,
-                        passingScore: Number(passingScore),
+                        passingPercent: Number(passingPercent),
                         timeLimit: Number(timeLimit),
                         quizId: sectionContentId,
                         description
