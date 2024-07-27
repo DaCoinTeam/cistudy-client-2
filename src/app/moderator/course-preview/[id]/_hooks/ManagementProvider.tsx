@@ -141,8 +141,8 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
     }, [courseId])
 
     const courseManagementSwr = useSWR(
-        courseId ? ["COURSE_MANAGEMENT"] : null,
-        fetchCourseManagement
+        courseId ? ["COURSE_PREVIEW"] : null,
+        fetchCourseManagement,
     )
 
     const manageContextValue: ManagementContextValue = useMemo(

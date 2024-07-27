@@ -1,8 +1,8 @@
 import { CourseEntity, parseISODateString } from "@common"
 import { Chip, ChipProps, Pagination, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
-import { Eye } from "lucide-react"
 import { useCallback, useContext } from "react"
 import { CourseApprovalItemContext, CourseApprovalItemProvider, ROWS_PER_PAGE } from "./CourseApprovalitemProvider"
+import { EyeIcon } from "@heroicons/react/24/outline"
 
 const WrappedCourseApprovalItem = () => {
     const { reducer, swrs } = useContext(CourseApprovalItemContext)!
@@ -71,8 +71,8 @@ const WrappedCourseApprovalItem = () => {
                         course.verifyStatus === "pending" && (
                             <div className="flex flex-row gap-2">
                                 <Tooltip content="Preview" color="primary">
-                                    <Eye
-                                        className="cursor-pointer"
+                                    <EyeIcon
+                                        className="cursor-pointer text-primary w-6 h-6"
                                         onClick={() => window.open(`/moderator/course-preview/${course.courseId}`)}
                                     />
                                 </Tooltip>

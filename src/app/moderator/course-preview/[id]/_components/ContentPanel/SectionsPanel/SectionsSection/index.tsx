@@ -2,7 +2,6 @@
 import {
     Accordion,
     AccordionItem,
-    Divider,
     Spacer,
 } from "@nextui-org/react"
 import React, { useContext } from "react"
@@ -58,10 +57,17 @@ export const SectionsSection = (props: SectionsSectionProps) => {
         <div>
             <div className="text-4xl font-bold"> Sections </div>
             <Spacer y={6}/>
-            <div className={`${className} border border-divider rounded-medium`}>
-                {renderSections()}
-                <Divider/>
-            </div>
+            {
+                courseManagement && courseManagement.sections.length > 0? (
+                    <div className={`${className} border border-divider rounded-medium`}>
+                        {renderSections()}
+                    </div>
+                ) : (
+                    <div className="text-xl">
+                        There are no sections yet
+                    </div>
+                )
+            }
         </div>
     )
 }

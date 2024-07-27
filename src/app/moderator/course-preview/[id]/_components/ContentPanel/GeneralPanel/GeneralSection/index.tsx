@@ -23,9 +23,7 @@ interface GeneralSectionProps {
 export const WrappedGeneralSection = (props: GeneralSectionProps) => {
     const { className } = props
 
-    const { formik, functions } = useContext(GeneralSectionContext)!
-
-    const { deleteTopic } = functions
+    const { formik } = useContext(GeneralSectionContext)!
 
     const [, setTopics] = useState<Array<CategoryEntity>>([])
     const [topicFocus] = useState(false)
@@ -110,9 +108,11 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             <div className="text-4xl font-bold"> General </div>
             <Spacer y={4} />
             <Input
+                label="Title"
                 classNames={{
                     inputWrapper: "input-input-wrapper",
                 }}
+                title="Title"
                 aria-label='Title'
                 id='title'
                 labelPlacement='outside'
@@ -125,6 +125,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             />
             <Spacer y={4} />
             <Textarea
+                label="Description"
                 classNames={{
                     inputWrapper: "input-input-wrapper",
                 }}
@@ -143,14 +144,17 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
 
             <Spacer y={4} />
             <Select
+                label='Category'
                 aria-label='Category'
                 variant='bordered'
                 placeholder='Select category'
                 labelPlacement='outside'
                 value={formik.values.categoryId}
                 classNames={{
+                    base: "opacity-100",
                     trigger: "px-4 !border !border-divider bg-transparent shadow-none",
                     popoverContent: "shadow-none border border-divider rounded-medium",
+                    selectorIcon: "hidden"
                 }}
                 items={categories ?? []}
                 selectionMode="single"
@@ -166,11 +170,14 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             </Select>
             <Spacer y={4} />
             <Select
+                label='Subcategories'
                 aria-label='Subcategories'
                 variant='bordered'
                 classNames={{
+                    base: "opacity-100",
                     trigger: "px-4 !border !border-divider bg-transparent shadow-none",
                     popoverContent: "shadow-none border border-divider rounded-medium",
+                    selectorIcon: "hidden"
                 }}
                 selectionMode="multiple"
                 placeholder="Select subcategory"
@@ -190,19 +197,17 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             <div>
                 <div className="text-sm"> Topics </div>
                 <Spacer y={2} />
-                <div className="!border !border-divider rounded-medium">
+                <div>
                     {formik.values.topics.length ? (
                         <>
-                            <div className="flex gap-4 p-4">
+                            <div className="flex gap-4">
                                 {formik.values.topics.map(({ categoryId, name }) => (
                                     <Chip
                                         key={categoryId}
                                         aria-label={name}
                                         radius='md'
-                                        color="primary"
+                                        color="default"
                                         variant="flat"
-                                        onClose={() => deleteTopic(categoryId)}
-                                        isDisabled={true}
                                     >
                                         {name}
                                     </Chip>

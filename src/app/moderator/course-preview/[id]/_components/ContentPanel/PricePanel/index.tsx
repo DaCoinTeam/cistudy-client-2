@@ -1,5 +1,6 @@
 "use client"
-import { PriceSection } from "./PriceSection"
+import { Spacer } from "@nextui-org/react"
+import { ManagePrice } from "./ManagePrice"
 
 interface PricePanelProps {
     className?: string
@@ -8,11 +9,12 @@ export const PricePanel = (props: PricePanelProps) => {
     const { className } = props
     return (
         <div className={`${className}`}>
-            <PriceSection/>
-            {/* <Spacer y={6}/>
-            <EnrollmentsSection/>
-            <Spacer y={6}/>
-            <ReceivedWalletSection/> */}
+            <div className="text-4xl font-bold"> Price </div>
+            <Spacer y={4}/>
+            <div className="w-1/2">
+                <ManagePrice/>
+            </div>
+
         </div>
     )
 }

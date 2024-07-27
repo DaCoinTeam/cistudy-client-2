@@ -24,7 +24,9 @@ export const WrappedTargetsSection = (props: TargetsSectionProps) => {
                 {sortByPosition(targetsCard ?? [])?.map((courseTarget) => (
                     <div key={courseTarget.courseTargetId}>
                         <TargetItem courseTarget={courseTarget} />
-                        <Divider />
+                        {
+                            courseTarget.position === sortByPosition(targetsCard ?? []).slice(-1)[0].position? "" : <Divider />
+                        }
                     </div>
                 ))}
             </>
@@ -35,9 +37,17 @@ export const WrappedTargetsSection = (props: TargetsSectionProps) => {
         <div className={`${className}`}>
             <div className='text-4xl font-bold'> Targets </div>
             <Spacer y={6} />
-            <div className='border border-divider rounded-medium'>
-                {renderTargetCards()}
-            </div>
+            {
+                targetsCard && targetsCard.length > 0? (
+                    <div className='border border-divider rounded-medium'>
+                        {renderTargetCards()}
+                    </div>
+                ) : (
+                    <div className="text-xl">
+                        There are no targets yet
+                    </div>
+                )
+            }
         </div>
     )
 }
