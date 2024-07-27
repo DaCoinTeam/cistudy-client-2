@@ -250,7 +250,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                                         aria-label={name}
                                         radius='md'
                                         color="default"
-                                        variant="flat"
+                                        variant="flat"  
                                         onClose={() => deleteTopic(categoryId)}
                                     >
                                         {name}

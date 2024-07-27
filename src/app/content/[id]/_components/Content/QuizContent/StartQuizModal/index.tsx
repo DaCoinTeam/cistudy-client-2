@@ -4,12 +4,14 @@ import { ContentDetailsContext } from "../../../../_hooks"
 import CountdownTimer from "./Countdown"
 import { QuizProgressState, QuizTimeState, StartQuizContext, StartQuizProvider } from "./StartQuizProvider"
 import { ArrowLeft, ArrowRight, Circle, CircleDot } from "lucide-react"
-import { ConfirmModalRef, ConfirmModalRefSelectors } from "../../../../../../_shared"
+import { ConfirmModalRef, ConfirmModalRefSelectors, LoadingFadeScreen } from "../../../../../../_shared"
 import { ErrorResponse } from "@common"
 import { RootContext } from "../../../../../../_hooks"
 import { ToastType } from "../../../../../../_components"
 import { ResultModalRef, ResultModalRefSelectors } from "./ResultModalRef"
 import { QuizAnswer } from "./useStartQuizReducer"
+import { QuizIndexTable } from "./QuizIndexTable"
+import { QuestionCheckbox } from "./QuestionCheckbox"
 
 export interface StartQuizModalRefProps {
 
@@ -56,31 +58,6 @@ const WrappedStartQuizModal = forwardRef<
         window.dispatchEvent(new Event("storage"))
         dispatch({ type: "RESET" })
         onClose()
-    }
-
-    const handleNextQuestion = () => {
-        dispatch({ type: "SET_CURRENT_QUESTION_INDEX", payload: state.currentQuestionIndex + 1 })
-    }
-
-    const handlePreviousQuestion = () => {
-        dispatch({ type: "SET_CURRENT_QUESTION_INDEX", payload: state.currentQuestionIndex - 1 })
-    }
-
-    const handleSelectQuestion = (index: number) => {
-        dispatch({ type: "SET_CURRENT_QUESTION_INDEX", payload: index })
-    }
-
-    const handleSelectedAnswer = ({questionIndex, answerIndex} : {questionIndex: number, answerIndex: string}) => {
-        const selectedAnswer = {
-            questionIndex: questionIndex.toString(),
-            answerIndex: [answerIndex],
-            isAnswered: true
-        }
-
-        dispatch({
-            type: "SET_SELECTED_OPTION_FOR_QUESTION",
-            payload: [selectedAnswer]
-        })
     }
 
     const handleSubmitQuiz = async() => {
@@ -140,71 +117,16 @@ const WrappedStartQuizModal = forwardRef<
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalBody>
-                                <div className="grid grid-cols-7 max-w-[1920px]">
+                            <ModalBody className="p-0">
+                                <div className="grid grid-cols-7 max-w-[1920px] p-6 gap-12">
                                     <div className="col-span-2">
-                                        {
-                                            quiz?.questions.map((_, index) => (
-                                                <Button key={index} color="primary" className={`w-20 h-16 mb-4 mr-4 text-white ${isAnswered(index)? "opacity-50" : ""}`} onPress={() => handleSelectQuestion(index)}>
-                                                    {index + 1}
-                                                </Button>
-                                            ))
-                                        }
-                                        <div className="flex flex-col items-center">
-                                            <div className="flex flex-row justify-center gap-2">
-                                                <Button 
-                                                    startContent={<ArrowLeft />}
-                                                    color="primary"
-                                                    className="text-white"
-                                                    onPress={handlePreviousQuestion} 
-                                                    isDisabled={state.currentQuestionIndex === 0}
-                                                />
-                                                <Button 
-                                                    color="primary" 
-                                                    className="text-white"
-                                                    endContent={<ArrowRight />} 
-                                                    onPress={handleNextQuestion} 
-                                                    isDisabled={state.currentQuestionIndex === (quiz?.questions.length ?? 0) - 1}
-                                                />
-                                            </div>
-                                            <div className="mt-32 ml-6">
-                                                <CountdownTimer initialTime={Number(quizTimeState?.remainingTime)} />
-                                            </div>
-                                        </div>
+                                        <QuizIndexTable/>
                                     </div>
                                     <div className="col-span-5">
-                                        <div className="flex flex-col gap-4">
-                                            <div className="flex flex-row items-center justify-between">
-                                                <div className="flex flex-row gap-1">
-                                                    <div className="text-primary font-semibold">Question {state.currentQuestionIndex+1}</div>
-                                                    <div className="text-primary font-semibold">of {quiz?.questions.length}</div>
-                                                </div>
-                                                <Chip color="default" size="md">{quiz?.questions[state.currentQuestionIndex].point} point</Chip>
-                                            </div>
-                                            <Divider />
-                                            <div className="font-semibold text-primary">{quiz?.questions[state.currentQuestionIndex].question}</div>
-                                            <div className="flex flex-col gap-4">
-                                                {
-                                                    quiz?.questions[state.currentQuestionIndex].answers.map((answer, index) => (
-                                                        <Button 
-                                                            startContent={
-                                                                state.selectedAnswers?.some(a => a.questionIndex === state.currentQuestionIndex.toString() && a.answerIndex.includes(answer.quizQuestionAnswerId)) ?
-                                                                    <CircleDot size={20} /> :
-                                                                    <Circle size={20} />
-                                                            } 
-                                                            key={index} color="primary" 
-                                                            variant="light" 
-                                                            className="flex justify-start font-semibold w-fit" 
-                                                            onPress={() => handleSelectedAnswer({questionIndex: state.currentQuestionIndex, answerIndex: answer.quizQuestionAnswerId})}
-                                                        >
-                                                            {answer.content}
-                                                        </Button>
-                                                    ))
-                                                }
-                                            </div>
-                                        </div>
+                                        <QuestionCheckbox/>
                                     </div>
                                 </div>
+                                <LoadingFadeScreen isLoading={state.isLoading}/>
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="danger" variant="light" onPress={onClose}>

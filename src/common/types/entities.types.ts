@@ -142,10 +142,9 @@ export interface CourseEntity {
   //graphql
   numberOfEnrollments?: number;
   enrolled?: boolean;
-  numberOfQuizzes?: number
-  numberOfLessons?: number
-  numberOfResources?: number
-
+  numberOfQuizzes?: number;
+  numberOfLessons?: number;
+  numberOfResources?: number;
 }
 export interface CourseTargetEntity {
   courseTargetId: string;
@@ -205,13 +204,13 @@ export interface ProgressEntity {
 export enum SectionContentType {
   Lesson = "lesson",
   Quiz = "quiz",
-  Resource = "resource"
+  Resource = "resource",
 }
 
 export enum CompleteState {
   Completed = "completed",
   Failed = "failed",
-  Undone = "undone"
+  Undone = "undone",
 }
 
 export interface SectionContentEntity {
@@ -226,7 +225,7 @@ export interface SectionContentEntity {
   position: number;
   createdAt: Date;
   updatedAt: Date;
-  
+
   section: SectionEntity;
   lesson: LessonEntity;
   resource: ResourceEntity;
@@ -248,6 +247,7 @@ export interface QuizEntity {
   questions: Array<QuizQuestionEntity>;
   quizAttempts: QuizAttemptEntity;
   description: string;
+  activeQuizAttempt?: QuizAttemptEntity;
 }
 
 export interface QuizQuestionEntity {
@@ -275,6 +275,16 @@ export interface QuizQuestionAnswerEntity {
   attempt: QuizAttemptEntity;
 }
 
+export interface QuizAttemptAnswerEntity {
+  quizAttemptAnswerId: string;
+  quizAttemptId: string;
+  quizQuestionAnswerId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  quizAttempt: QuizAttemptEntity;
+  quizQuestionAnswer: QuizQuestionAnswerEntity;
+}
+
 export interface QuizAttemptEntity {
   quizAttemptId: string;
   quizId: string;
@@ -285,7 +295,8 @@ export interface QuizAttemptEntity {
   createdAt: Date;
   updatedAt: Date;
   quiz: QuizEntity;
-  questionAnswers: Array<QuizQuestionAnswerEntity>;
+  currentQuestionPosition: number;
+  attemptAnswers: Array<QuizAttemptAnswerEntity>;
 }
 
 export interface QuizQuestionMediaEntity {
@@ -342,7 +353,7 @@ export interface PostCommentReplyEntity {
 export enum LockState {
   Completed = "completed",
   InProgress = "inProgress",
-  Locked = "locked"
+  Locked = "locked",
 }
 
 export interface SectionEntity {

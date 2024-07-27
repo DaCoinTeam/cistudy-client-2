@@ -648,3 +648,44 @@ export const updateQuizQuestionAnswer = async (
     const url = `${BASE_URL}/update-quiz-question-answer`
     return await authAxios.patch(url, data)
 }
+
+
+export interface UpdateQuizAttemptInput {
+  data: {
+    quizAttemptId: string
+    currentQuestionPosition?: number
+  }
+}
+
+export interface UpdateQuizAttemptOutput {
+  message: string
+}
+
+export const updateQuizAttempt = async (
+    input: UpdateQuizAttemptInput
+): Promise<UpdateQuizAttemptOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/update-quiz-attempt`
+    return await authAxios.patch(url, data)
+}
+
+export interface UpdateQuizAttemptAnswersInput {
+  data: {
+      quizAttemptId: string
+      quizQuestionId: string
+      quizQuestionAnswerIds: Array<string>
+  }
+}
+
+export interface UpdateQuizAttemptAnswersOutput {
+  message: string
+}
+
+export const updateQuizAttemptAnswers = async (
+    input: UpdateQuizAttemptAnswersInput
+): Promise<UpdateQuizAttemptAnswersOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/update-quiz-attempt-answers`
+    return await authAxios.patch(url, data)
+}
+
