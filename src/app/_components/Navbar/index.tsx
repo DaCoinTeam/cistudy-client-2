@@ -83,18 +83,20 @@ const WrappedNavbar = (props: NavbarProps) => {
                     ) : (
                         <>
                             <NavbarItem className='hidden lg:flex'>
-                                <Button color="primary" variant="solid" onPress={onSignInPress}>
-                  Sign In
-                                </Button>
-                            </NavbarItem>
-                            <NavbarItem>
-                                <Button
-                                    color='primary'
-                                    onPress={onSignUpPress}
-                                    variant='bordered'
-                                >
+                                <NavbarItem>
+                                    <Button
+                                        color='primary'
+                                        onPress={onSignUpPress}
+                                        variant='bordered'
+                                        className="mr-2"
+                                    >
                   Sign Up
-                                </Button>
+                                    </Button>
+                                    <Button color="primary" variant="solid" onPress={onSignInPress}>
+                  Sign In
+                                    </Button>
+                                </NavbarItem>
+                           
                             </NavbarItem>
                         </>
                     )}

@@ -121,7 +121,7 @@ export const CourseCard = (props: CourseCardProps) => {
                                         <Stars  readonly size={18} initialValue={overallCourseRating} />
                                         <div className="text-sm  ms-1">{overallCourseRating}</div>
                                     </div>
-                                    <div className="text-xs text-foreground-400 ms-1">{totalNumberOfRatings > 1 ? `(${totalNumberOfRatings || 0} ratings)` : `(${totalNumberOfRatings} rating)`}</div>
+                                    <div className="text-xs text-foreground-400 ms-1">{totalNumberOfRatings > 1 ? `(${totalNumberOfRatings} ratings)` : `(${totalNumberOfRatings || 0} rating)`}</div>
 
                                 </div>
                     
