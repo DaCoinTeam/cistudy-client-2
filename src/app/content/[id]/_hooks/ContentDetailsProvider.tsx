@@ -50,6 +50,7 @@ export const ContentDetailsProvider = ({
             {
                 sectionContentId: true,
                 title: true,
+                position: true,
                 type: true,
                 createdAt: true,
                 completeState: true,
@@ -62,7 +63,17 @@ export const ContentDetailsProvider = ({
                     passingScore: true,
                     isPassed: true,
                     description: true,
+                    activeQuizAttempt: {
+                        quizAttemptId: true,
+                        currentQuestionPosition: true,
+                        attemptAnswers: {
+                            quizAttemptAnswerId: true,
+                            quizAttemptId: true,
+                            quizQuestionAnswerId: true
+                        }
+                    },
                     questions: {
+                        position: true,
                         quizQuestionId: true,
                         question: true,
                         answers: {

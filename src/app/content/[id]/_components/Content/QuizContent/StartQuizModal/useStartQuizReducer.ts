@@ -13,7 +13,8 @@ export interface QuizState {
     currentQuestionIndex: number
     selectedAnswers: QuizAnswer[]
     score: number
-    finishTime: number
+    finishTime: number,
+    isLoading: boolean
 }
 
 export interface SetCurrentQuestionIndex {
@@ -40,13 +41,19 @@ export interface SetReset {
     type: "RESET"
 }
 
-export type QuizAction = SetCurrentQuestionIndex | SetSelectedOptionForQuestionAction | SetScore | SetFinishTime | SetReset
+export interface SetLoading {
+    type: "SET_LOADING",
+    payload: boolean
+}
+
+export type QuizAction = SetCurrentQuestionIndex | SetSelectedOptionForQuestionAction | SetScore | SetFinishTime | SetReset | SetLoading
 
 export const state: QuizState = {
     currentQuestionIndex: 0,
     selectedAnswers: quizProgressState?.selectedAnswers ?? [],
     score: 0,
-    finishTime: 0
+    finishTime: 0,
+    isLoading: false
 }
 
 export const reducer = (state: QuizState, action: QuizAction): QuizState => {
@@ -104,6 +111,12 @@ export const reducer = (state: QuizState, action: QuizAction): QuizState => {
             score: 0,
             finishTime: 0
         }
+    case "SET_LOADING": {
+        return {
+            ...state,
+            isLoading: action.payload
+        }
+    }
     default:
         return state
     }
