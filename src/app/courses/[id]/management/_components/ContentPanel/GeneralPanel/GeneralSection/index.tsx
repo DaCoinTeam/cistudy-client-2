@@ -18,6 +18,7 @@ import {
     GeneralSectionContext,
     GeneralSectionProvider,
 } from "./GeneralSectionProvider"
+import { GeneralSectionSekeleton } from "./GeneralSectionSkeleton"
 
 interface GeneralSectionProps {
   className?: string;
@@ -56,10 +57,9 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
         })
     }, [])
 
-    const { data: categories } = useSWR("FETCH_CATEGORIES", fetchCategories)
+    const { data: categories, isLoading } = useSWR("FETCH_CATEGORIES", fetchCategories)
     const onCategoryChange = (selection: Selection) =>
         formik.setFieldValue("categoryId", Array.from(selection).at(0))
-
     const subcategories =
     categories
         ?.find(({ categoryId }) => categoryId === formik.values.categoryId)
@@ -118,163 +118,167 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
 
     return (
         <div className={`${className}`}>
-            <div className="text-4xl font-bold"> General </div>
-            <Spacer y={4} />
-            <Input
-                classNames={{
-                    inputWrapper: "input-input-wrapper",
-                }}
-                aria-label='Title'
-                label='Title'
-                id='title'
-                labelPlacement='outside'
-                value={formik.values.title}
-                placeholder="Input title here"
-                onChange={formik.handleChange}
-                isInvalid={!!(formik.touched.title && formik.errors.title)}
-                errorMessage={formik.touched.title && formik.errors.title}
-            />
-            <Spacer y={4} />
-            <Textarea
-                classNames={{
-                    inputWrapper: "input-input-wrapper",
-                }}
-                aria-label='Description'
-                label='Description'
-                id='description'
-                value={formik.values.description}
-                labelPlacement="outside"
-                placeholder="Input description here"
-                onChange={formik.handleChange}
-                isInvalid={!!(formik.touched.description && formik.errors.description)}
-                errorMessage={
-                    !!(formik.touched.description && formik.errors.description)
-                }
-            />
-
-            <Spacer y={4} />
-            <Select
-                aria-label='Category'
-                label='Category'
-                variant='bordered'
-                placeholder='Select category'
-                labelPlacement='outside'
-                value={formik.values.categoryId}
-                classNames={{
-                    trigger: "px-4 !border !border-divider bg-transparent shadow-none",
-                    popoverContent: "shadow-none border border-divider rounded-medium",
-                }}
-                items={categories ?? []}
-                selectionMode="single"
-                selectedKeys={
-                    formik.values.categoryId ? [formik.values.categoryId] : []
-                }
-                onSelectionChange={onCategoryChange}
-            >
-                {({ categoryId, name }) => (
-                    <SelectItem key={categoryId}>{name}</SelectItem>
-                )}
-            </Select>
-            <Spacer y={4} />
-            <Select
-                aria-label='Subcategories'
-                label='Subcategories'
-                variant='bordered'
-                classNames={{
-                    trigger: "px-4 !border !border-divider bg-transparent shadow-none",
-                    popoverContent: "shadow-none border border-divider rounded-medium",
-                }}
-                selectionMode="multiple"
-                placeholder="Select subcategory"
-                labelPlacement="outside"
-                items={subcategories ?? []}
-                selectedKeys={formik.values.subcategories?.map(
-                    (category) => category?.categoryId
-                )}
-                onSelectionChange={onSubcategoryChange}
-            >
-                {({ categoryId, name }) => (
-                    <SelectItem key={categoryId}>{name}</SelectItem>
-                )}
-            </Select>
-            <Spacer y={4} />
-            <div>
-                <div className="text-sm"> Topics </div>
-                <Spacer y={2} />
-                <div className="!border !border-divider rounded-medium">
-                    <Autocomplete
-                        aria-label='Topics'
-                        className='w-full'
-                        labelPlacement='outside'
-                        placeholder='Find a topic'
-                        items={topics}
-                        menuTrigger='focus'
+            {!formik|| isLoading  ? <GeneralSectionSekeleton /> : (
+                <div>
+                    <div className="text-4xl font-bold"> General </div>
+                    <Spacer y={4} />
+                    <Input
                         classNames={{
-                            popoverContent: "rounded-medium",
+                            inputWrapper: "input-input-wrapper",
                         }}
-                        inputProps={{
-                            classNames: {
-                                inputWrapper: "px-4 !bg-transparent shadow-none",
-                            },
+                        aria-label='Title'
+                        label='Title'
+                        id='title'
+                        labelPlacement='outside'
+                        value={formik.values.title}
+                        placeholder="Input title here"
+                        onChange={formik.handleChange}
+                        isInvalid={!!(formik.touched.title && formik.errors.title)}
+                        errorMessage={formik.touched.title && formik.errors.title}
+                    />
+                    <Spacer y={4} />
+                    <Textarea
+                        classNames={{
+                            inputWrapper: "input-input-wrapper",
                         }}
-                        onFocus={() => {
-                            setTopicFocus(true)
+                        aria-label='Description'
+                        label='Description'
+                        id='description'
+                        value={formik.values.description}
+                        labelPlacement="outside"
+                        placeholder="Input description here"
+                        onChange={formik.handleChange}
+                        isInvalid={!!(formik.touched.description && formik.errors.description)}
+                        errorMessage={
+                            !!(formik.touched.description && formik.errors.description)
+                        }
+                    />
+
+                    <Spacer y={4} />
+                    <Select
+                        aria-label='Category'
+                        label='Category'
+                        variant='bordered'
+                        placeholder='Select category'
+                        labelPlacement='outside'
+                        value={formik.values.categoryId}
+                        classNames={{
+                            trigger: "px-4 !border !border-divider bg-transparent shadow-none",
+                            popoverContent: "shadow-none border border-divider rounded-medium",
                         }}
-                        onBlur={() => {
-                            setTopicFocus(false)
-                        }}
-                        onSelectionChange={onTopicChange}
+                        items={categories ?? []}
+                        selectionMode="single"
+                        selectedKeys={
+                            formik.values.categoryId ? [formik.values.categoryId] : []
+                        }
+                        onSelectionChange={onCategoryChange}
                     >
                         {({ categoryId, name }) => (
-                            <AutocompleteItem
-                                aria-label={name}
-                                key={categoryId}
-                            >
-                                {name}
-                            </AutocompleteItem>
+                            <SelectItem key={categoryId}>{name}</SelectItem>
                         )}
-                    </Autocomplete>
-
-                    {formik.values.topics.length ? (
-                        <>
-                            <div className="flex gap-4 p-4">
-                                {formik.values.topics.map(({ categoryId, name }) => (
-                                    <Chip
-                                        key={categoryId}
+                    </Select>
+                    <Spacer y={4} />
+                    <Select
+                        aria-label='Subcategories'
+                        label='Subcategories'
+                        variant='bordered'
+                        classNames={{
+                            trigger: "px-4 !border !border-divider bg-transparent shadow-none",
+                            popoverContent: "shadow-none border border-divider rounded-medium",
+                        }}
+                        selectionMode="multiple"
+                        placeholder="Select subcategory"
+                        labelPlacement="outside"
+                        items={subcategories ?? []}
+                        selectedKeys={formik.values.subcategories?.map(
+                            (category) => category?.categoryId
+                        )}
+                        onSelectionChange={onSubcategoryChange}
+                    >
+                        {({ categoryId, name }) => (
+                            <SelectItem key={categoryId}>{name}</SelectItem>
+                        )}
+                    </Select>
+                    <Spacer y={4} />
+                    <div>
+                        <div className="text-sm"> Topics </div>
+                        <Spacer y={2} />
+                        <div className="!border !border-divider rounded-medium">
+                            <Autocomplete
+                                aria-label='Topics'
+                                className='w-full'
+                                labelPlacement='outside'
+                                placeholder='Find a topic'
+                                items={topics}
+                                menuTrigger='focus'
+                                classNames={{
+                                    popoverContent: "rounded-medium",
+                                }}
+                                inputProps={{
+                                    classNames: {
+                                        inputWrapper: "px-4 !bg-transparent shadow-none",
+                                    },
+                                }}
+                                onFocus={() => {
+                                    setTopicFocus(true)
+                                }}
+                                onBlur={() => {
+                                    setTopicFocus(false)
+                                }}
+                                onSelectionChange={onTopicChange}
+                            >
+                                {({ categoryId, name }) => (
+                                    <AutocompleteItem
                                         aria-label={name}
-                                        radius='md'
-                                        color="default"
-                                        variant="flat"
-                                        onClose={() => deleteTopic(categoryId)}
+                                        key={categoryId}
                                     >
                                         {name}
-                                    </Chip>
-                                ))}
-                            </div>
-                        </>
-                    ) : null}
-                </div>
-            </div>
-            <Spacer y={6} />
-            <div className="flex gap-2">
-                <Button
-                    variant="bordered"
-                    color="primary"
-                    isDisabled={!hasChanged()}
-                    onPress={onCancelPress}
-                >
+                                    </AutocompleteItem>
+                                )}
+                            </Autocomplete>
+
+                            {formik.values.topics.length ? (
+                                <>
+                                    <div className="flex gap-4 p-4">
+                                        {formik.values.topics.map(({ categoryId, name }) => (
+                                            <Chip
+                                                key={categoryId}
+                                                aria-label={name}
+                                                radius='md'
+                                                color="default"
+                                                variant="flat"
+                                                onClose={() => deleteTopic(categoryId)}
+                                            >
+                                                {name}
+                                            </Chip>
+                                        ))}
+                                    </div>
+                                </>
+                            ) : null}
+                        </div>
+                    </div>
+                    <Spacer y={6} />
+                    <div className="flex gap-2">
+                        <Button
+                            variant="bordered"
+                            color="primary"
+                            isDisabled={!hasChanged()}
+                            onPress={onCancelPress}
+                        >
           Cancel
-                </Button>
-                <Button
-                    isDisabled={!hasChanged()}
-                    type="submit"
-                    color="primary"
-                    onPress={() => formik.handleSubmit()}
-                    isLoading={formik.isSubmitting}
-                >
-                    {formik.isSubmitting ? "Saving" : "Save"}
-                </Button>
-            </div>
+                        </Button>
+                        <Button
+                            isDisabled={!hasChanged()}
+                            type="submit"
+                            color="primary"
+                            onPress={() => formik.handleSubmit()}
+                            isLoading={formik.isSubmitting}
+                        >
+                            {formik.isSubmitting ? "Saving" : "Save"}
+                        </Button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

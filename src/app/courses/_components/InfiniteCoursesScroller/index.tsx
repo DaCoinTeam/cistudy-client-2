@@ -117,15 +117,15 @@ export const InfiniteCoursesScroller = (
                                     </div>
                                     <Spacer y={2}/>
 
-                                    <ul className='flex flex-col'>
-                                        <li> &#x2022; Make sure all words are spelled correctly</li>
+                                    <div className='flex flex-col'>
+                                        <div> &#x2022; Make sure all words are spelled correctly</div>
                                         <Spacer y={2}/>
 
-                                        <li>&#x2022; Try different search terms</li>
+                                        <div>&#x2022; Try different search terms</div>
                                         <Spacer y={2}/>
 
-                                        <li> &#x2022; Try more general search terms</li>
-                                    </ul>
+                                        <div> &#x2022; Try more general search terms</div>
+                                    </div>
                                 </div>
                             ) : (
                                 <></>
