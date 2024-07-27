@@ -4,15 +4,14 @@ import {
     AutocompleteItem,
     Button,
     Chip,
-    Image,
     Input,
     Select,
     Selection,
     SelectItem,
     Spacer,
-    Textarea,
+    Textarea
 } from "@nextui-org/react"
-import { findManyCategories, getAssetUrl } from "@services"
+import { findManyCategories } from "@services"
 import { useCallback, useContext, useEffect, useState } from "react"
 import useSWR from "swr"
 import {
@@ -126,6 +125,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                     inputWrapper: "input-input-wrapper",
                 }}
                 aria-label='Title'
+                label='Title'
                 id='title'
                 labelPlacement='outside'
                 value={formik.values.title}
@@ -140,6 +140,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                     inputWrapper: "input-input-wrapper",
                 }}
                 aria-label='Description'
+                label='Description'
                 id='description'
                 value={formik.values.description}
                 labelPlacement="outside"
@@ -154,6 +155,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             <Spacer y={4} />
             <Select
                 aria-label='Category'
+                label='Category'
                 variant='bordered'
                 placeholder='Select category'
                 labelPlacement='outside'
@@ -176,6 +178,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
             <Spacer y={4} />
             <Select
                 aria-label='Subcategories'
+                label='Subcategories'
                 variant='bordered'
                 classNames={{
                     trigger: "px-4 !border !border-divider bg-transparent shadow-none",
@@ -222,18 +225,9 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                         }}
                         onSelectionChange={onTopicChange}
                     >
-                        {({ categoryId, name, imageId }) => (
+                        {({ categoryId, name }) => (
                             <AutocompleteItem
                                 aria-label={name}
-                                startContent={
-                                    <Image
-                                        alt="topic"
-                                        classNames={{
-                                            wrapper: "w-5 h-5 grid place-items-center",
-                                        }}
-                                        src={getAssetUrl(imageId)}
-                                    />
-                                }
                                 key={categoryId}
                             >
                                 {name}
