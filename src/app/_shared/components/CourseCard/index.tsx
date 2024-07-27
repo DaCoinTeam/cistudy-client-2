@@ -1,5 +1,5 @@
 import { CourseEntity } from "@common"
-import { Button, Card, CardBody, CardFooter, Chip, Divider, Image, Spacer, Tooltip, User } from "@nextui-org/react"
+import { Card, CardBody, CardFooter, Chip, Divider, Image, Link, Spacer, Tooltip, User } from "@nextui-org/react"
 import {
     Award, CheckIcon,
     FileQuestionIcon,
@@ -36,7 +36,6 @@ export const CourseCard = (props: CourseCardProps) => {
                     className="max-w-72"
                     content={
                         <div className="p-4">
-                            {/* <div className="text-small font-bold">The course included</div> */}
                             <div >
                                 <div className="text-base font-semibold">This course included</div>
                                 <Spacer y={2} />
@@ -121,21 +120,23 @@ export const CourseCard = (props: CourseCardProps) => {
                                         <Stars  readonly size={18} initialValue={overallCourseRating} />
                                         <div className="text-sm  ms-1">{overallCourseRating}</div>
                                     </div>
-                                    <div className="text-xs text-foreground-400 ms-1">{totalNumberOfRatings > 1 ? `(${totalNumberOfRatings || 0} ratings)` : `(${totalNumberOfRatings} rating)`}</div>
+                                    <div className="text-xs text-foreground-400 ms-1">{totalNumberOfRatings > 1 ? `(${totalNumberOfRatings} ratings)` : `(${totalNumberOfRatings || 0} rating)`}</div>
 
                                 </div>
                     
                             </div>
                         </CardBody>
+
                         <CardFooter className="w-full flex-col pt-2" >
                             <div className="flex justify-between w-full items-center h-11">
                                 <div className="flex flex-col items-start">
                                     <div className="text-lg font-semibold text-black dark:text-white p-0 ms-1">{enableDiscount ? discountPrice : price} STARCI</div>
                                     {enableDiscount && <div className="text-sm text-foreground-400 line-through ms-1">{price} STARCI</div>}
                                 </div>
-                                <Button color="primary">
+                                <Link className="px-4 py-[0.6rem] text-sm font-normal bg-primary rounded-xl text-white dark:text-black" >
                             Add to cart
-                                </Button>
+                                </Link>
+                                
                             </div>
 
                         </CardFooter>

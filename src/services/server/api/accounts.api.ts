@@ -24,11 +24,15 @@ export interface VerifyCourseInput {
       note: string
       verifyStatus: string
     }
-  }
+}
+
+export interface VerifyCourseOutput {
+    message: string
+}
   
 export const verifyCourse = async (
     input : VerifyCourseInput
-): Promise<string> => {
+): Promise<VerifyCourseOutput> => {
     const {data} = input
     const url = `${BASE_URL}/verify-course`
     return await authAxios.patch(url, data)

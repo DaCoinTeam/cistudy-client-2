@@ -34,7 +34,7 @@ const WrappedCreateReply = () => {
                                 placeholder="Create a reply..."
                                 label=""
                                 variant="underlined"
-                                color="primary
+                                color="primary"
                                 id="content"
                                 value={formik.values.content}
                                 onChange={formik.handleChange}
