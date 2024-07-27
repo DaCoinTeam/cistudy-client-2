@@ -20,7 +20,7 @@ export const VideoTab = () => {
                     <div>
                         <VideoCameraIcon width={300} height={300} className="text-primary/20"/>
                         <Spacer y={4} />
-                        <div className="text-sm text-foreground-400">No Video.</div>
+                        <div className="text-sm text-foreground-400">No video.</div>
                     </div>
             }
             <Spacer y={6} />

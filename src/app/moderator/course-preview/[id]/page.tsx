@@ -1,13 +1,14 @@
 "use client"
-import React, { useContext } from "react"
-import { Sidebar, ContentPanel } from "./_components"
-import { BreadcrumbItem, Breadcrumbs, Chip, Spacer } from "@nextui-org/react"
+import React, { useContext, useRef } from "react"
+import { Sidebar, ContentPanel, CourseApproveModalRef, CourseApproveModalRefSelectors } from "./_components"
+import { BreadcrumbItem, Breadcrumbs, Button, Chip, Spacer } from "@nextui-org/react"
 import { ManagementContext } from "./_hooks"
 import { VerifyStatus } from "../../../../common/types"
 import { truncate } from "../../../../common/utils"
 import { useRouter } from "next/navigation"
 
 const Page = () => {
+    const courseApproveModalRef = useRef<CourseApproveModalRefSelectors>(null)
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data } = courseManagementSwr
@@ -33,7 +34,17 @@ const Page = () => {
                     <BreadcrumbItem>{truncate(courseId ?? "")}</BreadcrumbItem>
                 </Breadcrumbs>
                 <div className="flex gap-2 items-center">
-                    {renderStatus()}         
+                    {renderStatus()}
+                    {
+                        verifyStatus === VerifyStatus.Pending && (
+                            <Button
+                                color="primary"
+                                onPress={() => courseApproveModalRef.current?.onOpen()}
+                            >
+                                Resolve
+                            </Button>
+                        )
+                    }
                 </div>
             </div>
             <Spacer y={6}/>
@@ -41,6 +52,9 @@ const Page = () => {
                 <Sidebar className="col-span-1 h-fit"/>
                 <ContentPanel className="col-start-2 col-span-3"/>
             </div>
+            <CourseApproveModalRef
+                ref={courseApproveModalRef}
+            />
         </div>
     )
 }
