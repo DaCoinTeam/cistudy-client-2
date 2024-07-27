@@ -21,3 +21,10 @@ export const sanitizeNumericInput = (input: string): string | null => {
 export const formatNumber = (number: number | undefined): string => {
     return numeral(number).format("0.00a")
 }
+
+export const formatNouns = (amount: number | undefined, noun: string) => {
+    if(amount && amount > 1) {
+        return `${amount} ${noun}s`
+    } else 
+        return `${amount || 0} ${noun}`
+}

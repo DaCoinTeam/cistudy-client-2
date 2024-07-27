@@ -26,7 +26,7 @@ export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
     const { swrs, reducer } = useContext(RootContext)!
     const { categoriesSwr, topicsSwr } = swrs
     const { data } = categoriesSwr
-
+    const { data: topicData } = topicsSwr
     const [state, dispatch] = reducer
     const { categoryFilter } = state
     const [currentCategory, setCurrentCategory] = useState<CategoryEntity | null>(
@@ -66,7 +66,7 @@ export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
                     ) || []
                 ),
             ]),
-            (level2 = [...findNonDuplicatedCategories(topicsSwr?.data || [])])
+            (level2 = [...findNonDuplicatedCategories(topicData || [])])
         }
         setCategoryLevel0(level0)
         setCategoryLevel1(level1)
@@ -176,6 +176,7 @@ export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
      
     }, [categoryFilter])
     return (
+        
         <Card
             shadow='none'
             className={`${className} border border-divider rounded-medium h-fit w-[280px]`}
@@ -273,11 +274,11 @@ export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
                                     >
                                         <div className='flex gap-2 items-center'>
                                             {/* <Image
-                                                src={getAssetUrl(imageId)}
-                                                alt='topic'
-                                                height={14}
-                                                width={14}
-                                            /> */}
+                                                    src={getAssetUrl(imageId)}
+                                                    alt='topic'
+                                                    height={14}
+                                                    width={14}
+                                                /> */}
                                             <div>{category.name}</div>
                                         </div>
                                     </Checkbox>
@@ -288,6 +289,8 @@ export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
                 </Accordion>
             </CardBody>
         </Card>
+
+
     )
 }
 
