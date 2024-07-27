@@ -1,8 +1,8 @@
 "use client"
 
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { ContentDetailsContext } from "../../../../../_hooks"
-import { Checkbox, CheckboxGroup, Divider, Spacer } from "@nextui-org/react"
+import { Checkbox, CheckboxGroup, Chip, Divider, Spacer } from "@nextui-org/react"
 import { sortByPosition } from "@common"
 import { updateQuizAttemptAnswers } from "@services"
 
@@ -11,54 +11,66 @@ export const QuestionCheckbox = () => {
     const { sectionContentSwr } = swrs
     const { data: sectionContentData } = sectionContentSwr
     const { quiz } = { ...sectionContentData }
-    const { questions, activeQuizAttempt } = { ...quiz }
+    const { questions, activeQuizAttempt, quizId } = { ...quiz }
     const { currentQuestionPosition, quizAttemptId, attemptAnswers } = {
         ...activeQuizAttempt,
     }
 
-    const { question, answers, quizQuestionId } = {
-        ...questions?.at(currentQuestionPosition ?? 0),
+    const { question, answers, quizQuestionId, numberOfCorrectAnswers, point } = {
+        ...questions?.at(((currentQuestionPosition ?? 0) - 1) ?? 0),
     }
 
     const [chosenValues, setChosenValues] = useState<Array<string>>([])
-    console.log("T", chosenValues)
+
+    const previousQuizQuestionIdRef = useRef("")
 
     useEffect(() => {
-        setChosenValues(
-            (attemptAnswers ?? []).filter(({quizQuestionAnswerId}) => answers?.map(({quizQuestionAnswerId}) => quizQuestionAnswerId).includes(quizQuestionAnswerId))
-                .map(({ quizQuestionAnswerId }) => quizQuestionAnswerId)
-        )
-        return () => {
-            console.log("X", chosenValues)
-            const cloned = Object.assign(chosenValues, [])
-            const handleClearFn = async () => {
-                if (!quizAttemptId) return
-                if (!quizQuestionId) return
+        const handleEffect = async () => {
+            if (!quizAttemptId) return
+            if (!quizId) return
+
+            if (previousQuizQuestionIdRef.current) {
                 await updateQuizAttemptAnswers({
                     data: {
                         quizAttemptId,
-                        quizQuestionId,
-                        quizQuestionAnswerIds: cloned,
+                        quizQuestionId: previousQuizQuestionIdRef.current,
+                        quizQuestionAnswerIds: chosenValues,
+                        quizId
                     },
                 })
             }
-            handleClearFn()
+
+            previousQuizQuestionIdRef.current = quizQuestionId ?? ""
+
+            setChosenValues(
+                (attemptAnswers ?? [])
+                    .filter(({ quizQuestionAnswerId }) =>
+                        answers
+                            ?.map(({ quizQuestionAnswerId }) => quizQuestionAnswerId)
+                            .includes(quizQuestionAnswerId)
+                    )
+                    .map(({ quizQuestionAnswerId }) => quizQuestionAnswerId)
+            )
         }
-    }, [currentQuestionPosition])
+        handleEffect()
+    }, [currentQuestionPosition, quizAttemptId])
 
     return (
-        <div>
+        <div className="w-full">
             <div className="text-sm">
         Question {currentQuestionPosition} of {questions?.length}
             </div>
+         
             <Spacer y={1} />
             <Divider />
             <Spacer y={4} />
+            <div className="flex items-center justify-between">
+                <div className="text-lg font-semibold !text-foreground">{question}</div>
+                <Chip variant="flat">{point} points</Chip>
+            </div>
+            <div className="text-foreground-400 text-sm">(Choose {numberOfCorrectAnswers} answer{(numberOfCorrectAnswers ?? 0) > 1 ? "s" : ""})</div>
+            <Spacer y={4}/>
             <CheckboxGroup
-                classNames={{
-                    label: "text-lg font-semibold !text-foreground mb-2",
-                }}
-                label={question}
                 onValueChange={(values) => setChosenValues(values)}
                 value={chosenValues}
             >

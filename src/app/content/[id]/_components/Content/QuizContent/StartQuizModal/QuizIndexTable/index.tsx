@@ -15,7 +15,7 @@ export const QuizIndexTable = () => {
     const { sectionContentSwr } = swrs
     const { data: sectionContentData, mutate } = sectionContentSwr
     const { quiz } = { ...sectionContentData }
-    const { questions, activeQuizAttempt } = { ...quiz }
+    const { questions, activeQuizAttempt, quizId } = { ...quiz }
     const { quizAttemptId, currentQuestionPosition  } = { ...activeQuizAttempt }
 
     const { trigger } = useSWRMutation("UPDATE_QUIZ_ATTEMPT", async (_: string, { arg } : { arg: UpdateQuizAttemptInput}) => {
@@ -26,15 +26,15 @@ export const QuizIndexTable = () => {
     const [, dispatch] = reducer
 
     return (
-        <div>
+        <div className="w-[216px]">
             <div className="w-full grid grid-cols-5 gap-1">
-                {sortByPosition(questions ?? []).map(({ quizQuestionId, position }) => (
+                {sortByPosition(questions ?? []).map(({ quizQuestionId, position, answered }) => (
                     <Button
-                        className="!min-w-0"
+                        className="!min-w-10 w-10 col-span-1"
                         color="primary"
                         key={quizQuestionId}
                         //isDisabled={currentQuestionPosition === position}
-                        variant={currentQuestionPosition === position ? "solid" : "flat"}
+                        variant={currentQuestionPosition === position ? "solid" : (answered ? "flat" : "light") }
                         onPress={async () => {
                             dispatch({
                                 type: "SET_LOADING",
@@ -43,7 +43,8 @@ export const QuizIndexTable = () => {
                             await trigger({
                                 data: {
                                     quizAttemptId: quizAttemptId ?? "",
-                                    currentQuestionPosition: position
+                                    currentQuestionPosition: position,
+                                    quizId: quizId ?? ""
                                 }
                             })
                             await mutate()
@@ -67,7 +68,8 @@ export const QuizIndexTable = () => {
                     await trigger({
                         data: {
                             quizAttemptId: quizAttemptId ?? "",
-                            currentQuestionPosition: (currentQuestionPosition ?? 0) - 1
+                            currentQuestionPosition: (currentQuestionPosition ?? 0) - 1,
+                            quizId: quizId ?? ""
                         }
                     })
                     await mutate()
@@ -86,7 +88,8 @@ export const QuizIndexTable = () => {
                     await trigger({
                         data: {
                             quizAttemptId: quizAttemptId ?? "",
-                            currentQuestionPosition: (currentQuestionPosition ?? 0) + 1
+                            currentQuestionPosition: (currentQuestionPosition ?? 0) + 1,
+                            quizId: quizId ?? ""
                         }
                     })
                     await mutate()

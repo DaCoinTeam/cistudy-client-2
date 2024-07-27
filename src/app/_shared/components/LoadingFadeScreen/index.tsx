@@ -9,8 +9,8 @@ export const LoadingFadeScreen = ({ isLoading }: LoadingFadeScreenProps) => {
     return (
         <>
             {
-                isLoading ? (<div className="absolute w-screen h-screen grid place-items-center bg-foreground/20">
-                    <Spinner size="lg" label="Loading" />
+                isLoading ? (<div className="absolute w-full h-full grid place-items-center bg-foreground/20">
+                    <Spinner size="lg"/>
                 </div>) : null
             }
         </>

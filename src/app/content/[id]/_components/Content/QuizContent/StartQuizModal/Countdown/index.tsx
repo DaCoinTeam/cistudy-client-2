@@ -1,68 +1,38 @@
-import React, { useState, useEffect, useContext} from "react"
-import { ErrorResponse } from "@common"
-import { ToastType } from "../../../../../../../_components" 
-import { RootContext } from "../../../../../../../_hooks" 
-import { StartQuizContext } from "../StartQuizProvider"
+import React, { useContext, useEffect, useRef, useState } from "react"
+import { ContentDetailsContext } from "../../../../../_hooks"
+import { parseDuration } from "@common"
+import { ClockIcon } from "@heroicons/react/24/outline"
 
-const useCountdown = (initialTime : number) => {
-    const { notify } = useContext(RootContext)!
-    const {swrs} = useContext(StartQuizContext)!
-    const {finishQuizAttemptSwrMutation} = swrs
-    const { trigger } = finishQuizAttemptSwrMutation
-    const [remainingTime, setRemainingTime] = useState(initialTime)
-    const quizProgressState = JSON.parse(localStorage.getItem("quizProgressState") ?? "{}")
-    const quizTimeState = JSON.parse(localStorage.getItem("quizTimeState") ?? "{}")
-    const timemilliseconds = Number(quizTimeState.timeLimit) - Number(quizTimeState.remainingTime)
+export const CountdownTimer = () => {
+    const { swrs } = useContext(ContentDetailsContext)!
+    const { sectionContentSwr } = swrs
+    const { data } = sectionContentSwr
+    const { quiz } = { ...data }
+    const { activeQuizAttempt } = { ...quiz }
+    const { timeLeft } = { ...activeQuizAttempt }
+
+    const [displayTimeLeft, setDisplayTimeLeft] = useState(0)
+    
+    const firstTimeRef = useRef(false)
 
     useEffect(() => {
-        const intervalId = setInterval(async() => {
-            setRemainingTime((prevTime) => Math.max(prevTime - 1000, 0))
-            quizTimeState.remainingTime = remainingTime.toString()
-            localStorage.setItem("quizTimeState", JSON.stringify(quizTimeState))
-            if (Number(quizTimeState.remainingTime) === 0) {
-                try {
-                    await trigger({data: {quizAttemptId: quizProgressState.quizAttemptId, quizQuestionAnswerIds: quizProgressState.quizQuestionAnswerIds, timeTaken: timemilliseconds}})
-                } catch (ex) {
-                    const { message } = ex as ErrorResponse
-                    notify!({
-                        data: {
-                            error: message as string
-                        },
-                        type: ToastType.Error
-                    })
-                }
-            }
+        if (!timeLeft) return
+        if (firstTimeRef.current) return
+
+        setDisplayTimeLeft(timeLeft)
+        firstTimeRef.current = true
+    }, [timeLeft])
+
+    useEffect(() => {
+        if (!displayTimeLeft) return
+        const timeout = setTimeout(() => {
+            setDisplayTimeLeft(displayTimeLeft - 1000)
         }, 1000)
+        return () => {
+            if (!displayTimeLeft) return 
+            clearInterval(timeout)
+        }
+    }, [displayTimeLeft])
 
-        return () => {clearInterval(intervalId)}
-    }, [remainingTime])
-
-    return remainingTime
+    return <div className="flex gap-2 items-center"><ClockIcon className="w-6 h-6"/>{parseDuration(Math.ceil((displayTimeLeft ?? 0) / 1000))}</div>
 }
-
-const CountdownTimer = ({ initialTime } : { initialTime : number}) => {
-    const remainingTime = useCountdown(initialTime)
-
-    const getTimeComponents = (time : number) => {
-        const days = Math.floor(time / (1000 * 60 * 60 * 24))
-        const hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-        const minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60))
-        const seconds = Math.floor((time % (1000 * 60)) / 1000)
-
-        return { days, hours, minutes, seconds } 
-    }
-
-    const { days, hours, minutes, seconds } = getTimeComponents(remainingTime)
-
-    return (
-        <div className="flex flex-row mr-7">
-            {days > 0 && <div className="text-xl">{days}d </div>}
-            {hours > 0 || days > 0 && <div>:</div>}
-            <div className="text-4xl">{hours.toString().padStart(2, "0")}:</div>
-            <div className="text-4xl">{minutes.toString().padStart(2, "0")}:</div>
-            <div className="text-4xl">{seconds.toString().padStart(2, "0")}</div>
-        </div>
-    )
-}
-
-export default CountdownTimer

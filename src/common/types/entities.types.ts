@@ -241,7 +241,7 @@ export interface QuizEntity {
   sectionContent: SectionContentEntity;
   highestScoreRecorded: number;
   totalNumberOfAttempts: number;
-  passingScore: number;
+  passingPercent: number;
   isPassed: boolean;
   lastAttemptScore: number;
   questions: Array<QuizQuestionEntity>;
@@ -261,6 +261,8 @@ export interface QuizQuestionEntity {
   position: number;
   answers: Array<QuizQuestionAnswerEntity>;
   questionMedias: Array<QuizQuestionMediaEntity>;
+  answered?: boolean
+  numberOfCorrectAnswers?: number
 }
 
 export interface QuizQuestionAnswerEntity {
@@ -297,6 +299,7 @@ export interface QuizAttemptEntity {
   quiz: QuizEntity;
   currentQuestionPosition: number;
   attemptAnswers: Array<QuizAttemptAnswerEntity>;
+  timeLeft: number;
 }
 
 export interface QuizQuestionMediaEntity {

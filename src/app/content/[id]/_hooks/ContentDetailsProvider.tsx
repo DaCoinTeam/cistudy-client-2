@@ -60,28 +60,35 @@ export const ContentDetailsProvider = ({
                     highestScoreRecorded: true,
                     totalNumberOfAttempts: true,
                     lastAttemptScore: true,
-                    passingScore: true,
+                    passingPercent: true,
                     isPassed: true,
                     description: true,
                     activeQuizAttempt: {
+                        timeLeft: true,
                         quizAttemptId: true,
                         currentQuestionPosition: true,
                         attemptAnswers: {
                             quizAttemptAnswerId: true,
                             quizAttemptId: true,
-                            quizQuestionAnswerId: true
+                            quizQuestionAnswerId: true,  
                         }
+                    },
+                    quizAttempts: {
+                        quizAttemptId: true,
+                        attemptStatus: true,
                     },
                     questions: {
                         position: true,
                         quizQuestionId: true,
                         question: true,
+                        numberOfCorrectAnswers: true,
                         answers: {
                             quizQuestionAnswerId: true,
                             content: true,
                             isCorrect: true,
                         },
                         point: true,
+                        answered: true,
                     },
                 },
                 resource: {
@@ -129,7 +136,7 @@ export const ContentDetailsProvider = ({
                                     highestScoreRecorded: true,
                                     totalNumberOfAttempts: true,
                                     lastAttemptScore: true,
-                                    passingScore: true,
+                                    passingPercent: true,
                                     description: true,
                                     questions: {
                                         quizQuestionId: true,

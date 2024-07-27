@@ -84,7 +84,7 @@ export const QuizContent = () => {
                             </div>
                             <div className="flex flex-row gap-2">
                                 <div className="font-semibold">To Pass</div>
-                                <span>{quiz?.passingScore}% or Higher</span>
+                                <span>{quiz?.passingPercent}% or Higher</span>
                             </div>
                         </div>
                         <div className="flex flex-row items-center gap-6">

@@ -1,9 +1,7 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Divider, Chip } from "@nextui-org/react"
+import { Modal, ModalContent, ModalBody, ModalFooter, Button, useDisclosure, Spacer } from "@nextui-org/react"
 import { forwardRef, useContext, useImperativeHandle, useRef } from "react"
 import { ContentDetailsContext } from "../../../../_hooks"
-import CountdownTimer from "./Countdown"
 import { QuizProgressState, QuizTimeState, StartQuizContext, StartQuizProvider } from "./StartQuizProvider"
-import { ArrowLeft, ArrowRight, Circle, CircleDot } from "lucide-react"
 import { ConfirmModalRef, ConfirmModalRefSelectors, LoadingFadeScreen } from "../../../../../../_shared"
 import { ErrorResponse } from "@common"
 import { RootContext } from "../../../../../../_hooks"
@@ -12,6 +10,7 @@ import { ResultModalRef, ResultModalRefSelectors } from "./ResultModalRef"
 import { QuizAnswer } from "./useStartQuizReducer"
 import { QuizIndexTable } from "./QuizIndexTable"
 import { QuestionCheckbox } from "./QuestionCheckbox"
+import { CountdownTimer } from "./Countdown"
 
 export interface StartQuizModalRefProps {
 
@@ -110,7 +109,7 @@ const WrappedStartQuizModal = forwardRef<
     return (
         <div>
             <Modal
-                size="full"
+                size="4xl"
                 isOpen={isOpen}
                 onClose={handleCloseQuiz}
             >
@@ -118,21 +117,21 @@ const WrappedStartQuizModal = forwardRef<
                     {(onClose) => (
                         <>
                             <ModalBody className="p-0">
-                                <div className="grid grid-cols-7 max-w-[1920px] p-6 gap-12">
-                                    <div className="col-span-2">
+                                <div className="flex gap-6 p-6">
+                                    <div>
                                         <QuizIndexTable/>
+                                        <Spacer y={6} />
+                                        <CountdownTimer/>
                                     </div>
-                                    <div className="col-span-5">
-                                        <QuestionCheckbox/>
-                                    </div>
+                                    <QuestionCheckbox/>
                                 </div>
                                 <LoadingFadeScreen isLoading={state.isLoading}/>
                             </ModalBody>
-                            <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
+                            <ModalFooter className="gap-2">
+                                <Button color="primary" variant="bordered" onPress={onClose}>
                                 Close
                                 </Button>
-                                <Button color="primary" className="text-white" onPress={handleConfirmSubmit}>
+                                <Button color="primary" onPress={handleConfirmSubmit}>
                                 Submit
                                 </Button>
                             </ModalFooter>

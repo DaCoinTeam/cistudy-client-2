@@ -131,7 +131,7 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
     }
 
     const renderQuiz = (
-        { description, passingScore, questions }: QuizEntity,
+        { description, passingPercent, questions }: QuizEntity,
         { title, completeState, position }: SectionContentEntity
     ) => {
         return (
@@ -167,7 +167,7 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
                                     <TrophyIcon className="w-3 h-3" strokeWidth={3 / 2} />
                                 }
                             >
-                                {passingScore}/10 to pass
+                                {passingPercent}% to pass
                             </Chip>
                             <Chip
                                 classNames={{
