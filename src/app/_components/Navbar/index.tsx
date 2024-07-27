@@ -66,9 +66,6 @@ const WrappedNavbar = (props: NavbarProps) => {
                     </div>
                 </NavbarBrand>
                 <NavbarContent justify='center' className="space-x-4">
-                    {/* <Link className="font-medium text-base leading-8 text-gray-700 hover:text-primary cursor-pointer" onPress={handleCoursesPress}>  
-                        Courses
-                    </Link> */}
                     <Categories/>
                     <SearchInput className='w-[500px]' />
                 </NavbarContent>
@@ -83,20 +80,17 @@ const WrappedNavbar = (props: NavbarProps) => {
                     ) : (
                         <>
                             <NavbarItem className='hidden lg:flex'>
-                                <NavbarItem>
-                                    <Button
-                                        color='primary'
-                                        onPress={onSignUpPress}
-                                        variant='bordered'
-                                        className="mr-2"
-                                    >
+                                <Button
+                                    color='primary'
+                                    onPress={onSignUpPress}
+                                    variant='bordered'
+                                    className="mr-2"
+                                >
                   Sign Up
-                                    </Button>
-                                    <Button color="primary" variant="solid" onPress={onSignInPress}>
+                                </Button>
+                                <Button color="primary" variant="solid" onPress={onSignInPress}>
                   Sign In
-                                    </Button>
-                                </NavbarItem>
-                           
+                                </Button>
                             </NavbarItem>
                         </>
                     )}
