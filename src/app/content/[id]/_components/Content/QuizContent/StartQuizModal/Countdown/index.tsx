@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { ContentDetailsContext } from "../../../../../_hooks"
 import { parseDuration } from "@common"
+import { ClockIcon } from "@heroicons/react/24/outline"
 
 export const CountdownTimer = () => {
     const { swrs } = useContext(ContentDetailsContext)!
@@ -17,7 +18,7 @@ export const CountdownTimer = () => {
     useEffect(() => {
         if (!timeLeft) return
         if (firstTimeRef.current) return
-        
+
         setDisplayTimeLeft(timeLeft)
         firstTimeRef.current = true
     }, [timeLeft])
@@ -33,5 +34,5 @@ export const CountdownTimer = () => {
         }
     }, [displayTimeLeft])
 
-    return <div>{parseDuration(Math.ceil((displayTimeLeft ?? 0) / 1000))}</div>
+    return <div className="flex gap-2 items-center"><ClockIcon className="w-6 h-6"/>{parseDuration(Math.ceil((displayTimeLeft ?? 0) / 1000))}</div>
 }

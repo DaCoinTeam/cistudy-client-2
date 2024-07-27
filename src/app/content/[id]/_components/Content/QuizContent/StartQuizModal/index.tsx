@@ -109,7 +109,7 @@ const WrappedStartQuizModal = forwardRef<
     return (
         <div>
             <Modal
-                size="4xl"
+                size="3xl"
                 isOpen={isOpen}
                 onClose={handleCloseQuiz}
             >
@@ -128,11 +128,11 @@ const WrappedStartQuizModal = forwardRef<
                                 </div>
                                 <LoadingFadeScreen isLoading={state.isLoading}/>
                             </ModalBody>
-                            <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
+                            <ModalFooter className="gap-2">
+                                <Button color="primary" variant="bordered" onPress={onClose}>
                                 Close
                                 </Button>
-                                <Button color="primary" className="text-white" onPress={handleConfirmSubmit}>
+                                <Button color="primary" onPress={handleConfirmSubmit}>
                                 Submit
                                 </Button>
                             </ModalFooter>
