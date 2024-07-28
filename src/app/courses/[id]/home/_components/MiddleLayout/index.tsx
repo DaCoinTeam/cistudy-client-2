@@ -3,6 +3,7 @@ import React, { useContext } from "react"
 import { ForumLayout } from "./ForumLayout"
 import { SectionsLayout } from "./SectionsLayout"
 import { HomeContext, PanelSelected } from "../../_hooks"
+import { CertificatesLayout } from "./CertificatesLayout"
 
 interface MiddleLayoutProps {
   className?: string;
@@ -18,6 +19,7 @@ export const MiddleLayout = (props: MiddleLayoutProps) => {
         const panelSelectedToComponent: Record<PanelSelected, JSX.Element> = {
             [PanelSelected.Forum]: <ForumLayout className={`${className}`} />,
             [PanelSelected.Sections]: <SectionsLayout className={`${className}`} />,
+            [PanelSelected.Certificates]: <CertificatesLayout className={`${className}`} />,
             [PanelSelected.Preview]: <></>,
         }
         return panelSelectedToComponent[panelSelected]

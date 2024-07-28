@@ -9,6 +9,7 @@ import {
     EyeIcon,
     ListBulletIcon,
 } from "@heroicons/react/24/outline"
+import { Award } from "lucide-react"
 
 interface MenuProps {
   className?: string;
@@ -56,6 +57,14 @@ export const Menu = (props: MenuProps) => {
             key: "sections",
             content: "Sections",
             panelSelected: PanelSelected.Sections,
+        },
+        {
+            startContent: (
+                <Award width={24} height={24} strokeWidth={3 / 2} />
+            ),
+            key: "certificates",
+            content: "Certificates",
+            panelSelected: PanelSelected.Certificates
         },
         {
             startContent: (
