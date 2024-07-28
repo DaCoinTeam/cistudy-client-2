@@ -18,7 +18,7 @@ export const NumberShow = () => {
         <div className='flex justify-center bg-blue-700 mx-auto  max-w-[1600px] dark:bg-opacity-80 mb-20 py-12 px-6 z-10'>
             <div className=' w-full '>
                 <div className='flex flex-col justify-around items-center mb-4 text-white dark:text-black'>
-                    <div className='text-4xl tracking-tight font-extrabold  mb-4'>
+                    <div className='text-4xl tracking-tight font-bold  mb-4'>
 Our Growing Community
                     </div>
                     <div className='mb-4 font-normal dark:text-gray-900 sm:text-xl text-gray-300'>
