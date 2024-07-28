@@ -290,7 +290,8 @@ export interface QuizAttemptAnswerEntity {
 export interface QuizAttemptEntity {
   quizAttemptId: string;
   quizId: string;
-  score: number;
+  receivedPercent?: number
+  isPassed?: boolean
   account: AccountEntity;
   accountId: string;
   attemptStatus: string;

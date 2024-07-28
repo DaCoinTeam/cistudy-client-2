@@ -1,25 +1,24 @@
-import { parseMillisecondsTime } from "@common"
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react"
-import { X  } from "lucide-react"
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    useDisclosure,
+} from "@nextui-org/react"
+import { X } from "lucide-react"
 import { forwardRef, useContext, useImperativeHandle } from "react"
 import { StartQuizContext } from "../StartQuizProvider"
 
-export interface ResultModalRefProps {
-    onClosePress: () => void;
-}
-
 export interface ResultModalRefSelectors {
-    onOpen: () => void;
+  onOpen: () => void;
 }
 
-export const ResultModalRef = forwardRef<
-ResultModalRefSelectors,
-ResultModalRefProps
->((props, ref) => {
-    const {reducer} = useContext(StartQuizContext)!
-    const {onClosePress} = props
+export const ResultModalRef = forwardRef<ResultModalRefSelectors>((_, ref) => {
+    const { reducer } = useContext(StartQuizContext)!
     const [state] = reducer
-    const { isOpen, onOpen, onOpenChange } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     useImperativeHandle(ref, () => ({
         onOpen,
@@ -33,15 +32,25 @@ ResultModalRefProps
                         <ModalHeader className="p-4 pb-2 text-2xl">Your Result</ModalHeader>
                         <ModalBody className="p-4">
                             <div className="text-sm">
-                                <div className="font-semibold">Your score: {state.score}/10</div>
-                                <div className="font-semibold">Your finish time: {parseMillisecondsTime(state.finishTime)}</div>
+                                <div className="font-semibold">
+                  Your result: {state.receivedPercent}%
+                                </div>
+                                <div className="font-semibold">
+                  Your finish time: {state.timeTaken} mins
+                                </div>
+                                <div className="font-semibold">
+                  Your results: {state.isPassed}
+                                </div>
                             </div>
                         </ModalBody>
                         <ModalFooter className="p-4 pt-2">
-                            <Button startContent={<X size={20} strokeWidth={3/2}/>} color="primary" onPress={() => {
-                                onOpenChange(),
-                                onClosePress()
-                            }}>
+                            <Button
+                                startContent={<X size={20} strokeWidth={3 / 2} />}
+                                color="primary"
+                                onPress={() => {
+                                    onClose()
+                                }}
+                            >
                 Close
                             </Button>
                         </ModalFooter>

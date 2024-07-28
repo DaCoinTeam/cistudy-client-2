@@ -405,15 +405,15 @@ export const createQuizAttempt = async (
 export interface FinishQuizAttemptInput {
   data: {
     quizAttemptId: string;
-    quizQuestionAnswerIds: string[];
-    timeTaken: number;
   };
 }
 
 export interface FinishQuizAttemptOutput {
   message: string;
   others: {
-    score: number;
+    receivedPercent : number
+    isPassed: boolean
+    timeTaken: number
   };
 }
 

@@ -76,8 +76,7 @@ export const QuizContent = () => {
                 <div className="flex flex-row items-center justify-between">
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-row items-center gap-2">
-                            <CheckCircle2 size={20} color={quiz?.isPassed? "#1F8354":"#03045e"}  />
-                            <span className="font-semibold">Submit your assignment</span>
+                            <span className="font-semibold">Status</span>
                         </div>
                         <div className="flex flex-row gap-4">
                             <div className="flex flex-row gap-2">
@@ -107,12 +106,11 @@ export const QuizContent = () => {
                 <div className="flex flex-row justify-between">
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-row items-center gap-2">
-                            <CheckCircle2 size={20} color={quiz?.isPassed? "#1F8354":"#03045e"} />
-                            <span className="font-semibold">Receive grade</span>
+                            <span className="font-semibold">Condition</span>
                         </div>
                         <div className="flex flex-row gap-2">
                             <div className="font-semibold">To Pass</div>
-                            <span>{`${quiz?.passingPercent ?? 0}%`} or Higher</span>
+                            <span>{`${quiz?.passingPercent ?? 0}%`} or higher</span>
                         </div>
                     </div>
                     <div className="flex flex-row items-center gap-6">

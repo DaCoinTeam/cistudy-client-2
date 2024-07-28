@@ -8,39 +8,14 @@ import React, {
 
 import {finishQuizAttempt, FinishQuizAttemptInput, FinishQuizAttemptOutput } from "@services"
 import { ErrorResponse } from "@common"
-import { QuizAction, QuizState, useQuizReducer } from "./useStartQuizReducer"
 import useSWRMutation, { SWRMutationResponse } from "swr/mutation"
+import { StartQuizAction, StartQuizState, useStartQuizReducer } from "./useStartQuizReducer"
 
 export interface StartQuizContextValue {
-    reducer: [QuizState, React.Dispatch<QuizAction>];
+    reducer: [StartQuizState, React.Dispatch<StartQuizAction>];
     swrs: {
         finishQuizAttemptSwrMutation: SWRMutationResponse<FinishQuizAttemptOutput, ErrorResponse, "FINISH_QUIZ_ATTEMPT", FinishQuizAttemptInput>
     }
-}
-
-export interface QuizResponse {
-    message: string
-    others: {
-        quizAttemptId: string
-    }
-}
-
-export interface QuizAnswer {
-    questionIndex: string
-    answerIndex: string[]
-    isAnswered: boolean
-}
-
-export interface QuizProgressState {
-    quizAttemptId: string
-    score: number
-    selectedAnswers: QuizAnswer[]
-    quizQuestionAnswerIds: string[]
-}
-
-export interface QuizTimeState {
-    timeLimit: string
-    remainingTime: string
 }
 
 export const StartQuizContext =
@@ -51,7 +26,7 @@ const WrappedStartQuizProvider = ({
 }: {
     children: ReactNode;
 }) => {
-    const reducer = useQuizReducer()
+    const reducer = useStartQuizReducer()
 
     const fetchFinishQuizAttemptSwrMutation = useCallback(async (_: string, { arg } : {arg : FinishQuizAttemptInput}) => {
         return await finishQuizAttempt(arg)

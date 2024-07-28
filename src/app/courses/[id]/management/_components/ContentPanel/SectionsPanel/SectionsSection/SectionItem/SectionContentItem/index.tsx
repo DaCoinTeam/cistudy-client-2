@@ -82,7 +82,7 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
                         <div className="flex gap-2">
                             <Chip classNames={{
                                 base: "gap-1 px-2",
-                            }} size="sm" variant="flat" startContent={<TrophyIcon className="w-3 h-3" strokeWidth={3 / 2} />}>{passingPercent}% to pass</Chip>
+                            }} size="sm" variant="flat" startContent={<TrophyIcon className="w-3 h-3" strokeWidth={3 / 2} />}>{passingPercent}% or higher</Chip>
                             <Chip classNames={{
                                 base: "gap-1 px-2",
                             }} size="sm" variant="flat" startContent={<HelpCircleIcon className="w-3 h-3" strokeWidth={3 / 2} />}>{questions.length} question{questions.length > 1 ? "s" : ""}</Chip>
