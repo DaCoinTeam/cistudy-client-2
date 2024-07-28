@@ -1,4 +1,4 @@
-import { CourseEntity } from "@common"
+import { CourseEntity, formatNouns } from "@common"
 import { Card, CardBody, CardFooter, Chip, Divider, Image, Link, Spacer, Tooltip, User } from "@nextui-org/react"
 import {
     Award, CheckIcon,
@@ -111,7 +111,8 @@ export const CourseCard = (props: CourseCardProps) => {
                                             avatarId: avatarId,
                                             kind: kind
                                         })
-                                    }} name={username} description={`${numberOfFollowers || 2} followers`}/>
+                                    }} name={username} description={formatNouns(numberOfFollowers, "follower")}
+/>
                                 </div> 
                    
                                 <Divider orientation="vertical"/>

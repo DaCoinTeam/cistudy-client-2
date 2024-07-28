@@ -13,10 +13,13 @@ export const Main = () => {
 
     return (
         <div className='relative overflow-hidden '>
-            <div className='w-[80%] absolute -z-10]'>
+            <div className='w-[100%] absolute -z-10]'>
                 <Image
                     alt='bg_decoration'
-                    className='rounded-none h-[580px] mt-[-1rem]'
+                    className='rounded-none h-[620px] mt-[-1rem]'
+                    classNames={{
+                        wrapper: "w-full !max-w-full absolute",
+                    }}
                     src={darkMode ? BG_DECORATION_DARK : BG_DECORATION}
                 />
             </div>

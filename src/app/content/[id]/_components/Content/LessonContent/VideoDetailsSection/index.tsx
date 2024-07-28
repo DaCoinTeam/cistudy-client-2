@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import { getAvatarUrl } from "@services"
 import { Spacer, User } from "@nextui-org/react"
 import { MoreButton } from "./MoreButton"
-import { parseDateStringFrom } from "@common"
+import { formatNouns, parseDateStringFrom } from "@common"
 import { ToggleFollowButton } from "./ToggleFollowButton"
 import { ContentDetailsContext } from "../../../../_hooks"
 
@@ -33,7 +33,7 @@ export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
                             name: "text-base font-semibold",
                         }}
                         name={username}
-                        description={`${numberOfFollowers} followers`}
+                        description={formatNouns(numberOfFollowers, "follower")}
                         avatarProps={{
                             src: getAvatarUrl({
                                 avatarId,

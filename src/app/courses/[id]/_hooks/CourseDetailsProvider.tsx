@@ -102,6 +102,13 @@ export const WrappedCourseDetailsProvider = ({
                     accountId: true,
                     walletAddress: true
                 },
+                courseCategories: {
+                    category: {
+                        categoryId: true,
+                        name: true,
+                        level: true,
+                    }
+                },
                 numberOfLessons: true,
                 numberOfQuizzes: true,
                 numberOfResources: true

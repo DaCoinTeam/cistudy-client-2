@@ -1,4 +1,4 @@
-import { CategoryEntity } from "@common"
+import { CategoryEntity, formatNouns } from "@common"
 import {
     BreadcrumbItem,
     Breadcrumbs,
@@ -11,6 +11,9 @@ import { getAssetUrl, getAvatarUrl } from "@services"
 import { useCallback, useContext, useMemo } from "react"
 import { Stars } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
+import { BG_COURSE_DETAIL } from "@config"
+import { GlobeAsiaAustraliaIcon } from "@heroicons/react/24/outline"
+import { CalendarDays, FileBadge, MonitorSmartphone } from "lucide-react"
 
 interface CourseBannerProps {
   className?: string;
@@ -21,13 +24,14 @@ export const CourseBanner = (props: CourseBannerProps) => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
-    const { title, creator, description, courseCategories, courseRatings } = { ...course }
-    const {overallCourseRating} = { ...courseRatings }
+    const { title, creator, description, courseCategories, courseRatings, numberOfEnrollments } = { ...course }
+    const {overallCourseRating, totalNumberOfRatings} = { ...courseRatings }
     const { avatarId, avatarUrl, kind, username, numberOfFollowers } = {
         ...creator,
     }
     const getCategories = useCallback(() => {
         if (!courseCategories) return {}
+        console.log("courseCategories", courseCategories)
         const categoryLevel0: Array<CategoryEntity> = []
         const categoryLevel1: Array<CategoryEntity> = []
         const categoryLevel2: Array<CategoryEntity> = []
@@ -45,48 +49,82 @@ export const CourseBanner = (props: CourseBannerProps) => {
 
     return (
         <div
-            className={`${className} h-auto object-cover bg-primary justify-start`}
+            className={`${className} h-auto object-cover mx-auto relative`}
         >
-            <div className='p-12 w-full max-w-[1920px] m-auto'>
-                <div className='w-2/3'>
-                    <Breadcrumbs>
-                        <BreadcrumbItem>
+            <div className='w-full h-[460px] absolute -z-10'>
+                <Image
+                    classNames={{
+                        wrapper: "w-full !max-w-full absolute",
+                    }}
+                    alt='bg_decoration'
+                    className='rounded-none h-[520px] w-full object-fill'
+                    src={BG_COURSE_DETAIL}
+                />
+            </div>
+            <div className='p-20  max-w-[1920px] flex mx-auto '>
+                
+                <div className='w-2/3 '>
+                    <Breadcrumbs 
+                        
+                    >
+                        <BreadcrumbItem classNames={{
+                            item: "text-slate-700",
+                            separator: "text-slate-700"
+                        }}>
                             {categories.categoryLevel0?.map(({ name }) => name).join(", ")}
                         </BreadcrumbItem>
-                        <BreadcrumbItem>
+                        <BreadcrumbItem classNames={{
+                            item: "text-slate-700",
+                            separator: "text-slate-700"
+                        }}>
                             {categories.categoryLevel1?.map(({ name }) => name).join(", ")}
                         </BreadcrumbItem>
-                        <BreadcrumbItem>
+                        <BreadcrumbItem classNames={{
+                            item: "text-slate-900"
+                        }}>
                             {categories.categoryLevel2?.map(({ name }) => name).join(", ")}
                         </BreadcrumbItem>
                     </Breadcrumbs>
                     <Spacer y={4} />
-                    <div className='text-2xl font-bold text-transparent bg-clip-text text-white md:text-4xl py-1'>
+                    <div className='mb-4 text-2xl font-bold text-black bg-clip-text  md:text-4xl py-1'>
                         {title}
                     </div>
-                    <div className='text-slate-300 font-semibold text-lg'>
+
+                    <div className='text-slate-700 font-medium text-lg line-clamp-3 '>
                         {description}
                     </div>
-                    <Spacer y={4} />
-                    <User
-                        avatarProps={{
-                            src: getAvatarUrl({
-                                avatarId,
-                                avatarUrl,
-                                kind,
-                            }),
-                        }}
-                        classNames={{
-                            name: "font-semibold",
-                            description: "font-semibold"
-                        }}
-                        name={username}
-                        className="text-white"
-                        description={`${numberOfFollowers} followers`}
-                    />
                     <Spacer y={3} />
-                    <Stars readonly initialValue={overallCourseRating} />
+                    <div className="flex justify-between">
+                        <User
+                            avatarProps={{
+                                src: getAvatarUrl({
+                                    avatarId,
+                                    avatarUrl,
+                                    kind,
+                                }),
+                            }}
+                            classNames={{
+                                name: "font-semibold text-slate-800",
+                                description: "font-semibold text-slate-600"
+                            }}
+                            name={username}
+                            className="text-white"
+                            description={formatNouns(numberOfFollowers, "follower")}
+                        />
+                    
+
+                        <div className="mr-52 flex items-center">
+                            <div className="pb-1">
+                                <Stars  readonly size={20} initialValue={overallCourseRating} />
+                            </div>
+                            <div className="text-black text-sm  ms-2 ">{overallCourseRating?.toFixed(1)}</div>
+                            <div className="text-black text-sm ms-2">{totalNumberOfRatings && totalNumberOfRatings > 1 ? `(${totalNumberOfRatings} ratings)` : `(${totalNumberOfRatings || 0} rating)`}</div>
+                            <div className="text-black text-sm ms-2 ">{numberOfEnrollments && numberOfEnrollments > 1 ? `${numberOfEnrollments} students` : `${numberOfEnrollments || 0} student`}</div>
+                        </div>
+                    </div>
+                   
                     <Spacer y={4} />
+                    
                     <div className='flex gap-2 items-center'>
                         {categories.categoryLevel2?.map(({ categoryId, name, imageId }) => (
                             <Chip
@@ -104,6 +142,27 @@ export const CourseBanner = (props: CourseBannerProps) => {
                                 {name}
                             </Chip>
                         ))}
+                    </div>
+                    <Spacer y={4} />
+
+                    <div className="flex flex-col md:flex-row  ">
+                        <div className="flex items-center mr-4">
+                            <GlobeAsiaAustraliaIcon className="w-6 h-6 text-gray-700 mr-2"/>
+                            <div className="text-gray-700 text-sm">English</div>
+                        </div>
+                        <div className="flex items-center mr-4">
+                            <CalendarDays width={20} height={20} className="text-gray-700 mr-2"/>
+                            <div className="text-gray-700 text-sm">Last updated: Aprial, 28th Jan 2024 </div>
+                        </div>
+                        <div className="flex items-center">
+                            <FileBadge width={20} height={20} className="text-gray-700 mr-2"/>
+                            <div className="text-gray-700 text-sm">Certificate of completion</div>
+                        </div>
+                        
+                    </div>
+                    <div className="flex items-center mr-4 mt-2">
+                        <MonitorSmartphone width={20} height={20} className="text-gray-700 mr-2"/>
+                        <div className="text-gray-700 text-sm">Access on browser and mobile</div>
                     </div>
                 </div>
             </div>

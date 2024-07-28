@@ -2,6 +2,7 @@ import { Spacer } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { AccountDetailsContext } from "../../_hooks"
 import { Actions } from "./Actions"
+import { formatNouns } from "@common"
 
 interface UnderAvatarSectionProps {
   className?: string;
@@ -22,7 +23,8 @@ export const UnderAvatarSection = (props: UnderAvatarSectionProps) => {
                     {username ?? "Unnamed"}
                 </div>
                 <Spacer y={0.5} />
-                <div className="text-sm">{numberOfFollowers} followers</div>
+                <div className="text-sm">{formatNouns(numberOfFollowers, "follower")}
+                </div>
             </div>
             <Actions />
         </div>
