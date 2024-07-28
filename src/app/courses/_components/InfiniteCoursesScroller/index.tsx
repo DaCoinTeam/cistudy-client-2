@@ -12,7 +12,6 @@ import { useContext, useMemo, useState } from "react"
 import InfiniteScroll from "react-infinite-scroller"
 import {
     CardListHorizontalSkeleton,
-    CardListSkeleton,
     CourseCardHorizontal
 } from "../../../_shared"
 import { CourseCard } from "../../../_shared/components/CourseCard"
@@ -96,17 +95,17 @@ export const InfiniteCoursesScroller = (
                         }
                     >
                         <div>
-                            {isLoading ? (
+                            {/* {isLoading ? (
                                 <CardListSkeleton />
-                            ) : (
-                                <div className='grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-6'>
-                                    {getCoursesByPage.map((course) => (
-                                        <div key={course.courseId}>
-                                            <CourseCard course={course} />
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
+                            ) : ( */}
+                            <div className='grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-6'>
+                                {getCoursesByPage.map((course) => (
+                                    <div key={course.courseId}>
+                                        <CourseCard course={course} />
+                                    </div>
+                                ))}
+                            </div>
+                            {/* )} */}
                             {getCoursesByPage.length == 0 && !isLoading ? (
                                 <div>
                                     <div className='text-2xl text-primary font-semibold mb-4'>
