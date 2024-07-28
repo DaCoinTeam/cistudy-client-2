@@ -42,7 +42,7 @@ const WrappedStartQuizModal = forwardRef<StartQuizModalRefSelectors>(
         const { finishQuizAttemptSwrMutation } = startQuizSwrs
         const { trigger, isMutating } = finishQuizAttemptSwrMutation
         const [state, dispatch] = reducer
-        const { isOpen, onOpen, onClose } = useDisclosure()
+        const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
 
         useImperativeHandle(ref, () => ({
             onOpen,
@@ -51,7 +51,7 @@ const WrappedStartQuizModal = forwardRef<StartQuizModalRefSelectors>(
 
         return (
             <div>
-                <Modal size="4xl" isOpen={isOpen}>
+                <Modal size="4xl" isOpen={isOpen} onOpenChange={onOpenChange}>
                     <ModalContent>
                         {(onClose) => (
                             <>
@@ -71,7 +71,6 @@ const WrappedStartQuizModal = forwardRef<StartQuizModalRefSelectors>(
                     Close
                                     </Button>
                                     <Button
-                                        isLoading={isMutating}
                                         color="primary"
                                         onPress={() => { 
                                             confirmModalRef.current?.onOpen() 
@@ -88,6 +87,7 @@ const WrappedStartQuizModal = forwardRef<StartQuizModalRefSelectors>(
                     ref={confirmModalRef}
                     title="Submit your answers"
                     content="Continue to submit?"
+                    isLoading={isMutating}
                     onOKPress={async () => {
                         if (!quizAttemptId) return
                         const { others } = await trigger({

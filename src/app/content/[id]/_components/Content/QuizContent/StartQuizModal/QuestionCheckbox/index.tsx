@@ -1,10 +1,17 @@
 "use client"
 
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef } from "react"
 import { ContentDetailsContext } from "../../../../../_hooks"
-import { Checkbox, CheckboxGroup, Chip, Divider, Spacer } from "@nextui-org/react"
+import {
+    Checkbox,
+    CheckboxGroup,
+    Chip,
+    Divider,
+    Spacer,
+} from "@nextui-org/react"
 import { sortByPosition } from "@common"
 import { updateQuizAttemptAnswers } from "@services"
+import { StartQuizContext } from "../StartQuizProvider"
 
 export const QuestionCheckbox = () => {
     const { swrs } = useContext(ContentDetailsContext)!
@@ -17,12 +24,13 @@ export const QuestionCheckbox = () => {
     }
 
     const { question, answers, quizQuestionId, numberOfCorrectAnswers, point } = {
-        ...questions?.at(((currentQuestionPosition ?? 0) - 1) ?? 0),
+        ...questions?.find(({position}) => position === currentQuestionPosition)
     }
 
-    const [chosenValues, setChosenValues] = useState<Array<string>>([])
-
     const previousQuizQuestionIdRef = useRef("")
+
+    const { reducer } = useContext(StartQuizContext)!
+    const [state, dispatch] = reducer
 
     useEffect(() => {
         const handleEffect = async () => {
@@ -34,23 +42,24 @@ export const QuestionCheckbox = () => {
                     data: {
                         quizAttemptId,
                         quizQuestionId: previousQuizQuestionIdRef.current,
-                        quizQuestionAnswerIds: chosenValues,
-                        quizId
+                        quizQuestionAnswerIds: state.chosenValues,
+                        quizId,
                     },
                 })
             }
 
             previousQuizQuestionIdRef.current = quizQuestionId ?? ""
 
-            setChosenValues(
-                (attemptAnswers ?? [])
+            dispatch({
+                type: "SET_CHOSEN_VALUES",
+                payload: (attemptAnswers ?? [])
                     .filter(({ quizQuestionAnswerId }) =>
                         answers
                             ?.map(({ quizQuestionAnswerId }) => quizQuestionAnswerId)
                             .includes(quizQuestionAnswerId)
                     )
-                    .map(({ quizQuestionAnswerId }) => quizQuestionAnswerId)
-            )
+                    .map(({ quizQuestionAnswerId }) => quizQuestionAnswerId),
+            })
         }
         handleEffect()
     }, [currentQuestionPosition, quizAttemptId])
@@ -60,7 +69,7 @@ export const QuestionCheckbox = () => {
             <div className="text-sm">
         Question {currentQuestionPosition} of {questions?.length}
             </div>
-         
+
             <Spacer y={1} />
             <Divider />
             <Spacer y={4} />
@@ -68,11 +77,19 @@ export const QuestionCheckbox = () => {
                 <div className="text-lg font-semibold !text-foreground">{question}</div>
                 <Chip variant="flat">{point} points</Chip>
             </div>
-            <div className="text-foreground-400 text-sm">(Choose {numberOfCorrectAnswers} answer{(numberOfCorrectAnswers ?? 0) > 1 ? "s" : ""})</div>
-            <Spacer y={4}/>
+            <div className="text-foreground-400 text-sm">
+        (Choose {numberOfCorrectAnswers} answer
+                {(numberOfCorrectAnswers ?? 0) > 1 ? "s" : ""})
+            </div>
+            <Spacer y={4} />
             <CheckboxGroup
-                onValueChange={(values) => setChosenValues(values)}
-                value={chosenValues}
+                onValueChange={(values) =>
+                    dispatch({
+                        type: "SET_CHOSEN_VALUES",
+                        payload: values,
+                    })
+                }
+                value={state.chosenValues}
             >
                 {sortByPosition(answers ?? []).map(
                     ({ quizQuestionAnswerId, content }) => (
