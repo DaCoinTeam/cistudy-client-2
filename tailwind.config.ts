@@ -18,6 +18,10 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
             },
         },
+        skew: {
+            "-10": "-10deg",
+            "10": "10deg",
+        },
     },
     darkMode: "class",
     plugins: [

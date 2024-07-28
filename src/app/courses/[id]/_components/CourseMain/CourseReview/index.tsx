@@ -39,18 +39,18 @@ const WrappedCourseReview = () => {
             <Spacer y={4} />
 
             <div className='flex items-end text-center mb-2'>
-                <Stars initialValue={overallCourseRating} className='mr-2' readonly />
-                <p className='ms-1 text-sm font-medium text-gray-500 dark:text-gray-400'>
+                <Stars initialValue={overallCourseRating} className='mb-1 mr-2' readonly />
+                <p className='ms-1  text-sm lg:text-base font-medium text-gray-800 dark:text-gray-400'>
                     {overallCourseRating?.toFixed(2)}
                 </p>
-                <p className='ms-1 text-sm font-medium text-gray-500 dark:text-gray-400'>
+                <p className='ms-1 text-sm lg:text-base font-medium text-gray-800 dark:text-gray-400'>
           out of
                 </p>
-                <p className='ms-1 text-sm font-medium text-gray-500 dark:text-gray-400'>
+                <p className='ms-1 text-sm lg:text-base font-medium text-gray-800 dark:text-gray-400'>
           5
                 </p>
             </div>
-            <p className='text-sm font-medium text-gray-500 dark:text-gray-400'>
+            <p className='text-sm lg:text-base font-medium text-gray-800 dark:text-gray-400'>
                 {totalNumberOfRatings} ratings
             </p>
             <Spacer y={2} />

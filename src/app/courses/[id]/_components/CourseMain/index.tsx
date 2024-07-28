@@ -6,8 +6,8 @@ import { CourseTargets } from "./CourseTargets"
 import { CourseReview } from "./CourseReview"
 export const CourseMain = () => {
     return (
-        <div className='max-w-[1920px] mx-auto w-full px-12'>
-            <div className='w-2/3'>
+        <div className='max-w-[1920px] mx-auto w-full px-6 md:px-12 lg:px-16'>
+            <div className='w-full lg:w-2/3'>
                 <CourseTargets />
                 <Spacer y={12} />
                 <Sections />
