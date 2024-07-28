@@ -27,6 +27,7 @@ const WrappedPage = () => {
         <div >
          
             <div className="p-12 pt-6 max-w-[1920px] w-full mx-auto">
+                
                 {isLoading ? (<div className='flex mb-[0.2rem]'>
                     <Skeleton className="w-56 h-8 rounded-lg ">
                         <div className="w-56 h-8 rounded-lg"/>
@@ -85,12 +86,6 @@ const WrappedPage = () => {
                       
                 </div>
             </div>
-
-        
-            {/* <Breadcrumbs>
-                <BreadcrumbItem startContent={<HomeModernIcon />}>Home</BreadcrumbItem>
-                <BreadcrumbItem startContent={<ListIcon />}>Course</BreadcrumbItem>
-            </Breadcrumbs> */}
            
         </div>
         

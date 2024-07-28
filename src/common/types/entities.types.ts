@@ -61,6 +61,7 @@ export interface AccountEntity {
   avatarUrl?: string;
   phoneNumber?: string;
   balance: number;
+  bio: string;
   cart: CartEntity;
   roles: Array<RoleEntity>;
   walletAddress?: string;

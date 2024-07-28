@@ -100,7 +100,8 @@ export const WrappedCourseDetailsProvider = ({
                     avatarUrl: true,
                     kind: true,
                     accountId: true,
-                    walletAddress: true
+                    walletAddress: true,
+                    bio: true
                 },
                 courseCategories: {
                     category: {

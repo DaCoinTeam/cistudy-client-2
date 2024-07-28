@@ -31,7 +31,7 @@ export const Main = () => {
                 <LearningSteps />
                 <Spacer y={12} />
                 <BestInstrutors/>
-                <Spacer y={6} />
+                <Spacer y={12} />
             </div>
         </div>
     )

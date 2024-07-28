@@ -9,16 +9,20 @@ export const Heading = () => {
     return (
         <div className='grid grid-cols-5 gap-16 items-center justify-between h-[35rem] max-w-[1120px] mx-auto '>
             <div className='col-span-3 z-10'>
-                <div className="text-start mt-6">
-                    <h1 className="text-4xl tracking-tight text-slate-800 dark:text-slate-200 font-semibold mb-2">
-                    Share To Earn
+                <div className='text-start mt-6'>
+                    <h1 className='text-4xl tracking-tight text-slate-800 dark:text-slate-200 font-semibold mb-2'>
+            Share To Earn
                     </h1>
-                    <h1 className="text-4xl font-semibold mb-2 tracking-tight text-slate-800  dark:text-slate-200">
-                    Where Sharing Sparks {" "}
-                        <span className="inline-block bg-blue-500 transform -skew-x-10 px-3 py-1 rounded text-white"><span className="transform skew-x-10 inline-block">Earnings</span></span>
+                    <h1 className='text-4xl font-semibold mb-2 tracking-tight text-slate-800  dark:text-slate-200'>
+            Where Sharing Sparks{" "}
+                        <span className='inline-block bg-blue-500 transform -skew-x-10 px-3 py-1 rounded text-white'>
+                            <span className='transform skew-x-10 inline-block'>Earnings</span>
+                        </span>
                     </h1>
-                    <p className="text-gray-600 dark:text-gray-400 mt-4 max-w-[520px]">
-                    We aim for a vibrant, interactive learning community where everyone benefits from active participation and collaborative efforts                    </p>
+                    <p className='text-gray-600 dark:text-gray-400 mt-4 max-w-[520px]'>
+            We aim for a vibrant, interactive learning community where everyone
+            benefits from active participation and collaborative efforts.{" "}
+                    </p>
                 </div>
                 <div className='mt-6'>
                     <Button
@@ -33,19 +37,25 @@ export const Heading = () => {
                     >
             Explore Courses
                     </Button>
-                    <Button color='primary' variant="bordered" className='ms-4 px-8 py-6 box-border font-medium text-base'>
+                    <Button
+                        color='primary'
+                        variant='bordered'
+                        className='ms-4 px-8 py-6 box-border font-medium text-base'
+                    >
             More
                     </Button>
                 </div>
-                <div className="mt-12">
-                    <div className="text-base text-slate-500 mb-3 tracking-tight leading-8">From 99+ Reviews</div>
+                <div className='mt-12'>
+                    <div className='text-base text-slate-500 mb-3 tracking-tight leading-8'>
+            From 99+ Reviews
+                    </div>
                     <AvatarGroup isBordered max={4} total={99}>
-                        <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
-                        <Avatar src="https://i.pravatar.cc/150?u=a04258a2462d826712d" />
-                        <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
-                        <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026302d" />
-                        <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026702d" />
-                        <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
+                        <Avatar src='https://i.pravatar.cc/150?u=a042581f4e29026024d' />
+                        <Avatar src='https://i.pravatar.cc/150?u=a04258a2462d826712d' />
+                        <Avatar src='https://i.pravatar.cc/150?u=a042581f4e29026704d' />
+                        <Avatar src='https://i.pravatar.cc/150?u=a04258114e29026302d' />
+                        <Avatar src='https://i.pravatar.cc/150?u=a04258114e29026702d' />
+                        <Avatar src='https://i.pravatar.cc/150?u=a04258114e29026708c' />
                     </AvatarGroup>
                 </div>
             </div>

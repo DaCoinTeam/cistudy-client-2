@@ -20,7 +20,7 @@ export const CartItem = (props: CourseEntity) => {
     return (
        
         <div className="flex gap-4 items-center justify-center" key={courseId}>
-            <InteractiveThumbnail  isPressable className="min-w-40 w-40 h-fit relative" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
+            <InteractiveThumbnail  isPressable className="min-w-36 w-36 h-32 relative" src={getAssetUrl(thumbnailId)} onPress={() => router.push(`/courses/${courseId}`)}/>
             <div className="grid grid-cols-5 gap-4">
                 <div className="col-span-4 mr-2">
                     <div className="text-lg font-medium"> {title} </div>

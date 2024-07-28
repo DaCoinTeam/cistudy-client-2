@@ -34,17 +34,14 @@ export const Categories = () => {
         dispatch({ type: "SET_CATEGORY_FILTER", payload: [category] })
 
     }
-    const handleCoursesPress = () => {
-        dispatch({type: "RESET_CATEGORY_FILTER"})
-        router.push("/courses")
-    }
+   
     return (
         <div
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             className='relative h-full flex items-center '
         >
-            <Link className="font-medium text-base leading-8 text-gray-700 dark:text-gray-200 hover:text-primary cursor-pointer" onPress={handleCoursesPress}>Courses</Link>
+            <Link className="font-medium text-base leading-8 text-gray-700 dark:text-gray-200 hover:text-primary cursor-pointer" >Categories</Link>
             {isHovered && (
                 <div className='absolute z-10 top-16 -left-12 min-h-[26rem] bg-white dark:bg-slate-800 shadow-2xl rounded-lg'>
                     <div className="flex">
