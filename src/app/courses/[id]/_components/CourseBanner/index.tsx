@@ -1,4 +1,4 @@
-import { CategoryEntity, formatNouns } from "@common"
+import { CategoryEntity, formatNouns, parseDateToString } from "@common"
 import {
     BreadcrumbItem,
     Breadcrumbs,
@@ -24,7 +24,7 @@ export const CourseBanner = (props: CourseBannerProps) => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
-    const { title, creator, description, courseCategories, courseRatings, numberOfEnrollments } = { ...course }
+    const { title, creator, description, courseCategories, courseRatings, numberOfEnrollments, updatedAt } = { ...course }
     const {overallCourseRating, totalNumberOfRatings} = { ...courseRatings }
     const { avatarId, avatarUrl, kind, username, numberOfFollowers } = {
         ...creator,
@@ -61,9 +61,9 @@ export const CourseBanner = (props: CourseBannerProps) => {
                     src={BG_COURSE_DETAIL}
                 />
             </div>
-            <div className='p-20  max-w-[1920px] flex mx-auto '>
+            <div className='p-8 md:p-16  max-w-[1920px] flex mx-auto '>
                 
-                <div className='w-2/3 '>
+                <div className='w-full md:w-2/3 '>
                     <Breadcrumbs 
                         
                     >
@@ -86,15 +86,15 @@ export const CourseBanner = (props: CourseBannerProps) => {
                         </BreadcrumbItem>
                     </Breadcrumbs>
                     <Spacer y={4} />
-                    <div className='mb-4 text-2xl font-bold text-black bg-clip-text  md:text-4xl py-1'>
+                    <div className='mb-4 text-2xl font-bold text-black bg-clip-text md:text-3xl  lg:text-4xl py-1'>
                         {title}
                     </div>
 
-                    <div className='text-slate-700 font-medium text-lg line-clamp-3 '>
+                    <div className='text-slate-700 font-medium text-sm md:text-base lg:text-lg line-clamp-3 '>
                         {description}
                     </div>
-                    <Spacer y={3} />
-                    <div className="flex justify-between">
+                    <Spacer y={4} />
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center lg:justify-between mb-4 lg:mb-6">
                         <User
                             avatarProps={{
                                 src: getAvatarUrl({
@@ -108,23 +108,23 @@ export const CourseBanner = (props: CourseBannerProps) => {
                                 description: "font-semibold text-slate-600"
                             }}
                             name={username}
-                            className="text-white"
+                            className="text-white mb-2 lg:mb-0"
                             description={formatNouns(numberOfFollowers, "follower")}
                         />
-                    
-
+                        
                         <div className="mr-52 flex items-center">
-                            <div className="pb-1">
-                                <Stars  readonly size={20} initialValue={overallCourseRating} />
+                            <div className="flex items-center">
+                                <div className="pb-1">
+                                    <Stars  readonly size={20} initialValue={overallCourseRating} />
+                                </div>
+                                <div className="text-black text-sm  ms-2 ">{overallCourseRating?.toFixed(1)}</div>
+                            
                             </div>
-                            <div className="text-black text-sm  ms-2 ">{overallCourseRating?.toFixed(1)}</div>
-                            <div className="text-black text-sm ms-2">{totalNumberOfRatings && totalNumberOfRatings > 1 ? `(${totalNumberOfRatings} ratings)` : `(${totalNumberOfRatings || 0} rating)`}</div>
+                            <div className="text-black text-sm ms-2 hidden lg:inline-block">{totalNumberOfRatings && totalNumberOfRatings > 1 ? `(${totalNumberOfRatings} ratings)` : `(${totalNumberOfRatings || 0} rating)`}</div>
                             <div className="text-black text-sm ms-2 ">{numberOfEnrollments && numberOfEnrollments > 1 ? `${numberOfEnrollments} students` : `${numberOfEnrollments || 0} student`}</div>
                         </div>
                     </div>
-                   
-                    <Spacer y={4} />
-                    
+                                       
                     <div className='flex gap-2 items-center'>
                         {categories.categoryLevel2?.map(({ categoryId, name, imageId }) => (
                             <Chip
@@ -143,27 +143,29 @@ export const CourseBanner = (props: CourseBannerProps) => {
                             </Chip>
                         ))}
                     </div>
-                    <Spacer y={4} />
-
-                    <div className="flex flex-col md:flex-row  ">
-                        <div className="flex items-center mr-4">
-                            <GlobeAsiaAustraliaIcon className="w-6 h-6 text-gray-700 mr-2"/>
-                            <div className="text-gray-700 text-sm">English</div>
-                        </div>
-                        <div className="flex items-center mr-4">
-                            <CalendarDays width={20} height={20} className="text-gray-700 mr-2"/>
-                            <div className="text-gray-700 text-sm">Last updated: Aprial, 28th Jan 2024 </div>
-                        </div>
-                        <div className="flex items-center">
-                            <FileBadge width={20} height={20} className="text-gray-700 mr-2"/>
-                            <div className="text-gray-700 text-sm">Certificate of completion</div>
-                        </div>
+                    <Spacer y={6} />
+                    <div className="flex flex-col 2xl:flex-row">
+                        <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 mr-2 mb-2">
+                            <div className="flex items-center mr-4">
+                                <GlobeAsiaAustraliaIcon className="w-6 h-6 text-gray-700 mr-2"/>
+                                <div className="text-gray-700 text-sm">English</div>
+                            </div>
+                            <div className="flex items-center mr-4">
+                                <CalendarDays width={20} height={20} className="text-gray-700 mr-2"/>
+                                <div className="text-gray-700 text-sm flex">Last updated: <p className="ms-1">{parseDateToString(updatedAt || new Date())}</p> </div>
+                            </div>
+                            <div className="flex items-center">
+                                <FileBadge width={20} height={20} className="text-gray-700 mr-2"/>
+                                <div className="text-gray-700 text-sm">Certificate of completion</div>
+                            </div>
                         
+                        </div>
+                        <div className="flex items-center lg:ms-1 ">
+                            <MonitorSmartphone width={20} height={20} className="text-gray-700 mr-2"/>
+                            <div className="text-gray-700 text-sm">Access on browser and mobile</div>
+                        </div>
                     </div>
-                    <div className="flex items-center mr-4 mt-2">
-                        <MonitorSmartphone width={20} height={20} className="text-gray-700 mr-2"/>
-                        <div className="text-gray-700 text-sm">Access on browser and mobile</div>
-                    </div>
+                   
                 </div>
             </div>
         </div>

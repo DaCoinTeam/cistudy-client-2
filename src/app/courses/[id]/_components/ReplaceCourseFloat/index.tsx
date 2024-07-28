@@ -1,12 +1,5 @@
 
-import {
-    Button,
-    Card,
-    CardBody,
-    CardFooter,
-    CardHeader,
-    Spacer,
-} from "@nextui-org/react"
+
 
 import { computePercentage } from "@common"
 import {
@@ -23,12 +16,14 @@ import {
 } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { useContext } from "react"
+import { Button, Spacer } from "@nextui-org/react"
 import { VideoPlayer } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
-import { AddToCartButton } from "./AddToCartButton"
-import { ConfirmEnrollModal } from "./ConfirmEnrollModal"
+import { AddToCartButton } from "../CourseFloat/AddToCartButton"
+import { ConfirmEnrollModal } from "../CourseFloat/ConfirmEnrollModal"
 
-export const CourseFloat = () => {
+
+export const ReplaceCourseFloat = () => {
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course, isLoading } = courseSwr
@@ -76,24 +71,21 @@ export const CourseFloat = () => {
     const onEnterManageCoursePress = () => router.push(`${path}/management`)
 
     return (
-        <Card
-            radius="md"
-            className="w-full border border-divider rounded-medium"
-        >
-            <CardHeader className="p-0 pb-2">
+        <div className="mx-6 md:mx-12 items-center border border-divider rounded-medium" >
+            <div className="p-0 pb-2">
                 <VideoPlayer
-                    className="w-full rounded-t-lg rounded-b-none h-[180px]"
+                    className="w-full rounded-t-lg rounded-b-none h-[240px]"
                     src={getAssetUrl(previewVideoId)}
                 />
-            </CardHeader>
-            <CardBody className="px-6 py-3">
+            </div>
+            <div className="flex flex-col items-center mt-4 px-6">
                 {enrolled ? <div className="text-primary font-semibold text-base mb-2">Enrolled</div> : null}
                 <div>{renderPrice()}</div>
                 <Spacer y={4} />
-                <div>
+                <div className="flex flex-col items-center mb-2">
                     <div className="text-base font-semibold">This course included</div>
                     <Spacer y={2} />
-                    <div className="flex text-foreground-500 flex-col gap-2">
+                    <div className="flex text-foreground-500 flex-row gap-2">
                         <div className="flex gap-2">
                             <ListVideo size={20} strokeWidth={3 / 2} />
                             <div className="text-sm"> {sections?.length} sections</div>
@@ -112,8 +104,8 @@ export const CourseFloat = () => {
                         </div>
                     </div>
                 </div>
-            </CardBody>
-            <CardFooter className="p-4 pt-2 flex-col gap-2">
+            </div>
+            <div className="p-4 pt-2 flex-col gap-2">
                 {enrolled && !isCreator ? (
                     <Button
                         color="primary"
@@ -140,7 +132,7 @@ export const CourseFloat = () => {
                     }
                     fullWidth
                 >Manage course</Button>}
-            </CardFooter>
-        </Card>
+            </div>
+        </div>
     )
 }

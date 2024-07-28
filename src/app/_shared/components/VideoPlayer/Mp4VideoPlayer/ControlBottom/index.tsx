@@ -12,7 +12,7 @@ export const ControlBottom = () => {
     const { hideController } = state
     
     return (
-        <div className={`${hideController ? "hidden" : ""} p-3 z-10 absolute bottom-0 w-full`}>
+        <div className={`${hideController ? "hidden" : "inline-block"} p-3 z-10 absolute bottom-0 w-full`}>
             <ProgressBar/>
             <Spacer y={2} />
             <div className="flex items-center justify-between">

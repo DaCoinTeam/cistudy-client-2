@@ -8,6 +8,7 @@ import {
     CardHeader,
     Checkbox,
     Divider,
+    Image,
     Link,
 } from "@nextui-org/react"
 import { FilterIcon, Hash, ListTree } from "lucide-react"
@@ -15,6 +16,8 @@ import { useContext, useEffect, useState } from "react"
 import { MdCategory } from "react-icons/md"
 import { RootContext } from "../../../_hooks"
 import { CourseFiltersProvider } from "./CourseFiltersProvider"
+import { CourseFilterSkeleton } from "./CourseFilterSkeleton"
+import { getAssetUrl } from "@services"
 
 interface CourseFiltersProps {
   className?: string;
@@ -25,8 +28,8 @@ export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
 
     const { swrs, reducer } = useContext(RootContext)!
     const { categoriesSwr, topicsSwr } = swrs
-    const { data } = categoriesSwr
-    const { data: topicData } = topicsSwr
+    const { data, isLoading } = categoriesSwr
+    const { data: topicData, isLoading: topicSwrLoading } = topicsSwr
     const [state, dispatch] = reducer
     const { categoryFilter } = state
     const [currentCategory, setCurrentCategory] = useState<CategoryEntity | null>(
@@ -176,120 +179,126 @@ export const CourseFiltersWrapped = (props: CourseFiltersProps) => {
      
     }, [categoryFilter])
     return (
-        
-        <Card
-            shadow='none'
-            className={`${className} border border-divider rounded-medium h-fit w-[280px]`}
-        >
-            <CardHeader className='p-4'>
-                <FilterIcon size={20} className='text-primary mr-4' />
-                <div className='text-xl font-semibold'>Filters</div>
-            </CardHeader>
-            <Divider />
-            <CardBody className='p-0'>
-                <Accordion
-                    selectionMode='multiple'
-                    className='!px-0'
-                    itemClasses={{
-                        base: "!shadow-none gap-4 px-4",
-                        title: "!text-base",
-                        content: "pt-2 pb-4",
-                    }}
-                    defaultExpandedKeys={["categories"]}
+        <div>
+            {isLoading || topicSwrLoading ? (
+                <CourseFilterSkeleton/>
+            ) : (
+                <Card
+                    shadow='none'
+                    className={`${className} border border-divider rounded-medium h-fit w-[280px]`}
                 >
-                    <AccordionItem
-                        key='categories'
-                        aria-label='Categories'
-                        startContent={<MdCategory size={20} className='text-primary' />}
-                        title={
-                            <div className='flex gap-3 items-center'>
-                                <div>Categories</div>
-                                <div className='text-foreground-400'>
-                                    {categoryLevel0.length ?? 0}
-                                </div>
-                            </div>
-                        }
-                    >
-                        <div className='flex flex-col gap-3'>
-                            {categoryLevel0.map((category) => (
-                                <Link key={category.categoryId}>
-                                    <Checkbox
-                                        size='sm'
-                                        isSelected={categoryFilter.includes(category)}
-                                        onValueChange={() => handleCheckCategory(category)}
-                                    >
-                                        <div>{category.name}</div>
-                                    </Checkbox>
-                                </Link>
-                            ))}
-                        </div>
-                    </AccordionItem>
-                    <AccordionItem
-                        key='subcategories'
-                        aria-label='Subcategories'
-                        startContent={<ListTree size={20} className='text-primary' />}
-                        title={
-                            <div className='flex gap-3 items-center'>
-                                <div>Subcategories</div>
-                                <div className='text-foreground-400'>
-                                    {categoryLevel1?.length ?? 0}
-                                </div>
-                            </div>
-                        }
-                    >
-                        <div className='flex flex-col gap-3'>
-                            {categoryLevel1?.map((category) => (
-                                <Link key={category.categoryId}>
-                                    <Checkbox
-                                        size='sm'
-                                        isSelected={categoryFilter.includes(category)}
-                                        onValueChange={() => handleCheckCategory(category)}
-                                    >
-                                        <div>{category.name}</div>
-                                    </Checkbox>
-                                </Link>
-                            ))}
-                        </div>
-                    </AccordionItem>
-                    <AccordionItem
-                        key='topics'
-                        aria-label='Topics'
-                        startContent={<Hash fontSize={20} className='text-primary' />}
-                        title={
-                            <div className='flex gap-3 items-center'>
-                                <div>Topics</div>
-                                <div className='text-foreground-400'>
-                                    {categoryLevel2?.length ?? 0}
-                                </div>
-                            </div>
-                        }
-                    >
-                        <div className='flex flex-col gap-3'>
-                            {categoryLevel2?.map((category) => (
-                                <div key={category.categoryId}>
-                                    <Checkbox
-                                        size='sm'
-                                        isSelected={categoryFilter.includes(category)}
-                                        onValueChange={() => handleCheckCategory(category)}
-                                    >
-                                        <div className='flex gap-2 items-center'>
-                                            {/* <Image
-                                                    src={getAssetUrl(imageId)}
-                                                    alt='topic'
-                                                    height={14}
-                                                    width={14}
-                                                /> */}
-                                            <div>{category.name}</div>
+                    <CardHeader className='p-4'>
+                        <FilterIcon size={20} className='text-primary mr-4' />
+                        <div className='text-xl font-semibold'>Filters</div>
+                    </CardHeader>
+                    <Divider />
+                    <CardBody className='p-0'>
+                        <Accordion
+                            selectionMode='multiple'
+                            className='!px-0'
+                            itemClasses={{
+                                base: "!shadow-none gap-4 px-4",
+                                title: "!text-base",
+                                content: "pt-2 pb-4",
+                            }}
+                            defaultExpandedKeys={["categories"]}
+                        >
+                            <AccordionItem
+                                key='categories'
+                                aria-label='Categories'
+                                startContent={<MdCategory size={20} className='text-primary' />}
+                                title={
+                                    <div className='flex gap-3 items-center'>
+                                        <div>Categories</div>
+                                        <div className='text-foreground-400'>
+                                            {categoryLevel0.length ?? 0}
                                         </div>
-                                    </Checkbox>
+                                    </div>
+                                }
+                            >
+                                <div className='flex flex-col gap-3'>
+                                    {categoryLevel0.map((category) => (
+                                        <Link key={category.categoryId}>
+                                            <Checkbox
+                                                size='sm'
+                                                isSelected={categoryFilter.includes(category)}
+                                                onValueChange={() => handleCheckCategory(category)}
+                                            >
+                                                <div>{category.name}</div>
+                                            </Checkbox>
+                                        </Link>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
-                    </AccordionItem>
-                </Accordion>
-            </CardBody>
-        </Card>
+                            </AccordionItem>
+                            <AccordionItem
+                                key='subcategories'
+                                aria-label='Subcategories'
+                                startContent={<ListTree size={20} className='text-primary' />}
+                                title={
+                                    <div className='flex gap-3 items-center'>
+                                        <div>Subcategories</div>
+                                        <div className='text-foreground-400'>
+                                            {categoryLevel1?.length ?? 0}
+                                        </div>
+                                    </div>
+                                }
+                            >
+                                <div className='flex flex-col gap-3'>
+                                    {categoryLevel1?.map((category) => (
+                                        <Link key={category.categoryId}>
+                                            <Checkbox
+                                                size='sm'
+                                                isSelected={categoryFilter.includes(category)}
+                                                onValueChange={() => handleCheckCategory(category)}
+                                            >
+                                                <div>{category.name}</div>
+                                            </Checkbox>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </AccordionItem>
+                            <AccordionItem
+                                key='topics'
+                                aria-label='Topics'
+                                startContent={<Hash fontSize={20} className='text-primary' />}
+                                title={
+                                    <div className='flex gap-3 items-center'>
+                                        <div>Topics</div>
+                                        <div className='text-foreground-400'>
+                                            {categoryLevel2?.length ?? 0}
+                                        </div>
+                                    </div>
+                                }
+                            >
+                                <div className='flex flex-col gap-3'>
+                                    {categoryLevel2?.map((category) => (
+                                        <div key={category.categoryId}>
+                                            <Checkbox
+                                                size='sm'
+                                                isSelected={categoryFilter.includes(category)}
+                                                onValueChange={() => handleCheckCategory(category)}
+                                            >
+                                                <div className='flex gap-2 items-center'>
+                                                    <Image
+                                                        src={getAssetUrl(category.imageId)}
+                                                        alt='topic'
+                                                        height={14}
+                                                        width={14}
+                                                    />
+                                                    <div>{category.name}</div>
+                                                </div>
+                                            </Checkbox>
+                                        </div>
+                                    ))}
+                                </div>
+                            </AccordionItem>
+                        </Accordion>
+                    </CardBody>
+                </Card>
+            )}
+        
 
+        </div>
 
     )
 }
