@@ -8,13 +8,13 @@ import {
     ModalFooter,
     Button,
 } from "@nextui-org/react"
-import { CheckIcon } from "lucide-react"
 import { forwardRef, useImperativeHandle } from "react"
 
 export interface ConfirmModalRefProps {
-  onOKPress: () => void;
+  onOKPress: () => Promise<void>;
   title: string;
   content: string;
+  isLoading?: boolean;
 }
 
 export interface ConfirmModalRefSelectors {
@@ -25,7 +25,7 @@ export const ConfirmModalRef = forwardRef<
   ConfirmModalRefSelectors | null,
   ConfirmModalRefProps
 >((props, ref) => {
-    const { onOKPress, title, content } = props
+    const { onOKPress, title, content, isLoading } = props
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     useImperativeHandle(ref, () => ({
@@ -37,18 +37,22 @@ export const ConfirmModalRef = forwardRef<
             <ModalContent>
                 {(onClose) => (
                     <>
-                        <ModalHeader className="p-4 pb-2 text-2xl">{title}</ModalHeader>
+                        <ModalHeader className="p-4 pb-2">{title}</ModalHeader>
                         <ModalBody className="p-4">
                             <div className="text-sm">{content}</div>
                         </ModalBody>
                         <ModalFooter className="p-4 pt-2">
-                            <Button variant="light" onPress={onClose}>
+                            <Button variant="bordered" color="primary" onPress={onClose}>
                 Cancel
                             </Button>
-                            <Button startContent={<CheckIcon size={20} strokeWidth={3/2}/>} color="primary" onPress={() => {
-                                onOKPress()
-                                onClose()
-                            }}>
+                            <Button
+                                isLoading={isLoading}
+                                color="primary"
+                                onPress={async () => {
+                                    await onOKPress()
+                                    onClose()
+                                }}
+                            >
                 OK
                             </Button>
                         </ModalFooter>

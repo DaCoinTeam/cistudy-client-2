@@ -1,102 +1,77 @@
 "use client"
 import { Button, Divider, Spacer } from "@nextui-org/react"
-import { CheckCircle2, Flag, ThumbsDown, ThumbsUp } from "lucide-react"
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import { Flag, ThumbsDown, ThumbsUp } from "lucide-react"
+import { useCallback, useContext, useRef } from "react"
 import { ContentDetailsContext } from "../../../_hooks"
 import { StartQuizModal, StartQuizModalRefSelectors } from "./StartQuizModal"
-import { QuizProgressState, QuizTimeState } from "./StartQuizModal/StartQuizProvider"
 import { createQuizAttempt, CreateQuizAttemptInput } from "@services"
 import useSWRMutation from "swr/mutation"
-import { ErrorResponse } from "@common"
-import { RootContext } from "../../../../../_hooks"
-import { ToastType } from "../../../../../_components"
+import numeral from "numeral"
 
 export const QuizContent = () => {
-    const [quizProgressState, setQuizProgressState] = useState<QuizProgressState>(JSON.parse(localStorage.getItem("quizProgressState") ?? "{}"))
     const startQuizModalRef = useRef<StartQuizModalRefSelectors | null>(null)
-    const {notify} = useContext(RootContext)!
     const {swrs} = useContext(ContentDetailsContext)!
     const {sectionContentSwr} = swrs
-    const {data: sectionContentData} = sectionContentSwr
+    const {data: sectionContentData, mutate} = sectionContentSwr
     const {quiz} = {...sectionContentData}
+    const { activeQuizAttempt } = { ...quiz }
 
-    const fetchCreateQuizAttemptSwrMutation = useCallback(async (_: string, { arg } : {arg : CreateQuizAttemptInput}) => {
-        return await createQuizAttempt(arg)
-    }, [])
+    const createQuizAttemptFn = useCallback(async (_: string, { arg } : {arg : CreateQuizAttemptInput}) => {
+        const response = await createQuizAttempt(arg)
+        await mutate()
+        return response
+    }, [sectionContentSwr])
 
-    const createQuizAttemptSwrMutation = useSWRMutation("CREATE_QUIZ_ATTEMPT", fetchCreateQuizAttemptSwrMutation)
-    const { trigger } = createQuizAttemptSwrMutation
-
-
-    const handleStartQuiz = async() => {
-        if (!quiz) return
-
-        if (!quizProgressState.quizAttemptId) {
-            const quizTime: QuizTimeState = {
-                timeLimit: (quiz?.timeLimit * 60 * 1000).toString(),
-                remainingTime: (quiz?.timeLimit * 60 * 1000).toString()
-            }
-            localStorage.setItem("quizTimeState", JSON.stringify(quizTime))
-
-            try {
-                const res = await trigger({data: {quizId: quiz?.quizId as string}})
-                const quizProgressState : QuizProgressState = {
-                    quizAttemptId: res.others.quizAttemptId,
-                    score: 0,
-                    selectedAnswers: [],
-                    quizQuestionAnswerIds: []
-                }
-                localStorage.setItem("quizProgressState", JSON.stringify(quizProgressState))
-            } catch (ex) {
-                const { message } = ex as ErrorResponse
-                notify!({
-                    data: {
-                        error: message as string
-                    },
-                    type: ToastType.Error
-                })
-            }
-        }
-        startQuizModalRef.current?.onOpen()
-    }
-
-    useEffect(() => {
-        window.addEventListener("storage", () => {
-            setQuizProgressState(JSON.parse(localStorage.getItem("quizProgressState") ?? "{}"))
-        })
-    }, [])
+    const createQuizAttemptSwrMutation = useSWRMutation("CREATE_QUIZ_ATTEMPT", createQuizAttemptFn)
+    const { trigger, isMutating  } = createQuizAttemptSwrMutation
 
     return (
         <div className="w-full">
             <div className="text-2xl">{sectionContentData?.title}</div>
             <Spacer y={12}/>
             <div>
-                <div className="text-primary font-semibold cursor-pointer">Review Learning Object</div>
-                <Spacer y={8}/>
-                <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-row items-end justify-between">
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-row items-center gap-2">
-                            <span className="font-semibold">Status</span>
+                            <span className="font-semibold text-xl text-primary">Quiz Overview</span>
                         </div>
-                        <div className="flex flex-row gap-4">
-                            <div className="flex flex-row gap-2">
-                                <div className="font-semibold">Time Limit</div>
-                                <span>{quiz?.timeLimit} minutes</span>
+                        <div className="grid gap-2">
+                            <div className="flex flex-row gap-4">
+                                <div className="flex flex-row gap-2 w-[250px]">
+                                    <div className="font-semibold">Questions</div>
+                                    <span>{quiz?.questions.length} questions</span>
+                                </div>
+                                <div className="flex flex-row gap-2">
+                                    <div className="font-semibold">Total points</div>
+                                    <span>{quiz?.questions.reduce(((acc, { point }) => acc + point), 0)}</span>
+                                </div>
                             </div>
-                            <div className="flex flex-row gap-2">
-                                <div className="font-semibold">Attempts</div>
-                                <span>3 every 8 hours</span>
+                            <div className="flex flex-row gap-4">
+                                <div className="flex flex-row gap-2 w-[250px]">
+                                    <div className="font-semibold">Time limit</div>
+                                    <span>{quiz?.timeLimit} minutes</span>
+                                </div>
+                                <div className="flex flex-row gap-2">
+                                    <div className="font-semibold">Attempts</div>
+                                    <span>3 every 8 hours</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <Button 
+                        isLoading={isMutating}
                         color="primary" 
-                        size="lg" 
                         className="w-52 text-white"
-                        onPress={() => handleStartQuiz()}
+                        onPress={async () =>
+                        {
+                            if (!activeQuizAttempt) {
+                                await trigger({data: {quizId: quiz?.quizId as string}})
+                            }
+                            startQuizModalRef.current?.onOpen()
+                        }}
                     >
                         {
-                            quizProgressState.quizAttemptId? "Continue Quiz" : "Start Quiz"
+                            activeQuizAttempt ? "Continue Quiz" : "Start Quiz"
                         }
                     </Button>
                 </div>
@@ -106,18 +81,22 @@ export const QuizContent = () => {
                 <div className="flex flex-row justify-between">
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-row items-center gap-2">
-                            <span className="font-semibold">Condition</span>
+                            <span className="font-semibold text-xl text-primary">Condition</span>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <div className="font-semibold">To Pass</div>
+                            <div className="font-semibold">To pass</div>
                             <span>{`${quiz?.passingPercent ?? 0}%`} or higher</span>
                         </div>
                     </div>
                     <div className="flex flex-row items-center gap-6">
                         <Divider orientation="vertical" />
-                        <div>
-                            <div className="font-semibold">Your grade</div>
-                            <div className="text-lg text-primary">{quiz?.highestScoreRecorded? `${quiz?.highestScoreRecorded}/10` : "Not yet"}</div>
+                        <div className="grid place-items-center gap-2">
+                            <div className="font-semibold">Your best attempt</div>
+                            <div className={`text-2xl ${quiz?.isPassed ? "text-success" : "text-danger"}`}>{quiz?.highestScoreRecorded !== null ? `${numeral(quiz?.highestScoreRecorded).format("0.00")}%` : "Not yet"}</div>
+                            <div>
+                                <div className="text-sm">Last attempt: {numeral(quiz?.lastAttemptScore).format("0.00")}%</div>
+                                <div className="text-sm">Attempts: {quiz?.totalNumberOfAttempts} times</div>
+                            </div>
                         </div>
                         <div className="flex flex-col items-center">
                             <div className="text-primary font-semibold cursor-pointer">View Feedback</div>

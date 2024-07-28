@@ -301,6 +301,8 @@ export interface QuizAttemptEntity {
   currentQuestionPosition: number;
   attemptAnswers: Array<QuizAttemptAnswerEntity>;
   timeLeft: number;
+  receivedPoints : number
+  totalPoints : number
 }
 
 export interface QuizQuestionMediaEntity {

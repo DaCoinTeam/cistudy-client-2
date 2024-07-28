@@ -22,6 +22,7 @@ export const QuizIndexTable = () => {
         return await updateQuizAttempt(arg)
     })
 
+
     const { reducer } = useContext(StartQuizContext)!
     const [, dispatch] = reducer
 

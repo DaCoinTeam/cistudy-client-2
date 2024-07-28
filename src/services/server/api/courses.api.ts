@@ -414,6 +414,8 @@ export interface FinishQuizAttemptOutput {
     receivedPercent : number
     isPassed: boolean
     timeTaken: number
+    receivedPoints : number
+    totalPoints : number
   };
 }
 
