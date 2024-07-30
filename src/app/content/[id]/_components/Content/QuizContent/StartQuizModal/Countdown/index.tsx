@@ -10,7 +10,7 @@ export const CountdownTimer = () => {
     const { quiz } = { ...data }
     const { activeQuizAttempt } = { ...quiz }
     const { timeLeft } = { ...activeQuizAttempt }
-
+    
     const [displayTimeLeft, setDisplayTimeLeft] = useState(0)
     
     const firstTimeRef = useRef(false)

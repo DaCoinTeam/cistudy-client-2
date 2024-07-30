@@ -191,6 +191,7 @@ export interface LessonEntity {
   resources: Array<ResourceEntity>;
   numberOfViews: number;
   description: string;
+  enableSeek?: boolean;
 }
 
 export interface ProgressEntity {

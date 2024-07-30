@@ -10,6 +10,9 @@ import { ControlBottom } from "./ControlBottom"
 interface DashVideoPlayerProps {
   className?: string;
   src: string;
+  triggerOnFinish?: boolean;
+  onFinish?: () => void;
+  preventSeek?: boolean;
 }
 
 interface DashVideoPlayerContextValue {
@@ -105,6 +108,8 @@ export const DashVideoPlayer = (props: DashVideoPlayerProps) => {
         })
     }
 
+    const triggerOncePerMount = useRef(false)
+
     const dashVideoPlayerContextValue: DashVideoPlayerContextValue = useMemo(
         () => ({
             player: mediaPlayerRef.current,
@@ -117,6 +122,21 @@ export const DashVideoPlayer = (props: DashVideoPlayerProps) => {
         }),
         [mediaPlayerRef.current, state, dispatch]
     )
+
+    useEffect(() => {
+        if (
+            !triggerOncePerMount.current &&
+      props.triggerOnFinish &&
+      props.onFinish &&
+      state.playbackTime > 0 &&
+      state.duration > 0
+        ) {
+            if (Math.abs(state.playbackTime - state.duration) <= 0.1) {
+                props.onFinish()
+                triggerOncePerMount.current = true
+            }
+        }
+    }, [state.duration, state.playbackTime])
 
     const onMouseEnter = () =>
         dispatch({
@@ -137,8 +157,12 @@ export const DashVideoPlayer = (props: DashVideoPlayerProps) => {
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
-                <video className="h-full m-auto" ref={playerRef} aria-label="playback" />
-                <ControlBottom />
+                <video
+                    className="h-full m-auto"
+                    ref={playerRef}
+                    aria-label="playback"
+                />
+                <ControlBottom preventSeek={props.preventSeek}/>
             </div>
         </DashVideoPlayerContext.Provider>
     )

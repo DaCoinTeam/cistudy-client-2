@@ -97,7 +97,8 @@ export const ContentDetailsProvider = ({
                         resourceId: true,
                         fileId: true,
                         name: true,
-                    }
+                    },
+                    description: true
                 },
                 lesson: {
                     lessonId: true,
@@ -106,6 +107,7 @@ export const ContentDetailsProvider = ({
                     lessonVideoId: true,
                     description: true,
                     numberOfViews: true,
+                    enableSeek: true
                 },
                 section: {
                     sectionId: true,
@@ -145,8 +147,10 @@ export const ContentDetailsProvider = ({
                                 resource: {
                                     attachments: {
                                         resourceAttachmentId: true,
-                                        fileId: true
-                                    }
+                                        fileId: true,
+                                    },
+                                    resourceId: true,
+                                    description: true
                                 },
                                 lesson: {
                                     lessonId: true,

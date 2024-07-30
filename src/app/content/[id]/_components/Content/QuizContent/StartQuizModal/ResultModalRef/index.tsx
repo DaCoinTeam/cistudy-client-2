@@ -35,7 +35,7 @@ export const ResultModalRef = forwardRef<ResultModalRefSelectors>((_, ref) => {
     }))
 
     return (
-        <Modal isOpen={isOpen} size="sm" onOpenChange={onOpenChange}>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
                 <ModalHeader className="p-4 pb-2">Your Result</ModalHeader>
                 <ModalBody className="p-4">
@@ -49,11 +49,11 @@ export const ResultModalRef = forwardRef<ResultModalRefSelectors>((_, ref) => {
                             <div className="flex gap-1 items-center flex-1 flex-row-reverse">
                                 <div className="grid gap-1">
                                     <div className="flex gap-1 items-center text-sm">
-                                        <div className="min-w-[80px]">Score: </div>
+                                        <div className="min-w-[100px] font-semibold">Score </div>
                                         <div>{receivedPoints}/{totalPoints}</div>
                                     </div>
                                     <div className="flex gap-1 items-center text-sm">
-                                        <div className="min-w-[80px]">Time taken: </div>
+                                        <div className="min-w-[100px] font-semibold">Time taken </div>
                                         <div>{parseDuration(Number((timeTaken ?? 0) / 1000))}</div>
                                     </div>
                                 </div>

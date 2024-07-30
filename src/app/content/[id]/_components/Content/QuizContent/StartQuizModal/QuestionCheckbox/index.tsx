@@ -16,7 +16,7 @@ import { StartQuizContext } from "../StartQuizProvider"
 export const QuestionCheckbox = () => {
     const { swrs } = useContext(ContentDetailsContext)!
     const { sectionContentSwr } = swrs
-    const { data: sectionContentData } = sectionContentSwr
+    const { data: sectionContentData, mutate } = sectionContentSwr
     const { quiz } = { ...sectionContentData }
     const { questions, activeQuizAttempt, quizId } = { ...quiz }
     const { currentQuestionPosition, quizAttemptId, attemptAnswers } = {
@@ -50,6 +50,8 @@ export const QuestionCheckbox = () => {
 
             previousQuizQuestionIdRef.current = quizQuestionId ?? ""
 
+            await mutate()
+
             dispatch({
                 type: "SET_CHOSEN_VALUES",
                 payload: (attemptAnswers ?? [])
@@ -69,7 +71,6 @@ export const QuestionCheckbox = () => {
             <div className="text-sm">
         Question {currentQuestionPosition} of {questions?.length}
             </div>
-
             <Spacer y={1} />
             <Divider />
             <Spacer y={4} />

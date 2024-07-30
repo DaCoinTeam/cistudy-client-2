@@ -1,65 +1,79 @@
 "use client"
-import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Link } from "@nextui-org/react"
+import { Button, Card, CardBody, Link, Spacer } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { ContentDetailsContext } from "../../../_hooks"
-import { File, Flag, ThumbsDown, ThumbsUp } from "lucide-react"
-import { getAssetUrl } from "@services"
+import {
+    MarkAsCompletedResourceInput,
+    getAssetUrl,
+    markAsCompletedResource,
+} from "@services"
+import useSWRMutation from "swr/mutation"
+import { CompleteState } from "@common"
 
 export const ResourceContent = () => {
-    const {swrs} = useContext(ContentDetailsContext)!
-    const {sectionContentSwr} = swrs
-    const {data: sectionContentData} = sectionContentSwr
-    const {resource} = {...sectionContentData}
+    const { swrs } = useContext(ContentDetailsContext)!
+    const { sectionContentSwr } = swrs
+    const { data: sectionContentData, mutate } = sectionContentSwr
+    const { resource, completeState } = { ...sectionContentData }
+
+    const { trigger, isMutating } = useSWRMutation(
+        "MARK_AS_COMPLETED_RESOURCE",
+        async (_, { arg }: { arg: MarkAsCompletedResourceInput }) => {
+            await markAsCompletedResource(arg)
+            await mutate()
+        }
+    )
 
     return (
         <div>
-            <Card>
-                <CardHeader className="text-3xl font-bold text-primary p-6">{sectionContentData?.title}</CardHeader>
-                <CardBody className="mt-4 p-6 gap-4">
-                    <div>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum, ligula a consectetur vehicula, velit metus tristique libero, sit amet cursus quam enim vitae nunc. Ut luctus leo felis, sit amet molestie eros tempus eu. Praesent vehicula tristique tempus. Integer quis convallis libero. Vivamus pretium feugiat ultricies. Morbi elementum eget ante non mattis. Sed tempus rhoncus sapien, eu lobortis eros laoreet eget. Praesent bibendum nibh ut neque fermentum, eget scelerisque lectus iaculis.
-                    </div>
-                    {
-                        resource?.attachments?.map((attachment, index) => (
-                            <Link key={index} isExternal href={getAssetUrl(attachment.fileId)} className="text-primary p-6 bg-content2 rounded-xl hover:border-primary hover:border-2">
-                                <File size={28} className="mr-4" />
-                                {attachment.name}
-                            </Link>
-                        ))
-                    }
-                    <Button 
-                        color="primary" 
-                        size="lg" 
-                        className="w-52 text-white"
-                        isDisabled={sectionContentData?.isCompleted}
+            <div className="text-2xl">{sectionContentData?.title}</div>
+            <Spacer y={1} />
+            <div className="text-foreground-400 text-sm">{resource?.description}</div>
+            <Spacer y={6} />
+            <div>{resource?.attachments.length} attachments included</div>
+            <Spacer y={4} />
+            <div className="grid gap-4">
+                {resource?.attachments.map(({ resourceAttachmentId, fileId, name }) => (
+                    <Card
+                        key={resourceAttachmentId}
+                        isPressable
+                        shadow="none"
+                        className="bg-content2"
                     >
-                            Mark as Completed
-                    </Button>
-                    <Divider className="mt-12" />
-                </CardBody>
-                <CardFooter>
-                    <div className="-mt-4">
-                        <Button
-                            startContent={<ThumbsUp size={20} />}
-                            className="bg-transparent text-primary"
-                        >
-                        Like
-                        </Button>
-                        <Button
-                            startContent={<ThumbsDown size={20} />}
-                            className="bg-transparent text-primary"
-                        >
-                        Dislike
-                        </Button>
-                        <Button
-                            startContent={<Flag size={20} />}
-                            className="bg-transparent text-primary"
-                        >
-                        Report an issue
-                        </Button>
-                    </div>
-                </CardFooter>
-            </Card>
+                        <CardBody className="p-4">
+                            <div className="justify-between flex items-center">
+                                <Link
+                                    underline="always"
+                                    size="sm"
+                                    color="foreground"
+                                    isExternal
+                                    href={getAssetUrl(fileId)}
+                                >
+                                    {" "}
+                                    {name}{" "}
+                                </Link>
+                            </div>
+                        </CardBody>
+                    </Card>
+                ))}
+            </div>
+            <Spacer y={6} />
+            <Button
+                isDisabled={completeState === CompleteState.Completed}
+                isLoading={isMutating}
+                color="primary"
+                onPress={async () =>
+                    await trigger({
+                        data: {
+                            resourceId: sectionContentData?.sectionContentId ?? "",
+                        },
+                    })
+                }
+            >
+                {completeState !== CompleteState.Completed
+                    ? "Mark As Completed"
+                    : "Completed"}
+            </Button>
         </div>
     )
 }

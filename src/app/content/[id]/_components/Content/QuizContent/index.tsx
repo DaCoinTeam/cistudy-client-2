@@ -7,6 +7,7 @@ import { StartQuizModal, StartQuizModalRefSelectors } from "./StartQuizModal"
 import { createQuizAttempt, CreateQuizAttemptInput } from "@services"
 import useSWRMutation from "swr/mutation"
 import numeral from "numeral"
+import dayjs from "dayjs"
 
 export const QuizContent = () => {
     const startQuizModalRef = useRef<StartQuizModalRefSelectors | null>(null)
@@ -28,6 +29,7 @@ export const QuizContent = () => {
     return (
         <div className="w-full">
             <div className="text-2xl">{sectionContentData?.title}</div>
+            <div className="text-foreground-400">{quiz?.description}</div>
             <Spacer y={12}/>
             <div>
                 <div className="flex flex-row items-end justify-between">
@@ -49,7 +51,7 @@ export const QuizContent = () => {
                             <div className="flex flex-row gap-4">
                                 <div className="flex flex-row gap-2 w-[250px]">
                                     <div className="font-semibold">Time limit</div>
-                                    <span>{quiz?.timeLimit} minutes</span>
+                                    <span>{dayjs(quiz?.timeLimit).format("mm:ss")}</span>
                                 </div>
                                 <div className="flex flex-row gap-2">
                                     <div className="font-semibold">Attempts</div>
@@ -92,15 +94,19 @@ export const QuizContent = () => {
                         <Divider orientation="vertical" />
                         <div className="grid place-items-center gap-2">
                             <div className="font-semibold">Your best attempt</div>
-                            <div className={`text-2xl ${quiz?.isPassed ? "text-success" : "text-danger"}`}>{quiz?.highestScoreRecorded !== null ? `${numeral(quiz?.highestScoreRecorded).format("0.00")}%` : "Not yet"}</div>
-                            <div>
-                                <div className="text-sm">Last attempt: {numeral(quiz?.lastAttemptScore).format("0.00")}%</div>
-                                <div className="text-sm">Attempts: {quiz?.totalNumberOfAttempts} times</div>
-                            </div>
-                        </div>
-                        <div className="flex flex-col items-center">
-                            <div className="text-primary font-semibold cursor-pointer">View Feedback</div>
-                            <div className="text-xs">We keep your highest score</div>
+                            {
+                                quiz?.highestScoreRecorded !== null ? (
+                                    <div className="grid gap-1 place-items-center">
+                                        <div className={`text-2xl ${quiz?.isPassed ? "text-success" : "text-danger"}`}>
+                                            {numeral(quiz?.highestScoreRecorded).format("0.00")}%
+                                        </div>
+                                        <div>
+                                            <div className="text-sm">Last attempt: {numeral(quiz?.lastAttemptScore).format("0.00")}%</div>
+                                            <div className="text-sm">Attempts: {quiz?.totalNumberOfAttempts} times</div>
+                                        </div>
+                                    </div>
+                                ) : <div className="text-primary text-2xl">Not yet</div>
+                            }  
                         </div>
                     </div>
                 </div>
