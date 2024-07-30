@@ -12,7 +12,7 @@ export const BestInstrutors = () => {
     return (
         <div className='mt-10 max-w-[1080px] mx-auto '>
             <div className='mx-auto mb-8 max-w-screen-sm lg:mb-16 text-center'>
-                <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>
+                <h2 className='mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white'>
           Best Instructors
                 </h2>
                 <p className='font-light text-gray-500 sm:text-xl dark:text-gray-400'>

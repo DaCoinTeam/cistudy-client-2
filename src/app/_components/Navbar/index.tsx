@@ -1,6 +1,8 @@
 "use client"
 import {
+    Badge,
     Button,
+    Link,
     NavbarBrand,
     NavbarContent,
     NavbarItem,
@@ -15,6 +17,7 @@ import { DarkModeSwitch } from "./DarkModeSwitch"
 import { NavbarContext, NavbarProvider } from "./NavbarProvider"
 import { ProfileMenu } from "./ProfileMenu"
 import { SearchInput } from "./SearchInput"
+import { BellAlertIcon, ShoppingCartIcon } from "@heroicons/react/24/outline"
 
 interface NavbarProps {
   className?: string;
@@ -26,9 +29,12 @@ const WrappedNavbar = (props: NavbarProps) => {
     const { authModalDisclosure } = disclosures
     const { onOpen } = authModalDisclosure
     const [, dispatch] = reducer
-    const { swrs } = useContext(RootContext)!
+    const { swrs, reducer: rootContextReducer } = useContext(RootContext)!
+    const [,rootReducerDispatch] = rootContextReducer
+
     const { profileSwr } = swrs
     const { data: profile } = profileSwr
+    const {cart} = { ...profile }
     const router = useRouter()
 
     const onSignInPress = () => {
@@ -45,8 +51,14 @@ const WrappedNavbar = (props: NavbarProps) => {
             payload: true,
         })
     }
-    
-    
+    const handleCoursesPress = () => {
+        rootReducerDispatch({type: "RESET_CATEGORY_FILTER"})
+        router.push("/courses")
+    }
+
+    const handleCartPress = () => {
+        router.push("/cart")
+    }
     return (
         <>
             <NextUINavbar
@@ -61,15 +73,40 @@ const WrappedNavbar = (props: NavbarProps) => {
                         role='button'
                         onClick={() => router.push("/")}
                     >
-                        <span className='text-primary'>Ci</span>
-                        <span className='text-primary'>Study</span>
+                        <span className='text-lg  text-blue-400'>Ci</span>
+                        <span className='text-lg text-primary '>Study</span>
                     </div>
                 </NavbarBrand>
-                <NavbarContent justify='center' className="space-x-4">
+                <NavbarContent justify='start' className="space-x-6 -ml-32">
+                    <Link className="font-medium text-base leading-8 text-gray-700 dark:text-gray-200 hover:text-primary cursor-pointer" onPress={handleCoursesPress}>Courses</Link>
                     <Categories/>
                     <SearchInput className='w-[500px]' />
                 </NavbarContent>
                 <NavbarContent justify='end'>
+                    {profile ? (<NavbarItem className="mr-2 justify-center">
+                        <Button isIconOnly variant="light" className="p-6" onPress={handleCartPress}>
+                            {cart && cart?.cartCourses?.length > 0 ? (
+                                <Badge color="danger" content={cart?.cartCourses?.length}  shape="circle">
+                                    <ShoppingCartIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
+                                </Badge>
+                            ) : (
+                                <ShoppingCartIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
+                            )}
+                            
+                        </Button>
+                    </NavbarItem>) : (<></>)}
+                    {profile ? (
+                        <NavbarItem className="mr-2 justify-center">
+                            <Button isIconOnly variant="light" className="p-6">
+                                <Badge color="danger" content={5}  shape="circle">
+                                    <BellAlertIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
+                                </Badge>
+                            </Button>
+                         
+                        </NavbarItem>
+                    ) : (
+                        <></>
+                    ) }
                     <NavbarItem>
                         <DarkModeSwitch />
                     </NavbarItem>
