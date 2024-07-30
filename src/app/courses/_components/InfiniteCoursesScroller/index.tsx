@@ -1,5 +1,6 @@
 "use client"
 import { CourseEntity } from "@common"
+import { ListBulletIcon, Squares2X2Icon } from "@heroicons/react/24/outline"
 import {
     CircularProgress,
     Pagination,
@@ -7,7 +8,6 @@ import {
     Tab,
     Tabs
 } from "@nextui-org/react"
-import { Grid3X3Icon, List } from "lucide-react"
 import { useContext, useMemo, useState } from "react"
 import InfiniteScroll from "react-infinite-scroller"
 import {
@@ -78,26 +78,23 @@ export const InfiniteCoursesScroller = (
                     }}
                     className='mb-2'
                     variant='underlined'
+                    
                 >
                     <Tab
                         key='grid'
                         title={
                             <div className='flex items-center space-x-2'>
-                                <Grid3X3Icon
-                                    size={20}
-                                    className='cursor-pointer text-primary'
+                                <Squares2X2Icon
+                                    className={`w-5 h-5 cursor-pointer ${viewType == "grid" ? "text-primary" : "text-foreground"}`}
                                     onClick={() => {
                                         setViewType("grid")
                                     }}
                                 />
-                                <span>Grid</span>
+                                <span className={viewType == "grid" ? "text-primary" : "text-foreground"}>Grid</span>
                             </div>
                         }
                     >
                         <div>
-                            {/* {isLoading ? (
-                                <CardListSkeleton />
-                            ) : ( */}
                             <div className='grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-6'>
                                 {getCoursesByPage.map((course) => (
                                     <div key={course.courseId}>
@@ -146,14 +143,13 @@ export const InfiniteCoursesScroller = (
                         key='list'
                         title={
                             <div className='flex items-center space-x-2'>
-                                <List
-                                    size={20}
-                                    className='cursor-pointer text-primary'
+                                <ListBulletIcon
+                                    className={`w-5 h-5 cursor-pointer ${viewType == "list" ? "text-primary" : "text-foreground"}`}
                                     onClick={() => {
                                         setViewType("list")
                                     }}
                                 />
-                                <span>List</span>
+                                <span className={viewType == "list" ? "text-primary" : "text-foreground"}>List</span>
                             </div>
                         }
                     >

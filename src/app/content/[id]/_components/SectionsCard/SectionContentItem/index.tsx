@@ -45,10 +45,10 @@ const renderComplete = (
 
     const map: Record<CompleteState, JSX.Element> = {
         [CompleteState.Completed]: (
-            <SolidCheckCircleIcon className="w-6 h-6 text-primary" />
+            <SolidCheckCircleIcon className="w-6 h-6 text-success" />
         ),
         [CompleteState.Failed]: (
-            <SolidXCircleIcon className="w-6 h-6 text-primary" />
+            <SolidXCircleIcon className="w-6 h-6 text-danger" />
         ),
         [CompleteState.Undone]: base,
     }

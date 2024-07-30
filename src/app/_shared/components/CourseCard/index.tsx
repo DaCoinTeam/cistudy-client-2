@@ -98,13 +98,14 @@ export const CourseCard = (props: CourseCardProps) => {
                            
                         </div>
             
-                        <CardBody className="pb-1 w-full min-h-42 overflow-hidden">
+                        <CardBody className="pb-1 w-full px-4 min-h-42 overflow-hidden">
                             <div className="text-lg mb-2 line-clamp-2 min-h-13"> {title} </div>
                             <div className="text-sm text-foreground-400  line-clamp-2 mb-4"> {description} </div>
                             <div className="flex justify-between gap-4 h-7 items-center mb-2 w-full ">
                                 <div >
                                     <User classNames={{
-                                        name: "text-sm"
+                                        name: "text-sm line-clamp-1",
+                                        description: "w-[3.5rem]"
                                     }} avatarProps={{
                                         src: getAvatarUrl({
                                             avatarUrl: avatarUrl,
@@ -112,7 +113,7 @@ export const CourseCard = (props: CourseCardProps) => {
                                             kind: kind
                                         })
                                     }} name={username} description={formatNouns(numberOfFollowers, "follower")}
-/>
+                                    />
                                 </div> 
                    
                                 <Divider orientation="vertical"/>
@@ -128,7 +129,7 @@ export const CourseCard = (props: CourseCardProps) => {
                             </div>
                         </CardBody>
 
-                        <CardFooter className="w-full flex-col pt-2" >
+                        <CardFooter className="w-full flex-col pt-2 px-4" >
                             <div className="flex justify-between w-full items-center h-11">
                                 <div className="flex flex-col items-start">
                                     <div className="text-lg font-semibold text-black dark:text-white p-0 ms-1">{enableDiscount ? discountPrice : price} STARCI</div>

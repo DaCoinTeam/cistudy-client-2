@@ -45,6 +45,11 @@ export const CoursesTable = () => {
 
     const renderStatus = (status: VerifyStatus) => {
         const statusToComponent: Record<VerifyStatus, JSX.Element> = {
+            [VerifyStatus.Draft]: (
+                <Chip color="default" variant="flat">
+          Draft
+                </Chip>
+            ),
             [VerifyStatus.Pending]: (
                 <Chip color="warning" variant="flat">
           Pending

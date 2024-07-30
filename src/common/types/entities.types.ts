@@ -61,6 +61,7 @@ export interface AccountEntity {
   avatarUrl?: string;
   phoneNumber?: string;
   balance: number;
+  bio: string;
   cart: CartEntity;
   roles: Array<RoleEntity>;
   walletAddress?: string;
@@ -191,6 +192,7 @@ export interface LessonEntity {
   resources: Array<ResourceEntity>;
   numberOfViews: number;
   description: string;
+  enableSeek?: boolean;
 }
 
 export interface ProgressEntity {

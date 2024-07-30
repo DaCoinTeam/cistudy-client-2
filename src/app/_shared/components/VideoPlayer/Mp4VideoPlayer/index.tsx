@@ -10,6 +10,9 @@ import { ControlBottom } from "./ControlBottom"
 interface Mp4VideoPlayerProps {
   className?: string;
   src: string;
+  triggerOnFinish?: boolean;
+  onFinish?: () => void;
+  preventSeek?: boolean;
 }
 
 interface Mp4VideoPlayerContextValue {
@@ -26,7 +29,7 @@ export const Mp4VideoPlayerContext =
   createContext<Mp4VideoPlayerContextValue | null>(null)
 
 export const Mp4VideoPlayer = (props: Mp4VideoPlayerProps) => {
-    const { src, className } = props
+    const { src, className, onFinish, preventSeek, triggerOnFinish } = props
 
     const playerRef = useRef<HTMLVideoElement | null>(null)
     const [state, dispatch] = useMp4VideoPlayerReducer()
@@ -55,6 +58,23 @@ export const Mp4VideoPlayer = (props: Mp4VideoPlayerProps) => {
         }
         handleEffect()
     }, [])
+
+    const triggerOncePerMount = useRef(false)
+
+    useEffect(() => {
+        if (
+            !triggerOncePerMount.current &&
+      triggerOnFinish &&
+      onFinish &&
+      state.playbackTime > 0 &&
+      state.duration > 0
+        ) {
+            if (Math.abs(state.playbackTime - state.duration) <= 0.1) {
+                onFinish()
+                triggerOncePerMount.current = true
+            }
+        }
+    }, [state.duration, state.playbackTime])
 
     const onPlay = () => {
         const player = playerRef.current
@@ -104,12 +124,18 @@ export const Mp4VideoPlayer = (props: Mp4VideoPlayerProps) => {
     return (
         <Mp4VideoPlayerContext.Provider value={mp4VideoPlayerContextValue}>
             <div
-                className={`aspect-video relative bg-content2 rounded-lg overflow-hidden  ${className ?? ""}`}
+                className={`aspect-video relative bg-content2 rounded-lg overflow-hidden  ${
+                    className ?? ""
+                }`}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
-                <video className="h-full m-0 w-full object-cover" ref={playerRef} aria-label="Playback" />
-                <ControlBottom />
+                <video
+                    className="h-full m-0 w-full object-cover"
+                    ref={playerRef}
+                    aria-label="Playback"
+                />
+                <ControlBottom preventSeek={preventSeek} />
             </div>
         </Mp4VideoPlayerContext.Provider>
     )

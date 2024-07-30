@@ -43,6 +43,11 @@ export const TransactionsTable = () => {
 
     const renderStatus = (status: VerifyStatus) => {
         const statusToComponent: Record<VerifyStatus, JSX.Element> = {
+            [VerifyStatus.Draft]: (
+                <Chip color="warning" variant="flat">
+          Pending
+                </Chip>
+            ),
             [VerifyStatus.Pending]: (
                 <Chip color="warning" variant="flat">
           Pending

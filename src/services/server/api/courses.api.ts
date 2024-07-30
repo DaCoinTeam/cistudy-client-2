@@ -694,15 +694,41 @@ export const updateQuizAttemptAnswers = async (
     return await authAxios.patch(url, data)
 }
 
-export const convertHTMLtoImage = async (html: string) => {
-    const thirdServiceUrl = "https://html-to-image2.p.rapidapi.com"
-    const url = `${thirdServiceUrl}/html-to-image`
-    axios.defaults.headers.common["x-rapidapi-key"] = "6761e9fce1msh6e39d7d5225f36bp17dd75jsnf78b79b1e99b"
-    axios.defaults.headers.common["x-rapidapi-host"] = "html-to-image2.p.rapidapi.com"
-    return await axios.post(url, {
-        html,
-        config: {
-            "format": "png",
-        }
-    })
+export interface MarkAsCompletedResourceInput {
+  data: {
+      resourceId: string
+  }
 }
+
+export interface MarkAsCompletedResourceOutput {
+  message: string
+}
+
+export const markAsCompletedResource = async (
+    input: MarkAsCompletedResourceInput
+): Promise<MarkAsCompletedResourceOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/mark-as-completed-resource`
+    return await authAxios.patch(url, data)
+}
+
+export interface UpdateLessonProgressInput {
+  data: {
+    lessonId: string
+    completePercent?: number
+    completeFirstWatch?: boolean
+  }
+}
+
+export interface UpdateLessonProgressOutput {
+  message: string
+}
+
+export const updateLessonProgress = async (
+    input: UpdateLessonProgressInput
+): Promise<UpdateLessonProgressOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/update-lesson-progress`
+    return await authAxios.put(url, data)
+}
+
