@@ -69,7 +69,7 @@ const WrappedCourseApproveModalRef = forwardRef<
                         </ModalBody>
                         <ModalFooter>
                             <Button
-                                color="danger"
+                                color="primary"
                                 variant="bordered"
                                 onClick={() => handleSubmit(VerifyStatus.Rejected)}
                                 isLoading={formik.values.verifyStatus === VerifyStatus.Rejected && formik.isSubmitting}
@@ -77,8 +77,7 @@ const WrappedCourseApproveModalRef = forwardRef<
                                 Reject
                             </Button>
                             <Button
-                                color="success"
-                                variant="flat"
+                                color="primary"
                                 onClick={() => handleSubmit(VerifyStatus.Approved)}
                                 isLoading={formik.values.verifyStatus === VerifyStatus.Approved && formik.isSubmitting}
                             >

@@ -4,7 +4,7 @@ export enum PanelSelected {
     Forum = "forum",
     Sections = "sections",
     Preview = "preview",
-    Certificates = "certificates"
+    Certificate = "certificate"
 }
 
 export interface HomeState {

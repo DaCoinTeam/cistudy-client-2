@@ -6,6 +6,7 @@ export const BG_IMG_2 = "/bg2.avif"
 export const BG_DECORATION = "./background.svg"
 export const BG_DECORATION_DARK = "./background-dark.svg"
 export const BG_COURSE_DETAIL = "/bg-course-detail.jpg"
+export const CERTIFICATE = "/Certification.png"
 
 const TOPIC_URL = "/topics"
 export const TOPIC_JAVA = `${TOPIC_URL}/java.svg`

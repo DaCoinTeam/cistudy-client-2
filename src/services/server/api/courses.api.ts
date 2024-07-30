@@ -1,6 +1,7 @@
 import { ENDPOINT_API } from "@config"
 import { authAxios } from "./axios-instances"
 import { SectionContentType } from "@common"
+import axios from "axios"
 
 const BASE_URL = `${ENDPOINT_API}/courses`
 
@@ -693,3 +694,15 @@ export const updateQuizAttemptAnswers = async (
     return await authAxios.patch(url, data)
 }
 
+export const convertHTMLtoImage = async (html: string) => {
+    const thirdServiceUrl = "https://html-to-image2.p.rapidapi.com"
+    const url = `${thirdServiceUrl}/html-to-image`
+    axios.defaults.headers.common["x-rapidapi-key"] = "6761e9fce1msh6e39d7d5225f36bp17dd75jsnf78b79b1e99b"
+    axios.defaults.headers.common["x-rapidapi-host"] = "html-to-image2.p.rapidapi.com"
+    return await axios.post(url, {
+        html,
+        config: {
+            "format": "png",
+        }
+    })
+}

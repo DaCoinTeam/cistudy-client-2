@@ -1,19 +1,30 @@
-import { CourseEntity, parseISODateString } from "@common"
-import { Chip, ChipProps, Pagination, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
+import { CourseEntity, VerifyStatus } from "@common"
+import { Chip, Pagination, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
 import { useCallback, useContext } from "react"
 import { CourseApprovalItemContext, CourseApprovalItemProvider, ROWS_PER_PAGE } from "./CourseApprovalitemProvider"
 import { EyeIcon } from "@heroicons/react/24/outline"
+import dayjs from "dayjs"
 
 const WrappedCourseApprovalItem = () => {
     const { reducer, swrs } = useContext(CourseApprovalItemContext)!
     const [state, dispatch] = reducer
     const { pendingCoursesSwr } = swrs
-    const { data: unverifiedCourseData, isLoading } = pendingCoursesSwr
+    const { data: pendingCourseData, isLoading } = pendingCoursesSwr
 
-    const statusColorMap: Record<string, ChipProps["color"]> = {
-        approved: "success",
-        rejected: "danger",
-        pending: "warning",
+    const sortByNewestCreatedDate = () => {
+        return pendingCourseData?.results.sort((a, b) => {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        })
+    }
+
+    const renderStatus = (verifyStatus: VerifyStatus) => {
+        const map: Record<VerifyStatus, JSX.Element> = {
+            [VerifyStatus.Draft]: <Chip color="default" variant="flat"> Draft </Chip>,
+            [VerifyStatus.Pending]: <Chip color="warning" variant="flat"> Pending </Chip>,
+            [VerifyStatus.Approved]: <Chip color="success" variant="flat"> Approved </Chip>,
+            [VerifyStatus.Rejected]: <Chip color="danger" variant="flat"> Rejected </Chip>,
+        }
+        return map[verifyStatus ?? VerifyStatus.Draft]
     }
 
     const columns = [
@@ -21,7 +32,6 @@ const WrappedCourseApprovalItem = () => {
         { key: "description", label: "Description"},
         { key: "author", label: "Author" },
         { key: "createdAt", label: "Created At" },
-        { key: "updatedAt", label: "Updated At"},
         { key: "status", label: "Status" },
         { key: "actions", label: "Actions" }
     ]
@@ -49,20 +59,12 @@ const WrappedCourseApprovalItem = () => {
         case "createdAt":
             return (
                 <div className="w-24">
-                    {parseISODateString(course.createdAt)}
-                </div>
-            )
-        case "updatedAt":
-            return (
-                <div className="w-24">
-                    {parseISODateString(course.updatedAt)}
+                    {dayjs(course.createdAt).format("YYYY, MMM D hh:mm:ss")}
                 </div>
             )
         case "status":
             return (
-                <Chip className="capitalize" color={statusColorMap[course.verifyStatus]} size="sm" variant="flat">
-                    {course.verifyStatus}
-                </Chip>
+                renderStatus(course.verifyStatus)
             )
         case "actions":
             return (
@@ -91,11 +93,11 @@ const WrappedCourseApprovalItem = () => {
 
     const onPageChange = (page: number) => dispatch({ type: "SET_PAGE", payload: page })
 
-    if (!unverifiedCourseData) {
+    if (!pendingCourseData) {
         return null
     }
 
-    const count = unverifiedCourseData.metadata.count
+    const count = pendingCourseData.metadata.count
 
     const pages = Math.ceil(count / ROWS_PER_PAGE)
 
@@ -142,7 +144,7 @@ const WrappedCourseApprovalItem = () => {
                     {(columns) => <TableColumn key={columns.key} align={columns.key === "actions" ? "center" : "start"}>{columns.label}</TableColumn>}
                 </TableHeader>
                 <TableBody
-                    items={unverifiedCourseData.results}
+                    items={sortByNewestCreatedDate()}
                     loadingContent={<Spinner />}
                     loadingState={loadingState()}
                     emptyContent="No pending courses yet"

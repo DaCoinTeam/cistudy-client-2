@@ -62,9 +62,9 @@ export const Menu = (props: MenuProps) => {
             startContent: (
                 <Award width={24} height={24} strokeWidth={3 / 2} />
             ),
-            key: "certificates",
-            content: "Certificates",
-            panelSelected: PanelSelected.Certificates
+            key: "certificate",
+            content: "Certificate",
+            panelSelected: PanelSelected.Certificate
         },
         {
             startContent: (
