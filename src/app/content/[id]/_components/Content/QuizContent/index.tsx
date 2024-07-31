@@ -8,6 +8,7 @@ import { createQuizAttempt, CreateQuizAttemptInput } from "@services"
 import useSWRMutation from "swr/mutation"
 import numeral from "numeral"
 import dayjs from "dayjs"
+import { AttemptsModal } from "./AttemptsModal"
 
 export const QuizContent = () => {
     const startQuizModalRef = useRef<StartQuizModalRefSelectors | null>(null)
@@ -107,6 +108,8 @@ export const QuizContent = () => {
                                     </div>
                                 ) : <div className="text-primary text-2xl">Not yet</div>
                             }  
+                            <Spacer y={2}/>
+                            <AttemptsModal/>
                         </div>
                     </div>
                 </div>

@@ -20,7 +20,7 @@ export interface HasPositionLike {
 }
 
 export const sortByPosition = <Item extends HasPositionLike>(items : Item[]) => {
-    const clonedItems = Object.assign(items, [])
+    const clonedItems = Object.assign(items, []) as Array<Item>
 
     clonedItems?.sort((prev, next) => {
         return prev.position - next.position

@@ -1,7 +1,6 @@
 import { ENDPOINT_API } from "@config"
 import { authAxios } from "./axios-instances"
 import { SectionContentType } from "@common"
-import axios from "axios"
 
 const BASE_URL = `${ENDPOINT_API}/courses`
 
@@ -732,3 +731,20 @@ export const updateLessonProgress = async (
     return await authAxios.put(url, data)
 }
 
+export interface CreateCourseCertificateInput {
+  data: {
+    courseId: string
+  }
+}
+
+export interface CreateCourseCertificateOutput {
+  message: string
+}
+
+export const createCourseCertificate = async (
+    input: CreateCourseCertificateInput
+): Promise<CreateCourseCertificateOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/create-course-certificate`
+    return await authAxios.post(url, data)
+}
