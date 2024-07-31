@@ -30,7 +30,7 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
     const searchParams = useSearchParams()
 
     const tab = (searchParams.get("tab") ??
-    PanelSelected.Followers) as PanelSelected
+    PanelSelected.Courses) as PanelSelected
 
     useEffect(() => {
         dispatch({

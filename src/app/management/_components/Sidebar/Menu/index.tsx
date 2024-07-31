@@ -1,9 +1,9 @@
 "use client"
-import React, { useContext } from "react"
-import { ManagementContext, PanelSelected } from "../../../_hooks"
-import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
-import { BookOpenIcon, RssIcon } from "lucide-react"
+import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
+import { BookOpenIcon } from "lucide-react"
+import { useContext } from "react"
+import { ManagementContext, PanelSelected } from "../../../_hooks"
 
 interface MenuProps {
   className?: string;
@@ -36,14 +36,14 @@ export const Menu = (props: MenuProps) => {
     }
 
     const items = [
-        {
-            startContent: (
-                <RssIcon size={24} strokeWidth={3/2}/>
-            ),
-            key: "followers",
-            content: "Followers",
-            panelSelected: PanelSelected.Followers,
-        },
+        // {
+        //     startContent: (
+        //         <RssIcon size={24} strokeWidth={3/2}/>
+        //     ),
+        //     key: "followers",
+        //     content: "Followers",
+        //     panelSelected: PanelSelected.Followers,
+        // },
         {
             startContent: (
                 <BookOpenIcon size={24} strokeWidth={3/2} />
