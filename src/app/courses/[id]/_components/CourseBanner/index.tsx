@@ -1,4 +1,5 @@
 import { CategoryEntity, formatNouns, parseDateToString } from "@common"
+import { GlobeAsiaAustraliaIcon } from "@heroicons/react/24/outline"
 import {
     BreadcrumbItem,
     Breadcrumbs,
@@ -8,12 +9,10 @@ import {
     User,
 } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "@services"
+import { CalendarDays, FileBadge, MonitorSmartphone } from "lucide-react"
 import { useCallback, useContext, useMemo } from "react"
 import { Stars } from "../../../../_shared"
 import { CourseDetailsContext } from "../../_hooks"
-import { BG_COURSE_DETAIL } from "@config"
-import { GlobeAsiaAustraliaIcon } from "@heroicons/react/24/outline"
-import { CalendarDays, FileBadge, MonitorSmartphone } from "lucide-react"
 
 interface CourseBannerProps {
   className?: string;
@@ -48,19 +47,9 @@ export const CourseBanner = (props: CourseBannerProps) => {
 
     return (
         <div
-            className={`${className} h-auto object-cover mx-auto relative`}
+            className={`${className} object-cover mx-auto relative bg-[url(/bg-course-detail.jpg)] bg-cover bg-center h-[520px]`}
         >
-            <div className='w-full h-[520px] absolute -z-10'>
-                <Image
-                    classNames={{
-                        wrapper: "w-full !max-w-full absolute",
-                    }}
-                    alt='bg_decoration'
-                    className='rounded-none h-[520px] w-full object-fill'
-                    src={BG_COURSE_DETAIL}
-                />
-            </div>
-            <div className='p-8 lg:p-16  max-w-[1920px] flex mx-auto '>
+            <div className='p-8 lg:p-16 pb-0  max-w-[1920px] flex mx-auto '>
                 
                 <div className='w-full lg:w-2/3 '>
                     <Breadcrumbs 
@@ -143,7 +132,7 @@ export const CourseBanner = (props: CourseBannerProps) => {
                         ))}
                     </div>
                     <Spacer y={6} />
-                    <div className="flex flex-col 2xl:flex-row mb-12">
+                    <div className="flex flex-col 2xl:flex-row ">
                         <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 mr-2 mb-2">
                             <div className="flex items-center mr-4">
                                 <GlobeAsiaAustraliaIcon className="w-6 h-6 text-gray-700 mr-2"/>

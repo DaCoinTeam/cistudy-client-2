@@ -51,6 +51,13 @@ const WrappedCoursesManagementPanelProvider = ({
                         previewVideoId: true,
                         title: true,
                         description: true,
+                        createdAt: true,
+                        numberOfEnrollments: true,
+                        discountPrice: true,
+                        price: true,
+                        enableDiscount: true,
+                        
+
                     },
                     metadata: {
                         count: true

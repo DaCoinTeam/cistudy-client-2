@@ -17,9 +17,10 @@ const Page = () => {
                     </div> 
                     <CourseBanner/>
                     <div className="lg:hidden">
-                        <ReplaceCourseFloat/>
                         <Spacer y={12}/>
+                        <ReplaceCourseFloat/>
                     </div>
+                    <Spacer y={12}/>
                     <CourseMain/>   
                 </div>
             }
