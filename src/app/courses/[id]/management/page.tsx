@@ -29,10 +29,11 @@ const Page = () => {
         };
       }
         ) => {
-            await publishCourse({
+            const res = await publishCourse({
                 data: arg,
             })
             await mutate()
+            return res
         } 
     )
 
