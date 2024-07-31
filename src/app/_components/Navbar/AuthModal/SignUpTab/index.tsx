@@ -78,6 +78,24 @@ const WrappedSignUpTab = () => {
                         errorMessage={formik.touched.confirm && formik.errors.confirm}
                     />
                     <Spacer y={4} />
+                    <Input
+                        classNames={{
+                            inputWrapper: "input-input-wrapper"
+                        }} 
+                        label="Username"
+                        id="username"
+                        isRequired
+                        labelPlacement="outside"
+                        placeholder="Input username here"
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        isInvalid={
+                            !!(formik.touched.username && formik.errors.username)
+                        }
+                        errorMessage={formik.touched.username && formik.errors.username}
+                    />
+                    <Spacer y={4} />
                     <div className="grid grid-cols-2 gap-4">
                         <Input
                             classNames={{
