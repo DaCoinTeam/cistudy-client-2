@@ -12,7 +12,7 @@ import { VerifyStatus } from "../../../../common/types"
 const Page = () => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
-    const { data } = courseManagementSwr
+    const { data, mutate } = courseManagementSwr
     const { courseId, verifyStatus } = { ...data }
     
     const { notify } = useContext(RootContext)!
@@ -28,10 +28,12 @@ const Page = () => {
           courseId: string;
         };
       }
-        ) =>
+        ) => {
             await publishCourse({
                 data: arg,
             })
+            await mutate()
+        } 
     )
 
     const renderStatus = () => {
