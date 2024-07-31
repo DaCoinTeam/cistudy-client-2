@@ -22,7 +22,7 @@ export const CourseCertificateImage = (props : CourseCertificateImageProps) => {
     useEffect(() => {
         imageRef.current = new Image()
         imageRef.current.crossOrigin="anonymous"
-        imageRef.current.src="/certificate.png"
+        imageRef.current.src="/cert-template.png"
         imageRef.current.onload = () => {
             drawCertificate()
         }
