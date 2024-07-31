@@ -35,7 +35,7 @@ export const WrappedTargetsSection = (props: TargetsSectionProps) => {
 
     return (
         <div className={`${className}`}>
-            <div className='text-4xl font-bold'> Targets </div>
+            <div className='text-2xl font-semibold'> Targets </div>
             <Spacer y={6} />
             {
                 targetsCard && targetsCard.length > 0? (

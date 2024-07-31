@@ -11,7 +11,7 @@ export const PreviewPanel = (props: PreviewPanelProps) => {
     const { className } = props
     return (
         <div className={`${className}`}>
-            <div className="text-4xl font-bold">Preview</div>
+            <div className="text-2xl font-semibold">Preview</div>
             <Spacer y={6}/>
             <PreviewSection/>
         </div>

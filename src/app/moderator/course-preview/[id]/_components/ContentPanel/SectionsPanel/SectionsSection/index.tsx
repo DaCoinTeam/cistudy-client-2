@@ -38,7 +38,7 @@ export const SectionsSection = (props: SectionsSectionProps) => {
                     <AccordionItem
                         key={section.sectionId}
                         title={<div>
-                            <span className="font-bold">Section {section.position}: </span>
+                            <span className="font-semibold">Section {section.position}: </span>
                             <span> {section.title}</span>
                         </div>}
                         classNames={{
@@ -55,7 +55,7 @@ export const SectionsSection = (props: SectionsSectionProps) => {
 
     return (
         <div>
-            <div className="text-4xl font-bold"> Sections </div>
+            <div className="text-2xl font-semibold"> Sections </div>
             <Spacer y={6}/>
             {
                 courseManagement && courseManagement.sections.length > 0? (

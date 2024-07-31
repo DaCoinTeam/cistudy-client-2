@@ -9,7 +9,7 @@ export const PricePanel = (props: PricePanelProps) => {
     const { className } = props
     return (
         <div className={`${className}`}>
-            <div className="text-4xl font-bold"> Price </div>
+            <div className="text-2xl font-semibold"> Price </div>
             <Spacer y={4}/>
             <div className="w-1/2">
                 <ManagePrice/>
