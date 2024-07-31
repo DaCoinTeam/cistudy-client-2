@@ -15,14 +15,12 @@ const Page = () => {
                     <div className="fixed h-[100%] w-1/4 top-[7rem] right-12 z-30 hidden lg:block">
                         <CourseFloat/>
                     </div> 
-                      
                     <CourseBanner/>
                     <div className="lg:hidden">
-                        <Spacer y={12}/>
                         <ReplaceCourseFloat/>
+                        <Spacer y={12}/>
                     </div>
-                    <Spacer y={12}/>
-                    <CourseMain/>     
+                    <CourseMain/>   
                 </div>
             }
 

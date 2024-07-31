@@ -71,7 +71,7 @@ export const ReplaceCourseFloat = () => {
     const onEnterManageCoursePress = () => router.push(`${path}/management`)
 
     return (
-        <div className="mx-6 md:mx-12 items-center border border-divider rounded-medium" >
+        <div className="w-[430px] md:w-[560px] mx-auto  items-center border border-divider rounded-medium" >
             <div className="p-0 pb-2">
                 <VideoPlayer
                     className="w-full rounded-t-lg rounded-b-none h-[240px]"
