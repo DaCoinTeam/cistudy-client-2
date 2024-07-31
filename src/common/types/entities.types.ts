@@ -263,8 +263,8 @@ export interface QuizQuestionEntity {
   position: number;
   answers: Array<QuizQuestionAnswerEntity>;
   questionMedias: Array<QuizQuestionMediaEntity>;
-  answered?: boolean
-  numberOfCorrectAnswers?: number
+  answered?: boolean;
+  numberOfCorrectAnswers?: number;
 }
 
 export interface QuizQuestionAnswerEntity {
@@ -292,8 +292,8 @@ export interface QuizAttemptAnswerEntity {
 export interface QuizAttemptEntity {
   quizAttemptId: string;
   quizId: string;
-  receivedPercent?: number
-  isPassed?: boolean
+  receivedPercent?: number;
+  isPassed?: boolean;
   account: AccountEntity;
   accountId: string;
   attemptStatus: string;
@@ -303,8 +303,8 @@ export interface QuizAttemptEntity {
   currentQuestionPosition: number;
   attemptAnswers: Array<QuizAttemptAnswerEntity>;
   timeLeft: number;
-  receivedPoints : number
-  totalPoints : number
+  receivedPoints: number;
+  totalPoints: number;
 }
 
 export interface QuizQuestionMediaEntity {
@@ -573,6 +573,19 @@ export interface TransactionEntity {
   transactionHash: string;
   payPalOrderId: string;
   account: AccountEntity;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface NotificationEntity {
+  senderId: string;
+  receiverId: string;
+  title: string;
+  description: string;
+  sender: AccountEntity;
+  viewed: boolean;
+  referenceLink: string;
+  notificationId: string;
   createdAt: Date;
   updatedAt: Date;
 }

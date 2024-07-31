@@ -17,7 +17,8 @@ import { DarkModeSwitch } from "./DarkModeSwitch"
 import { NavbarContext, NavbarProvider } from "./NavbarProvider"
 import { ProfileMenu } from "./ProfileMenu"
 import { SearchInput } from "./SearchInput"
-import { BellAlertIcon, ShoppingCartIcon } from "@heroicons/react/24/outline"
+import { ShoppingCartIcon } from "@heroicons/react/24/outline"
+import { Notifications } from "./Notifications"
 
 interface NavbarProps {
   className?: string;
@@ -97,12 +98,7 @@ const WrappedNavbar = (props: NavbarProps) => {
                     </NavbarItem>) : (<></>)}
                     {profile ? (
                         <NavbarItem className="mr-2 justify-center">
-                            <Button isIconOnly variant="light" className="p-6">
-                                <Badge color="danger" content={5}  shape="circle">
-                                    <BellAlertIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
-                                </Badge>
-                            </Button>
-                         
+                            <Notifications/>
                         </NavbarItem>
                     ) : (
                         <></>

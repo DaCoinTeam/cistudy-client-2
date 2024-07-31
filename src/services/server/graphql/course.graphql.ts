@@ -10,6 +10,7 @@ import {
     CourseReviewEntity,
     AccountEntity,
     SectionContentEntity,
+    NotificationEntity,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
 import { gql } from "@apollo/client"
@@ -391,5 +392,46 @@ export const initLandingPage = async (
     return getGraphqlResponseData({
         data: graphqlData,
         isAuth: false,
+    })
+}
+
+
+
+export interface FindManyReceivedNotificationsInputData {
+  options?: {
+    take?: number
+    skip?: number
+
+  };
+}
+
+export interface FindManyReceivedNotificationsOutputData {
+  results: Array<NotificationEntity>;
+  metadata: {
+    count: number;
+    relativeTopics: Array<NotificationEntity>;
+  };
+}
+
+export const findManyReceivedNotifications = async (
+    data: FindManyReceivedNotificationsInputData,
+    schema: Schema<DeepPartial<FindManyReceivedNotificationsOutputData>>
+): Promise<FindManyReceivedNotificationsOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query findManyReceivedNotifications($data: FindManyReceivedNotificationsInputData!) {
+              findManyReceivedNotifications(data: $data) {
+      ${payload}
+    }
+  }
+          `,
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
     })
 }
