@@ -59,7 +59,7 @@ export const SectionsSection = (props: SectionsSectionProps) => {
 
     return (
         <div>
-            <div className="text-4xl font-bold"> Sections </div>
+            <div className="text-2xl font-semibold"> Sections </div>
             <Spacer y={6}/>
             <div className={`${className} border border-divider rounded-medium`}>
                 {renderSections()}

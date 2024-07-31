@@ -62,6 +62,9 @@ const WrappedHomeProvider = ({ children }: { children: ReactNode }) => {
                 enableDiscount: true,
                 isCreator: true,
                 enrolled: true,
+                certificate: {
+                    certificateId: true
+                },
                 courseRatings: {
                     numberOf1StarRatings: true,
                     numberOf2StarRatings:true,
@@ -89,9 +92,12 @@ const WrappedHomeProvider = ({ children }: { children: ReactNode }) => {
                             thumbnailId: true,
                             lessonVideoId: true,
                             description: true,
+                            videoType: true,
                             durationInSeconds: true
                         },
                         quiz: {
+                            quizId: true,
+                            passingPercent: true,
                             questions: {
                                 quizQuestionId: true
                             }

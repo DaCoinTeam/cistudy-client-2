@@ -8,7 +8,6 @@ import { publishCourse } from "@services"
 import { RootContext } from "../../../_hooks"
 import { ToastType } from "../../../_components"
 import { VerifyStatus } from "../../../../common/types"
-import { truncate } from "../../../../common/utils"
 
 const Page = () => {
     const { swrs } = useContext(ManagementContext)!
@@ -51,7 +50,6 @@ const Page = () => {
                 <Breadcrumbs>
                     <BreadcrumbItem>Home</BreadcrumbItem>
                     <BreadcrumbItem>Courses</BreadcrumbItem>
-                    <BreadcrumbItem>{truncate(courseId ?? "")}</BreadcrumbItem>
                     <BreadcrumbItem>Management</BreadcrumbItem>
                 </Breadcrumbs>
                 <div className="flex gap-2 items-center">

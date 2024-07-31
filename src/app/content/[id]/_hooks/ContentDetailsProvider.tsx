@@ -112,6 +112,12 @@ export const ContentDetailsProvider = ({
                 section: {
                     sectionId: true,
                     course: {
+                        certificate: {
+                            certificateId: true
+                        },
+                        courseId: true,
+                        certificateStatus: true,
+                        title: true,
                         creator: {
                             avatarId: true,
                             username: true,

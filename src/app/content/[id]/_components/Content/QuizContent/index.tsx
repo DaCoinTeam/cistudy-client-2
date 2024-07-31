@@ -1,6 +1,5 @@
 "use client"
 import { Button, Divider, Spacer } from "@nextui-org/react"
-import { Flag, ThumbsDown, ThumbsUp } from "lucide-react"
 import { useCallback, useContext, useRef } from "react"
 import { ContentDetailsContext } from "../../../_hooks"
 import { StartQuizModal, StartQuizModalRefSelectors } from "./StartQuizModal"
@@ -8,6 +7,7 @@ import { createQuizAttempt, CreateQuizAttemptInput } from "@services"
 import useSWRMutation from "swr/mutation"
 import numeral from "numeral"
 import dayjs from "dayjs"
+import { AttemptsModal } from "./AttemptsModal"
 
 export const QuizContent = () => {
     const startQuizModalRef = useRef<StartQuizModalRefSelectors | null>(null)
@@ -28,7 +28,8 @@ export const QuizContent = () => {
 
     return (
         <div className="w-full">
-            <div className="text-2xl">{sectionContentData?.title}</div>
+            <div className="text-2xl font-semibold">{sectionContentData?.title}</div>
+            <Spacer y={2}/>
             <div className="text-foreground-400">{quiz?.description}</div>
             <Spacer y={12}/>
             <div>
@@ -90,49 +91,32 @@ export const QuizContent = () => {
                             <span>{`${quiz?.passingPercent ?? 0}%`} or higher</span>
                         </div>
                     </div>
-                    <div className="flex flex-row items-center gap-6">
-                        <Divider orientation="vertical" />
-                        <div className="grid place-items-center gap-2">
-                            <div className="font-semibold">Your best attempt</div>
-                            {
-                                quiz?.highestScoreRecorded !== null ? (
-                                    <div className="grid gap-1 place-items-center">
-                                        <div className={`text-2xl ${quiz?.isPassed ? "text-success" : "text-danger"}`}>
-                                            {numeral(quiz?.highestScoreRecorded).format("0.00")}%
-                                        </div>
-                                        <div>
-                                            <div className="text-sm">Last attempt: {numeral(quiz?.lastAttemptScore).format("0.00")}%</div>
-                                            <div className="text-sm">Attempts: {quiz?.totalNumberOfAttempts} times</div>
-                                        </div>
-                                    </div>
-                                ) : <div className="text-primary text-2xl">Not yet</div>
-                            }  
-                        </div>
-                    </div>
                 </div>
             </div>
             <Spacer y={4}/>
             <Divider  />
             <Spacer y={4}/>
             <div>
-                <Button
-                    startContent={<ThumbsUp size={20} />}
-                    className="bg-transparent text-primary"
-                >
-                        Like
-                </Button>
-                <Button
-                    startContent={<ThumbsDown size={20} />}
-                    className="bg-transparent text-primary"
-                >
-                        Dislike
-                </Button>
-                <Button
-                    startContent={<Flag size={20} />}
-                    className="bg-transparent text-primary"
-                >
-                        Report an issue
-                </Button>
+                <div className="flex flex-row items-center gap-2">
+                    <span className="font-semibold text-xl text-primary">Your best attempt</span>
+                </div>
+                <Spacer y={4}/>
+                <div className={`text-2xl ${quiz?.isPassed ? "text-success" : "text-danger"}`}>
+                    {numeral(quiz?.highestScoreRecorded).format("0.00")}%
+                </div>
+                <Spacer y={4}/>
+                <div className="flex flex-row gap-4">
+                    <div className="flex flex-row gap-2 w-[250px]">
+                        <div className="font-semibold">Last attempt</div>
+                        <span>{numeral(quiz?.lastAttemptScore).format("0.00")}%</span>
+                    </div>
+                    <div className="flex flex-row gap-2">
+                        <div className="font-semibold">Attempts</div>
+                        <span>{quiz?.totalNumberOfAttempts} times</span>
+                    </div>
+                </div>
+                <Spacer y={4}/>
+                <AttemptsModal/>
             </div>
             <StartQuizModal ref={startQuizModalRef} />
         </div>

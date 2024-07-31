@@ -1,20 +1,22 @@
-import {
-    CourseEntity,
-    Schema,
-    buildPayloadString,
-    LessonEntity,
-    ResourceEntity,
-    buildAuthPayloadString,
-    CourseTargetEntity,
-    CategoryEntity,
-    CourseReviewEntity,
-    AccountEntity,
-    SectionContentEntity,
-    NotificationEntity,
-} from "@common"
-import { authClient, client, getGraphqlResponseData } from "./client"
 import { gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
+import {
+    AccountEntity,
+    buildAuthPayloadString,
+    buildPayloadString,
+    CategoryEntity,
+    CertificateEntity,
+    CourseEntity,
+    CourseReviewEntity,
+    CourseTargetEntity,
+    LessonEntity,
+    NotificationEntity,
+    QuizAttemptEntity,
+    ResourceEntity,
+    Schema,
+    SectionContentEntity
+} from "@common"
+import { authClient, client, getGraphqlResponseData } from "./client"
 
 export interface FindOneCourseInputData {
   params: {
@@ -265,7 +267,7 @@ export interface FindManyLevelCategoriesInputData {
   };
 }
 
-export const findManyLevelCategories  = async (
+export const findManyLevelCategories = async (
     data: FindManyLevelCategoriesInputData,
     schema: Schema<DeepPartial<CategoryEntity>>
 ): Promise<Array<CategoryEntity>> => {
@@ -413,6 +415,11 @@ export interface FindManyReceivedNotificationsOutputData {
   };
 }
 
+export interface FindOneCertificateInputData {
+    certificateId: string
+}
+
+
 export const findManyReceivedNotifications = async (
     data: FindManyReceivedNotificationsInputData,
     schema: Schema<DeepPartial<FindManyReceivedNotificationsOutputData>>
@@ -420,8 +427,69 @@ export const findManyReceivedNotifications = async (
     const payload = buildAuthPayloadString(schema)
     const { data: graphqlData } = await authClient.query({
         query: gql`
-            query findManyReceivedNotifications($data: FindManyReceivedNotificationsInputData!) {
-              findManyReceivedNotifications(data: $data) {
+          query findManyReceivedNotifications($data: FindManyReceivedNotificationsInputData!) {
+            findManyReceivedNotifications(data: $data) {
+  ${payload}
+}
+}
+      `,
+    })
+
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: false,
+    })
+}
+
+export const findOneCertificate = async (
+    data: FindOneCertificateInputData,
+    schema: Schema<DeepPartial<CertificateEntity>>
+): Promise<CertificateEntity> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+          query FindOneCertificate($data: FindOneCertificateInputData!) {
+  findOneCertificate(data: $data) {
+    ${payload}
+  }
+}
+        `,
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
+    })
+}
+
+export interface FindManyQuizAttemptsInputData {
+  params: {
+    quizId: string;
+  };
+  options: {
+    skip?: number
+    take?: number
+  }
+}
+
+export interface FindManyQuizAttemptsOutputData {
+  results: Array<QuizAttemptEntity>;
+  metadata: {
+    count: number;
+  };
+}
+
+export const findManyQuizAttempts = async (
+    data: FindManyQuizAttemptsInputData,
+    schema: Schema<DeepPartial<FindManyQuizAttemptsOutputData>>
+): Promise<FindManyQuizAttemptsOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query FindManyQuizAttempts($data: FindManyQuizAttemptsInputData!) {
+    findManyQuizAttempts(data: $data) {
       ${payload}
     }
   }

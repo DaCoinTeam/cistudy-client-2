@@ -112,6 +112,12 @@ export interface PostEntity {
   numberOfRewardableLikesLeft: number;
 }
 
+export enum CertificateStatus {
+  Cannot = "cannot",
+  Getable = "getable",
+  Gotten = "gotten",
+}
+
 export interface CourseEntity {
   courseId: string;
   title: string;
@@ -146,7 +152,20 @@ export interface CourseEntity {
   numberOfQuizzes?: number;
   numberOfLessons?: number;
   numberOfResources?: number;
+  certificateStatus?: CertificateStatus;
+  certificate?: CertificateEntity;
 }
+
+export interface CertificateEntity {
+  certificateId: string;
+  courseId: string;
+  accountId: string;
+  createdAt: Date;
+  expiredDate: Date;
+  account: AccountEntity;
+  course: CourseEntity;
+}
+
 export interface CourseTargetEntity {
   courseTargetId: string;
   content: string;
@@ -265,6 +284,7 @@ export interface QuizQuestionEntity {
   questionMedias: Array<QuizQuestionMediaEntity>;
   answered?: boolean;
   numberOfCorrectAnswers?: number;
+  corrected?: true;
 }
 
 export interface QuizQuestionAnswerEntity {
@@ -277,6 +297,7 @@ export interface QuizQuestionAnswerEntity {
   position: number;
   isCorrect: boolean;
   attempt: QuizAttemptEntity;
+  selected?: boolean;
 }
 
 export interface QuizAttemptAnswerEntity {
@@ -305,6 +326,7 @@ export interface QuizAttemptEntity {
   timeLeft: number;
   receivedPoints: number;
   totalPoints: number;
+  observedAt: Date;
 }
 
 export interface QuizQuestionMediaEntity {

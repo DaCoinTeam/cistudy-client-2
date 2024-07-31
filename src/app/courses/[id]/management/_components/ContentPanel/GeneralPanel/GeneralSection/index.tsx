@@ -120,8 +120,8 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
         <div className={`${className}`}>
             {!formik|| isLoading  ? <GeneralSectionSekeleton /> : (
                 <div>
-                    <div className="text-4xl font-bold"> General </div>
-                    <Spacer y={4} />
+                    <div className="text-2xl font-semibold"> General </div>
+                    <Spacer y={6} />
                     <Input
                         classNames={{
                             inputWrapper: "input-input-wrapper",

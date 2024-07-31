@@ -23,7 +23,6 @@ export const Content = ({ className }: ContentProps) => {
             [SectionContentType.Quiz]: <QuizContent/>,
             [SectionContentType.Resource]: <ResourceContent/>
         }
-
         return map[type]
     }
 
