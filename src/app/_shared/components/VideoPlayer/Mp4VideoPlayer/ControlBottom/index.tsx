@@ -17,10 +17,10 @@ export const ControlBottom = ({ preventSeek }: ControlBottomProps) => {
     
     return (
         <div className={`${hideController ? "hidden" : "inline-block"} p-3 z-10 absolute bottom-0 w-full`}>
-            {
-                !preventSeek ? <ProgressBar/> : null
-            }
-            <Spacer y={2} />
+            <div>
+                <ProgressBar preventSeek={preventSeek}/>
+                <Spacer y={2} />
+            </div> 
             <div className="flex items-center justify-between">
                 <div className="flex gap-4 items-center">
                     <PlayAndPause/>

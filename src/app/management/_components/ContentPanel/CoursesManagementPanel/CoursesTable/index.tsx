@@ -1,19 +1,20 @@
 "use client"
-import React, { useContext } from "react"
+import { parseTimeAgo } from "@common"
 import {
-    Table,
-    TableHeader,
-    TableColumn,
-    TableBody,
-    TableRow,
-    TableCell,
     Pagination,
     Spinner,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
 } from "@nextui-org/react"
-import { CoursesManagementPanelContext, ROWS_PER_PAGE } from "../CoursesManagementPanelProvider"
 import { getAssetUrl } from "@services"
 import { useRouter } from "next/navigation"
+import { useContext } from "react"
 import { InteractiveThumbnail } from "../../../../../_shared"
+import { CoursesManagementPanelContext, ROWS_PER_PAGE } from "../CoursesManagementPanelProvider"
 
 export const CoursesTable = () => {
     const router = useRouter()
@@ -21,10 +22,9 @@ export const CoursesTable = () => {
     const [state, dispatch] = reducer
     const { page } = state
     const { selfCreatedCoursesSwr } = swrs
-    const { data: selfCreatedCourses, isLoading } = selfCreatedCoursesSwr
-    const getRandomNumber = (limit : number) => {
-        return Math.floor(Math.random() * limit)
-    }
+    const { data: selfCreatedCourses, isLoading } = selfCreatedCoursesSwr    
+
+
     if (!selfCreatedCourses) return null
    
     const loadingState = () => {
@@ -46,6 +46,7 @@ export const CoursesTable = () => {
         <Table
             aria-label="Example table with client async pagination"
             selectionMode="multiple"
+            
             shadow="none"
             classNames={{
                 wrapper: "border border-divider rounded-medium p-0",
@@ -82,28 +83,31 @@ export const CoursesTable = () => {
                 ) : null
             }
         >
-            <TableHeader>
-                <TableColumn key="video" width={750}>
-          Video
+            <TableHeader >
+                <TableColumn key="no" className="text-sm">
+          No
                 </TableColumn>
-                <TableColumn key="title">
-          Enrollments
+                <TableColumn key="course" width={750} className="text-sm">
+          Course
                 </TableColumn>
-                <TableColumn key="mass">
-          Mass
+                <TableColumn key="enrollment" className="text-sm">
+          Enrollment
                 </TableColumn>
-                <TableColumn key="birth_year">
-          Birth year
+                <TableColumn key="price" className="text-sm">
+          Price
+                </TableColumn>
+                <TableColumn key="created_date" className="text-sm">
+          Created Date
                 </TableColumn>
             </TableHeader>
             <TableBody
                 emptyContent={"You haven't created any course."}
-                items={results}
                 loadingContent={<Spinner />}
                 loadingState={loadingState()}
             >
-                {({ courseId, thumbnailId, title, description }) => (
+                {results.map(({ courseId, thumbnailId, title, description, createdAt, price, discountPrice, enableDiscount, numberOfEnrollments  }, index) => (
                     <TableRow key={courseId}>
+                        <TableCell>{(ROWS_PER_PAGE * page) + index + 1}</TableCell>
                         <TableCell>
                             <div className="flex gap-3 py-2">
                                 <InteractiveThumbnail
@@ -120,11 +124,11 @@ export const CoursesTable = () => {
                                 </div>
                             </div>
                         </TableCell>
-                        <TableCell>{getRandomNumber(501)}</TableCell>
-                        <TableCell>{getRandomNumber(1001)}</TableCell>
-                        <TableCell>{getRandomNumber(3)}</TableCell>
+                        <TableCell className="text-black dark:text-white">{numberOfEnrollments ?? 0 }</TableCell>
+                        <TableCell className="text-black dark:text-white">{enableDiscount ? discountPrice : price} STARCI</TableCell>
+                        <TableCell className="text-black dark:text-white">{parseTimeAgo(createdAt)} ago</TableCell>
                     </TableRow>
-                )}
+                ))}
             </TableBody>
         </Table>
     )

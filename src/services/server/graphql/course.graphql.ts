@@ -11,6 +11,7 @@ import {
     AccountEntity,
     SectionContentEntity,
     CourseCertificateEntity,
+    QuizAttemptEntity,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
 import { gql } from "@apollo/client"
@@ -392,6 +393,86 @@ export const initLandingPage = async (
     return getGraphqlResponseData({
         data: graphqlData,
         isAuth: false,
+    })
+}
+
+export interface FindManyQuizAttemptsInputData {
+  params: {
+    quizId: string;
+  };
+  options: {
+    skip?: number
+    take?: number
+  }
+}
+
+export interface FindManyQuizAttemptsOutputData {
+  results: Array<QuizAttemptEntity>;
+  metadata: {
+    count: number;
+  };
+}
+
+export const findManyQuizAttempts = async (
+    data: FindManyQuizAttemptsInputData,
+    schema: Schema<DeepPartial<FindManyQuizAttemptsOutputData>>
+): Promise<FindManyQuizAttemptsOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query FindManyQuizAttempts($data: FindManyQuizAttemptsInputData!) {
+    findManyQuizAttempts(data: $data) {
+      ${payload}
+    }
+  }
+          `,
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
+    })
+}
+
+export interface FindManyQuizAttemptsInputData {
+  params: {
+    quizId: string;
+  };
+  options: {
+    skip?: number
+    take?: number
+  }
+}
+
+export interface FindManyQuizAttemptsOutputData {
+  results: Array<QuizAttemptEntity>;
+  metadata: {
+    count: number;
+  };
+}
+
+export const findManyQuizAttempts = async (
+    data: FindManyQuizAttemptsInputData,
+    schema: Schema<DeepPartial<FindManyQuizAttemptsOutputData>>
+): Promise<FindManyQuizAttemptsOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query FindManyQuizAttempts($data: FindManyQuizAttemptsInputData!) {
+    findManyQuizAttempts(data: $data) {
+      ${payload}
+    }
+  }
+          `,
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
     })
 }
 
