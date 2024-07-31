@@ -101,22 +101,28 @@ export const QuizContent = () => {
                     <span className="font-semibold text-xl text-primary">Your best attempt</span>
                 </div>
                 <Spacer y={4}/>
-                <div className={`text-2xl ${quiz?.isPassed ? "text-success" : "text-danger"}`}>
-                    {numeral(quiz?.highestScoreRecorded).format("0.00")}%
-                </div>
-                <Spacer y={4}/>
-                <div className="flex flex-row gap-4">
-                    <div className="flex flex-row gap-2 w-[250px]">
-                        <div className="font-semibold">Last attempt</div>
-                        <span>{numeral(quiz?.lastAttemptScore).format("0.00")}%</span>
-                    </div>
-                    <div className="flex flex-row gap-2">
-                        <div className="font-semibold">Attempts</div>
-                        <span>{quiz?.totalNumberOfAttempts} times</span>
-                    </div>
-                </div>
-                <Spacer y={4}/>
-                <AttemptsModal/>
+                {  
+                    quiz?.totalNumberOfAttempts ? (
+                        <>
+                            <div className={`text-2xl ${quiz?.isPassed ? "text-success" : "text-danger"}`}>
+                                {numeral(quiz?.highestScoreRecorded).format("0.00")}%
+                            </div>
+                            <Spacer y={4}/>
+                            <div className="flex flex-row gap-4">
+                                <div className="flex flex-row gap-2 w-[250px]">
+                                    <div className="font-semibold">Last attempt</div>
+                                    <span>{numeral(quiz?.lastAttemptScore).format("0.00")}%</span>
+                                </div>
+                                <div className="flex flex-row gap-2">
+                                    <div className="font-semibold">Attempts</div>
+                                    <span>{quiz?.totalNumberOfAttempts} times</span>
+                                </div>
+                            </div>
+                            <Spacer y={4}/>
+                            <AttemptsModal/>
+                        </>
+                    ) : (<div className="text-2xl">Not yet</div>)
+                }
             </div>
             <StartQuizModal ref={startQuizModalRef} />
         </div>

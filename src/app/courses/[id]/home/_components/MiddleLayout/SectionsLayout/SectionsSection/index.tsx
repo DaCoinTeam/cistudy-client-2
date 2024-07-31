@@ -223,8 +223,8 @@ export const SectionsSection = () => {
                                 title={
                                     <div>
                                         <span className="font-semibold">
-                        Section {index + 1}:
-                                        </span>
+                        Section {index + 1}: 
+                                        </span>{" "}
                                         {title}
                                     </div>
                                 }
