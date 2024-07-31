@@ -1,5 +1,5 @@
 import { capitalizeWords, generateLinkedinLink } from "@common"
-import { Button } from "@nextui-org/react"
+import { Button, Spacer } from "@nextui-org/react"
 import { DownloadIcon, Linkedin } from "lucide-react"
 import { useContext, useEffect, useRef } from "react"
 import { CertificateContext } from "../../_hooks"
@@ -16,9 +16,17 @@ export const CourseCertificateImage = (props : CourseCertificateImageProps) => {
     const {certificateId, course, account , createdAt} = {...data}
     const {className} = props
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
-    const image = new Image()
-    image.crossOrigin="anonymous"
-    image.src = "/Certificate.png"
+    
+    const imageRef = useRef<HTMLImageElement | null>(null)
+
+    useEffect(() => {
+        imageRef.current = new Image()
+        imageRef.current.crossOrigin="anonymous"
+        imageRef.current.src="/certificate.png"
+        imageRef.current.onload = () => {
+            drawCertificate()
+        }
+    }, [])
 
     const addTolinkedIn = () => {
         const issueYear = dayjs(createdAt).format("YYYY")
@@ -27,15 +35,10 @@ export const CourseCertificateImage = (props : CourseCertificateImageProps) => {
         window.open(linkedIn)
     }
 
-    useEffect(() => {
-        image.onload = () => {
-            drawCertificate()
-        }
-    }, [])
-
     const drawCertificate = () => {
         const canvas = canvasRef.current
-        if (canvas) {
+        const image = imageRef.current
+        if (canvas && image) {
             const ctx = canvas.getContext("2d") as CanvasRenderingContext2D
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
@@ -61,7 +64,7 @@ export const CourseCertificateImage = (props : CourseCertificateImageProps) => {
         const canvas = canvasRef.current
         if (canvas) {
             const link = document.createElement("a")
-            link.download = "certificate.png"
+            link.download = `${course?.title} - ${account?.username}.png`
             link.href = canvas.toDataURL("image/png")
             link.click()
         }
@@ -72,11 +75,12 @@ export const CourseCertificateImage = (props : CourseCertificateImageProps) => {
             <div className="border-2">
                 <canvas id="certificate" width={707} height={500} ref={canvasRef}></canvas>
             </div>
-            <div className="flex flex-row gap-4 mt-4">
-                <Button color="primary" variant="flat" startContent={<DownloadIcon />} onPress={downloadCertificate} >
+            <Spacer y={4}/>
+            <div className="flex flex-row gap-2">
+                <Button color="primary" startContent={<DownloadIcon className="w-5 h-5" strokeWidth={3/2}/>} onPress={downloadCertificate} >
                         Download Certificate
                 </Button>
-                <Button color="primary" variant="bordered" startContent={<Linkedin />} onPress={addTolinkedIn} >
+                <Button color="primary" variant="bordered" startContent={<Linkedin  className="w-5 h-5" strokeWidth={3/2}/>} onPress={addTolinkedIn} >
                         Add to LinkedIn
                 </Button>
             </div>

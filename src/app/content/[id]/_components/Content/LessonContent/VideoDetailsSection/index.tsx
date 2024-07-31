@@ -18,13 +18,14 @@ export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
     const { sectionContentSwr } = swrs
     const { data: sectionContent } = sectionContentSwr
     const { title, createdAt } = { ...sectionContent }
-    const { section, numberOfViews, description } = { ...sectionContent?.lesson }
-    const { course } = { ...section }
+    const { numberOfViews, description } = { ...sectionContent?.lesson }
+    const { course } = { ...sectionContent?.section }
     const { creator } = { ...course }
     const { username, avatarId, numberOfFollowers, avatarUrl, kind } = { ...creator }
+    
     return (
         <div className={className}>
-            <div className="text-2xl`">{title}</div>
+            <div className="text-2xl font-semibold">{title}</div>
             <Spacer y={4} />
             <div className="justify-between flex items-center">
                 <div className="flex items-center gap-8">

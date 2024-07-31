@@ -26,11 +26,11 @@ export const ResourceContent = () => {
 
     return (
         <div>
-            <div className="text-2xl">{sectionContentData?.title}</div>
-            <Spacer y={1} />
+            <div className="text-2xl font-semibold">{sectionContentData?.title}</div>
+            <Spacer y={2} />
             <div className="text-foreground-400 text-sm">{resource?.description}</div>
-            <Spacer y={6} />
-            <div>{resource?.attachments.length} attachments included</div>
+            <Spacer y={12} />
+            <div className="text-primary font-semibold text-xl">{resource?.attachments.length} attachments included</div>
             <Spacer y={4} />
             <div className="grid gap-4">
                 {resource?.attachments.map(({ resourceAttachmentId, fileId, name }) => (
@@ -57,7 +57,7 @@ export const ResourceContent = () => {
                     </Card>
                 ))}
             </div>
-            <Spacer y={6} />
+            <Spacer y={12} />
             <Button
                 isDisabled={completeState === CompleteState.Completed}
                 isLoading={isMutating}

@@ -94,6 +94,7 @@ export const CreatePostModal = (props: CreatePostModalProps) => {
         <>
             <Button
                 fullWidth
+                variant="flat"
                 onPress={onOpen}
                 className={`${className} !justify-normal px-3 text-foreground-400`}
             >

@@ -37,7 +37,10 @@ export const CertificateProvider = ({
                 certificateId: true,
                 account: {
                     accountId: true,
-                    username: true
+                    username: true,
+                    avatarId: true,
+                    avatarUrl: true,
+                    kind: true
                 },
                 course: {
                     courseId: true,

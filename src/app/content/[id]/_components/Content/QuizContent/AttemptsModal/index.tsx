@@ -4,7 +4,6 @@ import {
     ModalContent,
     ModalHeader,
     ModalBody,
-    Button,
     Table,
     Pagination,
     useDisclosure,
@@ -15,6 +14,7 @@ import {
     TableHeader,
     TableRow,
     Chip,
+    Link,
 } from "@nextui-org/react"
 import {
     AttemptsModalContext,
@@ -51,10 +51,10 @@ const WrappedAttemptsModal = () => {
 
     return (
         <>
-            <Button onPress={async() => {
+            <Link color="primary" as="button" onPress={async() => {
                 onOpen()
                 await mutate()
-            }}>View attempts</Button>
+            }}>View attempts</Link>
             <Modal size="2xl" isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <ModalHeader className="p-4 pb-2">Attempts</ModalHeader>

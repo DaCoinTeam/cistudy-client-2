@@ -93,7 +93,7 @@ export const SectionsCard = (props: SectionsCardProps) => {
                     title={section.title}
                     subtitle={`${section.contents.length} contents`}
                 >
-                    {section.contents.map((content) => (
+                    {sortByPosition(section.contents).map((content) => (
                         <SectionContentItem
                             key={content.sectionContentId}
                             section={section}

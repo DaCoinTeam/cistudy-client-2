@@ -46,21 +46,31 @@ const Page = () => {
                         <div className="flex justify-between items-center">
                             <Breadcrumbs size="lg">
                                 <BreadcrumbItem> Courses </BreadcrumbItem>
-                                <BreadcrumbItem>
+                                <BreadcrumbItem
+                                    onPress={() =>
+                                        router.push(
+                                            `/courses/${sectionContentSwr.data?.section.course.courseId}`
+                                        )
+                                    }
+                                >
                                     {sectionContentSwr.data.section.course.title}
                                 </BreadcrumbItem>
+                                <BreadcrumbItem>Home</BreadcrumbItem>
                                 <BreadcrumbItem>Learn</BreadcrumbItem>
                             </Breadcrumbs>
                             {sectionContentSwr.data.section.course.certificateStatus !==
               CertificateStatus.Cannot ? (
                                     <Button
+                                        variant="bordered"
                                         isLoading={isMutating}
                                         onPress={async () => {
                                             if (
                                                 sectionContentSwr.data?.section.course
                                                     .certificateStatus === CertificateStatus.Gotten
                                             ) {
-                                                router.push(`/`)
+                                                router.push(
+                                                    `/certificate/${sectionContentSwr.data?.section.course.certificate?.certificateId}`
+                                                )
                                             } else {
                                                 trigger()
                                             }

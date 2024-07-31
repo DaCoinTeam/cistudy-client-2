@@ -10,15 +10,20 @@ import {
     ListBulletIcon,
 } from "@heroicons/react/24/outline"
 import { Award } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 interface MenuProps {
   className?: string;
 }
 
 export const Menu = (props: MenuProps) => {
+    const router = useRouter()
     const { className } = props
 
-    const { reducer } = useContext(HomeContext)!
+    const { swrs, reducer } = useContext(HomeContext)!
+    const { courseHomeSwr } = swrs
+    const { data } = courseHomeSwr
+    const { certificate } = {...data}
     const [state, dispatch] = reducer
     const { panelSelected } = state
 
@@ -26,7 +31,7 @@ export const Menu = (props: MenuProps) => {
 
     const isSelected = (panelSelected: PanelSelected) =>
         Array.from(selectedKeys).includes(panelSelected)
-            ? "!bg-content2 !text-foreground rounded-medium"
+            ? "!bg-primary/20 !text-primary rounded-medium"
             : ""
 
     const onSelectionChange = (selection: Selection) => {
@@ -95,10 +100,15 @@ export const Menu = (props: MenuProps) => {
                 {items.map(({ key, startContent, panelSelected, content }) => (
                     <ListboxItem
                         classNames={{
-                            title: "text-base font-bold",
+                            title: "text-base",
                             base: `items-center rounded-none text-foreground-400 !p-3 !bg-transparent ${isSelected(
                                 panelSelected
                             )}`,
+                        }}
+                        onPress={() => {
+                            if (panelSelected === PanelSelected.Certificate) {
+                                router.push(`/certificate/${certificate?.certificateId}`)
+                            }
                         }}
                         startContent={startContent}
                         key={key}
