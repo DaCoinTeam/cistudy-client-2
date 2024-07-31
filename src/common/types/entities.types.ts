@@ -115,7 +115,7 @@ export interface PostEntity {
 export enum CertificateStatus {
   Cannot = "cannot",
   Getable = "getable",
-  Gotten = "gotten"
+  Gotten = "gotten",
 }
 
 export interface CourseEntity {
@@ -153,7 +153,19 @@ export interface CourseEntity {
   numberOfLessons?: number;
   numberOfResources?: number;
   certificateStatus?: CertificateStatus;
+  certificate?: CertificateEntity;
 }
+
+export interface CertificateEntity {
+  certificateId: string;
+  courseId: string;
+  accountId: string;
+  createdAt: Date;
+  expiredDate: Date;
+  account: AccountEntity;
+  course: CourseEntity;
+}
+
 export interface CourseTargetEntity {
   courseTargetId: string;
   content: string;
@@ -270,9 +282,9 @@ export interface QuizQuestionEntity {
   position: number;
   answers: Array<QuizQuestionAnswerEntity>;
   questionMedias: Array<QuizQuestionMediaEntity>;
-  answered?: boolean
-  numberOfCorrectAnswers?: number
-  corrected?: true
+  answered?: boolean;
+  numberOfCorrectAnswers?: number;
+  corrected?: true;
 }
 
 export interface QuizQuestionAnswerEntity {
@@ -285,7 +297,7 @@ export interface QuizQuestionAnswerEntity {
   position: number;
   isCorrect: boolean;
   attempt: QuizAttemptEntity;
-  selected?: boolean
+  selected?: boolean;
 }
 
 export interface QuizAttemptAnswerEntity {
@@ -301,8 +313,8 @@ export interface QuizAttemptAnswerEntity {
 export interface QuizAttemptEntity {
   quizAttemptId: string;
   quizId: string;
-  receivedPercent?: number
-  isPassed?: boolean
+  receivedPercent?: number;
+  isPassed?: boolean;
   account: AccountEntity;
   accountId: string;
   attemptStatus: string;
@@ -312,9 +324,9 @@ export interface QuizAttemptEntity {
   currentQuestionPosition: number;
   attemptAnswers: Array<QuizAttemptAnswerEntity>;
   timeLeft: number;
-  receivedPoints : number
-  totalPoints : number
-  observedAt: Date
+  receivedPoints: number;
+  totalPoints: number;
+  observedAt: Date;
 }
 
 export interface QuizQuestionMediaEntity {

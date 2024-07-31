@@ -8,8 +8,10 @@ import { createCourseCertificate } from "@services"
 import { RootContext } from "../../_hooks"
 import { ToastType } from "../../_components"
 import { CertificateStatus } from "../../../common/types"
+import { useRouter } from "next/navigation"
 
 const Page = () => {
+    const router = useRouter()
     const { swrs } = useContext(ContentDetailsContext)!
     const { sectionContentSwr } = swrs
     const { isLoading, mutate } = sectionContentSwr
@@ -58,7 +60,7 @@ const Page = () => {
                                                 sectionContentSwr.data?.section.course
                                                     .certificateStatus === CertificateStatus.Gotten
                                             ) {
-                                                console.log("x")
+                                                router.push(`/`)
                                             } else {
                                                 trigger()
                                             }

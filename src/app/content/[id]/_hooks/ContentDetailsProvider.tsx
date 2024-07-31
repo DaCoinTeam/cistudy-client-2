@@ -112,6 +112,7 @@ export const ContentDetailsProvider = ({
                 section: {
                     sectionId: true,
                     course: {
+                        certificate: true,
                         courseId: true,
                         certificateStatus: true,
                         title: true,
