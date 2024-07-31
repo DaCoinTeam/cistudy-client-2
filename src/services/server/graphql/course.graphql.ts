@@ -10,6 +10,7 @@ import {
     CourseReviewEntity,
     AccountEntity,
     SectionContentEntity,
+    CourseCertificateEntity,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
 import { gql } from "@apollo/client"
@@ -264,7 +265,7 @@ export interface FindManyLevelCategoriesInputData {
   };
 }
 
-export const findManyLevelCategories  = async (
+export const findManyLevelCategories = async (
     data: FindManyLevelCategoriesInputData,
     schema: Schema<DeepPartial<CategoryEntity>>
 ): Promise<Array<CategoryEntity>> => {
@@ -391,5 +392,32 @@ export const initLandingPage = async (
     return getGraphqlResponseData({
         data: graphqlData,
         isAuth: false,
+    })
+}
+
+export interface FindOneCertificateInputData {
+    certificateId: string
+}
+
+export const findOneCertificate = async (
+    data: FindOneCertificateInputData,
+    schema: Schema<DeepPartial<CourseCertificateEntity>>
+): Promise<CourseCertificateEntity> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+          query FindOneCertificate($data: FindOneCertificateInputData!) {
+  findOneCertificate(data: $data) {
+    ${payload}
+  }
+}
+        `,
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
     })
 }

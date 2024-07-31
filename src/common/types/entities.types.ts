@@ -167,6 +167,16 @@ export interface CourseRating {
   totalNumberOfRatings: number;
 }
 
+export interface CourseCertificateEntity {
+  account: AccountEntity
+  accountId: string
+  certificateId: string
+  course: CourseEntity
+  courseId: string
+  createdAt: Date
+  expiredDate: Date
+}
+
 export interface EnrolledInfoEntity {
   enrolledId: string;
   accountId: string;

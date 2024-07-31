@@ -68,9 +68,9 @@ export const CertificateLayout = (props: CertificatesLayoutProps) => {
             ctx.fillText(capitalizeWords(title?? ""), 525, 470, 600)
             ctx.font = "bold 24px Georgia"
             ctx.fillText(creatorUsername ?? "", 855, 682, 600)
-            ctx.font = "16px Georgia"
+            ctx.font = "16px Arial"
             ctx.fillText(today, 265, 639, 328)
-            ctx.fillText("7 Hours 20 Minutes", 285, 667, 200)
+            ctx.fillText("7 Hours 20 Minutes", 285, 670, 200)
             ctx.fillText(certificateId, 275, 725, 400)
         }
     }
