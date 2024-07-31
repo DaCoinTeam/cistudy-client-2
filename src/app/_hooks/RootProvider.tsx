@@ -8,21 +8,22 @@ import {
     generateClientId,
 } from "@common"
 import { useDisclosure } from "@nextui-org/react"
-import { findManyCategories, findManyLevelCategories, Highlight, init, initLandingPage } from "@services"
+import { findManyCategories, findManyLevelCategories, FindManyReceivedNotificationsOutputData, findManyReceivedNotifications, Highlight, init, initLandingPage } from "@services"
 import { Formik, FormikProps } from "formik"
 import { useRouter } from "next/navigation"
 import React, {
-    ReactNode,
     createContext,
+    ReactNode,
     useCallback,
     useEffect,
     useMemo,
     useRef
 } from "react"
 import useSWR, { SWRResponse } from "swr"
+import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite"
 import { NotifyFn, ToastRef, ToastRefSelectors } from "../_components"
-import { RootAction, RootState, useRootReducer } from "./useRootReducer"
 import { useFirebaseMessaging } from "./useFirebaseMessaging"
+import { RootAction, RootState, useRootReducer } from "./useRootReducer"
 
 interface FormikValues {
   searchValue: string;
@@ -39,6 +40,10 @@ interface RootContextValue {
     highlightSwr: SWRResponse<Highlight, ErrorResponse>;
     categoriesSwr: SWRResponse<Array<CategoryEntity>, ErrorResponse>;
     topicsSwr: SWRResponse<Array<CategoryEntity>, ErrorResponse>;
+    notifySwr:SWRInfiniteResponse<
+    FindManyReceivedNotificationsOutputData,
+    ErrorResponse
+>
 
   };
   formik: FormikProps<FormikValues>;
@@ -55,6 +60,7 @@ export const RootContext = createContext<RootContextValue | null>(null)
 interface WrappedRootProviderSelectors {
   mutate: any;
 }
+export const COLUMNS_PER_PAGE = 2
 
 const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps<FormikValues> }) => {
     const reducer = useRootReducer()
@@ -244,6 +250,8 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
         )
     }, [])
 
+    
+   
     const topicsSwr = useSWR(["TOPICS"], fetchTopics, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
@@ -258,7 +266,48 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
 
     const highlightSwr = useSWR(["HIGHLIGHT"], fetchHighlight)
 
+    const fetchNotifications = useCallback(
+        async ([key]: [number, string]) => {
+            return await findManyReceivedNotifications(
+                {
+                    options: {
+                        skip: COLUMNS_PER_PAGE * key,
+                        take: COLUMNS_PER_PAGE,
+                    },
+                },
+                {
+                    results: {
+                        title: true,
+                        description: true,
+                        createdAt: true,
+                        senderId: true,
+                        referenceLink: true,
+                        viewed: true,
+                        notificationId: true,
+                        sender: {
+                            accountId: true,
+                            avatarId: true,
+                            avatarUrl: true,
+                            kind: true,
+                        }
 
+                    },
+                    metadata: {
+                        count: true,
+                       
+                    },
+                }
+            )
+        },
+        [profileSwr.data?.accountId]
+    )
+    const notifySwr = useSWRInfinite(
+        (key) => [key, "NOTIFICATIONS", profileSwr?.data?.accountId],   
+        fetchNotifications,
+        {
+            revalidateFirstPage: false,
+        }
+    )
     useEffect(() => {
         generateClientId()
     }, [])
@@ -273,7 +322,8 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                 profileSwr,
                 highlightSwr,
                 categoriesSwr,
-                topicsSwr
+                topicsSwr,
+                notifySwr
             },
             formik,
             reducer,
@@ -282,7 +332,7 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
             },
             notify: toastRef.current?.notify,
         }),
-        [profileSwr, highlightSwr, categoriesSwr, reducer, notConnectWalletModalDisclosure]
+        [profileSwr, highlightSwr, notifySwr, categoriesSwr, reducer, notConnectWalletModalDisclosure]
     )
 
     return (

@@ -186,16 +186,6 @@ export interface CourseRating {
   totalNumberOfRatings: number;
 }
 
-export interface CourseCertificateEntity {
-  account: AccountEntity
-  accountId: string
-  certificateId: string
-  course: CourseEntity
-  courseId: string
-  createdAt: Date
-  expiredDate: Date
-}
-
 export interface EnrolledInfoEntity {
   enrolledId: string;
   accountId: string;
@@ -605,6 +595,19 @@ export interface TransactionEntity {
   transactionHash: string;
   payPalOrderId: string;
   account: AccountEntity;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface NotificationEntity {
+  senderId: string;
+  receiverId: string;
+  title: string;
+  description: string;
+  sender: AccountEntity;
+  viewed: boolean;
+  referenceLink: string;
+  notificationId: string;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -1,7 +1,6 @@
 import { Button, Image } from "@nextui-org/react"
 import React from "react"
-import { HiPlayCircle } from "react-icons/hi2";
-import { PlayCircleIcon } from "@heroicons/react/24/solid";
+import { PlayCircleIcon } from "@heroicons/react/24/solid"
 interface InteractiveThumbnailProps {
   className?: string;
   src?: string;
