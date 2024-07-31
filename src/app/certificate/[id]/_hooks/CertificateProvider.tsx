@@ -1,5 +1,5 @@
 "use client"
-import { CourseCertificateEntity, ErrorResponse } from "@common"
+import { CertificateEntity, ErrorResponse } from "@common"
 import { findOneCertificate } from "@services"
 import { useParams } from "next/navigation"
 import React, {
@@ -13,7 +13,7 @@ import useSWR, { SWRResponse } from "swr"
 
 export interface CertificateContextValue {
     swrs: {
-        certificateSwr: SWRResponse<CourseCertificateEntity, ErrorResponse>
+        certificateSwr: SWRResponse<CertificateEntity, ErrorResponse>
     }
 }
 
