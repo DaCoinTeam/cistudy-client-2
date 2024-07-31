@@ -23,10 +23,12 @@ export const CourseCertificateImage = (props : CourseCertificateImageProps) => {
         imageRef.current = new Image()
         imageRef.current.crossOrigin="anonymous"
         imageRef.current.src="/cert-template.png"
-        imageRef.current.onload = () => {
-            drawCertificate()
-        }
     }, [])
+
+    useEffect(() => {
+        if (!data) return
+        drawCertificate()
+    }, [data])
 
     const addTolinkedIn = () => {
         const issueYear = dayjs(createdAt).format("YYYY")
@@ -55,10 +57,6 @@ export const CourseCertificateImage = (props : CourseCertificateImageProps) => {
             ctx.fillText(certificateId?? "", 186, 415, 200)
         }
     }
-
-    useEffect(() => {
-        drawCertificate()
-    }, [data])
 
     const downloadCertificate = () => {
         const canvas = canvasRef.current
