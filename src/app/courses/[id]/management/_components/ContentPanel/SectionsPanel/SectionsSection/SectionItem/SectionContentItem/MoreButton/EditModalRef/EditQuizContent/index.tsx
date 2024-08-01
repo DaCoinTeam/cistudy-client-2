@@ -28,6 +28,7 @@ import {
     createQuizQuestionAnswer,
     CreateQuizQuestionAnswerInput,
     CreateQuizQuestionInput,
+    getAssetUrl,
 } from "@services"
 import useSWRMutation from "swr/mutation"
 import { ToastType } from "../../../../../../../../../../../../_components"
@@ -239,8 +240,8 @@ export const EditQuizContent = () => {
                                                                 <Spacer y={2}/> 
                                                                 {
                                                                     question.mediaType == MediaType.Image ?
-                                                                        <Image src={question.mediaId} alt="media" className="w-[200px] aspect-video"/>
-                                                                        : <VideoPlayer src={question.mediaId} className="w-[200px] aspect-video"/>
+                                                                        <Image src={getAssetUrl(question.mediaId)} alt="media" className="w-[400px] aspect-video"/>
+                                                                        : <VideoPlayer src={getAssetUrl(question.mediaId)} className="w-[400px] aspect-video"/>
                                                                 }
                                                             </>
                                                             

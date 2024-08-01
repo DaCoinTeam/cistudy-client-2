@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import {
     Button,
     Input,
@@ -20,6 +20,7 @@ import { getAssetManifestUrl, getAssetUrl } from "@services"
 import { SectionContentItemContext } from "../../.."
 import { VideoType } from "@common"
 
+export type Page = "details" | "upload" | "preview";
 
 const WrappedEditLessonContent = () => {
     const { formik } = useContext(EditLessonContentContext)!
@@ -30,13 +31,14 @@ const WrappedEditLessonContent = () => {
     const { lesson } = { ...sectionContent }
     const { videoType, lessonVideoId } = { ...lesson }
 
+    const [currentPage, setCurrentPage] = useState<Page>("details")
+
     const renderVideoType = () => {
         const map: Record<VideoType, string> = {
             dash: "MPEG-DASH",
-            mp4: "MP4"
+            mp4: "MP4",
         }
-        if (formik.values.lessonVideo)
-            return map[VideoType.MP4]
+        if (formik.values.lessonVideo) return map[VideoType.MP4]
         return map[videoType]
     }
 
@@ -60,6 +62,8 @@ const WrappedEditLessonContent = () => {
     return (
         <ModalBody className="p-4">
             <Tabs
+                selectedKey={currentPage}
+                onSelectionChange={(key) => setCurrentPage(key as Page)}
                 aria-label="Options"
                 variant="underlined"
                 color="primary"
@@ -130,38 +134,36 @@ const WrappedEditLessonContent = () => {
                 <Tab key="upload" title="Upload">
                     <div>
                         <AddVideoDropzone />
-                        <Spacer y={6}/>
-                        <div className="flex gap-2 flex-row-reverse w-full">
-                            <Button
-                                color="primary"
-                                isDisabled={formik.isSubmitting}
-                                isLoading={formik.isSubmitting}
-                                onPress={() => formik.submitForm()}
-                            >
-                  Upload
-                            </Button>
-                            <Button
-                                color="primary"
-                                variant="bordered"
-                            >
-                  Cancel
-                            </Button>
-                        </div>
                     </div>
                 </Tab>
-                {
-                    (formik.values.lessonVideo || sectionContent.lesson.lessonVideoId)
-                        ? (
-                            <Tab key="prevỉew" title="Preview">
-                                <div>
-                                    {renderPreview()}
-                                    <Spacer y={2}/>
-                                    <div className="flex gap-1 items-center">
-                                        <div className="text-sm"> Quality: {renderVideoType()}</div>
-                                    </div>
+                
+                <Tab key="prevỉew" title="Preview">
+                    {formik.values.lessonVideo || sectionContent.lesson.lessonVideoId ? (
+                        <>
+                            <div>
+                                {renderPreview()}
+                                <Spacer y={2} />
+                                <div className="flex gap-1 items-center">
+                                    <div className="text-sm"> Quality: {renderVideoType()}</div>
                                 </div>
-                            </Tab>) : null
-                }
+                            </div>
+                            <Spacer y={6} />
+                            <div className="flex gap-2 flex-row-reverse w-full">
+                                <Button
+                                    color="primary"
+                                    isDisabled={formik.isSubmitting}
+                                    isLoading={formik.isSubmitting}
+                                    onPress={() => formik.submitForm()}
+                                >
+                Upload
+                                </Button>
+                                <Button color="primary" variant="bordered">
+                Cancel
+                                </Button>
+                            </div>
+                        </>
+                    ) : <div/>}
+                </Tab>
             </Tabs>
         </ModalBody>
     )

@@ -36,6 +36,7 @@ export const DropzonePreview = () => {
       ? MediaType.Image
       : MediaType.Video
     : mediaType;
+  
   const src = formik.values.mediaFile
     ? URL.createObjectURL(formik.values.mediaFile)
     : getAssetUrl(mediaId);
@@ -63,7 +64,7 @@ export const DropzonePreview = () => {
           </div>
         </div>
       </div>
-      {type && !formik.values.deleteMedia ? (
+      {(formik.values.mediaFile || mediaId) && !formik.values.deleteMedia ? (
         <>
           <Spacer y={4} />
           <div className="flex justify-between items-center">
@@ -94,10 +95,10 @@ export const DropzonePreview = () => {
                     removeWrapper
                     src={src}
                     alt="media"
-                    className="w-[200px] aspect-video"
+                    className="w-[300px] aspect-video"
                   />
                 ) : (
-                  <VideoPlayer src={src} className="w-[200px] aspect-video" />
+                  <VideoPlayer src={src} className="w-[300px] aspect-video" />
                 )}
               </Badge>
             </div>
