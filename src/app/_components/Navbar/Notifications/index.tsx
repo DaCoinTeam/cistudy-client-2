@@ -29,17 +29,19 @@ export const Notifications = () => {
     }
     const getNotification = useMemo(() => {
         if (!data) return []
+        console.log("data", data[0])
         const notification: Array<NotificationEntity> = []
         data.forEach((element) => {
-            if (!element) return
-            const { results } = element
-            if(results){
-                notification.push(...results)
+            if(element) {
+                const { results } = element
+                if(results){
+                    notification.push(...results)
+                }
             }
+            
         })
         return notification
     }, [data])
-
     const getPages = useMemo(() => {
         if (!data) return 0
         const last = data.at(-1)
@@ -102,7 +104,7 @@ export const Notifications = () => {
                                     }) => (
                                         <div key={notificationId} className=' border-b-1 '>
                                             <Link
-                                                className='cursor-pointer flex p-4'
+                                                className='cursor-pointer flex p-4 text-black dark:text-white'
                                                 onPress={() => router.push(referenceLink)}
                                             >
                                                 <div>
