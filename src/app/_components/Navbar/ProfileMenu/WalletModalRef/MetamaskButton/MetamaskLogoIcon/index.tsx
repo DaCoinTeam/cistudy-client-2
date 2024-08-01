@@ -18,7 +18,7 @@ export const MetamaskLogoIcon = (props: MetamaskIconProps) => (
     >
         <style>
             {
-                "\n        .st1,.st6{fill:#e4761b;stroke:#e4761b;stroke-linecap:round;stroke-linejoin:round}.st6{fill:#f6851b;stroke:#f6851b}\n      "
+                "\n        .st1,.st6{fill:#e4761b;stroke:#e4761b;strokeLinecap:round;strokeLinejoin:round}.st6{fill:#f6851b;stroke:#f6851b}\n      "
             }
         </style>
         <path

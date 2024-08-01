@@ -411,7 +411,6 @@ export interface FindManyReceivedNotificationsOutputData {
   results: Array<NotificationEntity>;
   metadata: {
     count: number;
-    relativeTopics: Array<NotificationEntity>;
   };
 }
 
@@ -432,7 +431,9 @@ export const findManyReceivedNotifications = async (
   ${payload}
 }
 }
-      `,
+      `,variables: {
+            data,
+        },
     })
 
     return getGraphqlResponseData({

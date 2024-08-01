@@ -107,7 +107,7 @@ export const CoursesTable = () => {
             >
                 {results.map(({ courseId, thumbnailId, title, description, createdAt, price, discountPrice, enableDiscount, numberOfEnrollments  }, index) => (
                     <TableRow key={courseId}>
-                        <TableCell>{(ROWS_PER_PAGE * page) + index + 1}</TableCell>
+                        <TableCell>{(page - 1)*ROWS_PER_PAGE + index +1}</TableCell>
                         <TableCell>
                             <div className="flex gap-3 py-2">
                                 <InteractiveThumbnail

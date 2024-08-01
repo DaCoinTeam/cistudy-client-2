@@ -299,3 +299,47 @@ export const markPostCommentAsSolution= async (
     const url = `${BASE_URL}/mark-post-comment-as-solution`
     return await authAxios.patch(url, data)
 }
+export interface CreatePostReportInputData {
+   data: {
+    postId: string,
+    title: string,
+    description: string
+   }
+}
+export interface CreatePostReportOutputData {
+  message: string,
+  others: {
+      reportPostId: string,
+  }
+}
+
+export const createPostReport = async(
+    input: CreatePostReportInputData
+) : Promise<CreatePostReportOutputData> => {
+    const { data } = input
+    const url = `${BASE_URL}/create-post-report`
+    return await authAxios.post(url, data)
+}
+
+
+export interface CreatePostCommentReportInputData {
+  data: {
+   postCommentId: string,
+   title: string,
+   description: string
+  }
+}
+export interface CreatePostCommentReportOutputData {
+ message: string,
+ others: {
+     reportPostCommentId: string,
+ }
+}
+
+export const createPostCommentReport = async(
+    input: CreatePostCommentReportInputData
+) : Promise<CreatePostCommentReportOutputData> => {
+    const { data } = input
+    const url = `${BASE_URL}/create-post-comment-report`
+    return await authAxios.post(url, data)
+}

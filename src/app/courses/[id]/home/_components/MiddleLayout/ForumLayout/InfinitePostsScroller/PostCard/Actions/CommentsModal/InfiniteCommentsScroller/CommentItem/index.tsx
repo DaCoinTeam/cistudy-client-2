@@ -43,7 +43,6 @@ export const CommentItem = (props: CommentItemProps) => {
         updatedAt,
         postCommentId,
         isRewardable,
-        isCommentOwner,
         isSolution,
     } = postComment
     const { swrs } = useContext(RootContext)!
@@ -142,9 +141,8 @@ export const CommentItem = (props: CommentItemProps) => {
                                     </>
                                 )}
                             </div>
-                            {isCommentOwner && (
-                                <MoreButton className='transition-opacity opacity-0 group-hover/comment:opacity-100' />
-                            )}
+                            <MoreButton className='transition-opacity opacity-0 group-hover/comment:opacity-100' />
+                            
                         </div>
                     </div>
                     <Spacer y={2} />
