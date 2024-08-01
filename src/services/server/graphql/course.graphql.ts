@@ -408,10 +408,10 @@ export interface FindManyReceivedNotificationsInputData {
 }
 
 export interface FindManyReceivedNotificationsOutputData {
-  results: Array<NotificationEntity>;
-  metadata: {
-    count: number;
-  };
+    results: Array<NotificationEntity>;
+    metadata: {
+      count: number;
+    };
 }
 
 export interface FindOneCertificateInputData {
@@ -438,7 +438,7 @@ export const findManyReceivedNotifications = async (
 
     return getGraphqlResponseData({
         data: graphqlData,
-        isAuth: false,
+        isAuth: true,
     })
 }
 
