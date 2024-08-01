@@ -16,6 +16,7 @@ export const signIn = async (input: SignInInput): Promise<string> => {
 export interface SignUpInput {
     email: string;
     password: string;
+    username: string;
     firstName: string;
     lastName: string;
     birthdate: string;

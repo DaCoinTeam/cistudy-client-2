@@ -15,6 +15,8 @@ import {
     EditQuizQuestionAnswerContext,
     EditQuizQuestionAnswerProvider,
 } from "./EditQuizQuesitonAnwserModalProvider"
+import { AnswerMoreButtonContext } from "../index"
+import { ArrowRightIcon } from "@heroicons/react/24/outline"
 
 export interface EditQuizQuestionAnswerModalRefSelectors {
   onOpen: () => void;
@@ -30,13 +32,17 @@ const WrappedEditQuizQuestionAnswerModalRef =
 
       const { formik } = useContext(EditQuizQuestionAnswerContext)!
 
+      const { props } = useContext(AnswerMoreButtonContext)!
+      const { answer } = props
+      const { position } = answer
+    
       return (
-          <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
+          <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
               <ModalContent>
-                  <ModalHeader className="p-4 pb-2 text-xl">
-            Edit Quiz Question Answer
+                  <ModalHeader className="p-6 pb-2 text-xl">
+            Edit
                   </ModalHeader>
-                  <ModalBody>
+                  <ModalBody className="p-6">
                       <Input
                           label="Content"
                           id="content"
@@ -65,8 +71,47 @@ const WrappedEditQuizQuestionAnswerModalRef =
                               }}
                           />
                       </div>
+                      <Spacer y={4} />
+                      <div className="flex justify-between items-center">
+                          <div className="text-sm">Last Answer</div>
+                          <Switch
+                              isSelected={formik.values.lastAnswer}
+                              onValueChange={(lastAnswer) =>
+                                  formik.setFieldValue("lastAnswer", lastAnswer)
+                              }
+                              classNames={{
+                                  wrapper: "mr-0",
+                              }}
+                          />
+                      </div>
+                      <Spacer y={4} />
+                      <div className="flex items-center justify-between">
+                          <div className="text-sm">Position</div>
+                          <div className="justify-between flex items-center">
+                              <div className="text-sm flex gap-4 items-center">
+                                  <div>{position}</div>
+                                  <ArrowRightIcon  className="w-5 h-5"/>
+                                  <Input
+                                      id="swapPosition"
+                                      className="w-[50px]"
+                                      isRequired
+                                      classNames={{
+                                          inputWrapper: "input-input-wrapper",
+                                      }}
+                                      labelPlacement="outside"
+                                      placeholder="Input title here"
+                                      value={formik.values.swapPosition.toString()}
+                                      onChange={formik.handleChange}
+                                      onBlur={formik.handleBlur}
+                                      isInvalid={!!(formik.touched.swapPosition && formik.errors.swapPosition)}
+                                      errorMessage={formik.touched.swapPosition && formik.errors.swapPosition}
+                                  />
+                              </div>
+                              
+                          </div>
+                      </div>    
                   </ModalBody>
-                  <ModalFooter>
+                  <ModalFooter className="p-6 pt-2">
                       <Button
                           color="primary"
                           variant="bordered"

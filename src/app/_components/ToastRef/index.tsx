@@ -27,7 +27,7 @@ export interface ToastRefSelectors {
   notify: NotifyFn;
 }
 
-export const DURATION = 15_000
+export const DURATION = 2_000
 
 export const ToastRef = forwardRef<ToastRefSelectors>((_, ref) => {
     const notify = (params: NotifyParams) => {

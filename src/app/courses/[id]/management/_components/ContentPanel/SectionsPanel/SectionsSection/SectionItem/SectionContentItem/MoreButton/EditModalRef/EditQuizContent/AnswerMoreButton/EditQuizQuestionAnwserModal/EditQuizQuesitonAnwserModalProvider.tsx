@@ -24,12 +24,16 @@ export const EditQuizQuestionAnswerContext = createContext<EditQuizQuestionAnswe
 
 interface FormikValues {
     content: string,
-    isCorrect: boolean
+    isCorrect: boolean,
+    lastAnswer: boolean,
+    swapPosition: number
 }
 
 const initialValues: FormikValues = {
     content: "",
-    isCorrect: false
+    isCorrect: false,
+    lastAnswer: false,
+    swapPosition: 1
 }
 
 const WrappedFormikProvider = ({ formik, children, swrs }: {
@@ -50,20 +54,34 @@ const WrappedFormikProvider = ({ formik, children, swrs }: {
     
     const { props } = useContext(AnswerMoreButtonContext)!
     const { answer } = props
-    const { isCorrect, content } = answer
+    const { isCorrect, content, lastAnswer, position } = answer
 
     useEffect(() => {
-        if (!content) return
+        if (content === undefined) return
         formik.setFieldValue("content", content)
     }, [
         content
     ])
 
     useEffect(() => {
-        if (!isCorrect) return
+        if (isCorrect === undefined) return
         formik.setFieldValue("isCorrect", isCorrect)
     }, [
         isCorrect
+    ])
+
+    useEffect(() => {
+        if (lastAnswer === undefined) return
+        formik.setFieldValue("lastAnswer", lastAnswer)
+    }, [
+        lastAnswer
+    ])
+
+    useEffect(() => {
+        if (position === undefined) return
+        formik.setFieldValue("swapPosition", position)
+    }, [
+        position
     ])
 
     return (
@@ -95,13 +113,15 @@ export const EditQuizQuestionAnswerProvider = ({ children }: { children: ReactNo
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({})
         }
-        onSubmit={async ({ content, isCorrect }) => {
+        onSubmit={async ({ content, isCorrect, lastAnswer, swapPosition }) => {
             const { message } = await updateQuizQuestionAnswerSwrMutation.trigger(
                 {
                     data: {
                         quizQuestionAnswerId,
                         content,
-                        isCorrect
+                        isCorrect,
+                        lastAnswer,
+                        swapPosition
                     }
                 }
             )

@@ -46,7 +46,7 @@ export const Menu = (props: MenuProps) => {
         })
     }
 
-    const items = [
+    const items = certificate ? [
         {
             startContent: (
                 <ChatBubbleLeftRightIcon width={24} height={24} strokeWidth={3 / 2} />
@@ -70,6 +70,31 @@ export const Menu = (props: MenuProps) => {
             key: "certificate",
             content: "Certificate",
             panelSelected: PanelSelected.Certificate
+        },
+        {
+            startContent: (
+                <EyeIcon width={24} height={24} strokeWidth={3 / 2} />
+            ),
+            key: "preview",
+            content: "Preview",
+            panelSelected: PanelSelected.Preview,
+        },
+    ] : [
+        {
+            startContent: (
+                <ChatBubbleLeftRightIcon width={24} height={24} strokeWidth={3 / 2} />
+            ),
+            key: "forum",
+            content: "Forum",
+            panelSelected: PanelSelected.Forum,
+        },
+        {
+            startContent: (
+                <ListBulletIcon width={24} height={24} strokeWidth={3 / 2} />
+            ),
+            key: "sections",
+            content: "Sections",
+            panelSelected: PanelSelected.Sections,
         },
         {
             startContent: (

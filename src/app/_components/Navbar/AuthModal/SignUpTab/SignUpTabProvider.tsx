@@ -24,6 +24,7 @@ export const SignUpTabContext = createContext<SignUpTabContextValue | null>(
 interface FormikValues {
   email: string;
   password: string;
+  username: string;
   confirm: string;
   firstName: string;
   lastName: string;
@@ -33,6 +34,7 @@ interface FormikValues {
 const initialValues: FormikValues = {
     email: "",
     password: "",
+    username: "",
     confirm: "",
     firstName: "",
     lastName: "",
@@ -100,10 +102,11 @@ export const SignUpTabProvider = ({ children }: { children: ReactNode }) => {
                 lastName: Yup.string().required("Last name is required"),
                 birthdate: Yup.date().max(new Date(), "Birthdate must be in the past"),
             })}
-            onSubmit={async ({ email, password, firstName, lastName, birthdate }) => {
+            onSubmit={async ({ email, password, username, firstName, lastName, birthdate }) => {
                 const signUpData = {
                     email,
                     password,
+                    username,
                     firstName,
                     lastName,
                     birthdate

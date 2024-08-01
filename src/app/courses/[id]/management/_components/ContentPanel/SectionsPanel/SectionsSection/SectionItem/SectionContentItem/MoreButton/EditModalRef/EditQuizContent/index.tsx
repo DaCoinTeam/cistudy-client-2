@@ -7,6 +7,7 @@ import {
     Accordion,
     AccordionItem,
     Button,
+    Chip,
     Input,
     Link,
     ModalBody,
@@ -15,8 +16,9 @@ import {
     Tab,
     Tabs,
     Textarea,
+    Tooltip,
 } from "@nextui-org/react"
-import { CheckBadgeIcon, PlusIcon } from "@heroicons/react/24/outline"
+import { PlusIcon } from "@heroicons/react/24/outline"
 import { QuestionMoreButton } from "./QuestionMoreButton"
 import { AnswerMoreButton } from "./AnswerMoreButton"
 import { QuizQuestionAnswerEntity, sortByPosition } from "@common"
@@ -207,7 +209,7 @@ export const EditQuizContent = () => {
                                 className="!px-0 gap-4"
                                 itemClasses={{
                                     base: "!shadow-none gap-4",
-                                    title: "text-base"
+                                    title: "text-base",
                                 }}
                             >
                                 {sortByPosition(questions ?? []).map((question) => (
@@ -222,8 +224,8 @@ export const EditQuizContent = () => {
                                         title={
                                             <div>
                                                 <span className="font-semibold">
-                        Q{question.position}.
-                                                </span> {" "}
+                          Q{question.position}.
+                                                </span>{" "}
                                                 <span>{question.question}</span>
                                             </div>
                                         }
@@ -234,19 +236,44 @@ export const EditQuizContent = () => {
                                     >
                                         {sortByPosition(question.answers ?? [])?.map((answer) => {
                                             return (
-                                                <div
-                                                    key={answer?.quizQuestionAnswerId}
-                                                >
-                                                    <div className="flex items-center w-full justify-between">
+                                                <div key={answer?.quizQuestionAnswerId}>
+                                                    <div className="flex items-center w-full justify-between gap-2">
                                                         <div className="flex gap-3 items-center">
                                                             <div className="grid place-items-center">
                                                                 <AnswerMoreButton
                                                                     answer={answer as QuizQuestionAnswerEntity}
                                                                 />
-                                                            </div>     
-                                                            <div className={`text-sm ${answer.isCorrect ? "text-success" : "text-foreground-400"}`}><span className="font-semibold">{answer?.position}.</span>{" "}<span>{answer?.content}</span></div>
-                                                        </div>  
-                                                        {answer.isCorrect ? <CheckBadgeIcon className="text-success w-5 h-5"/> : null }
+                                                            </div>
+                                                            <div
+                                                                className={`text-sm ${
+                                                                    answer.isCorrect
+                                                                        ? "text-success"
+                                                                        : "text-foreground-400"
+                                                                }`}
+                                                            >
+                                                                <span className="font-semibold">
+                                                                    {answer?.position}.
+                                                                </span>{" "}
+                                                                <span>{answer?.content}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex gap-2 items-center min-w-[60px] flex-row-reverse">
+                                                            {answer.lastAnswer ? (
+                                                                <Tooltip
+                                                                    content={
+                                                                        <div className="max-w-[200px]">
+                                                                            {
+                                                                                "The 'Last' ensures that this answer is always placed at the end, no matter the order. This is especially useful for 'All of the above' questions, keeping the annotation consistently at the end."
+                                                                            }
+                                                                        </div>
+                                                                    }
+                                                                >
+                                                                    <Chip variant="flat" color="warning">
+                                    Last
+                                                                    </Chip>
+                                                                </Tooltip>
+                                                            ) : null}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             )
