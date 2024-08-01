@@ -24,8 +24,12 @@ import { getAssetFile } from "@services"
 import { MediaUploader, TextEditor } from "../../../../../../../../../../_shared"
 import { PostCardContext } from "../.."
 import { ArrowPathIcon, CheckIcon } from "@heroicons/react/24/outline"
+interface WrappedEditPostModalRefProps {
+    onClose: () => void
+}
 
-export const WrappedEditPostModalRef = () => {
+export const WrappedEditPostModalRef = (refProps: WrappedEditPostModalRefProps ) => {
+    const {onClose} = refProps
     const { formik } = useContext(EditPostModalContext)!
 
     const { props } = useContext(PostCardContext)!
@@ -107,6 +111,7 @@ export const WrappedEditPostModalRef = () => {
             <ModalFooter className="p-4 pt-2">
                 <Button
                     startContent={<ArrowPathIcon height={20} width={20} />} 
+                    onPress={onClose}
                 >
             Reset
                 </Button>
@@ -143,7 +148,7 @@ export const EditCommentModalRef = forwardRef<EditCommentModalRefSelectors, Edit
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" className={`${className}`}>
                 <ModalContent>
                     <EditPostModalProvider onClose={onClose}>
-                        <WrappedEditPostModalRef />
+                        <WrappedEditPostModalRef onClose={onClose} />
                     </EditPostModalProvider>
                 </ModalContent>
             </Modal>

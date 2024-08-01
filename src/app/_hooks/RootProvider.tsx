@@ -299,7 +299,7 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                 }
             )
         },
-        [profileSwr.data?.accountId]
+        [profileSwr]
     )
     const notifySwr = useSWRInfinite(
         (key) => [key, "NOTIFICATIONS", profileSwr?.data?.accountId],   

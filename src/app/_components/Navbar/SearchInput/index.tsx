@@ -65,6 +65,7 @@ export const SearchInput = (props: SearchInputProps) => {
                 // inputWrapper: "input-input-wrapper"
                 selectorButton: "hidden",
             }}
+            allowsCustomValue
             value={formik.values.searchValue}
             onInputChange={onValueChange}
             className={`${className}`}

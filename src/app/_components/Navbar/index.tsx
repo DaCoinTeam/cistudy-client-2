@@ -84,7 +84,7 @@ const WrappedNavbar = (props: NavbarProps) => {
                     <SearchInput className='w-[500px]' />
                 </NavbarContent>
                 <NavbarContent justify='end'>
-                    {profile ? (<NavbarItem className="mr-2 justify-center">
+                    {profile?.accountId ? (<NavbarItem className="mr-2 justify-center">
                         <Button isIconOnly variant="light" className="p-6" onPress={handleCartPress}>
                             {cart && cart?.cartCourses?.length > 0 ? (
                                 <Badge color="danger" content={cart?.cartCourses?.length}  shape="circle">
@@ -95,18 +95,18 @@ const WrappedNavbar = (props: NavbarProps) => {
                             )}
                             
                         </Button>
-                    </NavbarItem>) : (<></>)}
-                    {profile ? (
+                    </NavbarItem>) : (<NavbarItem></NavbarItem>)}
+                    {profile && profile?.accountId ? (
                         <NavbarItem className="mr-2 justify-center">
                             <Notifications/>
                         </NavbarItem>
                     ) : (
-                        <></>
+                        <NavbarItem></NavbarItem>
                     ) }
                     <NavbarItem>
                         <DarkModeSwitch />
                     </NavbarItem>
-                    {profile ? (
+                    {profile && profile ? (
                         <NavbarItem>
                             <ProfileMenu />
                         </NavbarItem>
