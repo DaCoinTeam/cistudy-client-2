@@ -547,6 +547,7 @@ export interface UpdateQuizQuestionInput {
     question?: string,
     swapPosition?: number,
     questionMedia?: UpdateQuizQuestionMediaInputData,
+    deleteMedia?: boolean
   }
   files?: Array<File>;
 }
@@ -554,7 +555,6 @@ export interface UpdateQuizQuestionInput {
 export interface UpdateQuizQuestionOutput {
   message: string
 }
-
 
 export const updateQuizQuestion = async (
     input: UpdateQuizQuestionInput

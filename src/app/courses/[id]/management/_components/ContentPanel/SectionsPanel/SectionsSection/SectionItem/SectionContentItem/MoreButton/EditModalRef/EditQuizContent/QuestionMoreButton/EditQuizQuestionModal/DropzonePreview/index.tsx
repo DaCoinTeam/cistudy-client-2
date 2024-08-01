@@ -8,15 +8,17 @@ import {
   FolderOpenIcon,
 } from "lucide-react";
 import { EditQuizQuestionContext } from "../EditQuizQuesitonModalProvider";
-import { Image, Spacer } from "@nextui-org/react";
+import { Badge, Image, Link, Spacer } from "@nextui-org/react";
 import { VideoPlayer } from "../../../../../../../../../../../../../../../_shared";
 import { QuestionMoreButtonContext } from "../..";
 import { MediaType, isFileImage } from "@common";
 import { getAssetUrl } from "@services";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export const DropzonePreview = () => {
   const onDrop = useCallback((files: Array<File>) => {
     formik.setFieldValue("mediaFile", files.at(0));
+    formik.setFieldValue("deleteMedia", false);
   }, []);
 
   const { formik } = useContext(EditQuizQuestionContext)!;
@@ -28,7 +30,6 @@ export const DropzonePreview = () => {
   const { props } = useContext(QuestionMoreButtonContext)!;
   const { question: _question } = props;
   const { mediaId, mediaType } = _question;
-  console.log(mediaId, mediaType)
 
   const type = formik.values.mediaFile
     ? isFileImage(formik.values.mediaFile)
@@ -62,19 +63,45 @@ export const DropzonePreview = () => {
           </div>
         </div>
       </div>
-      {type ? (
+      {type && !formik.values.deleteMedia ? (
         <>
-        <Spacer y={4}/>
-        <div className="flex justify-between items-center">
-          <div className="text-sm">Preview</div>
-          <div>
-              {
-                type === MediaType.Image ?
-                  <Image removeWrapper src={src} alt="media" className="w-[200px] aspect-video"/>
-                  : <VideoPlayer src={src}  className="w-[200px] aspect-video"/>
-              }
+          <Spacer y={4} />
+          <div className="flex justify-between items-center">
+            <div className="text-sm">Preview</div>
+            <div>
+              <Badge
+                classNames={{
+                  badge: "p-0"
+                }}
+                color="danger"
+                content={
+                  <Link
+                    as="button"
+                    className="text-white w-5 h-5"
+                    onPress={() => {
+                      formik.setFieldValue("deleteMedia", true);
+                    }}
+                  >
+                    <XMarkIcon/>
+                  </Link>
+                }
+                size="lg"
+                className="top-0 right-0"
+                shape="circle"
+              >
+                {type === MediaType.Image ? (
+                  <Image
+                    removeWrapper
+                    src={src}
+                    alt="media"
+                    className="w-[200px] aspect-video"
+                  />
+                ) : (
+                  <VideoPlayer src={src} className="w-[200px] aspect-video" />
+                )}
+              </Badge>
+            </div>
           </div>
-        </div>
         </>
       ) : null}
     </div>

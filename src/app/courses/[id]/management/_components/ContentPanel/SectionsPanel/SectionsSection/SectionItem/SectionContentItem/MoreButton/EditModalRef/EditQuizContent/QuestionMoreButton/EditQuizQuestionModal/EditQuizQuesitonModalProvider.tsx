@@ -25,7 +25,8 @@ export const EditQuizQuestionContext = createContext<EditQuizQuestionContextValu
 interface FormikValues {
     question: string,
     swapPosition: number,
-    mediaFile?: File
+    mediaFile?: File,
+    deleteMedia?: boolean
 }
 
 const initialValues: FormikValues = {
@@ -103,7 +104,7 @@ export const EditQuizQuestionProvider = ({ children }: { children: ReactNode }) 
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({})
         }
-        onSubmit={async ({ question, swapPosition , mediaFile }) => {
+        onSubmit={async ({ question, swapPosition , mediaFile, deleteMedia }) => {
             const { message } = await updateQuizQuestionSwrMutation.trigger(
                 {
                     data: {
@@ -113,7 +114,8 @@ export const EditQuizQuestionProvider = ({ children }: { children: ReactNode }) 
                         questionMedia: mediaFile ? {
                             mediaIndex: 0,
                             mediaType: isFileImage(mediaFile) ? MediaType.Image : MediaType.Video
-                        } : undefined
+                        } : undefined,
+                        deleteMedia
                     },
                     files: mediaFile ? [ mediaFile ] : undefined
                 }
