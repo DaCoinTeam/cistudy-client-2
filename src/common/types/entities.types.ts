@@ -280,6 +280,8 @@ export interface QuizQuestionEntity {
   question: string;
   point: number;
   position: number;
+  mediaId: string
+  mediaType: MediaType
   answers: Array<QuizQuestionAnswerEntity>;
   questionMedias: Array<QuizQuestionMediaEntity>;
   answered?: boolean;

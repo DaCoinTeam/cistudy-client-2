@@ -1,6 +1,6 @@
 import { ENDPOINT_API } from "@config"
 import { authAxios } from "./axios-instances"
-import { SectionContentType } from "@common"
+import { MediaType, SectionContentType } from "@common"
 
 const BASE_URL = `${ENDPOINT_API}/courses`
 
@@ -536,24 +536,41 @@ export const createQuizQuestion = async (
     return await authAxios.post(url, data)
 }
 
+export interface UpdateQuizQuestionMediaInputData {
+      mediaIndex: number
+      mediaType: MediaType
+}
+
 export interface UpdateQuizQuestionInput {
   data: {
     quizQuestionId: string,
     question?: string,
     swapPosition?: number,
+    questionMedia?: UpdateQuizQuestionMediaInputData,
   }
+  files?: Array<File>;
 }
 
 export interface UpdateQuizQuestionOutput {
   message: string
 }
 
+
 export const updateQuizQuestion = async (
     input: UpdateQuizQuestionInput
 ): Promise<UpdateQuizQuestionOutput> => {
-    const {data} = input
+    const { data, files } = input
     const url = `${BASE_URL}/update-quiz-question`
-    return await authAxios.patch(url, data)
+    const formData = new FormData()
+
+    formData.append("data", JSON.stringify(data))
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
+        }
+    }
+
+    return await authAxios.patch(url, formData)
 }
 
 export interface DeleteQuizQuestionInput {

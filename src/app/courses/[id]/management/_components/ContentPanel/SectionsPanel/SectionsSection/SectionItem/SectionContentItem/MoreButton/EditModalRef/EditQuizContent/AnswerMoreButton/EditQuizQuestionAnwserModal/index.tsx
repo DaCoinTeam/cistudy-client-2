@@ -39,10 +39,10 @@ const WrappedEditQuizQuestionAnswerModalRef =
       return (
           <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
               <ModalContent>
-                  <ModalHeader className="p-6 pb-2 text-xl">
+                  <ModalHeader className="p-4 pb-2 text-xl">
             Edit
                   </ModalHeader>
-                  <ModalBody className="p-6">
+                  <ModalBody className="p-4">
                       <Input
                           label="Content"
                           id="content"
@@ -111,7 +111,7 @@ const WrappedEditQuizQuestionAnswerModalRef =
                           </div>
                       </div>    
                   </ModalBody>
-                  <ModalFooter className="p-6 pt-2">
+                  <ModalFooter className="p-4 pt-2">
                       <Button
                           color="primary"
                           variant="bordered"
