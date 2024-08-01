@@ -18,18 +18,9 @@ import {
     ConfirmDeleteModalRef,
     ConfirmDeleteModalRefSelectors,
 } from "../../../../../../../../../../_shared"
-import { SectionContentItemContext } from "../index"
 import { ManagementContext } from "../../../../../../../_hooks"
 
-interface ManageThumbnailButtonProps {
-  className?: string;
-}
-
-export const MoreButton = (props: ManageThumbnailButtonProps) => {
-    const { props: sectionContentItemProps } = useContext(SectionContentItemContext)!
-    const { sectionContent } = sectionContentItemProps
-    const { sectionContentId } = sectionContent
-
+export const MoreButton = () => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { mutate } = courseManagementSwr

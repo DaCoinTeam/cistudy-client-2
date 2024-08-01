@@ -7,7 +7,7 @@ import { ManagementContext } from "../../../../../../../../../../../_hooks"
 import { RootContext } from "../../../../../../../../../../../../../../_hooks"
 import { UpdateQuizQuestionOutput, UpdateQuizQuestionInput, updateQuizQuestion } from "@services"
 import { ToastType } from "../../../../../../../../../../../../../../_components"
-import { ErrorResponse } from "@common"
+import { ErrorResponse, MediaType, isFileImage } from "@common"
 import { QuestionMoreButtonContext } from ".."
 
 interface EditQuizQuestionContextValue {
@@ -24,7 +24,9 @@ export const EditQuizQuestionContext = createContext<EditQuizQuestionContextValu
 
 interface FormikValues {
     question: string,
-    swapPosition: number
+    swapPosition: number,
+    mediaFile?: File,
+    deleteMedia?: boolean
 }
 
 const initialValues: FormikValues = {
@@ -66,6 +68,13 @@ const WrappedFormikProvider = ({ formik, children, swrs }: {
         question
     ])
 
+    useEffect(() => {
+        if (position === undefined) return
+        formik.setFieldValue("swapPosition", position)
+    }, [
+        question
+    ])
+
     return (
         <EditQuizQuestionContext.Provider value={EditQuizQuestionContextValue}>
             <Form onSubmit={formik.handleSubmit}>{children}</Form>
@@ -95,16 +104,23 @@ export const EditQuizQuestionProvider = ({ children }: { children: ReactNode }) 
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({})
         }
-        onSubmit={async ({ question, swapPosition }) => {
+        onSubmit={async ({ question, swapPosition , mediaFile, deleteMedia }) => {
             const { message } = await updateQuizQuestionSwrMutation.trigger(
                 {
                     data: {
                         quizQuestionId,
                         question,  
-                        swapPosition
-                    }
+                        swapPosition,
+                        questionMedia: mediaFile ? {
+                            mediaIndex: 0,
+                            mediaType: isFileImage(mediaFile) ? MediaType.Image : MediaType.Video
+                        } : undefined,
+                        deleteMedia
+                    },
+                    files: mediaFile ? [ mediaFile ] : undefined
                 }
             )
+
             await mutate()
                 notify!({
                     data: {

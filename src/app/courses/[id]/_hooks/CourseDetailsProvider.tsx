@@ -79,6 +79,8 @@ export const WrappedCourseDetailsProvider = ({
                         },
                         quiz: {
                             questions: {
+                                mediaId: true,
+                                mediaType: true,
                                 answers: {
                                     quizQuestionAnswerId: true
                                 },  

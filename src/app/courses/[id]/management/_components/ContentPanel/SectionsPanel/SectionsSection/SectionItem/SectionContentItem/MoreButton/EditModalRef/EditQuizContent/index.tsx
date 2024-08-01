@@ -8,6 +8,7 @@ import {
     AccordionItem,
     Button,
     Chip,
+    Image,
     Input,
     Link,
     ModalBody,
@@ -21,18 +22,20 @@ import {
 import { PlusIcon } from "@heroicons/react/24/outline"
 import { QuestionMoreButton } from "./QuestionMoreButton"
 import { AnswerMoreButton } from "./AnswerMoreButton"
-import { QuizQuestionAnswerEntity, sortByPosition } from "@common"
+import { MediaType, QuizQuestionAnswerEntity, sortByPosition } from "@common"
 import {
     createQuizQuestion,
     createQuizQuestionAnswer,
     CreateQuizQuestionAnswerInput,
     CreateQuizQuestionInput,
+    getAssetUrl,
 } from "@services"
 import useSWRMutation from "swr/mutation"
 import { ToastType } from "../../../../../../../../../../../../_components"
 import { SectionContentItemContext } from "../../.."
 import { RootContext } from "../../../../../../../../../../../../_hooks"
 import { ManagementContext } from "../../../../../../../../../_hooks"
+import { VideoPlayer } from "../../../../../../../../../../../../_shared"
 
 const WrappedEditQuizContent = () => {
     const { formik } = useContext(EditQuizContentContext)!
@@ -223,10 +226,28 @@ export const EditQuizContent = () => {
                                         }
                                         title={
                                             <div>
-                                                <span className="font-semibold">
+                                                <div>
+                                                    <span className="font-semibold">
                           Q{question.position}.
-                                                </span>{" "}
-                                                <span>{question.question}</span>
+                                                    </span>{" "}
+                                                    <span>{question.question}</span>
+                                                </div>
+                                                {
+                                                    question.mediaId ? 
+                                                        (
+                                                            
+                                                            <>
+                                                                <Spacer y={2}/> 
+                                                                {
+                                                                    question.mediaType == MediaType.Image ?
+                                                                        <Image src={getAssetUrl(question.mediaId)} alt="media" className="w-[400px] aspect-video"/>
+                                                                        : <VideoPlayer src={getAssetUrl(question.mediaId)} className="w-[400px] aspect-video"/>
+                                                                }
+                                                            </>
+                                                            
+                                                            
+                                                        ) : null
+                                                }
                                             </div>
                                         }
                                         classNames={{

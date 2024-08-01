@@ -106,6 +106,8 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                             description: true,
                             questions: {
                                 quizQuestionId: true,
+                                mediaId: true,
+                                mediaType: true,
                                 position: true,
                                 answers: {
                                     quizQuestionAnswerId: true,

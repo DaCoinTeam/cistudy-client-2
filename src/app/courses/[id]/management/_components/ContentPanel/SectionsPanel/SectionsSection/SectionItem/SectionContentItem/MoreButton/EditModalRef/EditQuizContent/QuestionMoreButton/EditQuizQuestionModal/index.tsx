@@ -17,6 +17,7 @@ import {
 } from "./EditQuizQuesitonModalProvider"
 import { ArrowRightIcon } from "@heroicons/react/24/outline"
 import { QuestionMoreButtonContext } from "../index"
+import { DropzonePreview } from "./DropzonePreview"
 
 export interface EditQuizQuestionModalRefSelectors {
   onOpen: () => void;
@@ -39,14 +40,15 @@ const WrappedEditQuizQuestionModalRef =
       return (
           <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
               <ModalContent>
-                  <ModalHeader className="p-6 pb-2 text-xl">
+                  <ModalHeader className="p-4 pb-2 text-xl">
             Edit
                   </ModalHeader>
-                  <ModalBody className="p-6">
+                  <ModalBody className="p-4">
                       <Tabs variant="underlined" classNames={{
-                          cursor: "w-full"
+                          cursor: "w-full",
+                          panel: "p-0 pt-4"
                       }} aria-label="Options">
-                          <Tab key="infomation" title="Information">
+                          <Tab key="general" title="General">
                               <div className="grid gap-4">
                                   <Input
                                       label="Question"
@@ -90,12 +92,12 @@ const WrappedEditQuizQuestionModalRef =
                                   </div>    
                               </div>
                           </Tab>
-                          <Tab key="    " title="Photos">
-
+                          <Tab key="media" title="Media">
+                              <DropzonePreview />    
                           </Tab>
                       </Tabs>
                   </ModalBody>
-                  <ModalFooter className="p-6 pt-2">
+                  <ModalFooter className="p-4 pt-2">
                       <Button
                           color="primary"
                           variant="bordered"
