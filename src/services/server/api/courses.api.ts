@@ -540,6 +540,7 @@ export interface UpdateQuizQuestionInput {
   data: {
     quizQuestionId: string,
     question?: string,
+    swapPosition?: number,
   }
 }
 
@@ -635,7 +636,9 @@ export interface UpdateQuizQuestionAnswerInput {
   data: {
       quizQuestionAnswerId: string,
       isCorrect?: boolean,
-      content?: string
+      content?: string,
+      lastAnswer?: boolean,
+      swapPosition?: number
   }
 }
 

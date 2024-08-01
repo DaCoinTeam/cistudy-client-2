@@ -23,11 +23,13 @@ export const EditQuizQuestionContext = createContext<EditQuizQuestionContextValu
 )
 
 interface FormikValues {
-    question: string
+    question: string,
+    swapPosition: number
 }
 
 const initialValues: FormikValues = {
-    question: ""
+    question: "",
+    swapPosition: 0
 }
 
 const WrappedFormikProvider = ({ formik, children, swrs }: {
@@ -48,11 +50,18 @@ const WrappedFormikProvider = ({ formik, children, swrs }: {
     
     const { props } = useContext(QuestionMoreButtonContext)!
     const { question: _question } = props
-    const { question } = _question
+    const { question, position } = _question
 
     useEffect(() => {
-        if (!question) return
+        if (question === undefined) return
         formik.setFieldValue("question", question)
+    }, [
+        question
+    ])
+
+    useEffect(() => {
+        if (position === undefined) return
+        formik.setFieldValue("swapPosition", position)
     }, [
         question
     ])
@@ -81,16 +90,18 @@ export const EditQuizQuestionProvider = ({ children }: { children: ReactNode }) 
     const { props } = useContext(QuestionMoreButtonContext)!
     const { question: _question } = props
     const { quizQuestionId } = _question
+
     return (
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({})
         }
-        onSubmit={async ({ question }) => {
+        onSubmit={async ({ question, swapPosition }) => {
             const { message } = await updateQuizQuestionSwrMutation.trigger(
                 {
                     data: {
                         quizQuestionId,
                         question,  
+                        swapPosition
                     }
                 }
             )

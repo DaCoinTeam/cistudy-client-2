@@ -6,23 +6,23 @@ import { CertificateContext } from "../../_hooks"
 import dayjs from "dayjs"
 
 export interface CourseCertificateImageProps {
-    className?: string
+  className?: string;
 }
 
-export const CourseCertificateImage = (props : CourseCertificateImageProps) => {
-    const {swrs} = useContext(CertificateContext)!
-    const {certificateSwr} = swrs
-    const {data} = certificateSwr
-    const {certificateId, course, account , createdAt} = {...data}
-    const {className} = props
+export const CourseCertificateImage = (props: CourseCertificateImageProps) => {
+    const { swrs } = useContext(CertificateContext)!
+    const { certificateSwr } = swrs
+    const { data } = certificateSwr
+    const { certificateId, course, account, createdAt } = { ...data }
+    const { className } = props
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
-    
+
     const imageRef = useRef<HTMLImageElement | null>(null)
 
     useEffect(() => {
         imageRef.current = new Image()
-        imageRef.current.crossOrigin="anonymous"
-        imageRef.current.src="/cert-template.png"
+        imageRef.current.crossOrigin = "anonymous"
+        imageRef.current.src = "/cert-template.png"
     }, [])
 
     useEffect(() => {
@@ -33,7 +33,12 @@ export const CourseCertificateImage = (props : CourseCertificateImageProps) => {
     const addTolinkedIn = () => {
         const issueYear = dayjs(createdAt).format("YYYY")
         const issueMonth = dayjs(createdAt).format("MM")
-        const linkedIn = generateLinkedinLink({certId: certificateId?? "", courseTitle: course?.title ?? "", issueYear, issueMonth})
+        const linkedIn = generateLinkedinLink({
+            certId: certificateId ?? "",
+            courseTitle: course?.title ?? "",
+            issueYear,
+            issueMonth,
+        })
         window.open(linkedIn)
     }
 
@@ -48,13 +53,13 @@ export const CourseCertificateImage = (props : CourseCertificateImageProps) => {
             ctx.textAlign = "center"
             ctx.fillText(account?.username ?? "", 350, 230, 400)
             ctx.font = "30px Georgia"
-            ctx.fillText(capitalizeWords(course?.title?? ""), 354, 275, 400)
+            ctx.fillText(capitalizeWords(course?.title ?? ""), 354, 275, 400)
             ctx.font = "bold 18px Georgia"
             ctx.fillText(course?.creator?.username ?? "", 570, 388, 200)
             ctx.font = "12px Arial"
             ctx.fillText(dayjs(createdAt).format("MMMM DD, YYYY"), 180, 362, 200)
             ctx.fillText("7 Hours 20 Minutes", 195, 380, 200)
-            ctx.fillText(certificateId?? "", 186, 415, 200)
+            ctx.fillText(certificateId ?? "", 186, 415, 200)
         }
     }
 
@@ -71,15 +76,31 @@ export const CourseCertificateImage = (props : CourseCertificateImageProps) => {
     return (
         <div className={`${className}`}>
             <div className="border-2">
-                <canvas id="certificate" width={707} height={500} ref={canvasRef}></canvas>
+                <canvas
+                    id="certificate"
+                    width={707}
+                    height={500}
+                    ref={canvasRef}
+                ></canvas>
             </div>
-            <Spacer y={4}/>
+            <Spacer y={4} />
             <div className="flex flex-row gap-2">
-                <Button color="primary" startContent={<DownloadIcon className="w-5 h-5" strokeWidth={3/2}/>} onPress={downloadCertificate} >
-                        Download Certificate
+                <Button
+                    color="primary"
+                    startContent={
+                        <DownloadIcon className="w-5 h-5" strokeWidth={3 / 2} />
+                    }
+                    onPress={downloadCertificate}
+                >
+          Download Certificate
                 </Button>
-                <Button color="primary" variant="bordered" startContent={<Linkedin  className="w-5 h-5" strokeWidth={3/2}/>} onPress={addTolinkedIn} >
-                        Add to LinkedIn
+                <Button
+                    color="primary"
+                    variant="bordered"
+                    startContent={<Linkedin className="w-5 h-5" strokeWidth={3 / 2} />}
+                    onPress={addTolinkedIn}
+                >
+          Add to LinkedIn
                 </Button>
             </div>
         </div>

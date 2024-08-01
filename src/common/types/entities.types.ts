@@ -298,6 +298,7 @@ export interface QuizQuestionAnswerEntity {
   isCorrect: boolean;
   attempt: QuizAttemptEntity;
   selected?: boolean;
+  lastAnswer: boolean
 }
 
 export interface QuizAttemptAnswerEntity {
