@@ -36,22 +36,44 @@ const WrappedPostCommentReportItem = ({ children }: { children: ReactNode }) => 
                 {
                     results: {
                         reportPostCommentId: true,
-                        reportedPostCommentId: true,
-                        reporterAccountId: true,
+                        postCommentId: true,
+                        accountId: true,
+                        title: true,
                         description: true,
                         processNote: true,
                         processStatus: true,
                         reportedPostComment: {
                             postCommentId: true,
                             html: true,
+                            postCommentMedias: {
+                                mediaId: true,
+                                mediaType: true,
+                                postCommentMediaId: true,
+                            },
+                            isRewardable: true,
+                            isSolution  : true,
+                            numberOfLikes: true,
+                            post: {
+                                title: true,
+                            },
+                            createdAt: true,
+                            creator: {
+                                accountId: true,
+                                username: true,
+                            },
                         },
+
                         reporterAccount: {
+                            avatarUrl: true,
+                            kind: true,
+                            avatarId: true,
                             accountId: true,
                             username: true,
                             email: true,
                         },
                         createdAt: true,
                         updatedAt: true,
+                        
                     },
                     metadata: {
                         count: true,

@@ -36,8 +36,9 @@ const WrappedPostReportItem = ({ children }: { children: ReactNode }) => {
                 {
                     results: {
                         reportPostId: true,
-                        reportedPostId: true,
-                        reporterAccountId: true,
+                        postId: true,
+                        accountId: true,
+                        title: true,
                         description: true,
                         processNote: true,
                         processStatus: true,
@@ -45,11 +46,30 @@ const WrappedPostReportItem = ({ children }: { children: ReactNode }) => {
                             postId: true,
                             title: true,
                             html: true,
+                            createdAt: true,
+                            postMedias: {
+                                mediaId: true,
+                                mediaType: true,
+                                postMediaId: true,
+                                position: true,
+                            },
+                            course: {
+                                title: true,
+                            },
+                            creator: {
+                                username: true,
+                            },
+                            numberOfComments: true,
+                            numberOfLikes: true,
+                            numberOfReports: true,
                         },
                         reporterAccount: {
                             accountId: true,
                             username: true,
                             email: true,
+                            avatarId: true,
+                            avatarUrl: true,
+                            kind: true,
                         },
                         createdAt: true,
                         updatedAt: true,

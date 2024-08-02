@@ -12,7 +12,7 @@ export const ReportsManagementPanel = (props: ReportsManagementPanelProps) => {
     return (
         <div className={`${className}`}>
             <div className="justify-between flex items-center">
-                <div className="text-2xl"> Reports </div>
+                <div className="text-2xl"> Reports Management</div>
             </div>
             <Spacer y={4} />
             <ReportItem />
