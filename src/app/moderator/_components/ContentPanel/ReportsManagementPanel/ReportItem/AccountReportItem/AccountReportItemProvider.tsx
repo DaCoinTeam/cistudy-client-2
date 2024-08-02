@@ -38,8 +38,9 @@ const WrappedAccountReportItem = ({ children }: {
                 {
                     results: {
                         reportAccountId: true,
-                        reportedAccountId: true,
-                        reporterAccountId: true,
+                        reportedId: true,
+                        reporterId: true,
+                        title: true,
                         description: true,
                         processNote: true,
                         processStatus: true,

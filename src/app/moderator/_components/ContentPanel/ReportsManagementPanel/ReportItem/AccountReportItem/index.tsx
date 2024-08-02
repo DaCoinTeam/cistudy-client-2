@@ -36,7 +36,7 @@ const WrappedAccountReportItem = () => {
         case "title":
             return (
                 <div>
-                    No Title
+                    {report.title}
                 </div>
             )
         case "createdAt":

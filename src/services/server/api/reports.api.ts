@@ -62,3 +62,71 @@ export const resolvePostCommentReport = async (input : resolvePostCommentReportI
 
     return await authAxios.patch(url, data)
 }
+
+
+export interface CreateAccountReportInputData {
+    data: {
+     reportedId: string,
+     title: string,
+     description: string
+    }
+  }
+export interface CreateAccountReportOutputData {
+   message: string,
+   others: {
+       reportAccountId: string,
+   }
+  }
+  
+export const createAccountReport = async(
+    input: CreateAccountReportInputData
+) : Promise<CreateAccountReportOutputData> => {
+    const { data } = input
+    const url = `${BASE_URL}/accounts/create-account-report`
+    return await authAxios.post(url, data)
+}
+
+export interface CreatePostReportInputData {
+    data: {
+     postId: string,
+     title: string,
+     description: string
+    }
+ }
+export interface CreatePostReportOutputData {
+   message: string,
+   others: {
+       reportPostId: string,
+   }
+ }
+ 
+export const createPostReport = async(
+    input: CreatePostReportInputData
+) : Promise<CreatePostReportOutputData> => {
+    const { data } = input
+    const url = `${BASE_URL}/posts/create-post-report`
+    return await authAxios.post(url, data)
+}
+ 
+ 
+export interface CreatePostCommentReportInputData {
+   data: {
+    postCommentId: string,
+    title: string,
+    description: string
+   }
+ }
+export interface CreatePostCommentReportOutputData {
+  message: string,
+  others: {
+      reportPostCommentId: string,
+  }
+ }
+ 
+export const createPostCommentReport = async(
+    input: CreatePostCommentReportInputData
+) : Promise<CreatePostCommentReportOutputData> => {
+    const { data } = input
+    const url = `${BASE_URL}/posts/create-post-comment-report`
+    return await authAxios.post(url, data)
+}

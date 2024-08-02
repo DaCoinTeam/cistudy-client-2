@@ -1,20 +1,25 @@
 "use client"
-import { parseISODateString, ReportCourseEntity } from "@common"
+import { formatNouns, ReportCourseEntity } from "@common"
 import {
-    Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    useDisclosure,
+    Avatar,
     Button,
+    Chip,
+    Image,
     Input,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    useDisclosure,
 } from "@nextui-org/react"
-import Link from "next/link"
 
+import { getAssetUrl, getAvatarUrl, resolveCourseReport } from "@services"
+import dayjs from "dayjs"
 import { forwardRef, useContext, useImperativeHandle, useRef } from "react"
-import { CourseReportItemContext } from "../CourseReportItemProvider"
-import { resolveCourseReport } from "@services"
 import { ToastRefSelectors, ToastType } from "../../../../../../../_components"
+import { Stars } from "../../../../../../../_shared"
+import { CourseReportItemContext } from "../CourseReportItemProvider"
 
 export interface ResolveModalRefProps {
     report: ReportCourseEntity;
@@ -34,6 +39,7 @@ export const ResolveModalRef = forwardRef<
     const [state, dispatch] = reducer
     const toastRef = useRef<ToastRefSelectors | null>(null)
     const { report } = props
+    const {reporterAccount, title, description, reportedCourse, createdAt, processNote, processStatus} = report
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     useImperativeHandle(ref, () => ({
@@ -69,66 +75,88 @@ export const ResolveModalRef = forwardRef<
     }
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
+        <Modal scrollBehavior="outside" isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" className="p-4">
             <ModalContent>
                 {() => (
                     <>
-                        <ModalHeader className="p-4 pb-2 text-2xl justify-center">Report Detail</ModalHeader>
+                        <ModalHeader className="pt-4 pb-1 text-2xl tracking-tight font-semibold justify-center items-center flex flex-col">
+                            <div className="mr-4">Course Report Detail </div> 
+                            <div><Chip color={processStatus== "pending" ? "warning": "success"} variant="flat" className="mb-2 capitalize">{processStatus}</Chip></div> 
+                        </ModalHeader>
                         <ModalBody className="p-4">
-                            <div className="flex flex-row justify-between">
-                                <div>
-                                    <span className="font-bold">Reporter:</span>
-                                    <span className="ml-2">{report.reporterAccount.username}</span>
+                            <div className="border-b pb-4 mb-4 border-gray-300 dark:border-gray-800">
+                                <h2 className="text-xl font-medium  mb-4 text-gray-800 dark:text-gray-300">Reporter Information</h2>
+                                <div className="flex items-center pb-4 mb-6 border-b border-gray-300">
+                                    <Avatar
+                                        name='avatar'
+                                        className='w-16 h-16 rounded-full mr-4'
+                                        src={getAvatarUrl({
+                                            avatarId: reporterAccount?.avatarId,
+                                            avatarUrl: reporterAccount?.avatarUrl,
+                                            kind: reporterAccount?.kind,
+                                        })}
+                                    />
+                                    <div>
+                                        <p className="mb-2"><span className="font-semibold">Username: </span>{reporterAccount.username}</p>
+                                        <p className="mb-2"><span className="font-semibold">Report Time: </span>{dayjs(createdAt).format("hh:mm:ss A MMM D, YYYY")}</p>
+                                    </div>
                                 </div>
+                                <div className="pb-4 mb-4 border-b border-gray-300">
+                                    <h2 className="text-xl font-medium  mb-4 text-gray-800 dark:text-gray-300">Course Information</h2>
+                                    <div className="grid grid-cols-3 space-x-3">
+                                        <div className="col-span-2">
+                                            <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Title: </span>{reportedCourse?.title}</p>
+                                            <p className="mb-1"><span className="font-semibold  text-gray-800 dark:text-gray-300">Instructor:</span> <span className="">{reportedCourse?.creator?.username} </span></p>
+                                            <p className="flex items-end mb-2"><span className="font-semibold mr-1  text-gray-800 dark:text-gray-300">Rating: </span><Stars readonly initialValue={reportedCourse?.courseRatings?.overallCourseRating} /> ({formatNouns(reportedCourse?.courseRatings?.totalNumberOfRatings, "rating")})</p>
+                                            <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Created Date: </span>{dayjs(reportedCourse?.createdAt).format("hh:mm:ss A MMM D, YYYY")}</p>
+                                            <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Number of reports: </span>{reportedCourse?.numberOfReports}</p>
 
-                                <div>
-                                    <span className="font-bold">Report Type:</span>
-                                    <span className="ml-2">Course</span>
-                                </div>
-                            </div>
-                            <div>
-                                <span className="font-bold">Created At:</span>
-                                <span className="ml-2">{parseISODateString(report.createdAt)}</span>
-                            </div>
-                            <div>
-                                <div className="font-bold">Course Reported:</div>
-                                <div>
-                                    <span className="text-base font-semibold">Course ID:</span>
-                                    <span> {report.reportedCourse.courseId}</span>
+                                        </div>
+                                        <div>
+                                            <Image src={getAssetUrl(reportedCourse?.thumbnailId)} alt="Course Image" className="w-full h-32 border border-divider  rounded-lg mb-4"/>
+                                        </div>
+                                    </div>
+                                
                                 </div>
                                 <div>
-                                    <span className="text-base font-semibold">Course Link: </span>
-                                    <Link href={`/accounts/${report.reportedCourse.courseId}`} target="_blank">
-                                        <span className="text-primary underline">Click Here</span>
-                                    </Link>
+                                    <h2 className="text-xl font-medium pb-4  text-gray-800 dark:text-gray-300">Report Content</h2>
+                                    <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Title: </span>{title}</p>
+                                    <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300" >Description: </span>{description}</p>
                                 </div>
                             </div>
-                            <div>
-                                <span className="font-bold">Description:</span>
-                                <span className="ml-2">{report.description}</span>
+                            <div className="mb-4">
+                                <div className="font-medium text-xl text-gray-800 dark:text-gray-300 mb-2">Note:</div>
+                                {processStatus == "pending" ? (
+                                    <Input
+                                        classNames={{
+                                            inputWrapper: "input-input-wrapper shadow-lg rounded-md",
+                                        }}
+                                        id="progressNote"
+                                        type="string"
+                                        isRequired
+                                        labelPlacement="outside"
+                                        placeholder="Take note here"
+                                        onChange={(e) => dispatch({ type: "SET_NOTE", payload: e.target.value })}
+                                    />
+                                ) : (
+                                    <p className="">{processNote}</p>
+                                )}
+                                
                             </div>
-                            <div>
-                                <div className="font-bold">Progress Note:</div>
-                                <Input
-                                    classNames={{
-                                        inputWrapper: "input-input-wrapper"
-                                    }}
-                                    id="progressNote"
-                                    type="string"
-                                    isRequired
-                                    labelPlacement="outside"
-                                    placeholder="Take note here"
-                                    onChange={(e) => dispatch({ type: "SET_NOTE", payload: e.target.value })}
-                                />
-                            </div>
-                            <div>
-                                <div className="font-bold">Your Action:</div>
-                                <div className="flex justify-center">
-                                    <Button color="primary" size="md" onClick={() => handleUpdateReport("approved")}>Approve</Button>
-                                    <Button color="danger" size="md" onClick={() => handleUpdateReport("rejected")} className="ml-4">Reject</Button>
-                                </div>
-                            </div>
+
                         </ModalBody>
+                        {processStatus == "pending" ? (
+                            <ModalFooter>
+                                <Button  color="primary" variant="bordered"
+                                    onClick={() => handleUpdateReport("approved")}>Approve</Button>
+                                <Button color="primary"
+                                    onClick={() => handleUpdateReport("rejected")}
+                                >
+                            Reject
+                                </Button>
+                            </ModalFooter>
+                        ): (<></>)}
+                        
                     </>
                 )}
             </ModalContent>

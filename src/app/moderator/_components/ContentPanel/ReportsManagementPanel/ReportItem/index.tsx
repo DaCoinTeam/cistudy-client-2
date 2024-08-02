@@ -10,12 +10,12 @@ export const ReportItem = () => {
     return (
         <div className="flex w-full flex-col">
             <Tabs aria-label="Options">
-                <Tab key="account" title="Account">
+                {/* <Tab key="account" title="Account">
                     <AccountReportItem />
                 </Tab>
                 <Tab key="course" title="Course">
                     <CourseReportItem />
-                </Tab>
+                </Tab> */}
                 <Tab key="post" title="Post">
                     <PostReportItem />
                 </Tab>
