@@ -3,7 +3,7 @@ import { Inter } from "next/font/google"
 import "./_css/globals.css"
 import { ReduxProvider, RootState } from "@redux"
 import { NextUIProvider } from "@nextui-org/react"
-import { RootProvider } from "./_hooks"
+import { RootProvider, SocketIOProvider } from "./_hooks"
 import { Footer, Navbar } from "./_components"
 import { ReactNode, useEffect } from "react"
 import { MetaMaskProvider } from "@metamask/sdk-react"
@@ -27,19 +27,21 @@ const WrappedLayout = ({ children }: { children: ReactNode }) => {
                 <GoogleAnalytics gaId={GA_ID} />
                 <NextUIProvider className="min-h-screen flex flex-col">
                     <RootProvider>
-                        <MetaMaskProvider
-                            sdkOptions={{
-                                extensionOnly: true,
-                                dappMetadata: {
-                                    name: "CiStudy",
-                                },
-                            }}
-                        >
-                            <Navbar />
-                            {children}
-                            <Footer />
-                            <NotConnectWalletModal />
-                        </MetaMaskProvider>
+                        <SocketIOProvider>
+                            <MetaMaskProvider
+                                sdkOptions={{
+                                    extensionOnly: true,
+                                    dappMetadata: {
+                                        name: "CiStudy",
+                                    },
+                                }}
+                            >
+                                <Navbar />
+                                {children}
+                                <Footer />
+                                <NotConnectWalletModal />
+                            </MetaMaskProvider>
+                        </SocketIOProvider>
                     </RootProvider>
                 </NextUIProvider>
             </body>
