@@ -3,6 +3,7 @@ import { DeepPartial } from "@apollo/client/utilities"
 import {
     buildAuthPayloadString,
     CourseEntity,
+    NotificationEntity,
     Schema,
     TransactionEntity,
 } from "@common"
@@ -121,3 +122,45 @@ export const findManyTransactions = async (
         isAuth: true,
     })
 }
+
+
+export interface FindManyReceivedNotificationsInputData {
+  options?: {
+    take?: number
+    skip?: number
+
+  };
+}
+
+export interface FindManyReceivedNotificationsOutputData {
+    results: Array<NotificationEntity>;
+    metadata: {
+      count: number;
+      notViewedCount: number;
+    };
+}
+export const findManyReceivedNotifications = async (
+    data: FindManyReceivedNotificationsInputData,
+    schema: Schema<DeepPartial<FindManyReceivedNotificationsOutputData>>
+): Promise<FindManyReceivedNotificationsOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+        query findManyReceivedNotifications($data: FindManyReceivedNotificationsInputData!) {
+          findManyReceivedNotifications(data: $data) {
+${payload}
+}
+}
+    `,variables: {
+            data,
+        },
+    })
+
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
+    })
+}
+
+
+

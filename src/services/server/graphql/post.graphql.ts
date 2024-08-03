@@ -130,3 +130,34 @@ export const findManyPostCommentReplies = async (
         isAuth: true
     })   
 }
+
+export interface FindOnePostInputData {
+    params: {
+        postId: string;
+    };
+}
+
+export const findOnePost = async (
+    data: FindOnePostInputData,
+    schema: Schema<DeepPartial<PostEntity>>
+): Promise<PostEntity> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query FindOnePost($data: FindOnePostInputData!) {
+                findOnePost(data: $data) {
+                    ${payload}
+                }
+            }
+        `,
+
+        variables: {
+            data
+        },
+    })
+
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true
+    })
+}

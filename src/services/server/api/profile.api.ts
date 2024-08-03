@@ -76,3 +76,21 @@ export const deposit = async (input: DepositInput): Promise<DepositOutput> => {
 
     return await authAxios.patch(url, data)
 }
+
+export interface MarkNotificationAsReadInput {
+  data: {
+    notificationIds: Array<string>
+  }
+}
+
+export interface MarkNotificationAsReadOutput {
+  message: string
+}
+
+export const markNotificationAsRead = async (
+    input: MarkNotificationAsReadInput
+): Promise<MarkNotificationAsReadOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/mark-notification-as-read`
+    return await authAxios.patch(url, data)
+}
