@@ -7,11 +7,7 @@ import {
     DropdownTrigger,
     Link,
 } from "@nextui-org/react"
-import {
-    MoreVerticalIcon,
-    PenLineIcon,
-    XIcon,
-} from "lucide-react"
+import { MoreVerticalIcon, PenLineIcon, XIcon } from "lucide-react"
 import { EditModalRef, EditModalRefSelectors } from "./EditModalRef"
 
 import {
@@ -19,20 +15,24 @@ import {
     ConfirmDeleteModalRefSelectors,
 } from "../../../../../../../../../../_shared"
 import { ManagementContext } from "../../../../../../../_hooks"
+import { DeleteSectionContentInput, deleteSectionContent } from "@services"
+import { SectionContentItemContext } from ".."
+import useSWRMutation from "swr/mutation"
 
 export const MoreButton = () => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { mutate } = courseManagementSwr
 
-    const onDeletePress = async () => {
-        // await deleteLesson({
-        //     data: {
-        //         lessonId,
-        //     },
-        // })
-        await mutate()
-    }
+    const { props } = useContext(SectionContentItemContext)!
+
+    const { trigger, isMutating } = useSWRMutation(
+        "DELETE_SECTION_CONTENT",
+        async (_, { arg }: { arg: DeleteSectionContentInput }) => {
+            await deleteSectionContent(arg)
+            await mutate()
+        }
+    )
 
     const editModalRef = useRef<EditModalRefSelectors | null>(null)
     const onEditModalOpen = () => editModalRef.current?.onOpen()
@@ -54,12 +54,12 @@ export const MoreButton = () => {
             >
                 <DropdownTrigger>
                     <Link color="foreground">
-                        <MoreVerticalIcon className="w-5 h-5" strokeWidth={3/2}/>
+                        <MoreVerticalIcon className="w-5 h-5" strokeWidth={3 / 2} />
                     </Link>
                 </DropdownTrigger>
                 <DropdownMenu>
                     <DropdownItem
-                        startContent={<PenLineIcon size={20} strokeWidth={3/2} />}
+                        startContent={<PenLineIcon size={20} strokeWidth={3 / 2} />}
                         onPress={onEditModalOpen}
                         key="edit"
                     >
@@ -67,7 +67,7 @@ export const MoreButton = () => {
                     </DropdownItem>
                     <DropdownItem
                         color="danger"
-                        startContent={<XIcon size={20} strokeWidth={3/2} />}
+                        startContent={<XIcon size={20} strokeWidth={3 / 2} />}
                         key="delete"
                         onPress={onConfirmDeleteModalOpen}
                         className="text-danger"
@@ -80,11 +80,18 @@ export const MoreButton = () => {
                 <EditModalRef ref={editModalRef} />
                 <ConfirmDeleteModalRef
                     ref={confirmDeleteModalRef}
-                    onDeletePress={onDeletePress}
-                    title="Delete Lesson"
-                    content="Are you sure you want to delete this lesson? All references will be lost, and you cannot undo this action."
+                    onDeletePress={async () =>
+                        await trigger({
+                            data: {
+                                sectionContentId: props.sectionContent.sectionContentId,
+                            },
+                        })
+                    }
+                    isLoading={isMutating}
+                    title="Delete Content"
+                    content="Are you sure you want to delete this content? All references will be lost, and you cannot undo this action."
                 />
-            </div>       
+            </div>
         </>
     )
 }

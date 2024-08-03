@@ -8,10 +8,12 @@ import {
     Chip,
     Divider,
     Spacer,
+    Image,
 } from "@nextui-org/react"
-import { sortByPosition } from "@common"
-import { updateQuizAttemptAnswers } from "@services"
+import { MediaType, QuizQuestionAnswerEntity, sortByPosition } from "@common"
+import { getAssetUrl, updateQuizAttemptAnswers } from "@services"
 import { StartQuizContext } from "../StartQuizProvider"
+import { VideoPlayer } from "../../../../../../../_shared"
 
 export const QuestionCheckbox = () => {
     const { swrs } = useContext(ContentDetailsContext)!
@@ -23,8 +25,16 @@ export const QuestionCheckbox = () => {
         ...activeQuizAttempt,
     }
 
-    const { question, answers, quizQuestionId, numberOfCorrectAnswers, point } = {
-        ...questions?.find(({position}) => position === currentQuestionPosition)
+    const {
+        question,
+        answers,
+        quizQuestionId,
+        numberOfCorrectAnswers,
+        point,
+        mediaId,
+        mediaType,
+    } = {
+        ...questions?.find(({ position }) => position === currentQuestionPosition),
     }
 
     const previousQuizQuestionIdRef = useRef("")
@@ -82,6 +92,24 @@ export const QuestionCheckbox = () => {
         (Choose {numberOfCorrectAnswers} answer
                 {(numberOfCorrectAnswers ?? 0) > 1 ? "s" : ""})
             </div>
+            {mediaId ? (
+                <>
+                    <Spacer y={2} />
+                    {mediaType == MediaType.Image ? (
+                        <Image
+                            src={getAssetUrl(mediaId)}
+                            alt="media"
+                            className="w-[400px] aspect-video"
+                        />
+                    ) : (
+                        <VideoPlayer
+                            src={getAssetUrl(mediaId)}
+                            className="w-[400px] aspect-video"
+                        />
+                    )}
+                </>
+            ) : null}
+
             <Spacer y={4} />
             <CheckboxGroup
                 onValueChange={(values) =>
@@ -92,7 +120,7 @@ export const QuestionCheckbox = () => {
                 }
                 value={state.chosenValues}
             >
-                {sortByPosition(answers ?? []).map(
+                {sortByPositionButLast(answers ?? []).map(
                     ({ quizQuestionAnswerId, content }) => (
                         <Checkbox key={quizQuestionAnswerId} value={quizQuestionAnswerId}>
                             {content}
@@ -102,4 +130,13 @@ export const QuestionCheckbox = () => {
             </CheckboxGroup>
         </div>
     )
+}
+
+export const sortByPositionButLast = (
+    answers: Array<QuizQuestionAnswerEntity>
+) => {
+    const lastAnswer = answers.find(({ lastAnswer }) => lastAnswer) 
+    let nonLastAnswers = answers.filter(({ lastAnswer }) => !lastAnswer)
+    nonLastAnswers = sortByPosition(nonLastAnswers)
+    return lastAnswer ? [...nonLastAnswers, lastAnswer ] : nonLastAnswers
 }

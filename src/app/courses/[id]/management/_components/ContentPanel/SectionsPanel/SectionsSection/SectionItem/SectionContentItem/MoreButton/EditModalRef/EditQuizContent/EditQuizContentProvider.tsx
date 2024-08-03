@@ -32,7 +32,7 @@ const initialValues: FormikValues = {
     title: "",
     description: "",
     passingPercent: 80,
-    timeLimit: 60 * 15
+    timeLimit: 15
 }
 
 const WrappedFormikProvider = ({ formik, children, swrs }: {
@@ -79,7 +79,7 @@ const WrappedFormikProvider = ({ formik, children, swrs }: {
 
     useEffect(() => {
         if (!timeLimit) return
-        formik.setFieldValue("timeLimit", timeLimit)
+        formik.setFieldValue("timeLimit", timeLimit/(60 * 1000))
     }, [
         timeLimit
     ])
@@ -121,7 +121,7 @@ export const EditQuizContentProvider = ({ children }: { children: ReactNode }) =
                     data: {
                         title,
                         passingPercent: Number(passingPercent),
-                        timeLimit: Number(timeLimit),
+                        timeLimit: Number(timeLimit * 60 * 1000),
                         quizId: sectionContentId,
                         description
                     }

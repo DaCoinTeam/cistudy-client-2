@@ -93,7 +93,7 @@ const WrappedEditQuizContent = () => {
                         isInvalid={!!(formik.touched.timeLimit && formik.errors.timeLimit)}
                         errorMessage={formik.touched.timeLimit && formik.errors.timeLimit}
                         endContent={
-                            <div className="text-sm text-foreground-400">seconds</div>
+                            <div className="text-sm text-foreground-400">minutes</div>
                         }
                     />
                     <Input

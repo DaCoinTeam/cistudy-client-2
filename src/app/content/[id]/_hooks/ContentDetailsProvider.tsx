@@ -54,7 +54,9 @@ export const ContentDetailsProvider = ({
                 type: true,
                 createdAt: true,
                 completeState: true,
-                quiz: {
+                quiz: { 
+                    blockAttemptTimeWait: true,
+                    blockAttempt: true,
                     quizId: true,
                     timeLimit: true,
                     highestScoreRecorded: true,
@@ -78,6 +80,8 @@ export const ContentDetailsProvider = ({
                         attemptStatus: true,
                     },
                     questions: {
+                        mediaId: true,
+                        mediaType: true,
                         position: true,
                         quizQuestionId: true,
                         question: true,
@@ -86,6 +90,7 @@ export const ContentDetailsProvider = ({
                             quizQuestionAnswerId: true,
                             content: true,
                             isCorrect: true,
+                            position: true
                         },
                         point: true,
                         answered: true,

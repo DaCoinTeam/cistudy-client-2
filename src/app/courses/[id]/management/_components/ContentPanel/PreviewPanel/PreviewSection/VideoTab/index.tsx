@@ -13,26 +13,28 @@ export const VideoTab = () => {
 
     return (
         <div>
-            {
-                courseManagement?.previewVideoId ? <VideoPlayer
-                    src={getAssetUrl(courseManagement?.previewVideoId)}
-                    className="w-full"
-                /> : 
-                    <div>
-                        <VideoCameraIcon width={300} height={300} className="text-primary/20"/>
-                        <Spacer y={4} />
-                        <div className="text-sm text-foreground-400">Please upload your first preview video.</div>
-                    </div>
-            }
+            <div className="w-[400px]">
+                {
+                    courseManagement?.previewVideoId ? <VideoPlayer
+                        src={getAssetUrl(courseManagement?.previewVideoId)}
+                        className="w-full"
+                    /> : 
+                        <div>
+                            <VideoCameraIcon width={300} height={300} className="text-primary/20"/>
+                            <Spacer y={4} />
+                            <div className="text-sm text-foreground-400">Please upload your first preview video.</div>
+                        </div>
+                }
+            </div>
             <Spacer y={6} />
             <div className="gap-2 flex items-center">
+                <UploadButton />
                 <Button
                     color="primary"
                     variant="bordered"
                 >
           Cancel
                 </Button>
-                <UploadButton />
             </div>
         </div>
     )

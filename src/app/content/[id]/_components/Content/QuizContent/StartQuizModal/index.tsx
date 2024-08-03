@@ -7,7 +7,7 @@ import {
     useDisclosure,
     Spacer,
 } from "@nextui-org/react"
-import { forwardRef, useContext, useImperativeHandle, useRef } from "react"
+import { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { ContentDetailsContext } from "../../../../_hooks"
 import { StartQuizContext, StartQuizProvider } from "./StartQuizProvider"
 import {
@@ -19,6 +19,7 @@ import { ResultModalRef, ResultModalRefSelectors } from "./ResultModalRef"
 import { QuizIndexTable } from "./QuizIndexTable"
 import { QuestionCheckbox } from "./QuestionCheckbox"
 import { CountdownTimer } from "./Countdown"
+import { SocketIOContext } from "../../../../../../_hooks"
 
 export interface StartQuizModalRefSelectors {
   onOpen: () => void;
@@ -28,6 +29,7 @@ export interface StartQuizModalRefSelectors {
 const WrappedStartQuizModal = forwardRef<StartQuizModalRefSelectors>(
     (_, ref) => {
         const confirmModalRef = useRef<ConfirmModalRefSelectors>(null)
+        
         const resultModalRef = useRef<ResultModalRefSelectors>(null)
 
         const { swrs } = useContext(ContentDetailsContext)!
@@ -49,38 +51,67 @@ const WrappedStartQuizModal = forwardRef<StartQuizModalRefSelectors>(
             onClose,
         }))
 
+        const socket = useContext(SocketIOContext)!
+
+        const [finished, setFinished] = useState(false)
+
+        useEffect(() => {
+            if (!socket) return
+            socket.on("finishAttempt", (result: {
+                receivedPercent : number
+                isPassed: boolean
+                timeTaken: number
+                receivedPoints : number
+                totalPoints : number
+              }) => {
+                setFinished(true)
+                dispatch({
+                    type: "SET_STATE",
+                    payload: result,
+                })
+                onClose()
+                resultModalRef.current?.onOpen()
+                setFinished(false)
+            })
+        }, [socket])
+
         return (
             <div>
                 <Modal size="4xl" isOpen={isOpen} onOpenChange={onOpenChange}>
                     <ModalContent>
-                        {(onClose) => (
-                            <>
-                                <ModalBody className="p-0">
-                                    <div className="flex gap-6 p-6">
-                                        <div>
-                                            <QuizIndexTable />
-                                            <Spacer y={6} />
-                                            <CountdownTimer />
+                        <ModalBody className="p-0">
+                            <div className="flex gap-4 p-4">
+                                {
+                                    finished ? (
+                                        <div className="grid gap-4">
                                         </div>
-                                        <QuestionCheckbox />
-                                    </div>
-                                    <LoadingFadeScreen isLoading={state.isLoading} />
-                                </ModalBody>
-                                <ModalFooter className="gap-2">
-                                    <Button color="primary" variant="bordered" onPress={onClose}>
+                                    ) : (
+                                        <>
+                                            <div>
+                                                <QuizIndexTable />
+                                                <Spacer y={6} />
+                                                <CountdownTimer />
+                                            </div>
+                                            <QuestionCheckbox />
+                                            <LoadingFadeScreen isLoading={state.isLoading} />
+                                        </>
+                                    )
+                                }
+                            </div>
+                        </ModalBody>
+                        <ModalFooter className="gap-2">
+                            <Button color="primary" variant="bordered" onPress={onClose}>
                     Close
-                                    </Button>
-                                    <Button
-                                        color="primary"
-                                        onPress={() => { 
-                                            confirmModalRef.current?.onOpen() 
-                                        }}
-                                    >
+                            </Button>
+                            <Button
+                                color="primary"
+                                onPress={() => { 
+                                    confirmModalRef.current?.onOpen() 
+                                }}
+                            >
                     Submit
-                                    </Button>
-                                </ModalFooter>
-                            </>
-                        )}
+                            </Button>
+                        </ModalFooter>
                     </ModalContent>
                 </Modal>
                 <ConfirmModalRef
