@@ -30,7 +30,7 @@ export const EnrolledUsers = () => {
             <Spacer y={4}/>
             <div className="grid gap-4">
                 {
-                    (data?.students ?? []).map(({accountId, avatarId, avatarUrl, kind}) => (
+                    (data?.students ?? []).map(({accountId, avatarId, avatarUrl, kind, username}) => (
                         <div key={accountId} className="cursor-pointer">
                             <UserTooltip accountId={accountId}>
                                 <User avatarProps={
@@ -41,7 +41,7 @@ export const EnrolledUsers = () => {
                                             kind,
                                         })
                                     }
-                                } name={data?.creator.username}/>
+                                } name={username}/>
                             </UserTooltip>
                         </div>
                     ))
