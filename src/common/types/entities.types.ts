@@ -615,9 +615,14 @@ export interface NotificationEntity {
   title: string;
   description: string;
   sender: AccountEntity;
+  receiver: AccountEntity;
   viewed: boolean;
   referenceLink: string;
   notificationId: string;
+  type: string;
+  course: CourseEntity;
+  courseId: string;
+  isPublished: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

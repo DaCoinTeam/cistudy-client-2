@@ -1,19 +1,21 @@
-import { NotificationEntity } from "@common"
+import { NotificationEntity, parseTimeAgo } from "@common"
+import { CISTUDY_LOGO, STARCI_LOGO } from "@config"
 import { BellAlertIcon } from "@heroicons/react/24/outline"
 import {
     Avatar,
     Badge,
     Button,
     CircularProgress,
-    Image,
     Link,
     Popover,
     PopoverContent,
     PopoverTrigger,
     ScrollShadow,
     Skeleton,
-    Spacer,
+    Spacer
 } from "@nextui-org/react"
+import { getAssetUrl, getAvatarUrl, markNotificationAsRead } from "@services"
+import { useRouter } from "next/navigation"
 import { useContext, useEffect, useMemo } from "react"
 import InfiniteScroll from "react-infinite-scroller"
 import {
@@ -21,9 +23,14 @@ import {
     RootContext,
     SocketIOContext,
 } from "../../../_hooks"
-import { getAvatarUrl } from "@services"
-import { STARCI_COIN } from "@config"
-import { useRouter } from "next/navigation"
+const NOTIFICATION_TYPES = {
+
+    SYSTEM: "system",
+    TRANSACTION: "transaction",
+    INTERACT: "interact",
+    COURSE: "course",
+    CERTIFICATE: "certificate"
+}
 
 export const Notifications = () => {
     const socket = useContext(SocketIOContext)!
@@ -59,6 +66,12 @@ export const Notifications = () => {
         })
         return notification
     }, [data])
+    const getNotViewed = useMemo(() => {
+        if (!data) return 0
+        const last = data.at(-1)
+        if (!last) return 0
+        return last?.metadata?.notViewedCount
+    }, [data])
     const getPages = useMemo(() => {
         if (!data) return 0
         const last = data.at(-1)
@@ -66,6 +79,89 @@ export const Notifications = () => {
         return Math.ceil(last?.metadata?.count / COLUMNS_PER_PAGE)
     }, [data])
     const router = useRouter()
+    const onPressNotification = async (notification: NotificationEntity) => {
+        router.push(notification.referenceLink)
+        await markNotificationAsRead({
+            data: {
+                notificationIds: [notification.notificationId]
+            }
+        })
+            .then(() => {
+                console.log("success")
+            })
+            .catch((ex) => {
+                console.log("error", ex?.message)
+            })
+    }
+
+    const renderNotification = (notification: NotificationEntity) => {
+        switch (notification.type) {
+        case NOTIFICATION_TYPES.SYSTEM:
+            return (
+               
+                <Avatar
+                    alt="logo imgage"
+                    size="md"
+                    src={CISTUDY_LOGO}
+                />
+                 
+            )
+        case NOTIFICATION_TYPES.TRANSACTION:
+            return (
+               
+                <Avatar
+                    alt="logo imgage"
+                    size="md"
+                    src={STARCI_LOGO}
+                />
+                
+            )
+        case NOTIFICATION_TYPES.INTERACT:
+            return (
+                <Avatar
+                    name="avatar"
+                    size="md"
+                    src={getAvatarUrl({
+                        avatarId: notification?.sender?.avatarId,
+                        avatarUrl: notification?.sender?.avatarUrl,
+                        kind: notification?.sender?.kind,
+                    })}
+                />
+                   
+            )
+        case NOTIFICATION_TYPES.COURSE:
+            return (
+               
+                <Avatar
+                    alt="logo imgage"
+                    size="md"
+                    src={getAssetUrl(notification?.course?.thumbnailId)}
+                />
+                  
+            )
+        case NOTIFICATION_TYPES.CERTIFICATE:
+            return (
+                <Avatar
+                    alt="logo imgage"
+                    size="md"
+                    src={getAssetUrl(notification?.course?.thumbnailId)}
+                />
+            )
+        default:
+            return (
+                <Avatar
+                    alt="logo imgage"
+                    size="md"
+                    src={CISTUDY_LOGO}
+                />
+                    
+            )
+        }
+    }
+   
+    
+
+
     return (
         <Popover showArrow offset={10} placement="bottom" backdrop="opaque" classNames={{
             content: "p-0"
@@ -79,7 +175,7 @@ export const Notifications = () => {
                     ) : (
                         <Badge
                             color="danger"
-                            content={getNotification.length}
+                            content={getNotViewed}
                             shape="circle"
                         >
                             <BellAlertIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
@@ -92,7 +188,7 @@ export const Notifications = () => {
                     <div className="p-4">No notification</div>
                 ) : (
                     <div className="p-4">
-                        <ScrollShadow className="h-[400px] w-[420px]">
+                        <ScrollShadow className="h-[400px] w-[360px]">
                             <InfiniteScroll 
                                 className="flex flex-col"
                                 pageStart={0}
@@ -100,7 +196,7 @@ export const Notifications = () => {
                                 loadMore={onLoadMore}
                                 hasMore={size < getPages && !isValidating}
                                 useWindow={false}
-                                loader={<CircularProgress key={0} aria-label="Loading..." />}
+                                loader={<div className="w-full flex items-center justify-center pt-2"><CircularProgress key={0} aria-label="Loading..." /></div>}
                             >
                                 {isLoading ? (
                                     <div>
@@ -116,45 +212,28 @@ export const Notifications = () => {
                                     </div>
                                 ) : (
                                     getNotification.map(
-                                        ({
-                                            title,
-                                            description,
-                                            notificationId,
-                                            sender,
-                                            referenceLink,
-                                            viewed,
-                                            createdAt
-                                        }) => (
-                                            <div key={notificationId} className="border-b-1">
+                                        (notification) => (
+                                            <div key={notification.notificationId} className="border-b-1">
                                                 <Link
                                                     color="foreground"
-                                                    className={`cursor-pointer flex p-4 ${!viewed ? "bg-content2" : ""}`}
-                                                    onPress={() => router.push(referenceLink)}
+                                                    className={"cursor-pointer flex p-4 pr-1"}
+                                                    onPress={() => onPressNotification(notification)}
                                                 >
-                                                    <div>
-                                                        {sender ? (
-                                                            <Avatar
-                                                                name="avatar"
-                                                                className="w-10 h-10"
-                                                                src={getAvatarUrl({
-                                                                    avatarId: sender.avatarId,
-                                                                    avatarUrl: sender.avatarUrl,
-                                                                    kind: sender.kind,
-                                                                })}
-                                                            />
-                                                        ) : (
-                                                            <Image
-                                                                alt="reward"
-                                                                className="rounded-none w-10 h-10"
-                                                                src={STARCI_COIN}
-                                                            />
-                                                        )}
+                                                    <div className="grid grid-cols-6  gap-2">
+                                                        {renderNotification(notification)}
+                                                        <div className={`col-span-5 flex ${!notification.viewed ? "" : "opacity-65"}`}>
+                                                            <div>
+                                                                <div className="font-medium text-sm">{notification.title}</div>
+                                                                <div className="text-sm">{notification.description}</div>
+                                                                <div className="text-xs text-primary mt-1">{parseTimeAgo(notification?.updatedAt)}</div>
+                                                            </div>
+                                                            <Spacer x={4}/>
+                                                            <div className="w-6 text-end">
+                                                                {!notification.viewed ? <div className="text-primary tex-end text-4xl">&#x2022;</div> : (<></>)}
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <Spacer x={2} />
-                                                    <div>
-                                                        <div className="font-semibold text-sm">{title}</div>
-                                                        <div className="text-sm">{description}</div>
-                                                    </div>
+                                                    
                                                 </Link>
                                             </div>
                                         )
@@ -162,8 +241,8 @@ export const Notifications = () => {
                                 )}
                             </InfiniteScroll>
                         </ScrollShadow>
-                        <Spacer y={6}/>
-                        <Button color="primary" fullWidth> Mark all viewed </Button>
+                        {/* <Spacer y={6}/> */}
+                        {/* <Button color="primary" fullWidth> Mark all viewed </Button> */}
                     </div>
                 )}
             </PopoverContent>

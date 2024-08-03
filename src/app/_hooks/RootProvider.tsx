@@ -60,7 +60,7 @@ export const RootContext = createContext<RootContextValue | null>(null)
 interface WrappedRootProviderSelectors {
   mutate: any;
 }
-export const COLUMNS_PER_PAGE = 5
+export const COLUMNS_PER_PAGE = 10
 
 const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps<FormikValues> }) => {
     const reducer = useRootReducer()
@@ -280,10 +280,17 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                         title: true,
                         description: true,
                         createdAt: true,
+                        updatedAt: true,
                         senderId: true,
                         referenceLink: true,
                         viewed: true,
                         notificationId: true,
+                        type: true,
+                        course: {
+                            courseId: true,
+                            title: true,
+                            thumbnailId: true,
+                        },
                         sender: {
                             accountId: true,
                             avatarId: true,
@@ -294,6 +301,7 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                     },
                     metadata: {
                         count: true,
+                        notViewedCount: true,
                        
                     },
                 }
