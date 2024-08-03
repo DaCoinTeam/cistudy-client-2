@@ -8,6 +8,7 @@ import useSWRMutation from "swr/mutation"
 import numeral from "numeral"
 import dayjs from "dayjs"
 import { AttemptsModal } from "./AttemptsModal"
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline"
 
 export const QuizContent = () => {
     const startQuizModalRef = useRef<StartQuizModalRefSelectors | null>(null)
@@ -63,6 +64,7 @@ export const QuizContent = () => {
                     </div>
                     <Button 
                         isLoading={isMutating}
+                        isDisabled={quiz?.blockAttempt}
                         color="primary" 
                         className="w-52 text-white"
                         onPress={async () =>
@@ -78,6 +80,15 @@ export const QuizContent = () => {
                         }
                     </Button>
                 </div>
+                <Spacer y={4}/>
+                {
+                    quiz?.blockAttemptTimeWait ?
+                        <div className="flex gap-2 items-center">
+                            <ExclamationCircleIcon className="text-danger w-5 h-5"/>
+                            <div className="text-danger text-sm">You have taken 3 attempts. Please wait util {dayjs(quiz.blockAttemptTimeWait).format("YYYY, MMM D. hh:mm:ss")} to continue.</div>
+                        </div>
+                        : null
+                }
                 <Spacer y={4}/>
                 <Divider  />
                 <Spacer y={4}/>

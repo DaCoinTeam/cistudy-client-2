@@ -154,6 +154,9 @@ export interface CourseEntity {
   numberOfResources?: number;
   certificateStatus?: CertificateStatus;
   certificate?: CertificateEntity;
+  totalContents?: number
+  completedContents?: number
+  students?: Array<AccountEntity>
 }
 
 export interface CertificateEntity {
@@ -269,6 +272,8 @@ export interface QuizEntity {
   quizAttempts: QuizAttemptEntity;
   description: string;
   activeQuizAttempt?: QuizAttemptEntity;
+  blockAttempt?: boolean;
+  blockAttemptTimeWait?: Date;
 }
 
 export interface QuizQuestionEntity {

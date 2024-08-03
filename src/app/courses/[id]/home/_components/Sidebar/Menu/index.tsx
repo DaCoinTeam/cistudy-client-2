@@ -9,21 +9,15 @@ import {
     EyeIcon,
     ListBulletIcon,
 } from "@heroicons/react/24/outline"
-import { Award } from "lucide-react"
-import { useRouter } from "next/navigation"
 
 interface MenuProps {
   className?: string;
 }
 
 export const Menu = (props: MenuProps) => {
-    const router = useRouter()
     const { className } = props
 
-    const { swrs, reducer } = useContext(HomeContext)!
-    const { courseHomeSwr } = swrs
-    const { data } = courseHomeSwr
-    const { certificate } = {...data}
+    const { reducer } = useContext(HomeContext)!
     const [state, dispatch] = reducer
     const { panelSelected } = state
 
@@ -46,40 +40,7 @@ export const Menu = (props: MenuProps) => {
         })
     }
 
-    const items = certificate ? [
-        {
-            startContent: (
-                <ChatBubbleLeftRightIcon width={24} height={24} strokeWidth={3 / 2} />
-            ),
-            key: "forum",
-            content: "Forum",
-            panelSelected: PanelSelected.Forum,
-        },
-        {
-            startContent: (
-                <ListBulletIcon width={24} height={24} strokeWidth={3 / 2} />
-            ),
-            key: "sections",
-            content: "Sections",
-            panelSelected: PanelSelected.Sections,
-        },
-        {
-            startContent: (
-                <Award width={24} height={24} strokeWidth={3 / 2} />
-            ),
-            key: "certificate",
-            content: "Certificate",
-            panelSelected: PanelSelected.Certificate
-        },
-        {
-            startContent: (
-                <EyeIcon width={24} height={24} strokeWidth={3 / 2} />
-            ),
-            key: "preview",
-            content: "Preview",
-            panelSelected: PanelSelected.Preview,
-        },
-    ] : [
+    const items = [
         {
             startContent: (
                 <ChatBubbleLeftRightIcon width={24} height={24} strokeWidth={3 / 2} />
@@ -129,11 +90,6 @@ export const Menu = (props: MenuProps) => {
                             base: `items-center rounded-none text-foreground-400 !p-3 !bg-transparent ${isSelected(
                                 panelSelected
                             )}`,
-                        }}
-                        onPress={() => {
-                            if (panelSelected === PanelSelected.Certificate) {
-                                router.push(`/certificate/${certificate?.certificateId}`)
-                            }
                         }}
                         startContent={startContent}
                         key={key}

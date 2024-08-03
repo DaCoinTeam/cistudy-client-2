@@ -5,7 +5,8 @@ export enum PanelSelected {
     Sections = "sections",
     Price = "price",
     Target = "target",
-    Preview = "preview"
+    Preview = "preview",
+    Analytics = "analytics"
 }
 
 export interface ManagementState {

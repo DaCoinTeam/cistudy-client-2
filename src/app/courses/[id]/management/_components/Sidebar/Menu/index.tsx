@@ -2,7 +2,7 @@
 import { getSetValues } from "@common"
 import { Cog6ToothIcon, CurrencyDollarIcon, ListBulletIcon } from "@heroicons/react/24/outline"
 import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
-import { Goal, ScanEyeIcon } from "lucide-react"
+import { Goal, ScanEyeIcon, BarChart3Icon } from "lucide-react"
 import { useContext } from "react"
 import { ManagementContext, PanelSelected } from "../../../_hooks"
 
@@ -46,7 +46,7 @@ export const Menu = (props: MenuProps) => {
         {
             startContent: <ScanEyeIcon size={24} strokeWidth={3 / 2} />,
             key: "preview",
-            content: "Preview",
+            content: "Preview Video",
             panelSelected: PanelSelected.Preview,
         },
         {
@@ -66,6 +66,12 @@ export const Menu = (props: MenuProps) => {
             key: "price",
             content: "Price",
             panelSelected: PanelSelected.Price,
+        },
+        {
+            startContent: <BarChart3Icon width={24} height={24} />,
+            key: "analytics",
+            content: "Analytics",
+            panelSelected: PanelSelected.Analytics,
         },
     ]
 

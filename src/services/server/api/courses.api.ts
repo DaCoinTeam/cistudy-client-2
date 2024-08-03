@@ -209,18 +209,18 @@ export const updateLesson = async (
     })
 }
 
-export interface DeleteLessonInput {
+export interface DeleteSectionContentInput {
   data: {
-    lessonId: string;
+    sectionContentId: string;
   };
 }
 
-export const deleteLesson = async (
-    input: DeleteLessonInput
+export const deleteSectionContent = async (
+    input: DeleteSectionContentInput
 ): Promise<string> => {
     const { data } = input
-    const { lessonId } = data
-    const url = `${BASE_URL}/delete-lesson/${lessonId}`
+    const { sectionContentId } = data
+    const url = `${BASE_URL}/delete-section-content/${sectionContentId}`
 
     return await authAxios.delete(url)
 }

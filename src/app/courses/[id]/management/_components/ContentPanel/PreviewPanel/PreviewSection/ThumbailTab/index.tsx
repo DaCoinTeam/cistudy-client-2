@@ -12,32 +12,34 @@ export const ThumbnailTab = () => {
 
     return (
         <div>
-            {
-                courseManagement?.thumbnailId ? <Image
-                    classNames={{
-                        wrapper:
+            <div className="w-[400px]">
+                {
+                    courseManagement?.thumbnailId ? <Image
+                        classNames={{
+                            wrapper:
             "w-full !max-w-full aspect-video grid content-center overflow-hidden",
-                    }}
-                    alt="thumbnail"
-                    src={getAssetUrl(courseManagement?.thumbnailId)}
-                    className="w-full"
-                /> : 
-                    <div>
-                        <PhotoIcon width={300} height={300} className="text-primary/20"/>
-                        <Spacer y={4} />
-                        <div className="text-sm text-foreground-400">Please upload your first preview thumbnail.</div>
-                    </div>
+                        }}
+                        alt="thumbnail"
+                        src={getAssetUrl(courseManagement?.thumbnailId)}
+                        className="w-full"
+                    /> : 
+                        <div>
+                            <PhotoIcon width={300} height={300} className="text-primary/20"/>
+                            <Spacer y={4} />
+                            <div className="text-sm text-foreground-400">Please upload your first preview thumbnail.</div>
+                        </div>
                
-            }
+                }
+            </div>
             <Spacer y={6} />
             <div className="gap-2 flex items-center">
+                <UploadButton />
                 <Button
                     color="primary"
                     variant="bordered"
                 >
           Cancel
                 </Button>
-                <UploadButton />
             </div>
         </div>
     )

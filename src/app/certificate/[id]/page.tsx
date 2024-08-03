@@ -11,17 +11,25 @@ const Page = () => {
     const {certificateSwr} = swrs
     const {data} = certificateSwr
 
-    const navigateToHome = () => {
-        router.push("/")
-    }
-
     return (
         <div className="p-12 max-w-[1920px]">
             <div>
                 <Breadcrumbs>
-                    <BreadcrumbItem onPress={navigateToHome}>Courses</BreadcrumbItem>
-                    <BreadcrumbItem>{data?.course.title}</BreadcrumbItem>
-                    <BreadcrumbItem>Home</BreadcrumbItem>
+                    <BreadcrumbItem> Courses </BreadcrumbItem>
+                    <BreadcrumbItem
+                        onPress={() =>
+                            router.push(
+                                `/courses/${data?.course.courseId}`
+                            )
+                        }
+                    >
+                        {data?.course.title}
+                    </BreadcrumbItem>
+                    <BreadcrumbItem onPress={() =>
+                        router.push(
+                            `/courses/${data?.course.courseId}/home`
+                        )
+                    }>Home</BreadcrumbItem>
                     <BreadcrumbItem>Certificate</BreadcrumbItem>
                 </Breadcrumbs>
             </div>

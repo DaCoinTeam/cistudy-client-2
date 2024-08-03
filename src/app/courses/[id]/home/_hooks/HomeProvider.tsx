@@ -62,9 +62,19 @@ const WrappedHomeProvider = ({ children }: { children: ReactNode }) => {
                 enableDiscount: true,
                 isCreator: true,
                 enrolled: true,
+                completedContents: true,
+                totalContents: true,
+                students: {
+                    accountId: true,
+                    username: true,
+                    avatarId: true,
+                    avatarUrl: true,
+                    kind: true
+                },
                 certificate: {
                     certificateId: true
                 },
+                certificateStatus: true,
                 courseRatings: {
                     numberOf1StarRatings: true,
                     numberOf2StarRatings:true,
@@ -83,7 +93,9 @@ const WrappedHomeProvider = ({ children }: { children: ReactNode }) => {
                     sectionId: true,
                     title: true,
                     position: true,
+                    lockState: true,
                     contents: {
+                        completeState: true,
                         position: true,
                         sectionContentId: true,
                         title: true,
@@ -100,7 +112,7 @@ const WrappedHomeProvider = ({ children }: { children: ReactNode }) => {
                             passingPercent: true,
                             questions: {
                                 quizQuestionId: true
-                            }
+                            },
                         },
                         resource: {
                             attachments: {

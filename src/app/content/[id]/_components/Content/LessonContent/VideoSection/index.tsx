@@ -18,7 +18,6 @@ export const VideoSection = (props: VideoSectionProps) => {
     const { sectionContentSwr } = swrs
     const { data: sectionContent, mutate } = sectionContentSwr
     const { lessonVideoId, videoType, enableSeek } = { ...sectionContent?.lesson }
-
     const { notify } = useContext(RootContext)!
 
     return (

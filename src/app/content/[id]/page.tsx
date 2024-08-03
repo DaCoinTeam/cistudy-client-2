@@ -55,7 +55,11 @@ const Page = () => {
                                 >
                                     {sectionContentSwr.data.section.course.title}
                                 </BreadcrumbItem>
-                                <BreadcrumbItem>Home</BreadcrumbItem>
+                                <BreadcrumbItem onPress={() =>
+                                    router.push(
+                                        `/courses/${sectionContentSwr.data?.section.course.courseId}/home`
+                                    )
+                                }>Home</BreadcrumbItem>
                                 <BreadcrumbItem>Learn</BreadcrumbItem>
                             </Breadcrumbs>
                             {sectionContentSwr.data.section.course.certificateStatus !==
@@ -80,7 +84,7 @@ const Page = () => {
                                         {sectionContentSwr.data.section.course.certificateStatus ===
                   CertificateStatus.Gotten
                                             ? "View Certificate"
-                                            : "Get Certificate"}
+                                            : "Get Certificate & Rewards"}
                                     </Button>
                                 ) : null}
                         </div>
