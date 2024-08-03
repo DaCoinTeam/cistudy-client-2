@@ -133,24 +133,23 @@ export const CourseBanner = (props: CourseBannerProps) => {
                     </div>
                     <Spacer y={6} />
                     <div className="flex flex-col 2xl:flex-row ">
-                        <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 mr-2 mb-2">
-                            <div className="flex items-center mr-4">
-                                <GlobeAsiaAustraliaIcon className="w-6 h-6 text-gray-700 mr-2"/>
-                                <div className="text-gray-700 text-sm">English</div>
+                        <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 gap-4">
+                            <div className="flex items-center gap-2">
+                                <GlobeAsiaAustraliaIcon className="w-6 h-6 text-content4-foreground"/>
+                                <div className="text-content4-foreground text-sm">English</div>
                             </div>
-                            <div className="flex items-center mr-4">
-                                <CalendarDays width={20} height={20} className="text-gray-700 mr-2"/>
-                                <div className="text-gray-700 text-sm flex">Last updated: <p className="ms-1">{parseDateToString(updatedAt || new Date())}</p> </div>
+                            <div className="flex items-center gap-2">
+                                <CalendarDays width={20} height={20} className="text-content4-foreground"/>
+                                <div className="text-content4-foreground text-sm flex">Last updated: <p className="ms-1">{parseDateToString(updatedAt || new Date())}</p> </div>
                             </div>
-                            <div className="flex items-center">
-                                <FileBadge width={20} height={20} className="text-gray-700 mr-2"/>
-                                <div className="text-gray-700 text-sm">Certificate of completion</div>
+                            <div className="flex items-center gap-2">
+                                <FileBadge width={20} height={20} className="text-content4-foreground"/>
+                                <div className="text-content4-foreground text-sm">Certificate of completion</div>
                             </div>
-                        
-                        </div>
-                        <div className="flex items-center lg:ms-1 ">
-                            <MonitorSmartphone width={20} height={20} className="text-gray-700 mr-2"/>
-                            <div className="text-gray-700 text-sm">Access on browser and mobile</div>
+                            <div className="flex items-center lg:ms-1 gap-2">
+                                <MonitorSmartphone width={20} height={20} className="text-content4-foreground"/>
+                                <div className="text-content4-foreground text-sm">Access on browser and mobile</div>
+                            </div>
                         </div>
                     </div>
                    

@@ -4,6 +4,7 @@ import React, {
     createContext,
     useCallback,
     useContext,
+    useEffect,
     useMemo,
 } from "react"
 import {
@@ -21,7 +22,7 @@ export interface ForumLayoutContextValue {
   };
 }
 
-export const COLUMNS_PER_PAGE = 5
+export const COLUMNS_PER_PAGE = 20
 
 export const ForumLayoutContext =
   createContext<ForumLayoutContextValue | null>(null)
@@ -106,6 +107,13 @@ const WrappedForumLayoutProvider = ({
         }),
         [postsSwr]
     )
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            postsSwr.mutate()
+        }, 1000)
+        return () => clearInterval(interval)
+    }, [postsSwr])
 
     return (
         <ForumLayoutContext.Provider
