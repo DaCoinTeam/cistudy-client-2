@@ -5,7 +5,6 @@ import {
     Button,
     Chip,
     ChipProps,
-    Input,
     Modal,
     ModalBody,
     ModalContent,
@@ -17,11 +16,11 @@ import {
 
 import { getAvatarUrl, resolvePostReport } from "@services"
 import dayjs from "dayjs"
-import { forwardRef, use, useContext, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { ToastRefSelectors, ToastType } from "../../../../../../../_components"
-import { PostReportItemContext } from "../PostReportItemProvider"
-import { MediaGroup, TextRenderer } from "../../../../../../../_shared"
+import { forwardRef, useContext, useEffect, useImperativeHandle, useState } from "react"
+import { ToastType } from "../../../../../../../_components"
 import { RootContext } from "../../../../../../../_hooks"
+import { MediaGroup, TextRenderer } from "../../../../../../../_shared"
+import { PostReportItemContext } from "../PostReportItemProvider"
 
 export interface ResolveModalRefProps {
     report: ReportPostEntity;
@@ -42,8 +41,8 @@ export const ResolveModalRef = forwardRef<
     // const toastRef = useRef<ToastRefSelectors | null>(null)
     const {notify} = useContext(RootContext)!
     const { report } = props
-    const {title, description, reportedPost, reporterAccount, createdAt, processNote, processStatus, reportPostId} = {...report}
-    const {postMedias, html, title: reportedPostTitle} = {...reportedPost}
+    const {title, description, reportedPost, reporterAccount, createdAt, processNote, processStatus} = {...report}
+    const {postMedias, html,} = {...reportedPost}
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
     const [isNotValidNote, setIsNotValidNote] = useState(false)
     useImperativeHandle(ref, () => ({
@@ -129,10 +128,10 @@ export const ResolveModalRef = forwardRef<
                         <ModalHeader className="pt-4 pb-1 text-2xl tracking-tight font-semibold justify-center items-center flex flex-col">
                             <div className="mr-4">Post Report Detail </div> 
                             <div> <Chip className="capitalize mb-2 " color={statusColorMap[report.processStatus]} variant="flat">
-                    {processStatus}
-                                </Chip>
-                                </div>
-                            </ModalHeader>
+                                {processStatus}
+                            </Chip>
+                            </div>
+                        </ModalHeader>
                         <ModalBody className="p-4">
                             <div className="border-b pb-4 mb-4 border-gray-300 dark:border-gray-800">
                                 <h2 className="text-xl font-medium  mb-4 text-gray-800 dark:text-gray-300">Reporter Information</h2>
@@ -154,32 +153,32 @@ export const ResolveModalRef = forwardRef<
                                 <div className="pb-4 mb-4 border-b border-gray-300">
                                     <h2 className="text-xl font-medium  mb-4 text-gray-800 dark:text-gray-300">Post Information</h2>
                                     <div className="">
-                                            <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Title: </span>{reportedPost?.title}</p>
-                                            <div className="mb-2">
-                                                <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Content: </span></p>
-                                                <div className="border border-divider p-4 rounded-lg">
+                                        <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Title: </span>{reportedPost?.title}</p>
+                                        <div className="mb-2">
+                                            <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Content: </span></p>
+                                            <div className="border border-divider p-4 rounded-lg">
                                                 <TextRenderer html={html} />
-                                                </div>
                                             </div>
-                                            {postMedias?.length > 0 ? (
-                                                <div className="mb-2">
-                                                    <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Media: </span></p>
-                                                    <MediaGroup
+                                        </div>
+                                        {postMedias?.length > 0 ? (
+                                            <div className="mb-2">
+                                                <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Media: </span></p>
+                                                <MediaGroup
                                                     medias={postMedias?.map(({ mediaId, mediaType, postMediaId }) => ({
                                                         key: postMediaId,
                                                         mediaId,
                                                         mediaType,
                                                     }))}/>
                                             </div>
-                                            ): (<></>)}
-                                            <p className="mb-1"><span className="font-semibold  text-gray-800 dark:text-gray-300">Author:</span> <span className="">{reportedPost?.creator?.username} </span></p>
-                                            <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Created date: </span>{dayjs(reportedPost?.createdAt).format("hh:mm:ss A DD/MM/YYYY")}</p>
-                                            <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Number of likes: </span>{reportedPost?.numberOfLikes}</p>
-                                            <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Number of comments: </span>{reportedPost?.numberOfComments}</p>
-                                            <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Number of reports: </span>{reportedPost?.numberOfReports}</p>
-                                            <p className="mb-1"><span className="font-semibold  text-gray-800 dark:text-gray-300">This post is belong to the course:</span> <span className="">{reportedPost?.course?.title} </span></p>
+                                        ): (<></>)}
+                                        <p className="mb-1"><span className="font-semibold  text-gray-800 dark:text-gray-300">Author:</span> <span className="">{reportedPost?.creator?.username} </span></p>
+                                        <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Created date: </span>{dayjs(reportedPost?.createdAt).format("hh:mm:ss A DD/MM/YYYY")}</p>
+                                        <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Number of likes: </span>{reportedPost?.numberOfLikes}</p>
+                                        <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Number of comments: </span>{reportedPost?.numberOfComments}</p>
+                                        <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Number of reports: </span>{reportedPost?.numberOfReports}</p>
+                                        <p className="mb-1"><span className="font-semibold  text-gray-800 dark:text-gray-300">This post is belong to the course:</span> <span className="">{reportedPost?.course?.title} </span></p>
 
-                                        </div>
+                                    </div>
                                         
                                 </div>
                                 <div>

@@ -1,12 +1,12 @@
-import React, { useCallback, useContext } from "react"
+import { ReportPostCommentEntity } from "@common"
 import { Avatar, Chip, ChipProps, Pagination, Spacer, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
-import { parseISODateString, ReportPostCommentEntity } from "@common"
-import { PostCommentReportItemProvider, PostCommentReportItemContext, ROWS_PER_PAGE } from "./PostCommentReportItemProvider"
-import { ResolveModalRef, ResolveModalRefSelectors } from "./ResolveModal"
-import { ClipboardPenLine } from "lucide-react"
 import { getAvatarUrl } from "@services"
-import { TextRenderer } from "../../../../../../_shared"
 import dayjs from "dayjs"
+import { ClipboardPenLine } from "lucide-react"
+import React, { useCallback, useContext } from "react"
+import { TextRenderer } from "../../../../../../_shared"
+import { PostCommentReportItemContext, PostCommentReportItemProvider, ROWS_PER_PAGE } from "./PostCommentReportItemProvider"
+import { ResolveModalRef, ResolveModalRefSelectors } from "./ResolveModal"
 
 const WrappedPostCommentReportItem = () => {
     const { swrs, reducer } = useContext(PostCommentReportItemContext)!
@@ -35,7 +35,7 @@ const WrappedPostCommentReportItem = () => {
     ]
 
     const renderCell = useCallback((report: ReportPostCommentEntity, columnKey: React.Key) => {
-        const {processStatus, description, title, reporterAccount, reportedPostComment, createdAt, } = {...report}
+        const {processStatus, title, reporterAccount, reportedPostComment, createdAt, } = {...report}
 
         switch (columnKey) {
         case "no": 
@@ -44,42 +44,42 @@ const WrappedPostCommentReportItem = () => {
             </div>
         case "reporter":
             return <div className="flex items-center justify-center">
-            <Avatar
-                name='avatar'
-                className='w-8 h-8'
-                src={getAvatarUrl({
-                    avatarId: reporterAccount.avatarId,
-                    avatarUrl: reporterAccount.avatarUrl,
-                    kind: reporterAccount.kind,
-                })}
-            />
-            <Spacer x={2} />
-            <div className="font-normal">{reporterAccount.username}</div>
-        </div>
+                <Avatar
+                    name='avatar'
+                    className='w-8 h-8'
+                    src={getAvatarUrl({
+                        avatarId: reporterAccount.avatarId,
+                        avatarUrl: reporterAccount.avatarUrl,
+                        kind: reporterAccount.kind,
+                    })}
+                />
+                <Spacer x={2} />
+                <div className="font-normal">{reporterAccount.username}</div>
+            </div>
         case "comment":
             return (
                 <div className="line-clamp-2">
-                <TextRenderer html={reportedPostComment.html} />
-            </div>
+                    <TextRenderer html={reportedPostComment.html} />
+                </div>
             )
         case "author":
             return <div className="flex items-center justify-center line-clamp-1">
-            <div className="font-normal">{reportedPostComment.creator.username}</div>
-        </div>
+                <div className="font-normal">{reportedPostComment.creator.username}</div>
+            </div>
         case "status":
             return (
                 <Chip className="capitalize" color={statusColorMap[processStatus]} size="sm" variant="flat">
                     {processStatus}
                 </Chip>
             )
-         case "reportReason":
-                return (
-                    <div className="line-clamp-3">
-                        {title}
-                    </div>
-                )
-         case "submittedDate":
-                return dayjs(createdAt).format("hh:mm:ss A DD/MM/YYYY")
+        case "reportReason":
+            return (
+                <div className="line-clamp-3">
+                    {title}
+                </div>
+            )
+        case "submittedDate":
+            return dayjs(createdAt).format("hh:mm:ss A DD/MM/YYYY")
         
         case "actions":
             return (
