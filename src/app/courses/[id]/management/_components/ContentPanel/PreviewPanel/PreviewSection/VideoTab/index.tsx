@@ -13,7 +13,7 @@ export const VideoTab = () => {
 
     return (
         <div>
-            <div className="w-[400px]">
+            <div className="w-[600px]">
                 {
                     courseManagement?.previewVideoId ? <VideoPlayer
                         src={getAssetUrl(courseManagement?.previewVideoId)}

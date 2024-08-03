@@ -217,6 +217,7 @@ export interface LessonEntity {
   numberOfViews: number;
   description: string;
   enableSeek?: boolean;
+  isTrial: boolean
 }
 
 export interface ProgressEntity {

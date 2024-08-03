@@ -1,5 +1,4 @@
 "use client"
-import { parseTimeAgo } from "@common"
 import {
     Pagination,
     Spinner,
@@ -15,6 +14,7 @@ import { useRouter } from "next/navigation"
 import { useContext } from "react"
 import { InteractiveThumbnail } from "../../../../../_shared"
 import { CoursesManagementPanelContext, ROWS_PER_PAGE } from "../CoursesManagementPanelProvider"
+import dayjs from "dayjs"
 
 export const CoursesTable = () => {
     const router = useRouter()
@@ -91,7 +91,7 @@ export const CoursesTable = () => {
           Course
                 </TableColumn>
                 <TableColumn key="enrollment" className="text-sm">
-          Enrollment
+          Enrollments
                 </TableColumn>
                 <TableColumn key="price" className="text-sm">
           Price
@@ -126,7 +126,7 @@ export const CoursesTable = () => {
                         </TableCell>
                         <TableCell className="text-black dark:text-white">{numberOfEnrollments ?? 0 }</TableCell>
                         <TableCell className="text-black dark:text-white">{enableDiscount ? discountPrice : price} STARCI</TableCell>
-                        <TableCell className="text-black dark:text-white">{parseTimeAgo(createdAt)} ago</TableCell>
+                        <TableCell className="text-black dark:text-white">{dayjs(createdAt).format("HH:mm:ss DD/MM/YYYY")}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>

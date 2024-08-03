@@ -4,6 +4,7 @@ import {
     Input,
     ModalBody,
     Spacer,
+    Switch,
     Tab,
     Tabs,
     Textarea,
@@ -111,6 +112,19 @@ const WrappedEditLessonContent = () => {
                                 formik.touched.description && formik.errors.description
                             }
                         />
+                        <Spacer y={4} />
+                        <div className="flex justify-between items-center">
+                            <div className="text-sm">Is Trial</div>
+                            <Switch
+                                isSelected={formik.values.isTrial}
+                                onValueChange={(isTrial) =>
+                                    formik.setFieldValue("isTrial", isTrial)
+                                }
+                                classNames={{
+                                    wrapper: "mr-0",
+                                }}
+                            />
+                        </div>
                         <Spacer y={6} />
                         <div className="flex gap-2 flex-row-reverse w-full">
                             <Button

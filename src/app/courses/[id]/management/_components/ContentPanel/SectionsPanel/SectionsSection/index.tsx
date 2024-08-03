@@ -63,7 +63,9 @@ export const SectionsSection = (props: SectionsSectionProps) => {
             <Spacer y={6}/>
             <div className={`${className} border border-divider rounded-medium`}>
                 {renderSections()}
-                <Divider/>
+                {
+                    courseManagement?.sections.length ? <Divider/> : null
+                }
                 <AddSectionItem />
             </div>
         </div>
