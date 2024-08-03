@@ -1,7 +1,5 @@
-import { CourseReviewEntity } from "@common"
 import { useContext } from "react"
 import {
-    CourseReviewsContext,
     CourseReviewsProvider,
 } from "./CourseReviewProvider"
 import { CourseReviewItem } from "./CourseReviewItem"
@@ -12,32 +10,18 @@ import { ReviewInput } from "./ReviewInput"
 import { Stars } from "../../../../../_shared"
 
 const WrappedCourseReview = () => {
-    const { swrs } = useContext(CourseReviewsContext)!
-    const { data } = swrs.courseReviewsSwr
     const { swrs: courseDetailSwrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = courseDetailSwrs
     const { data: course } = courseSwr
-    const { enrolled, courseRatings, isCreator } = { ...course }
+    const { enrolled, courseRatings, isCreator, isReviewed, courseReviews } = { ...course }
     const {overallCourseRating,
         totalNumberOfRatings
     } = { ...courseRatings }
-
-    const getReviews = () => {
-        if (!data) return []
-        const reviewsReturn: Array<CourseReviewEntity> = []
-        data.forEach((element) => {
-            if (!element) return
-            const { results } = element
-            reviewsReturn.push(...results)
-        })
-        return reviewsReturn
-    }
 
     return (
         <div>
             <div className='text-2xl font-bold'>Reviews</div>
             <Spacer y={4} />
-
             <div className='flex items-end text-center mb-2'>
                 <Stars initialValue={overallCourseRating} className='mb-1 mr-2' readonly />
                 <p className='ms-1  text-sm lg:text-base font-medium text-gray-800 dark:text-gray-400'>
@@ -54,14 +38,14 @@ const WrappedCourseReview = () => {
                 {totalNumberOfRatings} ratings
             </p>
             <Spacer y={2} />
-            {enrolled && isCreator === false && <ReviewInput />}
-
+            {enrolled && isCreator === false && !isReviewed && <ReviewInput />}
+            <div className="text-primary">{isReviewed ? "You have already leaven a review." : null}</div>
             <Spacer y={6} />
             <div className='space-y-4'>
-                {getReviews()?.map((item) => {
+                {(courseReviews ?? []).map((courseReview) => {
                     return (
-                        <div key={item.courseReviewId}>
-                            <CourseReviewItem review={item} />
+                        <div key={courseReview.courseReviewId}>
+                            <CourseReviewItem review={courseReview} />
                         </div>
                     )
                 })}

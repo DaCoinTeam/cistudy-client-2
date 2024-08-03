@@ -42,8 +42,8 @@ export const AllCourseReviewsModal = () => {
             <Modal scrollBehavior="outside" size='4xl' isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <>
-                        <ModalHeader className='flex flex-col gap-1 font-bold'>Reviews</ModalHeader>
-                        <ModalBody className="mb-4">
+                        <ModalHeader className='p-4 pb-2 font-semibold text-xl'>Reviews</ModalHeader>
+                        <ModalBody className="p-4">
                             <CourseRatingChart />
                             <Spacer y={4}/>
                             <div className="space-y-4">
@@ -56,8 +56,7 @@ export const AllCourseReviewsModal = () => {
                                 })}
                             </div>
                                
-                        </ModalBody>
-                            
+                        </ModalBody>       
                     </>
                 </ModalContent>
             </Modal>

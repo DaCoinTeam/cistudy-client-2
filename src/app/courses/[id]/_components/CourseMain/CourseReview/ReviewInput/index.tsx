@@ -36,6 +36,7 @@ const ReviewInputWrapped = () => {
                     type='submit'
                     color='primary'
                     className="font-semibold"
+                    isLoading={formik.isSubmitting}
                     onPress={() => formik.handleSubmit()}
                 >Submit</Button>
             </div>

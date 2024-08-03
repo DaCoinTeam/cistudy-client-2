@@ -33,10 +33,12 @@ export const WrappedCourseReviewsProvider = ({
 }: {
   children: ReactNode;
 }) => {
-    const { swrs } = useContext(CourseDetailsContext)!
+    const { swrs, reducer: { "0": { refreshReviewsKey }} } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
     const { data: course } = courseSwr
     const courseId = course?.courseId ?? ""
+
+
     const fetchManyCourseReviews = useCallback(
         async ([key]: [number, string]) => {
             return await findManyCourseReviews(
@@ -76,7 +78,7 @@ export const WrappedCourseReviewsProvider = ({
     )
 
     const courseReviewsSwr = useSWRInfinite(
-        (key) => [key, "REVIEWS", courseId],
+        (key) => [key, "COURSE_REVIEWS", courseId, refreshReviewsKey],
         fetchManyCourseReviews,
         {
             revalidateIfStale: false,

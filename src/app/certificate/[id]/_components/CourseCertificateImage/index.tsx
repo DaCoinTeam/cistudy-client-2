@@ -1,6 +1,6 @@
 import { capitalizeWords, generateLinkedinLink } from "@common"
 import { Button, Spacer } from "@nextui-org/react"
-import { DownloadIcon, Linkedin } from "lucide-react"
+import { DownloadIcon } from "lucide-react"
 import { useContext, useEffect, useRef } from "react"
 import { CertificateContext } from "../../_hooks"
 import dayjs from "dayjs"
@@ -13,7 +13,7 @@ export const CourseCertificateImage = (props: CourseCertificateImageProps) => {
     const { swrs } = useContext(CertificateContext)!
     const { certificateSwr } = swrs
     const { data } = certificateSwr
-    const { certificateId, course, account, createdAt } = { ...data }
+    const { certificateId, course, account, createdAt, expiredDate } = { ...data }
     const { className } = props
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
@@ -49,18 +49,27 @@ export const CourseCertificateImage = (props: CourseCertificateImageProps) => {
             const ctx = canvas.getContext("2d") as CanvasRenderingContext2D
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
-            ctx.font = "26px Georgia"
+            ctx.font = "24px Georgia"
             ctx.textAlign = "center"
             ctx.fillText(account?.username ?? "", 350, 230, 400)
-            ctx.font = "30px Georgia"
-            ctx.fillText(capitalizeWords(course?.title ?? ""), 354, 275, 400)
+            ctx.font = "24px Georgia"
+            ctx.fillText(capitalizeWords(course?.title ?? ""), 354, 315, 400)
             ctx.font = "bold 18px Georgia"
-            ctx.fillText(course?.creator?.username ?? "", 570, 388, 200)
-            ctx.font = "12px Arial"
-            ctx.fillText(dayjs(createdAt).format("MMMM DD, YYYY"), 180, 362, 200)
-            ctx.fillText("7 Hours 20 Minutes", 195, 380, 200)
-            ctx.fillText(certificateId ?? "", 186, 415, 200)
+            ctx.textAlign = "left"
+            ctx.font = "12px Georgia"
+            ctx.fillText(`Issued at ${dayjs(createdAt).format("YYYY, MMM DD")}`, 110, 382, 200)
+            ctx.font = "12px Georgia"
+            ctx.fillText(`Expired at ${dayjs(expiredDate).format("YYYY, MMM DD")}`, 110, 402, 200)
+            ctx.font = "8px Georgia"
+            ctx.fillText(`Verify at https://cistudy.starci.net/certificate/${certificateId ?? ""}`, 110, 422, 1000)
+
+            ctx.textAlign = "center"
+            ctx.font = "12px Georgia"
+            ctx.fillText("Instructor", 707-180, 382, 1000)
+            ctx.font = "16px Georgia"
+            ctx.fillText(course?.creator?.username ?? "", 707-180, 402, 1000)
         }
+
     }
 
     const downloadCertificate = () => {
@@ -75,7 +84,7 @@ export const CourseCertificateImage = (props: CourseCertificateImageProps) => {
 
     return (
         <div className={`${className}`}>
-            <div className="border-2">
+            <div>
                 <canvas
                     id="certificate"
                     width={707}
@@ -97,7 +106,6 @@ export const CourseCertificateImage = (props: CourseCertificateImageProps) => {
                 <Button
                     color="primary"
                     variant="bordered"
-                    startContent={<Linkedin className="w-5 h-5" strokeWidth={3 / 2} />}
                     onPress={addTolinkedIn}
                 >
           Add to LinkedIn

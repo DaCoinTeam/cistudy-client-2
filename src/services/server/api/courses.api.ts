@@ -332,6 +332,7 @@ export interface DeleteResourceInput {
   };
 }
 
+
 export const deleteResource = async (
     input: DeleteResourceInput
 ): Promise<string> => {
@@ -349,9 +350,14 @@ export interface CreateCourseReviewInput {
     rating: number;
   };
 }
+
+export interface CreateCourseReviewOutput {
+  message: string;
+}
+
 export const createCourseReview = async (
     input: CreateCourseReviewInput
-): Promise<string> => {
+): Promise<CreateCourseReviewOutput> => {
     const { data } = input
     const url = `${BASE_URL}/create-course-review`
     return await authAxios.post(url, data)

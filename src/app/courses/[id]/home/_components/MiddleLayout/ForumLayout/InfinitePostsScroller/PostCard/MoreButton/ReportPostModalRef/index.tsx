@@ -81,16 +81,18 @@ export const WrappedReportPostModalRef = (refProps : WrappedReportPostModalRefPr
             </ModalBody>
             <ModalFooter className="p-4 pt-2">
                 <Button
-                    onPress={onPress}
+                    color="danger"
                     variant="bordered"
-                >
-            Submit
-                </Button>
-                <Button
-                    color="primary"
                     onPress={onClose}
                 >
             Cancel
+                </Button>
+                <Button
+                    isLoading={formik.isSubmitting}
+                    onPress={onPress}
+                    color="danger"
+                >
+            Submit
                 </Button>
             </ModalFooter>
         </>

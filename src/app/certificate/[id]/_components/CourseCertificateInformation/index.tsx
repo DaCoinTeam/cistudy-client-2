@@ -36,11 +36,18 @@ export const CourseCertificateInformation = (props: CourseCertificateInformation
                 <div className="grid gap-4">
                     <div>Completed by <span className="uppercase font-semibold">{data?.account.username ? data?.account.username : "Username"}</span></div>
                     <div className="text-sm">
-                        <div>{dayjs(data?.createdAt).format("YYYY, MMMM DD")}</div>
-                        <div>6 hours (approximately)</div>
-                        <div>Grade Achieved: 100%</div>
+                        <div className="flex gap-2 items-center">
+                            <div className="w-[80px] font-semibold">Issued At </div>
+                            <div>{data?.createdAt ? dayjs(data?.createdAt).format("YYYY, MMM DD HH:mm:ss") : ""}</div>
+                        </div>
+                        <div className="flex gap-2 items-center">
+                            <div className="w-[80px] font-semibold">Expired At </div>
+                            <div>{data?.expiredDate ? dayjs(data?.expiredDate).format("YYYY, MMM DD HH:mm:ss") : ""}</div>
+                        </div>
+                        <Spacer y={4}/>
+                        <div>The course includes {course?.sections?.length} sections</div>
                     </div>
-                    <div>
+                    <div className="text-sm">
                         <span className="uppercase font-semibold">{data?.account.username}</span> account is verified. CiStudy certifies their successful completion of {data?.course.title}
                     </div>
                 </div>
@@ -83,7 +90,7 @@ export const CourseCertificateInformation = (props: CourseCertificateInformation
                         <div className="text-sm">{course?.numberOfEnrollments && course?.numberOfEnrollments > 1 ? `${course?.numberOfEnrollments} students` : `${course?.numberOfEnrollments || 0} student`}</div>
                     </div>
                 </div>
-                <div className="font-semibold text-2xl">What you will learn</div>
+                <div className="font-semibold text-2xl">What you have done</div>
                 <Spacer y={4} />
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start p-4 border border-divider rounded-medium">
                     {data?.course.courseTargets?.map(({ courseTargetId, content }) => (

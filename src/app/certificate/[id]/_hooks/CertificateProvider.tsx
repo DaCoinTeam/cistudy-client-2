@@ -43,6 +43,9 @@ export const CertificateProvider = ({
                     kind: true
                 },
                 course: {
+                    sections:{
+                        sectionId: true
+                    },
                     courseId: true,
                     title: true,
                     description: true,

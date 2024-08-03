@@ -139,7 +139,7 @@ export interface CourseEntity {
   updatedAt: Date;
   courseCategories: Array<CourseCategoryEntity>;
   courseTargets: Array<CourseTargetEntity>;
-  courseReview: CourseReviewEntity;
+  courseReviews: Array<CourseReviewEntity>;
   posts: Array<PostEntity>;
   enrolledInfos: Array<EnrolledInfoEntity>;
   sections: Array<SectionEntity>;
@@ -159,6 +159,7 @@ export interface CourseEntity {
   totalContents?: number
   completedContents?: number
   students?: Array<AccountEntity>
+  isReviewed?: boolean
 }
 
 export interface CertificateEntity {

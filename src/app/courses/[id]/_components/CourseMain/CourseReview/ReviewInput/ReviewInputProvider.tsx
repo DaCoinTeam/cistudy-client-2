@@ -1,10 +1,5 @@
 import { Formik, FormikProps } from "formik"
-import {
-    ReactNode,
-    createContext,
-    useContext,
-    useState
-} from "react"
+import { ReactNode, createContext, useContext, useState } from "react"
 import * as Yup from "yup"
 import { ToastType } from "../../../../../../_components"
 import { RootContext } from "../../../../../../_hooks"
@@ -43,7 +38,10 @@ export const ReviewInputProvider = ({ children }: { children: ReactNode }) => {
     })
     const { notify } = useContext(RootContext)!
 
-    const { swrs: courseDetailSwrs } = useContext(CourseDetailsContext)!
+    const {
+        swrs: courseDetailSwrs,
+        reducer: { "1": dispatch },
+    } = useContext(CourseDetailsContext)!
     const { courseSwr } = courseDetailSwrs
     const { data: course, mutate } = courseSwr
     const { courseId } = { ...course }
@@ -60,22 +58,24 @@ export const ReviewInputProvider = ({ children }: { children: ReactNode }) => {
             })}
             enableReinitialize
             onSubmit={async ({ rating, content }) => {
-                await createCourseReview({
+                const { message } = await createCourseReview({
                     data: {
                         courseId: courseId ? courseId : "",
                         rating,
                         content,
                     },
                 })
-                    .then(() => {
-                        mutate()
-                    })
-                    .catch((ex) => {
-            notify!({
-                data: { error: ex.message },
-                type: ToastType.Error,
-            })
-                    })
+
+                await mutate()
+
+                dispatch({
+                    type: "SET_REFRESH_REVIEW_KEY",
+                })
+
+        notify!({
+            data: { message },
+            type: ToastType.Success,
+        })
             }}
         >
             {(formik) => (
