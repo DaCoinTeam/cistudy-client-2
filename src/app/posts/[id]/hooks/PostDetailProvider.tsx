@@ -43,6 +43,10 @@ const WrappedPostDetailProvider = ({ children }: { children: ReactNode }) => {
                     avatarUrl: true,
                     kind: true
                 },
+                course: {
+                    courseId: true,
+                    title: true,
+                },
                 postId: true,
                 courseId: true,
                 title: true,

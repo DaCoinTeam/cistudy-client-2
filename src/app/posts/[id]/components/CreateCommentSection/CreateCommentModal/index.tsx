@@ -68,6 +68,7 @@ export const CreateCommentModal = () => {
     return (
         <CreateCommentModalProvider onClose={onClose}>
             <Button
+                variant="flat"
                 fullWidth
                 onPress={onOpen}
                 className="!justify-normal px-3 text-foreground-400"

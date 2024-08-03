@@ -94,3 +94,12 @@ export const markNotificationAsRead = async (
     const url = `${BASE_URL}/mark-notification-as-read`
     return await authAxios.patch(url, data)
 }
+
+export interface MarkAllNotificationsAsReadOutput {
+  message: string
+}
+
+export const markAllNotificationsAsRead = async (): Promise<MarkAllNotificationsAsReadOutput> => {
+    const url = `${BASE_URL}/mark-all-notifications-as-read`
+    return await authAxios.patch(url)
+}
