@@ -1,10 +1,11 @@
 import { ReportPostEntity } from "@common"
-import { Avatar, Chip, ChipProps, Link, Pagination, Spacer, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react"
+import { Avatar, Chip, ChipProps, Link, Pagination, Spacer, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
 import { getAvatarUrl } from "@services"
 import dayjs from "dayjs"
 import React, { useCallback, useContext } from "react"
 import { PostReportItemContext, PostReportItemProvider, ROWS_PER_PAGE } from "./PostReportItemProvider"
 import { ResolveModalRef, ResolveModalRefSelectors } from "./ResolveModal"
+import { PencilRulerIcon } from "lucide-react"
 
 const WrappedPostReportItem = () => {
     const { swrs, reducer } = useContext(PostReportItemContext)!
@@ -25,8 +26,6 @@ const WrappedPostReportItem = () => {
     const columns = [
         {key: "no", label: "No"},
         { key: "reporter", label: "Reporter" },
-        {key: "post", label: "Post"},
-        {key: "author", label: "Post Author"},
         {key: "course", label: "Course"},
         { key: "reportReason", label: "Report Reason"},
         { key: "submittedDate", label: "Submitted Date" },
@@ -42,7 +41,7 @@ const WrappedPostReportItem = () => {
                 {(page - 1) * ROWS_PER_PAGE + indexOfItem(report)  + 1}
             </div>
         case "reporter":
-            return <div className="flex items-center justify-center">
+            return <div className="flex items-center">
                 <Avatar
                     name='avatar'
                     className='w-8 h-8'
@@ -87,15 +86,11 @@ const WrappedPostReportItem = () => {
             return (
                 <div className="flex justify-center">
                     {
-                        report.processStatus === "processing" ? (
-                            <Link className="flex flex-row gap-2" onClick={() => handleResolve(report)}>
-                                    Resolve 
-                            </Link>
-                        ) : (
-                            <Link onPress={() => handleResolve(report)}>
-                                    View
-                            </Link>
-                        )
+                        <Link as="button" className="flex flex-row gap-2" onClick={() => handleResolve(report)}>
+                            <Tooltip content={"Resolve"}>
+                                <PencilRulerIcon className="w-5 h-5" strokeWidth={3/2}/> 
+                            </Tooltip>             
+                        </Link>
                     }
                 </div>
             )
@@ -163,7 +158,7 @@ const WrappedPostReportItem = () => {
                 }
             >
                 <TableHeader columns={columns}>
-                    {(columns) => <TableColumn key={columns.key} className="uppercase text-sm text-slate-700 dark:text-slate-300" align={columns.key === "actions" ? "center" : "start"}>{columns.label}</TableColumn>}
+                    {(columns) => <TableColumn key={columns.key}  align={columns.key === "actions" ? "center" : "start"}>{columns.label}</TableColumn>}
                 </TableHeader>
                 <TableBody
                     items={reportData.results}

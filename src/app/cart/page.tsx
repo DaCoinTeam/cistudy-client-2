@@ -110,7 +110,7 @@ const Page = () => {
         confirmDeleteModalRef.current?.onOpen()
 
     return (
-        <div className="relative h-full flex flex-col mx-auto max-w-[1260px] mt-12 ">
+        <div className="relative h-full flex flex-col mx-auto w-full p-12">
             <div className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
         Shopping Cart
             </div>
