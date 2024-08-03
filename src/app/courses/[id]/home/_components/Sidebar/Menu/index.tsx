@@ -6,7 +6,6 @@ import { getSetValues } from "@common"
 import { PanelSelected } from "../../../_hooks"
 import {
     ChatBubbleLeftRightIcon,
-    EyeIcon,
     ListBulletIcon,
 } from "@heroicons/react/24/outline"
 
@@ -56,14 +55,6 @@ export const Menu = (props: MenuProps) => {
             key: "sections",
             content: "Sections",
             panelSelected: PanelSelected.Sections,
-        },
-        {
-            startContent: (
-                <EyeIcon width={24} height={24} strokeWidth={3 / 2} />
-            ),
-            key: "preview",
-            content: "Preview",
-            panelSelected: PanelSelected.Preview,
         },
     ]
 

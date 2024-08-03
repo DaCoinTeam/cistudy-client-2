@@ -103,14 +103,16 @@ export const WithdrawModalProvider = ({
                         withdrawAmount,
                     },
                 })
+
+                dispatch({
+                    type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
+                })
+
                 notify!({
                     data: {
                         message
                     },
                     type: ToastType.Success
-                })
-                dispatch({
-                    type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
                 })
             }}
         >

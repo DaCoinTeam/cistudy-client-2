@@ -37,17 +37,27 @@ export const InfinitePostsScroller = () => {
     }
 
     return (
-        <InfiniteScroll
-            className="flex flex-col gap-6"
-            pageStart={0}
-            initialLoad={false}
-            loadMore={onLoadMore}
-            hasMore={size < getPages() && !isValidating}
-            loader={<CircularProgress key={0} aria-label="Loading..." />}
-        >
-            {getPosts().map((post) => (
-                <PostCard key={post.postId} post={post} />
-            ))}
-        </InfiniteScroll>
+        <>
+            {
+                getPosts().length ? 
+                    (<InfiniteScroll
+                        className="flex flex-col gap-6"
+                        pageStart={0}
+                        initialLoad={false}
+                        loadMore={onLoadMore}
+                        hasMore={size < getPages() && !isValidating}
+                        loader={<CircularProgress key={0} aria-label="Loading..." />}
+                    >
+                        {getPosts().map((post) => (
+                            <PostCard key={post.postId} post={post} />
+                        ))}
+                    </InfiniteScroll>) :
+                    (
+                        <div className="grid items-center">
+                            <div> No posts available</div>
+                        </div>
+                    )
+            }
+        </>
     )
 }

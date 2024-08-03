@@ -63,7 +63,8 @@ export const DepositModalProvider = ({ children }: { children: ReactNode }) => {
 
     const { reducer : walletReducer } = useContext(WalletModalRefContext)!
     const [ , dispatch ] = walletReducer
-    
+
+
     return (
         <Formik
             initialValues={initialValues}
@@ -96,15 +97,15 @@ export const DepositModalProvider = ({ children }: { children: ReactNode }) => {
                     },
                 })
 
+                dispatch({
+                    type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
+                })
+
                 notify!({
                     data: {
                         message
                     },
                     type: ToastType.Success
-                })
-
-                dispatch({
-                    type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
                 })
             }}
         >

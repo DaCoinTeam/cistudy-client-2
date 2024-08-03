@@ -1,12 +1,12 @@
 import React, { useContext } from "react"
-import { HomeContext } from "../../../_hooks"
+import { HomeContext } from "../../../../_hooks"
 import { Button, Progress, Spacer } from "@nextui-org/react"
 import { CertificateStatus } from "@common"
 import { useRouter } from "next/navigation"
 import useSWRMutation from "swr/mutation"
 import { CreateCourseCertificateInput, createCourseCertificate } from "@services"
-import { RootContext } from "../../../../../../_hooks"
-import { ToastType } from "../../../../../../_components"
+import { RootContext } from "../../../../../../../_hooks"
+import { ToastType } from "../../../../../../../_components"
 
 export const CompleteState = () => {
     const { swrs } = useContext(HomeContext)!
@@ -30,10 +30,8 @@ export const CompleteState = () => {
     })
 
     return (
-        <div className="border border-divider rounded-medium p-4">
-            <div className="text-xl">Progress</div>
-            <Spacer y={6}/>
-            <Progress showValueLabel color="primary" value={(data?.completedContents ?? 0) * 100 / (data?.totalContents ?? 1)}/>
+        <div>
+            <Progress showValueLabel className="w-[400px]" color="primary" value={(data?.completedContents ?? 0) * 100 / (data?.totalContents ?? 1)}/>
             <Spacer y={4}/>
             <div className="flex gap-2 text-sm items-center text-foreground-400">
                 <div className="w-[150px]">Completed contents</div>
