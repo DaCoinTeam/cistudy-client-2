@@ -10,8 +10,8 @@ export const Sidebar = (props: SidebarProps) => {
     const { className } = props
 
     return (
-        <>
+        <div>
             <Menu className={`${className}`} />
-        </>
+        </div>
     )
 }   

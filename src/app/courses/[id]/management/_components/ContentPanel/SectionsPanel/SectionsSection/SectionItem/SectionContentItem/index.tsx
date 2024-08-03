@@ -1,7 +1,7 @@
 import React, { createContext, useMemo } from "react"
 import { LessonEntity, QuizEntity, ResourceEntity, SectionContentEntity, SectionContentType, VideoType, parseDuration } from "@common"
 import { MoreButton } from "./MoreButton"
-import { VideoIcon, Clock2Icon, FileQuestionIcon, PackageIcon, AirplayIcon, HelpCircleIcon, TrophyIcon } from "lucide-react"
+import { VideoIcon, Clock2Icon, FileQuestionIcon, PackageIcon, AirplayIcon, HelpCircleIcon, TrophyIcon, FlaskConicalIcon } from "lucide-react"
 import { Chip, Spacer } from "@nextui-org/react"
 import { PaperClipIcon } from "@heroicons/react/24/outline"
 
@@ -28,7 +28,7 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
     )
 
     const renderLession = (
-        { description, durationInSeconds, videoType }: LessonEntity,
+        { description, durationInSeconds, videoType, isTrial }: LessonEntity,
         { title, position }: SectionContentEntity
     ) => {
         return (
@@ -54,6 +54,11 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
                             (videoType === VideoType.DASH) ? <Chip variant="flat" size="sm" classNames={{
                                 base: "gap-1 px-2"
                             }} startContent={<AirplayIcon className="w-3 h-3" strokeWidth={3 / 2} />}>Adaptive Bitrate Streaming</Chip> : null
+                        }
+                        {
+                            (isTrial) ? <Chip variant="flat" size="sm" classNames={{
+                                base: "gap-1 px-2"
+                            }} startContent={<FlaskConicalIcon className="w-3 h-3" strokeWidth={3 / 2} />}>Trial</Chip> : null
                         }
                     </div>
                 </div>

@@ -1,8 +1,8 @@
 import { Chip, Divider, Spacer, User } from "@nextui-org/react"
 import React, { useContext } from "react"
-import { HomeContext } from "../../../_hooks"
-import { getAvatarUrl } from "../../../../../../../services/server"
-import { UserTooltip } from "../../../../../../_shared"
+import { HomeContext } from "../../../../_hooks"
+import { getAvatarUrl } from "@services"
+import { UserTooltip } from "../../../../../../../_shared"
 
 export const EnrolledUsers = () => {
     const { swrs } = useContext(HomeContext)!
@@ -10,9 +10,7 @@ export const EnrolledUsers = () => {
     const { data } = courseHomeSwr
     
     return (
-        <div className="border border-divider p-4 rounded-medium">
-            <div className="text-xl">Participants</div>
-            <Spacer y={6}/>
+        <div>
             <div className="cursor-pointer flex justify-between items-center" >
                 <User avatarProps={
                     {

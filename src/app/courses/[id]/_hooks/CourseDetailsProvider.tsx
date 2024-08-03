@@ -75,7 +75,9 @@ export const WrappedCourseDetailsProvider = ({
                             thumbnailId: true,
                             lessonVideoId: true,
                             description: true,
-                            durationInSeconds: true
+                            durationInSeconds: true,
+                            isTrial: true,
+                            videoType: true
                         },
                         quiz: {
                             questions: {
@@ -84,8 +86,9 @@ export const WrappedCourseDetailsProvider = ({
                                 answers: {
                                     quizQuestionAnswerId: true
                                 },  
-                                quizQuestionId: true
-                            }
+                                quizQuestionId: true,
+                            },
+                            passingPercent: true,
                         },
                         resource: {
                             attachments: {

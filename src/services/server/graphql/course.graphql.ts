@@ -10,7 +10,6 @@ import {
     CourseReviewEntity,
     CourseTargetEntity,
     LessonEntity,
-    NotificationEntity,
     QuizAttemptEntity,
     ResourceEntity,
     Schema,
@@ -398,48 +397,8 @@ export const initLandingPage = async (
 }
 
 
-
-export interface FindManyReceivedNotificationsInputData {
-  options?: {
-    take?: number
-    skip?: number
-
-  };
-}
-
-export interface FindManyReceivedNotificationsOutputData {
-    results: Array<NotificationEntity>;
-    metadata: {
-      count: number;
-    };
-}
-
 export interface FindOneCertificateInputData {
     certificateId: string
-}
-
-
-export const findManyReceivedNotifications = async (
-    data: FindManyReceivedNotificationsInputData,
-    schema: Schema<DeepPartial<FindManyReceivedNotificationsOutputData>>
-): Promise<FindManyReceivedNotificationsOutputData> => {
-    const payload = buildAuthPayloadString(schema)
-    const { data: graphqlData } = await authClient.query({
-        query: gql`
-          query findManyReceivedNotifications($data: FindManyReceivedNotificationsInputData!) {
-            findManyReceivedNotifications(data: $data) {
-  ${payload}
-}
-}
-      `,variables: {
-            data,
-        },
-    })
-
-    return getGraphqlResponseData({
-        data: graphqlData,
-        isAuth: true,
-    })
 }
 
 export const findOneCertificate = async (

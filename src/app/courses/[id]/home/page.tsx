@@ -13,7 +13,7 @@ const Page = () => {
     const [state] = reducer
 
     return (
-        <div className="p-12 max-w-[1920px] mx-auto w-full">
+        <div className="p-12 max-w-[1920px] mx-auto w-full min-h-screen">
             <Breadcrumbs size="lg">
                 <BreadcrumbItem> Courses </BreadcrumbItem>
                 <BreadcrumbItem

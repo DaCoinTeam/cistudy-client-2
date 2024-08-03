@@ -194,7 +194,7 @@ export const SectionsSection = () => {
                         lockState ?? LockState.InProgress,
                         completeState,
                         <PackageIcon
-                            className="w-6 h-6 text-foreground-400"
+                            className="w-6 h-6 text-primary"
                             strokeWidth={3 / 2}
                         />
                     )}

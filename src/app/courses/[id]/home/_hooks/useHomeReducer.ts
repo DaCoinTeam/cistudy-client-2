@@ -2,8 +2,7 @@ import { useReducer } from "react"
 
 export enum PanelSelected {
     Forum = "forum",
-    Sections = "sections",
-    Preview = "preview"
+    Sections = "sections"
 }
 
 export interface HomeState {

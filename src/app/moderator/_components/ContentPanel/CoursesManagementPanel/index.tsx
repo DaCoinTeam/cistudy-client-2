@@ -14,7 +14,7 @@ export const CoursesManagementPanel = (props: CoursesManagementPanelProps) => {
             <div className="justify-between flex items-center">
                 <div className="text-2xl">Courses Management</div>
             </div>
-            <Spacer y={4} />
+            <Spacer y={6} />
             <CourseApprovalItem />
         </div>
     )

@@ -98,6 +98,7 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                             description: true,
                             durationInSeconds: true,
                             videoType: true,
+                            isTrial: true
                         },
                         quiz: {
                             quizId: true,

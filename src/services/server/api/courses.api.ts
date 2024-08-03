@@ -180,6 +180,7 @@ export interface UpdateLessonInput {
     description?: string;
     thumbnailIndex?: number;
     lessonVideoIndex?: number;
+    isTrial?: boolean;
   };
   files?: Array<File>;
 }

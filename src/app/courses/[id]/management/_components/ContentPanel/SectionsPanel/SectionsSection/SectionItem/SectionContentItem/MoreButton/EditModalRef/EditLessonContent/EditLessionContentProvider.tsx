@@ -19,12 +19,14 @@ export const EditLessonContentContext = createContext<EditLessonContentContextVa
 interface FormikValues {
     title: string,
     description: string,
-    lessonVideo?: File
+    lessonVideo?: File,
+    isTrial: boolean,
 }
 
 const initialValues: FormikValues = {
     title: "",
     description: "",
+    isTrial: false,
 }
 
 const WrappedFormikProvider = ({ formik, children }: {
@@ -36,7 +38,7 @@ const WrappedFormikProvider = ({ formik, children }: {
     const { props } = useContext(SectionContentItemContext)!
     const { sectionContent } = props
     const { lesson, title } = sectionContent
-    const { description } = lesson
+    const { description, isTrial } = lesson
 
     useEffect(() => {
         if (!title) return
@@ -51,6 +53,14 @@ const WrappedFormikProvider = ({ formik, children }: {
     }, [
         description
     ])
+
+    useEffect(() => {
+        if (!isTrial) return
+        formik.setFieldValue("isTrial", isTrial)
+    }, [
+        isTrial
+    ])
+
 
     const editLessonContentContextValue: EditLessonContentContextValue = useMemo(
         () => ({
@@ -81,7 +91,7 @@ export const EditLessonContentProvider = ({ children }: { children: ReactNode })
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({})
         }
-        onSubmit={async ({ title, description, lessonVideo }) => {
+        onSubmit={async ({ title, description, lessonVideo, isTrial }) => {
             const files: Array<File> = []
             let lessonVideoIndex: number | undefined
 
@@ -95,7 +105,8 @@ export const EditLessonContentProvider = ({ children }: { children: ReactNode })
                     lessonId: sectionContentId,
                     title,
                     lessonVideoIndex,
-                    description
+                    description,
+                    isTrial
                 },
                 files
             })

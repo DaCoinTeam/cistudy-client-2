@@ -6,6 +6,7 @@ import { PanelSelected, ManagementContext } from "../../_hooks"
 import { TargetPanel } from "./TargetPanel"
 import { PreviewPanel } from "./PreviewPanel"
 import { PricePanel } from "./PricePanel"
+import { SettingsPanel } from "./SettingsPanel"
 
 interface ContentPanelProps {
   className?: string;
@@ -22,7 +23,9 @@ export const ContentPanel = (props: ContentPanelProps) => {
         [PanelSelected.Sections]: <SectionsPanel className={`${className}`} />,
         [PanelSelected.Price]: <PricePanel className={`${className}`} />,
         [PanelSelected.Preview]: <PreviewPanel className={`${className}`} />,
-        [PanelSelected.Target]: <TargetPanel className={`${className}`} />
+        [PanelSelected.Target]: <TargetPanel className={`${className}`} />,
+        [PanelSelected.Analytics]: <SettingsPanel className={`${className}`}/>,
+        [PanelSelected.Settings]: <SettingsPanel className={`${className}`}/>
     }
 
     return <>{panelSelectedToComponent[panelSelected]}</>

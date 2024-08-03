@@ -5,24 +5,20 @@ import { CourseDetailsContext } from "../../../_hooks"
 
 import {
     LessonEntity,
-    parseDuration,
     QuizEntity,
     SectionContentType,
     SectionContentEntity,
     ResourceEntity,
     sortByPosition,
-    VideoType,
 } from "@common"
 import {
-    AirplayIcon,
-    Clock2Icon,
     FileQuestionIcon,
     HelpCircleIcon,
     PackageIcon,
     TrophyIcon,
-    VideoIcon,
 } from "lucide-react"
 import { PaperClipIcon } from "@heroicons/react/24/outline"
+import { TrialVideoModal } from "./TrialVideoModal"
 
 export const Sections = () => {
     const { swrs } = useContext(CourseDetailsContext)!
@@ -36,61 +32,9 @@ export const Sections = () => {
     )
 
     const renderLession = (
-        { description, durationInSeconds, videoType }: LessonEntity,
-        { title, position }: SectionContentEntity
-    ) => {
-        return (
-            <>
-                <div>
-                    <VideoIcon
-                        className="w-6 h-6 text-foreground-400"
-                        strokeWidth={3 / 2}
-                    />
-                </div>
-                <div>
-                    <div className="flex gap-2 items-center">
-                        <div>
-                            <span className="font-semibold">{position}. Lesson: </span>
-                            <span>{title}</span>
-                        </div>
-                    </div>
-                    <div className="text-xs text-foreground-400 line-clamp-1">
-                        {description}
-                    </div>
-                    <Spacer y={1} />
-                    <div className="flex gap-2">
-                        <Chip
-                            classNames={{
-                                base: "gap-1 px-2",
-                            }}
-                            size="sm"
-                            color="default"
-                            variant="flat"
-                            startContent={
-                                <Clock2Icon className="w-3 h-3" strokeWidth={3 / 2} />
-                            }
-                        >
-                            {parseDuration(durationInSeconds ?? 0)}
-                        </Chip>
-                        {videoType === VideoType.DASH ? (
-                            <Chip
-                                variant="flat"
-                                size="sm"
-                                classNames={{
-                                    base: "gap-1 px-2",
-                                }}
-                                startContent={
-                                    <AirplayIcon className="w-3 h-3" strokeWidth={3 / 2} />
-                                }
-                            >
-                Adaptive Bitrate Streaming
-                            </Chip>
-                        ) : null}
-                    </div>
-                </div>
-            </>
-        )
-    }
+        lesson: LessonEntity,
+        content: SectionContentEntity
+    ) => <TrialVideoModal lesson={lesson} sectionContent={content}/>
 
     const renderQuiz = (
         { description, passingPercent, questions }: QuizEntity,

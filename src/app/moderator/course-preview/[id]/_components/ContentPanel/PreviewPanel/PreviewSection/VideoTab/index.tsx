@@ -15,7 +15,7 @@ export const VideoTab = () => {
             {
                 courseManagement?.previewVideoId ? <VideoPlayer
                     src={getAssetUrl(courseManagement?.previewVideoId)}
-                    className="w-full"
+                    className="w-[600px]"
                 /> : 
                     <div>
                         <VideoCameraIcon width={300} height={300} className="text-primary/20"/>
