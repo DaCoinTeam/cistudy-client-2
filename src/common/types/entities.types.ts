@@ -110,6 +110,7 @@ export interface PostEntity {
   isPostOwner: boolean;
   numberOfRewardableCommentsLeft: number;
   numberOfRewardableLikesLeft: number;
+  numberOfReports: number;
 }
 
 export enum CertificateStatus {
@@ -152,6 +153,7 @@ export interface CourseEntity {
   numberOfQuizzes?: number;
   numberOfLessons?: number;
   numberOfResources?: number;
+  numberOfReports: true,
   certificateStatus?: CertificateStatus;
   certificate?: CertificateEntity;
   totalContents?: number
@@ -538,8 +540,9 @@ export interface CourseReviewEntity {
 
 export interface ReportAccountEntity {
   reportAccountId: string;
-  reportedAccountId: string;
-  reporterAccountId: string;
+  reportedId: string;
+  reporterId: string;
+  title: string;
   description: string;
   processNote: string;
   processStatus: string;
@@ -551,8 +554,10 @@ export interface ReportAccountEntity {
 
 export interface ReportCourseEntity {
   reportCourseId: string;
-  reportedCourseId: string;
-  reporterAccountId: string;
+  courseId: string;
+  accountId: string;
+  title: string;
+  numberOfReports: number;
   description: string;
   processNote: string;
   processStatus: string;
@@ -564,8 +569,9 @@ export interface ReportCourseEntity {
 
 export interface ReportPostEntity {
   reportPostId: string;
-  reportedPostId: string;
-  reporterAccountId: string;
+  postId: string;
+  title: string;
+  accountId: string;
   description: string;
   processNote: string;
   processStatus: string;
@@ -577,8 +583,9 @@ export interface ReportPostEntity {
 
 export interface ReportPostCommentEntity {
   reportPostCommentId: string;
-  reportedPostCommentId: string;
-  reporterAccountId: string;
+  postCommentId: string;
+  accountId: string;
+  title: string;
   description: string;
   processNote: string;
   processStatus: string;

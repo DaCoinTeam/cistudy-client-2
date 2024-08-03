@@ -1,15 +1,17 @@
-import React, { useCallback, useContext } from "react"
-import { Chip, ChipProps, Pagination, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
 import { parseISODateString, ReportCourseEntity } from "@common"
-import { CourseReportItemProvider, CourseReportItemContext, ROWS_PER_PAGE } from "./CourseReportItemProvider"
+import { Avatar, Chip, ChipProps, Link, Pagination, Spacer, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react"
+import { getAvatarUrl } from "@services"
+import React, { useCallback, useContext } from "react"
+import { CourseReportItemContext, CourseReportItemProvider, ROWS_PER_PAGE } from "./CourseReportItemProvider"
 import { ResolveModalRef, ResolveModalRefSelectors } from "./ResolveModal"
-import { ClipboardPenLine } from "lucide-react"
+import dayjs from "dayjs"
 
 const WrappedCourseReportItem = () => {
     const { swrs, reducer } = useContext(CourseReportItemContext)!
-    const { courseReportsSwr } = swrs
-    const { data: reportData, isLoading } = courseReportsSwr
+    const { courseReportsSwr, } = swrs
+    const { data: reportData, isLoading, } = courseReportsSwr
     const [state, dispatch] = reducer
+    const { page } = state
 
     const resolveModalRef = React.useRef<ResolveModalRefSelectors | null>(null)
 
@@ -18,57 +20,70 @@ const WrappedCourseReportItem = () => {
         rejected: "danger",
         processing: "warning",
     }
+    const indexOfItem = (item: ReportCourseEntity) => reportData?.results.indexOf(item) || 0
 
     const columns = [
+        { key: "no", label: "No" },
         { key: "reporter", label: "Reporter" },
-        { key: "title", label: "Title"},
-        { key: "createdAt", label: "Created At" },
-        { key: "updatedAt", label: "Updated At"},
+        { key: "course", label: "Course"},
         { key: "status", label: "Status" },
-        { key: "description", label: "Description"},
+        { key: "reportTitle", label: "Report Title"},
+        { key: "submittedDate", label: "Submitted date" },
         { key: "actions", label: "Actions" }
     ]
 
     const renderCell = useCallback((report: ReportCourseEntity, columnKey: React.Key) => {
         switch (columnKey) {
+        case "no": 
+            return <div>
+                {(page - 1)* ROWS_PER_PAGE + indexOfItem(report)  + 1}
+            </div>
         case "reporter":
-            return report.reporterAccount.username
-        case "title":
+            return <div className="flex items-center justify-center">
+                <Avatar
+                    name='avatar'
+                    className='w-8 h-8'
+                    src={getAvatarUrl({
+                        avatarId: report.reporterAccount.avatarId,
+                        avatarUrl: report.reporterAccount.avatarUrl,
+                        kind: report.reporterAccount.kind,
+                    })}
+                />
+                <Spacer x={2} />
+                <div className="font-normal">{report.reporterAccount.username}</div>
+            </div>
+        case "course":
             return (
-                <div className="line-clamp-3">
+                <div className="font-normal">
                     {report.reportedCourse.title}
                 </div>
             )
-        case "createdAt":
-            return parseISODateString(report.createdAt)
-        case "updatedAt":
-            return parseISODateString(report.updatedAt)
         case "status":
             return (
                 <Chip className="capitalize" color={statusColorMap[report.processStatus]} size="sm" variant="flat">
                     {report.processStatus}
                 </Chip>
             )
-        case "description":
+        case "reportTitle":
             return (
                 <div className="line-clamp-3">
-                    {report.description}
+                    {report.title}
                 </div>
             )
+        case "submittedDate":
+            return dayjs(report.createdAt).format("hh:mm:ss A DD/MM/YYYY")
         case "actions":
             return (
                 <div className="flex justify-center">
                     {
-                        report.processStatus === "processing" && (
-                            <div className="flex flex-row gap-2">
-                                <Tooltip content="Resolve" color="primary">
-                                    <ClipboardPenLine
-                                        color="rgb(20,184,166)" 
-                                        onClick={() => handleResolve(report)}
-                                        className="cursor-pointer" 
-                                    />
-                                </Tooltip>
-                            </div>
+                        report.processStatus === "processing" ? (
+                            <Link className="flex flex-row gap-2" onPress={() => handleResolve(report)}>
+                                Resolve 
+                            </Link>
+                        ) : (
+                            <Link onPress={() => handleResolve(report)}>
+                                View
+                            </Link>
                         )
                     }
                 </div>
@@ -137,7 +152,7 @@ const WrappedCourseReportItem = () => {
                 }
             >
                 <TableHeader columns={columns}>
-                    {(columns) => <TableColumn key={columns.key} align={columns.key === "actions" ? "center" : "start"}>{columns.label}</TableColumn>}
+                    {(columns) => <TableColumn className="uppercase text-sm text-slate-700 dark:text-slate-300" key={columns.key} align={columns.key === "actions" ? "center" : "start"}>{columns.label}</TableColumn>}
                 </TableHeader>
                 <TableBody
                     items={reportData.results}
@@ -145,7 +160,7 @@ const WrappedCourseReportItem = () => {
                     loadingState={loadingState()}
                     emptyContent="No course reports yet."
                 >
-                    {(item) => (
+                    {( item,) => (
                         <TableRow key={item.reportCourseId}>
                             {
                                 (columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>

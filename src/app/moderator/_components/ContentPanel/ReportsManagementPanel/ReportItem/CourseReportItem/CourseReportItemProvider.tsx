@@ -36,19 +36,38 @@ const WrappedCourseReportItem = ({ children }: { children: ReactNode }) => {
                 {
                     results: {
                         reportCourseId: true,
-                        reportedCourseId: true,
-                        reporterAccountId: true,
+                        courseId: true,
+                        accountId: true,
+                        title: true,
                         description: true,
                         processNote: true,
                         processStatus: true,
                         reportedCourse: {
                             courseId: true,
                             title: true,
+                            createdAt: true,
+                            thumbnailId: true,
+                            numberOfReports: true,
+                            courseRatings: {
+                                overallCourseRating: true,
+                                totalNumberOfRatings: true,
+                            },
+                            creator: {
+                                accountId: true,
+                                username: true,
+                                email: true,
+                                avatarId: true,
+                                avatarUrl: true,
+                                kind: true,
+                            }
                         },
                         reporterAccount: {
                             accountId: true,
                             username: true,
                             email: true,
+                            avatarId: true,
+                            avatarUrl: true,
+                            kind: true,
                         },
                         createdAt: true,
                         updatedAt: true,

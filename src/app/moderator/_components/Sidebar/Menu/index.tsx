@@ -49,7 +49,7 @@ export const Menu = (props: MenuProps) => {
                 <BookCheck size={24} strokeWidth={3/2}/>
             ),
             key: "coursesApproval",
-            content: "Courses Approval",
+            content: "Courses",
             panelSelected: PanelSelected.CoursesApproval,
         }
     ]
