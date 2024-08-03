@@ -17,7 +17,7 @@ export interface SetPanelSelectedAction {
 export type ModeratorAction = SetPanelSelectedAction;
 
 export const state: ModeratorState = {
-    panelSelected: PanelSelected.Reports,
+    panelSelected: PanelSelected.CoursesApproval,
 }
 
 export const reducer = (

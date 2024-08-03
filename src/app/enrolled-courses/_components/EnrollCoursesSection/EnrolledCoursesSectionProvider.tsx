@@ -26,7 +26,7 @@ export interface EnrolledCoursesSectionContextValue {
   };
 }
 
-export const ROWS_PER_PAGE = 5
+export const ROWS_PER_PAGE = 1000
 
 export const EnrolledCoursesSectionContext =
   createContext<EnrolledCoursesSectionContextValue | null>(null)

@@ -253,7 +253,6 @@ export interface SectionContentEntity {
   position: number;
   createdAt: Date;
   updatedAt: Date;
-
   section: SectionEntity;
   lesson: LessonEntity;
   resource: ResourceEntity;
