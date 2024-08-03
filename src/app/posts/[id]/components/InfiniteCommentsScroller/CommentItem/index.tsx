@@ -51,7 +51,6 @@ export const CommentItem = (props: CommentItemProps) => {
     const {postSwr} = postDetailSwrs
     const {data: postCommentData} = postSwr
     const { creator: postCreator } = {...postCommentData}
-    const { accountId: postCreatorAccountId } = postCreator
     const {
         avatarId,
         username,
@@ -93,7 +92,7 @@ export const CommentItem = (props: CommentItemProps) => {
                                     {isEdited ? <div>Edited</div> : null}
                                 </div>
                             </div>
-                            {postCreatorAccountId === commentCreatorAccountId && (
+                            {postCreator?.accountId === commentCreatorAccountId && (
                                 <Chip
                                     startContent={<PencilIcon size={18} className='ml-1' />}
                                     variant='flat'
@@ -131,7 +130,7 @@ export const CommentItem = (props: CommentItemProps) => {
                                     <>
                                         {isRewardable && (
                                             <>
-                                                {postCreatorAccountId === profileAccountId && (
+                                                {postCreator?.accountId === profileAccountId && (
                                                     <MarkAsSolutionButton postCommentId={postCommentId} />
                                                 )}
                                             </>
