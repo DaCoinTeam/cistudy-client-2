@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext, useRef } from "react"
 import { Sidebar, ContentPanel, CourseApproveModalRef, CourseApproveModalRefSelectors } from "./_components"
-import { BreadcrumbItem, Breadcrumbs, Button, Chip, Spacer } from "@nextui-org/react"
+import { BreadcrumbItem, Breadcrumbs, Button, Spacer } from "@nextui-org/react"
 import { ManagementContext } from "./_hooks"
 import { VerifyStatus } from "../../../../common/types"
 import { truncate } from "../../../../common/utils"
@@ -15,16 +15,6 @@ const Page = () => {
     const { courseId, verifyStatus } = { ...data }
     const router = useRouter()
 
-    const renderStatus = () => {
-        const map: Record<VerifyStatus, JSX.Element> = {
-            [VerifyStatus.Draft]: <Chip color="default" variant="flat"> Draft </Chip>,
-            [VerifyStatus.Pending]: <Chip color="warning" variant="flat"> Pending </Chip>,
-            [VerifyStatus.Approved]: <Chip color="success" variant="flat"> Approved </Chip>,
-            [VerifyStatus.Rejected]: <Chip color="danger" variant="flat"> Rejected </Chip>,
-        }
-        return map[verifyStatus ?? VerifyStatus.Draft]
-    }
-
     return (
         <div className="px-12 my-12 max-w-[1600px] mx-auto w-full">
             <div className="flex justify-between items-center">
@@ -34,7 +24,6 @@ const Page = () => {
                     <BreadcrumbItem>{truncate(courseId ?? "")}</BreadcrumbItem>
                 </Breadcrumbs>
                 <div className="flex gap-2 items-center">
-                    {renderStatus()}
                     {
                         verifyStatus === VerifyStatus.Pending && (
                             <Button

@@ -22,7 +22,7 @@ export const WrappedWithdrawModal = () => {
 
     return (
         <>
-            <Button fullWidth className="flex-1" onPress={onOpen}>
+            <Button  variant="flat" fullWidth className="flex-1" onPress={onOpen}>
         Withdraw
             </Button>
             <Modal isDismissable={false} isOpen={isOpen} onOpenChange={onOpenChange}>

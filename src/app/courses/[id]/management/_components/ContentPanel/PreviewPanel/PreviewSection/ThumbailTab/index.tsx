@@ -12,7 +12,7 @@ export const ThumbnailTab = () => {
 
     return (
         <div>
-            <div className="w-[400px]">
+            <div className="w-[600px]">
                 {
                     courseManagement?.thumbnailId ? <Image
                         classNames={{

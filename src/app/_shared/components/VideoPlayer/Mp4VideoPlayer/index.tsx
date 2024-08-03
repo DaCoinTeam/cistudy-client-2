@@ -131,7 +131,7 @@ export const Mp4VideoPlayer = (props: Mp4VideoPlayerProps) => {
                 onMouseLeave={onMouseLeave}
             >
                 <video
-                    className="h-full m-0 w-full object-cover"
+                    className="h-full m-auto object-cover"
                     ref={playerRef}
                     aria-label="Playback"
                 />

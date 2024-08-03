@@ -19,7 +19,7 @@ export const ThumbnailTab = () => {
                     }}
                     alt="thumbnail"
                     src={getAssetUrl(courseManagement?.thumbnailId)}
-                    className="w-full"
+                    className="w-[600px]"
                 /> : 
                     <div>
                         <PhotoIcon width={300} height={300} className="text-primary/20"/>

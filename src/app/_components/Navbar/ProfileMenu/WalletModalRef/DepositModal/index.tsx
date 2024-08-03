@@ -20,7 +20,7 @@ export const WrappedDepositModal = () => {
 
     return (
         <>
-            <Button fullWidth onPress={onOpen}>
+            <Button  variant="flat" fullWidth onPress={onOpen}>
         Deposit
             </Button>
             <Modal isDismissable={false} isOpen={isOpen} onOpenChange={onOpenChange}>

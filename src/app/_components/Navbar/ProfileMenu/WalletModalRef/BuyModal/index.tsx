@@ -7,12 +7,9 @@ import {
     Button,
     Input,
     Spacer,
-    Tooltip,
     ModalFooter,
 } from "@nextui-org/react"
 import { BuyModalContext, BuyModalProvider } from "./BuyModalProvider"
-import numeral from "numeral"
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
 import { captureOrder, createOrder } from "@services"
 import { RootContext } from "../../../../../_hooks"
@@ -25,16 +22,12 @@ const WrappedBuyModal = () => {
     const { isOpen, onOpenChange, onOpen, onClose } = baseDiscloresure
     const { notify } = useContext(RootContext)!
 
-    const price = Number.parseFloat(
-        numeral(formik.values.buyAmount).format("0.00")
-    )
-
     const { reducer : walletReducer } = useContext(WalletModalRefContext)!
     const [ , dispatch ] = walletReducer
 
     return (
         <>
-            <Button fullWidth className="flex-1" onPress={onOpen}>
+            <Button fullWidth variant="flat" className="flex-1" onPress={onOpen}>
         Buy
             </Button>
             <Modal isDismissable={false} isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -43,7 +36,7 @@ const WrappedBuyModal = () => {
                     <ModalBody className="p-4">
                         <div>
                             <Input
-                                label="Buy Amount"
+                                label="You Buy"
                                 id="buyAmount"
                                 isRequired
                                 classNames={{
@@ -65,16 +58,23 @@ const WrappedBuyModal = () => {
                                 }
                             />
                             <Spacer y={4} />
-                            <div>
-                                <div className="text-primary text-lg font-semibold"></div>
-                                <Spacer y={2} />
-                                <div className="flex gap-1 items-center text-primary font-semibold">
-                                    <div>Price: {price} USD</div>
-                                    <Tooltip content="1 STARCI = 1 USD">
-                                        <QuestionMarkCircleIcon className="w-4 h-4 text-primary" />
-                                    </Tooltip>
-                                </div>
-                            </div>
+                            <Input
+                                label="You Paid"
+                                isRequired
+                                classNames={{
+                                    inputWrapper: "input-input-wrapper",
+                                }}
+                                labelPlacement="outside"
+                                placeholder="Input deposit amount here"
+                                value={formik.values.buyAmount.toString()}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                readOnly
+                            />
+                        </div>
+                        <Spacer y={4}/>
+                        <div className="text-sm text-foreground-500">
+                                Price ratio: 1 STARCI = 1 USD
                         </div>
                     </ModalBody>
                     <ModalFooter className="p-4 pt-2 flex flex-col">
@@ -113,17 +113,19 @@ const WrappedBuyModal = () => {
                                                 isSandbox: true,
                                             },
                                         })
+                                        
+                                        dispatch({
+                                            type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
+                                        })
+                                        
                                         notify!({
                                             data: {
                                                 message
                                             },
                                             type: ToastType.Success
                                         })
-                                        
+
                                         onClose()
-                                        dispatch({
-                                            type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
-                                        })
                                     }} 
                                 />
                             </PayPalScriptProvider>

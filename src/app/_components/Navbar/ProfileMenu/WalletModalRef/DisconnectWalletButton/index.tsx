@@ -30,6 +30,7 @@ export const DisconnectWalletButton = () => {
 
     return (
         <Button
+            variant="flat"
             fullWidth
             onPress={onDisconnectWalletPress}
         >

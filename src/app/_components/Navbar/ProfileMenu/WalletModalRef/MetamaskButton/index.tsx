@@ -28,13 +28,14 @@ export const MetamaskButton = () => {
                 }
             })
         } catch (ex) {
-            console.warn("failed to connect..", ex)
+            console.log("failed to connect..", ex)
         }
     }
 
     return (
         <Button
             fullWidth
+            variant="flat"
             onPress={onConnectWalletPress}
             startContent={<MetamaskLogoIcon size={20} />}
         >

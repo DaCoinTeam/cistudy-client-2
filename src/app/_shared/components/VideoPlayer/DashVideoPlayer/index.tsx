@@ -158,7 +158,7 @@ export const DashVideoPlayer = (props: DashVideoPlayerProps) => {
                 onMouseLeave={onMouseLeave}
             >
                 <video
-                    className="h-full m-auto"
+                    className="h-full m-auto object-cover"
                     ref={playerRef}
                     aria-label="playback"
                 />

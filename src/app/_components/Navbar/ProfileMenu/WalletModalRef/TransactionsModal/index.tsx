@@ -18,12 +18,13 @@ import {
     Chip,
 } from "@nextui-org/react"
 import React, { useContext } from "react"
-import { TransactionType, parseISODateString, truncate } from "@common"
+import { TransactionType, truncate } from "@common"
 import {
     ROWS_PER_PAGE,
     TransactionsModalContext,
     TransactionsModalProvider,
 } from "./TransactionModaProvider"
+import dayjs from "dayjs"
 
 const WrappedTransactionsModal = () => {
     const { isOpen, onOpenChange, onOpen } = useDisclosure()
@@ -54,7 +55,7 @@ const WrappedTransactionsModal = () => {
                 </Chip>
             ),
             [TransactionType.Withdraw]: (
-                <Chip color="primary" variant="flat">
+                <Chip color="secondary" variant="flat">
           Withdraw
                 </Chip>
             ),
@@ -193,7 +194,7 @@ const WrappedTransactionsModal = () => {
                                                 {transactionHash ? truncate(transactionHash) : "N/A"}
                                             </div>
                                         </TableCell>
-                                        <TableCell>{parseISODateString(createdAt)}</TableCell>
+                                        <TableCell>{dayjs(createdAt).format("HH:mm:ss DD/MM/YYYY")}</TableCell>
                                     </TableRow>
                                 )}
                             </TableBody>

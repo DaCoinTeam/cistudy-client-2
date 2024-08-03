@@ -90,7 +90,8 @@ export const ContentDetailsProvider = ({
                             quizQuestionAnswerId: true,
                             content: true,
                             isCorrect: true,
-                            position: true
+                            position: true,
+                            lastAnswer: true
                         },
                         point: true,
                         answered: true,

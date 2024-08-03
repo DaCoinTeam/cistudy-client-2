@@ -16,10 +16,10 @@ export const ContentPanel = (props: ContentPanelProps) => {
 
     const render = () => {
         const panelSelectedToComponent: Record<PanelSelected, JSX.Element> = {
+            [PanelSelected.CoursesApproval]: <CoursesManagementPanel className={`${className}`} />,
             [PanelSelected.Reports]: (
                 <ReportsManagementPanel className={`${className}`} />
             ),
-            [PanelSelected.CoursesApproval]: <CoursesManagementPanel className={`${className}`} />,
         }
         return panelSelectedToComponent[panelSelected]
     }

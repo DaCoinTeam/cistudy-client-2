@@ -2,7 +2,7 @@
 import { getSetValues } from "@common"
 import { Cog6ToothIcon, CurrencyDollarIcon, ListBulletIcon } from "@heroicons/react/24/outline"
 import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
-import { Goal, ScanEyeIcon, BarChart3Icon } from "lucide-react"
+import { Goal, ScanEyeIcon, BarChart3Icon, ActivityIcon } from "lucide-react"
 import { useContext } from "react"
 import { ManagementContext, PanelSelected } from "../../../_hooks"
 
@@ -68,12 +68,19 @@ export const Menu = (props: MenuProps) => {
             panelSelected: PanelSelected.Price,
         },
         {
+            startContent: <ActivityIcon width={24} height={24} strokeWidth={3/2}/>,
+            key: "actions",
+            content: "Actions",
+            panelSelected: PanelSelected.Settings,
+        },
+        {
             startContent: <BarChart3Icon width={24} height={24} />,
             key: "analytics",
             content: "Analytics",
             panelSelected: PanelSelected.Analytics,
         },
     ]
+
 
     return (
         <div className={`${className}`}>
