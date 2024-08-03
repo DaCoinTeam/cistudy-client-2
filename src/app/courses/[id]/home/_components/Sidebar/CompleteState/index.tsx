@@ -33,7 +33,7 @@ export const CompleteState = () => {
         <div className="border border-divider rounded-medium p-4">
             <div className="text-xl">Progress</div>
             <Spacer y={6}/>
-            <Progress showValueLabel color="default" value={(data?.completedContents ?? 0) * 100 / (data?.totalContents ?? 1)}/>
+            <Progress showValueLabel color="primary" value={(data?.completedContents ?? 0) * 100 / (data?.totalContents ?? 1)}/>
             <Spacer y={4}/>
             <div className="flex gap-2 text-sm items-center text-foreground-400">
                 <div className="w-[150px]">Completed contents</div>
