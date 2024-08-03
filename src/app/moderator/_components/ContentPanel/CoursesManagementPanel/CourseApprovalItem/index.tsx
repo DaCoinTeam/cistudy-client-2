@@ -59,7 +59,7 @@ const WrappedCourseApprovalItem = () => {
         case "createdAt":
             return (
                 <div className="w-24">
-                    {dayjs(course.createdAt).format("YYYY, MMM D hh:mm:ss")}
+                    {dayjs(course.createdAt).format("YYYY, MMM D HH:mm:ss")}
                 </div>
             )
         case "status":

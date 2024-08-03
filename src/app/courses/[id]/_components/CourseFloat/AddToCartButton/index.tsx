@@ -15,7 +15,7 @@ export const AddToCartButton = () => {
     const { profileSwr } = RootContextSwrs
     const { swrs } = useContext(CourseDetailsContext)!
     const { courseSwr } = swrs
-    const { data: course, isLoading, mutate } = courseSwr
+    const { data: course } = courseSwr
     const { cart } = { ...profileSwr?.data }
     const router = useRouter()
 
@@ -35,27 +35,18 @@ export const AddToCartButton = () => {
     }, [profileSwr.data])
 
     const fetchAddToCart = async (_: string, { arg }: { arg: string }) => {
-        const res = await addToCart({
+        const { message } = await addToCart({
             data: {
                 courseId: arg,
             },
         })
-        if (res.others) {
-            await mutate()
-      notify!({
-          data: {
-              message: res.message,
-          },
-          type: ToastType.Success,
-      })
-        } else {
-      notify!({
-          data: {
-              error: res.message,
-          },
-          type: ToastType.Error,
-      })
-        }
+        await profileSwr.mutate()
+    notify!({
+        data: {
+            message,
+        },
+        type: ToastType.Success,
+    })
     }
 
     const { trigger, isMutating } = useSWRMutation("ADD_TO_CART", fetchAddToCart)
@@ -71,9 +62,8 @@ export const AddToCartButton = () => {
         <div className="w-full">
             {isAddedToCart ? (
                 <Button
-                    color='primary'
-                    className='font-semibold'
-                    variant='flat'
+                    color="primary"
+                    variant="flat"
                     onPress={() => router.push("/cart")}
                     startContent={<ShoppingCartIcon height={20} width={20} />}
                     fullWidth
@@ -82,10 +72,9 @@ export const AddToCartButton = () => {
                 </Button>
             ) : (
                 <Button
-                    color='primary'
-                    className='font-semibold'
-                    variant='light'
-                    isLoading={isMutating || isLoading}
+                    color="primary"
+                    variant="light"
+                    isLoading={isMutating}
                     onPress={() => {
                         handleAddToCart(course?.courseId ?? "")
                     }}

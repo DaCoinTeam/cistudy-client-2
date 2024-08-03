@@ -65,7 +65,6 @@ export const ConfirmEnrollModal = () => {
                 startContent={
                     <ClipboardPenLineIcon height={20} width={20} strokeWidth={3 / 2} />
                 }
-                className="font-semibold"
                 onPress={onOpen}
                 color="primary"
                 fullWidth

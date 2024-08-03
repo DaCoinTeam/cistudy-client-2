@@ -1,5 +1,5 @@
 import { CourseEntity, formatNouns } from "@common"
-import { Button, Card, CardBody, Image, User } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, Image, User } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "@services"
 import { useRouter } from "next/navigation"
 
@@ -16,7 +16,7 @@ export const CourseCard = (props: CourseCardProps) => {
     const router = useRouter()
     const onPress = () => router.push(`/courses/${courseId}/home`)
     return (
-        <Card  className="w-full hover:cursor-pointer h-full"  >
+        <Card className="w-full hover:cursor-pointer h-full"  >
             <div className="w-full relative z-30">
                 {thumbnailId && (
                     <Image
@@ -48,9 +48,10 @@ export const CourseCard = (props: CourseCardProps) => {
                         />
                     </div> 
                 </div>
-                <Button onPress={onPress} color="primary" >Enter course</Button>
             </CardBody>
-     
+            <CardFooter className="p-4 pt-2">
+                <Button fullWidth onPress={onPress} color="primary" >Enter course</Button>
+            </CardFooter>
         </Card>
     )
 }

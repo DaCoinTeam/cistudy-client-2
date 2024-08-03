@@ -1,10 +1,13 @@
 "use client"
 import { ReactNode, Suspense } from "react"
+import { CartProvider } from "./_hooks"
 
 const Layout = ({ children }: { children: ReactNode }) => {
     return (
         <Suspense>
-            {children}
+            <CartProvider>
+                {children}
+            </CartProvider>
         </Suspense>
     )
 }

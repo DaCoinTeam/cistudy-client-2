@@ -21,7 +21,6 @@ export interface SelectAllItemsAction {
 
 export interface UnselectAllItemsAction {
     type: "SET_UNSELECT_ALL_ITEMS"
-    payload: Array<string>
 
 }
 export type CartAction = SelectAction | UnselectAction | SelectAllItemsAction | UnselectAllItemsAction

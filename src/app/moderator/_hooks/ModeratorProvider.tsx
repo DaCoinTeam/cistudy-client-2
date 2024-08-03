@@ -30,7 +30,7 @@ const WrappedModeratorProvider = ({ children }: { children: ReactNode }) => {
     const searchParams = useSearchParams()
 
     const tab = (searchParams.get("tab") ??
-    PanelSelected.Reports) as PanelSelected
+    PanelSelected.CoursesApproval) as PanelSelected
 
     useEffect(() => {
         dispatch({

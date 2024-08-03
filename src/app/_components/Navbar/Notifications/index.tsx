@@ -23,8 +23,8 @@ import {
     RootContext,
     SocketIOContext,
 } from "../../../_hooks"
-const NOTIFICATION_TYPES = {
 
+const NOTIFICATION_TYPES = {
     SYSTEM: "system",
     TRANSACTION: "transaction",
     INTERACT: "interact",
@@ -37,7 +37,8 @@ export const Notifications = () => {
 
     useEffect(() => {
         if (!socket) return
-        socket.on("notifications", () => {
+        socket.on("notifications", (id: string) => {
+            console.log(id)
             mutate()
         })
         return () => {
@@ -79,19 +80,20 @@ export const Notifications = () => {
         return Math.ceil(last?.metadata?.count / COLUMNS_PER_PAGE)
     }, [data])
     const router = useRouter()
+
     const onPressNotification = async (notification: NotificationEntity) => {
-        router.push(notification.referenceLink)
-        await markNotificationAsRead({
-            data: {
-                notificationIds: [notification.notificationId]
-            }
-        })
-            .then(() => {
-                console.log("success")
+        if (notification.referenceLink) {
+            router.push(notification.referenceLink)
+        }
+        if (!notification.viewed) {
+            await markNotificationAsRead({
+                data: {
+                    notificationIds: [notification.notificationId]
+                }
             })
-            .catch((ex) => {
-                console.log("error", ex?.message)
-            })
+            await mutate()
+        }
+       
     }
 
     const renderNotification = (notification: NotificationEntity) => {
@@ -108,7 +110,6 @@ export const Notifications = () => {
             )
         case NOTIFICATION_TYPES.TRANSACTION:
             return (
-               
                 <Avatar
                     alt="logo imgage"
                     size="md"
