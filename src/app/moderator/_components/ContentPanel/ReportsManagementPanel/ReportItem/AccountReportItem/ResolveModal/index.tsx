@@ -42,55 +42,55 @@ export const ResolveModalRef = forwardRef<
 
     const handleUpdateReport = (reportStatus : string) => {
         if (reportStatus === "approved") {
-            resolveAccountReport({
-                data: {
-                    reportAccountId: report.reportAccountId,
-                    processStatus: "approved",
-                    processNote: state.note
-                }
-            }).then(() => {
-                toastRef.current?.notify({
-                    data: {
-                        message: "Report has been resolved successfully!"
-                    },
-                    type: ToastType.Success
-                })
-                mutate()
-                onOpenChange()
-            }).catch((err) => {
-                toastRef.current?.notify({
-                    data: {
-                        error: err.message
-                    },
-                    type: ToastType.Error
-                })
-            })
+            // resolveAccountReport({
+            //     data: {
+            //         reportAccountId: report.reportAccountId,
+            //         processStatus: ReportAccess,
+            //         processNote: state.note
+            //     }
+            // }).then(() => {
+            //     toastRef.current?.notify({
+            //         data: {
+            //             message: "Report has been resolved successfully!"
+            //         },
+            //         type: ToastType.Success
+            //     })
+            //     mutate()
+            //     onOpenChange()
+            // }).catch((err) => {
+            //     toastRef.current?.notify({
+            //         data: {
+            //             error: err.message
+            //         },
+            //         type: ToastType.Error
+            //     })
+            // })
         }
 
         if (reportStatus === "rejected") {
-            resolveAccountReport({
-                data: {
-                    reportAccountId: report.reportAccountId,
-                    processStatus: "rejected",
-                    processNote: state.note
-                }
-            }).then(() => {
-                toastRef.current?.notify({
-                    data: {
-                        message: "Report has been resolved successfully!"
-                    },
-                    type: ToastType.Success
-                })
-                mutate()
-                onOpenChange()
-            }).catch((err) => {
-                toastRef.current?.notify({
-                    data: {
-                        error: err.message
-                    },
-                    type: ToastType.Error
-                })
-            })
+            // resolveAccountReport({
+            //     data: {
+            //         reportAccountId: report.reportAccountId,
+            //         processStatus: "rejected",
+            //         processNote: state.note
+            //     }
+            // }).then(() => {
+            //     toastRef.current?.notify({
+            //         data: {
+            //             message: "Report has been resolved successfully!"
+            //         },
+            //         type: ToastType.Success
+            //     })
+            //     mutate()
+            //     onOpenChange()
+            // }).catch((err) => {
+            //     toastRef.current?.notify({
+            //         data: {
+            //             error: err.message
+            //         },
+            //         type: ToastType.Error
+            //     })
+            // })
         }
     }
 
