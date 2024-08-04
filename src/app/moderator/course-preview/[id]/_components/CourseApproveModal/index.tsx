@@ -5,9 +5,9 @@ import {
     ModalHeader,
     ModalBody,
     useDisclosure,
-    Input,
     Button,
     ModalFooter,
+    Textarea,
 } from "@nextui-org/react"
 
 import { forwardRef, useContext, useEffect, useImperativeHandle } from "react"
@@ -50,7 +50,7 @@ const WrappedCourseApproveModalRef = forwardRef<
                     <div>
                         <ModalHeader className="p-4 pb-2 text-2xl">Resolve</ModalHeader>
                         <ModalBody className="p-4">
-                            <Input
+                            <Textarea
                                 classNames={{
                                     inputWrapper: "input-input-wrapper"
                                 }}

@@ -29,7 +29,6 @@ const WrappedCourseApprovalItem = () => {
 
     const columns = [
         { key: "title", label: "Title" },
-        { key: "description", label: "Description"},
         { key: "author", label: "Author" },
         { key: "createdAt", label: "Created At" },
         { key: "status", label: "Status" },
@@ -42,12 +41,6 @@ const WrappedCourseApprovalItem = () => {
             return (
                 <div className="w-60">
                     {course.title}
-                </div>
-            )
-        case "description": 
-            return (
-                <div className="line-clamp-3">
-                    {course.description}
                 </div>
             )
         case "author":

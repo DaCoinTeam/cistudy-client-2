@@ -12,7 +12,8 @@ import {
     PopoverTrigger,
     ScrollShadow,
     Skeleton,
-    Spacer
+    Spacer,
+    useDisclosure
 } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl, markNotificationAsRead, markAllNotificationsAsRead } from "@services"
 import { useRouter } from "next/navigation"
@@ -37,6 +38,7 @@ const NOTIFICATION_TYPES = {
 export const Notifications = () => {
     const socket = useContext(SocketIOContext)!
     const {notify} = useContext(RootContext)!
+    const { isOpen, onOpenChange, onClose } = useDisclosure()
 
     useEffect(() => {
         if (!socket) return
@@ -87,6 +89,7 @@ export const Notifications = () => {
     const onPressNotification = async (notification: NotificationEntity) => {
         if (notification.referenceLink) {
             router.push(notification.referenceLink)
+            onClose()
         }
         if (!notification.viewed) {
             await markNotificationAsRead({
@@ -182,7 +185,7 @@ export const Notifications = () => {
     }
 
     return (
-        <Popover showArrow offset={10} placement="bottom" backdrop="opaque" classNames={{
+        <Popover isOpen={isOpen} onOpenChange={onOpenChange} showArrow offset={10} placement="bottom" backdrop="opaque" classNames={{
             content: "p-0"
         }}>
             <PopoverTrigger>
