@@ -91,7 +91,7 @@ export const ResolveModalRef = forwardRef<
             //         type: ToastType.Error
             //     })
             // })
-        }
+        } 
     }
 
     return (
