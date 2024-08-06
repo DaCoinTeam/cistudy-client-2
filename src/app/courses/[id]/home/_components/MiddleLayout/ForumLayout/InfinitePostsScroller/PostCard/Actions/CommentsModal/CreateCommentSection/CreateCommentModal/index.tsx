@@ -54,10 +54,13 @@ export const WrappedCreateCommentModal = () => {
                     <Button
                         onPress={onPress}
                         color="primary"
-
-                        startContent={<PlusIcon height={20} width={20} />}
+                        isLoading={formik.isSubmitting}
+                        isDisabled={formik.isSubmitting}
+                        startContent={formik.isSubmitting? <></> : <PlusIcon height={20} width={20}/>}
                     >
-            Create
+                        {
+                            formik.isSubmitting ? "Creating" : "Create"
+                        }
                     </Button>
                 </div>
             </ModalFooter>

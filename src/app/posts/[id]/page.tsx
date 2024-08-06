@@ -1,7 +1,7 @@
 "use client"
 import { useContext } from "react"
 import { PostDetailContext } from "./hooks"
-import { parseTimeAgo, truncate } from "@common"
+import { parseTimeAgo } from "@common"
 import { Card, CardHeader, Chip, CardBody, CardFooter, User, Breadcrumbs, BreadcrumbItem } from "@nextui-org/react"
 import { getAvatarUrl } from "@services"
 import { CheckIcon, GiftIcon } from "lucide-react"
@@ -15,7 +15,6 @@ const Page = () => {
     const { postSwr } = swrs
     const { data } = postSwr
     const { title,
-        postId,
         html,
         postMedias,
         creator,
@@ -47,7 +46,7 @@ const Page = () => {
                 <BreadcrumbItem onPress={navigateToCourseDetail}>{course?.title}</BreadcrumbItem>
                 <BreadcrumbItem onPress={navigateToForum} >Home</BreadcrumbItem>
                 <BreadcrumbItem onPress={navigateToForum} >Forum</BreadcrumbItem>
-                <BreadcrumbItem>{truncate(postId?? "")}</BreadcrumbItem>
+                <BreadcrumbItem>{title}</BreadcrumbItem>
             </Breadcrumbs>
             <div className="flex flex-col w-1/2 self-center gap-y-2">
                 <Card shadow='none' className='border border-divider rounded-medium'>

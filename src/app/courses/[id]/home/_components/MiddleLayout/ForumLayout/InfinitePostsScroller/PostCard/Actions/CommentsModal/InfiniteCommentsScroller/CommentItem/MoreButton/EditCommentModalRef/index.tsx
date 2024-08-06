@@ -95,9 +95,13 @@ export const WrappedEditCommentModalRef = () => {
                 <Button
                     onPress={onPress}
                     color="primary"
-                    startContent={<CheckIcon width={20} height={20} />}
+                    isLoading={formik.isSubmitting}
+                    isDisabled={formik.isSubmitting}
+                    startContent={formik.isSubmitting? <></> : <CheckIcon height={20} width={20}/>}
                 >
-            Save
+                    {
+                        formik.isSubmitting ? "Saving" : "Save"
+                    }
                 </Button>
             </ModalFooter>
         </>

@@ -17,7 +17,7 @@ export interface SetPanelSelectedAction {
 export type HomeAction = SetPanelSelectedAction;
 
 export const state: HomeState = {
-    panelSelected: PanelSelected.Forum,
+    panelSelected: PanelSelected.Sections,
 }
 
 export const reducer = (

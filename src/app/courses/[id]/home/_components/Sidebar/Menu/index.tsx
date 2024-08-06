@@ -42,19 +42,19 @@ export const Menu = (props: MenuProps) => {
     const items = [
         {
             startContent: (
-                <ChatBubbleLeftRightIcon width={24} height={24} strokeWidth={3 / 2} />
-            ),
-            key: "forum",
-            content: "Forum",
-            panelSelected: PanelSelected.Forum,
-        },
-        {
-            startContent: (
                 <ListBulletIcon width={24} height={24} strokeWidth={3 / 2} />
             ),
             key: "sections",
             content: "Sections",
             panelSelected: PanelSelected.Sections,
+        },
+        {
+            startContent: (
+                <ChatBubbleLeftRightIcon width={24} height={24} strokeWidth={3 / 2} />
+            ),
+            key: "forum",
+            content: "Forum",
+            panelSelected: PanelSelected.Forum,
         },
     ]
 

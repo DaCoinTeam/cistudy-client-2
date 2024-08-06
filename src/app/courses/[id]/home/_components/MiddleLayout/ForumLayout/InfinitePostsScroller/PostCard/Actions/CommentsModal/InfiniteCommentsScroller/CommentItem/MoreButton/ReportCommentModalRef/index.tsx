@@ -80,10 +80,12 @@ export const WrappedReportPostCommentModalRef = (refProps : WrappedReportPostCom
             </ModalBody>
             <ModalFooter className="p-4 pt-2">
                 <Button
+                    isLoading={formik.isSubmitting}
+                    isDisabled={formik.isSubmitting}
                     onPress={onPress}
                     variant="bordered"
                 >
-            Submit
+                    {formik.isSubmitting ? "Submitting" : "Submit"}
                 </Button>
                 <Button
                     color="primary"
