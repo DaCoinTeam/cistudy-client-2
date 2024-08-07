@@ -105,7 +105,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
 
     return (
         <div className={`${className}`}>
-            <div className="text-2xl font-semibold"> General </div>
+            <div className="text-2xl font-semibold"> General Course Information </div>
             <Spacer y={4} />
             <Input
                 label="Title"

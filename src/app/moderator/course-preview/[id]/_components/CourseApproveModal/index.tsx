@@ -5,12 +5,12 @@ import {
     ModalHeader,
     ModalBody,
     useDisclosure,
-    Input,
     Button,
     ModalFooter,
+    Textarea,
 } from "@nextui-org/react"
 
-import { forwardRef, useContext, useEffect, useImperativeHandle } from "react"
+import { forwardRef, useContext, useImperativeHandle } from "react"
 import { CourseApproveModalContext, CourseApproveModalProvider } from "./CourseApproveModalProvider"
 import { VerifyStatus } from "@common"
 
@@ -22,22 +22,18 @@ const WrappedCourseApproveModalRef = forwardRef<
     CourseApproveModalRefSelectors | null
 >((_, ref) => {
     const {formik} = useContext(CourseApproveModalContext)!
-    const { isOpen, onOpen, onClose , onOpenChange } = useDisclosure()
+    const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     useImperativeHandle(ref, () => ({
         onOpen
     }))
 
-    useEffect(() => {
-        if (!formik.isSubmitting && formik.submitCount > 0) {
-            onClose()
-        }
-    }, [formik.isSubmitting, formik.submitCount])
-
     const handleSubmit = (verifyStatus: VerifyStatus) => {
         if (verifyStatus === VerifyStatus.Approved) {
             formik.setFieldValue("verifyStatus", VerifyStatus.Approved)
-        } else {
+        }
+
+        if (verifyStatus === VerifyStatus.Rejected) {
             formik.setFieldValue("verifyStatus", VerifyStatus.Rejected)
         }
         formik.handleSubmit()
@@ -50,7 +46,7 @@ const WrappedCourseApproveModalRef = forwardRef<
                     <div>
                         <ModalHeader className="p-4 pb-2 text-2xl">Resolve</ModalHeader>
                         <ModalBody className="p-4">
-                            <Input
+                            <Textarea
                                 classNames={{
                                     inputWrapper: "input-input-wrapper"
                                 }}
@@ -71,14 +67,14 @@ const WrappedCourseApproveModalRef = forwardRef<
                             <Button
                                 color="primary"
                                 variant="bordered"
-                                onClick={() => handleSubmit(VerifyStatus.Rejected)}
+                                onPress={() => handleSubmit(VerifyStatus.Rejected)}
                                 isLoading={formik.values.verifyStatus === VerifyStatus.Rejected && formik.isSubmitting}
                             >
                                 Reject
                             </Button>
                             <Button
                                 color="primary"
-                                onClick={() => handleSubmit(VerifyStatus.Approved)}
+                                onPress={() => handleSubmit(VerifyStatus.Approved)}
                                 isLoading={formik.values.verifyStatus === VerifyStatus.Approved && formik.isSubmitting}
                             >
                                 Approve

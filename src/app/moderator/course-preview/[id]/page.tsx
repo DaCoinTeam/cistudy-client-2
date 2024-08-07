@@ -4,7 +4,6 @@ import { Sidebar, ContentPanel, CourseApproveModalRef, CourseApproveModalRefSele
 import { BreadcrumbItem, Breadcrumbs, Button, Spacer } from "@nextui-org/react"
 import { ManagementContext } from "./_hooks"
 import { VerifyStatus } from "../../../../common/types"
-import { truncate } from "../../../../common/utils"
 import { useRouter } from "next/navigation"
 
 const Page = () => {
@@ -12,7 +11,7 @@ const Page = () => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data } = courseManagementSwr
-    const { courseId, verifyStatus } = { ...data }
+    const { title, verifyStatus } = { ...data }
     const router = useRouter()
 
     return (
@@ -21,7 +20,7 @@ const Page = () => {
                 <Breadcrumbs>
                     <BreadcrumbItem onPress={() => router.push("/moderator") }>Moderator</BreadcrumbItem>
                     <BreadcrumbItem>Course-Preview</BreadcrumbItem>
-                    <BreadcrumbItem>{truncate(courseId ?? "")}</BreadcrumbItem>
+                    <BreadcrumbItem>{title}</BreadcrumbItem>
                 </Breadcrumbs>
                 <div className="flex gap-2 items-center">
                     {

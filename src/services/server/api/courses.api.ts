@@ -775,3 +775,21 @@ export const createCourseCertificate = async (
     const url = `${BASE_URL}/create-course-certificate`
     return await authAxios.post(url, data)
 }
+
+export interface DeleteCourseInput {
+  data: {
+    courseId: string
+  }
+}
+
+export interface DeleteCourseOutput {
+  message: string
+}
+
+export const deleteCourse = async (
+  input: DeleteCourseInput
+): Promise<DeleteCourseOutput> => {
+  const {courseId} = input.data
+  const url = `${BASE_URL}/delete-course/${courseId}`
+  return await authAxios.delete(url)
+}

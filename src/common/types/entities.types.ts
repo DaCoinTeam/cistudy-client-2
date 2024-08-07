@@ -253,7 +253,6 @@ export interface SectionContentEntity {
   position: number;
   createdAt: Date;
   updatedAt: Date;
-
   section: SectionEntity;
   lesson: LessonEntity;
   resource: ResourceEntity;
@@ -569,6 +568,11 @@ export interface ReportCourseEntity {
   updatedAt: Date;
 }
 
+export enum ReportProcessStatus {
+  Processing = "processing",
+  Approved = "approved",
+  Rejected = "rejected",
+}
 export interface ReportPostEntity {
   reportPostId: string;
   postId: string;
@@ -576,7 +580,7 @@ export interface ReportPostEntity {
   accountId: string;
   description: string;
   processNote: string;
-  processStatus: string;
+  processStatus: ReportProcessStatus;
   reporterAccount: AccountEntity;
   reportedPost: PostEntity;
   createdAt: Date;

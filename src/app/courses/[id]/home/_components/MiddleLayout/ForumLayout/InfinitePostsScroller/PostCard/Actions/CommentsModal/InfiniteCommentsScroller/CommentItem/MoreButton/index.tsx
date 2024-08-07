@@ -5,15 +5,17 @@ import {
     DropdownMenu,
     DropdownTrigger,
 } from "@nextui-org/react"
-import { MoreVertical, PenLineIcon, XIcon } from "lucide-react"
-import { deletePostComment } from "@services"
+import { MoreVertical, PenLineIcon, 
+    // XIcon 
+} from "lucide-react"
+// import { deletePostComment } from "@services"
 import { useContext, useRef } from "react"
-import {
-    ConfirmDeleteModalRef,
-    ConfirmDeleteModalRefSelectors,
-} from "../../../../../../../../../../../../../_shared"
+// import {
+//     ConfirmDeleteModalRef,
+//     ConfirmDeleteModalRefSelectors,
+// } from "../../../../../../../../../../../../../_shared"
 import { CommentItemContext } from ".."
-import { CommentsModalContext } from "../../../CommentsModalProvider"
+// import { CommentsModalContext } from "../../../CommentsModalProvider"
 import {
     EditCommentModalRef,
     EditCommentModalRefSelectors,
@@ -30,31 +32,34 @@ export const MoreButton = (props: MoreButtonProps) => {
 
     const { props: commentItemProps } = useContext(CommentItemContext)!
     const { postComment } = commentItemProps
-    const { postCommentId, isRewardable, isCommentOwner } = postComment
+    const { 
+        // postCommentId, 
+        // isRewardable, 
+        isCommentOwner } = postComment
 
-    const { swrs } = useContext(CommentsModalContext)!
-    const { postCommentsSwr } = swrs
-    const { mutate } = postCommentsSwr
+    // const { swrs } = useContext(CommentsModalContext)!
+    // const { postCommentsSwr } = swrs
+    // const { mutate } = postCommentsSwr
 
-    const confirmDeleteModalRef = useRef<ConfirmDeleteModalRefSelectors | null>(
-        null
-    )
+    // const confirmDeleteModalRef = useRef<ConfirmDeleteModalRefSelectors | null>(
+    //     null
+    // )
     const reportPostCommentModalRef = useRef<ReportPostCommentModalRefSelectors | null>(null)
 
-    const onConfirmDeleteModalOpen = () =>
-        confirmDeleteModalRef.current?.onOpen()
+    // const onConfirmDeleteModalOpen = () =>
+    //     confirmDeleteModalRef.current?.onOpen()
 
     const editCommentModalRef = useRef<EditCommentModalRefSelectors | null>(null)
     const onEditCommentModalOpen = () => editCommentModalRef.current?.onOpen()
     const onReportPostCommentModalOpen = () => reportPostCommentModalRef.current?.onOpen()
-    const onDeletePress = async () => {
-        await deletePostComment({
-            data: {
-                postCommentId,
-            },
-        })
-        await mutate()
-    }
+    // const onDeletePress = async () => {
+    //     await deletePostComment({
+    //         data: {
+    //             postCommentId,
+    //         },
+    //     })
+    //     await mutate()
+    // }
 
     return (
         <>
@@ -81,7 +86,7 @@ export const MoreButton = (props: MoreButtonProps) => {
                         </DropdownItem>
                     ): <DropdownItem className="hidden"/>}
                     
-                    {isCommentOwner && !isRewardable ? (
+                    {/* {isCommentOwner && !isRewardable ? (
                         <DropdownItem
                             color='danger'
                             startContent={<XIcon size={20} strokeWidth={3 / 2} />}
@@ -93,7 +98,7 @@ export const MoreButton = (props: MoreButtonProps) => {
                         </DropdownItem>
                     ) : (
                         <DropdownItem  className='hidden'/>
-                    )}
+                    )} */}
                     {!isCommentOwner ? (
                         <DropdownItem
                             color='danger'
@@ -110,12 +115,12 @@ export const MoreButton = (props: MoreButtonProps) => {
             <div className='hidden'>
                 <EditCommentModalRef ref={editCommentModalRef} />
                 <ReportPostCommentModalRef ref={reportPostCommentModalRef}/>
-                <ConfirmDeleteModalRef
+                {/* <ConfirmDeleteModalRef
                     ref={confirmDeleteModalRef}
                     title='Delete Comment'
                     content='Are you sure you want to delete this comment? All references will be lost, and you cannot undo this action.'
                     onDeletePress={onDeletePress}
-                />
+                /> */}
             </div>
         </>
     )

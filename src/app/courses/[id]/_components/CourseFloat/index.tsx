@@ -113,8 +113,8 @@ export const CourseFloat = () => {
                     </div>
                 </div>
             </CardBody>
-            <CardFooter className="p-4 pt-2 flex-col gap-2">
-                {enrolled && !isCreator ? (
+            <CardFooter className="p-4 pt-2 flex flex-col gap-2">
+                {(enrolled || isCreator) ? (
                     <Button
                         color="primary"
                         className="font-semibold"
@@ -126,20 +126,23 @@ export const CourseFloat = () => {
                     >
             Enter course
                     </Button>
-                ) : !isCreator? (
-                    <>
-                        <ConfirmEnrollModal/>
-                        <AddToCartButton/>
-                    </>
-                ) : <Button
-                    color="primary"
-                    className="font-semibold"
-                    onPress={onEnterManageCoursePress}
-                    startContent={
-                        <BookOpenIcon height={20} width={20} />
-                    }
-                    fullWidth
-                >Manage course</Button>}
+                ) : <>
+                    <ConfirmEnrollModal/>
+                    <AddToCartButton/>
+                </> }
+                
+                {
+                    !isCreator? (
+                        null
+                    ) : <Button
+                        color="primary"
+                        variant="bordered"
+                        onPress={onEnterManageCoursePress}
+                        startContent={
+                            <BookOpenIcon height={20} width={20} />
+                        }
+                        fullWidth
+                    >Manage course</Button>}
             </CardFooter>
         </Card>
     )

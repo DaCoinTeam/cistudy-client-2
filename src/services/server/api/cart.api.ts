@@ -47,3 +47,20 @@ export const deleteFromCart = async (
     const url = `${BASE_URL}/delete-from-cart`
     return await authAxios.post(url, data)
 }
+
+export interface CheckOutInput {
+    data: {
+        cartCourseIds: Array<string>
+    }
+}
+
+export interface CheckOutOutput {
+    message: string;
+  }
+export const checkOut = async (
+    input: CheckOutInput
+): Promise<CheckOutOutput> => {
+    const { data } = input
+    const url = `${BASE_URL}/checkout`
+    return await authAxios.post(url, data)
+}

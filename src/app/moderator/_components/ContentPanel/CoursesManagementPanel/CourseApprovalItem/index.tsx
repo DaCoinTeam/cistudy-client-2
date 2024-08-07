@@ -29,7 +29,6 @@ const WrappedCourseApprovalItem = () => {
 
     const columns = [
         { key: "title", label: "Title" },
-        { key: "description", label: "Description"},
         { key: "author", label: "Author" },
         { key: "createdAt", label: "Created At" },
         { key: "status", label: "Status" },
@@ -44,12 +43,6 @@ const WrappedCourseApprovalItem = () => {
                     {course.title}
                 </div>
             )
-        case "description": 
-            return (
-                <div className="line-clamp-3">
-                    {course.description}
-                </div>
-            )
         case "author":
             return (
                 <div className="w-20">
@@ -59,7 +52,7 @@ const WrappedCourseApprovalItem = () => {
         case "createdAt":
             return (
                 <div className="w-24">
-                    {dayjs(course.createdAt).format("YYYY, MMM D hh:mm:ss")}
+                    {dayjs(course.createdAt).format("YYYY, MMM D HH:mm:ss")}
                 </div>
             )
         case "status":

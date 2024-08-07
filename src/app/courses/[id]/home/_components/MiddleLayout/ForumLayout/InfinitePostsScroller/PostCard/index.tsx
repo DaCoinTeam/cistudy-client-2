@@ -14,6 +14,7 @@ import { createContext, useMemo } from "react"
 import { MediaGroup, TextRenderer } from "../../../../../../../../_shared"
 import { Actions } from "./Actions"
 import { MoreButton } from "./MoreButton"
+import { useRouter } from "next/navigation"
 interface PostCardProps {
   post: PostEntity;
 }
@@ -27,6 +28,7 @@ export const PostCardContext = createContext<PostCardContextValue | null>(null)
 export const PostCard = (props: PostCardProps) => {
     const { post } = props
     const {
+        postId,
         title,
         html,
         postMedias,
@@ -45,9 +47,11 @@ export const PostCard = (props: PostCardProps) => {
 
     const isEdited = updatedAt !== createdAt
 
+    const router = useRouter()
+
     return (
         <PostCardContext.Provider value={postCardContextValue}>
-            <Card shadow='none' className='border border-divider rounded-medium'>
+            <Card shadow='none' className='border border-divider rounded-medium' isPressable onPress={() => router.push(`/posts/${postId}`)}>
                 <CardHeader className='p-4 pb-2 inline'>
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center'>

@@ -4,7 +4,7 @@ import { Form, Formik, FormikProps } from "formik"
 import * as Yup from "yup"
 import useSWRMutation from "swr/mutation"
 import { verifyCourse, VerifyCourseInput } from "@services"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { RootContext } from "../../../../../_hooks"
 import { ErrorResponse, VerifyStatus } from "@common"
 import { ToastType } from "../../../../../_components"
@@ -20,12 +20,12 @@ export const CourseApproveModalContext = createContext<CourseApproveModalContext
 
 interface FormikValues {
     note: string
-    verifyStatus: VerifyStatus
+    verifyStatus: string
 }
 
 const initialValues: FormikValues = {
     note: "",
-    verifyStatus: VerifyStatus.Rejected
+    verifyStatus: ""
 }
 
 const WrappedCourseApproveModalProvider = ({ formik, children }: {
@@ -48,6 +48,7 @@ const WrappedCourseApproveModalProvider = ({ formik, children }: {
 }
 
 export const CourseApproveModalProvider = ({ children }: { children: ReactNode }) => {
+    const route = useRouter()
     const params = useParams()
     const courseId = params.id as string
     const {notify} = useContext(RootContext)!
@@ -83,6 +84,7 @@ export const CourseApproveModalProvider = ({ children }: { children: ReactNode }
                     type: ToastType.Success
                 })
                 courseManagementSwr.mutate()
+                route.push("/moderator")
             } catch (ex) {
                 const {message} = ex as ErrorResponse
                 notify!({

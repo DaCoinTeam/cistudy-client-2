@@ -12,9 +12,10 @@ import {
     PopoverTrigger,
     ScrollShadow,
     Skeleton,
-    Spacer
+    Spacer,
+    useDisclosure
 } from "@nextui-org/react"
-import { getAssetUrl, getAvatarUrl, markNotificationAsRead } from "@services"
+import { getAssetUrl, getAvatarUrl, markNotificationAsRead, markAllNotificationsAsRead } from "@services"
 import { useRouter } from "next/navigation"
 import { useContext, useEffect, useMemo } from "react"
 import InfiniteScroll from "react-infinite-scroller"
@@ -23,8 +24,10 @@ import {
     RootContext,
     SocketIOContext,
 } from "../../../_hooks"
-const NOTIFICATION_TYPES = {
+import useSWRMutation from "swr/mutation"
+import { ToastType } from "../../ToastRef"
 
+const NOTIFICATION_TYPES = {
     SYSTEM: "system",
     TRANSACTION: "transaction",
     INTERACT: "interact",
@@ -34,10 +37,13 @@ const NOTIFICATION_TYPES = {
 
 export const Notifications = () => {
     const socket = useContext(SocketIOContext)!
+    const {notify} = useContext(RootContext)!
+    const { isOpen, onOpenChange, onClose } = useDisclosure()
 
     useEffect(() => {
         if (!socket) return
-        socket.on("notifications", () => {
+        socket.on("notifications", (id: string) => {
+            console.log(id)
             mutate()
         })
         return () => {
@@ -79,19 +85,21 @@ export const Notifications = () => {
         return Math.ceil(last?.metadata?.count / COLUMNS_PER_PAGE)
     }, [data])
     const router = useRouter()
+
     const onPressNotification = async (notification: NotificationEntity) => {
-        router.push(notification.referenceLink)
-        await markNotificationAsRead({
-            data: {
-                notificationIds: [notification.notificationId]
-            }
-        })
-            .then(() => {
-                console.log("success")
+        if (notification.referenceLink) {
+            router.push(notification.referenceLink)
+            onClose()
+        }
+        if (!notification.viewed) {
+            await markNotificationAsRead({
+                data: {
+                    notificationIds: [notification.notificationId]
+                }
             })
-            .catch((ex) => {
-                console.log("error", ex?.message)
-            })
+            await mutate()
+        }
+       
     }
 
     const renderNotification = (notification: NotificationEntity) => {
@@ -108,7 +116,6 @@ export const Notifications = () => {
             )
         case NOTIFICATION_TYPES.TRANSACTION:
             return (
-               
                 <Avatar
                     alt="logo imgage"
                     size="md"
@@ -159,11 +166,26 @@ export const Notifications = () => {
         }
     }
    
-    
+    const markAllNotificationsAsReadSwrMutation = useSWRMutation(
+        "MARK_ALL_NOTIFICATION_AS_READ",
+        async() => {
+            return await markAllNotificationsAsRead()
+        }
+    )
 
+    const handleMarkAllNotifications = async() => {
+        const {message} = await markAllNotificationsAsReadSwrMutation.trigger()
+        mutate()
+        notify!({
+            data: {
+                message
+            },
+            type: ToastType.Success
+        })
+    }
 
     return (
-        <Popover showArrow offset={10} placement="bottom" backdrop="opaque" classNames={{
+        <Popover isOpen={isOpen} onOpenChange={onOpenChange} showArrow offset={10} placement="bottom" backdrop="opaque" classNames={{
             content: "p-0"
         }}>
             <PopoverTrigger>
@@ -211,38 +233,46 @@ export const Notifications = () => {
                                         </Skeleton>
                                     </div>
                                 ) : (
-                                    getNotification.map(
-                                        (notification) => (
-                                            <div key={notification.notificationId} className="border-b-1">
-                                                <Link
-                                                    color="foreground"
-                                                    className={"cursor-pointer flex p-4 pr-1"}
-                                                    onPress={() => onPressNotification(notification)}
-                                                >
-                                                    <div className="grid grid-cols-6  gap-2">
-                                                        {renderNotification(notification)}
-                                                        <div className={`col-span-5 flex ${!notification.viewed ? "" : "opacity-65"}`}>
-                                                            <div>
-                                                                <div className="font-medium text-sm">{notification.title}</div>
-                                                                <div className="text-sm">{notification.description}</div>
-                                                                <div className="text-xs text-primary mt-1">{parseTimeAgo(notification?.updatedAt)}</div>
+                                    <div>
+                                        {
+                                            getNotification.map(
+                                                (notification) => (
+                                                    <div key={notification.notificationId} className="border-b-1">
+                                                        <Link
+                                                            color="foreground"
+                                                            className={"cursor-pointer flex p-4 pr-1"}
+                                                            onPress={() => onPressNotification(notification)}
+                                                        >
+                                                            <div className="grid grid-cols-6  gap-2">
+                                                                {renderNotification(notification)}
+                                                                <div className={`col-span-5 flex ${!notification.viewed ? "" : "opacity-65"}`}>
+                                                                    <div>
+                                                                        <div className="font-medium text-sm">{notification.title}</div>
+                                                                        <div className="text-sm">{notification.description}</div>
+                                                                        <div className="text-xs text-primary mt-1">{parseTimeAgo(notification?.updatedAt)}</div>
+                                                                    </div>
+                                                                    <Spacer x={4}/>
+                                                                    <div className="w-6 text-end">
+                                                                        {!notification.viewed ? <div className="text-primary tex-end text-4xl">&#x2022;</div> : (<></>)}
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <Spacer x={4}/>
-                                                            <div className="w-6 text-end">
-                                                                {!notification.viewed ? <div className="text-primary tex-end text-4xl">&#x2022;</div> : (<></>)}
-                                                            </div>
-                                                        </div>
+                                                                                                
+                                                        </Link>
                                                     </div>
-                                                    
-                                                </Link>
-                                            </div>
-                                        )
-                                    )
+                                                )
+                                            )
+                                        }
+                                    </div>
                                 )}
                             </InfiniteScroll>
                         </ScrollShadow>
-                        {/* <Spacer y={6}/> */}
-                        {/* <Button color="primary" fullWidth> Mark all viewed </Button> */}
+                        <Spacer y={6}/>
+                        <Button isLoading={markAllNotificationsAsReadSwrMutation.isMutating} isDisabled={getNotViewed === 0} className="p-6" fullWidth color="primary" onPress={handleMarkAllNotifications}>
+                            {
+                                markAllNotificationsAsReadSwrMutation.isMutating? "Marking..." : "Mark All Notifications"
+                            }
+                        </Button>
                     </div>
                 )}
             </PopoverContent>

@@ -92,7 +92,9 @@ export const WrappedReportPostModalRef = (refProps : WrappedReportPostModalRefPr
                     onPress={onPress}
                     color="danger"
                 >
-            Submit
+                    {
+                        formik.isSubmitting ? "Submitting" : "Submit"
+                    }
                 </Button>
             </ModalFooter>
         </>

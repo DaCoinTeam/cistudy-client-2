@@ -82,8 +82,12 @@ export const WrappedReportPostCommentModalRef = (refProps : WrappedReportPostCom
                 <Button
                     onPress={onPress}
                     variant="bordered"
+                    isLoading={formik.isSubmitting}
+                    isDisabled={formik.isSubmitting}
                 >
-            Submit
+                    {
+                        formik.isSubmitting ? "Submitting" : "Submit"
+                    }
                 </Button>
                 <Button
                     color="primary"

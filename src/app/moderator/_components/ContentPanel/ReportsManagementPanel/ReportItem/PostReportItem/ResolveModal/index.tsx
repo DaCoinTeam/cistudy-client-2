@@ -1,228 +1,223 @@
 "use client"
-import { ReportPostEntity } from "@common"
+import { ReportPostEntity, ReportProcessStatus } from "@common"
 import {
     Avatar,
     Button,
-    Chip,
-    ChipProps,
+    Link,
     Modal,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalHeader,
+    Spacer,
     Textarea,
-    useDisclosure
+    useDisclosure,
 } from "@nextui-org/react"
 
-import { getAvatarUrl, resolvePostReport } from "@services"
+import {
+    ResolvePostReportInput,
+    getAvatarUrl,
+    resolvePostReport,
+} from "@services"
 import dayjs from "dayjs"
-import { forwardRef, useContext, useEffect, useImperativeHandle, useState } from "react"
+import { forwardRef, useContext, useImperativeHandle } from "react"
 import { ToastType } from "../../../../../../../_components"
 import { RootContext } from "../../../../../../../_hooks"
-import { MediaGroup, TextRenderer } from "../../../../../../../_shared"
+import { TextRenderer } from "../../../../../../../_shared"
 import { PostReportItemContext } from "../PostReportItemProvider"
+import useSWRMutation from "swr/mutation"
 
 export interface ResolveModalRefProps {
-    report: ReportPostEntity;
+  report: ReportPostEntity;
 }
 
 export interface ResolveModalRefSelectors {
-    onOpen: () => void;
+  onOpen: () => void;
 }
 
 export const ResolveModalRef = forwardRef<
-    ResolveModalRefSelectors | null,
-    ResolveModalRefProps
+  ResolveModalRefSelectors | null,
+  ResolveModalRefProps
 >((props, ref) => {
-    const {reducer, swrs} = useContext(PostReportItemContext)!
-    const {postReportsSwr} = swrs
-    const {mutate} = postReportsSwr
+    const { reducer, swrs } = useContext(PostReportItemContext)!
+    const { postReportsSwr } = swrs
+    const { mutate } = postReportsSwr
     const [state, dispatch] = reducer
-    // const toastRef = useRef<ToastRefSelectors | null>(null)
-    const {notify} = useContext(RootContext)!
+    const { notify } = useContext(RootContext)!
     const { report } = props
-    const {title, description, reportedPost, reporterAccount, createdAt, processNote, processStatus} = {...report}
-    const {postMedias, html,} = {...reportedPost}
-    const { isOpen, onOpen, onOpenChange } = useDisclosure()
-    const [isNotValidNote, setIsNotValidNote] = useState(false)
+    const {
+        title,
+        description,
+        reportedPost,
+        reporterAccount,
+        createdAt,
+        reportPostId,
+    } = { ...report }
+    const { html } = { ...reportedPost }
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+
     useImperativeHandle(ref, () => ({
-        onOpen
+        onOpen,
     }))
-    useEffect(() => {
-        if(state.note.length > 20){
-            setIsNotValidNote(false)
+
+    const { trigger, isMutating } = useSWRMutation(
+        "RESOLVE_REPORT_POST",
+        async (_, { arg }: { arg: ResolvePostReportInput }) => {
+            const { message } = await resolvePostReport(arg)
+            await mutate()
+      notify!({
+          data: {
+              message,
+          },
+          type: ToastType.Success,
+      })
+      onClose()
         }
-    }, [state.note.length])
-    const statusColorMap: Record<string, ChipProps["color"]>  = {
-        approved: "success",
-        rejected: "danger",
-        processing: "warning",
-    }
-    const handleUpdateReport = async (reportStatus : string) => {
-        if(state.note.length < 20) {
-            setIsNotValidNote(true)
-        } else {
-            setIsNotValidNote(false)
+    )
+
+    const { trigger: trigger2, isMutating: isMutating2 } = useSWRMutation(
+        "RESOLVE_REPORT_POST2",
+        async (_, { arg }: { arg: ResolvePostReportInput }) => {
+            const { message } = await resolvePostReport(arg)
+            await mutate()
+      notify!({
+          data: {
+              message,
+          },
+          type: ToastType.Success,
+      })
+      onClose()
         }
-        if(!isNotValidNote) {
-            if (reportStatus === "approved") {
-                await resolvePostReport({
-                    data: {
-                        reportPostId: report.reportPostId,
-                        processStatus: "approved",
-                        processNote: state.note
-                    }
-                }).then(() => {
-                    notify!({
-                        data: {
-                            message: "The report has been approved successfully!"
-                        },
-                        type: ToastType.Success
-                    })
-                    mutate()
-                    onOpenChange()
-                }).catch((err) => {
-                    notify!({
-                        data: {
-                            error: err.message
-                        },
-                        type: ToastType.Error
-                    })
-                })
-            }
-    
-            if (reportStatus === "rejected") {
-                await resolvePostReport({
-                    data: {
-                        reportPostId: report.reportPostId,
-                        processStatus: "rejected",
-                        processNote: state.note
-                    }
-                }).then(() => {
-                    notify!({
-                        data: {
-                            message: "The report has been rejected successfully!"
-                        },
-                        type: ToastType.Success
-                    })
-                    mutate()
-                    onOpenChange()
-                }).catch((err) => {
-                    notify!({
-                        data: {
-                            error: err.message
-                        },
-                        type: ToastType.Error
-                    })
-                })
-            }
-        }
-        
-    }
+    )
 
     return (
-        <Modal scrollBehavior="outside" isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" className="p-4">
+        <Modal
+            scrollBehavior="outside"
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            size="2xl"
+        >
             <ModalContent>
-                {() => (
-                    <>
-                        <ModalHeader className="pt-4 pb-1 text-2xl tracking-tight font-semibold justify-center items-center flex flex-col">
-                            <div className="mr-4">Post Report Detail </div> 
-                            <div> <Chip className="capitalize mb-2 " color={statusColorMap[report.processStatus]} variant="flat">
-                                {processStatus}
-                            </Chip>
+                <ModalHeader className="p-4 pb-2 text-xl font-semibold">
+                    <div>Post Report Detail </div>
+                </ModalHeader>
+                <ModalBody className="p-4">
+                    <div>
+                        <div className="text-primary">Reporter Information</div>
+                        <Spacer y={4} />
+                        <div className="flex items-center gap-2">
+                            <Avatar
+                                name="avatar"
+                                className="w-12 h-12 rounded-full"
+                                src={getAvatarUrl({
+                                    avatarId: reporterAccount?.avatarId,
+                                    avatarUrl: reporterAccount?.avatarUrl,
+                                    kind: reporterAccount?.kind,
+                                })}
+                            />
+                            <div>
+                                <div className="text-sm flex items-center">
+                                    <div className="min-w-[100px] font-semibold">Username </div>
+                                    {reporterAccount?.username}
+                                </div>
+                                <div className="text-sm flex items-center">
+                                    <div className="min-w-[100px] font-semibold">Report time</div>
+                                    {dayjs(createdAt).format("hh:mm:ss A DD/MM/YYYY")}
+                                </div>
                             </div>
-                        </ModalHeader>
-                        <ModalBody className="p-4">
-                            <div className="border-b pb-4 mb-4 border-gray-300 dark:border-gray-800">
-                                <h2 className="text-xl font-medium  mb-4 text-gray-800 dark:text-gray-300">Reporter Information</h2>
-                                <div className="flex items-center pb-4 mb-6 border-b border-gray-300">
-                                    <Avatar
-                                        name='avatar'
-                                        className='w-16 h-16 rounded-full mr-4'
-                                        src={getAvatarUrl({
-                                            avatarId: reporterAccount?.avatarId,
-                                            avatarUrl: reporterAccount?.avatarUrl,
-                                            kind: reporterAccount?.kind,
-                                        })}
-                                    />
-                                    <div>
-                                        <p className="mb-2"><span className="font-semibold">Username: </span>{reporterAccount.username}</p>
-                                        <p className="mb-2"><span className="font-semibold">Report time: </span>{dayjs(createdAt).format("hh:mm:ss A DD/MM/YYYY")}</p>
-                                    </div>
+                        </div>
+                        <Spacer y={6} />
+                        <div>
+                            <div className="text-primary">Post Information</div>
+                            <Spacer y={4} />
+                            <div>
+                                <div className="flex gap-2">
+                                    <div className="font-semibold w-[100px] text-sm">Title</div>
+                                    {reportedPost?.title}
                                 </div>
-                                <div className="pb-4 mb-4 border-b border-gray-300">
-                                    <h2 className="text-xl font-medium  mb-4 text-gray-800 dark:text-gray-300">Post Information</h2>
-                                    <div className="">
-                                        <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Title: </span>{reportedPost?.title}</p>
-                                        <div className="mb-2">
-                                            <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Content: </span></p>
-                                            <div className="border border-divider p-4 rounded-lg">
-                                                <TextRenderer html={html} />
-                                            </div>
-                                        </div>
-                                        {postMedias?.length > 0 ? (
-                                            <div className="mb-2">
-                                                <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Media: </span></p>
-                                                <MediaGroup
-                                                    medias={postMedias?.map(({ mediaId, mediaType, postMediaId }) => ({
-                                                        key: postMediaId,
-                                                        mediaId,
-                                                        mediaType,
-                                                    }))}/>
-                                            </div>
-                                        ): (<></>)}
-                                        <p className="mb-1"><span className="font-semibold  text-gray-800 dark:text-gray-300">Author:</span> <span className="">{reportedPost?.creator?.username} </span></p>
-                                        <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Created date: </span>{dayjs(reportedPost?.createdAt).format("hh:mm:ss A DD/MM/YYYY")}</p>
-                                        <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Number of likes: </span>{reportedPost?.numberOfLikes}</p>
-                                        <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Number of comments: </span>{reportedPost?.numberOfComments}</p>
-                                        <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Number of reports: </span>{reportedPost?.numberOfReports}</p>
-                                        <p className="mb-1"><span className="font-semibold  text-gray-800 dark:text-gray-300">This post is belong to the course:</span> <span className="">{reportedPost?.course?.title} </span></p>
-
-                                    </div>
-                                        
-                                </div>
+                                <Spacer y={2} />
                                 <div>
-                                    <h2 className="text-xl font-medium pb-4  text-gray-800 dark:text-gray-300">Report Content</h2>
-                                    <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Title: </span>{title}</p>
-                                    <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300" >Description: </span>{description}</p>
+                                    <div>
+                                        <div className="font-semibold w-[100px] text-sm">
+                      Content
+                                        </div>
+                                        <Spacer y={1.5} />
+                                        <div className="border border-divider p-4 rounded-lg">
+                                            <TextRenderer html={html} />
+                                        </div>
+                                    </div>
                                 </div>
+                                <Spacer y={2} />
+                                <Link size="sm">Post link</Link>
                             </div>
-                            <div className="mb-4">
-                                <div className="font-medium text-xl text-gray-800 dark:text-gray-300 mb-2">Moderator Note: </div>
-                                {processStatus == "processing" ? (
-                                    <Textarea
-                                        classNames={{
-                                            inputWrapper: "input-input-wrapper shadow-lg rounded-md",
-                                        }}
-                                        id="progressNote"
-                                        type="string"
-                                        isRequired
-                                        labelPlacement="outside"
-                                        placeholder="Take note here"
-                                        isInvalid={isNotValidNote}
-                                        errorMessage="The note should be at least 20 characters long."
-                                        onChange={(e) => dispatch({ type: "SET_NOTE", payload: e.target.value })}
-                                    />
-                                ) : (
-                                    <p className="">{processNote}</p>
-                                )}
-                                
+                            <Spacer y={6} />
+                        </div>
+                        <div>
+                            <div className="text-primary">Content</div>
+                            <Spacer y={4} />
+                            <div className="text-sm flex items-center">
+                                <div className="font-semibold w-[100px]">Title</div>
+                                {title}
                             </div>
-
-                        </ModalBody>
-                        {processStatus == "processing" ? (
-                            <ModalFooter>
-                                <Button  color="primary" variant="bordered"
-                                    onClick={() => handleUpdateReport("approved")}>Approve</Button>
-                                <Button color="primary"
-                                    onClick={() => handleUpdateReport("rejected")}
-                                >
-                            Reject
-                                </Button>
-                            </ModalFooter>
-                        ): (<></>)}
-                    </>
-                )}
+                            <Spacer y={2} />
+                            <div className="text-sm flex items-center">
+                                <div className="font-semibold w-[100px]">Description</div>
+                                {description}
+                            </div>
+                            <Spacer y={6} />
+                            <div className="text-primary">Moderator Note</div>
+                            <Spacer y={4} />
+                            <Textarea
+                                classNames={{
+                                    inputWrapper: "input-input-wrapper shadow-lg rounded-md",
+                                }}
+                                id="progressNote"
+                                type="string"
+                                value={state.note}
+                                isRequired
+                                labelPlacement="outside"
+                                placeholder="Take note here"
+                                errorMessage="The note should be at least 20 characters long."
+                                onValueChange={(value) =>
+                                    dispatch({ type: "SET_NOTE", payload: value })
+                                }
+                            />
+                        </div>
+                    </div>
+                </ModalBody>
+                <ModalFooter className="p-4 pt-2">
+                    <Button
+                        isLoading={isMutating}
+                        variant="bordered"
+                        color="primary"
+                        onClick={async () => {
+                            await trigger({
+                                data: {
+                                    processNote: state.note,
+                                    processStatus: ReportProcessStatus.Rejected,
+                                    reportPostId,
+                                },
+                            })
+                        }}
+                    >
+            Reject
+                    </Button>
+                    <Button
+                        isLoading={isMutating2}
+                        color="primary"
+                        onClick={async () => {
+                            await trigger2({
+                                data: {
+                                    processNote: state.note,
+                                    processStatus: ReportProcessStatus.Approved,
+                                    reportPostId,
+                                },
+                            })
+                        }}
+                    >
+            Approve
+                    </Button>
+                </ModalFooter>
             </ModalContent>
         </Modal>
     )
