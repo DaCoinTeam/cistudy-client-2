@@ -1,5 +1,5 @@
 import { CourseEntity, formatNouns } from "@common"
-import { Card, CardBody, CardFooter, Chip, Divider, Image, Link, Spacer, Tooltip, User } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, Chip, Divider, Image, Link, Spacer, Tooltip, User } from "@nextui-org/react"
 import {
     Award, CheckIcon,
     FileQuestionIcon,
@@ -8,8 +8,12 @@ import {
     VideoIcon
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { getAssetUrl, getAvatarUrl } from "../../../../services/server"
+import { addToCart, getAssetUrl, getAvatarUrl } from "../../../../services/server"
 import { Stars } from "../../../_shared"
+import { useContext } from "react"
+import { RootContext } from "../../../_hooks"
+import { ToastType } from "../../../_components"
+import useSWRMutation from "swr/mutation"
 
 interface CourseCardProps {
     course: CourseEntity,
@@ -24,6 +28,32 @@ export const CourseCard = (props: CourseCardProps) => {
     }
     const {totalNumberOfRatings, overallCourseRating} = {...courseRatings}
     const router = useRouter()
+    
+    const { swrs: RootContextSwrs, notify } = useContext(RootContext)!
+    const { profileSwr } = RootContextSwrs
+    const fetchAddToCart = async (_: string, { arg }: { arg: string }) => {
+        const { message } = await addToCart({
+            data: {
+                courseId: arg,
+            },
+        })
+        await profileSwr.mutate()
+    notify!({
+        data: {
+            message,
+        },
+        type: ToastType.Success,
+    })
+    }
+
+    const { trigger, isMutating } = useSWRMutation("ADD_TO_CART", fetchAddToCart)
+    const handleAddToCart = async (courseId: string) => {
+        try {
+            await trigger(courseId)
+        } catch (ex) {
+            console.log(ex)
+        }
+    }
     return (
         <div>
 
@@ -137,10 +167,14 @@ export const CourseCard = (props: CourseCardProps) => {
                                     <div className="text-lg font-semibold text-black dark:text-white p-0 ms-1">{enableDiscount ? discountPrice : price} STARCI</div>
                                     {enableDiscount && <div className="text-sm text-foreground-400 line-through ms-1">{price} STARCI</div>}
                                 </div>
-                                <Link className="px-4 py-[0.6rem] text-sm font-normal bg-primary rounded-xl text-white dark:text-black" >
-                            Add to cart
-                                </Link>
-                                
+                                <Button 
+                                    as={Link}
+                                    color="primary"
+                                    onPress={() => {
+                                        handleAddToCart(courseId ?? "")
+                                    }}
+                                    isLoading={isMutating}
+                                >Add to cart</Button>
                             </div>
 
                         </CardFooter>

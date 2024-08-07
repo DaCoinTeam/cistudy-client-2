@@ -1,10 +1,14 @@
 import { CourseEntity } from "@common"
 import { Button, Divider, Spacer, Tooltip, User } from "@nextui-org/react"
-import { getAssetUrl, getAvatarUrl } from "@services"
+import { addToCart, getAssetUrl, getAvatarUrl } from "@services"
 import { InteractiveThumbnail } from "../InteractiveThumbnail"
 import { Stars } from "../Stars"
 import { useRouter } from "next/navigation"
 import { CheckIcon, FileQuestion, ListVideo, PlaySquareIcon } from "lucide-react"
+import { useContext } from "react"
+import { RootContext } from "../../../_hooks"
+import { ToastType } from "../../../_components"
+import useSWRMutation from "swr/mutation"
 
 export const CourseCardHorizontal = (props: CourseEntity) => {
     const { title, creator, thumbnailId, description, courseId, courseRatings, discountPrice, price, enableDiscount, courseTargets  } = { ...props }
@@ -13,6 +17,32 @@ export const CourseCardHorizontal = (props: CourseEntity) => {
     }
     const { overallCourseRating, totalNumberOfRatings} = {...courseRatings}
     const router = useRouter()
+
+    const { swrs: RootContextSwrs, notify } = useContext(RootContext)!
+    const { profileSwr } = RootContextSwrs
+    const fetchAddToCart = async (_: string, { arg }: { arg: string }) => {
+        const { message } = await addToCart({
+            data: {
+                courseId: arg,
+            },
+        })
+        await profileSwr.mutate()
+    notify!({
+        data: {
+            message,
+        },
+        type: ToastType.Success,
+    })
+    }
+
+    const { trigger, isMutating } = useSWRMutation("ADD_TO_CART", fetchAddToCart)
+    const handleAddToCart = async (courseId: string) => {
+        try {
+            await trigger(courseId)
+        } catch (ex) {
+            console.log(ex)
+        }
+    }
     return (
         <Tooltip
             placement="top"
@@ -92,7 +122,12 @@ export const CourseCardHorizontal = (props: CourseEntity) => {
                                 {enableDiscount && <div className="text-sm text-foreground-400 line-through ms-1">{price} STARCI</div>}
                             </div>
                        
-                            <Button color="primary">
+                            <Button color="primary"
+                                isLoading={isMutating}
+                                onPress={() => {
+                                    handleAddToCart(courseId ?? "")
+                                }}
+                            >
                             Add to cart
                             </Button>
                         </div>

@@ -93,6 +93,7 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                             title: true,
                             price: true,
                             discountPrice: true,
+                            enableDiscount: true,
                             thumbnailId: true,
                             description: true,
                             courseRatings: {

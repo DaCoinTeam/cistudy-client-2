@@ -26,11 +26,15 @@ export const ConfirmDeleteModalRef = forwardRef<
   ConfirmDeleteModalRefProps
 >((props, ref) => {
     const { onDeletePress, title, content, isLoading } = props
-    const { isOpen, onOpen, onOpenChange } = useDisclosure()
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
     useImperativeHandle(ref, () => ({
         onOpen,
     }))
+    const onDelete = () => {
+        onDeletePress()
+        onClose()
+    }
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="sm">
@@ -45,7 +49,7 @@ export const ConfirmDeleteModalRef = forwardRef<
                             <Button variant="light" onPress={onClose}>
                 Cancel
                             </Button>
-                            <Button isLoading={isLoading} color="danger" onPress={onDeletePress}>
+                            <Button isLoading={isLoading} color="danger" onPress={onDelete}>
                 Delete
                             </Button>
                         </ModalFooter>
