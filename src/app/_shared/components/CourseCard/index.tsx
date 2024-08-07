@@ -81,7 +81,7 @@ export const CourseCard = (props: CourseCardProps) => {
                 >
                     <Card   className="w-full hover:cursor-pointer h-full"  isPressable onPress={() => router.push(`/courses/${courseId}`)}>
                         <div className="w-full relative z-30">
-                            {thumbnailId && (
+                            {thumbnailId ? (
                                 <Image
                                     alt='course image'
                                     style={{width: "100%"}}
@@ -90,7 +90,9 @@ export const CourseCard = (props: CourseCardProps) => {
                                     src={getAssetUrl(thumbnailId)!}
                                 />
                 
-                            )}
+                            ): <Image  alt='course image' 
+                                className='z-10 rounded-b-none object-cover max-h-[9.6rem] min-h-[9.6rem]'
+                                src="https://placehold.co/289x153?text=No+Image"/>}
                             {isBestSeller &&  <div  className="absolute right-4 top-4 z-20 flex">
                                 <Chip color="warning"  size="sm" startContent={<Award className="w-5 h-5"/>}>Best Seller</Chip>
                             </div>
@@ -99,13 +101,13 @@ export const CourseCard = (props: CourseCardProps) => {
                         </div>
             
                         <CardBody className="pb-1 w-full px-4 min-h-42 overflow-hidden">
-                            <div className="text-lg mb-2 line-clamp-2 min-h-13"> {title} </div>
-                            <div className="text-sm text-foreground-400  line-clamp-2 mb-4"> {description} </div>
+                            <div className="text-lg mb-2 line-clamp-2 min-h-14"> {title} </div>
+                            <div className="text-sm text-foreground-400 min-h-10 line-clamp-2 mb-4"> {description} </div>
                             <div className="flex justify-between gap-4 h-7 items-center mb-2 w-full ">
                                 <div >
                                     <User classNames={{
                                         name: "text-sm line-clamp-1",
-                                        description: "w-[3.5rem]"
+                                        description: "w-[70px]"
                                     }} avatarProps={{
                                         src: getAvatarUrl({
                                             avatarUrl: avatarUrl,

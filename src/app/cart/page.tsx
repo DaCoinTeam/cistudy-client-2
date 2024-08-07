@@ -12,6 +12,7 @@ import {
 import { CartItem } from "./_components/CartItem"
 import { useCartReducer } from "./_hooks/useCartReducer"
 import { ArrowRightIcon } from "@heroicons/react/24/solid"
+import { useRouter } from "next/navigation"
 
 const Cart = () => {
     const [state, dispatch] = useCartReducer()
@@ -89,7 +90,7 @@ const Cart = () => {
     )
     const onConfirmDeleteModalOpen = () =>
         confirmDeleteModalRef.current?.onOpen()
-
+    const router = useRouter()
     return (
         <div className='relative h-full flex flex-col mx-auto max-w-[1260px] mt-12 '>
             <div className='text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl'>
@@ -199,7 +200,7 @@ const Cart = () => {
                             // onPress={()=> handleCheckout()}
                             className='flex w-full items-center justify-center rounded-lg 700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
                         >
-              Proceed to Checkout
+              Checkout
                         </Button>
 
                         <div className='flex items-center justify-center gap-2'>
@@ -209,6 +210,7 @@ const Cart = () => {
                             </span>
                             <Link
                                 title=''
+                                onPress={()=> router.push("/courses")}
                                 className='inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500'
                             >
                 Continue Shopping
