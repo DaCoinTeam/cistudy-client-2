@@ -1,8 +1,8 @@
 import { ReportPostCommentEntity } from "@common"
-import { Avatar, Chip, ChipProps, Pagination, Spacer, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
+import { Avatar, Chip, ChipProps, Link, Pagination, Spacer, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
 import { getAvatarUrl } from "@services"
 import dayjs from "dayjs"
-import { ClipboardPenLine } from "lucide-react"
+import { PencilRulerIcon } from "lucide-react"
 import React, { useCallback, useContext } from "react"
 import { TextRenderer } from "../../../../../../_shared"
 import { PostCommentReportItemContext, PostCommentReportItemProvider, ROWS_PER_PAGE } from "./PostCommentReportItemProvider"
@@ -86,16 +86,11 @@ const WrappedPostCommentReportItem = () => {
                 <div className="flex justify-center">
                     {
                         report.processStatus === "processing" && (
-                            <div className="flex flex-row gap-2">
+                            <Link className="cursor-pointer flex flex-row gap-2" onClick={() => handleResolve(report)}>
                                 <Tooltip content="Resolve" color="primary">
-                                    <ClipboardPenLine
-                                        width={20}
-                                        height={20}
-                                        onClick={() => handleResolve(report)}
-                                        className="cursor-pointer primary" 
-                                    />
+                                    <PencilRulerIcon className="w-5 h-5" strokeWidth={3/2}/> 
                                 </Tooltip>
-                            </div>
+                            </Link>
                         )
                     }
                 </div>

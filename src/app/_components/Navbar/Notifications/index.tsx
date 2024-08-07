@@ -190,7 +190,7 @@ export const Notifications = () => {
         }}>
             <PopoverTrigger>
                 <Button isIconOnly variant="light" className="p-6">
-                    {getNotification.length === 0 ? (
+                    {getNotification.length === 0 || getNotViewed == 0 ? (
                         <div>
                             <BellAlertIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
                         </div>
