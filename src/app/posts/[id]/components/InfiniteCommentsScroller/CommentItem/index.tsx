@@ -1,7 +1,9 @@
 import { PostCommentEntity, parseTimeAgo } from "@common"
 import { Avatar, Chip, Spacer, useDisclosure } from "@nextui-org/react"
 import { getAvatarUrl } from "@services"
-import { CheckIcon, GiftIcon, PencilIcon } from "lucide-react"
+import { CheckIcon, 
+    // GiftIcon, 
+    PencilIcon } from "lucide-react"
 import { createContext, useContext, useMemo } from "react"
 import { Actions } from "./Actions"
 import { MoreButton } from "./MoreButton"
@@ -102,7 +104,7 @@ export const CommentItem = (props: CommentItemProps) => {
                   Author
                                 </Chip>
                             )}
-                            {isRewardable && (
+                            {/* {isRewardable && (
                                 <Chip
                                     startContent={<GiftIcon size={18} className='ml-1' />}
                                     variant='flat'
@@ -111,7 +113,7 @@ export const CommentItem = (props: CommentItemProps) => {
                                 >
                   Rewardable
                                 </Chip>
-                            )}
+                            )} */}
                             {isSolution && (
                                 <Chip
                                     startContent={<CheckIcon size={18} className='ml-1' />}
