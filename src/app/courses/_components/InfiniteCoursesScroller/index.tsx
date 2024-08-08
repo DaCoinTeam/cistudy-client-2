@@ -12,13 +12,13 @@ import { useContext, useMemo, useState } from "react"
 import InfiniteScroll from "react-infinite-scroller"
 import {
     CardListHorizontalSkeleton,
-    CourseCardHorizontal
 } from "../../../_shared"
-import { CourseCard } from "../../../_shared/components/CourseCard"
 import {
     AllCoursesContext,
     COLUMNS_PER_PAGE
 } from "../../_hooks"
+import { CourseCard } from "./CourseCard"
+import { CourseCardHorizontal } from "./CourseCardHorizontal"
 
 interface InfiniteCoursesScrollerProps {
   className?: string;

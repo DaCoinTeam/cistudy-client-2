@@ -179,6 +179,12 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                     email: true,
                     avatarId: true,
                     avatarUrl: true
+                },
+                numberOfLessons: true,
+                numberOfQuizzes: true,
+                numberOfResources: true,
+                sections: {
+                    sectionId: true,
                 }
             },
             recentlyAddedCourses: {
@@ -202,6 +208,12 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                     email: true,
                     avatarId: true,
                     avatarUrl: true
+                },
+                numberOfLessons: true,
+                numberOfQuizzes: true,
+                numberOfResources: true,
+                sections: {
+                    sectionId: true,
                 }
             },
             highRatedInstructors: {
@@ -213,7 +225,8 @@ const WrappedRootProvider = ((props : { children: ReactNode; formik: FormikProps
                 kind: true,
                 accountRatings: {
                     overallAccountRating: true,
-                }
+                },
+                
             }
         })
     }, [])

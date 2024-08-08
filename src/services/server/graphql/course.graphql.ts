@@ -78,6 +78,9 @@ export const findOneCourseAuth = async (
 }
 
 export interface FindManyCoursesInputData {
+  params: {
+    accountId?: string | null;
+  },
   options?: {
     take?: number
     skip?: number

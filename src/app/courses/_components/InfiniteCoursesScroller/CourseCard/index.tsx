@@ -8,12 +8,13 @@ import {
     VideoIcon
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { addToCart, getAssetUrl, getAvatarUrl } from "../../../../services/server"
-import { Stars } from "../../../_shared"
 import { useContext } from "react"
-import { RootContext } from "../../../_hooks"
-import { ToastType } from "../../../_components"
+import { AllCoursesContext } from "../../../_hooks"
+import { RootContext } from "../../../../_hooks"
+import { addToCart, getAssetUrl, getAvatarUrl } from "@services"
 import useSWRMutation from "swr/mutation"
+import { ToastType } from "../../../../_components"
+import { Stars } from "../../../../_shared"
 
 interface CourseCardProps {
     course: CourseEntity,
@@ -29,6 +30,9 @@ export const CourseCard = (props: CourseCardProps) => {
     const {totalNumberOfRatings, overallCourseRating} = {...courseRatings}
     const router = useRouter()
 
+    const {swrs} = useContext(AllCoursesContext)!
+    const {coursesSwr} = swrs
+    const {mutate} = coursesSwr
     
     const { swrs: RootContextSwrs, notify } = useContext(RootContext)!
     const { profileSwr } = RootContextSwrs
@@ -39,6 +43,7 @@ export const CourseCard = (props: CourseCardProps) => {
             },
         })
         await profileSwr.mutate()
+        await mutate()
     notify!({
         data: {
             message,
@@ -59,8 +64,6 @@ export const CourseCard = (props: CourseCardProps) => {
     const onEnterManageCoursePress = () => router.push(`courses/${courseId}/management`)
     return (
         <div>
-
-           
             <div>
                 <Tooltip
                     placement="right-start"
@@ -73,10 +76,10 @@ export const CourseCard = (props: CourseCardProps) => {
                                 <div className="text-base font-semibold">This course included</div>
                                 <Spacer y={2} />
                                 <div className="flex text-foreground-500 flex-col gap-2">
-                                    {/* <div className="flex gap-2">
+                                    <div className="flex gap-2">
                                         <ListVideo size={20} strokeWidth={3 / 2} />
                                         <div className="text-sm"> {sections?.length} sections</div>
-                                    </div> */}
+                                    </div>
                                     <div className="flex gap-2">
                                         <VideoIcon size={20} strokeWidth={3 / 2} />
                                         <div className="text-sm"> {numberOfLessons} lesson{numberOfQuizzes ?? 0 > 1 ? "s" : ""}</div>
@@ -169,7 +172,47 @@ export const CourseCard = (props: CourseCardProps) => {
                                 <div className="flex flex-col items-start">
                                     <div className="text-lg font-semibold text-black dark:text-white p-0 ms-1">{enableDiscount ? discountPrice : price} STARCI</div>
                                     {enableDiscount && <div className="text-sm text-foreground-400 line-through ms-1">{price} STARCI</div>}
-                                </div>                                
+                                </div>
+                                {isCreator ? (
+                                    <Button
+                                        color="primary"
+                                        variant="bordered"
+                                        onPress={onEnterManageCoursePress}
+                                    >Manage course</Button>
+                                ): (
+                                    <div>
+                                        {enrolled ? (
+                                            <Button
+                                                color="primary"
+                                                className="font-semibold"
+                                                onPress={onEnterCoursePress}                                        fullWidth
+                                            >Enter course</Button>
+                                        ) : (
+                                            <div>
+                                                {isAddedToCart ? (
+                                                    <Button
+                                                        color="primary"
+                                                        onPress={() => router.push("/cart")}
+                                                        fullWidth
+                                                    >
+                          Go to cart
+                                                    </Button>
+                                                ): (
+                                                    <Button 
+                                                        as={Link}
+                                                        color="primary"
+                                                        onPress={() => {
+                                                            handleAddToCart(courseId ?? "")
+                                                        }}
+                                                        isLoading={isMutating}
+                                                    >Add to cart</Button>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                               
+                                
                            
                             </div>
 
