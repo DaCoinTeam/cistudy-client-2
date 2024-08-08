@@ -160,6 +160,7 @@ export interface CourseEntity {
   completedContents?: number
   students?: Array<AccountEntity>
   isReviewed?: boolean
+  isAddedToCart?: boolean
 }
 
 export interface CertificateEntity {

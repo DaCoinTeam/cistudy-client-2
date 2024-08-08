@@ -31,7 +31,10 @@ export const WrappedAllCoursesProvider = ({
     const searchParams = useSearchParams()
     const searchValue = searchParams.get("searchValue")
 
-    const {reducer} = useContext(RootContext)!
+    const {reducer, swrs} = useContext(RootContext)!
+    const {profileSwr} = {...swrs}
+    const {accountId, } = {...profileSwr.data}
+    console.log("accountId", accountId)
     const [state, dispatch] = reducer
     const { categoryFilter } = state
     const getCategoryFilterIds = () => {
@@ -43,6 +46,10 @@ export const WrappedAllCoursesProvider = ({
         async ([key]: [number, string]) => {
             return await findManyCourses(
                 {
+                
+                    params: {
+                        accountId: accountId,
+                    },
                     options: {
                         categoryIds: getCategoryFilterIds(),
                         searchValue: searchValue || "",
@@ -77,6 +84,9 @@ export const WrappedAllCoursesProvider = ({
                         numberOfLessons: true,
                         numberOfQuizzes: true,
                         numberOfResources: true,
+                        isCreator: true,
+                        enrolled: true,
+                        isAddedToCart: true,
                         sections: {
                             sectionId: true
                         }
@@ -91,10 +101,10 @@ export const WrappedAllCoursesProvider = ({
                 }
             )
         },
-        [searchValue, categoryFilter]
+        [searchValue, categoryFilter, accountId]
     )
     const coursesSwr = useSWRInfinite(
-        (key) => [key, "COURSES", searchValue, categoryFilter],
+        (key) => [key, "COURSES", searchValue, categoryFilter, accountId],
         fetchCourses,
         {
             revalidateFirstPage: false,
