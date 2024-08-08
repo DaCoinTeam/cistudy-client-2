@@ -100,7 +100,7 @@ const WrappedEditQuizContent = () => {
                         classNames={{
                             inputWrapper: "input-input-wrapper",
                         }}
-                        label="Passing Score"
+                        label="Passing Percent"
                         id="passingPercent"
                         isRequired
                         labelPlacement="outside"
@@ -114,7 +114,7 @@ const WrappedEditQuizContent = () => {
                         errorMessage={
                             formik.touched.passingPercent && formik.errors.passingPercent
                         }
-                        endContent={<div className="text-sm text-foreground-400">/10</div>}
+                        endContent={<div className="text-sm text-foreground-400">/100%</div>}
                     />
                 </div>
                 <Spacer y={6} />
