@@ -84,11 +84,18 @@ const WrappedNavbar = (props: NavbarProps) => {
                     <SearchInput className='w-[500px]' />
                 </NavbarContent>
                 <NavbarContent justify='end'>
-                    {profile?.accountId ? (<NavbarItem className="mr-2 justify-center">
+                    {profile && profile?.accountId ? (<NavbarItem className="mr-2 justify-center">
                         <Button isIconOnly variant="light" className="p-6" onPress={handleCartPress}>
-                            <Badge color="danger" content={cart?.cartCourses?.length ?? 0}  shape="circle">
-                                <ShoppingCartIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
-                            </Badge>          
+                            {cart && cart?.cartCourses?.length > 0 ? (
+                                <Badge color="danger" content={cart?.cartCourses?.length}  shape="circle">
+                                    <ShoppingCartIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
+                                </Badge>
+                            ) : (
+                                <div>
+                                    <ShoppingCartIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
+                                </div>
+                            )}
+                            
                         </Button>
                     </NavbarItem>) : (<NavbarItem></NavbarItem>)}
                     {profile && profile?.accountId ? (

@@ -50,7 +50,7 @@ export const Instructor = (props: InstructorProps) => {
                     </div>
                     <div className='flex items-center'>
                         <div className="pb-1">                        
-                            <Stars initialValue={5} readonly />
+                            <Stars initialValue={overallAccountRating} readonly />
                         </div>
                         <div className="ms-1 pt-1 text-sm text-slate-700 dark:text-slate-300">{overallAccountRating || 0}</div>
                         <div className='ms-1  pt-1 text-sm text-slate-700 dark:text-slate-300'>

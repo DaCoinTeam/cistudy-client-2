@@ -1,6 +1,6 @@
 import { CourseEntity, formatNouns } from "@common"
 import { XMarkIcon } from "@heroicons/react/24/outline"
-import { Spacer, User } from "@nextui-org/react"
+import { Link, Spacer, User } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "@services"
 import {
     FileQuestionIcon,
@@ -9,8 +9,15 @@ import {
     VideoIcon,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { InteractiveThumbnail, Stars } from "../../../_shared"
-export const CartItem = (props: CourseEntity) => {
+import { ConfirmDeleteModalRef, ConfirmDeleteModalRefSelectors, InteractiveThumbnail, Stars } from "../../../_shared"
+import { useRef } from "react"
+interface CartItemProps {
+    course: CourseEntity,
+    cartCourseId: string,
+    handleDelete: (courseId: string) => void
+}
+export const CartItem = (props: CartItemProps) => {
+    const {course, handleDelete, cartCourseId} = props
     const {
         title,
         creator,
@@ -25,12 +32,17 @@ export const CartItem = (props: CourseEntity) => {
         numberOfLessons,
         numberOfQuizzes,
         numberOfResources,
-    } = { ...props }
+    } = { ...course }
     const { avatarId, avatarUrl, kind, username, numberOfFollowers } = {
         ...creator,
     }
     const { overallCourseRating, totalNumberOfRatings } = { ...courseRatings }
     const router = useRouter()
+    const confirmDeleteModalRef = useRef<ConfirmDeleteModalRefSelectors | null>(
+        null
+    )
+    const onConfirmDeleteModalOpen = () =>
+        confirmDeleteModalRef.current?.onOpen()
     return (
         <div className="flex gap-4 items-center w-full" key={courseId}>
             <InteractiveThumbnail
@@ -39,7 +51,7 @@ export const CartItem = (props: CourseEntity) => {
                 src={getAssetUrl(thumbnailId)}
                 onPress={() => router.push(`/courses/${courseId}`)}
             />
-            <div className="grid grid-cols-5 gap-4 justify-between">
+            <div className="grid grid-cols-5 gap-4 w-full justify-between">
                 <div className="col-span-4 mr-2 w-full">
                     <div className="text-lg font-medium"> {title} </div>
                     <div className="text-sm text-foreground-400 line-clamp-2">
@@ -113,28 +125,40 @@ export const CartItem = (props: CourseEntity) => {
                         </div>
                     </div>
                 </div>
-                <div className="col-span-1 h-full flex justify-center items-end">
-                    <div className="grid grid-rows-2 h-full ">
-                        <div className="row-span-1">
-                            <div className="text-base font-semibold p-0 ms-1">
-                                {enableDiscount ? discountPrice : price} STARCI
-                            </div>
-                            {enableDiscount && (
-                                <div className="text-sm text-foreground-400 line-through ms-1">
+                <div className="col-span-1 ">
+                    <div className="h-full grid grid-rows-5 justify-end ">
+                        <div className="row-span-4">
+                            <div className="">
+                                <div className="text-base font-semibold p-0 ms-1">
                                     {price} STARCI
                                 </div>
-                            )}
+                                
+                                {enableDiscount && (
+                                    <div className="text-sm text-foreground-400 line-through ms-1">
+                                        {discountPrice} STARCI
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                        <div className="flex row-span-1  items-center justify-center  text-red-600 cursor-pointer">
-                            <XMarkIcon
-                                className="h-6 w-6 mr-1"
-                                onClick={() => console.log("remove")}
-                            />
-                            <div className="text-sm  text-red-60">Remove</div>
+                        <div className="row-span-1">
+                            <Link onPress={onConfirmDeleteModalOpen} className="flex row-span-1  items-center justify-center  text-red-500 cursor-pointer">
+                                <XMarkIcon
+                                    className="h-3 w-3 mr-1"
+                                />
+                                <div className="text-xs  text-red-60">Remove</div>
+                            </Link>
                         </div>
                     </div>
+                    
+                    
                 </div>
             </div>
+            <ConfirmDeleteModalRef
+                ref={confirmDeleteModalRef}
+                title="You are going to delete a course in cart ?"
+                content={`Are you sure delete the course '${title}' in cart`}
+                onDeletePress={() => handleDelete(cartCourseId)}
+            />
         </div>
     )
 }

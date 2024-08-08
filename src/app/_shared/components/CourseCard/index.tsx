@@ -1,5 +1,5 @@
 import { CourseEntity, formatNouns } from "@common"
-import { Card, CardBody, CardFooter, Chip, Divider, Image, Link, Spacer, Tooltip, User } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, Chip, Divider, Image, Link, Spacer, Tooltip, User } from "@nextui-org/react"
 import {
     Award, CheckIcon,
     FileQuestionIcon,
@@ -8,8 +8,12 @@ import {
     VideoIcon
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { getAssetUrl, getAvatarUrl } from "../../../../services/server"
+import { addToCart, getAssetUrl, getAvatarUrl } from "../../../../services/server"
 import { Stars } from "../../../_shared"
+import { useContext } from "react"
+import { RootContext } from "../../../_hooks"
+import { ToastType } from "../../../_components"
+import useSWRMutation from "swr/mutation"
 
 interface CourseCardProps {
     course: CourseEntity,
@@ -24,6 +28,32 @@ export const CourseCard = (props: CourseCardProps) => {
     }
     const {totalNumberOfRatings, overallCourseRating} = {...courseRatings}
     const router = useRouter()
+    
+    const { swrs: RootContextSwrs, notify } = useContext(RootContext)!
+    const { profileSwr } = RootContextSwrs
+    const fetchAddToCart = async (_: string, { arg }: { arg: string }) => {
+        const { message } = await addToCart({
+            data: {
+                courseId: arg,
+            },
+        })
+        await profileSwr.mutate()
+    notify!({
+        data: {
+            message,
+        },
+        type: ToastType.Success,
+    })
+    }
+
+    const { trigger, isMutating } = useSWRMutation("ADD_TO_CART", fetchAddToCart)
+    const handleAddToCart = async (courseId: string) => {
+        try {
+            await trigger(courseId)
+        } catch (ex) {
+            console.log(ex)
+        }
+    }
     return (
         <div>
 
@@ -81,7 +111,7 @@ export const CourseCard = (props: CourseCardProps) => {
                 >
                     <Card   className="w-full hover:cursor-pointer h-full"  isPressable onPress={() => router.push(`/courses/${courseId}`)}>
                         <div className="w-full relative z-30">
-                            {thumbnailId && (
+                            {thumbnailId ? (
                                 <Image
                                     alt='course image'
                                     style={{width: "100%"}}
@@ -90,7 +120,9 @@ export const CourseCard = (props: CourseCardProps) => {
                                     src={getAssetUrl(thumbnailId)!}
                                 />
                 
-                            )}
+                            ): <Image  alt='course image' 
+                                className='z-10 rounded-b-none object-cover max-h-[9.6rem] min-h-[9.6rem]'
+                                src="https://placehold.co/289x153?text=No+Image"/>}
                             {isBestSeller &&  <div  className="absolute right-4 top-4 z-20 flex">
                                 <Chip color="warning"  size="sm" startContent={<Award className="w-5 h-5"/>}>Best Seller</Chip>
                             </div>
@@ -99,13 +131,13 @@ export const CourseCard = (props: CourseCardProps) => {
                         </div>
             
                         <CardBody className="pb-1 w-full px-4 min-h-42 overflow-hidden">
-                            <div className="text-lg mb-2 line-clamp-2 min-h-13"> {title} </div>
-                            <div className="text-sm text-foreground-400  line-clamp-2 mb-4"> {description} </div>
+                            <div className="text-lg mb-2 line-clamp-2 min-h-14"> {title} </div>
+                            <div className="text-sm text-foreground-400 min-h-10 line-clamp-2 mb-4"> {description} </div>
                             <div className="flex justify-between gap-4 h-7 items-center mb-2 w-full ">
                                 <div >
                                     <User classNames={{
                                         name: "text-sm line-clamp-1",
-                                        description: "w-[3.5rem]"
+                                        description: "w-[70px]"
                                     }} avatarProps={{
                                         src: getAvatarUrl({
                                             avatarUrl: avatarUrl,
@@ -135,10 +167,14 @@ export const CourseCard = (props: CourseCardProps) => {
                                     <div className="text-lg font-semibold text-black dark:text-white p-0 ms-1">{enableDiscount ? discountPrice : price} STARCI</div>
                                     {enableDiscount && <div className="text-sm text-foreground-400 line-through ms-1">{price} STARCI</div>}
                                 </div>
-                                <Link className="px-4 py-[0.6rem] text-sm font-normal bg-primary rounded-xl text-white dark:text-black" >
-                            Add to cart
-                                </Link>
-                                
+                                <Button 
+                                    as={Link}
+                                    color="primary"
+                                    onPress={() => {
+                                        handleAddToCart(courseId ?? "")
+                                    }}
+                                    isLoading={isMutating}
+                                >Add to cart</Button>
                             </div>
 
                         </CardFooter>
