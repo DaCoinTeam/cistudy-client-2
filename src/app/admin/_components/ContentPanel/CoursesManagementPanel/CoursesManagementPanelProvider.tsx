@@ -39,6 +39,8 @@ const WrappedCoursesManagementPanelProvider = ({
         async ([key]: [number, string]) => {
             return await findManyCourses(
                 {
+                    params: {
+                    },
                     options: {
                         skip: ROWS_PER_PAGE * (key - 1),
                         take: ROWS_PER_PAGE,
