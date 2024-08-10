@@ -86,7 +86,7 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                             <Spacer y={4}/>
                             <div className="text-sm">
                                 {transaction.transactionDetails.length > 0 ? (
-                                    <div>
+                                    <div className="grid gap-1">
                                         {transaction.transactionDetails.map(
                                             ({
                                                 transactionDetailId,

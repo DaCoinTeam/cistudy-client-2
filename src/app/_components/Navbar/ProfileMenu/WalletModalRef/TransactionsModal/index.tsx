@@ -208,7 +208,7 @@ const WrappedTransactionsModal = () => {
                                         </TableCell>
                                         <TableCell>
                                             {transaction.transactionDetails.length > 0 ? (
-                                                <div>
+                                                <div className="grid gap-1">
                                                     {transaction.transactionDetails.map(
                                                         ({
                                                             transactionDetailId,
