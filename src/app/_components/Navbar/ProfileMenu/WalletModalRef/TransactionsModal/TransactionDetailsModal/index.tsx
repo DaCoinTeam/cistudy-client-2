@@ -84,6 +84,8 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                                 )}
                             </div>
                             <Spacer y={4}/>
+                            <div className="text-primary font-semibold">Details</div>
+                            <Spacer y={1}/>
                             <div className="text-sm">
                                 {transaction.transactionDetails.length > 0 ? (
                                     <div className="grid gap-1">
@@ -114,7 +116,6 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                                                             >
                                                                 {course?.title}
                                                             </Link>
-                                                            <div className="text-danger">(- {course?.enableDiscount ? course.discountPrice : course?.price} STARCI)</div>
                                                         </div>
                                                     )
                                                 }
@@ -148,7 +149,6 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                                                         >
                                                             {course?.title}
                                                         </Link>
-                                                        <div className="text-success">(+ {course?.enableDiscount ? course.discountPrice : course?.price} STARCI)</div>
                                                     </div>
                                                 )
                                             }

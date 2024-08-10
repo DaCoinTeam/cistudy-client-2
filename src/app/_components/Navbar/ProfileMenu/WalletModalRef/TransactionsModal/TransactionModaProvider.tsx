@@ -66,9 +66,6 @@ const WrappedTransactionsModalProvider = ({
                                 courseId: true,
                                 title: true,
                                 thumbnailId: true,
-                                enableDiscount: true,
-                                discountPrice: true,
-                                price: true
                             },
                             transactionDetailId: true,
                             payAmount: true,
