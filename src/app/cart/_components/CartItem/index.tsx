@@ -13,8 +13,8 @@ import { ConfirmDeleteModalRef, ConfirmDeleteModalRefSelectors, InteractiveThumb
 import { useRef } from "react"
 interface CartItemProps {
     course: CourseEntity,
-    cartCourseId: string,
-    handleDelete: (courseId: string) => void
+    cartCourseId?: string,
+    handleDelete?: (courseId: string) => void
 }
 export const CartItem = (props: CartItemProps) => {
     const {course, handleDelete, cartCourseId} = props
@@ -140,14 +140,17 @@ export const CartItem = (props: CartItemProps) => {
                                 )}
                             </div>
                         </div>
-                        <div className="row-span-1">
-                            <Link onPress={onConfirmDeleteModalOpen} className="flex row-span-1  items-center justify-center  text-red-500 cursor-pointer">
-                                <XMarkIcon
-                                    className="h-3 w-3 mr-1"
-                                />
-                                <div className="text-xs  text-red-60">Remove</div>
-                            </Link>
-                        </div>
+                        {handleDelete  && (
+                            <div className="row-span-1">
+                                <Link onPress={onConfirmDeleteModalOpen} className="flex row-span-1  items-center justify-center  text-red-500 cursor-pointer">
+                                    <XMarkIcon
+                                        className="h-3 w-3 mr-1"
+                                    />
+                                    <div className="text-xs  text-red-60">Remove</div>
+                                </Link>
+                            </div>
+                        )}
+                       
                     </div>
                     
                     
@@ -157,7 +160,7 @@ export const CartItem = (props: CartItemProps) => {
                 ref={confirmDeleteModalRef}
                 title="You are going to delete a course in cart ?"
                 content={`Are you sure delete the course '${title}' in cart`}
-                onDeletePress={() => handleDelete(cartCourseId)}
+                onDeletePress={() => {if(handleDelete){handleDelete(cartCourseId ?? "")}}}
             />
         </div>
     )

@@ -52,11 +52,13 @@ const WrappedCoursesManagementPanelProvider = ({
                         title: true,
                         description: true,
                         createdAt: true,
-                        numberOfEnrollments: true,
                         discountPrice: true,
                         price: true,
                         enableDiscount: true,
-                        
+                        verifyStatus: true,
+                        enrolledInfos: {
+                            accountId: true,
+                        },
 
                     },
                     metadata: {

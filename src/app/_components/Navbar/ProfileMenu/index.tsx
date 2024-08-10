@@ -41,6 +41,9 @@ export const ProfileMenu = () => {
     const onEnrolledCouresPress = () => router.push("/enrolled-courses")
     const onAdminDashboardPress = () => router.push("/admin")
     const onModeratorDashboardPress = () => router.push("/moderator")
+    const onPurchaseHistoryPress = () => {
+
+    }
 
     const walletModalRef = useRef<WalletModalRefSelectors | null>(null)
     const onWalletPress = () => walletModalRef.current?.onOpen()
@@ -78,6 +81,11 @@ export const ProfileMenu = () => {
                     key: "management",
                     onPress: onManagementPress,
                     content: "Management",
+                },
+                {
+                    key: "purchaseHistory",
+                    onPress: onPurchaseHistoryPress,
+                    content: "Purchase history"
                 },
                 {
                     key: "help_and_feedback",
@@ -133,6 +141,11 @@ export const ProfileMenu = () => {
                         content: "Management",
                     },
                     {
+                        key: "purchaseHistory",
+                        onPress: onPurchaseHistoryPress,
+                        content: "Purchase history"
+                    },
+                    {
                         key: "help_and_feedback",
                         content: "Help & Feedback",
                     },
@@ -174,6 +187,11 @@ export const ProfileMenu = () => {
                         key: "management",
                         onPress: onManagementPress,
                         content: "Management",
+                    },
+                    {
+                        key: "purchaseHistory",
+                        onPress: onPurchaseHistoryPress,
+                        content: "Purchase history"
                     },
                     {
                         key: "help_and_feedback",

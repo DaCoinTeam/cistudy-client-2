@@ -14,6 +14,7 @@ import { ArrowRightIcon } from "@heroicons/react/24/solid"
 import { useRouter } from "next/navigation"
 import { CartContext } from "./_hooks"
 import useSWRMutation from "swr/mutation"
+import { ConfirmOrderModalRef, ConfirmOrderModalRefSelectors } from "../_shared/components/ConfirmOrderModalRef"
 
 const Page = () => {
     const { reducer } = useContext(CartContext)!
@@ -120,7 +121,23 @@ const Page = () => {
     )
     const onConfirmDeleteModalOpen = () =>
         confirmDeleteModalRef.current?.onOpen()
+
+    const confirmOrderModalRef = useRef<ConfirmOrderModalRefSelectors | null>(
+        null
+    )
+    const onConfirmOrderModalOpen = () =>
+        confirmOrderModalRef.current?.onOpen()
+
     const router = useRouter()
+
+    const handleCheckout = async () => {
+        await trigger({
+            data: {
+                cartCourseIds: selectedItems,
+            },
+        })
+    }
+
     return (
         <div className='relative h-full flex flex-col mx-auto w-full p-12'>
             <div className='text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl'>
@@ -243,16 +260,17 @@ const Page = () => {
                             color='primary'
                             isLoading={isMutating}
                             isDisabled={selectedItems.length === 0}
-                            onPress={async () => {
-                                await trigger({
-                                    data: {
-                                        cartCourseIds: selectedItems,
-                                    },
-                                })
-                            }}
+                            // onPress={async () => {
+                            //     await trigger({
+                            //         data: {
+                            //             cartCourseIds: selectedItems,
+                            //         },
+                            //     })
+                            // }}
+                            onPress={onConfirmOrderModalOpen}
                             className='flex w-full items-center justify-center rounded-lg 700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
                         >
-              Checkout
+              Go To Checkout
                         </Button>
 
                         <div className='flex items-center justify-center gap-2'>
@@ -302,6 +320,14 @@ const Page = () => {
                         title='You are going to delete course(courses) in cart ? '
                         content='Are you sure delete course(courses) in cart'
                         onDeletePress={() => handleDelete()}
+                    />
+                    <ConfirmOrderModalRef
+                        ref={confirmOrderModalRef}
+                        courses={cartCourses?.map((item) => item.course) ?? []}
+                        originalPrice={getTotalPrice.price}
+                        discountPrice={getTotalPrice.discountPrice}
+                        onCheckoutPress={handleCheckout}
+                        isMutating={isMutating}
                     />
                 </div>
             </div>
