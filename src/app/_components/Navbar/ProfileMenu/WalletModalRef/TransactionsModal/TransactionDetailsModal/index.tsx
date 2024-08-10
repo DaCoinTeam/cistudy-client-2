@@ -42,7 +42,7 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                             </div>
                             
                             <Spacer y={4}/>
-                            <div className="text-sm">
+                            <div className="font-semibold">
                                 {transaction.amountOnChainChange ? (
                                     <div className="grid gap-1">
                                         <div className="flex gap-2 items-center">
