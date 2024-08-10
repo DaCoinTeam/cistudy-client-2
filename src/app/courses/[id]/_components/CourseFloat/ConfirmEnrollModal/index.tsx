@@ -1,23 +1,15 @@
 
-import React, { useContext } from "react"
 import {
-    Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Button,
-    useDisclosure,
-    Spacer,
-    Divider,
+    Button
 } from "@nextui-org/react"
-import { ClipboardPenLineIcon } from "lucide-react"
-import { CourseDetailsContext } from "../../../_hooks"
-import { RootContext } from "../../../../../_hooks"
 import { enrollCourse } from "@services"
-import { ToastType } from "../../../../../_components"
+import { ClipboardPenLineIcon } from "lucide-react"
+import { useContext, useRef } from "react"
 import useSWRMutation from "swr/mutation"
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline"
+import { ToastType } from "../../../../../_components"
+import { RootContext } from "../../../../../_hooks"
+import { ConfirmOrderModalRef, ConfirmOrderModalRefSelectors } from "../../../../../_shared/components/ConfirmOrderModalRef"
+import { CourseDetailsContext } from "../../../_hooks"
 
 export const ConfirmEnrollModal = () => {
     const { swrs } = useContext(CourseDetailsContext)!
@@ -27,22 +19,13 @@ export const ConfirmEnrollModal = () => {
         ...course,
     }
 
-    const { swrs: rootSwrs } = useContext(RootContext)!
-    const { profileSwr } = rootSwrs
-    const { data } = profileSwr
-    const { balance } = { ...data }
-
-    const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure()
-
     const getPrice = () => (enableDiscount ? discountPrice : price) ?? 0
 
     const { notify } = useContext(RootContext)!
 
-    const balanceLeft = (balance ?? 0) - getPrice()
-
     const { trigger, isMutating } = useSWRMutation(
         "ENROLL",
-        (
+        async (
             _,
             {
                 arg,
@@ -51,27 +34,51 @@ export const ConfirmEnrollModal = () => {
           courseId: string;
         };
       }
-        ) =>
-            enrollCourse({
+        ) => {
+            const { message } = await enrollCourse({
                 data: {
                     courseId: arg.courseId,
                 },
             })
+    
+            await mutate()
+
+            notify!({
+                data: {
+                    message,
+                },
+                type: ToastType.Success,
+            })
+        }        
     )
 
+    const confirmOrderModalRef = useRef<ConfirmOrderModalRefSelectors | null>(
+        null
+    )
+    const onConfirmOrderModalOpen = () =>
+        confirmOrderModalRef.current?.onOpen()
+    
+
+    const handleEnroll = async () => {
+     
+        if (!courseId) return
+        await trigger({
+            courseId,
+        })         
+    }
     return (
         <>
             <Button
                 startContent={
                     <ClipboardPenLineIcon height={20} width={20} strokeWidth={3 / 2} />
                 }
-                onPress={onOpen}
+                onPress={onConfirmOrderModalOpen}
                 color="primary"
                 fullWidth
             >
         Enroll
             </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            {/* <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <ModalHeader className="p-4 pb-2 text-xl">Enroll</ModalHeader>
                     <ModalBody className="p-4">
@@ -155,7 +162,15 @@ export const ConfirmEnrollModal = () => {
                         </Button>
                     </ModalFooter>
                 </ModalContent>
-            </Modal>
+            </Modal> */}
+            <ConfirmOrderModalRef
+                ref={confirmOrderModalRef}
+                courses={course ? [course] : []}
+                originalPrice={price ?? 0}
+                discountPrice={getPrice()}
+                onCheckoutPress={handleEnroll}
+                isMutating={isMutating}
+            />
         </>
     )
 }

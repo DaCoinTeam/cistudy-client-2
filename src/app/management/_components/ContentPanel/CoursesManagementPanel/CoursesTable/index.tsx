@@ -1,5 +1,6 @@
 "use client"
 import {
+    Chip,
     Pagination,
     Spinner,
     Table,
@@ -15,6 +16,7 @@ import { useContext } from "react"
 import { InteractiveThumbnail } from "../../../../../_shared"
 import { CoursesManagementPanelContext, ROWS_PER_PAGE } from "../CoursesManagementPanelProvider"
 import dayjs from "dayjs"
+import { VerifyStatus } from "@common"
 
 export const CoursesTable = () => {
     const router = useRouter()
@@ -42,10 +44,37 @@ export const CoursesTable = () => {
     const { count } = metadata
 
     const pages = Math.ceil(count / ROWS_PER_PAGE )
+    
+    const renderStatus = (status: VerifyStatus) => {
+        const statusToComponent: Record<VerifyStatus, JSX.Element> = {
+            [VerifyStatus.Draft]: (
+                <Chip color="default" variant="flat">
+          Draft
+                </Chip>
+            ),
+            [VerifyStatus.Pending]: (
+                <Chip color="warning" variant="flat">
+          Pending
+                </Chip>
+            ),
+            [VerifyStatus.Approved]: (
+                <Chip color="success" variant="flat">
+            Approved
+                </Chip>
+            ),
+            [VerifyStatus.Rejected]: (
+                <Chip color="danger" variant="flat">
+          Rejected
+                </Chip>
+            ),
+        }
+        return statusToComponent[status]
+    }
+
     return (
         <Table
             aria-label="Example table with client async pagination"
-            selectionMode="multiple"
+            selectionMode="none"
             
             shadow="none"
             classNames={{
@@ -84,17 +113,20 @@ export const CoursesTable = () => {
             }
         >
             <TableHeader >
-                <TableColumn key="no" className="text-sm">
+                <TableColumn key="no" className="text-sm text-center">
           No
                 </TableColumn>
                 <TableColumn key="course" width={750} className="text-sm">
           Course
                 </TableColumn>
-                <TableColumn key="enrollment" className="text-sm">
-          Enrollments
+                <TableColumn key="enrollment" className="text-sm ">
+          Learner
                 </TableColumn>
-                <TableColumn key="price" className="text-sm">
+                <TableColumn key="price" className="text-sm px-6">
           Price
+                </TableColumn>
+                <TableColumn key="price" className="text-sm px-6">
+            Status
                 </TableColumn>
                 <TableColumn key="created_date" className="text-sm">
           Created Date
@@ -105,9 +137,9 @@ export const CoursesTable = () => {
                 loadingContent={<Spinner />}
                 loadingState={loadingState()}
             >
-                {results.map(({ courseId, thumbnailId, title, description, createdAt, price, discountPrice, enableDiscount, numberOfEnrollments  }, index) => (
+                {results.map(({ courseId, thumbnailId, title, description, createdAt, price, discountPrice, enableDiscount, enrolledInfos, verifyStatus  }, index) => (
                     <TableRow key={courseId}>
-                        <TableCell>{(page - 1)*ROWS_PER_PAGE + index +1}</TableCell>
+                        <TableCell >{(page - 1)*ROWS_PER_PAGE + index +1}</TableCell>
                         <TableCell>
                             <div className="flex gap-3 py-2">
                                 <InteractiveThumbnail
@@ -124,8 +156,20 @@ export const CoursesTable = () => {
                                 </div>
                             </div>
                         </TableCell>
-                        <TableCell className="text-black dark:text-white">{numberOfEnrollments ?? 0 }</TableCell>
-                        <TableCell className="text-black dark:text-white">{enableDiscount ? discountPrice : price} STARCI</TableCell>
+                        <TableCell className="text-black dark:text-white"><div >
+                            <div></div>
+                            {enrolledInfos?.length ?? 0 }
+                        </div></TableCell>
+                        <TableCell className="text-black dark:text-white">
+                            {enableDiscount ? (
+                                <>
+                                    <div>{discountPrice} STARCI</div>
+                                    <div className="text-foreground-400 line-through">{price} STARCI</div>
+                                </>
+                            ) : (
+                                <>{price} STARCI</>
+                            )}</TableCell>
+                        <TableCell className="text-black dark:text-white">{renderStatus(verifyStatus)}</TableCell>
                         <TableCell className="text-black dark:text-white">{dayjs(createdAt).format("HH:mm:ss DD/MM/YYYY")}</TableCell>
                     </TableRow>
                 ))}
