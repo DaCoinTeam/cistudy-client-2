@@ -53,7 +53,24 @@ const WrappedTransactionsModalProvider = ({
                         createdAt: true,
                         transactionHash: true,
                         transactionId: true,
-                        type: true
+                        type: true,
+                        transactionDetails: {
+                            account: {
+                                accountId: true,
+                                username: true,
+                                avatarId: true,
+                                avatarUrl: true,
+                                kind: true
+                            },
+                            course: {
+                                courseId: true,
+                                title: true,
+                                thumbnailId: true
+                            },
+                            transactionDetailId: true,
+                            payAmount: true,
+                            directIn: true
+                        }
                     },
                     metadata: {
                         count: true
