@@ -1,5 +1,5 @@
 import { ENDPOINT_API } from "@config"
-import { authAxios } from "./axios-instances"
+import { authAxios, baseAxios } from "./axios-instances"
 
 const BASE_URL = `${ENDPOINT_API}/profile`
 
@@ -102,4 +102,24 @@ export interface MarkAllNotificationsAsReadOutput {
 export const markAllNotificationsAsRead = async (): Promise<MarkAllNotificationsAsReadOutput> => {
     const url = `${BASE_URL}/mark-all-notifications-as-read`
     return await authAxios.patch(url)
+}
+
+export interface IsSastifyCommunityStandardInput {
+  message: string,
+  signal?: AbortSignal;
+}
+
+export interface IsSastifyCommunityStandardOutput {
+  result: boolean
+  reason?: string
+}
+
+export const isSastifyCommunityStandard = async (
+    input: IsSastifyCommunityStandardInput
+): Promise<IsSastifyCommunityStandardOutput> => {
+    const {message, signal } = input
+    const url = `${BASE_URL}/is-sastify-community-standard`
+    return await baseAxios.post(url, { message }, {
+        signal
+    })
 }
