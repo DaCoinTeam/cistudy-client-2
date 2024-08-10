@@ -554,7 +554,8 @@ export interface UpdateQuizQuestionInput {
     question?: string,
     swapPosition?: number,
     questionMedia?: UpdateQuizQuestionMediaInputData,
-    deleteMedia?: boolean
+    deleteMedia?: boolean,
+    point?: number
   }
   files?: Array<File>;
 }
@@ -787,9 +788,9 @@ export interface DeleteCourseOutput {
 }
 
 export const deleteCourse = async (
-  input: DeleteCourseInput
+    input: DeleteCourseInput
 ): Promise<DeleteCourseOutput> => {
-  const {courseId} = input.data
-  const url = `${BASE_URL}/delete-course/${courseId}`
-  return await authAxios.delete(url)
+    const {courseId} = input.data
+    const url = `${BASE_URL}/delete-course/${courseId}`
+    return await authAxios.delete(url)
 }

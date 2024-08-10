@@ -2,7 +2,6 @@ import React, { useContext } from "react"
 import { HomeContext } from "../../../../_hooks"
 import { Button, Progress, Spacer } from "@nextui-org/react"
 import { CertificateStatus } from "@common"
-import { useRouter } from "next/navigation"
 import useSWRMutation from "swr/mutation"
 import { CreateCourseCertificateInput, createCourseCertificate } from "@services"
 import { RootContext } from "../../../../../../../_hooks"
@@ -12,7 +11,6 @@ export const CompleteState = () => {
     const { swrs } = useContext(HomeContext)!
     const { courseHomeSwr } = swrs
     const { data, mutate } = courseHomeSwr
-    const router = useRouter()
     const { notify } = useContext(RootContext)!
     
     const { trigger, isMutating } = useSWRMutation("CREATE_COURSE_CERTIFICATE", async (_, { arg }: { 
@@ -49,7 +47,7 @@ export const CompleteState = () => {
                         <Button
                             color="primary"
                             onPress={() => {
-                                router.push(`/certificate/${data.certificate?.certificateId}`)
+                                window.open(`/certificate/${data.certificate?.certificateId}`)
                             }}>
                             View Certificate
                         </Button>

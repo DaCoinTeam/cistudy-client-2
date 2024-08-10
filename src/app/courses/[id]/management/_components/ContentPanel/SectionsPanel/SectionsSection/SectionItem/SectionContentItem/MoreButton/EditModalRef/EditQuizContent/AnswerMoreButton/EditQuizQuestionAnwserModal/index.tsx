@@ -17,6 +17,7 @@ import {
 } from "./EditQuizQuesitonAnwserModalProvider"
 import { AnswerMoreButtonContext } from "../index"
 import { ArrowRightIcon } from "@heroicons/react/24/outline"
+import { EditQuizQuestionModalContext } from "../../EditQuizQuestionModal"
 
 export interface EditQuizQuestionAnswerModalRefSelectors {
   onOpen: () => void;
@@ -35,13 +36,23 @@ const WrappedEditQuizQuestionAnswerModalRef =
       const { props } = useContext(AnswerMoreButtonContext)!
       const { answer } = props
       const { position } = answer
-    
+
+      const {
+          props: {
+              question: { answers },
+          },
+      } = useContext(EditQuizQuestionModalContext)!
+
+      const duplicate = answers.some(
+          ({ content, quizQuestionAnswerId }) =>
+              quizQuestionAnswerId !== answer.quizQuestionAnswerId &&
+content === formik.values.content
+      )
+
       return (
           <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
               <ModalContent>
-                  <ModalHeader className="p-4 pb-2 text-xl">
-            Edit
-                  </ModalHeader>
+                  <ModalHeader className="p-4 pb-2 text-xl">Edit</ModalHeader>
                   <ModalBody className="p-4">
                       <div>
                           <Input
@@ -56,8 +67,16 @@ const WrappedEditQuizQuestionAnswerModalRef =
                               value={formik.values.content}
                               onChange={formik.handleChange}
                               onBlur={formik.handleBlur}
-                              isInvalid={!!(formik.touched.content && formik.errors.content)}
-                              errorMessage={formik.touched.content && formik.errors.content}
+                              isInvalid={
+                                  !!(formik.touched.content && formik.errors.content) ||
+                                  duplicate
+                              }
+                              errorMessage={
+                                  duplicate
+                                      ? "There is an answer with this content"
+                                      : ( formik.touched.content &&
+                        formik.errors.content)
+                              }
                           />
                           <Spacer y={4} />
                           <div className="flex justify-between items-center">
@@ -91,7 +110,7 @@ const WrappedEditQuizQuestionAnswerModalRef =
                               <div className="justify-between flex items-center">
                                   <div className="text-sm flex gap-4 items-center">
                                       <div>{position}</div>
-                                      <ArrowRightIcon  className="w-5 h-5"/>
+                                      <ArrowRightIcon className="w-5 h-5" />
                                       <Input
                                           id="swapPosition"
                                           className="w-[50px]"
@@ -104,13 +123,21 @@ const WrappedEditQuizQuestionAnswerModalRef =
                                           value={formik.values.swapPosition.toString()}
                                           onChange={formik.handleChange}
                                           onBlur={formik.handleBlur}
-                                          isInvalid={!!(formik.touched.swapPosition && formik.errors.swapPosition)}
-                                          errorMessage={formik.touched.swapPosition && formik.errors.swapPosition}
+                                          isInvalid={
+                                              !!(
+                                                  formik.touched.swapPosition &&
+                          formik.errors.swapPosition
+                                              )
+                                          }
+                                          errorMessage={
+                                              formik.touched.swapPosition &&
+                        formik.errors.swapPosition
+                                          }
                                       />
                                   </div>
                               </div>
-                          </div>   
-                      </div> 
+                          </div>
+                      </div>
                   </ModalBody>
                   <ModalFooter className="p-4 pt-2">
                       <Button
@@ -120,7 +147,12 @@ const WrappedEditQuizQuestionAnswerModalRef =
                       >
               Cancel
                       </Button>
-                      <Button color="primary" isLoading={formik.isSubmitting} onPress={() => formik.submitForm()}>
+                      <Button
+                          color="primary"
+                          isDisabled={duplicate}
+                          isLoading={formik.isSubmitting}
+                          onPress={() => formik.submitForm()}
+                      >
               Save
                       </Button>
                   </ModalFooter>

@@ -44,18 +44,29 @@ export const AnswerMoreButton = (props: AnswerMoreButtonProps) => {
 
     const onDeletePress = async () => {
         if (!quizQuestionAnswerId) return
-        const { message } = await deleteSwrMutation.trigger({ 
-            data: {
-                quizQuestionAnswerId
-            }
-        })
-        await courseManagementSwr.mutate()
-        notify!({
-            data: {
-                message
-            },
-            type: ToastType.Success
-        })
+        try {
+            const { message } = await deleteSwrMutation.trigger({ 
+                data: {
+                    quizQuestionAnswerId
+                }
+            })
+            await courseManagementSwr.mutate()
+            notify!({
+                data: {
+                    message
+                },
+                type: ToastType.Success
+            })
+        } catch (ex: unknown) {
+            const { message } = ex as { message : string }
+            notify!({
+                data: {
+                    error: message
+                },
+                type: ToastType.Error
+            })
+        }
+        
     }
 
     const editQuizQuestionAnwserModalRef = useRef<EditQuizQuestionAnswerModalRefSelectors | null>(null)
