@@ -7,6 +7,7 @@ import { TargetPanel } from "./TargetPanel"
 import { PreviewPanel } from "./PreviewPanel"
 import { PricePanel } from "./PricePanel"
 import { SettingsPanel } from "./SettingsPanel"
+import { AnalyticsPanel } from "./AnalyticsPanel"
 
 interface ContentPanelProps {
   className?: string;
@@ -24,7 +25,7 @@ export const ContentPanel = (props: ContentPanelProps) => {
         [PanelSelected.Price]: <PricePanel className={`${className}`} />,
         [PanelSelected.Preview]: <PreviewPanel className={`${className}`} />,
         [PanelSelected.Target]: <TargetPanel className={`${className}`} />,
-        [PanelSelected.Analytics]: <SettingsPanel className={`${className}`}/>,
+        [PanelSelected.Analytics]: <AnalyticsPanel className={`${className}`}/>,
         [PanelSelected.Settings]: <SettingsPanel className={`${className}`}/>
     }
 

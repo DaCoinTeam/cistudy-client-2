@@ -120,7 +120,7 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
         <div className={`${className}`}>
             {!formik|| isLoading  ? <GeneralSectionSekeleton /> : (
                 <div>
-                    <div className="text-2xl font-semibold"> General Course Information </div>
+                    <div className="text-2xl font-semibold"> General </div>
                     <Spacer y={6} />
                     <Input
                         classNames={{
@@ -260,14 +260,6 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                     <Spacer y={6} />
                     <div className="flex gap-2">
                         <Button
-                            variant="bordered"
-                            color="primary"
-                            isDisabled={!hasChanged()}
-                            onPress={onCancelPress}
-                        >
-          Cancel
-                        </Button>
-                        <Button
                             isDisabled={!hasChanged()}
                             type="submit"
                             color="primary"
@@ -275,6 +267,14 @@ export const WrappedGeneralSection = (props: GeneralSectionProps) => {
                             isLoading={formik.isSubmitting}
                         >
                             {formik.isSubmitting ? "Saving" : "Save"}
+                        </Button>
+                        <Button
+                            variant="bordered"
+                            color="primary"
+                            isDisabled={!hasChanged()}
+                            onPress={onCancelPress}
+                        >
+          Cancel
                         </Button>
                     </div>
                 </div>

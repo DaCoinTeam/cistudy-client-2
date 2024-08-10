@@ -49,9 +49,20 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                 courseId: true,
                 title: true,
                 description: true,
+                numberOfEnrollments: true,
                 previewVideoId: true,
                 thumbnailId: true,
                 price: true,
+                enrolledInfos: {
+                    createdAt: true,
+                    enrolledInfoId: true,
+                    account: {
+                        username: true,
+                        kind: true,
+                        avatarId: true,
+                        avatarUrl: true
+                    }
+                },
                 discountPrice: true,
                 enableDiscount: true,
                 isCreator: true,

@@ -196,13 +196,15 @@ export interface CourseRating {
 }
 
 export interface EnrolledInfoEntity {
+  enrolledInfoId: string;
   enrolledId: string;
   accountId: string;
   courseId: string;
-  enrolledAt: Date;
   course: CourseEntity;
   account: AccountEntity;
   enrolled: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface LessonEntity {

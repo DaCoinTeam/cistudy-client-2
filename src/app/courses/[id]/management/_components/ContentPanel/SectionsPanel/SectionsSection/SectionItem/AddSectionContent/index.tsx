@@ -3,8 +3,9 @@ import { Link } from "@nextui-org/react"
 import React, { useRef } from "react"
 import { PlusIcon } from "@heroicons/react/24/outline"
 import { SelectSectionTypeModal, SelectSectionTypeModalRef } from "./SelectSectionTypeModal"
+import { SectionEntity } from "@common"
 
-export const AddSectionContentItem = ({sectionId} : {sectionId: string}) => {
+export const AddSectionContentItem = ({section} : {section: SectionEntity}) => {
     const selectSectionTypeModalRef = useRef<SelectSectionTypeModalRef>(null)
 
     const onPress = async () => {
@@ -25,7 +26,7 @@ export const AddSectionContentItem = ({sectionId} : {sectionId: string}) => {
                 </div>
     
             </Link>
-            <SelectSectionTypeModal sectionId={sectionId} ref={selectSectionTypeModalRef} />
+            <SelectSectionTypeModal section={section} ref={selectSectionTypeModalRef} />
         </div>
     )
 }

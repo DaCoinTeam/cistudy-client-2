@@ -12,6 +12,8 @@ import React, {
 import { updateCourse } from "@services"
 import { ManagementContext } from "../../../../_hooks"
 import { CategoryEntity } from "@common"
+import { RootContext } from "../../../../../../../_hooks"
+import { ToastType } from "../../../../../../../_components"
 
 interface GeneralSectionContextValue {
   formik: FormikProps<FormikValues>;
@@ -211,6 +213,8 @@ export const GeneralSectionProvider = ({
     const { courseManagementSwr } = swrs
     const { data: courseManagement, mutate } = courseManagementSwr
 
+    const { notify } = useContext(RootContext)!
+
     return (
         <Formik
             initialValues={initialValues}
@@ -227,7 +231,7 @@ export const GeneralSectionProvider = ({
                     categoryIds = [categoryId, ...categoriesLevel1, ...categoriesLevel2] 
                 }
                 
-                await updateCourse({
+                const { message } = await updateCourse({
                     data: {
                         courseId,
                         title,
@@ -242,6 +246,13 @@ export const GeneralSectionProvider = ({
                 setFieldValue("subcategoriesPrevious", subcategories)
                 setFieldValue("topicsPrevious", topics)
                 await mutate()
+                notify!({
+                    data: {
+                        message
+                    },
+                    type: ToastType.Success
+                }, 
+                )
             }}
         >
             {(formik) => (
