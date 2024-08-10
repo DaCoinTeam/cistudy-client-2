@@ -59,6 +59,21 @@ const WrappedTransactionsModal = () => {
           Withdraw
                 </Chip>
             ),
+            [TransactionType.Earn]: (
+                <Chip color="success" variant="flat">
+          Earn
+                </Chip>
+            ),
+            [TransactionType.CheckOut]: (
+                <Chip color="danger" variant="flat">
+          Check Out
+                </Chip>
+            ),
+            [TransactionType.Received]: (
+                <Chip color="default" variant="flat">
+          Received
+                </Chip>
+            ),
         }
         return typeToComponent[type]
     }
@@ -73,7 +88,9 @@ const WrappedTransactionsModal = () => {
 
     return (
         <>
-            <Link size="sm" as="button" onPress={onOpen}>View Transactions</Link>
+            <Link size="sm" as="button" onPress={onOpen}>
+        View Transactions
+            </Link>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
                 <ModalContent>
                     <ModalHeader className="p-4 pb-2">Transactions</ModalHeader>
@@ -137,7 +154,7 @@ const WrappedTransactionsModal = () => {
                                     payPalOrderId,
                                     amountDepositedChange,
                                     amountOnChainChange,
-                                    type
+                                    type,
                                 }) => (
                                     <TableRow key={transactionId}>
                                         <TableCell>
@@ -151,50 +168,62 @@ const WrappedTransactionsModal = () => {
                                                 {truncate(transactionId)}
                                             </Snippet>
                                         </TableCell>
+                                        <TableCell>{renderType(type)}</TableCell>
                                         <TableCell>
-                                            {renderType(type)}
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className="grid gap-1">
-                                                <div className="flex gap-2 items-center">
-                                                    <div>Deposited: </div>
-                                                    {amountDepositedChange >= 0 ? (
-                                                        <div className="text-success">
-                              +{amountDepositedChange} STARCI
-                                                        </div>
-                                                    ) : (
-                                                        <div className="text-danger">
-                                                            {amountDepositedChange} STARCI
-                                                        </div>
-                                                    )}
+                                            {
+                                                amountOnChainChange ? ( <div className="grid gap-1">
+                                                    <div className="flex gap-2 items-center">
+                                                        <div>Deposited: </div>
+                                                        {amountDepositedChange >= 0 ? (
+                                                            <div className="text-success">
+                                  +{amountDepositedChange} STARCI
+                                                            </div>
+                                                        ) : (
+                                                            <div className="text-danger">
+                                                                {amountDepositedChange} STARCI
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex gap-2 items-center">
+                                                        <div>On-chain: </div>
+                                                        {amountOnChainChange >= 0 ? (
+                                                            <div className="text-success">
+                                  +{amountOnChainChange} STARCI
+                                                            </div>
+                                                        ) : (
+                                                            <div className="text-danger">
+                                                                {amountOnChainChange} STARCI
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>) : <div className={`${amountOnChainChange >= 0 ? "text-success" : "text-danger"}`}>
+                                                    {amountOnChainChange >= 0 ? "+" : ""}{amountOnChainChange} STARCI
                                                 </div>
-                                                <div className="flex gap-2 items-center">
-                                                    <div>On-chain: </div>
-                                                    {amountOnChainChange >= 0 ? (
-                                                        <div className="text-success">
-                              +{amountOnChainChange} STARCI
-                                                        </div>
-                                                    ) : (
-                                                        <div className="text-danger">
-                                                            {amountOnChainChange} STARCI
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
+                                            } 
+                                           
                                         </TableCell>
                                         <TableCell>
-                                            <div className="flex gap-1 items-center">
-                                                <div>Paypal Order Id:</div>
-                                                <Link as="button">
-                                                    {payPalOrderId ? truncate(payPalOrderId) : "N/A"}
-                                                </Link>
-                                            </div>
-                                            <div className="flex gap-1 items-center">
-                                                <div>Transaction Hash:</div>
-                                                {transactionHash ? truncate(transactionHash) : "N/A"}
-                                            </div>
+                                            {
+                                                payPalOrderId ? <div className="flex gap-1 items-center">
+                                                    <div>Paypal Order Id:</div>
+                                                    <Link as="button">
+                                                        {truncate(payPalOrderId)}
+                                                    </Link>
+                                                </div> : null
+                                            }
+                                            {
+                                                transactionHash ? (<div className="flex gap-1 items-center">
+                                                    <div>Transaction Hash:</div>
+                                                    {transactionHash ? <Link as="button">{truncate(transactionHash)}</Link> : "N/A"}
+                                                </div>) : null
+                                            }
+                                            {
+                                                ((!payPalOrderId && !transactionHash) ? "N/A" : null)
+                                            }
                                         </TableCell>
-                                        <TableCell>{dayjs(createdAt).format("HH:mm:ss DD/MM/YYYY")}</TableCell>
+                                        <TableCell>
+                                            {dayjs(createdAt).format("HH:mm:ss DD/MM/YYYY")}
+                                        </TableCell>
                                     </TableRow>
                                 )}
                             </TableBody>

@@ -114,24 +114,35 @@ export const EditQuizQuestionAnswerProvider = ({ children }: { children: ReactNo
             Yup.object({})
         }
         onSubmit={async ({ content, isCorrect, lastAnswer, swapPosition }) => {
-            const { message } = await updateQuizQuestionAnswerSwrMutation.trigger(
-                {
-                    data: {
-                        quizQuestionAnswerId,
-                        content,
-                        isCorrect,
-                        lastAnswer,
-                        swapPosition
+            try{
+                const { message } = await updateQuizQuestionAnswerSwrMutation.trigger(
+                    {
+                        data: {
+                            quizQuestionAnswerId,
+                            content,
+                            isCorrect,
+                            lastAnswer,
+                            swapPosition
+                        }
                     }
-                }
-            )
-            await mutate()
+                )
+                await mutate()
+                    notify!({
+                        data: {
+                            message
+                        },
+                        type: ToastType.Success
+                    })
+
+            } catch (ex: unknown) {
+                const { message } = ex as { message: string }
                 notify!({
                     data: {
-                        message
+                        error: message
                     },
-                    type: ToastType.Success
+                    type: ToastType.Error
                 })
+            }
         }}
         >
             {(formik) => (

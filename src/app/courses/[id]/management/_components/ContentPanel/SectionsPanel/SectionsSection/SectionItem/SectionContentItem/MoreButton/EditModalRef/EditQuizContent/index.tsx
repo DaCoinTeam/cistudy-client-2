@@ -4,11 +4,7 @@ import {
     EditQuizContentProvider,
 } from "./EditQuizContentProvider"
 import {
-    Accordion,
-    AccordionItem,
     Button,
-    Chip,
-    Image,
     Input,
     Link,
     ModalBody,
@@ -17,25 +13,19 @@ import {
     Tab,
     Tabs,
     Textarea,
-    Tooltip,
 } from "@nextui-org/react"
 import { PlusIcon } from "@heroicons/react/24/outline"
-import { QuestionMoreButton } from "./QuestionMoreButton"
-import { AnswerMoreButton } from "./AnswerMoreButton"
-import { MediaType, QuizQuestionAnswerEntity, sortByPosition } from "@common"
+import { sortByPosition } from "@common"
 import {
     createQuizQuestion,
-    createQuizQuestionAnswer,
-    CreateQuizQuestionAnswerInput,
-    CreateQuizQuestionInput,
-    getAssetUrl,
+    CreateQuizQuestionInput
 } from "@services"
 import useSWRMutation from "swr/mutation"
 import { ToastType } from "../../../../../../../../../../../../_components"
-import { SectionContentItemContext } from "../../.."
+import { SectionContentItemContext } from "../../../index"
 import { RootContext } from "../../../../../../../../../../../../_hooks"
 import { ManagementContext } from "../../../../../../../../../_hooks"
-import { VideoPlayer } from "../../../../../../../../../../../../_shared"
+import { EditQuizQuesitonModal } from "./EditQuizQuestionModal"
 
 const WrappedEditQuizContent = () => {
     const { formik } = useContext(EditQuizContentContext)!
@@ -153,29 +143,9 @@ export const EditQuizContent = () => {
         }
     )
 
-    const createQuizQuestionAnswerSwrMutation = useSWRMutation(
-        "CREATE_QUIZ_QUESTION_ANSWER",
-        async (_: string, { arg }: { arg: CreateQuizQuestionAnswerInput }) => {
-            return await createQuizQuestionAnswer(arg)
-        }
-    )
-
     const handleAddQuestion = async () => {
         const { message } = await createQuizQuestionSwrMutation.trigger({
             data: { quizId },
-        })
-        await mutate()
-    notify!({
-        data: {
-            message,
-        },
-        type: ToastType.Success,
-    })
-    }
-
-    const handleAddAnswer = async (quizQuestionId: string) => {
-        const { message } = await createQuizQuestionAnswerSwrMutation.trigger({
-            data: { quizQuestionId },
         })
         await mutate()
     notify!({
@@ -204,114 +174,15 @@ export const EditQuizContent = () => {
                     </EditQuizContentProvider>
                 </Tab>
                 <Tab key="questions" title="Questions">
-                    <div className="border border-divider rounded-medium">
+                    <div className="border border-divider rounded-medium overflow-hidden">
                         <ScrollShadow className="h-[400px]">
-                            <Accordion
-                                selectionMode="multiple"
-                                variant="light"
+                            <div
                                 className="!px-0 gap-4"
-                                itemClasses={{
-                                    base: "!shadow-none gap-4",
-                                    title: "text-base",
-                                }}
                             >
                                 {sortByPosition(questions ?? []).map((question) => (
-                                    <AccordionItem
-                                        key={question.quizQuestionId}
-                                        startContent={
-                                            <QuestionMoreButton
-                                                className="text-primary"
-                                                question={question}
-                                            />
-                                        }
-                                        title={
-                                            <div>
-                                                <div>
-                                                    <span className="font-semibold">
-                          Q{question.position}.
-                                                    </span>{" "}
-                                                    <span>{question.question}</span>
-                                                </div>
-                                                {
-                                                    question.mediaId ? 
-                                                        (
-                                                            
-                                                            <>
-                                                                <Spacer y={2}/> 
-                                                                {
-                                                                    question.mediaType == MediaType.Image ?
-                                                                        <Image src={getAssetUrl(question.mediaId)} alt="media" className="w-[400px] aspect-video"/>
-                                                                        : <VideoPlayer src={getAssetUrl(question.mediaId)} className="w-[400px] aspect-video"/>
-                                                                }
-                                                            </>
-                                                            
-                                                            
-                                                        ) : null
-                                                }
-                                            </div>
-                                        }
-                                        classNames={{
-                                            content: "flex flex-col gap-4 p-4",
-                                            heading: "!px-4",
-                                        }}
-                                    >
-                                        {sortByPosition(question.answers ?? [])?.map((answer) => {
-                                            return (
-                                                <div key={answer?.quizQuestionAnswerId}>
-                                                    <div className="flex items-center w-full justify-between gap-2">
-                                                        <div className="flex gap-3 items-center">
-                                                            <div className="grid place-items-center">
-                                                                <AnswerMoreButton
-                                                                    answer={answer as QuizQuestionAnswerEntity}
-                                                                />
-                                                            </div>
-                                                            <div
-                                                                className={`text-sm ${
-                                                                    answer.isCorrect
-                                                                        ? "text-success"
-                                                                        : "text-foreground-400"
-                                                                }`}
-                                                            >
-                                                                <span className="font-semibold">
-                                                                    {answer?.position}.
-                                                                </span>{" "}
-                                                                <span>{answer?.content}</span>
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex gap-2 items-center min-w-[60px] flex-row-reverse">
-                                                            {answer.lastAnswer ? (
-                                                                <Tooltip
-                                                                    content={
-                                                                        <div className="max-w-[200px]">
-                                                                            {
-                                                                                "The 'Last' ensures that this answer is always placed at the end, no matter the order. This is especially useful for 'All of the above' questions, keeping the annotation consistently at the end."
-                                                                            }
-                                                                        </div>
-                                                                    }
-                                                                >
-                                                                    <Chip variant="flat" color="warning">
-                                    Last
-                                                                    </Chip>
-                                                                </Tooltip>
-                                                            ) : null}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })}
-                                        <div className="w-full grid place-content-center py-3 px-4">
-                                            <Link
-                                                onPress={() => handleAddAnswer(question.quizQuestionId)}
-                                                as="button"
-                                                className="flex gap-2 items-center"
-                                            >
-                                                <PlusIcon className="w-5 h-5" />
-                                                <div className="text-sm"> Add Answer </div>
-                                            </Link>
-                                        </div>
-                                    </AccordionItem>
+                                    <EditQuizQuesitonModal key={question.quizQuestionId} question={question}/>
                                 ))}
-                            </Accordion>
+                            </div>
                             <div className="w-full grid place-content-center py-3 px-4">
                                 <Link
                                     onPress={handleAddQuestion}
@@ -329,3 +200,4 @@ export const EditQuizContent = () => {
         </ModalBody>
     )
 }
+

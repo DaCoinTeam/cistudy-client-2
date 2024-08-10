@@ -3,12 +3,12 @@ import { Form, Formik, FormikProps } from "formik"
 import React, { ReactNode, createContext, useContext, useEffect, useMemo } from "react"
 import * as Yup from "yup"
 import useSWRMutation, { SWRMutationResponse } from "swr/mutation"
-import { ManagementContext } from "../../../../../../../../../../../_hooks"
-import { RootContext } from "../../../../../../../../../../../../../../_hooks"
+import { ManagementContext } from "../../../../../../../../../../_hooks"
+import { RootContext } from "../../../../../../../../../../../../../_hooks"
 import { UpdateQuizQuestionOutput, UpdateQuizQuestionInput, updateQuizQuestion } from "@services"
-import { ToastType } from "../../../../../../../../../../../../../../_components"
+import { ToastType } from "../../../../../../../../../../../../../_components"
 import { ErrorResponse, MediaType, isFileImage } from "@common"
-import { QuestionMoreButtonContext } from ".."
+import { EditQuizQuestionModalContext } from "./index"
 
 interface EditQuizQuestionContextValue {
     formik: FormikProps<FormikValues>
@@ -26,12 +26,14 @@ interface FormikValues {
     question: string,
     swapPosition: number,
     mediaFile?: File,
-    deleteMedia?: boolean
+    deleteMedia?: boolean,
+    point: number
 }
 
 const initialValues: FormikValues = {
     question: "",
-    swapPosition: 0
+    swapPosition: 0,
+    point: 0,
 }
 
 const WrappedFormikProvider = ({ formik, children, swrs }: {
@@ -50,9 +52,16 @@ const WrappedFormikProvider = ({ formik, children, swrs }: {
         [formik, swrs]
     )
     
-    const { props } = useContext(QuestionMoreButtonContext)!
+    const { props } = useContext(EditQuizQuestionModalContext)!
     const { question: _question } = props
-    const { question, position } = _question
+    const { question, position, point } = _question
+
+    useEffect(() => {
+        if (question === undefined) return
+        formik.setFieldValue("question", question)
+    }, [
+        question
+    ])
 
     useEffect(() => {
         if (question === undefined) return
@@ -69,10 +78,10 @@ const WrappedFormikProvider = ({ formik, children, swrs }: {
     ])
 
     useEffect(() => {
-        if (position === undefined) return
-        formik.setFieldValue("swapPosition", position)
+        if (point === undefined) return
+        formik.setFieldValue("point", point)
     }, [
-        question
+        point
     ])
 
     return (
@@ -96,7 +105,7 @@ export const EditQuizQuestionProvider = ({ children }: { children: ReactNode }) 
         }
     )
 
-    const { props } = useContext(QuestionMoreButtonContext)!
+    const { props } = useContext(EditQuizQuestionModalContext)!
     const { question: _question } = props
     const { quizQuestionId } = _question
 
@@ -104,30 +113,41 @@ export const EditQuizQuestionProvider = ({ children }: { children: ReactNode }) 
         <Formik initialValues={initialValues} validationSchema={
             Yup.object({})
         }
-        onSubmit={async ({ question, swapPosition , mediaFile, deleteMedia }) => {
-            const { message } = await updateQuizQuestionSwrMutation.trigger(
-                {
-                    data: {
-                        quizQuestionId,
-                        question,  
-                        swapPosition,
-                        questionMedia: mediaFile ? {
-                            mediaIndex: 0,
-                            mediaType: isFileImage(mediaFile) ? MediaType.Image : MediaType.Video
-                        } : undefined,
-                        deleteMedia
-                    },
-                    files: mediaFile ? [ mediaFile ] : undefined
-                }
-            )
-
-            await mutate()
+        onSubmit={async ({ question, swapPosition , mediaFile, deleteMedia, point }) => {
+            try {
+                const { message } = await updateQuizQuestionSwrMutation.trigger(
+                    {
+                        data: {
+                            quizQuestionId,
+                            question,  
+                            swapPosition,
+                            questionMedia: mediaFile ? {
+                                mediaIndex: 0,
+                                mediaType: isFileImage(mediaFile) ? MediaType.Image : MediaType.Video
+                            } : undefined,
+                            deleteMedia,
+                            point
+                        },
+                        files: mediaFile ? [ mediaFile ] : undefined
+                    }
+                )
+                
+                await mutate()
+            notify!({
+                data: {
+                    message
+                },
+                type: ToastType.Success
+            })
+            } catch (ex: unknown) {
+                const { message } = ex as { message: string }
                 notify!({
                     data: {
-                        message
+                        error: message
                     },
-                    type: ToastType.Success
+                    type: ToastType.Error
                 })
+            }
         }}
         >
             {(formik) => (

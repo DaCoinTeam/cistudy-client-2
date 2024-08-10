@@ -7,9 +7,11 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
+    Spacer,
+    Spinner,
     useDisclosure,
 } from "@nextui-org/react"
-import { useCallback, useContext } from "react"
+import { useCallback, useContext, useEffect } from "react"
 import {
     MediaUploader,
     TextEditor,
@@ -18,6 +20,9 @@ import {
     CreateCommentModalContext,
     CreateCommentModalProvider,
 } from "./CreateCommentModalProvider"
+import { IsSastifyCommunityStandardInput, isSastifyCommunityStandard } from "@services"
+import useSWRMutation from "swr/mutation"
+import { DELAY_TIME } from "../../../../../../../../../../../../../config/base.config"
 
 export const WrappedCreateCommentModal = () => {
     const { formik } = useContext(CreateCommentModalContext)!
@@ -35,14 +40,67 @@ export const WrappedCreateCommentModal = () => {
 
     const onPress = () => formik.handleSubmit()
 
+    const { trigger, data, isMutating } = useSWRMutation(
+        "IS_SATISFY_COMMUNITY_STANDARD",
+        async (
+            _,
+            {
+                arg,
+            }: {
+        arg: IsSastifyCommunityStandardInput;
+      }
+        ) => {
+            return await isSastifyCommunityStandard(arg)
+        }
+    )
+
+    useEffect(() => {
+        if (!formik.values.html) return
+        const abortController = new AbortController()
+        const handleEffect = async () => {
+            await trigger({
+                message: formik.values.html,
+                signal: abortController.signal,
+            })
+        }
+        const delayedHandleEffect = setTimeout(handleEffect, DELAY_TIME)
+        return () => {
+            abortController.abort()
+            clearTimeout(delayedHandleEffect)
+        }
+    }, [formik.values.html])
+
+
+
     return (
         <>
             <ModalHeader className="p-4 pb-2">
         Create Comment
             </ModalHeader>
             <ModalBody className="p-4">
-                <TextEditor setHtml={setHtml} />
-                <MediaUploader medias={formik.values.postCommentMedias} setMedias={setPostCommentMedias}/>
+                <div>
+                    <TextEditor setHtml={setHtml} />
+                    <Spacer y={4}/>
+                    <MediaUploader medias={formik.values.postCommentMedias} setMedias={setPostCommentMedias}/>
+                    <Spacer y={4} />
+                    <div className="text-sm">AI Community Standard Scan</div>
+                    {data || isMutating ? <Spacer y={1.5} /> : null}
+                    {isMutating ? (
+                        <div className="flex gap-2 items-center">
+                            <Spinner size="sm" /> <div className="text-sm">Checking...</div>
+                        </div>
+                    ) : ( 
+                        data ? <div
+                            className={`px-3 py-2 rounded-medium text-sm ${
+                                data.result === false ? "bg-success/20 text-success" : "text-danger bg-danger/20"
+                            }`}
+                        >
+                            {data.result === false 
+                                ? "Congratulations! Your content is valid."
+                                : data.reason}
+                        </div> : null
+                    )}
+                </div>
             </ModalBody>
             <ModalFooter className="p-4 pt-2">
                 <div className="flex gap-2 items-center">

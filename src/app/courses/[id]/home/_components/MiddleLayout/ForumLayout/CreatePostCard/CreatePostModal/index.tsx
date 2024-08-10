@@ -1,5 +1,5 @@
 "use client"
-import React, { useCallback, useContext } from "react"
+import React, { useCallback, useContext, useEffect } from "react"
 import {
     Button,
     Input,
@@ -9,6 +9,7 @@ import {
     ModalFooter,
     ModalHeader,
     Spacer,
+    Spinner,
     useDisclosure,
 } from "@nextui-org/react"
 import {
@@ -17,11 +18,14 @@ import {
 } from "./CreatePostModalProvider"
 import { PlusIcon } from "lucide-react"
 import { AppendKey, Media } from "@common"
-import {
-    MediaUploader,
-    TextEditor,
-} from "../../../../../../../../_shared"
+import { MediaUploader, TextEditor } from "../../../../../../../../_shared"
 import { ArrowPathIcon } from "@heroicons/react/24/outline"
+import useSWRMutation from "swr/mutation"
+import {
+    IsSastifyCommunityStandardInput,
+    isSastifyCommunityStandard,
+} from "@services"
+import { DELAY_TIME } from "@config"
 
 interface CreatePostModalProps {
   className?: string;
@@ -42,18 +46,47 @@ export const WrappedCreatePostModal = () => {
         [formik.values.postMedias]
     )
 
+    const { trigger, data, isMutating } = useSWRMutation(
+        "IS_SATISFY_COMMUNITY_STANDARD",
+        async (
+            _,
+            {
+                arg,
+            }: {
+        arg: IsSastifyCommunityStandardInput;
+      }
+        ) => {
+            return await isSastifyCommunityStandard(arg)
+        }
+    )
+
+    useEffect(() => {
+        if (!formik.values.html) return
+        const abortController = new AbortController()
+        const handleEffect = async () => {
+            await trigger({
+                message: formik.values.html,
+                signal: abortController.signal,
+            })
+        }
+        const delayedHandleEffect = setTimeout(handleEffect, DELAY_TIME)
+        return () => {
+            abortController.abort()
+            clearTimeout(delayedHandleEffect)
+        }
+    }, [formik.values.html])
+
     return (
         <>
-            <ModalHeader className="p-4 pb-2 text-xl">
-        Create Post
-            </ModalHeader>
+            <ModalHeader className="p-4 pb-2 text-xl">Create Post</ModalHeader>
             <ModalBody className="p-4 gap-0">
-                <Input  
+                <Input
                     id="title"
                     size="lg"
                     classNames={{
-                        inputWrapper: "px-4 !border !border-divider bg-transparent shadow-none"
-                    }} 
+                        inputWrapper:
+              "px-4 !border !border-divider bg-transparent shadow-none",
+                    }}
                     labelPlacement="outside"
                     placeholder="Input title here"
                     value={formik.values.title}
@@ -69,17 +102,39 @@ export const WrappedCreatePostModal = () => {
                     medias={formik.values.postMedias}
                     setMedias={setPostMedias}
                 />
+                <Spacer y={4} />
+                <div className="text-sm">AI Community Standard Scan</div>
+                {data || isMutating ? <Spacer y={1.5} /> : null}
+                {isMutating ? (
+                    <div className="flex gap-2 items-center">
+                        <Spinner size="sm" /> <div className="text-sm">Checking...</div>
+                    </div>
+                ) : ( 
+                    data ? <div
+                        className={`px-3 py-2 rounded-medium text-sm ${
+                            data.result === false ? "bg-success/20 text-success" : "text-danger bg-danger/20"
+                        }`}
+                    >
+                        {data.result === false 
+                            ? "Congratulations! Your content is valid."
+                            : data.reason}
+                    </div> : null
+                )}
             </ModalBody>
             <ModalFooter className="p-4 pt-2 items-center">
-                <Button variant="light" startContent={<ArrowPathIcon height={20} width={20} />}>Reset</Button>
                 <Button
+                    variant="light"
+                    startContent={<ArrowPathIcon height={20} width={20} />}
+                >
+          Reset
+                </Button>
+                <Button
+                    isDisabled={!(data?.result === false)}
                     onPress={onPress}
-                    startContent={
-                        <PlusIcon height={20} width={20}/>
-                    }
+                    startContent={<PlusIcon height={20} width={20} />}
                     color="primary"
                 >
-            Create
+          Create
                 </Button>
             </ModalFooter>
         </>
