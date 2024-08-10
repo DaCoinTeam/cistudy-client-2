@@ -114,6 +114,7 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                                                             >
                                                                 {course?.title}
                                                             </Link>
+                                                            <div className="text-danger">(- {course?.enableDiscount ? course.discountPrice : course?.price} STARCI)</div>
                                                         </div>
                                                     )
                                                 }
@@ -147,6 +148,7 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                                                         >
                                                             {course?.title}
                                                         </Link>
+                                                        <div className="text-success">(+ {course?.enableDiscount ? course.discountPrice : course?.price} STARCI)</div>
                                                     </div>
                                                 )
                                             }
