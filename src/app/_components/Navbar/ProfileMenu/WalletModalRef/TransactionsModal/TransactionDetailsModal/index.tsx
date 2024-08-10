@@ -36,11 +36,7 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                             <Snippet hideSymbol>
                                 <div>Id: {transaction.transactionId}</div>
                             </Snippet>
-                            <Spacer y={1.5}/>
-                            <div className="text-xs text-foreground-400">
-                            Created At: {dayjs(transaction.createdAt).format(" DD/MM/YYYY HH:mm:ss")}
-                            </div>
-                            
+ 
                             <Spacer y={4}/>
                             <div className="font-semibold">
                                 {transaction.amountOnChainChange ? (
@@ -176,6 +172,10 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                                         ) : null}
                                     </>
                                 )}
+                            </div>
+                            <Spacer y={4}/>
+                            <div className="text-sm">
+                            Created At: {dayjs(transaction.createdAt).format(" DD/MM/YYYY HH:mm:ss")}
                             </div>
                         </div>         
                     </ModalBody>
