@@ -34,7 +34,7 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                     <ModalBody className="p-4">
                         <div>
                             <Snippet hideSymbol>
-                                <div>Id: {transaction.transactionId}</div>
+                                <div>{transaction.transactionId}</div>
                             </Snippet>
  
                             <Spacer y={4}/>
