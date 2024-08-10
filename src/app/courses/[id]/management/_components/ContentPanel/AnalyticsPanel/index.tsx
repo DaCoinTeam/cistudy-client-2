@@ -56,7 +56,7 @@ export const AnalyticsPanel = (props: GeneralPanelProps) => {
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={sevenDaysEnrollmentsChartData} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
                             <XAxis dataKey="name" name="Time" />
-                            <YAxis dataKey="value" name="Enrollments" />
+                            <YAxis dataKey="value" name="Enrollments" allowDecimals={false} />
                             <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
                             <Line
                                 type="monotone"
