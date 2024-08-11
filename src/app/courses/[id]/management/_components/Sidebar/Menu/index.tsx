@@ -40,7 +40,7 @@ export const Menu = (props: MenuProps) => {
         {
             startContent: <Cog6ToothIcon width={24} height={24} />,
             key: "general",
-            content: "General Course Information",
+            content: "General",
             panelSelected: PanelSelected.General,
         },
         {

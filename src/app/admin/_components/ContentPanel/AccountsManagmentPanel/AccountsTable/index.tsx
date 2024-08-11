@@ -2,6 +2,7 @@
 import { parseISODateString } from "@common"
 import {
     Chip,
+    Link,
     Pagination,
     Spinner,
     Table,
@@ -13,15 +14,14 @@ import {
     User,
 } from "@nextui-org/react"
 import { getAvatarUrl } from "@services"
-import { useRouter } from "next/navigation"
 import { useContext } from "react"
 import {
     AccountsManagementPanelContext,
     ROWS_PER_PAGE,
 } from "../AccountsManagementPanelProvider"
+import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline"
 
 export const AccountsTable = () => {
-    const router = useRouter()
     const { reducer, swrs } = useContext(AccountsManagementPanelContext)!
     const [state, dispatch] = reducer
     const { page } = state
@@ -69,7 +69,7 @@ export const AccountsTable = () => {
     return (
         <Table
             aria-label="Example table with client async pagination"
-            selectionMode="multiple"
+            selectionMode="single"
             shadow="none"
             classNames={{
                 wrapper: "border border-divider rounded-medium p-0",
@@ -114,6 +114,7 @@ export const AccountsTable = () => {
                 <TableColumn key="birthdate">Birthdate</TableColumn>
                 <TableColumn key="createdAt">Created At</TableColumn>
                 <TableColumn key="status">Status</TableColumn>
+                <TableColumn key="actions">Actions</TableColumn>
             </TableHeader>
             <TableBody
                 items={results ?? []}
@@ -135,15 +136,28 @@ export const AccountsTable = () => {
                                 classNames={{
                                     name: "text-base"
                                 }}
-                                name={username}
+                                name={username ?? "Unnamed"}
                                 description={"0 followers"}
                                 />
                             </div>
                         </TableCell>
                         <TableCell>{email}</TableCell>
-                        <TableCell>{parseISODateString(birthdate)}</TableCell>
+                        <TableCell>{birthdate ? parseISODateString(birthdate) : "N/A"}</TableCell>
                         <TableCell>{parseISODateString(createdAt)}</TableCell>
                         <TableCell>{renderStatus(Status.Enabled)}</TableCell>
+                        <TableCell>
+                            <div className="gap-2 flex items-center">
+                                <Link as="button" className="w-5 h-5">
+                                    <EyeIcon/>
+                                </Link>
+                                <Link as="button" className="w-5 h-5">
+                                    <PencilIcon/>
+                                </Link>
+                                <Link as="button" className="w-5 h-5" color="danger">
+                                    <TrashIcon/>
+                                </Link>
+                            </div>    
+                        </TableCell>
                     </TableRow>
                 )}
             </TableBody>

@@ -58,9 +58,13 @@ export interface UpdateCourseInput {
   signal?: AbortSignal;
 }
 
+export interface UpdateCourseOutput {
+  message: string
+}
+
 export const updateCourse = async (
     input: UpdateCourseInput
-): Promise<string> => {
+): Promise<UpdateCourseOutput> => {
     const { data, files, signal } = input
 
     const url = `${BASE_URL}/update-course`

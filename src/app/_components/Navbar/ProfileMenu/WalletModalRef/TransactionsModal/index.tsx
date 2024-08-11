@@ -25,6 +25,8 @@ import {
     TransactionsModalProvider,
 } from "./TransactionModaProvider"
 import dayjs from "dayjs"
+import { useRouter } from "next/navigation"
+import { TransactionDetailsModal } from "./TransactionDetailsModal"
 
 const WrappedTransactionsModal = () => {
     const { isOpen, onOpenChange, onOpen } = useDisclosure()
@@ -86,6 +88,8 @@ const WrappedTransactionsModal = () => {
 
     const pages = count ? Math.ceil(count / ROWS_PER_PAGE) : 0
 
+    const router = useRouter()
+
     return (
         <>
             <Link size="sm" as="button" onPress={onOpen}>
@@ -97,7 +101,6 @@ const WrappedTransactionsModal = () => {
                     <ModalBody className="p-4">
                         <Table
                             aria-label="Example table with client async pagination"
-                            selectionMode="multiple"
                             shadow="none"
                             classNames={{
                                 wrapper: "border border-divider rounded-medium p-0",
@@ -137,9 +140,10 @@ const WrappedTransactionsModal = () => {
                             <TableHeader>
                                 <TableColumn key="transactionId">Transaction Id</TableColumn>
                                 <TableColumn key="type">Type</TableColumn>
-                                <TableColumn key="balanceChange">Balance Change</TableColumn>
-                                <TableColumn key="IDs">Metadata</TableColumn>
+                                <TableColumn width={"20%"} key="balanceChange">Balance Change</TableColumn>
+                                <TableColumn key="IDs">Details</TableColumn>
                                 <TableColumn key="createdAt">Created At</TableColumn>
+                                <TableColumn key="details">Details</TableColumn>
                             </TableHeader>
                             <TableBody
                                 emptyContent={"No transactions found."}
@@ -147,82 +151,157 @@ const WrappedTransactionsModal = () => {
                                 loadingContent={<Spinner />}
                                 loadingState={loadingState()}
                             >
-                                {({
-                                    createdAt,
-                                    transactionId,
-                                    transactionHash,
-                                    payPalOrderId,
-                                    amountDepositedChange,
-                                    amountOnChainChange,
-                                    type,
-                                }) => (
-                                    <TableRow key={transactionId}>
+                                {(transaction) => (
+                                    <TableRow key={transaction.transactionId}>
                                         <TableCell>
                                             <Snippet
                                                 hideSymbol
                                                 classNames={{
                                                     base: "!bg-inherit",
                                                 }}
-                                                codeString={transactionId}
+                                                codeString={transaction.transactionId}
                                             >
-                                                {truncate(transactionId)}
+                                                {truncate(transaction.transactionId)}
                                             </Snippet>
                                         </TableCell>
-                                        <TableCell>{renderType(type)}</TableCell>
+                                        <TableCell>{renderType(transaction.type)}</TableCell>
                                         <TableCell>
-                                            {
-                                                amountOnChainChange ? ( <div className="grid gap-1">
+                                            {transaction.amountOnChainChange ? (
+                                                <div className="grid gap-1">
                                                     <div className="flex gap-2 items-center">
                                                         <div>Deposited: </div>
-                                                        {amountDepositedChange >= 0 ? (
+                                                        {transaction.amountDepositedChange >= 0 ? (
                                                             <div className="text-success">
-                                  +{amountDepositedChange} STARCI
+                                +{transaction.amountDepositedChange} STARCI
                                                             </div>
                                                         ) : (
                                                             <div className="text-danger">
-                                                                {amountDepositedChange} STARCI
+                                                                {transaction.amountDepositedChange} STARCI
                                                             </div>
                                                         )}
                                                     </div>
                                                     <div className="flex gap-2 items-center">
                                                         <div>On-chain: </div>
-                                                        {amountOnChainChange >= 0 ? (
+                                                        {transaction.amountOnChainChange >= 0 ? (
                                                             <div className="text-success">
-                                  +{amountOnChainChange} STARCI
+                                +{transaction.amountOnChainChange} STARCI
                                                             </div>
                                                         ) : (
                                                             <div className="text-danger">
-                                                                {amountOnChainChange} STARCI
+                                                                {transaction.amountOnChainChange} STARCI
                                                             </div>
                                                         )}
                                                     </div>
-                                                </div>) : <div className={`${amountOnChainChange >= 0 ? "text-success" : "text-danger"}`}>
-                                                    {amountOnChainChange >= 0 ? "+" : ""}{amountOnChainChange} STARCI
                                                 </div>
-                                            } 
-                                           
+                                            ) : (
+                                                <div
+                                                    className={`${
+                                                        transaction.amountDepositedChange >= 0
+                                                            ? "text-success"
+                                                            : "text-danger"
+                                                    }`}
+                                                >
+                                                    {transaction.amountDepositedChange >= 0 ? "+" : ""}
+                                                    {transaction.amountDepositedChange} STARCI
+                                                </div>
+                                            )}
                                         </TableCell>
                                         <TableCell>
-                                            {
-                                                payPalOrderId ? <div className="flex gap-1 items-center">
-                                                    <div>Paypal Order Id:</div>
-                                                    <Link as="button">
-                                                        {truncate(payPalOrderId)}
-                                                    </Link>
-                                                </div> : null
-                                            }
-                                            {
-                                                transactionHash ? (<div className="flex gap-1 items-center">
-                                                    <div>Transaction Hash:</div>
-                                                    {transactionHash ? <Link as="button">{truncate(transactionHash)}</Link> : "N/A"}
-                                                </div>) : null
-                                            }
-                                            {
-                                                ((!payPalOrderId && !transactionHash) ? "N/A" : null)
-                                            }
+                                            {transaction.transactionDetails.length > 0 ? (
+                                                <div className="grid gap-1">
+                                                    {transaction.transactionDetails.map(
+                                                        ({
+                                                            transactionDetailId,
+                                                            account,
+                                                            course,
+                                                            directIn,
+                                                        }) => {
+                                                            if (!directIn) {
+                                                                return (
+                                                                    <div
+                                                                        key={transactionDetailId}
+                                                                        className="text-sm"
+                                                                    >
+                                                                        {" "}
+                                    Enroll to{" "}
+                                                                        <Link
+                                                                            className="inline"
+                                                                            as="button"
+                                                                            onPress={() =>
+                                                                                router.push(
+                                                                                    `/courses/${course?.courseId}`
+                                                                                )
+                                                                            }
+                                                                            size="sm"
+                                                                        >
+                                                                            {course?.title.slice(0, 15)}...
+                                                                        </Link>
+                                                                    </div>
+                                                                )
+                                                            }
+                                                            return (
+                                                                <div
+                                                                    key={transactionDetailId}
+                                                                    className="text-sm"
+                                                                >
+                                                                    {" "}
+                                  User{" "}
+                                                                    <Link
+                                                                        as="button"
+                                                                        onPress={() =>
+                                                                            router.push(
+                                                                                `/accounts/${account?.accountId}`
+                                                                            )
+                                                                        }
+                                                                        size="sm"
+                                                                    >
+                                                                        {account?.username.slice(0, 10)}...
+                                                                    </Link>
+                                                                    {" "}enrolled to{" "}
+                                                                    <Link
+                                                                        as="button"
+                                                                        onPress={() =>
+                                                                            router.push(
+                                                                                `/courses/${course?.courseId}`
+                                                                            )
+                                                                        }
+                                                                        size="sm"
+                                                                    >
+                                                                        {course?.title.slice(0, 15)}...
+                                                                    </Link>
+                                                                </div>
+                                                            )
+                                                        }
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    {transaction.payPalOrderId ? (
+                                                        <div className="flex gap-1 items-center">
+                                                            <div>Paypal Order Id:</div>
+                                                            <Link as="button">{truncate(transaction.payPalOrderId)}</Link>
+                                                        </div>
+                                                    ) : null}
+                                                    {transaction.transactionHash ? (
+                                                        <div className="flex gap-1 items-center">
+                                                            <div>Transaction Hash:</div>
+                                                            {transaction.transactionHash ? (
+                                                                <Link as="button">
+                                                                    {truncate(transaction.transactionHash)}
+                                                                </Link>
+                                                            ) : (
+                                                                "N/A"
+                                                            )}
+                                                        </div>
+                                                    ) : null}
+                                                </>
+                                            )}
                                         </TableCell>
                                         <TableCell>
-                                            {dayjs(createdAt).format("HH:mm:ss DD/MM/YYYY")}
+                                            {dayjs(transaction.createdAt).format("HH:mm:ss DD/MM/YYYY")}
+                                        </TableCell>
+                                        <TableCell>
+                                            <TransactionDetailsModal transaction={transaction}/>
                                         </TableCell>
                                     </TableRow>
                                 )}

@@ -14,7 +14,7 @@ const WrappedSectionItem = (props: SectionItemProps) => {
             {sortByPosition(section.contents).map((sectionContent) => (
                 <SectionContentItem key={sectionContent.sectionContentId} sectionContent={sectionContent} />
             ))}
-            <AddSectionContentItem sectionId={section.sectionId} />
+            <AddSectionContentItem section={section} />
         </>
     )
 }

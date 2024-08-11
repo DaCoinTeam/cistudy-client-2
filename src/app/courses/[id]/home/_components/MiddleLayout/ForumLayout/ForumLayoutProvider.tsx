@@ -76,10 +76,9 @@ const WrappedForumLayoutProvider = ({
                         isRewardable: true,
                         isCompleted: true,
                         isPostOwner: true,
+                        isInstructor: true,
                         numberOfRewardableCommentsLeft: true,
                         numberOfRewardableLikesLeft: true,
-
-
                     },
                     metadata: {
                         count: true

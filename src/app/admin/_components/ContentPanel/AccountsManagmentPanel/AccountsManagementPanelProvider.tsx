@@ -23,7 +23,7 @@ export interface AccountsManagementPanelContextValue {
   };
 }
 
-export const ROWS_PER_PAGE = 5
+export const ROWS_PER_PAGE = 10
 
 export const AccountsManagementPanelContext =
   createContext<AccountsManagementPanelContextValue | null>(null)

@@ -22,7 +22,7 @@ const Page = () => {
         course,
         updatedAt,
         isRewardable,
-        isCompleted, } = { ...data }
+        isCompleted, isInstructor} = { ...data }
     const { avatarId, username, avatarUrl, kind } = { ...creator }
 
     const isEdited = updatedAt !== createdAt
@@ -75,26 +75,34 @@ const Page = () => {
                                     />
                                 </div>
 
-                                {isCompleted && (
-                                    <Chip
-                                        startContent={<CheckIcon size={18} className='ml-1' />}
-                                        variant='flat'
-                                        color='success'
-                                        className='mr-2'
-                                    >
-                                    Completed
-                                    </Chip>
-                                )}
-                                {isRewardable && (
-                                    <Chip
-                                        startContent={<GiftIcon size={18} className='ml-1' />}
-                                        variant='flat'
-                                        color='warning'
-                                        className='mr-2'
-                                    >
-                                    Rewardable
-                                    </Chip>
-                                )}
+                                <div className="flex flex-row gap-2">
+                                    {isInstructor && (
+                                        <Chip
+                                            variant='flat'
+                                            color='primary'
+                                        >
+                                        Instructor
+                                        </Chip>
+                                    )}
+                                    {isCompleted && (
+                                        <Chip
+                                            startContent={<CheckIcon size={18} className="ml-1" />}
+                                            variant='flat'
+                                            color='success'
+                                        >
+                                            Completed
+                                        </Chip>
+                                    )}
+                                    {isRewardable && (
+                                        <Chip
+                                            startContent={<GiftIcon size={18} className="ml-1" />}
+                                            variant='flat'
+                                            color='warning'
+                                        >
+                                            Rewardable
+                                        </Chip>
+                                    )}
+                                </div>
                             </div>
                             <MoreButton />
                         </div>

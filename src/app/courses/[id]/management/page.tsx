@@ -16,7 +16,7 @@ const Page = () => {
     const router = useRouter()
 
     return (
-        <div className="px-12 my-12 max-w-[1600px] mx-auto w-full">
+        <div className="px-12 my-12 max-w-[1600px] mx-auto w-full min-h-screen">
             <div className="flex justify-between items-center">
                 <Breadcrumbs>
                     <BreadcrumbItem>Home</BreadcrumbItem>
@@ -34,7 +34,10 @@ const Page = () => {
                 </Breadcrumbs>
                 {
                     verifyStatus === VerifyStatus.Approved ?
-                        <Button variant="bordered" color="primary" onPress={() => router.push(`/courses/${courseId}`)}> Preview </Button>
+                        <div className="flex gap-2 items-center">
+                            <Button variant="bordered" color="primary" onPress={() => router.push(`/courses/${courseId}/home`)}> Enter </Button>
+                            <Button color="primary" onPress={() => router.push(`/courses/${courseId}`)}> Preview </Button>
+                        </div> 
                         : null
                 }
             </div>

@@ -81,6 +81,7 @@ export interface AccountEntity {
   enrolledInfos: Array<EnrolledInfoEntity>;
   posts: Array<PostEntity>;
   courses: Array<CourseEntity>;
+  transactionDetails: Array<TransactionDetailEntity>;
   //graphql
   followed?: boolean;
   numberOfFollowers?: number;
@@ -108,6 +109,7 @@ export interface PostEntity {
   isRewardable: boolean;
   isCompleted: boolean;
   isPostOwner: boolean;
+  isInstructor: boolean;
   numberOfRewardableCommentsLeft: number;
   numberOfRewardableLikesLeft: number;
   numberOfReports: number;
@@ -147,20 +149,21 @@ export interface CourseEntity {
   courseRate: number;
   courseRatings: CourseRating;
   duration: number;
+  transactionDetails: Array<TransactionDetailEntity>;
   //graphql
   numberOfEnrollments?: number;
   enrolled?: boolean;
   numberOfQuizzes?: number;
   numberOfLessons?: number;
   numberOfResources?: number;
-  numberOfReports: true,
+  numberOfReports: true;
   certificateStatus?: CertificateStatus;
   certificate?: CertificateEntity;
-  totalContents?: number
-  completedContents?: number
-  students?: Array<AccountEntity>
-  isReviewed?: boolean
-  isAddedToCart?: boolean
+  totalContents?: number;
+  completedContents?: number;
+  students?: Array<AccountEntity>;
+  isReviewed?: boolean;
+  isAddedToCart?: boolean;
 }
 
 export interface CertificateEntity {
@@ -194,13 +197,27 @@ export interface CourseRating {
 }
 
 export interface EnrolledInfoEntity {
+  enrolledInfoId: string;
   enrolledId: string;
   accountId: string;
   courseId: string;
-  enrolledAt: Date;
   course: CourseEntity;
   account: AccountEntity;
   enrolled: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  priceAtEnrolled: number;
+}
+
+export interface ConfigurationEntity {
+  configurationId: string;
+  earn: number;
+  instructor: number;
+  completed: number;
+  foundation: number;
+  appliedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface LessonEntity {
@@ -219,7 +236,7 @@ export interface LessonEntity {
   numberOfViews: number;
   description: string;
   enableSeek?: boolean;
-  isTrial: boolean
+  isTrial: boolean;
 }
 
 export interface ProgressEntity {
@@ -289,8 +306,8 @@ export interface QuizQuestionEntity {
   question: string;
   point: number;
   position: number;
-  mediaId: string
-  mediaType: MediaType
+  mediaId: string;
+  mediaType: MediaType;
   answers: Array<QuizQuestionAnswerEntity>;
   questionMedias: Array<QuizQuestionMediaEntity>;
   answered?: boolean;
@@ -309,7 +326,7 @@ export interface QuizQuestionAnswerEntity {
   isCorrect: boolean;
   attempt: QuizAttemptEntity;
   selected?: boolean;
-  lastAnswer: boolean
+  lastAnswer: boolean;
 }
 
 export interface QuizAttemptAnswerEntity {
@@ -608,7 +625,7 @@ export enum TransactionType {
   Withdraw = "withdraw",
   Earn = "earn",
   CheckOut = "checkout",
-  Received = "received"
+  Received = "received",
 }
 
 export interface TransactionEntity {
@@ -622,6 +639,19 @@ export interface TransactionEntity {
   account: AccountEntity;
   createdAt: Date;
   updatedAt: Date;
+  transactionDetails: Array<TransactionDetailEntity>;
+}
+
+export interface TransactionDetailEntity {
+  transactionDetailId: string;
+  accountId: string;
+  courseId: string;
+  transactionId: string;
+  directIn: boolean;
+  payAmount: number;
+  course?: CourseEntity;
+  account?: AccountEntity;
+  transaction?: TransactionEntity;
 }
 
 export interface NotificationEntity {
