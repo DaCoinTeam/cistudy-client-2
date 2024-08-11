@@ -3,6 +3,7 @@ import React from "react"
 import {
     Button,
     Dropdown,
+    DropdownItem,
     DropdownMenu,
     DropdownTrigger,
 } from "@nextui-org/react"
@@ -32,7 +33,7 @@ export const MoreButton = (props: ManageThumbnailButtonProps) => {
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
-                    <div/>
+                    <DropdownItem />
                 </DropdownMenu>
             </Dropdown>
         </>

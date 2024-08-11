@@ -90,84 +90,83 @@ const WrappedPurchaseHistoryModalRef = () => {
                     <div className="flex justify-between px-2 pb-2 border-b-1">
                         <div className="grid grid-cols-12 w-full">
                             <div key='no' className='text-sm '>
-              No
+No
                             </div>
 
                             <div key='numberOfCourse' className='text-sm col-span-5 pr-4'>
                                 {"  "}
                             </div>
                             <div key='totalPrice' className='text-sm  col-span-2 '>
-              Total Price
+Total Price
                             </div>
                             <div key='status' className='text-sm  col-span-2 '>
-              Status
+Status
                             </div>
                             <div key='completeDate' className='text-sm col-span-2 '>
-              Complete Date
+Complete Date
                             </div>
                         </div>
                         <Spacer x={9}/>
                     </div>
-                    
-                    <div
-                        // emptyContent={"You haven't created any course."}
-                        // loadingContent={<Spinner />}
-                    >
-                       
-                        <Accordion >
-                        
-                            {getOrdersByPage.map(
-                                (
-                                    { orderId, orderStatus, completeDate, orderCourses },
-                                    index
-                                ) => (
-                                    <AccordionItem
-                                        textValue="Course Order Item"
-                                        hideIndicator={orderCourses.length <= 1}
-                                        key={orderId}
-                                        aria-expanded={false}
-                                        title={
-                                            <div className="flex">
-                                                <div className="grid grid-cols-12 w-full">
-                                                    <div className='text-sm '>
-                                                        {(size - 1) * ROWS_PER_PAGE + index + 1}
+ 
+                    <div>
+                        {data && getOrdersByPage.length ? (
+                            <Accordion >
+                                {getOrdersByPage.map(
+                                    (
+                                        { orderId, orderStatus, completeDate, orderCourses },
+                                        index
+                                    ) => (
+                                        <AccordionItem
+                                            textValue="Course Order Item"
+                                            hideIndicator={orderCourses.length <= 1}
+                                            key={orderId}
+                                            aria-expanded={false}
+                                            title={
+                                                <div className="flex">
+                                                    <div className="grid grid-cols-12 w-full">
+                                                        <div className='text-sm '>
+                                                            {(size - 1) * ROWS_PER_PAGE + index + 1}
+                                                        </div>
+                                                        <div className='text-sm col-span-5 pr-4'>
+                                                            {orderCourses.length == 1 ? (
+                                                                <div className="text-primary">{orderCourses[0].course.title}</div>
+                                                            ): (<> {orderCourses.length} courses purchased </>)}
+                                                        </div>
+                                                        <div className='text-sm col-span-2 '>
+                                                            {totalPrice(orderCourses)} STARCI
+                                                        </div>
+                                                        <div className='text-sm col-span-2 '>
+                                                            {renderStatus(orderStatus)}
+                                                        </div>
+                                                        <div className='text-sm col-span-2 '>
+                                                            {dayjs(completeDate).format("HH:mm:ss DD/MM/YYYY")}
+                                                        </div>
                                                     </div>
-                                                    <div className='text-sm col-span-5 pr-4'>
-                                                        {orderCourses.length == 1 ? (
-                                                            <div className="text-primary">{orderCourses[0].course.title}</div>
-                                                        ): (<> {orderCourses.length} courses purchased </>)}
-                                                    </div>
-                                                    <div className='text-sm col-span-2 '>
-                                                        {totalPrice(orderCourses)} STARCI
-                                                    </div>
-                                                    <div className='text-sm col-span-2 '>
-                                                        {renderStatus(orderStatus)}
-                                                    </div>
-                                                    <div className='text-sm col-span-2 '>
-                                                        {dayjs(completeDate).format("HH:mm:ss DD/MM/YYYY")}
-                                                    </div>
+                                                    {orderCourses.length == 1 ? <Spacer x={9}/> : <></>}
+                             
                                                 </div>
-                                                {orderCourses.length == 1 ? <Spacer x={9}/> : <></>}
-                                                
-                                            </div>
 
-                                        }>
-                                        <div >
-                                            { orderCourses?.length > 1 ? orderCourses?.map((course) => (
-                                                <div key={course.orderCourseId} className="grid grid-cols-12 mr-[2.3rem] pb-2 mb-1">
-                                                    <div />
-                                                    <div className="col-span-5 text-sm text-primary flex items-start pr-4"><Dot size={20} className="mr-1"/>{course?.course.title}</div>
-                                                    <div className="col-span-2 text-sm ">{course?.discountedPrice} STARCI</div>
-                                                </div>
-                                            )) : <></>}
-                                        </div>
-                                       
-                                    </AccordionItem>
-                                ))}
-                                       
-                        </Accordion>
+                                            }>
+                                            <div >
+                                                { orderCourses?.length > 1 ? orderCourses?.map((course) => (
+                                                    <div key={course.orderCourseId} className="grid grid-cols-12 mr-[2.3rem] pb-2 mb-1">
+                                                        <div  />
+                                                        <div className="col-span-5 text-sm text-primary flex items-start pr-4"><Dot size={20} className="mr-1"/>{course?.course.title}</div>
+                                                        <div className="col-span-2 text-sm ">{course?.discountedPrice} STARCI</div>
+                                                    </div>
+                                                )) : <></>}
+                                            </div>
+                    
+                                        </AccordionItem>
+                                    ))}
+                    
+                            </Accordion>
+                        ): (<div className="flex items-center justify-center w-full py-6">You do not have any order</div>)}
                     </div>
                 </div>
+             
+               
             </ModalBody>
             <ModalFooter>
                 {
@@ -209,14 +208,14 @@ export const PurchaseHistoryModalRef = forwardRef<
             size='3xl'
             scrollBehavior="inside"
         >
-                <ModalContent>
+            <ModalContent>
                 <ScrollShadow  className="h-[460px] " >
                     <PurchaseHistoryModalProvider>
                         <WrappedPurchaseHistoryModalRef />
                     </PurchaseHistoryModalProvider>
                 </ScrollShadow>
 
-                </ModalContent>
+            </ModalContent>
         </Modal>
     )
 })

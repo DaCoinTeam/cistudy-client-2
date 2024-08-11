@@ -5,6 +5,7 @@ export enum PanelSelected {
     Accounts = "accounts",
     Courses = "courses",
     Transactions = "transactions",
+    Orders = "orders",
     Notifications = "notifications",
     Configuration = "configuration"
 }

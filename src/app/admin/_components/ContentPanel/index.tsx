@@ -6,6 +6,7 @@ import { TransactionsManagementPanel } from "./TransactionsManagementPanel"
 import { NotificationsManagementPanel } from "./NotificationsManagementPanel"
 import { AnalyticsPanel } from "./AnalyticsPanel"
 import { ConfigurationPanel } from "./ConfigurationPanel"
+import { OrdersManagementPanel } from "./OrderManagementPanel"
 
 interface ContentPanelProps {
   className?: string;
@@ -31,6 +32,9 @@ export const ContentPanel = (props: ContentPanelProps) => {
             ),
             [PanelSelected.Transactions]: (
                 <TransactionsManagementPanel className={`${className}`} />
+            ),
+            [PanelSelected.Orders]: (
+                <OrdersManagementPanel className={`${className}`} />
             ),
             [PanelSelected.Notifications]: (
                 <NotificationsManagementPanel className={`${className}`} />
