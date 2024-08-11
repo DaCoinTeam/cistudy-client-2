@@ -102,7 +102,7 @@ export const ProfileMenu = () => {
                     content: "Sign Out",
                     color: "danger",
                 },
-            ] : roles?.map(role => role.name).includes(AccountRole.Moderator) ?
+            ] : roles?.map(role => role.name).includes(SystemRoles.Moderator) ?
                 [
                     {
                         key: "base",
