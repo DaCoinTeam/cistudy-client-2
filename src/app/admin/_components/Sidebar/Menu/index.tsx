@@ -4,7 +4,7 @@ import { AdminContext, PanelSelected } from "../../../_hooks"
 import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
 import { BanknoteIcon, BookOpenIcon } from "lucide-react"
-import { BellIcon, ChartBarIcon, UserCircleIcon } from "@heroicons/react/24/outline"
+import { BellIcon, ChartBarIcon, Cog6ToothIcon, UserCircleIcon } from "@heroicons/react/24/outline"
 
 interface MenuProps {
   className?: string;
@@ -76,6 +76,14 @@ export const Menu = (props: MenuProps) => {
             key: "notifications",
             content: "Notifications",
             panelSelected: PanelSelected.Notifications,
+        },
+        {
+            startContent: (
+                <Cog6ToothIcon className="w-5 h-5" strokeWidth={3/2} />
+            ),
+            key: "configuration",
+            content: "Configuration",
+            panelSelected: PanelSelected.Configuration,
         },
     ]
 

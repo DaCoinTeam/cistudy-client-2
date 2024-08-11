@@ -37,3 +37,24 @@ export const verifyCourse = async (
     const url = `${BASE_URL}/verify-course`
     return await authAxios.patch(url, data)
 }
+
+export interface CreateConfigurationInput {
+    data: {
+        instructor: number
+        earn: number
+        completed: number
+        foundation: number
+    }
+}
+
+export interface CreateConfigurationOutput {
+    message: string
+}
+  
+export const createConfiguration = async (
+    input : CreateConfigurationInput
+): Promise<CreateConfigurationOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/create-configuration`
+    return await authAxios.post(url, data)
+}

@@ -8,6 +8,8 @@ import {
     buildPayloadString,
     NotificationEntity,
     TransactionEntity,
+    EnrolledInfoEntity,
+    ConfigurationEntity,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
 
@@ -221,6 +223,7 @@ export interface GetAdminAnalyticsOutputData {
   numberOfCourses: number;
   numberOfTransactions: number;
   numberOfOrders: number;
+  enrolledInfos: Array<EnrolledInfoEntity>
 }
 
 export const getAdminAnalytics = async (
@@ -241,3 +244,23 @@ export const getAdminAnalytics = async (
         isAuth: true,
     })
 }
+
+export const findLatestConfiguration = async (
+    schema?: Schema<DeepPartial<ConfigurationEntity>>
+): Promise<ConfigurationEntity> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+              query FindLatestConfiguration {
+                  findLatestConfiguration {
+        ${payload}
+      }
+    }
+            `,
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
+    })
+}
+  

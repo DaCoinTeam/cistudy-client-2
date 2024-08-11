@@ -5,7 +5,8 @@ export enum PanelSelected {
     Accounts = "accounts",
     Courses = "courses",
     Transactions = "transactions",
-    Notifications = "notifications"
+    Notifications = "notifications",
+    Configuration = "configuration"
 }
 
 export interface AdminState {

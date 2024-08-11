@@ -209,6 +209,17 @@ export interface EnrolledInfoEntity {
   priceAtEnrolled: number;
 }
 
+export interface ConfigurationEntity {
+  configurationId: string;
+  earn: number;
+  instructor: number;
+  completed: number;
+  foundation: number;
+  appliedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface LessonEntity {
   lessonId: string;
   thumbnailId?: string;

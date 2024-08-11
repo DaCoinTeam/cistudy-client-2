@@ -43,6 +43,11 @@ const WrappedAnalyticsPanelProvider = ({
                     numberOfCourses: true, 
                     numberOfOrders: true,
                     numberOfTransactions: true,
+                    enrolledInfos: {
+                        enrolledInfoId: true,
+                        priceAtEnrolled: true,
+                        createdAt: true,
+                    }
                 }
             )
             return result
