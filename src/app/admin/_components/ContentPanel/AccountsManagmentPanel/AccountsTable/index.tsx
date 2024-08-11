@@ -19,7 +19,9 @@ import {
     AccountsManagementPanelContext,
     ROWS_PER_PAGE,
 } from "../AccountsManagementPanelProvider"
-import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline"
+import { AccountDetailsModal } from "./AccountDetailsModal"
+import { EyeIcon, TrashIcon } from "@heroicons/react/24/outline"
+import { useRouter } from "next/navigation"
 
 export const AccountsTable = () => {
     const { reducer, swrs } = useContext(AccountsManagementPanelContext)!
@@ -43,28 +45,7 @@ export const AccountsTable = () => {
 
     const pages = count ? Math.ceil(count / ROWS_PER_PAGE) : 0
 
-
-    //
-    enum Status {
-        Enabled,
-        Disabled
-    }
-
-    const renderStatus = (status: Status) => {
-        const statusToComponent: Record<Status, JSX.Element> = {
-            [Status.Enabled]: (
-                <Chip color="success" variant="flat">
-          Enabled
-                </Chip>
-            ),
-            [Status.Disabled]: (
-                <Chip color="danger" variant="flat">
-          Disabled
-                </Chip>
-            ),
-        }
-        return statusToComponent[status]
-    }
+    const router = useRouter()
 
     return (
         <Table
@@ -107,9 +88,7 @@ export const AccountsTable = () => {
             }
         >
             <TableHeader>
-                <TableColumn key="infomation">
-          Infomation
-                </TableColumn>
+                <TableColumn key="infomation">Infomation</TableColumn>
                 <TableColumn key="email">Email</TableColumn>
                 <TableColumn key="birthdate">Birthdate</TableColumn>
                 <TableColumn key="createdAt">Created At</TableColumn>
@@ -121,42 +100,58 @@ export const AccountsTable = () => {
                 loadingContent={<Spinner />}
                 loadingState={loadingState()}
             >
-                {({ accountId, avatarId, username, avatarUrl, kind, birthdate, email, createdAt }) => (
-                    <TableRow key={accountId}>
+                {(account) => (
+                    <TableRow key={account.accountId}>
                         <TableCell>
                             <div className="flex gap-3 py-2">
-                                <User avatarProps={{
-                                    src : getAvatarUrl({
-                                        avatarId,
-                                        avatarUrl,
-                                        kind
-                                    })              
-                                }
-                                }
-                                classNames={{
-                                    name: "text-base"
-                                }}
-                                name={username ?? "Unnamed"}
-                                description={"0 followers"}
+                                <User
+                                    avatarProps={{
+                                        src: getAvatarUrl({
+                                            avatarId: account.avatarId,
+                                            avatarUrl: account.avatarUrl,
+                                            kind: account.kind,
+                                        }),
+                                    }}
+                                    classNames={{
+                                        name: "text-base",
+                                    }}
+                                    name={account.username ?? "Unnamed"}
+                                    description={"0 followers"}
                                 />
                             </div>
                         </TableCell>
-                        <TableCell>{email}</TableCell>
-                        <TableCell>{birthdate ? parseISODateString(birthdate) : "N/A"}</TableCell>
-                        <TableCell>{parseISODateString(createdAt)}</TableCell>
-                        <TableCell>{renderStatus(Status.Enabled)}</TableCell>
+                        <TableCell>{account.email}</TableCell>
+                        <TableCell>
+                            {account.birthdate
+                                ? parseISODateString(account.birthdate)
+                                : "N/A"}
+                        </TableCell>
+                        <TableCell>{parseISODateString(account.createdAt)}</TableCell>
+                        <TableCell>
+                            {account.isDisabled ? (
+                                <Chip color="danger" variant="flat">
+                  Disabled
+                                </Chip>
+                            ) : (
+                                <Chip color="primary" variant="flat">
+                  Enabled
+                                </Chip>
+                            )}
+                        </TableCell>
                         <TableCell>
                             <div className="gap-2 flex items-center">
-                                <Link as="button" className="w-5 h-5">
-                                    <EyeIcon/>
+                                <Link
+                                    className="w-5 h-5"
+                                    color="primary"
+                                    onPress={() => router.push(`/accounts/${account.accountId}`)}
+                                >
+                                    <EyeIcon />
                                 </Link>
-                                <Link as="button" className="w-5 h-5">
-                                    <PencilIcon/>
+                                <AccountDetailsModal account={account} />
+                                <Link className="w-5 h-5" color="danger">
+                                    <TrashIcon />
                                 </Link>
-                                <Link as="button" className="w-5 h-5" color="danger">
-                                    <TrashIcon/>
-                                </Link>
-                            </div>    
+                            </div>
                         </TableCell>
                     </TableRow>
                 )}

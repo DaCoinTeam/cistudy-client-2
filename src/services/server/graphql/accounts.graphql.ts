@@ -264,3 +264,31 @@ export const findLatestConfiguration = async (
     })
 }
   
+export interface FindOneAdminAccountInputData {
+  params: {
+    accountId: string;
+  };
+}
+
+export const findOneAdminAccount = async (
+    data: FindOneAdminAccountInputData,
+    schema?: Schema<DeepPartial<AccountEntity>>
+): Promise<AccountEntity> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query FindOneAdminAccount($data: FindOneAdminAccountInputData!) {
+                findOneAdminAccount(data: $data)   {
+      ${payload}
+    }
+  }
+          `,
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
+    })
+}

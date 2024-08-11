@@ -1,5 +1,6 @@
 import { ENDPOINT_API } from "@config"
 import { authAxios } from "./axios-instances"
+import { SystemRoles } from "@common"
 
 const BASE_URL = `${ENDPOINT_API}/accounts`
 
@@ -57,4 +58,28 @@ export const createConfiguration = async (
     const {data} = input
     const url = `${BASE_URL}/create-configuration`
     return await authAxios.post(url, data)
+}
+
+export interface UpdateAccountInput {
+    data: {
+        accountId: string
+        username?: string
+        firstName?: string
+        lastName?: string
+        birthdate?: Date
+        roles?: Array<SystemRoles>
+        isDisabled?: boolean
+    }
+}
+
+export interface UpdateAccountOutput {
+    message: string
+}
+  
+export const updateAccount = async (
+    input : UpdateAccountInput
+): Promise<UpdateAccountOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/update-account`
+    return await authAxios.put(url, data)
 }

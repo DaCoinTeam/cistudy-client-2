@@ -34,15 +34,7 @@ export enum VideoType {
   MP4 = "mp4",
   DASH = "dash",
 }
-export interface RoleEntity {
-  roleId: string;
-  name: string;
-  accountId: string;
-  accountRoles: AccountEntity;
-  createdAt: Date;
-  isDisabled: boolean;
-  updatedAt: Date;
-}
+
 export interface AccountRatingDTO {
   numberOf1StarRatings: number;
   numberOf2StarRatings: number;
@@ -82,10 +74,28 @@ export interface AccountEntity {
   posts: Array<PostEntity>;
   courses: Array<CourseEntity>;
   transactionDetails: Array<TransactionDetailEntity>;
+  isDisabled: boolean;
   //graphql
   followed?: boolean;
   numberOfFollowers?: number;
   accountRatings?: AccountRatingDTO;
+}
+
+export enum SystemRoles {
+  User = "user",
+  Instructor = "instructor",
+  Moderator = "moderator",
+  Administrator = "administrator",
+}
+
+export interface RoleEntity {
+  roleId: string;
+  accountId: string;
+  name: SystemRoles;
+  isDisabled: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  accountRoles: AccountEntity;
 }
 
 export interface PostEntity {

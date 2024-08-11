@@ -54,7 +54,8 @@ const WrappedAccountsManagementPanelProvider = ({
                         birthdate: true,
                         email: true,
                         createdAt: true,
-                        updatedAt: true
+                        updatedAt: true,
+                        isDisabled: true
                     },
                     metadata: {
                         count: true

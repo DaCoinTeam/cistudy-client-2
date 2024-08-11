@@ -57,7 +57,9 @@ const WrappedCoursesManagementPanelProvider = ({
                         enableDiscount: true,
                         price: true,
                         discountPrice: true,
-                        numberOfEnrollments: true
+                        numberOfEnrollments: true,
+                        updatedAt: true,
+                        createdAt: true
                     },
                     metadata: {
                         count: true
