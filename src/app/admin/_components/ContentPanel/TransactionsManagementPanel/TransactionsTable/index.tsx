@@ -10,13 +10,17 @@ import {
     Pagination,
     Spinner,
     Chip,
+    Link,
+    Snippet,
 } from "@nextui-org/react"
 import {
     TransactionsManagementPanelContext,
     ROWS_PER_PAGE,
 } from "../TransactionsManagementPanelProvider"
 import { useRouter } from "next/navigation"
-import { VerifyStatus, computeDenomination, parseDateStringFrom, truncate } from "@common"
+import { TransactionType, truncate } from "@common"
+import dayjs from "dayjs"
+import { EyeIcon } from "@heroicons/react/24/outline"
 
 export const TransactionsTable = () => {
     const router = useRouter()
@@ -41,36 +45,45 @@ export const TransactionsTable = () => {
 
     const pages = count ? Math.ceil(count / ROWS_PER_PAGE) : 0
 
-    const renderStatus = (status: VerifyStatus) => {
-        const statusToComponent: Record<VerifyStatus, JSX.Element> = {
-            [VerifyStatus.Draft]: (
+    const renderType = (type: TransactionType) => {
+        const typeToComponent: Record<TransactionType, JSX.Element> = {
+            [TransactionType.Buy]: (
                 <Chip color="warning" variant="flat">
-          Pending
+          Buy
                 </Chip>
             ),
-            [VerifyStatus.Pending]: (
-                <Chip color="warning" variant="flat">
-          Pending
+            [TransactionType.Deposit]: (
+                <Chip color="primary" variant="flat">
+          Deposit
                 </Chip>
             ),
-            [VerifyStatus.Approved]: (
+            [TransactionType.Withdraw]: (
+                <Chip color="secondary" variant="flat">
+          Withdraw
+                </Chip>
+            ),
+            [TransactionType.Earn]: (
                 <Chip color="success" variant="flat">
-          Success
+          Earn
                 </Chip>
             ),
-            [VerifyStatus.Rejected]: (
+            [TransactionType.CheckOut]: (
                 <Chip color="danger" variant="flat">
-          Rejected
+          Check Out
+                </Chip>
+            ),
+            [TransactionType.Received]: (
+                <Chip color="default" variant="flat">
+          Received
                 </Chip>
             ),
         }
-        return statusToComponent[status]
+        return typeToComponent[type]
     }
 
     return (
         <Table
             aria-label="Example table with client async pagination"
-            selectionMode="multiple"
             shadow="none"
             classNames={{
                 wrapper: "border border-divider rounded-medium p-0",
@@ -108,28 +121,175 @@ export const TransactionsTable = () => {
             }
         >
             <TableHeader>
-                <TableColumn key="address">
-          Address
-                </TableColumn>
-                <TableColumn key="from">From</TableColumn>
-                <TableColumn key="to">To</TableColumn>
-                <TableColumn key="value"> Value </TableColumn>
-                <TableColumn key="createdAt"> Created At </TableColumn>
+                <TableColumn key="transactionId">Transaction Id</TableColumn>
+                <TableColumn key="type">Type</TableColumn>
+                <TableColumn width={"20%"} key="balanceChange">Balance Change</TableColumn>
+                <TableColumn key="IDs">Details</TableColumn>
+                <TableColumn key="createdAt">Created At</TableColumn>
+                <TableColumn key="details">Actions</TableColumn>
             </TableHeader>
             <TableBody
+                emptyContent={"No transactions found."}
                 items={results ?? []}
                 loadingContent={<Spinner />}
                 loadingState={loadingState()}
             >
-                {({ transactionHash, from, to, createdAt, value }) => (
-                    <TableRow key={transactionHash}>
+                {(transaction) => (
+                    <TableRow key={transaction.transactionId}>
                         <TableCell>
-                            {truncate(transactionHash)}
+                            <Snippet
+                                hideSymbol
+                                classNames={{
+                                    base: "!bg-inherit",
+                                }}
+                                codeString={transaction.transactionId}
+                            >
+                                {truncate(transaction.transactionId)}
+                            </Snippet>
                         </TableCell>
-                        <TableCell>{truncate(from)}</TableCell>
-                        <TableCell>{truncate(to)}</TableCell>
-                        <TableCell>{computeDenomination(BigInt(value))} STARCI</TableCell>
-                        <TableCell>{parseDateStringFrom(createdAt)}</TableCell>
+                        <TableCell>{renderType(transaction.type)}</TableCell>
+                        <TableCell>
+                            {transaction.amountOnChainChange ? (
+                                <div className="grid gap-1">
+                                    <div className="flex gap-2 items-center">
+                                        <div>Deposited: </div>
+                                        {transaction.amountDepositedChange >= 0 ? (
+                                            <div className="text-success">
+                                +{transaction.amountDepositedChange} STARCI
+                                            </div>
+                                        ) : (
+                                            <div className="text-danger">
+                                                {transaction.amountDepositedChange} STARCI
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="flex gap-2 items-center">
+                                        <div>On-chain: </div>
+                                        {transaction.amountOnChainChange >= 0 ? (
+                                            <div className="text-success">
+                                +{transaction.amountOnChainChange} STARCI
+                                            </div>
+                                        ) : (
+                                            <div className="text-danger">
+                                                {transaction.amountOnChainChange} STARCI
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div
+                                    className={`${
+                                        transaction.amountDepositedChange >= 0
+                                            ? "text-success"
+                                            : "text-danger"
+                                    }`}
+                                >
+                                    {transaction.amountDepositedChange >= 0 ? "+" : ""}
+                                    {transaction.amountDepositedChange} STARCI
+                                </div>
+                            )}
+                        </TableCell>
+                        <TableCell>
+                            {transaction.transactionDetails.length > 0 ? (
+                                <div className="grid gap-1">
+                                    {transaction.transactionDetails.map(
+                                        ({
+                                            transactionDetailId,
+                                            account,
+                                            course,
+                                            directIn,
+                                        }) => {
+                                            if (!directIn) {
+                                                return (
+                                                    <div
+                                                        key={transactionDetailId}
+                                                        className="text-sm"
+                                                    >
+                                                        {" "}
+                                    Enroll to{" "}
+                                                        <Link
+                                                            className="inline"
+                                                            as="button"
+                                                            onPress={() =>
+                                                                router.push(
+                                                                    `/courses/${course?.courseId}`
+                                                                )
+                                                            }
+                                                            size="sm"
+                                                        >
+                                                            {course?.title.slice(0, 15)}...
+                                                        </Link>
+                                                    </div>
+                                                )
+                                            }
+                                            return (
+                                                <div
+                                                    key={transactionDetailId}
+                                                    className="text-sm"
+                                                >
+                                                    {" "}
+                                  User{" "}
+                                                    <Link
+                                                        as="button"
+                                                        onPress={() =>
+                                                            router.push(
+                                                                `/accounts/${account?.accountId}`
+                                                            )
+                                                        }
+                                                        size="sm"
+                                                    >
+                                                        {account?.username.slice(0, 10)}...
+                                                    </Link>
+                                                    {" "}enrolled to{" "}
+                                                    <Link
+                                                        as="button"
+                                                        onPress={() =>
+                                                            router.push(
+                                                                `/courses/${course?.courseId}`
+                                                            )
+                                                        }
+                                                        size="sm"
+                                                    >
+                                                        {course?.title.slice(0, 15)}...
+                                                    </Link>
+                                                </div>
+                                            )
+                                        }
+                                    )}
+                                </div>
+                            ) : (
+                                <>
+                                    {transaction.payPalOrderId ? (
+                                        <div className="flex gap-1 items-center">
+                                            <div>Paypal Order Id:</div>
+                                            <Link as="button">{truncate(transaction.payPalOrderId)}</Link>
+                                        </div>
+                                    ) : null}
+                                    {transaction.transactionHash ? (
+                                        <div className="flex gap-1 items-center">
+                                            <div>Transaction Hash:</div>
+                                            {transaction.transactionHash ? (
+                                                <Link as="button">
+                                                    {truncate(transaction.transactionHash)}
+                                                </Link>
+                                            ) : (
+                                                "N/A"
+                                            )}
+                                        </div>
+                                    ) : null}
+                                </>
+                            )}
+                        </TableCell>
+                        <TableCell>
+                            {dayjs(transaction.createdAt).format("HH:mm:ss DD/MM/YYYY")}
+                        </TableCell>
+                        <TableCell>
+                            <div className="flex gap-2">
+                                <Link as="button" className="w-5 h-5">
+                                    <EyeIcon/>
+                                </Link>
+                            </div>   
+                        </TableCell>
                     </TableRow>
                 )}
             </TableBody>

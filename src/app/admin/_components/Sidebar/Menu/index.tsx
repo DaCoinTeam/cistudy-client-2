@@ -4,7 +4,7 @@ import { AdminContext, PanelSelected } from "../../../_hooks"
 import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
 import { BanknoteIcon, BookOpenIcon } from "lucide-react"
-import { UserCircleIcon } from "@heroicons/react/24/outline"
+import { BellIcon, UserCircleIcon } from "@heroicons/react/24/outline"
 
 interface MenuProps {
   className?: string;
@@ -21,7 +21,7 @@ export const Menu = (props: MenuProps) => {
 
     const isSelected = (panelSelected: PanelSelected) =>
         Array.from(selectedKeys).includes(panelSelected)
-            ? "!bg-content2 !text-foreground rounded-medium"
+            ? "!bg-primary/20 !text-primary rounded-medium"
             : ""
 
     const onSelectionChange = (selection: Selection) => {
@@ -60,6 +60,14 @@ export const Menu = (props: MenuProps) => {
             key: "transactions",
             content: "Transactions",
             panelSelected: PanelSelected.Transactions,
+        },
+        {
+            startContent: (
+                <BellIcon className="w-5 h-5" strokeWidth={3/2} />
+            ),
+            key: "notifications",
+            content: "Notifications",
+            panelSelected: PanelSelected.Notifications,
         },
     ]
 

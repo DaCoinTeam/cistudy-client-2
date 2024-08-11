@@ -61,7 +61,8 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                         kind: true,
                         avatarId: true,
                         avatarUrl: true
-                    }
+                    },
+                    priceAtEnrolled: true
                 },
                 discountPrice: true,
                 enableDiscount: true,

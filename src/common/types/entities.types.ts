@@ -205,6 +205,7 @@ export interface EnrolledInfoEntity {
   enrolled: boolean;
   createdAt: Date;
   updatedAt: Date;
+  priceAtEnrolled: number;
 }
 
 export interface LessonEntity {

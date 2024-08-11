@@ -3,7 +3,7 @@ import React, { ReactNode, createContext, useCallback, useMemo } from "react"
 
 import {
     FindManyTransactionsOutputData,
-    findManyTransactions
+    findManyAdminTransactions
 } from "@services"
 import { ErrorResponse } from "@common"
 import useSWR, { SWRConfig, SWRResponse } from "swr"
@@ -37,7 +37,7 @@ const WrappedTransactionsManagementPanelProvider = ({
 
     const fetchTransactions = useCallback(
         async ([key]: [number, string]) => {
-            return await findManyTransactions(
+            return await findManyAdminTransactions(
                 {
                     options: {
                         skip: ROWS_PER_PAGE * (key - 1),
@@ -46,11 +46,30 @@ const WrappedTransactionsManagementPanelProvider = ({
                 },
                 {
                     results: {
-                        transactionHash: true,
+                        amountDepositedChange: true,
+                        amountOnChainChange: true,
+                        payPalOrderId:true,
                         createdAt: true,
-                        from: true,
-                        to: true,
-                        value: true
+                        transactionHash: true,
+                        transactionId: true,
+                        type: true,
+                        transactionDetails: {
+                            account: {
+                                accountId: true,
+                                username: true,
+                                avatarId: true,
+                                avatarUrl: true,
+                                kind: true
+                            },
+                            course: {
+                                courseId: true,
+                                title: true,
+                                thumbnailId: true,
+                            },
+                            transactionDetailId: true,
+                            payAmount: true,
+                            directIn: true
+                        }
                     },
                     metadata: {
                         count: true

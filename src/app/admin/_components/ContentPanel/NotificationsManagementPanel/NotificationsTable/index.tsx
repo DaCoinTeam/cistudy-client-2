@@ -13,20 +13,20 @@ import {
     TableRow,
     User,
 } from "@nextui-org/react"
-import { getAvatarUrl } from "@services"
 import { useContext } from "react"
 import {
-    AccountsManagementPanelContext,
+    NotificationsManagementPanelContext,
     ROWS_PER_PAGE,
-} from "../AccountsManagementPanelProvider"
+} from "../NotificationsManagementPanelProvider"
 import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline"
+import { getAvatarUrl } from "../../../../../../services/server"
 
-export const AccountsTable = () => {
-    const { reducer, swrs } = useContext(AccountsManagementPanelContext)!
+export const NotificationsTable = () => {
+    const { reducer, swrs } = useContext(NotificationsManagementPanelContext)!
     const [state, dispatch] = reducer
     const { page } = state
-    const { accountsSwr } = swrs
-    const { data, isLoading } = accountsSwr
+    const { notificationsSwr } = swrs
+    const { data, isLoading } = notificationsSwr
     const { metadata, results } = { ...data }
     const { count } = { ...metadata }
 
@@ -42,29 +42,6 @@ export const AccountsTable = () => {
         })
 
     const pages = count ? Math.ceil(count / ROWS_PER_PAGE) : 0
-
-
-    //
-    enum Status {
-        Enabled,
-        Disabled
-    }
-
-    const renderStatus = (status: Status) => {
-        const statusToComponent: Record<Status, JSX.Element> = {
-            [Status.Enabled]: (
-                <Chip color="success" variant="flat">
-          Enabled
-                </Chip>
-            ),
-            [Status.Disabled]: (
-                <Chip color="danger" variant="flat">
-          Disabled
-                </Chip>
-            ),
-        }
-        return statusToComponent[status]
-    }
 
     return (
         <Table
@@ -107,13 +84,11 @@ export const AccountsTable = () => {
             }
         >
             <TableHeader>
-                <TableColumn key="infomation">
-          Infomation
-                </TableColumn>
-                <TableColumn key="email">Email</TableColumn>
-                <TableColumn key="birthdate">Birthdate</TableColumn>
-                <TableColumn key="createdAt">Created At</TableColumn>
-                <TableColumn key="status">Status</TableColumn>
+                <TableColumn key="email">Title</TableColumn>
+                <TableColumn key="birthdate">Description</TableColumn>
+                <TableColumn key="createdAt22" width={"15%"}>Receiver</TableColumn>
+                <TableColumn key="status">Viewed</TableColumn>
+                <TableColumn key="createdAt"  width={"10%"}>Created At</TableColumn>
                 <TableColumn key="actions">Actions</TableColumn>
             </TableHeader>
             <TableBody
@@ -121,30 +96,28 @@ export const AccountsTable = () => {
                 loadingContent={<Spinner />}
                 loadingState={loadingState()}
             >
-                {({ accountId, avatarId, username, avatarUrl, kind, birthdate, email, createdAt }) => (
-                    <TableRow key={accountId}>
+                {({ notificationId, title, description, viewed, createdAt, receiver: { avatarId, avatarUrl, kind, username} }) => (
+                    <TableRow key={notificationId}>
                         <TableCell>
-                            <div className="flex gap-3 py-2">
-                                <User avatarProps={{
-                                    src : getAvatarUrl({
-                                        avatarId,
-                                        avatarUrl,
-                                        kind
-                                    })              
-                                }
-                                }
-                                classNames={{
-                                    name: "text-base"
-                                }}
-                                name={username ?? "Unnamed"}
-                                description={"0 followers"}
-                                />
-                            </div>
+                            <div className="font-semibold">{title}</div>
                         </TableCell>
-                        <TableCell>{email}</TableCell>
-                        <TableCell>{birthdate ? parseISODateString(birthdate) : "N/A"}</TableCell>
+                        <TableCell>{description}</TableCell>
+                        <TableCell><User avatarProps={{
+                            src : getAvatarUrl({
+                                avatarId,
+                                avatarUrl,
+                                kind
+                            })              
+                        }
+                        }
+                        classNames={{
+                            name: "text-base"
+                        }}
+                        name={username ?? "Unnamed"}
+                        description={"0 followers"}
+                        /></TableCell>
+                        <TableCell>{viewed ? <Chip variant="flat" color="success">Yes</Chip> : <Chip variant="flat" color="default">No</Chip>}</TableCell>
                         <TableCell>{parseISODateString(createdAt)}</TableCell>
-                        <TableCell>{renderStatus(Status.Enabled)}</TableCell>
                         <TableCell>
                             <div className="gap-2 flex items-center">
                                 <Link as="button" className="w-5 h-5">
