@@ -52,6 +52,13 @@ const WrappedTransactionsManagementPanelProvider = ({
                         createdAt: true,
                         transactionHash: true,
                         transactionId: true,
+                        account: {
+                            accountId: true,
+                            username: true,
+                            avatarId: true,
+                            avatarUrl: true,
+                            kind: true
+                        },
                         type: true,
                         transactionDetails: {
                             account: {

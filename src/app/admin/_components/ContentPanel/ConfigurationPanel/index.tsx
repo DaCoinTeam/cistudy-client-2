@@ -17,7 +17,7 @@ const WrappedConfigurationPanel = ({ className }: ConfigurationPanelProps) => {
     return (
         <div className={`${className} col-span-3`}>
             <div className="text-2xl">Configuration</div>
-            <Spacer y={2} />
+            <Spacer y={6} />
             <div className="grid gap-4 w-full">
                 <Input
                     label="Earn Percent"

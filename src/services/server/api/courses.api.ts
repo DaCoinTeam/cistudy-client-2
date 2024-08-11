@@ -798,3 +798,21 @@ export const deleteCourse = async (
     const url = `${BASE_URL}/delete-course/${courseId}`
     return await authAxios.delete(url)
 }
+
+export interface DeleteAdminCourseInput {
+  data: {
+    courseId: string
+  }
+}
+
+export interface DeleteAdminCourseOutput {
+  message: string
+}
+
+export const deleteAdminCourse = async (
+    input: DeleteAdminCourseInput
+): Promise<DeleteAdminCourseOutput> => {
+    const {courseId} = input.data
+    const url = `${BASE_URL}/delete-admin-course/${courseId}`
+    return await authAxios.delete(url)
+}

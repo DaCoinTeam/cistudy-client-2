@@ -12,6 +12,7 @@ import {
     Chip,
     Link,
     Snippet,
+    User,
 } from "@nextui-org/react"
 import {
     TransactionsManagementPanelContext,
@@ -20,7 +21,8 @@ import {
 import { useRouter } from "next/navigation"
 import { TransactionType, truncate } from "@common"
 import dayjs from "dayjs"
-import { EyeIcon } from "@heroicons/react/24/outline"
+import { TransactionDetailsModal } from "./TransactionDetailsModal"
+import { getAvatarUrl } from "../../../../../../services/server"
 
 export const TransactionsTable = () => {
     const router = useRouter()
@@ -123,7 +125,8 @@ export const TransactionsTable = () => {
             <TableHeader>
                 <TableColumn key="transactionId">Transaction Id</TableColumn>
                 <TableColumn key="type">Type</TableColumn>
-                <TableColumn width={"20%"} key="balanceChange">Balance Change</TableColumn>
+                <TableColumn key="to">To</TableColumn>
+                <TableColumn width={"15%"} key="balanceChange">Balance Change</TableColumn>
                 <TableColumn key="IDs">Details</TableColumn>
                 <TableColumn key="createdAt">Created At</TableColumn>
                 <TableColumn key="details">Actions</TableColumn>
@@ -148,6 +151,20 @@ export const TransactionsTable = () => {
                             </Snippet>
                         </TableCell>
                         <TableCell>{renderType(transaction.type)}</TableCell>
+                        <TableCell><User avatarProps={{
+                            src : getAvatarUrl({
+                                avatarId: transaction.account.avatarId,
+                                avatarUrl: transaction.account.avatarUrl,
+                                kind: transaction.account.kind
+                            })              
+                        }
+                        }
+                        classNames={{
+                            name: "text-base"
+                        }}
+                        name={transaction.account.username ?? "Unnamed"}
+                        description={"0 followers"}
+                        /></TableCell>
                         <TableCell>
                             {transaction.amountOnChainChange ? (
                                 <div className="grid gap-1">
@@ -285,9 +302,7 @@ export const TransactionsTable = () => {
                         </TableCell>
                         <TableCell>
                             <div className="flex gap-2">
-                                <Link as="button" className="w-5 h-5">
-                                    <EyeIcon/>
-                                </Link>
+                                <TransactionDetailsModal transaction={transaction}/>
                             </div>   
                         </TableCell>
                     </TableRow>

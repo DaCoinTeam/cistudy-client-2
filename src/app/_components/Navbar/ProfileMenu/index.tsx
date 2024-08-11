@@ -6,7 +6,7 @@ import {
     Avatar,
 } from "@nextui-org/react"
 import React, { useContext, useRef } from "react"
-import { AccountRole, removeTokens } from "@common"
+import { AccountRole, SystemRoles, removeTokens } from "@common"
 import { RootContext } from "../../../_hooks"
 import { getAvatarUrl } from "@services"
 import { useRouter } from "next/navigation"
@@ -52,7 +52,7 @@ export const ProfileMenu = () => {
     const onWalletPress = () => walletModalRef.current?.onOpen()
 
     const items: Array<Item> =
-        roles?.map(role => role.name).includes(AccountRole.Administrator) ?
+        roles?.map(role => role.name).includes(SystemRoles.Administrator) ?
             [
                 {
                     key: "base",
@@ -105,7 +105,7 @@ export const ProfileMenu = () => {
                     content: "Sign Out",
                     color: "danger",
                 },
-            ] : roles?.map(role => role.name).includes(AccountRole.Moderator) ?
+            ] : roles?.map(role => role.name).includes(SystemRoles.Moderator) ?
                 [
                     {
                         key: "base",
