@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import { AdminContext, PanelSelected } from "../../../_hooks"
 import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
-import { BanknoteIcon, BookOpenIcon } from "lucide-react"
+import { BanknoteIcon, BookOpenIcon, ScrollText } from "lucide-react"
 import { BellIcon, ChartBarIcon, Cog6ToothIcon, UserCircleIcon } from "@heroicons/react/24/outline"
 
 interface MenuProps {
@@ -68,6 +68,14 @@ export const Menu = (props: MenuProps) => {
             key: "transactions",
             content: "Transactions",
             panelSelected: PanelSelected.Transactions,
+        },
+        {
+            startContent: (
+                <ScrollText size={24} strokeWidth={3/2} />
+            ),
+            key: "orders",
+            content: "Orders",
+            panelSelected: PanelSelected.Orders,
         },
         {
             startContent: (

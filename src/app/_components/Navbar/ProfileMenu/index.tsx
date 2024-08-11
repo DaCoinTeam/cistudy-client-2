@@ -11,6 +11,7 @@ import { RootContext } from "../../../_hooks"
 import { getAvatarUrl } from "@services"
 import { useRouter } from "next/navigation"
 import { WalletModalRef, WalletModalRefSelectors } from "./WalletModalRef"
+import { PurchaseHistoryModalRef, PurchaseHistoryModalRefSelectors } from "./PurchaseHistoryModalRef"
 
 interface Item {
     key: string;
@@ -41,8 +42,10 @@ export const ProfileMenu = () => {
     const onEnrolledCouresPress = () => router.push("/enrolled-courses")
     const onAdminDashboardPress = () => router.push("/admin")
     const onModeratorDashboardPress = () => router.push("/moderator")
+    const purchaseHistoryModalRef = useRef<PurchaseHistoryModalRefSelectors | null>(null)
     const onPurchaseHistoryPress = () => {
 
+        purchaseHistoryModalRef.current?.onOpen()
     }
 
     const walletModalRef = useRef<WalletModalRefSelectors | null>(null)
@@ -231,6 +234,7 @@ export const ProfileMenu = () => {
                 </DropdownMenu>
             </Dropdown>
             <WalletModalRef ref={walletModalRef} />
+            <PurchaseHistoryModalRef ref={purchaseHistoryModalRef}/>
         </>
     )
 }

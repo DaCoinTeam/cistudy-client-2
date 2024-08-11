@@ -681,3 +681,27 @@ export interface NotificationEntity {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface OrderCourseEntity {
+course: CourseEntity;
+courseId: string;
+createdAt: Date;
+discountedPrice: number;
+orderCourseId: string;
+orderId: string;
+price: string;
+updatedAt: Date;
+}
+
+export interface OrderEntity {
+account: AccountEntity;
+accountId: string;
+completeDate: Date;
+createdAt: Date;
+isDeleted: boolean;
+orderCourses: [OrderCourseEntity];
+orderId: string;
+orderStatus: string;
+paymentDue: Date;
+updatedAt: Date; 
+}
