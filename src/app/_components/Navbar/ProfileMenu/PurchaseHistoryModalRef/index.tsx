@@ -1,173 +1,222 @@
 "use client"
-import React, { forwardRef, useContext, useImperativeHandle } from "react"
+import { OrderCourseEntity, OrderEntity } from "@common"
 import {
-    Link,
+    Accordion,
+    AccordionItem,
+    Chip,
     Modal,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalHeader,
+    Pagination,
+    ScrollShadow,
     Spacer,
+
     useDisclosure,
 } from "@nextui-org/react"
-interface PurchaseHistoryModalRefSelectors {
-    onOpen: () => void;
+import dayjs from "dayjs"
+import { forwardRef, useContext, useImperativeHandle, useMemo } from "react"
+import {
+    PurchaseHistoryModalContext,
+    PurchaseHistoryModalProvider,
+    ROWS_PER_PAGE,
+} from "./PurchaseHistoryModalProvider"
+import { Dot } from "lucide-react"
+export interface PurchaseHistoryModalRefSelectors {
+  onOpen: () => void;
 }
-interface PurchaseHistoryModalRefProps {
+interface PurchaseHistoryModalRefProps {}
 
+const WrappedPurchaseHistoryModalRef = () => {
+    const { swrs } = useContext(PurchaseHistoryModalContext)!
+    const { accountOrdersSwr } = swrs
+    const { data,  setSize, size } = accountOrdersSwr
+    const getCount = () => {
+        if (!data) return 0
+        const last = data.at(-1)
+        if (!last) return 0
+        return last.metadata.count
+    }
+
+    const onLoadPage = (page: number) => {
+        setSize(page)
+    }
+    const getOrdersByPage = useMemo(() => {
+        if (!data) return []
+        const orderReturn: Array<OrderEntity> = []
+        const results = data[size - 1]?.results
+        if (results) orderReturn.push(...results)
+        return orderReturn
+    }, [data])
+
+ 
+    const renderStatus = (status: string) => {
+        switch (status) {
+        case "completed": 
+            return <Chip color="success" variant="flat">
+                Completed
+            </Chip>
+        case "pending": 
+            return <Chip color="warning" variant="flat">
+                Pending
+            </Chip>
+        case "canceled":
+            return <Chip color="danger" variant="flat">
+                Canceled
+            </Chip>
+        default: 
+            return <Chip color="warning" variant="flat">
+                Pending
+            </Chip>
+        }
+    }
+    const totalPrice = (orderCourses : Array<OrderCourseEntity>) => {
+        let price = 0
+        if(orderCourses) {
+            orderCourses.map((orderCourses) => price = price + orderCourses.discountedPrice)
+        }
+        return price
+    }
+    const pages = Math.ceil(getCount() / ROWS_PER_PAGE)
+
+    return (
+        < >
+            <ModalHeader className='p-4 pb-0'>Orders</ModalHeader>
+            <ModalBody className='p-4'>
+                <div className="border rounded-xl p-4"
+                    aria-label='Table with client async pagination'
+                >
+                    <div className="flex justify-between px-2 pb-2 border-b-1">
+                        <div className="grid grid-cols-12 w-full">
+                            <div key='no' className='text-sm '>
+              No
+                            </div>
+
+                            <div key='numberOfCourse' className='text-sm col-span-5 pr-4'>
+                                {"  "}
+                            </div>
+                            <div key='totalPrice' className='text-sm  col-span-2 '>
+              Total Price
+                            </div>
+                            <div key='status' className='text-sm  col-span-2 '>
+              Status
+                            </div>
+                            <div key='completeDate' className='text-sm col-span-2 '>
+              Complete Date
+                            </div>
+                        </div>
+                        <Spacer x={9}/>
+                    </div>
+                    
+                    <div
+                        // emptyContent={"You haven't created any course."}
+                        // loadingContent={<Spinner />}
+                    >
+                       
+                        <Accordion >
+                        
+                            {getOrdersByPage.map(
+                                (
+                                    { orderId, orderStatus, completeDate, orderCourses },
+                                    index
+                                ) => (
+                                    <AccordionItem
+                                        textValue="Course Order Item"
+                                        hideIndicator={orderCourses.length <= 1}
+                                        key={orderId}
+                                        aria-expanded={false}
+                                        title={
+                                            <div className="flex">
+                                                <div className="grid grid-cols-12 w-full">
+                                                    <div className='text-sm '>
+                                                        {(size - 1) * ROWS_PER_PAGE + index + 1}
+                                                    </div>
+                                                    <div className='text-sm col-span-5 pr-4'>
+                                                        {orderCourses.length == 1 ? (
+                                                            <div className="text-primary">{orderCourses[0].course.title}</div>
+                                                        ): (<> {orderCourses.length} courses purchased </>)}
+                                                    </div>
+                                                    <div className='text-sm col-span-2 '>
+                                                        {totalPrice(orderCourses)} STARCI
+                                                    </div>
+                                                    <div className='text-sm col-span-2 '>
+                                                        {renderStatus(orderStatus)}
+                                                    </div>
+                                                    <div className='text-sm col-span-2 '>
+                                                        {dayjs(completeDate).format("HH:mm:ss DD/MM/YYYY")}
+                                                    </div>
+                                                </div>
+                                                {orderCourses.length == 1 ? <Spacer x={9}/> : <></>}
+                                                
+                                            </div>
+
+                                        }>
+                                        <div >
+                                            { orderCourses?.length > 1 ? orderCourses?.map((course) => (
+                                                <div key={course.orderCourseId} className="grid grid-cols-12 mr-[2.3rem] pb-2 mb-1">
+                                                    <div />
+                                                    <div className="col-span-5 text-sm text-primary flex items-start pr-4"><Dot size={20} className="mr-1"/>{course?.course.title}</div>
+                                                    <div className="col-span-2 text-sm ">{course?.discountedPrice} STARCI</div>
+                                                </div>
+                                            )) : <></>}
+                                        </div>
+                                       
+                                    </AccordionItem>
+                                ))}
+                                       
+                        </Accordion>
+                    </div>
+                </div>
+            </ModalBody>
+            <ModalFooter>
+                {
+                    pages > 0 ? (
+                        <div className='flex w-full justify-center'>
+                            <div className='pb-4'>
+                                <Pagination
+                                    isCompact
+                                    showControls
+                                    showShadow
+                                    color='primary'
+                                    initialPage={1}
+                                    total={pages}
+                                    onChange={onLoadPage}
+                                />
+                            </div>
+                        </div>
+                    ) : null
+                }
+            </ModalFooter>
+        </>
+    )
 }
 
 export const PurchaseHistoryModalRef = forwardRef<
   PurchaseHistoryModalRefSelectors | null,
   PurchaseHistoryModalRefProps
 >((props, ref) => {
-    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-
+    const { isOpen, onOpen, onOpenChange } = useDisclosure()
     useImperativeHandle(ref, () => ({
         onOpen,
     }))
-    // const { swrs: rootSwrs } = useContext(RootContext)!
-    // const { profileSwr } = rootSwrs
-    // const { data } = profileSwr
-    // const { balance,  avatarUrl, avatarId, username, kind, numberOfFollowers,  } = { ...data }
-    // const balanceLeft = balance! - discountPrice
-    // const handlePress = async () => {
-    //     if(onCheckoutPress) await onCheckoutPress()
-    //     onClose()
-    // }
+
     return (
-    // <Modal isOpen={isOpen} scrollBehavior="inside"  onOpenChange={onOpenChange} size='xl'>
-    //     <ScrollShadow className="h-[420px] w-[360px]" >
-    //         <ModalContent>
-    //             <>
-    //                 <ModalHeader className='p-4 pb-0'>Billing Summary</ModalHeader>
-    //                 <ModalBody className='p-4'>
-    //                     <div className="">
-    //                         <div className="mb-1 text-lg font-medium">Customer</div>
-    //                         <User classNames={{
-    //                             name: "text-sm line-clamp-1",
-    //                             description: "w-[70px]"
-    //                         }} avatarProps={{
-    //                             src: getAvatarUrl({
-    //                                 avatarUrl: avatarUrl,
-    //                                 avatarId: avatarId,
-    //                                 kind: kind
-    //                             })
-    //                         }} name={username} description={formatNouns(numberOfFollowers, "follower")}
-    //                         /> 
-    //                     </div>
-    //                     <Divider />
-    //                     <div className=" text-lg font-medium">Course</div>
-    //                     <div className="w-full">
-    //                         {courses.map((course, index) => {
-    //                             return (
-    //                                 <div key={course.courseId} className="mb-2 grid grid-cols-4">
-    //                                     <div className="flex col-span-3">
-    //                                         <div>{index + 1}.</div>
-    //                                         <Spacer x={2}   />
-    //                                         <div className=""> {course?.title} </div>
-    //                                     </div>
-    //                                     <div className="flex flex-col items-end">
-    //                                         <div className="text-primary">{course?.enableDiscount ? discountPrice : course?.price} STARCI</div>
-    //                                         {course?.enableDiscount && <div className="text-sm text-foreground-400 line-through ms-1">{course?.price} STARCI</div>}
-    //                                     </div>
-                                           
-    //                                 </div>
-    //                             )
-    //                         })}
-    //                     </div>
-    //                     <Divider />  
-    //                     <div className='flex  w-full'>
-    //                         <div className='w-full' >
-    //                             <div className='text-lg font-medium'>
-    //               Summary
-    //                             </div>
-    //                             <div className="w-full">
-    //                                 <div className=" w-full" >
-    //                                     <div className='flex items-center justify-between gap-4'>
-    //                                         <div className='text-base font-normal text-gray-500 dark:text-gray-400'>
-    //                     Item{" "}
-    //                                         </div>
-    //                                         <div className='text-base text-gray-900 dark:text-white'>
-    //                                             {formatNouns(courses.length, "item")}
-    //                                         </div>
-    //                                     </div>
-    //                                     <Spacer y={1} />
+        <Modal
+            isDismissable={true}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            size='3xl'
+            scrollBehavior="inside"
+        >
+                <ModalContent>
+                <ScrollShadow  className="h-[460px] " >
+                    <PurchaseHistoryModalProvider>
+                        <WrappedPurchaseHistoryModalRef />
+                    </PurchaseHistoryModalProvider>
+                </ScrollShadow>
 
-    //                                     <div className='flex items-center justify-between gap-4'>
-    //                                         <div className='text-base font-normal text-gray-500 dark:text-gray-400'>
-    //                     Original price
-    //                                         </div>
-    //                                         <div className='text-base  text-gray-900 dark:text-white'>
-    //                                             {originalPrice} STARCI
-                                                        
-    //                                         </div>
-    //                                     </div>
-    //                                     <Spacer y={1} />
-
-    //                                     <div className='flex items-center justify-between gap-4'>
-    //                                         <div className='text-base font-normal text-gray-500 dark:text-gray-400'>
-    //                     Savings
-    //                                         </div>
-    //                                         <dd className='text-base  text-green-600'>
-    //                                             -{originalPrice - discountPrice} STARCI
-    //                                         </dd>
-    //                                     </div>
-    //                                     <Spacer y={2} />
-
-    //                                 </div>
-
-        //                                 <div className='flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700'>
-        //                                     <div className='text-base font-semibold text-gray-900 dark:text-white'>
-        //                   Total
-        //                                     </div>
-        //                                     <div className='text-base font-semibold text-gray-900 dark:text-white'>
-        //                                         {discountPrice} STARCI
-        //                                     </div>
-        //                                 </div>                                   
-        //                             </div>
-        //                         </div>
-        //                     </div>
-        //                     <div>
-        //                         {balanceLeft < 0 ? (
-        //                             <div className="bg-danger/20 p-4 rounded-md mt-4">
-        //                                 <div className='text-lg  '>
-        //                 Sorry, your balance are not enough.
-        //                                 </div>
-        //                                 <Spacer y={4} />
-        //                                 <div className='text-sm flex gap-2 items-center'>
-        //                                     <div>Paid amount:</div>
-        //                                     <span className=' font-semibold'>
-        //                                         {discountPrice} STARCI
-        //                                     </span>
-        //                                 </div>
-        //                                 <div className='text-sm flex gap-2 items-center'>
-        //                                     <div>Your balance:</div>
-        //                                     <span className=' font-semibold'>
-        //                                         {balance} STARCI
-        //                                     </span>
-        //                                 </div>
-        //                             </div>
-        //                         ) : (
-        //                             <div></div>
-        //                         )}
-        //                     </div>
-        //                 </ModalBody>
-        //                 <ModalFooter className='p-4 pt-2'>
-        //                     <Button
-        //                         isLoading={isMutating}
-        //                         color='primary'
-        //                         onPress={handlePress}
-        //                         isDisabled={balanceLeft <= 0}
-        //                     >
-        //         Checkout
-        //                     </Button>
-        //                 </ModalFooter>
-        //             </>
-        //         </ModalContent>
-        //     </ScrollShadow>
-        // </Modal>
-        <div></div>
+                </ModalContent>
+        </Modal>
     )
-
 })
