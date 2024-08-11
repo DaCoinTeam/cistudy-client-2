@@ -6,6 +6,8 @@ import {
     AccountEntity,
     buildAuthPayloadString,
     buildPayloadString,
+    NotificationEntity,
+    TransactionEntity,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
 
@@ -126,6 +128,80 @@ export const findManyAccounts = async (
         query: gql`
             query FindManyAccounts($data: FindManyAccountsInputData!) {
                 findManyAccounts(data: $data)   {
+      ${payload}
+    }
+  }
+          `,
+        variables: {
+            data
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true
+    })
+}
+
+export interface FindManyNotificationsInputData {
+    options?: {
+        take?: number;
+        skip?: number;
+    };
+}
+
+export interface FindManyNotificationsOutputData {
+    results: Array<NotificationEntity>;
+    metadata: {
+        count: number;
+    };
+}
+
+export const findManyNotifications = async (
+    data: FindManyNotificationsInputData,
+    schema?: Schema<DeepPartial<FindManyNotificationsOutputData>>
+): Promise<FindManyNotificationsOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query FindManyNotifications($data: FindManyNotificationsInputData!) {
+                findManyNotifications(data: $data)   {
+      ${payload}
+    }
+  }
+          `,
+        variables: {
+            data
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true
+    })
+}
+
+export interface FindManyAdminTransactionsInputData {
+    options?: {
+        take?: number;
+        skip?: number;
+    };
+}
+
+export interface FindManyAdminTransactionsOutputData {
+    results: Array<TransactionEntity>;
+    metadata: {
+        count: number;
+    };
+}
+
+export const findManyAdminTransactions = async (
+    data: FindManyAdminTransactionsInputData,
+    schema?: Schema<DeepPartial<FindManyAdminTransactionsOutputData>>
+): Promise<FindManyAdminTransactionsOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query FindManyAdminTransactions($data: FindManyAdminTransactionsInputData!) {
+                findManyAdminTransactions(data: $data)   {
       ${payload}
     }
   }

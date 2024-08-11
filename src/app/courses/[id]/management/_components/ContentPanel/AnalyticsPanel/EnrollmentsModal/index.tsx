@@ -9,6 +9,12 @@ import {
     useDisclosure,
     User,
     ScrollShadow,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
 } from "@nextui-org/react"
 import { EnrolledInfoEntity } from "@common"
 import { getAvatarUrl } from "@services"
@@ -23,32 +29,40 @@ export const EnrollmentsModal = ({ enrollments }: EnrollmentsModalProps) => {
     return (
         <>
             <Button color="primary" onPress={onOpen}>Details</Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
                 <ModalContent>
                     <ModalHeader className="p-4 pb-2">Enrollments Details</ModalHeader>
                     <ModalBody className="p-4">
                         <ScrollShadow className="h-[300px]">
-                            {
-                                <div className="gap-4 grid">
-                                    {
-                                        enrollments.map(({ account, createdAt }) => (
-                                            <div key={account.accountId} className="flex justify-between items-center">
-                                                <User    
-                                                    name={account.username}
-                                                    avatarProps={{
-                                                        src: getAvatarUrl({
-                                                            avatarId: account.avatarId,
-                                                            avatarUrl: account.avatarUrl,
-                                                            kind: account.kind
-                                                        })
-                                                    }}
-                                                />
-                                                <div className="text-sm text-foreground-400">{dayjs(new Date(createdAt)).format("YYYY MMM, DD HH:mm:ss")}</div>
-                                            </div> 
-                                        ))
-                                    }
-                                </div> 
-                            }
+                            <Table removeWrapper aria-label="Example table with dynamic content">
+                                <TableHeader>
+                                    <TableColumn key="user">Learner</TableColumn>
+                                    <TableColumn key="priceAtEnrolled">Price At Enrolled</TableColumn>
+                                    <TableColumn key="createdAt">Enrolled At</TableColumn>
+                                </TableHeader>
+                                <TableBody items={enrollments}>
+                                    {({ account, enrolledInfoId, createdAt, priceAtEnrolled }) => (
+                                        <TableRow key={enrolledInfoId}>
+                                            <TableCell><User    
+                                                name={account.username}
+                                                avatarProps={{
+                                                    src: getAvatarUrl({
+                                                        avatarId: account.avatarId,
+                                                        avatarUrl: account.avatarUrl,
+                                                        kind: account.kind
+                                                    })
+                                                }}
+                                            /></TableCell>
+                                            <TableCell>
+                                                {priceAtEnrolled} STARCI
+                                            </TableCell>
+                                            <TableCell>
+                                                {dayjs(new Date(createdAt)).format("YYYY MMM, DD HH:mm:ss")}
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
                         </ScrollShadow>
                     </ModalBody>
                     <ModalFooter className="p-4 pt-2">

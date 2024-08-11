@@ -25,7 +25,10 @@ dayjs.updateLocale("en", {
         yy: "%d years"
     }
 })
-export const parseISODateString = (date: Date = new Date()) => dayjs(date).format("YYYY-MM-DD")
+export const parseISODateString = (date: Date = new Date()) => {
+    return dayjs(new Date(date)).format("YYYY-MM-DD")
+}
+
 export const parseDate = (date: string) => dayjs(date).toDate()
 
 export const parseDuration = (seconds: number) => {

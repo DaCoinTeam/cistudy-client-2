@@ -3,6 +3,7 @@ import { CoursesManagementPanel } from "./CoursesManagementPanel"
 import { AdminContext, PanelSelected } from "../../_hooks"
 import { AccountsManagementPanel } from "./AccountsManagmentPanel"
 import { TransactionsManagementPanel } from "./TransactionsManagementPanel"
+import { NotificationsManagementPanel } from "./NotificationsManagementPanel"
 
 interface ContentPanelProps {
   className?: string;
@@ -25,6 +26,9 @@ export const ContentPanel = (props: ContentPanelProps) => {
             ),
             [PanelSelected.Transactions]: (
                 <TransactionsManagementPanel className={`${className}`} />
+            ),
+            [PanelSelected.Notifications]: (
+                <NotificationsManagementPanel className={`${className}`} />
             )
         }
         return panelSelectedToComponent[panelSelected]

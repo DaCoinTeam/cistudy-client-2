@@ -34,7 +34,10 @@ const Page = () => {
                 </Breadcrumbs>
                 {
                     verifyStatus === VerifyStatus.Approved ?
-                        <Button variant="bordered" color="primary" onPress={() => router.push(`/courses/${courseId}`)}> Preview </Button>
+                        <div className="flex gap-2 items-center">
+                            <Button variant="bordered" color="primary" onPress={() => router.push(`/courses/${courseId}/home`)}> Enter </Button>
+                            <Button color="primary" onPress={() => router.push(`/courses/${courseId}`)}> Preview </Button>
+                        </div> 
                         : null
                 }
             </div>

@@ -10,6 +10,7 @@ import {
     Pagination,
     Spinner,
     Chip,
+    Link,
 } from "@nextui-org/react"
 import {
     CoursesManagementPanelContext,
@@ -19,6 +20,8 @@ import { getAssetUrl } from "@services"
 import { useRouter } from "next/navigation"
 import { InteractiveThumbnail } from "../../../../../_shared"
 import { VerifyStatus } from "@common"
+import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline"
+import dayjs from "dayjs"
 
 export const CoursesTable = () => {
     const router = useRouter()
@@ -72,7 +75,7 @@ export const CoursesTable = () => {
     return (
         <Table
             aria-label="Example table with client async pagination"
-            selectionMode="multiple"
+            selectionMode="single"
             shadow="none"
             classNames={{
                 wrapper: "border border-divider rounded-medium p-0",
@@ -114,15 +117,17 @@ export const CoursesTable = () => {
           Infomation
                 </TableColumn>
                 <TableColumn key="enrollments">Enrollments</TableColumn>
-                <TableColumn key="status">Status</TableColumn>
-                <TableColumn key="birth_year">Birth year</TableColumn>
+                <TableColumn key="status">Price</TableColumn>
+                <TableColumn key="birth_year">Status</TableColumn>
+                <TableColumn key="createdDate">Created Date</TableColumn>
+                <TableColumn key="actions">Actions</TableColumn>
             </TableHeader>
             <TableBody
                 items={results ?? []}
                 loadingContent={<Spinner />}
                 loadingState={loadingState()}
             >
-                {({ courseId, thumbnailId, title, description, verifyStatus }) => (
+                {({ courseId, thumbnailId, title, description, verifyStatus, numberOfEnrollments, createdAt, enableDiscount, discountPrice, price }) => (
                     <TableRow key={courseId}>
                         <TableCell>
                             <div className="flex gap-3 py-2">
@@ -139,9 +144,31 @@ export const CoursesTable = () => {
                                 </div>
                             </div>
                         </TableCell>
-                        <TableCell>123</TableCell>
+                        <TableCell>{numberOfEnrollments}</TableCell>
+                        <TableCell className="text-black dark:text-white">
+                            {enableDiscount ? (
+                                <>
+                                    <div>{discountPrice} STARCI</div>
+                                    <div className="text-foreground-400 line-through">{price} STARCI</div>
+                                </>
+                            ) : (
+                                <>{price} STARCI</>
+                            )}</TableCell>
                         <TableCell>{renderStatus(verifyStatus)}</TableCell>
-                        <TableCell>123</TableCell>
+                        <TableCell>{dayjs(createdAt).format("YYYY/MM/DD HH:mm:ss")}</TableCell>
+                        <TableCell>
+                            <div className="flex gap-2">
+                                <Link as="button" className="w-5 h-5">
+                                    <EyeIcon/>
+                                </Link>
+                                <Link as="button" className="w-5 h-5">
+                                    <PencilIcon/>
+                                </Link>
+                                <Link as="button" className="w-5 h-5" color="danger">
+                                    <TrashIcon/>
+                                </Link>
+                            </div>   
+                        </TableCell>
                     </TableRow>
                 )}
             </TableBody>
