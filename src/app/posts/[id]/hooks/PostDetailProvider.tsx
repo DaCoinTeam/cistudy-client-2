@@ -54,6 +54,7 @@ const WrappedPostDetailProvider = ({ children }: { children: ReactNode }) => {
                 isRewardable: true,
                 isPostOwner: true,
                 isCompleted: true,
+                isInstructor: true,
                 numberOfRewardableCommentsLeft: true,
                 numberOfRewardableLikesLeft: true,
                 numberOfLikes: true,

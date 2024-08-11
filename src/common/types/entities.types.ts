@@ -109,6 +109,7 @@ export interface PostEntity {
   isRewardable: boolean;
   isCompleted: boolean;
   isPostOwner: boolean;
+  isInstructor: boolean;
   numberOfRewardableCommentsLeft: number;
   numberOfRewardableLikesLeft: number;
   numberOfReports: number;
