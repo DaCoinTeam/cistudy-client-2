@@ -23,7 +23,7 @@ export interface TransactionsManagementPanelContextValue {
   };
 }
 
-export const ROWS_PER_PAGE = 5
+export const ROWS_PER_PAGE = 10
 
 export const TransactionsManagementPanelContext =
   createContext<TransactionsManagementPanelContextValue | null>(null)

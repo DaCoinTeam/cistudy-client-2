@@ -30,14 +30,14 @@ const WrappedAdminProvider = ({ children }: { children: ReactNode }) => {
     const searchParams = useSearchParams()
 
     const tab = (searchParams.get("tab") ??
-    PanelSelected.Accounts) as PanelSelected
+    PanelSelected.Analytics) as PanelSelected
 
     useEffect(() => {
         dispatch({
             type: "SET_PANEL_SELECTED",
             payload: tab,
         })
-    }, [])
+    }, [searchParams])
 
     const manageContextValue: AdminContextValue = useMemo(
         () => ({

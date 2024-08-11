@@ -12,12 +12,12 @@ import {
 import { authClient, client, getGraphqlResponseData } from "./client"
 
 export interface FindOneAccountInputData {
-    params: {
-        accountId: string;
-    },
-    options?: {
-        followerId?: string;
-    };
+  params: {
+    accountId: string;
+  };
+  options?: {
+    followerId?: string;
+  };
 }
 
 export const findOneAccount = async (
@@ -34,19 +34,19 @@ export const findOneAccount = async (
   }
           `,
         variables: {
-            data
+            data,
         },
     })
     return getGraphqlResponseData({
         data: graphqlData,
-        isAuth: false
+        isAuth: false,
     })
 }
 
 export interface FindManyFollowersInputData {
-    params: {
-        accountId: string;
-    },
+  params: {
+    accountId: string;
+  };
 }
 
 export const findManyFollowers = async (
@@ -63,23 +63,23 @@ export const findManyFollowers = async (
   }
           `,
         variables: {
-            data
+            data,
         },
     })
     return getGraphqlResponseData({
         data: graphqlData,
-        isAuth: false
+        isAuth: false,
     })
 }
 
 export interface FindManyCreatedCoursesInputData {
-    params: {
-        accountId: string;
-    },
-    options?: {
-        skip?: number;
-        take?: number;
-    }
+  params: {
+    accountId: string;
+  };
+  options?: {
+    skip?: number;
+    take?: number;
+  };
 }
 
 export const findManyCreatedCourses = async (
@@ -96,27 +96,27 @@ export const findManyCreatedCourses = async (
   }
           `,
         variables: {
-            data
+            data,
         },
     })
     return getGraphqlResponseData({
         data: graphqlData,
-        isAuth: false
+        isAuth: false,
     })
 }
 
 export interface FindManyAccountsInputData {
-    options?: {
-        take?: number;
-        skip?: number;
-    };
+  options?: {
+    take?: number;
+    skip?: number;
+  };
 }
 
 export interface FindManyAccountsOutputData {
-    results: Array<AccountEntity>;
-    metadata: {
-        count: number;
-    };
+  results: Array<AccountEntity>;
+  metadata: {
+    count: number;
+  };
 }
 
 export const findManyAccounts = async (
@@ -133,27 +133,27 @@ export const findManyAccounts = async (
   }
           `,
         variables: {
-            data
+            data,
         },
     })
     return getGraphqlResponseData({
         data: graphqlData,
-        isAuth: true
+        isAuth: true,
     })
 }
 
 export interface FindManyNotificationsInputData {
-    options?: {
-        take?: number;
-        skip?: number;
-    };
+  options?: {
+    take?: number;
+    skip?: number;
+  };
 }
 
 export interface FindManyNotificationsOutputData {
-    results: Array<NotificationEntity>;
-    metadata: {
-        count: number;
-    };
+  results: Array<NotificationEntity>;
+  metadata: {
+    count: number;
+  };
 }
 
 export const findManyNotifications = async (
@@ -170,27 +170,27 @@ export const findManyNotifications = async (
   }
           `,
         variables: {
-            data
+            data,
         },
     })
     return getGraphqlResponseData({
         data: graphqlData,
-        isAuth: true
+        isAuth: true,
     })
 }
 
 export interface FindManyAdminTransactionsInputData {
-    options?: {
-        take?: number;
-        skip?: number;
-    };
+  options?: {
+    take?: number;
+    skip?: number;
+  };
 }
 
 export interface FindManyAdminTransactionsOutputData {
-    results: Array<TransactionEntity>;
-    metadata: {
-        count: number;
-    };
+  results: Array<TransactionEntity>;
+  metadata: {
+    count: number;
+  };
 }
 
 export const findManyAdminTransactions = async (
@@ -207,11 +207,37 @@ export const findManyAdminTransactions = async (
   }
           `,
         variables: {
-            data
+            data,
         },
     })
     return getGraphqlResponseData({
         data: graphqlData,
-        isAuth: true
+        isAuth: true,
+    })
+}
+
+export interface GetAdminAnalyticsOutputData {
+  numberOfAccounts: number;
+  numberOfCourses: number;
+  numberOfTransactions: number;
+  numberOfOrders: number;
+}
+
+export const getAdminAnalytics = async (
+    schema?: Schema<DeepPartial<GetAdminAnalyticsOutputData>>
+): Promise<GetAdminAnalyticsOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query GetAdminAnalytics {
+                getAdminAnalytics {
+      ${payload}
+    }
+  }
+          `,
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
     })
 }

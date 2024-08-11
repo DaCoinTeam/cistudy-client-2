@@ -4,6 +4,7 @@ import { AdminContext, PanelSelected } from "../../_hooks"
 import { AccountsManagementPanel } from "./AccountsManagmentPanel"
 import { TransactionsManagementPanel } from "./TransactionsManagementPanel"
 import { NotificationsManagementPanel } from "./NotificationsManagementPanel"
+import { AnalyticsPanel } from "./AnalyticsPanel"
 
 interface ContentPanelProps {
   className?: string;
@@ -18,6 +19,9 @@ export const ContentPanel = (props: ContentPanelProps) => {
 
     const render = () => {
         const panelSelectedToComponent: Record<PanelSelected, JSX.Element> = {
+            [PanelSelected.Analytics]: (
+                <AnalyticsPanel className={`${className}`}/>
+            ),
             [PanelSelected.Accounts]: (
                 <AccountsManagementPanel className={`${className}`}/>
             ),
