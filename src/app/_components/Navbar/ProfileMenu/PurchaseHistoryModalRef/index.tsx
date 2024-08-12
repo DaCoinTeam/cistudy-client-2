@@ -23,6 +23,7 @@ import {
     ROWS_PER_PAGE,
 } from "./PurchaseHistoryModalProvider"
 import { Dot } from "lucide-react"
+import { OrderDetailsModal } from "../../../../_shared"
 export interface PurchaseHistoryModalRefSelectors {
   onOpen: () => void;
 }
@@ -93,7 +94,7 @@ const WrappedPurchaseHistoryModalRef = () => {
 No
                             </div>
 
-                            <div key='numberOfCourse' className='text-sm col-span-5 pr-4'>
+                            <div key='numberOfCourse' className='text-sm col-span-4 pr-4'>
                                 Course
                             </div>
                             <div key='totalPrice' className='text-sm  col-span-2 '>
@@ -105,6 +106,9 @@ Status
                             <div key='completeDate' className='text-sm col-span-2 '>
 Date
                             </div>
+                            <div key='actions' className='text-sm col-span-1 '>
+Actions
+                            </div>
                         </div>
                         <Spacer x={9}/>
                     </div>
@@ -114,13 +118,13 @@ Date
                             <Accordion showDivider={false}>
                                 {getOrdersByPage.map(
                                     (
-                                        { orderId, orderStatus, completeDate, orderCourses },
+                                        order,
                                         index
                                     ) => (
                                         <AccordionItem
                                             textValue="Course Order Item"
-                                            hideIndicator={orderCourses.length <= 1}
-                                            key={orderId}
+                                            hideIndicator={order.orderCourses.length <= 1}
+                                            key={order.orderId}
                                             aria-expanded={false}
                                             title={
                                                 <div className="flex">
@@ -128,28 +132,31 @@ Date
                                                         <div className='text-sm '>
                                                             {(size - 1) * ROWS_PER_PAGE + index + 1}
                                                         </div>
-                                                        <div className='text-sm col-span-5 pr-4'>
-                                                            {orderCourses.length == 1 ? (
-                                                                <div className="text-primary">{orderCourses[0].course.title}</div>
-                                                            ): (<> {orderCourses.length} courses purchased </>)}
+                                                        <div className='text-sm col-span-4 pr-4'>
+                                                            {order.orderCourses.length == 1 ? (
+                                                                <div className="text-primary">{order.orderCourses[0].course.title}</div>
+                                                            ): (<> {order.orderCourses.length} courses purchased </>)}
                                                         </div>
                                                         <div className='text-sm col-span-2 '>
-                                                            {totalPrice(orderCourses)} STARCI
+                                                            {totalPrice(order.orderCourses)} STARCI
                                                         </div>
                                                         <div className='text-sm col-span-2 '>
-                                                            {renderStatus(orderStatus)}
+                                                            {renderStatus(order.orderStatus)}
                                                         </div>
                                                         <div className='text-sm col-span-2 '>
-                                                            {dayjs(completeDate).format("DD/MM/YYYY")}
+                                                            {dayjs(order.completeDate).format("DD/MM/YYYY")}
+                                                        </div>
+                                                        <div className='text-sm col-span-1 '>
+                                                            <OrderDetailsModal order={order}/>
                                                         </div>
                                                     </div>
-                                                    {orderCourses.length == 1 ? <Spacer x={9}/> : <></>}
+                                                    {order.orderCourses.length == 1 ? <Spacer x={9}/> : <></>}
                              
                                                 </div>
 
                                             }>
                                             <div >
-                                                { orderCourses?.length > 1 ? orderCourses?.map((course) => (
+                                                { order.orderCourses?.length > 1 ? order.orderCourses?.map((course) => (
                                                     <div key={course.orderCourseId} className="grid grid-cols-12 mr-[2.3rem] pb-2 mb-1">
                                                         <div  />
                                                         <div className="col-span-5 text-sm text-primary flex items-start pr-4"><Dot size={20} className="mr-1"/>{course?.course.title}</div>

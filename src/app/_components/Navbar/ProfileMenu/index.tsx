@@ -6,7 +6,7 @@ import {
     Avatar,
 } from "@nextui-org/react"
 import React, { useContext, useRef } from "react"
-import { AccountRole, SystemRoles, removeTokens } from "@common"
+import { SystemRoles, removeTokens } from "@common"
 import { RootContext } from "../../../_hooks"
 import { getAvatarUrl } from "@services"
 import { useRouter } from "next/navigation"

@@ -17,6 +17,7 @@ import {
     OrdersTableProvider,
     ROWS_PER_PAGE,
 } from "./OrdersTableProvider"
+import { OrderDetailsModal } from "../../../../../_shared"
 export interface OrdersTableSelectors {
   onOpen: () => void;
 }
@@ -96,7 +97,7 @@ const WrappedOrdersTable = () => {
             No
                     </div>
                     <div className='grid grid-cols-12 gap-1 w-full font-semibold text-tiny text-default-500'>
-                        <div key='numberOfCourse' className='col-span-5 pr-4 '>
+                        <div key='numberOfCourse' className='col-span-4 pr-4 '>
               Course
                         </div>
                         <div key='totalPrice' className='col-span-1 mr-4'>
@@ -111,6 +112,9 @@ const WrappedOrdersTable = () => {
                         <div key='completeDate' className='col-span-2 '>
               Complete Date
                         </div>
+                        <div key='action' className='col-span-1 '>
+              Action
+                        </div>
                     </div>
                     <Spacer x={11} />
                 </div>
@@ -120,67 +124,66 @@ const WrappedOrdersTable = () => {
                         <Accordion disallowEmptySelection={false} showDivider={false}>
                             {getOrdersByPage.map(
                                 (
-                                    {
-                                        orderId,
-                                        orderStatus,
-                                        completeDate,
-                                        orderCourses,
-                                        account: { avatarId, kind, avatarUrl, username },
-                                    },
+                                    order,
                                     index
                                 ) => (
                                     <AccordionItem
                                         textValue='Course Order Item'
-                                        hideIndicator={orderCourses.length <= 1}
-                                        key={orderId}
+                                        hideIndicator={order.orderCourses.length <= 1}
+                                        key={order.orderId}
                                         title={
                                             <div className='flex'>
                                                 <div className='text-sm mr-6'>
                                                     {(size - 1) * ROWS_PER_PAGE + index + 1}
                                                 </div>
                                                 <div className='grid grid-cols-12 gap-1 w-full'>
-                                                    <div className='text-base col-span-5 pr-4 '>
-                                                        {orderCourses.length == 1 ? (
+                                                    <div className='text-base col-span-4 pr-4 '>
+                                                        {order.orderCourses.length == 1 ? (
                                                             <div className='text-primary'>
-                                                                {orderCourses[0].course.title}
+                                                                {order.orderCourses[0].course.title}
                                                             </div>
                                                         ) : (
-                                                            <> {orderCourses.length} courses purchased </>
+                                                            <> {order.orderCourses.length} courses purchased </>
                                                         )}
                                                     </div>
                                                     <div className='text-sm col-span-1 mr-4'>
-                                                        {totalPrice(orderCourses)} STARCI
+                                                        {totalPrice(order.orderCourses)} STARCI
                                                     </div>
                                                     <div className='text-sm col-span-2 '>
                                                         <User
                                                             avatarProps={{
                                                                 src: getAvatarUrl({
-                                                                    avatarId,
-                                                                    avatarUrl,
-                                                                    kind,
+                                                                    avatarId: order.account.avatarId,
+                                                                    avatarUrl: order.account.avatarUrl,
+                                                                    kind: order.account.kind,
                                                                 }),
                                                             }}
                                                             classNames={{
                                                                 name: "text-sm",
                                                             }}
-                                                            name={username ?? "Unnamed"}
+                                                            name={order.account.username ?? "Unnamed"}
                                                             description={"0 followers"}
                                                         />
                                                     </div>
                                                     <div className='text-sm col-span-2 text-center'>
-                                                        {renderStatus(orderStatus)}
+                                                        {renderStatus(order.orderStatus)}
                                                     </div>
                                                     <div className='text-sm col-span-2 '>
-                                                        {dayjs(completeDate).format("DD/MM/YYYY")}
+                                                        {dayjs(order.completeDate).format("DD/MM/YYYY")}
+                                                    </div>
+                                                    <div className='text-sm col-span-1 '>
+                                                        <div className="flex items-center">
+                                                            <OrderDetailsModal order={order}/>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                {orderCourses.length == 1 ? <Spacer x={9} /> : <></>}
+                                                {order.orderCourses.length == 1 ? <Spacer x={9} /> : <></>}
                                             </div>
                                         }
                                     >
                                         <div>
-                                            {orderCourses?.length > 1 ? (
-                                                orderCourses?.map((course) => (
+                                            {order.orderCourses?.length > 1 ? (
+                                                order.orderCourses?.map((course) => (
                                                     <div
                                                         className='flex w-full'
                                                         key={course.orderCourseId}

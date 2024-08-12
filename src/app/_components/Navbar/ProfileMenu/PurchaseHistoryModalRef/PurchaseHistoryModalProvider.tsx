@@ -26,6 +26,13 @@ const WrappedPurchaseHistoryModalProvider = ({children}: {children: ReactNode}) 
                 {
                     results: {
                         orderId: true,
+                        account: {
+                            username: true,
+                            accountId: true,
+                            avatarId: true,
+                            avatarUrl: true,
+                            kind: true
+                        },
                         orderCourses: {
                             courseId: true,
                             discountedPrice: true,
@@ -37,7 +44,11 @@ const WrappedPurchaseHistoryModalProvider = ({children}: {children: ReactNode}) 
                                 courseId: true,
                                 title: true,
                                 creator: {
-                                    username: true
+                                    username: true,
+                                    accountId: true,
+                                    avatarId: true,
+                                    avatarUrl: true,
+                                    kind: true
                                 }
                             }
                         },
