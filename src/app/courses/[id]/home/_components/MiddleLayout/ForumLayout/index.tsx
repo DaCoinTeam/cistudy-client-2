@@ -18,6 +18,8 @@ export const WrappedForumLayout = (props: ForumLayoutProps) => {
 
     return (
         <div className="w-full col-span-3">
+            <div className="text-xl font-semibold">{data?.title}</div>
+            <Spacer y={6}/>
             <Tabs
                 variant="underlined"
                 classNames={{
