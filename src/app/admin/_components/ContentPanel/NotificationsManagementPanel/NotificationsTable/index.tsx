@@ -1,5 +1,4 @@
 "use client"
-import { parseISODateString } from "@common"
 import {
     Chip,
     Link,
@@ -20,6 +19,7 @@ import {
 } from "../NotificationsManagementPanelProvider"
 import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline"
 import { getAvatarUrl } from "../../../../../../services/server"
+import dayjs from "dayjs"
 
 export const NotificationsTable = () => {
     const { reducer, swrs } = useContext(NotificationsManagementPanelContext)!
@@ -117,7 +117,7 @@ export const NotificationsTable = () => {
                         description={"0 followers"}
                         /></TableCell>
                         <TableCell>{viewed ? <Chip variant="flat" color="success">Yes</Chip> : <Chip variant="flat" color="default">No</Chip>}</TableCell>
-                        <TableCell>{parseISODateString(createdAt)}</TableCell>
+                        <TableCell>{dayjs(createdAt).format("HH:mm:ss DD/MM/YYYY")}</TableCell>
                         <TableCell>
                             <div className="gap-2 flex items-center">
                                 <Link as="button" className="w-5 h-5">

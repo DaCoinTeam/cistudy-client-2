@@ -173,7 +173,7 @@ export const ConfirmOrderModalRef = forwardRef<
                                 isLoading={isMutating}
                                 color='primary'
                                 onPress={handlePress}
-                                isDisabled={balanceLeft <= 0}
+                                isDisabled={balanceLeft < 0}
                             >
                 Checkout
                             </Button>

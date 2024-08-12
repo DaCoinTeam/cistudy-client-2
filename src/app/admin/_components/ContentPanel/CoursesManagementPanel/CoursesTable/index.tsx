@@ -156,7 +156,7 @@ export const CoursesTable = () => {
                                     <>{price} STARCI</>
                                 )}</TableCell>
                             <TableCell>{renderStatus(verifyStatus)}</TableCell>
-                            <TableCell>{dayjs(updatedAt).format("YYYY/MM/DD HH:mm:ss")}</TableCell>
+                            <TableCell>{dayjs(updatedAt).format("HH:mm:ss DD/MM/YYYY")}</TableCell>
                             <TableCell>
                                 <div className="flex gap-2">
                                     <Link onPress={() => router.push(`/courses/${courseId}`)} as="button" className="w-5 h-5">
