@@ -5,6 +5,7 @@ import { ForumLayoutProvider } from "./ForumLayoutProvider"
 import { EnrolledUsers } from "./EnrolledUsers"
 import { useContext } from "react"
 import { HomeContext } from "../../../_hooks"
+import { Statistics } from "./Statistics"
 
 interface ForumLayoutProps {
     className?: string
@@ -36,6 +37,9 @@ export const WrappedForumLayout = (props: ForumLayoutProps) => {
                     </div>           
                 }>
                     <EnrolledUsers/>
+                </Tab>
+                <Tab key="statistics" title="Statistics">
+                    <Statistics />
                 </Tab>
             </Tabs>
         </div>
