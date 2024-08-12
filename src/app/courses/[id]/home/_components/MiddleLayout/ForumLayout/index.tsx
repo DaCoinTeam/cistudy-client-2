@@ -28,7 +28,7 @@ export const WrappedForumLayout = (props: ForumLayoutProps) => {
                 aria-label="Options"
                 color="primary"
             >
-                <Tab key="news" title="News">
+                <Tab key="news" title="Posts">
                     <div className={`${props.className} w-full`}>
                         <CreatePostCard />
                         <Spacer y={6} />
