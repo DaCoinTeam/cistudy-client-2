@@ -8,7 +8,7 @@ import React, {
     useMemo,
 } from "react"
 import { findOneAdminAccount, updateAccount } from "@services"
-import { AccountEntity, ErrorResponse, SystemRoles } from "@common"
+import { AccountEntity, ErrorResponse, SystemRoles, parseISODateString } from "@common"
 import { AccountDetailsModalPropsContext } from "./index"
 import useSWR, { SWRResponse } from "swr"
 import { RootContext } from "../../../../../../_hooks"
@@ -27,7 +27,7 @@ export const AccountDetailsModalContext =
 
 interface FormikValues {
   username: string;
-  birthdate: Date;
+  birthdate: string;
   roles: Array<SystemRoles>;
   isDisabled: boolean;
   firstName: string;
@@ -36,7 +36,7 @@ interface FormikValues {
 
 const initialValues: FormikValues = {
     username: "",
-    birthdate: new Date(),
+    birthdate: parseISODateString(),
     roles: [],
     isDisabled: false,
     firstName: "",
@@ -89,6 +89,11 @@ const WrappedAccountDetailsModalProvider = ({
         if (!lastName) return
         formik?.setFieldValue("lastName", lastName)
     }, [lastName])
+
+    useEffect(() => {
+        if (!birthdate) return
+        formik?.setFieldValue("birthdate", birthdate)
+    }, [birthdate])
 
     const accountDetailsModalContextValue: AccountDetailsModalContextValue =
     useMemo(
