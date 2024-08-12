@@ -77,9 +77,9 @@ const WrappedManagePriceProvider = ({
     useEffect(() => {
         if (!enableDiscountPreviousRef.current) {
             enableDiscountPreviousRef.current = true
-            formik?.setFieldValue("descriptionPrevious", enableDiscount)
+            formik?.setFieldValue("enableDiscountPrevious", enableDiscount)
         }
-        formik?.setFieldValue("description", enableDiscount)
+        formik?.setFieldValue("enableDiscount", enableDiscount)
     }, [enableDiscount])
 
     const hasChanged = () =>
