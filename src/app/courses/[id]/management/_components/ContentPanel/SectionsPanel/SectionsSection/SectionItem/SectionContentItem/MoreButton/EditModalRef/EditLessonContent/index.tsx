@@ -114,7 +114,7 @@ const WrappedEditLessonContent = () => {
                         />
                         <Spacer y={4} />
                         <div className="flex justify-between items-center">
-                            <div className="text-sm">Is Trial</div>
+                            <div className="text-sm">Trial</div>
                             <Switch
                                 isSelected={formik.values.isTrial}
                                 onValueChange={(isTrial) =>

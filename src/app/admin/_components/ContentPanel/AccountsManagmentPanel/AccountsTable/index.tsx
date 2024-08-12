@@ -22,6 +22,7 @@ import {
 import { AccountDetailsModal } from "./AccountDetailsModal"
 import { EyeIcon, TrashIcon } from "@heroicons/react/24/outline"
 import { useRouter } from "next/navigation"
+import dayjs from "dayjs"
 
 export const AccountsTable = () => {
     const { reducer, swrs } = useContext(AccountsManagementPanelContext)!
@@ -126,7 +127,7 @@ export const AccountsTable = () => {
                                 ? parseISODateString(account.birthdate)
                                 : "N/A"}
                         </TableCell>
-                        <TableCell>{parseISODateString(account.createdAt)}</TableCell>
+                        <TableCell>{dayjs(account.createdAt).format("HH:mm:ss DD/MM/YYYY")}</TableCell>
                         <TableCell>
                             {account.isDisabled ? (
                                 <Chip color="danger" variant="flat">
