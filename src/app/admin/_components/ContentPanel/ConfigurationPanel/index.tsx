@@ -31,8 +31,8 @@ const WrappedConfigurationPanel = ({ className }: ConfigurationPanelProps) => {
                     value={formik.values.earn.toString()}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    isInvalid={!!(formik.touched.earn && formik.errors.earn)}
-                    errorMessage={formik.touched.earn && formik.errors.earn}
+                    isInvalid={!!(formik.errors.earn)}
+                    errorMessage={formik.errors.earn}
                     endContent={<div className="text-foreground-400">%</div>}
                 />
                 <Input
@@ -47,8 +47,8 @@ const WrappedConfigurationPanel = ({ className }: ConfigurationPanelProps) => {
                     value={formik.values.completed.toString()}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    isInvalid={!!(formik.touched.completed && formik.errors.completed)}
-                    errorMessage={formik.touched.completed && formik.errors.completed}
+                    isInvalid={!!(formik.errors.completed)}
+                    errorMessage={formik.errors.completed}
                     endContent={<div className="text-foreground-400">%</div>}
                 />
                 <Input
@@ -63,8 +63,8 @@ const WrappedConfigurationPanel = ({ className }: ConfigurationPanelProps) => {
                     value={formik.values.foundation.toString()}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    isInvalid={!!(formik.touched.foundation && formik.errors.foundation)}
-                    errorMessage={formik.touched.foundation && formik.errors.foundation}
+                    isInvalid={!!(formik.errors.foundation)}
+                    errorMessage={formik.errors.foundation}
                     endContent={<div className="text-foreground-400">%</div>}
                 />
                 <Input
@@ -79,8 +79,8 @@ const WrappedConfigurationPanel = ({ className }: ConfigurationPanelProps) => {
                     value={(formik.values.instructor).toString()}
                     readOnly
                     onBlur={formik.handleBlur}
-                    isInvalid={!!(formik.touched.instructor && formik.errors.instructor)}
-                    errorMessage={formik.touched.instructor && formik.errors.instructor}
+                    isInvalid={!!(formik.errors.instructor)}
+                    errorMessage={formik.errors.instructor}
                     endContent={<div className="text-foreground-400">%</div>}
                 />
             </div>
