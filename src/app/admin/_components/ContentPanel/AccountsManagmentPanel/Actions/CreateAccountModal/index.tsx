@@ -43,7 +43,7 @@ export const WrappedCreateAccountModal = () => {
     ]
     return (
         <>
-            <ModalHeader className="p-4 pb-2">Account Details</ModalHeader>
+            <ModalHeader className="p-4 pb-2">Create Account</ModalHeader>
             <ModalBody className="p-4">
                 <div className="grid gap-4">
                     <Input
