@@ -121,7 +121,9 @@ const Page = () => {
                     <CardFooter className='pt-2 inline'>
                         <Actions />
                         <InfiniteCommentsScroller />
-                        <CreateCommentSection />
+                        {!isCompleted && (
+                            <CreateCommentSection />
+                        )}
                     </CardFooter>
                 </Card>
             </div>

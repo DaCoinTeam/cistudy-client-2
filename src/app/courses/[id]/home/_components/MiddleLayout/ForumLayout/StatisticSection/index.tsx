@@ -3,15 +3,15 @@ import React, { useContext } from "react"
 import useSWR from "swr"
 import { HomeContext } from "../../../../_hooks"
 import { Card, CardBody, Chip, Spacer, Tab, Tabs, User } from "@nextui-org/react"
-import { GiftIcon } from "lucide-react"
+import { CheckIcon, GiftIcon } from "lucide-react"
 import { parseTimeAgo } from "../../../../../../../../common/utils"
 import { useRouter } from "next/navigation"
 
 export const StatisticSection = () => {
-    const { swrs: { courseHomeSwr: { data: course }}} = useContext(HomeContext)!
+    const { swrs: { courseHomeSwr: { data: course } } } = useContext(HomeContext)!
     const { courseId } = { ...course }
 
-    const { data } = useSWR(["STATISTIC_SWR", courseId] , async () => {
+    const { data } = useSWR(["STATISTIC_SWR", courseId], async () => {
         if (!courseId) return
         return getCourseStatistic({
             params: {
@@ -24,6 +24,9 @@ export const StatisticSection = () => {
                 title: true,
                 createdAt: true,
                 updatedAt: true,
+                isRewardable: true,
+                isCompleted: true,
+                isInstructor: true,
                 creator: {
                     accountId: true,
                     avatarId: true,
@@ -37,6 +40,9 @@ export const StatisticSection = () => {
                 title: true,
                 createdAt: true,
                 updatedAt: true,
+                isRewardable: true,
+                isCompleted: true,
+                isInstructor: true,
                 creator: {
                     accountId: true,
                     avatarId: true,
@@ -50,6 +56,9 @@ export const StatisticSection = () => {
                 title: true,
                 createdAt: true,
                 updatedAt: true,
+                isRewardable: true,
+                isCompleted: true,
+                isInstructor: true,
                 creator: {
                     accountId: true,
                     avatarId: true,
@@ -64,6 +73,8 @@ export const StatisticSection = () => {
                 createdAt: true,
                 updatedAt: true,
                 isRewardable: true,
+                isCompleted: true,
+                isInstructor: true,
                 creator: {
                     accountId: true,
                     avatarId: true,
@@ -85,7 +96,7 @@ export const StatisticSection = () => {
                 <div>
                     <div>
                         <div>Total Earning </div>
-                        <Spacer y={2}/>
+                        <Spacer y={2} />
                         <div className="text-4xl font-semibold text-success">  {data?.totalEarning?.toFixed(2)} STARCI </div>
                     </div>
                 </div>
@@ -107,18 +118,35 @@ export const StatisticSection = () => {
                                             <div>
                                                 <div className="flex gap-4 items-center">
                                                     <div className="text-lg">{post.title}</div>
+                                                    {post.isInstructor && (
+                                                        <Chip
+                                                            variant='flat'
+                                                            color='primary'
+                                                        >
+                                                            Instructor
+                                                        </Chip>
+                                                    )}
+                                                    {post.isCompleted && (
+                                                        <Chip
+                                                            startContent={<CheckIcon size={18} className="ml-1" />}
+                                                            variant='flat'
+                                                            color='success'
+                                                        >
+                                                            Completed
+                                                        </Chip>
+                                                    )}
                                                     {
                                                         post.isRewardable ? <Chip
                                                             startContent={<GiftIcon size={18} className="ml-1" />}
                                                             variant='flat'
                                                             color='warning'
                                                         >
-                                                        Rewardable
+                                                            Rewardable
                                                         </Chip> : null
                                                     }
                                                 </div>
-                                                
-                                                <Spacer y={4}/>
+
+                                                <Spacer y={4} />
                                                 <User
                                                     classNames={{
                                                         name: "text-base",
@@ -127,7 +155,7 @@ export const StatisticSection = () => {
                                                     description={
                                                         <div className='flex gap-2 items-center'>
                                                             <div>{parseTimeAgo(post.updatedAt)}</div>
-                                                            {  post.updatedAt !== post.createdAt ? <div> Edited </div> : null}
+                                                            {post.updatedAt !== post.createdAt ? <div> Edited </div> : null}
                                                         </div>
                                                     }
                                                     avatarProps={{
@@ -143,9 +171,9 @@ export const StatisticSection = () => {
                                     </Card>
                                 ))
                             }
-                        </div>  
-                        <Spacer y={4}/>
-                        <div className="text-sm">Number of rewardable posts left: {data?.numberOfRewardablePostsLeft}</div>    
+                        </div>
+                        <Spacer y={4} />
+                        <div className="text-sm">Number of rewardable posts left: {data?.numberOfRewardablePostsLeft}</div>
                     </Tab>
                     <Tab key="comments" title="Commented">
                         <div className="gap-4 grid grid-cols-2">
@@ -154,8 +182,36 @@ export const StatisticSection = () => {
                                     <Card onPress={() => router.push(`/posts/${post.postId}`)} isPressable key={post.postId} shadow="none" className="border border-divider">
                                         <CardBody className="p-4">
                                             <div>
-                                                <div className="text-lg">{post.title}</div>
-                                                <Spacer y={4}/>
+                                                <div className="flex gap-4 items-center">
+                                                    <div className="text-lg">{post.title}</div>
+                                                    {post.isInstructor && (
+                                                        <Chip
+                                                            variant='flat'
+                                                            color='primary'
+                                                        >
+                                                            Instructor
+                                                        </Chip>
+                                                    )}
+                                                    {post.isCompleted && (
+                                                        <Chip
+                                                            startContent={<CheckIcon size={18} className="ml-1" />}
+                                                            variant='flat'
+                                                            color='success'
+                                                        >
+                                                            Completed
+                                                        </Chip>
+                                                    )}
+                                                    {
+                                                        post.isRewardable ? <Chip
+                                                            startContent={<GiftIcon size={18} className="ml-1" />}
+                                                            variant='flat'
+                                                            color='warning'
+                                                        >
+                                                            Rewardable
+                                                        </Chip> : null
+                                                    }
+                                                </div>
+                                                <Spacer y={4} />
                                                 <User
                                                     classNames={{
                                                         name: "text-base",
@@ -164,7 +220,7 @@ export const StatisticSection = () => {
                                                     description={
                                                         <div className='flex gap-2 items-center'>
                                                             <div>{parseTimeAgo(post.updatedAt)}</div>
-                                                            {  post.updatedAt !== post.createdAt ? <div> Edited </div> : null}
+                                                            {post.updatedAt !== post.createdAt ? <div> Edited </div> : null}
                                                         </div>
                                                     }
                                                     avatarProps={{
@@ -180,7 +236,7 @@ export const StatisticSection = () => {
                                     </Card>
                                 ))
                             }
-                        </div>      
+                        </div>
                     </Tab>
                     <Tab key="likes" title="Liked">
                         <div className="gap-4 grid grid-cols-2">
@@ -189,8 +245,36 @@ export const StatisticSection = () => {
                                     <Card onPress={() => router.push(`/posts/${post.postId}`)} isPressable key={post.postId} shadow="none" className="border border-divider">
                                         <CardBody className="p-4">
                                             <div>
-                                                <div className="text-lg">{post.title}</div>
-                                                <Spacer y={4}/>
+                                                <div className="flex gap-4 items-center">
+                                                    <div className="text-lg">{post.title}</div>
+                                                    {post.isInstructor && (
+                                                        <Chip
+                                                            variant='flat'
+                                                            color='primary'
+                                                        >
+                                                            Instructor
+                                                        </Chip>
+                                                    )}
+                                                    {post.isCompleted && (
+                                                        <Chip
+                                                            startContent={<CheckIcon size={18} className="ml-1" />}
+                                                            variant='flat'
+                                                            color='success'
+                                                        >
+                                                            Completed
+                                                        </Chip>
+                                                    )}
+                                                    {
+                                                        post.isRewardable ? <Chip
+                                                            startContent={<GiftIcon size={18} className="ml-1" />}
+                                                            variant='flat'
+                                                            color='warning'
+                                                        >
+                                                            Rewardable
+                                                        </Chip> : null
+                                                    }
+                                                </div>
+                                                <Spacer y={4} />
                                                 <User
                                                     classNames={{
                                                         name: "text-base",
@@ -199,7 +283,7 @@ export const StatisticSection = () => {
                                                     description={
                                                         <div className='flex gap-2 items-center'>
                                                             <div>{parseTimeAgo(post.updatedAt)}</div>
-                                                            {  post.updatedAt !== post.createdAt ? <div> Edited </div> : null}
+                                                            {post.updatedAt !== post.createdAt ? <div> Edited </div> : null}
                                                         </div>
                                                     }
                                                     avatarProps={{
@@ -215,7 +299,7 @@ export const StatisticSection = () => {
                                     </Card>
                                 ))
                             }
-                        </div> 
+                        </div>
                     </Tab>
                     <Tab key="solution" title="Gaven solution">
                         <div className="gap-4 grid grid-cols-2">
@@ -224,8 +308,36 @@ export const StatisticSection = () => {
                                     <Card onPress={() => router.push(`/posts/${post.postId}`)} isPressable key={post.postId} shadow="none" className="border border-divider">
                                         <CardBody className="p-4">
                                             <div>
-                                                <div className="text-lg">{post.title}</div>
-                                                <Spacer y={4}/>
+                                                <div className="flex gap-4 items-center">
+                                                    <div className="text-lg">{post.title}</div>
+                                                    {post.isInstructor && (
+                                                        <Chip
+                                                            variant='flat'
+                                                            color='primary'
+                                                        >
+                                                            Instructor
+                                                        </Chip>
+                                                    )}
+                                                    {post.isCompleted && (
+                                                        <Chip
+                                                            startContent={<CheckIcon size={18} className="ml-1" />}
+                                                            variant='flat'
+                                                            color='success'
+                                                        >
+                                                            Completed
+                                                        </Chip>
+                                                    )}
+                                                    {
+                                                        post.isRewardable ? <Chip
+                                                            startContent={<GiftIcon size={18} className="ml-1" />}
+                                                            variant='flat'
+                                                            color='warning'
+                                                        >
+                                                            Rewardable
+                                                        </Chip> : null
+                                                    }
+                                                </div>
+                                                <Spacer y={4} />
                                                 <User
                                                     classNames={{
                                                         name: "text-base",
@@ -234,7 +346,7 @@ export const StatisticSection = () => {
                                                     description={
                                                         <div className='flex gap-2 items-center'>
                                                             <div>{parseTimeAgo(post.updatedAt)}</div>
-                                                            {  post.updatedAt !== post.createdAt ? <div> Edited </div> : null}
+                                                            {post.updatedAt !== post.createdAt ? <div> Edited </div> : null}
                                                         </div>
                                                     }
                                                     avatarProps={{
@@ -250,7 +362,7 @@ export const StatisticSection = () => {
                                     </Card>
                                 ))
                             }
-                        </div> 
+                        </div>
                     </Tab>
                 </Tabs>
             </div>
