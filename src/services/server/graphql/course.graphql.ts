@@ -481,6 +481,7 @@ export interface GetCourseStatisticOutputData {
   likePosts?: Array<PostEntity>;
   commentPosts?: Array<PostEntity>;
   markedPosts?: Array<PostEntity>;
+  createdPosts?: Array<PostEntity>;
 }
 
 export const getCourseStatistic = async (
