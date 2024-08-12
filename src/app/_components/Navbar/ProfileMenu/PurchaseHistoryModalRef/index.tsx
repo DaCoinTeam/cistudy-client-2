@@ -54,19 +54,19 @@ const WrappedPurchaseHistoryModalRef = () => {
     const renderStatus = (status: string) => {
         switch (status) {
         case "completed": 
-            return <Chip color="success" variant="flat">
+            return <Chip color="success" variant="flat" size="sm">
                 Completed
             </Chip>
         case "pending": 
-            return <Chip color="warning" variant="flat">
+            return <Chip color="warning" variant="flat" size="sm">
                 Pending
             </Chip>
         case "canceled":
-            return <Chip color="danger" variant="flat">
+            return <Chip color="danger" variant="flat" size="sm">
                 Canceled
             </Chip>
         default: 
-            return <Chip color="warning" variant="flat">
+            return <Chip color="warning" variant="flat" size="sm">
                 Pending
             </Chip>
         }
@@ -81,7 +81,7 @@ const WrappedPurchaseHistoryModalRef = () => {
     const pages = Math.ceil(getCount() / ROWS_PER_PAGE)
 
     return (
-        < >
+        <>
             <ModalHeader className='p-4 pb-0'>Orders</ModalHeader>
             <ModalBody className='p-4'>
                 <div className="border rounded-xl p-4"
@@ -94,16 +94,16 @@ No
                             </div>
 
                             <div key='numberOfCourse' className='text-sm col-span-5 pr-4'>
-                                {"  "}
+                                Course
                             </div>
                             <div key='totalPrice' className='text-sm  col-span-2 '>
-Total Price
+Price
                             </div>
                             <div key='status' className='text-sm  col-span-2 '>
 Status
                             </div>
                             <div key='completeDate' className='text-sm col-span-2 '>
-Complete Date
+Date
                             </div>
                         </div>
                         <Spacer x={9}/>
@@ -111,7 +111,7 @@ Complete Date
  
                     <div>
                         {data && getOrdersByPage.length ? (
-                            <Accordion >
+                            <Accordion showDivider={false}>
                                 {getOrdersByPage.map(
                                     (
                                         { orderId, orderStatus, completeDate, orderCourses },
@@ -140,7 +140,7 @@ Complete Date
                                                             {renderStatus(orderStatus)}
                                                         </div>
                                                         <div className='text-sm col-span-2 '>
-                                                            {dayjs(completeDate).format("HH:mm:ss DD/MM/YYYY")}
+                                                            {dayjs(completeDate).format("DD/MM/YYYY")}
                                                         </div>
                                                     </div>
                                                     {orderCourses.length == 1 ? <Spacer x={9}/> : <></>}
@@ -208,14 +208,15 @@ export const PurchaseHistoryModalRef = forwardRef<
             size='3xl'
             scrollBehavior="inside"
         >
-            <ModalContent>
-                <ScrollShadow  className="h-[460px] " >
+            <ScrollShadow  className="h-[340px] w-[780px] py-0 my-0 "  >
+                <ModalContent  style={{margin: 0}} >
                     <PurchaseHistoryModalProvider>
                         <WrappedPurchaseHistoryModalRef />
                     </PurchaseHistoryModalProvider>
-                </ScrollShadow>
 
-            </ModalContent>
+                </ModalContent>
+            </ScrollShadow>
+
         </Modal>
     )
 })
