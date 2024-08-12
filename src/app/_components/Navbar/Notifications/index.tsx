@@ -87,7 +87,10 @@ export const Notifications = () => {
     const router = useRouter()
 
     const onPressNotification = async (notification: NotificationEntity) => {
-        if (notification.referenceLink) {
+        if (notification.referenceLink.startsWith("/certificate")) {
+            window.open(notification.referenceLink)
+            onClose()
+        } else {
             router.push(notification.referenceLink)
             onClose()
         }
@@ -183,6 +186,13 @@ export const Notifications = () => {
             type: ToastType.Success
         })
     }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            mutate()
+        }, 1000)
+        return () => clearInterval(interval)
+    }, [notifySwr])
 
     return (
         <Popover isOpen={isOpen} onOpenChange={onOpenChange} showArrow offset={10} placement="bottom" backdrop="opaque" classNames={{

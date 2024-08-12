@@ -72,7 +72,7 @@ const Page = () => {
                                                 sectionContentSwr.data?.section.course
                                                     .certificateStatus === CertificateStatus.Gotten
                                             ) {
-                                                router.push(
+                                                window.open(
                                                     `/certificate/${sectionContentSwr.data?.section.course.certificate?.certificateId}`
                                                 )
                                             } else {
