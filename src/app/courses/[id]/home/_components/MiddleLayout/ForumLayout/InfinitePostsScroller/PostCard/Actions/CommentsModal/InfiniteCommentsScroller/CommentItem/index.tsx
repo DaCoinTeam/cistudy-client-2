@@ -44,7 +44,6 @@ export const CommentItem = (props: CommentItemProps) => {
         createdAt,
         updatedAt,
         postCommentId,
-        isRewardable,
         isSolution,
     } = postComment
     const { swrs } = useContext(RootContext)!
@@ -133,12 +132,8 @@ export const CommentItem = (props: CommentItemProps) => {
                             <div className='mr-4'>
                                 {!isSolution && (
                                     <>
-                                        {isRewardable && (
-                                            <>
-                                                {postCreatorAccountId === profileAccountId && (
-                                                    <MarkAsSolutionButton postCommentId={postCommentId} />
-                                                )}
-                                            </>
+                                        {postCreatorAccountId === profileAccountId && (
+                                            <MarkAsSolutionButton postCommentId={postCommentId} />
                                         )}
                                     </>
                                 )}

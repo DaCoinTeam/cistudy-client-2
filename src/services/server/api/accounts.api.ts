@@ -66,7 +66,7 @@ export interface UpdateAccountInput {
         username?: string
         firstName?: string
         lastName?: string
-        birthdate?: Date
+        birthdate?: string
         roles?: Array<SystemRoles>
         isDisabled?: boolean
     }
@@ -82,4 +82,27 @@ export const updateAccount = async (
     const {data} = input
     const url = `${BASE_URL}/update-account`
     return await authAxios.put(url, data)
+}
+
+export interface CreateAccountInput {
+    data: {
+        email: string
+        username?: string
+        firstName?: string
+        lastName?: string
+        birthdate?: string
+        roles?: Array<SystemRoles>
+    }
+}
+
+export interface CreateAccountOutput {
+    message: string
+}
+  
+export const createAccount = async (
+    input : CreateAccountInput
+): Promise<CreateAccountOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/create-account`
+    return await authAxios.post(url, data)
 }

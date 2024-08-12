@@ -1,9 +1,9 @@
-import React, { createContext, useContext } from "react"
-import { AccountEntity, SystemRoles, getSetValues, parseISODateString } from "@common"
+import React, { useContext } from "react"
+import { SystemRoles, getSetValues, parseISODateString } from "@common"
 import {
-    AccountDetailsModalContext,
-    AccountDetailsModalProvider,
-} from "./AccountDetailsModalProvider"
+    CreateAccountModalContext,
+    CreateAccountModalProvider,
+} from "./CreateAccountModalProvider"
 import {
     useDisclosure,
     Button,
@@ -13,18 +13,15 @@ import {
     ModalFooter,
     ModalHeader,
     Input,
-    Switch,
-    Link,
     Select,
     SelectItem,
     DatePicker,
 } from "@nextui-org/react"
-import { PencilIcon } from "@heroicons/react/24/outline"
+import { PlusIcon } from "@heroicons/react/24/outline"
 import { getLocalTimeZone, parseDate } from "@internationalized/date"
 
-export const WrappedAccountDetailsModal = () => {
-    const { formik, swrs } = useContext(AccountDetailsModalContext)!
-    const { accountSwr } = swrs
+export const WrappedCreateAccountModal = () => {
+    const { formik } = useContext(CreateAccountModalContext)!
 
     const rolesMap = [
         {
@@ -46,7 +43,7 @@ export const WrappedAccountDetailsModal = () => {
     ]
     return (
         <>
-            <ModalHeader className="p-4 pb-2">Account Details</ModalHeader>
+            <ModalHeader className="p-4 pb-2">Create Account</ModalHeader>
             <ModalBody className="p-4">
                 <div className="grid gap-4">
                     <Input
@@ -57,8 +54,11 @@ export const WrappedAccountDetailsModal = () => {
                         }} 
                         labelPlacement="outside"
                         placeholder="Input email here"
-                        value={accountSwr.data?.email}
-                        readOnly={true}
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        isInvalid={!!(formik.touched.email && formik.errors.email)}
+                        errorMessage={formik.touched.email && formik.errors.email}
                     />
                     <Input
                         label="Username"
@@ -113,17 +113,6 @@ export const WrappedAccountDetailsModal = () => {
                             formik.setFieldValue("birthdate", parseISODateString(value.toDate(getLocalTimeZone())))
                         }}
                     />
-                    <div className="flex justify-between items-center">
-                        <div className="text-sm">Disabled</div>
-                        <Switch
-                            isSelected={formik.values.isDisabled}
-                            onValueChange={(isSelected) => formik.setFieldValue("isDisabled", isSelected)}
-                            classNames={{
-                                wrapper: "mr-0",
-                            }}
-                            color="primary"
-                        />
-                    </div>
                     <Select
                         selectionMode="multiple"
                         label="Roles"
@@ -158,38 +147,23 @@ export const WrappedAccountDetailsModal = () => {
                     isLoading={formik.isSubmitting}
                     onPress={() => formik.submitForm()}
                 >
-          Update
+          Create
                 </Button>
             </ModalFooter>
         </>
     )
 }
 
-interface AccountDetailsModalProps {
-  account: AccountEntity;
-}
-
-interface AccountDetailsModalPropsContext {
-  props: AccountDetailsModalProps;
-}
-
-export const AccountDetailsModalPropsContext =
-  createContext<AccountDetailsModalPropsContext | null>(null)
-
-export const AccountDetailsModal = (props: AccountDetailsModalProps) => {
+export const CreateAccountModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
     return (
         <>
-            <Link as="button" onPress={onOpen} className="w-5 h-5">
-                <PencilIcon/>
-            </Link>
+            <Button startContent={<PlusIcon className="w-5 h-5"/>} onPress={onOpen} color="default" variant="flat">Create</Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
-                    <AccountDetailsModalPropsContext.Provider value={{ props }}>
-                        <AccountDetailsModalProvider>
-                            <WrappedAccountDetailsModal />
-                        </AccountDetailsModalProvider>
-                    </AccountDetailsModalPropsContext.Provider>
+                    <CreateAccountModalProvider>
+                        <WrappedCreateAccountModal />
+                    </CreateAccountModalProvider>
                 </ModalContent>
             </Modal>
         </>

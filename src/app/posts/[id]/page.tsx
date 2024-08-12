@@ -40,7 +40,7 @@ const Page = () => {
     }
 
     return (
-        <div className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col gap-12 p-12">
             <Breadcrumbs>
                 <BreadcrumbItem onPress={navigateToCourseList}>Courses</BreadcrumbItem>
                 <BreadcrumbItem onPress={navigateToCourseDetail}>{course?.title}</BreadcrumbItem>
@@ -121,7 +121,9 @@ const Page = () => {
                     <CardFooter className='pt-2 inline'>
                         <Actions />
                         <InfiniteCommentsScroller />
-                        <CreateCommentSection />
+                        {!isCompleted && (
+                            <CreateCommentSection />
+                        )}
                     </CardFooter>
                 </Card>
             </div>

@@ -10,10 +10,11 @@ import {
     CourseReviewEntity,
     CourseTargetEntity,
     LessonEntity,
+    PostEntity,
     QuizAttemptEntity,
     ResourceEntity,
     Schema,
-    SectionContentEntity
+    SectionContentEntity,
 } from "@common"
 import { authClient, client, getGraphqlResponseData } from "./client"
 
@@ -80,12 +81,12 @@ export const findOneCourseAuth = async (
 export interface FindManyCoursesInputData {
   params: {
     accountId?: string | null;
-  },
+  };
   options?: {
-    take?: number
-    skip?: number
-    searchValue?: string
-    categoryIds?: Array<string>
+    take?: number;
+    skip?: number;
+    searchValue?: string;
+    categoryIds?: Array<string>;
   };
 }
 
@@ -399,9 +400,8 @@ export const initLandingPage = async (
     })
 }
 
-
 export interface FindOneCertificateInputData {
-    certificateId: string
+  certificateId: string;
 }
 
 export const findOneCertificate = async (
@@ -432,9 +432,9 @@ export interface FindManyQuizAttemptsInputData {
     quizId: string;
   };
   options: {
-    skip?: number
-    take?: number
-  }
+    skip?: number;
+    take?: number;
+  };
 }
 
 export interface FindManyQuizAttemptsOutputData {
@@ -457,6 +457,46 @@ export const findManyQuizAttempts = async (
     }
   }
           `,
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
+    })
+}
+
+export interface GetCourseStatisticParams {
+  courseId: string;
+}
+
+export interface GetCourseStatisticInputData {
+  params: GetCourseStatisticParams;
+}
+
+export interface GetCourseStatisticOutputData {
+  numberOfRewardablePostsLeft?: number;
+  totalEarning?: number;
+  likePosts?: Array<PostEntity>;
+  commentPosts?: Array<PostEntity>;
+  markedPosts?: Array<PostEntity>;
+  createdPosts?: Array<PostEntity>;
+}
+
+export const getCourseStatistic = async (
+    data: GetCourseStatisticInputData,
+    schema: Schema<DeepPartial<GetCourseStatisticOutputData>>
+): Promise<GetCourseStatisticOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+          query GetCourseStatistic($data: GetCourseStatisticInputData!) {
+  getCourseStatistic(data: $data) {
+    ${payload}
+  }
+}
+        `,
         variables: {
             data,
         },
