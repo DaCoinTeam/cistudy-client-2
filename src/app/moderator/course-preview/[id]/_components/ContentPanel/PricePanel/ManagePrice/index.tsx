@@ -9,7 +9,7 @@ import { ManagePriceContext, ManagePriceProvider } from "./ManagePriceProvider"
 
 
 const WrappedManagePrice = () => {
-    const PLATFORM_PEE_PERCENT = 0.4
+    const PLATFORM_PEE_PERCENT = 0.5
     const { formik } = useContext(ManagePriceContext)!
 
     const onEnableDiscountChange = (value: boolean) =>
@@ -103,7 +103,7 @@ const WrappedManagePrice = () => {
                 <div className="notification bg-blue-50 dark:bg-blue-800 dark:text-white border-l-4 border-blue-500 dark:border-blue-600 text-primary-500 p-4 mb-4 rounded-md shadow-sm">
                     <h3 className="font-semibold text-primary dark:text-white"> Platform Fee Notice</h3>
                     <p className="mt-2 text-sm leading-relaxed">
-        The platform fee is set at <strong>40%</strong> of the course revenue. This fee covers the maintenance and operational costs of the platform. Please consider this when setting the price for your course.
+        The platform fee is set at <strong>50%</strong> of the course revenue. This fee covers the maintenance and operational costs of the platform. Please consider this when setting the price for your course.
                     </p>
                 </div>
                 <Spacer y={4} />
