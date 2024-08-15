@@ -1,9 +1,10 @@
 import React, { useContext, useRef } from "react"
 import { AccountDetailsContext } from "../../_hooks"
 import { Button, Image } from "@nextui-org/react"
-import { getAssetUrl, updateProfile } from "@services"
+import { getAssetUrl, updateProfile, UpdateProfileInput } from "@services"
 import { RootContext } from "../../../../_hooks"
 import { ImageUpIcon } from "lucide-react"
+import useSWRMutation from "swr/mutation"
 
 interface CoverPhotoProps {
   className?: string;
@@ -28,18 +29,26 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
         if (fileInputRef.current) fileInputRef.current.click()
     }
 
+    const updateProfileSwrMutation = useSWRMutation(
+        "UPDATE_PROFILE",
+        async (_: string, { arg }: { arg: UpdateProfileInput }) => {
+            return await updateProfile(arg)
+        }
+    )
+
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files
         if (files === null) return
         const file = files.item(0)
         if (file === null) return
 
-        await updateProfile({
+        updateProfileSwrMutation.trigger({
             data: {
                 coverPhotoIndex: 0
             },
             files: [file]
         })
+
         await mutate()
         await rootMutate()
     }
@@ -52,7 +61,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
                 <Image
                     alt="coverPhoto"
                     radius="none"
-                    src={getAssetUrl(account?.coverPhotoId, { forceUpdate: true })}
+                    src={getAssetUrl(account?.coverPhotoId, {forceUpdate: false})}
                     className="w-full"
                     classNames={{
                         wrapper: "w-full !max-w-full absolute",
@@ -64,9 +73,13 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
                             <Button
                                 onPress={onPress}
                                 className="z-10 w-fit absolute bottom-6 right-12 shadow-none"
-                                startContent={<ImageUpIcon size={24} strokeWidth={3/2} />}
+                                startContent={updateProfileSwrMutation.isMutating? "" : <ImageUpIcon size={24} strokeWidth={3/2} />}
+                                isLoading={updateProfileSwrMutation.isMutating}
+                                isDisabled={updateProfileSwrMutation.isMutating}
                             >
-            Upload cover photo
+                                {
+                                    updateProfileSwrMutation.isMutating? "Uploading" : "Upload cover photo"
+                                }
                             </Button>
                         </div>
                     ) : null

@@ -32,3 +32,12 @@ export const formatNouns = (amount: number | undefined, noun: string) => {
 export const isFileImage = (file: File) => {
     return file && file["type"].split("/")[0] === "image"
 }
+
+export const convertUrlToFile = async(url: string) => {
+    return await fetch(url)
+        .then(res => res.blob())
+        .then(blob => {
+            const file = new File([blob], "image.jpg", {type: "image/jpeg"})
+            return file
+        })
+}

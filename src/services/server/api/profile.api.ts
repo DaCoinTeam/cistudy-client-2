@@ -123,3 +123,140 @@ export const isSastifyCommunityStandard = async (
         signal
     })
 }
+
+export interface AddJobInput {
+  data: {
+    companyName: string
+    role: string
+    companyThumbnailIndex: number
+    startDate: string
+    endDate: string
+  }
+
+  files?: Array<File>
+}
+
+export interface AddJobOutput {
+  message: string
+}
+
+export const addJob = async (
+    input: AddJobInput
+): Promise<AddJobOutput> => {
+    const { data, files } = input
+    const url = `${BASE_URL}/add-job`
+    const formData = new FormData()
+
+    formData.append("data", JSON.stringify(data))
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
+        }
+    }
+
+    return await authAxios.post(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
+}
+
+export interface UpdateAccountJobInput {
+  data: {
+    accountJobId: string
+    companyName: string
+    role: string
+    companyThumbnailIndex: number
+    startDate: string
+    endDate: string
+  }
+
+  files?: Array<File>
+}
+
+export interface UpdateAccountJobOutput {
+  message: string
+}
+
+export const updateAccountJob = async (
+    input: UpdateAccountJobInput
+): Promise<UpdateAccountJobOutput> => {
+    const { data, files } = input
+    const url = `${BASE_URL}/update-account-job`
+    const formData = new FormData()
+
+    formData.append("data", JSON.stringify(data))
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
+        }
+    }
+
+    return await authAxios.put(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
+}
+
+export interface DeleteJobInput {
+  accountJobId: string
+}
+
+export interface DeleteJobOutput {
+  message: string
+}
+
+export const deleteJob = async (
+    input: DeleteJobInput
+): Promise<DeleteJobOutput> => {
+    const { accountJobId } = input
+    const url = `${BASE_URL}/delete-job/${accountJobId}`
+
+    return await authAxios.delete(url)
+}
+
+export interface AddQualificationInput {
+  files?: Array<File>
+}
+
+export interface AddQualificationOutput {
+  message: string
+}
+
+export const addQualification = async (
+    input: AddQualificationInput
+): Promise<AddQualificationOutput> => {
+    const { files } = input
+    const url = `${BASE_URL}/add-qualification`
+    const formData = new FormData()
+
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
+        }
+    }
+
+    return await authAxios.post(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
+}
+
+export interface DeleteQualificationInput {
+  accountQualificationId: string
+}
+
+export interface DeleteQualificationOutput {
+  message: string
+}
+
+export const deleteQualification = async (
+    input: DeleteQualificationInput
+): Promise<DeleteQualificationOutput> => {
+    const { accountQualificationId } = input
+    const url = `${BASE_URL}/delete-qualification/${accountQualificationId}`
+
+    return await authAxios.delete(url)
+}

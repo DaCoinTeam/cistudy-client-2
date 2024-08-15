@@ -50,7 +50,28 @@ const WrappedAccountDetailsProvider = ({ children }: { children: ReactNode }) =>
                 followed: true,
                 numberOfFollowers: true,
                 avatarUrl: true,
-                kind: true
+                kind: true,
+                roles: {
+                    accountId: true,
+                    name: true,
+                    roleId: true,
+                },
+                accountJobs: {
+                    accountJobId: true,
+                    companyName: true,
+                    companyThumbnailId: true,
+                    role: true,
+                    startDate: true,
+                    endDate: true,
+                },
+                accountQualifications: {
+                    accountQualificationId: true,
+                    fileId: true,
+                    name: true,
+                    createdAt: true,
+                    updatedAt: true,
+                },
+                instructorStatus: true,
             }
         )
     }, [profile])

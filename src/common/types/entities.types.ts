@@ -79,6 +79,32 @@ export interface AccountEntity {
   followed?: boolean;
   numberOfFollowers?: number;
   accountRatings?: AccountRatingDTO;
+  accountJobs: Array<AccountJobEntity>;
+  accountQualifications: Array<AccountQualificationEntity>;
+  instructorStatus: boolean;
+}
+
+export interface AccountJobEntity {
+  accountJobId: string
+  accountId: string
+  companyName: string
+  companyThumbnailId: string
+  role: string
+  startDate: Date
+  endDate: Date
+  createdAt: Date
+  updatedAt: Date
+  account: AccountEntity
+}
+
+export interface AccountQualificationEntity {
+  accountQualificationId: string
+  accountId: string
+  name: string
+  fileId: string
+  createdAt: Date
+  updatedAt: Date
+  account: AccountEntity
 }
 
 export enum SystemRoles {

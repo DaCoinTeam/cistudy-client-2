@@ -4,6 +4,8 @@ import { EditProfileModal } from "./EditProfileModal"
 import { ToggleFollowButton } from "./ToggleFollowButton"
 import { MoreButton } from "./MoreButton"
 import { RootContext } from "../../../../../_hooks"
+import { SystemRoles } from "@common"
+import { BeInstructorButton } from "./BeInstructorButton"
 
 interface ActionsProps {
   className?: string;
@@ -22,6 +24,14 @@ export const Actions = (props: ActionsProps) => {
 
     const renderButton = () => (
         <>
+            {
+                account?.roles?.map(role => role.name).includes(SystemRoles.Instructor)? (
+                    <BeInstructorButton />
+                ) : (
+                    <></>
+                )
+            }
+            
             {account?.accountId === profile?.accountId ? (
                 <EditProfileModal />
             ) : (
