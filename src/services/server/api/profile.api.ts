@@ -260,3 +260,19 @@ export const deleteQualification = async (
 
     return await authAxios.delete(url)
 }
+
+export interface registerInstructorInput {
+
+}
+
+export interface registerInstructorOutput {
+  message: string
+}
+
+export const registerInstructor = async (
+
+): Promise<registerInstructorOutput> => {
+    const url = `${BASE_URL}/register-instructor`
+
+    return await authAxios.patch(url)
+}

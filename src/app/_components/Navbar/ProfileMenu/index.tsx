@@ -158,8 +158,7 @@ export const ProfileMenu = () => {
                         content: "Sign Out",
                         color: "danger",
                     },
-                ] :
-                [
+                ] : roles?.map(role => role.name).includes(SystemRoles.Instructor)? [
                     {
                         key: "base",
                         content: [
@@ -190,6 +189,48 @@ export const ProfileMenu = () => {
                         key: "management",
                         onPress: onManagementPress,
                         content: "Management",
+                    },
+                    {
+                        key: "purchaseHistory",
+                        onPress: onPurchaseHistoryPress,
+                        content: "Purchase history"
+                    },
+                    {
+                        key: "help_and_feedback",
+                        content: "Help & Feedback",
+                    },
+                    {
+                        key: "logout",
+                        onPress: onSignOutPress,
+                        content: "Sign Out",
+                        color: "danger",
+                    },
+                ] : [
+                    {
+                        key: "base",
+                        content: [
+                            <div key="signedInAs" className="font-semibold">
+                                Signed in as
+                            </div>,
+                            <div key="username" className="font-semibold">
+                                {username}
+                            </div>,
+                        ],
+                    },
+                    {
+                        key: "profile",
+                        onPress: onProfilePress,
+                        content: "Profile",
+                    },
+                    {
+                        key: "enrolledCourses",
+                        onPress: onEnrolledCouresPress,
+                        content: "Enrolled courses",
+                    },
+                    {
+                        key: "wallet",
+                        onPress: onWalletPress,
+                        content: "Wallet",
                     },
                     {
                         key: "purchaseHistory",

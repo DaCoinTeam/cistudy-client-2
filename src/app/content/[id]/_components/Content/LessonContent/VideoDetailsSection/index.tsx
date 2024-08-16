@@ -18,7 +18,7 @@ export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
     const { sectionContentSwr } = swrs
     const { data: sectionContent } = sectionContentSwr
     const { title, createdAt } = { ...sectionContent }
-    const { numberOfViews, description } = { ...sectionContent?.lesson }
+    const { description } = { ...sectionContent?.lesson }
     const { course } = { ...sectionContent?.section }
     const { creator } = { ...course }
     const { username, avatarId, numberOfFollowers, avatarUrl, kind } = { ...creator }
@@ -53,9 +53,6 @@ export const VideoDetailsSection = (props: VideoDetailsSectionProps) => {
             <Spacer y={4} />
             <div className="bg-content2 rounded-large p-4">
                 <div className="font-semibold text-sm flex items-center gap-4"> 
-                    <div>
-                        {numberOfViews} views 
-                    </div>
                     <div>
                 Premiered on {parseDateStringFrom(createdAt)}
                     </div>

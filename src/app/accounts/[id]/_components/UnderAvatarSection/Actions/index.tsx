@@ -17,6 +17,7 @@ export const Actions = (props: ActionsProps) => {
     const { swrs } = useContext(AccountDetailsContext)!
     const { accountSwr } = swrs
     const { data: account } = accountSwr
+    const {accountQualifications, accountJobs, roles} = {...account}
 
     const { swrs: rootSwrs } = useContext(RootContext)!
     const { profileSwr } = rootSwrs
@@ -25,7 +26,7 @@ export const Actions = (props: ActionsProps) => {
     const renderButton = () => (
         <>
             {
-                account?.roles?.map(role => role.name).includes(SystemRoles.Instructor)? (
+                profile?.accountId && (accountQualifications?.length ?? 0) > 0 && (accountJobs?.length ?? 0) > 0 && (roles?.map(role => role.name).includes(SystemRoles.Instructor) || !roles)? (
                     <BeInstructorButton />
                 ) : (
                     <></>

@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import { ModeratorContext, PanelSelected } from "../../../_hooks"
 import { Listbox, ListboxItem, Selection } from "@nextui-org/react"
 import { getSetValues } from "@common"
-import { BookCheck, MessageSquareWarning } from "lucide-react"
+import { BookCheck, MessageSquareWarning, UserRoundCheck } from "lucide-react"
 
 interface MenuProps {
   className?: string;
@@ -43,6 +43,14 @@ export const Menu = (props: MenuProps) => {
             key: "coursesApproval",
             content: "Courses",
             panelSelected: PanelSelected.CoursesApproval,
+        },
+        {
+            startContent: (
+                <UserRoundCheck size={24} strokeWidth={3/2}/>
+            ),
+            key: "instructors",
+            content: "Instructors",
+            panelSelected: PanelSelected.Instructors,
         },
         {
             startContent: (

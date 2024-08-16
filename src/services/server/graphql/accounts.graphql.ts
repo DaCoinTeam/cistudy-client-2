@@ -292,3 +292,40 @@ export const findOneAdminAccount = async (
         isAuth: true,
     })
 }
+
+export interface FindManyPendingInstructorsInputData {
+  options?: {
+    take?: number;
+    skip?: number;
+  };
+}
+
+export interface FindManyPendingInstructorsOutputData {
+  results: Array<AccountEntity>;
+  metadata: {
+    count: number;
+  };
+}
+
+export const findManyPendingInstructors = async (
+    data: FindManyPendingInstructorsInputData,
+    schema?: Schema<DeepPartial<FindManyPendingInstructorsOutputData>>
+): Promise<FindManyPendingInstructorsOutputData> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query FindManyPendingInstructors($data: FindManyPendingInstructorsInputData!) {
+                findManyPendingInstructors(data: $data)   {
+      ${payload}
+    }
+  }
+          `,
+        variables: {
+            data,
+        },
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
+    })
+}

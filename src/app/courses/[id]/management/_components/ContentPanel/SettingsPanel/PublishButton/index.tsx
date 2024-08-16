@@ -11,7 +11,7 @@ export const PublishButton = () => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data, mutate } = courseManagementSwr
-    const { courseId, verifyStatus } = { ...data }
+    const { courseId, verifyStatus, sections } = { ...data }
     const { notify } = useContext(RootContext)!
 
     const { trigger, isMutating } = useSWRMutation(
@@ -50,7 +50,7 @@ export const PublishButton = () => {
                 })
             }}
             isLoading={isMutating}
-            isDisabled={verifyStatus === VerifyStatus.Approved || verifyStatus === VerifyStatus.Pending}
+            isDisabled={verifyStatus === VerifyStatus.Approved || verifyStatus === VerifyStatus.Pending || sections?.length === 0 || sections?.at(0)?.contents?.length === 0}
         >
             {(verifyStatus === VerifyStatus.Approved || verifyStatus === VerifyStatus.Pending) ? "Published" : "Publish"}
         </Button>
