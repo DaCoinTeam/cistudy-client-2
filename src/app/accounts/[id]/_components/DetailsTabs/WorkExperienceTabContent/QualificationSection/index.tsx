@@ -1,17 +1,20 @@
-import { Card, CardHeader, CardBody, Image, Badge, Spacer, Link } from "@nextui-org/react"
-import { Edit3, PlusIcon, X } from "lucide-react"
+import { Card, CardHeader, CardBody, Image, Spacer, Link } from "@nextui-org/react"
+import { Edit3, PlusIcon, Trash2} from "lucide-react"
 import { AddQualificationModalRef, AddQualificationModalRefSelectors } from "./QualificationModalRef"
 import { useContext, useRef, useState } from "react"
-import { deleteQualification, getAssetUrl } from "@services"
+import { deleteQualification, DeleteQualificationInput, getAssetUrl } from "@services"
 import { RootContext } from "../../../../../../_hooks"
 import { ToastType } from "../../../../../../_components"
 import { AccountDetailsContext } from "../../../../_hooks"
-import { ErrorResponse } from "@common"
+import { AccountQualificationEntity, ErrorResponse } from "@common"
 import { useParams } from "next/navigation"
 import { ConfirmDeleteModalRef, ConfirmDeleteModalRefSelectors } from "../../../../../../_shared"
 import dayjs from "dayjs"
+import useSWRMutation from "swr/mutation"
+import { EditQualificationModalRef, EditQualificationModalRefSelectors } from "./QualificationModalRef/EditQualificationModalRef"
 
 export const QualificationSection = () => {
+    const [currentQualification, setCurrentQualification] = useState<AccountQualificationEntity | null>(null)
     const route = useParams()
     const accountIdParam = route.id
     const confirmDeleteModalRef = useRef<ConfirmDeleteModalRefSelectors>(null)
@@ -26,11 +29,18 @@ export const QualificationSection = () => {
     const {data: accountData, mutate} = accountSwr
     const {accountQualifications} = {...accountData}
     const addQualificationRef = useRef<AddQualificationModalRefSelectors>(null)
-    const [isEdit, setIsEdit] = useState(false)
+    const editQualificationRef = useRef<EditQualificationModalRefSelectors>(null)
+
+    const deleteQualificationSwrMutation = useSWRMutation(
+        "DELETE_QUALIFICATION",
+        async(_: string, {arg} : {arg: DeleteQualificationInput}) => {
+            return await deleteQualification(arg)
+        }
+    )
 
     const handleRemoveQualification = async(accountQualificationId: string) => {
         try {
-            const {message} = await deleteQualification({accountQualificationId})
+            const {message} = await deleteQualificationSwrMutation.trigger({accountQualificationId})
             notify!({
                 data: {
                     message
@@ -48,6 +58,16 @@ export const QualificationSection = () => {
             })
         }
     }
+
+    const handleOpenDeleteQualificationModal = (qualification: AccountQualificationEntity) => {
+        setCurrentQualification(qualification)
+        confirmDeleteModalRef.current?.onOpen()
+    }
+
+    const handleOpenEditQualificationModal = (qualification: AccountQualificationEntity) => {
+        setCurrentQualification(qualification)
+        editQualificationRef.current?.onOpen()
+    }
     
     return (
         <div>
@@ -62,11 +82,10 @@ export const QualificationSection = () => {
                             accountIdParam === currentAccountId && (
                                 <div className="flex flex-row gap-4">
                                     {
-                                        accountQualifications && accountQualifications.length > 0 && (
-                                            <Edit3 className={`w-5 h-5 ${isEdit? "text-primary" : ""} cursor-pointer`} strokeWidth={3 / 2} onClick={() => {setIsEdit(!isEdit)}} />
+                                        accountQualifications && accountQualifications.length < 3 && (
+                                            <PlusIcon className="w-5 h-5 cursor-pointer" strokeWidth={3 / 2} onClick={() => addQualificationRef.current?.onOpen()} />
                                         )
                                     }
-                                    <PlusIcon className="w-5 h-5 cursor-pointer" strokeWidth={3 / 2} onClick={() => addQualificationRef.current?.onOpen()} />
                                 </div>
                             )
                         }
@@ -77,7 +96,7 @@ export const QualificationSection = () => {
                         {
                             accountQualifications && accountQualifications.length > 0? accountQualifications.map((qualification) => (
                                 <div key={qualification.accountQualificationId} className="border border-divider rounded-medium p-4">
-                                    <Badge className="absolute top-2 right-2 w-5 h-5" content={<X />} color="danger" isInvisible={!isEdit} onClick={() => isEdit? confirmDeleteModalRef.current?.onOpen() : ""}>
+                                    <div className="flex flex-row items-center justify-between">
                                         <div>
                                             <div className="font-semibold">{qualification.name}</div>
                                             <div className="flex gap-2">
@@ -89,15 +108,19 @@ export const QualificationSection = () => {
                                             </Link>
                                             <Spacer y={4}/>
                                             <Image className="w-[300px]" src={getAssetUrl(qualification.fileId)} alt="qualification" />
-                                        </div>                     
-                                    </Badge>
+                                        </div>
 
-                                    <ConfirmDeleteModalRef
-                                        ref={confirmDeleteModalRef}
-                                        title="Delete Qualification"
-                                        content="Are you sure you want to delete this qualification?"
-                                        onDeletePress={() => handleRemoveQualification(qualification.accountQualificationId)}
-                                    />
+                                        <div>
+                                            {
+                                                currentAccountId === accountIdParam && (
+                                                    <div className="flex flex-row gap-4">
+                                                        <Trash2 className="w-5 h-5 cursor-pointer text-danger" strokeWidth={3 / 2} onClick={() => handleOpenDeleteQualificationModal(qualification)} />
+                                                        <Edit3 className="w-5 h-5 cursor-pointer text-primary" strokeWidth={3 / 2} onClick={() => handleOpenEditQualificationModal(qualification)} />
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
                             )) : (
                                 <div className="flex items-center">
@@ -110,6 +133,8 @@ export const QualificationSection = () => {
             </Card>
 
             <AddQualificationModalRef ref={addQualificationRef} />
+            <ConfirmDeleteModalRef ref={confirmDeleteModalRef} title="Delete qualification" content="Confirm to delete this qualification?" isLoading={deleteQualificationSwrMutation.isMutating} onDeletePress={() => handleRemoveQualification(currentQualification?.accountQualificationId as string)} />
+            <EditQualificationModalRef ref={editQualificationRef} qualification={currentQualification as AccountQualificationEntity} />
         </div>
     )
 }

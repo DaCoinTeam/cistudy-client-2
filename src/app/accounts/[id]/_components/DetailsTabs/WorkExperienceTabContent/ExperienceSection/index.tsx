@@ -82,24 +82,23 @@ export const ExperienceSection = () => {
                 <CardBody className="p-4">
                     {
                         accountJobs && accountJobs.length > 0? accountJobs?.map((job, index) => (
-                            <div key={job.accountJobId} className="gap-4">
+                            <div key={job.accountJobId} className="border border-divider rounded-medium p-4">
                                 <div className="flex flex-row items-center justify-between">
-                                    <div className="flex flex-row py-4 gap-2">
-                                        <div>
-                                            <Image className="w-44 h-20" src={getAssetUrl(job.companyThumbnailId)} alt="company" />
+                                    <div className="gap-2">
+                                        <div className="text-lg font-semibold">
+                                            {job.companyName}
                                         </div>
-                                        <div className="gap-2">
-                                            <div className="text-lg font-semibold">
-                                                {job.companyName}
-                                            </div>
 
-                                            <div className="text-base">
-                                                {job.role}
-                                            </div>
+                                        <div className="text-base">
+                                            {job.role}
+                                        </div>
 
-                                            <div className="text-base opacity-50">
-                                                {dayjs(job.startDate).format("MMM YYYY")} - {job.endDate ? dayjs(job.endDate).format("MMM YYYY") : "Present"} · {job.endDate ? dayjs(job.endDate).diff(dayjs(job.startDate), "year") : dayjs().diff(dayjs(job.startDate), "year")} years
-                                            </div>
+                                        <div className="text-base opacity-50">
+                                            {dayjs(job.startDate).format("MMM YYYY")} - {job.endDate ? dayjs(job.endDate).format("MMM YYYY") : "Present"} · {job.endDate ? dayjs(job.endDate).diff(dayjs(job.startDate), "year") : dayjs().diff(dayjs(job.startDate), "year")} years
+                                        </div>
+
+                                        <div>
+                                            <Image className="w-44" src={getAssetUrl(job.companyThumbnailId)} alt="company" />
                                         </div>
                                     </div>
 
