@@ -54,6 +54,9 @@ export const VideoTab = () => {
             setVideo(files.at(0))
         },
         multiple: false,
+        accept: {
+            "video/*": [".mp4", ".webm", ".mkv", ".avi", ".mov"],
+        }
     })
 
     return (

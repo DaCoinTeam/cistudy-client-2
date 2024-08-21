@@ -53,6 +53,9 @@ export const ThumbnailTab = () => {
             setImage(files.at(0))
         },
         multiple: false,
+        accept: {
+            "image/*": [".jpg", ".jpeg", ".png", ".gif"]
+        }
     })
 
     return (
