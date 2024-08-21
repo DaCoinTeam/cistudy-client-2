@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, Image, Badge } from "@nextui-org/react"
+import { Card, CardHeader, CardBody, Image, Badge, Spacer, Link } from "@nextui-org/react"
 import { Edit3, PlusIcon, X } from "lucide-react"
 import { AddQualificationModalRef, AddQualificationModalRefSelectors } from "./QualificationModalRef"
 import { useContext, useRef, useState } from "react"
@@ -9,6 +9,7 @@ import { AccountDetailsContext } from "../../../../_hooks"
 import { ErrorResponse } from "@common"
 import { useParams } from "next/navigation"
 import { ConfirmDeleteModalRef, ConfirmDeleteModalRefSelectors } from "../../../../../../_shared"
+import dayjs from "dayjs"
 
 export const QualificationSection = () => {
     const route = useParams()
@@ -50,9 +51,9 @@ export const QualificationSection = () => {
     
     return (
         <div>
-            <Card className="w-full">
+            <Card shadow="none" className="w-full border-divider border">
                 <CardHeader className="flex flex-row justify-between p-4">
-                    <div className="text-xl font-bold">Qualification</div>
+                    <div className="text-xl font-semibold">Qualification</div>
                     <div>
                         {
                             accountIdParam === currentAccountId && (
@@ -69,12 +70,23 @@ export const QualificationSection = () => {
                     </div>
                 </CardHeader>
                 <CardBody>
-                    <div className="flex flex-row gap-4">
+                    <div className="grid gap-4">
                         {
                             accountQualifications && accountQualifications.length > 0? accountQualifications.map((qualification) => (
-                                <div key={qualification.accountQualificationId}>
+                                <div key={qualification.accountQualificationId} className="border border-divider rounded-medium p-4">
                                     <Badge className="absolute top-2 right-2 w-5 h-5" content={<X />} color="danger" isInvisible={!isEdit} onClick={() => isEdit? confirmDeleteModalRef.current?.onOpen() : ""}>
-                                        <Image className="w-[400px] h-80" src={getAssetUrl(qualification.fileId)} alt="qualification" />
+                                        <div>
+                                            <div className="font-semibold">{qualification.name}</div>
+                                            <div className="flex gap-2">
+                                                <div className="text-sm text-foreground-400">{dayjs(new Date(qualification.issuedAt)).format("YYYY MMM, DD")}</div>
+                                                <div className="text-sm text-foreground-400">{qualification.issuedFrom}</div>
+                                            </div>                          
+                                            <Link href={qualification.url} isExternal color="foreground" size="sm" showAnchorIcon underline="always">
+                                                {qualification.url} 
+                                            </Link>
+                                            <Spacer y={4}/>
+                                            <Image className="w-[300px]" src={getAssetUrl(qualification.fileId)} alt="qualification" />
+                                        </div>                     
                                     </Badge>
 
                                     <ConfirmDeleteModalRef

@@ -70,9 +70,9 @@ export const ExperienceSection = () => {
 
     return (
         <div>
-            <Card className="w-full">
+            <Card shadow="none" className="w-full border border-divider">
                 <CardHeader className="flex flex-row justify-between p-4">
-                    <div className="text-xl font-bold">Experience</div>
+                    <div className="text-xl font-semibold">Experience</div>
                     {
                         currentAccountId === accountIdParam && (
                             <PlusIcon className="w-5 h-5 cursor-pointer" strokeWidth={3 / 2} onClick={() => addExperienceModalRef.current?.onOpen()} />

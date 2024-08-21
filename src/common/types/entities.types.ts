@@ -102,6 +102,9 @@ export interface AccountQualificationEntity {
   accountId: string
   name: string
   fileId: string
+  url: string
+  issuedFrom: string
+  issuedAt: Date
   createdAt: Date
   updatedAt: Date
   account: AccountEntity

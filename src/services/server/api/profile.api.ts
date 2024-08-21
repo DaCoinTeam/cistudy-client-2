@@ -217,6 +217,12 @@ export const deleteJob = async (
 }
 
 export interface AddQualificationInput {
+  data: {
+    name: string
+    issuedFrom: string
+    issuedAt: string
+    url?: string
+  },
   files?: Array<File>
 }
 
@@ -227,9 +233,11 @@ export interface AddQualificationOutput {
 export const addQualification = async (
     input: AddQualificationInput
 ): Promise<AddQualificationOutput> => {
-    const { files } = input
+    const { files, data } = input
     const url = `${BASE_URL}/add-qualification`
     const formData = new FormData()
+
+    formData.append("data", JSON.stringify(data))
 
     if (files) {
         for (const file of files) {

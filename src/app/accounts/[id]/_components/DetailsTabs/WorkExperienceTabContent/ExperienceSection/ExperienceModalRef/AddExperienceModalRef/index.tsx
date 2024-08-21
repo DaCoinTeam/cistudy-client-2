@@ -27,6 +27,9 @@ const WrappedAddExperienceModalRef = forwardRef<
             formik.setFieldValue("companyImage", files)
         },
         multiple: false,
+        accept: {
+            "image/*": [".jpg", ".jpeg", ".png", ".gif"]
+        }
     })
 
     useImperativeHandle(ref, () => ({

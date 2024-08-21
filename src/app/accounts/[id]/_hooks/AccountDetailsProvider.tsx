@@ -70,6 +70,9 @@ const WrappedAccountDetailsProvider = ({ children }: { children: ReactNode }) =>
                     name: true,
                     createdAt: true,
                     updatedAt: true,
+                    issuedAt: true,
+                    issuedFrom: true,
+                    url: true
                 },
                 instructorStatus: true,
             }
