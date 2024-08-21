@@ -551,6 +551,7 @@ export interface CourseCategoryEntity {
   courseCategoryId: string;
   createdAt: Date;
   updatedAt: Date;
+
   courseId: string;
   categoryId: string;
   course: CourseEntity;
@@ -668,6 +669,12 @@ export enum TransactionType {
   Received = "received",
 }
 
+export enum TransactionStatus {
+  Pending = "pending",
+  Success = "success",
+  Failed = "failed",
+}
+
 export interface TransactionEntity {
   transactionId: string;
   type: TransactionType;
@@ -680,6 +687,8 @@ export interface TransactionEntity {
   createdAt: Date;
   updatedAt: Date;
   transactionDetails: Array<TransactionDetailEntity>;
+  status: TransactionStatus
+  preTextEarn: string
 }
 
 export interface TransactionDetailEntity {
@@ -691,6 +700,8 @@ export interface TransactionDetailEntity {
   payAmount: number;
   course?: CourseEntity;
   account?: AccountEntity;
+  post?: PostEntity
+  postComment?: PostCommentEntity
   transaction?: TransactionEntity;
 }
 

@@ -54,6 +54,8 @@ const WrappedTransactionsModalProvider = ({
                         transactionHash: true,
                         transactionId: true,
                         type: true,
+                        status: true,
+                        preTextEarn: true,
                         transactionDetails: {
                             account: {
                                 accountId: true,
@@ -66,6 +68,17 @@ const WrappedTransactionsModalProvider = ({
                                 courseId: true,
                                 title: true,
                                 thumbnailId: true,
+                            },
+                            post: {
+                                postId: true,
+                                title: true,
+                            },
+                            postComment: {
+                                postCommentId: true,
+                                post: {
+                                    postId: true,
+                                    title: true,
+                                }
                             },
                             transactionDetailId: true,
                             payAmount: true,

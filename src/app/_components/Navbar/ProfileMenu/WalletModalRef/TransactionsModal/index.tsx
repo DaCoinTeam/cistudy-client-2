@@ -18,7 +18,7 @@ import {
     Chip,
 } from "@nextui-org/react"
 import React, { useContext } from "react"
-import { TransactionType, truncate } from "@common"
+import { TransactionStatus, TransactionType, truncate } from "@common"
 import {
     ROWS_PER_PAGE,
     TransactionsModalContext,
@@ -79,6 +79,28 @@ const WrappedTransactionsModal = () => {
         }
         return typeToComponent[type]
     }
+
+    const renderStatus = (status: TransactionStatus) => {
+        const typeToComponent: Record<TransactionStatus, JSX.Element> = {
+            [TransactionStatus.Failed]: (
+                <Chip color="danger" variant="flat">
+          Failed
+                </Chip>
+            ),
+            [TransactionStatus.Pending]: (
+                <Chip color="warning" variant="flat">
+          Pending
+                </Chip>
+            ),
+            [TransactionStatus.Success]: (
+                <Chip color="success" variant="flat">
+          Success
+                </Chip>
+            ),
+        }
+        return typeToComponent[status]
+    }
+
 
     const onPageChange = (page: number) =>
         dispatch({
@@ -143,6 +165,7 @@ const WrappedTransactionsModal = () => {
                                 <TableColumn width={"20%"} key="balanceChange">Balance Change</TableColumn>
                                 <TableColumn key="IDs">Details</TableColumn>
                                 <TableColumn key="createdAt">Created At</TableColumn>
+                                <TableColumn key="status">Status</TableColumn>
                                 <TableColumn key="details">Details</TableColumn>
                             </TableHeader>
                             <TableBody
@@ -214,18 +237,54 @@ const WrappedTransactionsModal = () => {
                                                             transactionDetailId,
                                                             account,
                                                             course,
+                                                            postComment,
+                                                            post,
                                                             directIn,
                                                         }) => {
-                                                            if (!directIn) {
+                                                            if (course) {
+                                                                if (!directIn) {
+                                                                    return (
+                                                                        <div
+                                                                            key={transactionDetailId}
+                                                                            className="text-sm"
+                                                                        >
+                                                                            {" "}
+                                        Enroll to{" "}
+                                                                            <Link
+                                                                                className="inline"
+                                                                                as="button"
+                                                                                onPress={() =>
+                                                                                    router.push(
+                                                                                        `/courses/${course?.courseId}`
+                                                                                    )
+                                                                                }
+                                                                                size="sm"
+                                                                            >
+                                                                                {course?.title.slice(0, 15)}...
+                                                                            </Link>
+                                                                        </div>
+                                                                    )
+                                                                }
                                                                 return (
                                                                     <div
                                                                         key={transactionDetailId}
                                                                         className="text-sm"
                                                                     >
                                                                         {" "}
-                                    Enroll to{" "}
+                                      User{" "}
                                                                         <Link
-                                                                            className="inline"
+                                                                            as="button"
+                                                                            onPress={() =>
+                                                                                router.push(
+                                                                                    `/accounts/${account?.accountId}`
+                                                                                )
+                                                                            }
+                                                                            size="sm"
+                                                                        >
+                                                                            {account?.username.slice(0, 10)}...
+                                                                        </Link>
+                                                                        {" "}enrolled to{" "}
+                                                                        <Link
                                                                             as="button"
                                                                             onPress={() =>
                                                                                 router.push(
@@ -239,39 +298,26 @@ const WrappedTransactionsModal = () => {
                                                                     </div>
                                                                 )
                                                             }
-                                                            return (
-                                                                <div
-                                                                    key={transactionDetailId}
-                                                                    className="text-sm"
-                                                                >
-                                                                    {" "}
-                                  User{" "}
-                                                                    <Link
-                                                                        as="button"
-                                                                        onPress={() =>
-                                                                            router.push(
-                                                                                `/accounts/${account?.accountId}`
-                                                                            )
-                                                                        }
-                                                                        size="sm"
-                                                                    >
-                                                                        {account?.username.slice(0, 10)}...
-                                                                    </Link>
-                                                                    {" "}enrolled to{" "}
-                                                                    <Link
-                                                                        as="button"
-                                                                        onPress={() =>
-                                                                            router.push(
-                                                                                `/courses/${course?.courseId}`
-                                                                            )
-                                                                        }
-                                                                        size="sm"
-                                                                    >
-                                                                        {course?.title.slice(0, 15)}...
-                                                                    </Link>
-                                                                </div>
-                                                            )
-                                                        }
+                                                            if (transaction.type === TransactionType.Earn) {
+                                                                if (post) {
+                                                                    return (
+                                                                        <div className="text-sm" key={transactionDetailId}>
+                                                                            {transaction.preTextEarn}  <Link
+                                                                                as="button"
+                                                                                onPress={() =>
+                                                                                    router.push(
+                                                                                        `/posts/${post.postId}`
+                                                                                    )
+                                                                                }
+                                                                                size="sm"
+                                                                            >
+                                                                                {post?.title.slice(0, 15)}...
+                                                                            </Link>
+                                                                        </div>
+                                                                    )
+                                                                }
+                                                            }
+                                                        }    
                                                     )}
                                                 </div>
                                             ) : (
@@ -300,6 +346,7 @@ const WrappedTransactionsModal = () => {
                                         <TableCell>
                                             {dayjs(transaction.createdAt).format("HH:mm:ss DD/MM/YYYY")}
                                         </TableCell>
+                                        <TableCell>{renderStatus(transaction.status)}</TableCell>
                                         <TableCell>
                                             <TransactionDetailsModal transaction={transaction}/>
                                         </TableCell>
