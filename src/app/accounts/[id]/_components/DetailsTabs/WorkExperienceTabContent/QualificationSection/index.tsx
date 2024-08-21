@@ -53,7 +53,10 @@ export const QualificationSection = () => {
         <div>
             <Card shadow="none" className="w-full border-divider border">
                 <CardHeader className="flex flex-row justify-between p-4">
-                    <div className="text-xl font-semibold">Qualification</div>
+                    <div>
+                        <div className="text-xl font-semibold">Qualification</div>
+                        <div className="text-sm text-warning">At least 1 qualification is required to publish course.</div>
+                    </div>   
                     <div>
                         {
                             accountIdParam === currentAccountId && (
