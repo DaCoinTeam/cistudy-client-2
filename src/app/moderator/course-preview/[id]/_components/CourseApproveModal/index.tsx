@@ -8,6 +8,7 @@ import {
     Button,
     ModalFooter,
     Textarea,
+    Spacer,
 } from "@nextui-org/react"
 
 import { forwardRef, useContext, useImperativeHandle } from "react"
@@ -50,14 +51,6 @@ const WrappedCourseApproveModalRef = forwardRef<
                     <div>
                         <ModalHeader className="p-4 pb-2 text-2xl">Resolve</ModalHeader>
                         <ModalBody className="p-4">
-                            {
-                                course?.previousFeedback? (
-                                    <div className="bg-warning/20 rounded-md p-4 text-xs">
-                                        This course has been rejected before with the following feedback:
-                                        <div className="text-warning">{course.previousFeedback}</div>
-                                    </div>
-                                ) : <></>
-                            }
                             <Textarea
                                 classNames={{
                                     inputWrapper: "input-input-wrapper"
@@ -74,6 +67,18 @@ const WrappedCourseApproveModalRef = forwardRef<
                                 isInvalid={!!(formik.touched.note && formik.errors.note)}
                                 errorMessage={formik.touched.note && formik.errors.note}
                             />
+                            {
+                                course?.previousFeedback? (
+                                    <div>
+                                        <div className="text-xs text-foreground-400">This course has been rejected before with the following feedback:</div>
+                                        <Spacer y={1.5} />
+                                        <Textarea
+                                            isReadOnly
+                                            value={course.previousFeedback}
+                                        />
+                                    </div>
+                                ) : <></>
+                            }
                         </ModalBody>
                         <ModalFooter>
                             <Button
