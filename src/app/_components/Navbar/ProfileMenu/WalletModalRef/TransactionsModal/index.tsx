@@ -237,7 +237,6 @@ const WrappedTransactionsModal = () => {
                                                             transactionDetailId,
                                                             account,
                                                             course,
-                                                            postComment,
                                                             post,
                                                             directIn,
                                                         }) => {
@@ -281,7 +280,7 @@ const WrappedTransactionsModal = () => {
                                                                             }
                                                                             size="sm"
                                                                         >
-                                                                            {account?.username.slice(0, 10)}...
+                                                                            {account?.username?.slice(0, 10)}...
                                                                         </Link>
                                                                         {" "}enrolled to{" "}
                                                                         <Link

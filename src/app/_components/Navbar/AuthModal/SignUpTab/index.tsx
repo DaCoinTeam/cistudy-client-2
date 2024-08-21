@@ -1,7 +1,6 @@
 "use client"
 import {
     Button,
-    DatePicker,
     Input,
     Link,
     ModalBody,
@@ -11,8 +10,6 @@ import {
 import { SignUpTabContext, SignUpTabProvider } from "./SignUpTabProvider"
 import { useContext } from "react"
 import { NavbarContext } from "../../NavbarProvider"
-import { parseDate, getLocalTimeZone } from "@internationalized/date"
-import { parseISODateString } from "@common"
 
 const WrappedSignUpTab = () => {
 
@@ -133,16 +130,6 @@ const WrappedSignUpTab = () => {
                             errorMessage={formik.touched.lastName && formik.errors.lastName}
                         />
                     </div>
-                    <Spacer y={4} />
-                    <DatePicker
-                        // classNames={{
-                        //     inputWrapper: "input-input-wrapper"
-                        // }}
-                        label="Birthdate" value={parseDate(formik.values.birthdate)} className="w-full" 
-                        labelPlacement="outside" onChange={(value) => {
-                            formik.setFieldValue("birthdate", parseISODateString(value.toDate(getLocalTimeZone())))
-                        }}
-                    />
                     <Spacer y={4} />
                     <div className="text-center">
                         <span className="text-sm">Already have an account?</span>{" "}

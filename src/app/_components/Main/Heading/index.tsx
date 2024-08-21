@@ -11,7 +11,7 @@ export const Heading = () => {
             <div className='col-span-3 z-10'>
                 <div className='text-start mt-6'>
                     <h1 className='text-4xl tracking-tight text-slate-800 dark:text-slate-200 font-semibold mb-2'>
-            Share To Earn
+            Interact To Earn
                     </h1>
                     <h1 className='text-4xl font-semibold mb-2 tracking-tight text-slate-800  dark:text-slate-200'>
             Where Sharing Sparks{" "}
