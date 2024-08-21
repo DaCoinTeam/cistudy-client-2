@@ -252,6 +252,44 @@ export const addQualification = async (
     })
 }
 
+export interface UpdateQualificationInput {
+  data: {
+    accountQualificationId: string
+    name: string
+    issuedFrom: string
+    issuedAt: string
+    url?: string
+    fileIndex: number
+  },
+  files?: Array<File>
+}
+
+export interface UpdateQualificationOutput {
+  message: string
+}
+
+export const updateQualification = async(
+    input: UpdateQualificationInput
+): Promise<UpdateQualificationOutput> => {
+    const { data, files } = input
+    const url = `${BASE_URL}/update-qualification`
+    const formData = new FormData()
+
+    formData.append("data", JSON.stringify(data))
+
+    if (files) {
+        for (const file of files) {
+            formData.append("files", file)
+        }
+    }
+
+    return await authAxios.put(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
+}
+
 export interface DeleteQualificationInput {
   accountQualificationId: string
 }

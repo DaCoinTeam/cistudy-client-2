@@ -2,7 +2,6 @@ import React, { useContext } from "react"
 import { ModeratorContext, PanelSelected } from "../../_hooks"
 import { ReportsManagementPanel } from "./ReportsManagementPanel"
 import { CoursesManagementPanel } from "./CoursesManagementPanel"
-import { InstructorsManagementPanel } from "./InstructorsManagementPanel"
 
 interface ContentPanelProps {
   className?: string;
@@ -18,7 +17,6 @@ export const ContentPanel = (props: ContentPanelProps) => {
     const render = () => {
         const panelSelectedToComponent: Record<PanelSelected, JSX.Element> = {
             [PanelSelected.CoursesApproval]: <CoursesManagementPanel className={`${className}`} />,
-            [PanelSelected.Instructors]: <InstructorsManagementPanel className={`${className}`} />,
             [PanelSelected.Reports]: (
                 <ReportsManagementPanel className={`${className}`} />
             ),

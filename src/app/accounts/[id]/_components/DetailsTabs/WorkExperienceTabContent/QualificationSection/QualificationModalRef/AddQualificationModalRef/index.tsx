@@ -24,7 +24,8 @@ export const AddQualificationModalRef = forwardRef<
   AddQualificationModalRefProps
 >((_, ref) => {
     const [images, setImages] = useState<Array<File> | undefined>()
-    const {notify} = useContext(RootContext)!
+    const {notify, swrs: rootSwrs} = useContext(RootContext)!
+    const {profileSwr} = rootSwrs
     const {swrs} = useContext(AccountDetailsContext)!
     const {accountSwr} = swrs
     const {mutate} = accountSwr
@@ -46,6 +47,7 @@ export const AddQualificationModalRef = forwardRef<
 
     const handleCancel = () => {
         onOpenChange()
+        formik.resetForm()
         setImages(undefined)
     }
 
@@ -82,7 +84,9 @@ export const AddQualificationModalRef = forwardRef<
                     type: ToastType.Success
                 })
                 mutate()
+                profileSwr.mutate()
                 setImages(undefined)
+                formik.resetForm()
                 onOpenChange()
             } catch (ex) {
                 const {message} = ex as ErrorResponse
@@ -93,14 +97,13 @@ export const AddQualificationModalRef = forwardRef<
                     type: ToastType.Error
                 })
             }
-            console.log(values)
         }
     })
 
     return (
         <Modal
             isOpen={isOpen}
-            onOpenChange={onOpenChange}
+            onOpenChange={handleCancel}
             isDismissable={false}
         >
             <ModalContent>
