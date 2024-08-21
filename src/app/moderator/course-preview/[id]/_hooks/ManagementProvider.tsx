@@ -53,6 +53,7 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                 isCreator: true,
                 enrolled: true,
                 verifyStatus: true,
+                previousFeedback: true,
                 courseTargets: {
                     courseTargetId: true,
                     content: true,

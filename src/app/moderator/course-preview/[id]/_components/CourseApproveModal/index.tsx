@@ -13,6 +13,7 @@ import {
 import { forwardRef, useContext, useImperativeHandle } from "react"
 import { CourseApproveModalContext, CourseApproveModalProvider } from "./CourseApproveModalProvider"
 import { VerifyStatus } from "@common"
+import { ManagementContext } from "../../_hooks"
 
 export interface CourseApproveModalRefSelectors {
     onOpen: () => void;
@@ -21,6 +22,9 @@ export interface CourseApproveModalRefSelectors {
 const WrappedCourseApproveModalRef = forwardRef<
     CourseApproveModalRefSelectors | null
 >((_, ref) => {
+    const {swrs} = useContext(ManagementContext)!
+    const {courseManagementSwr} = swrs
+    const {data: course} = courseManagementSwr
     const {formik} = useContext(CourseApproveModalContext)!
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -46,6 +50,14 @@ const WrappedCourseApproveModalRef = forwardRef<
                     <div>
                         <ModalHeader className="p-4 pb-2 text-2xl">Resolve</ModalHeader>
                         <ModalBody className="p-4">
+                            {
+                                course?.previousFeedback? (
+                                    <div className="bg-warning/20 rounded-md p-4 text-xs">
+                                        This course has been rejected before with the following feedback:
+                                        <div className="text-warning">{course.previousFeedback}</div>
+                                    </div>
+                                ) : <></>
+                            }
                             <Textarea
                                 classNames={{
                                     inputWrapper: "input-input-wrapper"

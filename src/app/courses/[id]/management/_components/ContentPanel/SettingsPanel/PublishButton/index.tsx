@@ -50,7 +50,7 @@ export const PublishButton = () => {
                 })
             }}
             isLoading={isMutating}
-            isDisabled={verifyStatus === VerifyStatus.Approved || verifyStatus === VerifyStatus.Pending || sections?.length === 0 || sections?.at(0)?.contents?.length === 0}
+            isDisabled={verifyStatus === VerifyStatus.Approved || verifyStatus === VerifyStatus.Pending || (sections && sections?.length < 1) || (sections && sections?.length > 0 && sections.some((section) => section.contents.length < 1))}
         >
             {(verifyStatus === VerifyStatus.Approved || verifyStatus === VerifyStatus.Pending) ? "Published" : "Publish"}
         </Button>

@@ -203,6 +203,7 @@ export interface CourseEntity {
   students?: Array<AccountEntity>;
   isReviewed?: boolean;
   isAddedToCart?: boolean;
+  previousFeedback: string;
 }
 
 export interface CertificateEntity {
