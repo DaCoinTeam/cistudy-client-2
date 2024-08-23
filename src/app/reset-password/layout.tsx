@@ -1,10 +1,10 @@
-import { ReactNode } from "react"
+import { ReactNode, Suspense } from "react"
 
 const Layout = ({ children }: { children: ReactNode }) => {
     return (
-        <div>
+        <Suspense>
             {children}
-        </div>
+        </Suspense>
     )
 }
 
