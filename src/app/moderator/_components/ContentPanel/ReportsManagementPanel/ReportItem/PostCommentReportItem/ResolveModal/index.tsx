@@ -1,5 +1,5 @@
 "use client"
-import { ReportPostCommentEntity } from "@common"
+import { ReportPostCommentEntity, ReportProcessStatus } from "@common"
 import {
     Avatar,
     Button,
@@ -14,13 +14,14 @@ import {
     useDisclosure
 } from "@nextui-org/react"
 
-import { getAvatarUrl, resolvePostCommentReport } from "@services"
+import { getAvatarUrl, resolvePostCommentReport, resolvePostCommentReportInput } from "@services"
 import dayjs from "dayjs"
-import { forwardRef, useContext, useEffect, useImperativeHandle, useState } from "react"
+import { forwardRef, useContext, useImperativeHandle } from "react"
 import { ToastType } from "../../../../../../../_components"
 import { RootContext } from "../../../../../../../_hooks"
 import { MediaGroup, TextRenderer } from "../../../../../../../_shared"
 import { PostCommentReportItemContext } from "../PostCommentReportItemProvider"
+import useSWRMutation from "swr/mutation"
 
 export interface ResolveModalRefProps {
     report: ReportPostCommentEntity;
@@ -34,18 +35,17 @@ export const ResolveModalRef = forwardRef<
     ResolveModalRefSelectors | null,
     ResolveModalRefProps
 >((props, ref) => {
-    const {reducer, swrs} = useContext(PostCommentReportItemContext)!
-    const {postCommentReportsSwr} = swrs
-    const {mutate} = postCommentReportsSwr
+    const { reducer, swrs } = useContext(PostCommentReportItemContext)!
+    const { postCommentReportsSwr } = swrs
+    const { mutate } = postCommentReportsSwr
     const [state, dispatch] = reducer
-    const {notify} = useContext(RootContext)!
+    const { notify } = useContext(RootContext)!
     const { report } = props
     const { reporterAccount, createdAt, reportedPostComment, title, description, processStatus, processNote } = report
-    const {html, postCommentMedias, creator, numberOfLikes, isRewardable, isSolution, post} = {...reportedPostComment}
+    const { html, postCommentMedias, creator, numberOfLikes, isRewardable, isSolution, post } = { ...reportedPostComment }
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
-    const [isNotValidNote, setIsNotValidNote] = useState(false)
 
-    const statusColorMap: Record<string, ChipProps["color"]>  = {
+    const statusColorMap: Record<string, ChipProps["color"]> = {
         approved: "success",
         rejected: "danger",
         processing: "warning",
@@ -53,71 +53,36 @@ export const ResolveModalRef = forwardRef<
     useImperativeHandle(ref, () => ({
         onOpen
     }))
-    useEffect(() => {
-        if(state.note.length > 20){
-            setIsNotValidNote(false)
-        }
-    }, [state.note.length])
-    const handleUpdateReport = (reportStatus : string) => {
-        if(state.note.length < 20) {
-            setIsNotValidNote(true)
-        } else {
-            setIsNotValidNote(false)
-        }
-        if(!isNotValidNote) {
-            if (reportStatus === "approved") {
-                resolvePostCommentReport({
-                    data: {
-                        reportPostCommentId: report.reportPostCommentId,
-                        processStatus: "approved",
-                        processNote: state.note
-                    }
-                }).then(() => {
-               notify!({
-                   data: {
-                       message: "Report has been appoved successfully!"
-                   },
-                   type: ToastType.Success
-               })
-               mutate()
-               onOpenChange()
-                }).catch((err) => {
-                notify!({
-                    data: {
-                        error: err.message
-                    },
-                    type: ToastType.Error
-                })
-                })
-            }
 
-            if (reportStatus === "rejected") {
-                resolvePostCommentReport({
-                    data: {
-                        reportPostCommentId: report.reportPostCommentId,
-                        processStatus: "rejected",
-                        processNote: state.note
-                    }
-                }).then(() => {
-                notify!({
-                    data: {
-                        message: "Report has been resolved successfully!"
-                    },
-                    type: ToastType.Success
-                })
-                mutate()
-                onOpenChange()
-                }).catch((err) => {
-               notify!({
-                   data: {
-                       error: err.message
-                   },
-                   type: ToastType.Error
-               })
-                })
-            }
+    const { trigger, isMutating } = useSWRMutation(
+        "RESOLVE_POST_COMMENT_REPORT",
+        async (_: string, { arg }: { arg: resolvePostCommentReportInput }) => {
+            const { message } = await resolvePostCommentReport(arg)
+            await mutate()
+            notify!({
+                data: {
+                    message
+                },
+                type: ToastType.Success
+            })
+            onOpenChange()
         }
-    }
+    )
+
+    const { trigger: trigger2, isMutating: isMutating2 } = useSWRMutation(
+        "RESOLVE_POST_COMMENT_REPORT",
+        async (_: string, { arg }: { arg: resolvePostCommentReportInput }) => {
+            const { message } = await resolvePostCommentReport(arg)
+            await mutate()
+            notify!({
+                data: {
+                    message
+                },
+                type: ToastType.Success
+            })
+            onOpenChange()
+        }
+    )
 
     return (
         <Modal scrollBehavior="outside" isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" className="p-4">
@@ -125,7 +90,7 @@ export const ResolveModalRef = forwardRef<
                 {() => (
                     <>
                         <ModalHeader className="pt-4 pb-1 text-2xl tracking-tight font-semibold justify-center items-center flex flex-col">
-                            <div className="mr-4">Comment Report Detail </div> 
+                            <div className="mr-4">Comment Report Detail </div>
                             <div> <Chip className="capitalize mb-2 " color={statusColorMap[report.processStatus]} variant="flat">
                                 {processStatus}
                             </Chip>
@@ -166,9 +131,9 @@ export const ResolveModalRef = forwardRef<
                                                         key: postCommentMediaId,
                                                         mediaId,
                                                         mediaType,
-                                                    }))}/>
+                                                    }))} />
                                             </div>
-                                        ): (<></>)}
+                                        ) : (<></>)}
                                         <p className="mb-1"><span className="font-semibold  text-gray-800 dark:text-gray-300">Author:</span> <span className="">{creator?.username} </span></p>
                                         <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Created Date: </span>{dayjs(createdAt).format("hh:mm:ss A DD/MM/YYYY")}</p>
                                         <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Number of likes: </span>{numberOfLikes}</p>
@@ -176,7 +141,7 @@ export const ResolveModalRef = forwardRef<
                                         <p className="mb-2"><span className="font-semibold  text-gray-800 dark:text-gray-300">Is a comment as solution : </span>{isSolution ? "Yes" : "No"}</p>
                                         <p className="mb-1"><span className="font-semibold  text-gray-800 dark:text-gray-300">This post is belong to the post:</span> <span className="">{post?.title} </span></p>
                                     </div>
-                                        
+
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-medium pb-4  text-gray-800 dark:text-gray-300">Report Content</h2>
@@ -193,31 +158,56 @@ export const ResolveModalRef = forwardRef<
                                         }}
                                         id="progressNote"
                                         type="string"
+                                        minLength={20}
                                         isRequired
                                         labelPlacement="outside"
                                         placeholder="Take note here"
-                                        isInvalid={isNotValidNote}
+                                        isInvalid={state.note.length < 20}
                                         errorMessage="The note should be at least 20 characters long."
-                                        onChange={(e) => dispatch({ type: "SET_NOTE", payload: e.target.value })}
+                                        onValueChange={(value) =>
+                                            dispatch({ type: "SET_NOTE", payload: value })
+                                        }
                                     />
                                 ) : (
                                     <p className="">{processNote}</p>
                                 )}
-                                
+
                             </div>
 
                         </ModalBody>
                         {processStatus == "processing" ? (
                             <ModalFooter>
-                                <Button  color="primary" variant="bordered"
-                                    onClick={() => handleUpdateReport("approved")}>Approve</Button>
-                                <Button color="primary"
-                                    onClick={() => handleUpdateReport("rejected")}
+                                <Button
+                                    color="primary"
+                                    variant="bordered"
+                                    isDisabled={state.note.length < 20}
+                                    isLoading={isMutating}
+                                    onClick={() => trigger({
+                                        data: {
+                                            processNote: state.note,
+                                            processStatus: ReportProcessStatus.Approved,
+                                            reportPostCommentId: report.reportPostCommentId
+                                        }
+                                    })}>
+                                    Approve
+                                </Button>
+
+                                <Button
+                                    color="primary"
+                                    isDisabled={state.note.length < 20}
+                                    isLoading={isMutating2}
+                                    onClick={() => trigger2({
+                                        data: {
+                                            processNote: state.note,
+                                            processStatus: ReportProcessStatus.Approved,
+                                            reportPostCommentId: report.reportPostCommentId
+                                        }
+                                    })}
                                 >
-                            Reject
+                                    Reject
                                 </Button>
                             </ModalFooter>
-                        ): (<></>)}
+                        ) : (<></>)}
                     </>
                 )}
             </ModalContent>

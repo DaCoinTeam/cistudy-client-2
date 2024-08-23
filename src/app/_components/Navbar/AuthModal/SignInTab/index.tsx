@@ -8,18 +8,20 @@ import {
     ModalFooter,
     Spacer,
 } from "@nextui-org/react"
-import { SignInTabContext , SignInTabProvider } from "./SignInTabProvider"
-import { useContext } from "react"
+import { SignInTabContext, SignInTabProvider } from "./SignInTabProvider"
+import { useContext, useRef } from "react"
 import { NavbarContext } from "../../NavbarProvider"
 import { SignInByGoogleIcon } from "./SignInByGoogleButton"
 import { SignInByFacebookIcon } from "./SignInByFacebookButton"
+import { ForgotPasswordModalRef, ForgotPasswordModalRefSelectors } from "./ForgotPasswordModalRef"
 
 const WrappedSignInTab = () => {
     const { formik, swrs } = useContext(SignInTabContext)!
-    const {signInTabSwrMutation} = swrs
-    const {isMutating} = signInTabSwrMutation
+    const { signInTabSwrMutation } = swrs
+    const { isMutating } = signInTabSwrMutation
     const { reducer } = useContext(NavbarContext)!
     const [, dispatch] = reducer
+    const forgetPasswordModalRef = useRef<ForgotPasswordModalRefSelectors>(null)
 
     const onPressToSignUp = () => dispatch({
         type: "SET_IS_SIGN_UP",
@@ -36,7 +38,7 @@ const WrappedSignInTab = () => {
                         isRequired
                         classNames={{
                             inputWrapper: "input-input-wrapper"
-                        }} 
+                        }}
                         labelPlacement="outside"
                         placeholder="Input email here"
                         value={formik.values.email}
@@ -49,7 +51,7 @@ const WrappedSignInTab = () => {
                     <Input
                         classNames={{
                             inputWrapper: "input-input-wrapper"
-                        }} 
+                        }}
                         label="Password"
                         id="password"
                         type="password"
@@ -62,11 +64,17 @@ const WrappedSignInTab = () => {
                         isInvalid={!!(formik.touched.password && formik.errors.password)}
                         errorMessage={formik.touched.password && formik.errors.password}
                     />
+                    <Spacer y={1} />
+                    <div className="text-right">
+                        <div className="text-xs text-primary cursor-pointer underline" onClick={() => forgetPasswordModalRef.current?.onOpen()}>
+                            Forget password?
+                        </div>
+                    </div>
                     <Spacer y={4} />
                     <div className="text-center">
                         <span className="text-sm">Do not have an account?</span>{" "}
                         <Link className="text-sm cursor-pointer" onPress={onPressToSignUp}>
-              Sign Up
+                            Sign Up
                         </Link>
                     </div>
                 </div>
@@ -80,12 +88,12 @@ const WrappedSignInTab = () => {
                         color="primary"
                         isLoading={isMutating}
                     >
-                        {isMutating? "Signing..." : "Sign In"}
+                        {isMutating ? "Signing..." : "Sign In"}
                     </Button>
                     <Spacer y={4} />
                     <div className="flex items-center gap-2">
                         <Divider className="flex-1" />
-            OR
+                        OR
                         <Divider className="flex-1" />
                     </div>
                     <Spacer y={4} />
@@ -95,12 +103,13 @@ const WrappedSignInTab = () => {
                     </div>
                 </div>
             </ModalFooter>
+            <ForgotPasswordModalRef ref={forgetPasswordModalRef} />
         </>
     )
 }
 
 export const SignInTab = () => (
     <SignInTabProvider>
-        <WrappedSignInTab/>
+        <WrappedSignInTab />
     </SignInTabProvider>
 )

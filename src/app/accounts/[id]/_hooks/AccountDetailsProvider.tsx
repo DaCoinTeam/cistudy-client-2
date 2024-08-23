@@ -50,6 +50,7 @@ const WrappedAccountDetailsProvider = ({ children }: { children: ReactNode }) =>
                 followed: true,
                 numberOfFollowers: true,
                 avatarUrl: true,
+                bio: true,
                 kind: true,
                 roles: {
                     accountId: true,
@@ -79,7 +80,7 @@ const WrappedAccountDetailsProvider = ({ children }: { children: ReactNode }) =>
         )
     }, [profile])
 
-    const accountSwr = useSWR([profile?.accountId, "ACCOUNT"], fetchAccount)
+    const accountSwr = useSWR([profile, "ACCOUNT"], fetchAccount)
 
     const accountDetailsContextValue: AccountDetailsContextValue = useMemo(
         () => ({

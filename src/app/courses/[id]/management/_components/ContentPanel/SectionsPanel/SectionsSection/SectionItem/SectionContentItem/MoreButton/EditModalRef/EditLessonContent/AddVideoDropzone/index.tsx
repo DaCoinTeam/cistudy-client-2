@@ -27,6 +27,9 @@ export const AddVideoDropzone = () => {
       })
         },
         multiple: false,
+        accept: {
+            "video/*": [".mp4", ".webm", ".mkv", ".avi", ".mov"],
+        }
     })
 
     return (

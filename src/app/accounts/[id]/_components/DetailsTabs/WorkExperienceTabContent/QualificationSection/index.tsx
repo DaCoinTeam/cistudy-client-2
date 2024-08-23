@@ -103,9 +103,13 @@ export const QualificationSection = () => {
                                                 <div className="text-sm text-foreground-400">{dayjs(new Date(qualification.issuedAt)).format("YYYY MMM, DD")}</div>
                                                 <div className="text-sm text-foreground-400">{qualification.issuedFrom}</div>
                                             </div>                          
-                                            <Link href={qualification.url} isExternal color="foreground" size="sm" showAnchorIcon underline="always">
-                                                {qualification.url} 
-                                            </Link>
+                                            {
+                                                qualification.url && (
+                                                    <Link href={qualification.url} isExternal color="primary" size="sm" showAnchorIcon underline="always">
+                                                        {qualification.url} 
+                                                    </Link>
+                                                )
+                                            }
                                             <Spacer y={4}/>
                                             <Image className="w-[300px]" src={getAssetUrl(qualification.fileId)} alt="qualification" />
                                         </div>

@@ -31,6 +31,8 @@ interface FormikValues {
   usernamePrevious: string;
   birthdate: string;
   birthdatePrevious: string;
+  bio: string;
+  bioPrevious: string;
 }
 
 const initialValues: FormikValues = {
@@ -38,6 +40,8 @@ const initialValues: FormikValues = {
     usernamePrevious: "",
     birthdate: parseISODateString(),
     birthdatePrevious: parseISODateString(),
+    bio: "",
+    bioPrevious: "",
 }
 
 const WrappedEditProfileModalProvider = ({
@@ -50,7 +54,7 @@ const WrappedEditProfileModalProvider = ({
     const { swrs } = useContext(AccountDetailsContext)!
     const { accountSwr } = swrs
     const { data: account } = accountSwr
-    const { username, birthdate } = { ...account }
+    const { username, birthdate, bio } = { ...account }
 
     const usernamePreviousRef = useRef(false)
     useEffect(() => {
@@ -76,13 +80,27 @@ const WrappedEditProfileModalProvider = ({
         formik?.setFieldValue("birthdate", birthdate)
     }, [birthdate])
 
+    const bioPreviousRef = useRef(false)
+    useEffect(() => {
+        if (!bio) return
+
+        if (!bioPreviousRef.current) {
+            bioPreviousRef.current = true
+            formik?.setFieldValue("bioPrevious", bio)
+        }
+
+        formik?.setFieldValue("bio", bio)
+    }, [bio])
+
     const hasChanged = () =>
         formik.values.username !== formik.values.usernamePrevious ||
-    formik.values.birthdate !== formik.values.birthdatePrevious
+    formik.values.birthdate !== formik.values.birthdatePrevious ||
+    formik.values.bio !== formik.values.bioPrevious
 
     const discardChanges = () => {
         formik.setFieldValue("username", formik.values.usernamePrevious)
         formik.setFieldValue("birthdate", formik.values.birthdatePrevious)
+        formik.setFieldValue("bio", formik.values.bioPrevious)
     }
 
     const editProfileModalRefContextValue: EditProfileModalContextValue = useMemo(
@@ -119,11 +137,12 @@ export const EditProfileModalProvider = ({
                 //username: Yup.string().required("Password is required"),
             })
         }
-        onSubmit={async ({ birthdate, username }) => {
+        onSubmit={async ({ birthdate, username, bio }) => {
             const { message } = await updateProfile({
                 data: {
                     username,
-                    birthdate
+                    birthdate,
+                    bio,
                 }
             })
             notify!({

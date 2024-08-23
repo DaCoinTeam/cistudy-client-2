@@ -9,12 +9,13 @@ import {
     ModalFooter,
     ModalHeader,
     Spacer,
+    Textarea,
     useDisclosure,
 } from "@nextui-org/react"
 import { PenIcon, RefreshCcw } from "lucide-react"
 import React, { useContext } from "react"
 import { EditProfileModalContext, EditProfileModalProvider } from "./EditProfileModalProvider"
-import { parseDate, getLocalTimeZone } from "@internationalized/date"
+import { parseDate, getLocalTimeZone, today } from "@internationalized/date"
 import { parseISODateString } from "@common"
 
 export const WrappedEditProfileModal = () => {
@@ -52,10 +53,20 @@ export const WrappedEditProfileModal = () => {
                             // classNames={{
                             //     inputWrapper: "input-input-wrapper"
                             // }}
+                            maxValue={today(getLocalTimeZone())}
                             label="Birthdate" value={parseDate(formik.values.birthdate)} className="w-full" 
                             labelPlacement="outside" onChange={(value) => {
                                 formik.setFieldValue("birthdate", parseISODateString(value.toDate(getLocalTimeZone())))
                             }}
+                        />
+                        <Spacer y={4} />
+                        <Textarea
+                            label="Bio"
+                            id="bio"
+                            labelPlacement="outside"
+                            value={formik.values.bio}
+                            placeholder="Input bio here"
+                            onChange={formik.handleChange}
                         />
                     </ModalBody>
                     <ModalFooter className="p-6 gap-2 pt-0">

@@ -9,7 +9,7 @@ import { ToastType } from "../../../../../../../../_components"
 import { AccountDetailsContext } from "../../../../../../_hooks"
 import { ErrorResponse, parseISODateString } from "@common"
 import { useFormik } from "formik"
-import { getLocalTimeZone, parseDate } from "@internationalized/date"
+import { getLocalTimeZone, parseDate, today } from "@internationalized/date"
 
 export interface AddQualificationModalRefProps {
 
@@ -144,6 +144,7 @@ export const AddQualificationModalRef = forwardRef<
                         <Spacer y={4} />
                         <DatePicker
                             label="Issued At" value={parseDate(formik.values.issuedAt)} className="w-full" 
+                            maxValue={today(getLocalTimeZone())}
                             labelPlacement="outside" onChange={(value) => {
                                 formik.setFieldValue("issuedAt", parseISODateString(value.toDate(getLocalTimeZone())))
                             }}

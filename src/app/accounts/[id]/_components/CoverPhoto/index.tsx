@@ -21,7 +21,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
 
     const { swrs: rootSwrs } = useContext(RootContext)!
     const { profileSwr } = rootSwrs
-    const { data: profile, mutate: rootMutate } = profileSwr
+    const { data: profile } = profileSwr
 
     const isOwnProfile = account?.accountId === profile?.accountId
 
@@ -42,7 +42,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
         const file = files.item(0)
         if (file === null) return
 
-        updateProfileSwrMutation.trigger({
+        await updateProfileSwrMutation.trigger({
             data: {
                 coverPhotoIndex: 0
             },
@@ -50,7 +50,6 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
         })
 
         await mutate()
-        await rootMutate()
     }
 
     return (
@@ -61,7 +60,7 @@ export const CoverPhoto = (props: CoverPhotoProps) => {
                 <Image
                     alt="coverPhoto"
                     radius="none"
-                    src={getAssetUrl(account?.coverPhotoId, {forceUpdate: false})}
+                    src={getAssetUrl(account?.coverPhotoId)}
                     className="w-full"
                     classNames={{
                         wrapper: "w-full !max-w-full absolute",

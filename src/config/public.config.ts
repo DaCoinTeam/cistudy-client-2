@@ -7,6 +7,7 @@ export const BG_DECORATION = "./background.svg"
 export const BG_DECORATION_DARK = "./background-dark.svg"
 export const CISTUDY_LOGO = "/cistudy-logo.png"
 export const CERTIFICATE = "/Certification.png"
+export const RESET_PASSWORD = "/reset-password.png"
 
 const TOPIC_URL = "/topics"
 export const TOPIC_JAVA = `${TOPIC_URL}/java.svg`

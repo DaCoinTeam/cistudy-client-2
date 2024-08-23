@@ -7,6 +7,7 @@ export interface UpdateProfileInput {
   data: {
     username?: string;
     birthdate?: string;
+    bio?: string;
     avatarIndex?: number;
     coverPhotoIndex?: number;
     walletAddress?: string;

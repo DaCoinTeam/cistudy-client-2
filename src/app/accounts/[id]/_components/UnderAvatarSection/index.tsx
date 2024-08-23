@@ -14,16 +14,20 @@ export const UnderAvatarSection = (props: UnderAvatarSectionProps) => {
     const { swrs } = useContext(AccountDetailsContext)!
     const { accountSwr } = swrs
     const { data: account } = accountSwr
-    const { username, numberOfFollowers } = { ...account }
+    const { username, numberOfFollowers, bio } = { ...account }
 
     return (
-        <div className={`${className} flex justify-between items-center`}>
+        <div className={`${className} flex justify-between items-center gap-4`}>
             <div>
                 <div className="text-4xl">
                     {username ?? "Unnamed"}
                 </div>
                 <Spacer y={0.5} />
                 <div className="text-sm">{formatNouns(numberOfFollowers, "follower")}
+                </div>
+                <Spacer y={0.5} />
+                <div>
+                    {bio?? "No bio"}
                 </div>
             </div>
             <Actions />

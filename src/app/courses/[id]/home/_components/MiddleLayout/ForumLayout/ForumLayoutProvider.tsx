@@ -108,10 +108,10 @@ const WrappedForumLayoutProvider = ({
     )
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            postsSwr.mutate()
-        }, 1000)
-        return () => clearInterval(interval)
+        const handleEffect = async() => {
+            await postsSwr.mutate()
+        }
+        handleEffect()
     }, [postsSwr])
 
     return (
