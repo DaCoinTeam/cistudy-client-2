@@ -37,7 +37,9 @@ const WrappedLayout = ({ children }: { children: ReactNode }) => {
                                 }}
                             >
                                 <Navbar />
-                                {children}
+                                <div className="min-h-[56vh]">
+                                    {children}
+                                </div>
                                 <Footer />
                                 <NotConnectWalletModal />
                             </MetaMaskProvider>

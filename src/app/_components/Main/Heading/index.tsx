@@ -37,13 +37,13 @@ export const Heading = () => {
                     >
             Explore Courses
                     </Button>
-                    <Button
+                    {/* <Button
                         color='primary'
                         variant='bordered'
                         className='ms-4 px-8 py-6 box-border font-medium text-base'
                     >
             More
-                    </Button>
+                    </Button> */}
                 </div>
                 <div className='mt-12'>
                     <div className='text-base text-slate-500 mb-3 tracking-tight leading-8'>

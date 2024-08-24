@@ -24,7 +24,7 @@ const WrappedPage = () => {
     }
 
     return (
-        <div >
+        <div className="min-h-screen">
          
             <div className="p-12 pt-6 max-w-[1920px] w-full mx-auto">
                 

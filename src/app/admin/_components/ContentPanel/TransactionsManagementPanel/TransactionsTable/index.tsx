@@ -1,31 +1,30 @@
 "use client"
-import React, { useContext } from "react"
+import { TransactionStatus, TransactionType, truncate } from "@common"
 import {
-    Table,
-    TableHeader,
-    TableColumn,
-    TableBody,
-    TableRow,
-    TableCell,
-    Pagination,
-    Spinner,
     Chip,
-    Link,
+    Pagination,
     Snippet,
+    Spinner,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
     User,
 } from "@nextui-org/react"
-import {
-    TransactionsManagementPanelContext,
-    ROWS_PER_PAGE,
-} from "../TransactionsManagementPanelProvider"
-import { useRouter } from "next/navigation"
-import { TransactionType, truncate } from "@common"
 import dayjs from "dayjs"
-import { TransactionDetailsModal } from "./TransactionDetailsModal"
+// import { useRouter } from "next/navigation"
+import { useContext } from "react"
 import { getAvatarUrl } from "../../../../../../services/server"
+import {
+    ROWS_PER_PAGE,
+    TransactionsManagementPanelContext,
+} from "../TransactionsManagementPanelProvider"
+import { TransactionDetailsModal } from "./TransactionDetailsModal"
 
 export const TransactionsTable = () => {
-    const router = useRouter()
+    // const router = useRouter()
     const { reducer, swrs } = useContext(TransactionsManagementPanelContext)!
     const [state, dispatch] = reducer
     const { page } = state
@@ -82,6 +81,26 @@ export const TransactionsTable = () => {
         }
         return typeToComponent[type]
     }
+    const renderStatus = (status: TransactionStatus) => {
+        const typeToComponent: Record<TransactionStatus, JSX.Element> = {
+            [TransactionStatus.Failed]: (
+                <Chip color="danger" variant="flat">
+          Failed
+                </Chip>
+            ),
+            [TransactionStatus.Pending]: (
+                <Chip color="warning" variant="flat">
+          Pending
+                </Chip>
+            ),
+            [TransactionStatus.Success]: (
+                <Chip color="success" variant="flat">
+          Success
+                </Chip>
+            ),
+        }
+        return typeToComponent[status]
+    }
 
     return (
         <Table
@@ -127,7 +146,7 @@ export const TransactionsTable = () => {
                 <TableColumn key="type">Type</TableColumn>
                 <TableColumn key="to">To</TableColumn>
                 <TableColumn width={"15%"} key="balanceChange">Balance Change</TableColumn>
-                <TableColumn key="IDs">Details</TableColumn>
+                <TableColumn key="IDs">Status</TableColumn>
                 <TableColumn key="createdAt">Created At</TableColumn>
                 <TableColumn key="details">Actions</TableColumn>
             </TableHeader>
@@ -151,7 +170,8 @@ export const TransactionsTable = () => {
                             </Snippet>
                         </TableCell>
                         <TableCell>{renderType(transaction.type)}</TableCell>
-                        <TableCell><User avatarProps={{
+                        <TableCell>
+                            {/* <User avatarProps={{
                             src : getAvatarUrl({
                                 avatarId: transaction.account.avatarId,
                                 avatarUrl: transaction.account.avatarUrl,
@@ -164,11 +184,13 @@ export const TransactionsTable = () => {
                         }}
                         name={transaction.account.username ?? "Unnamed"}
                         description={"0 followers"}
-                        /></TableCell>
+                        /> */}
+                            {transaction.account.username ?? "Unnamed"}
+                        </TableCell>
                         <TableCell>
                             {transaction.amountOnChainChange ? (
                                 <div className="grid gap-1">
-                                    <div className="flex gap-2 items-center">
+                                    <div className="items-center text-sm">
                                         <div>Deposited: </div>
                                         {transaction.amountDepositedChange >= 0 ? (
                                             <div className="text-success">
@@ -180,7 +202,7 @@ export const TransactionsTable = () => {
                                             </div>
                                         )}
                                     </div>
-                                    <div className="flex gap-2 items-center">
+                                    <div className="items-center  text-sm">
                                         <div>On-chain: </div>
                                         {transaction.amountOnChainChange >= 0 ? (
                                             <div className="text-success">
@@ -206,7 +228,7 @@ export const TransactionsTable = () => {
                                 </div>
                             )}
                         </TableCell>
-                        <TableCell>
+                        {/* <TableCell>
                             {transaction.transactionDetails.length > 0 ? (
                                 <div className="grid gap-1">
                                     {transaction.transactionDetails.map(
@@ -296,7 +318,9 @@ export const TransactionsTable = () => {
                                     ) : null}
                                 </>
                             )}
-                        </TableCell>
+                        </TableCell> */}
+                        <TableCell>{renderStatus(transaction.status)}</TableCell>
+
                         <TableCell>
                             {dayjs(transaction.createdAt).format("HH:mm:ss DD/MM/YYYY")}
                         </TableCell>
