@@ -2,6 +2,7 @@ import { gql } from "@apollo/client"
 import { DeepPartial } from "@apollo/client/utilities"
 import {
     buildAuthPayloadString,
+    CourseConfigurationEntity,
     CourseEntity,
     NotificationEntity,
     Schema,
@@ -162,5 +163,23 @@ ${payload}
     })
 }
 
+export const findLatestCourseConfiguration = async (
+    schema?: Schema<DeepPartial<CourseConfigurationEntity>>
+): Promise<CourseConfigurationEntity> => {
+    const payload = buildAuthPayloadString(schema)
+    const { data: graphqlData } = await authClient.query({
+        query: gql`
+            query FindLatestCourseConfiguration {
+                findLatestCourseConfiguration {
+      ${payload}
+    }
+  }
+          `,
+    })
+    return getGraphqlResponseData({
+        data: graphqlData,
+        isAuth: true,
+    })
+}
 
 

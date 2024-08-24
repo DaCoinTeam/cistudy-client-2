@@ -7,7 +7,7 @@ import { Card, CardBody, Divider, Link, Spacer } from "@nextui-org/react"
 import { ArrowRightIcon } from "@heroicons/react/24/outline"
 import { useRouter } from "next/navigation"
 import dayjs from "dayjs"
-import { ResponsiveContainer, XAxis, YAxis, CartesianGrid, Line, Legend, Tooltip as ChartTooltip, LineChart, Cell, Pie, PieChart } from "recharts"
+import { ResponsiveContainer, XAxis, YAxis, CartesianGrid, Line, Legend, Tooltip as ChartTooltip, LineChart } from "recharts"
 
 interface AnalyticsManagementPanelProps {
   className?: string;
@@ -48,14 +48,6 @@ const WrappedAnalyticsPanel = (props: AnalyticsManagementPanelProps) => {
     }
 
     const router = useRouter()
-
-    const pieData = [
-        { name: "Instructor", value: 50 },
-        { name: "Earn", value: 30 },
-        { name: "Completed", value: 10 },
-        { name: "Foundation", value: 10 },
-    ]
-    const COLORS = ["#006FEE", "#9353d3", "#17c964", "#f5a524"]
 
     return (
         <div className={`${className}`}>
@@ -177,69 +169,6 @@ const WrappedAnalyticsPanel = (props: AnalyticsManagementPanelProps) => {
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
-                </div>
-            </div>
-            <Spacer y={6} />
-            <div className="border border-divider rounded-medium">
-                <div className="p-4">
-                    <div className="font-semibold text-primary">Configuration</div>
-                    <Spacer y={2}/>
-                    <div className="text-warning text-sm">Any changes in configuration will be applied in the next quarter</div>
-                </div>
-                <Divider/>
-                <div className="p-4 h-[500px]">
-                    <div className="grid grid-cols-2 gap-4">
-                        <PieChart width={400} height={400}>
-                            <Pie
-                                label
-                                data={pieData}
-                                cx={120}
-                                cy={200}
-                                innerRadius={60}
-                                outerRadius={80}
-                                fill="#8884d8"
-                                paddingAngle={5}
-                                dataKey="value"
-                            >
-                                {pieData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                ))}
-                            </Pie>
-                            <ChartTooltip formatter={(value, name) => [`${value}%`, name]}/>
-                            <Legend/>
-                        </PieChart>
-                        <div>
-                            <div className="font-semibold">Distribution</div>
-                            <Spacer y={2}/>
-                            <div>
-                                Instructor: 50%
-                            </div>
-                            <div className="text-sm text-foreground-400">
-                                This is the amount of STARCI allocated to instructors when a course is created.
-                            </div>
-                            <Spacer y={1}/>
-                            <div>
-                                Earn: 30%
-                            </div>
-                            <div className="text-sm text-foreground-400">
-                                This is the amount of STARCI awarded to students when they create posts, like, comment, and engage in other activities.
-                            </div>
-                            <Spacer y={1}/>
-                            <div>
-                                Completed: 10%
-                            </div>
-                            <div className="text-sm text-foreground-400">
-                                This is the amount of STARCI granted upon the completion of the course.
-                            </div>
-                            <Spacer y={1}/>
-                            <div>
-                                Foundation: 10%
-                            </div>
-                            <div className="text-sm text-foreground-400">
-                                This is the amount of STARCI allocated to us, the founders, for the application foundation.
-                            </div>
-                        </div>
-                    </div>    
                 </div>
             </div>
         </div>

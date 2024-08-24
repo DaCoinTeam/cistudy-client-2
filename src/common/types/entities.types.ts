@@ -189,6 +189,7 @@ export interface CourseEntity {
   courseRatings: CourseRating;
   duration: number;
   transactionDetails: Array<TransactionDetailEntity>;
+  courseConfigurations: Array<CourseConfigurationEntity>
   //graphql
   numberOfEnrollments?: number;
   enrolled?: boolean;
@@ -204,6 +205,7 @@ export interface CourseEntity {
   isReviewed?: boolean;
   isAddedToCart?: boolean;
   previousFeedback: string;
+  courseConfiguration: CourseConfigurationEntity
 }
 
 export interface CertificateEntity {
@@ -251,14 +253,21 @@ export interface EnrolledInfoEntity {
 
 export interface ConfigurationEntity {
   configurationId: string;
-  earn: number;
-  instructor: number;
-  completed: number;
   foundation: number;
-  appliedAt: Date;
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface CourseConfigurationEntity {
+  courseId: string,
+  course: CourseEntity
+  courseConfigurationId: string;
+  earn: number;
+  completed: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 
 export interface LessonEntity {
   lessonId: string;

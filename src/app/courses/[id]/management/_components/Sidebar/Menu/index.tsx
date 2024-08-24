@@ -68,6 +68,12 @@ export const Menu = (props: MenuProps) => {
             panelSelected: PanelSelected.Price,
         },
         {
+            startContent: <Cog6ToothIcon  width={24} height={24} />,
+            key: "configuration",
+            content: "Configuration",
+            panelSelected: PanelSelected.Configuration,
+        },
+        {
             startContent: <ActivityIcon width={24} height={24} strokeWidth={3/2}/>,
             key: "actions",
             content: "Actions",

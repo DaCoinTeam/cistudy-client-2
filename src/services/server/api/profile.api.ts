@@ -323,3 +323,23 @@ export const registerInstructor = async (
 
     return await authAxios.patch(url)
 }
+
+export interface CreateCourseConfigurationInput {
+  data: {
+    courseId: string
+    earn: number
+    completed: number
+  },
+}
+
+export interface CreateCourseConfigurationOutput {
+  message: string
+}
+
+export const createCourseConfiguration = async (
+    input : CreateCourseConfigurationInput
+): Promise<CreateCourseConfigurationOutput> => {
+    const {data} = input
+    const url = `${BASE_URL}/create-course-configuration`
+    return await authAxios.post(url, data)
+}
