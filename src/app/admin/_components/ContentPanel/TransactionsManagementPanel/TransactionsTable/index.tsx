@@ -10,13 +10,10 @@ import {
     TableCell,
     TableColumn,
     TableHeader,
-    TableRow,
-    User,
+    TableRow
 } from "@nextui-org/react"
 import dayjs from "dayjs"
-// import { useRouter } from "next/navigation"
 import { useContext } from "react"
-import { getAvatarUrl } from "../../../../../../services/server"
 import {
     ROWS_PER_PAGE,
     TransactionsManagementPanelContext,
@@ -24,7 +21,6 @@ import {
 import { TransactionDetailsModal } from "./TransactionDetailsModal"
 
 export const TransactionsTable = () => {
-    // const router = useRouter()
     const { reducer, swrs } = useContext(TransactionsManagementPanelContext)!
     const [state, dispatch] = reducer
     const { page } = state
@@ -228,97 +224,6 @@ export const TransactionsTable = () => {
                                 </div>
                             )}
                         </TableCell>
-                        {/* <TableCell>
-                            {transaction.transactionDetails.length > 0 ? (
-                                <div className="grid gap-1">
-                                    {transaction.transactionDetails.map(
-                                        ({
-                                            transactionDetailId,
-                                            account,
-                                            course,
-                                            directIn,
-                                        }) => {
-                                            if (!directIn) {
-                                                return (
-                                                    <div
-                                                        key={transactionDetailId}
-                                                        className="text-sm"
-                                                    >
-                                                        {" "}
-                                    Enroll to{" "}
-                                                        <Link
-                                                            className="inline"
-                                                            as="button"
-                                                            onPress={() =>
-                                                                router.push(
-                                                                    `/courses/${course?.courseId}`
-                                                                )
-                                                            }
-                                                            size="sm"
-                                                        >
-                                                            {course?.title.slice(0, 15)}...
-                                                        </Link>
-                                                    </div>
-                                                )
-                                            }
-                                            return (
-                                                <div
-                                                    key={transactionDetailId}
-                                                    className="text-sm"
-                                                >
-                                                    {" "}
-                                  User{" "}
-                                                    <Link
-                                                        as="button"
-                                                        onPress={() =>
-                                                            router.push(
-                                                                `/accounts/${account?.accountId}`
-                                                            )
-                                                        }
-                                                        size="sm"
-                                                    >
-                                                        {account?.username.slice(0, 10)}...
-                                                    </Link>
-                                                    {" "}enrolled to{" "}
-                                                    <Link
-                                                        as="button"
-                                                        onPress={() =>
-                                                            router.push(
-                                                                `/courses/${course?.courseId}`
-                                                            )
-                                                        }
-                                                        size="sm"
-                                                    >
-                                                        {course?.title.slice(0, 15)}...
-                                                    </Link>
-                                                </div>
-                                            )
-                                        }
-                                    )}
-                                </div>
-                            ) : (
-                                <>
-                                    {transaction.payPalOrderId ? (
-                                        <div className="flex gap-1 items-center">
-                                            <div>Paypal Order Id:</div>
-                                            <Link as="button">{truncate(transaction.payPalOrderId)}</Link>
-                                        </div>
-                                    ) : null}
-                                    {transaction.transactionHash ? (
-                                        <div className="flex gap-1 items-center">
-                                            <div>Transaction Hash:</div>
-                                            {transaction.transactionHash ? (
-                                                <Link as="button">
-                                                    {truncate(transaction.transactionHash)}
-                                                </Link>
-                                            ) : (
-                                                "N/A"
-                                            )}
-                                        </div>
-                                    ) : null}
-                                </>
-                            )}
-                        </TableCell> */}
                         <TableCell>{renderStatus(transaction.status)}</TableCell>
 
                         <TableCell>

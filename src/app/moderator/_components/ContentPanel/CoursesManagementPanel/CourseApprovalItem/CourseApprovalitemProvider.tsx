@@ -2,8 +2,8 @@
 import React, { ReactNode, createContext, useCallback, useMemo } from "react"
 
 import {
-    FindManyPendingCoursesOutputData,
-    findManyPendingCourses,
+    findManyPublishedCourses,
+    FindManyPublishedCoursesOutputData,
 } from "@services"
 
 import { ErrorResponse } from "@common"
@@ -13,7 +13,7 @@ import useSWR, { SWRResponse } from "swr"
 export interface CourseApprovalItemContextValue {
     reducer: [CourseApprovalItemState, React.Dispatch<CourseApprovalItemAction>],
     swrs: {
-        pendingCoursesSwr: SWRResponse<FindManyPendingCoursesOutputData | undefined, ErrorResponse>
+        pendingCoursesSwr: SWRResponse<FindManyPublishedCoursesOutputData | undefined, ErrorResponse>
     },
 }
 
@@ -28,7 +28,7 @@ const WrappedCourseApprovalItem = ({ children }: {
 
     const fetchPendingCourses = useCallback(
         async ([key]: [number, string]) => {
-            return await findManyPendingCourses(
+            return await findManyPublishedCourses(
                 {
                     options: {
                         skip: ROWS_PER_PAGE * (key - 1),
@@ -58,8 +58,8 @@ const WrappedCourseApprovalItem = ({ children }: {
     const [state] = reducer
     const { page } = state
 
-    const pendingCoursesSwr = useSWR<FindManyPendingCoursesOutputData | undefined, ErrorResponse>(
-        [page, "PENDiNG_COURSES"],
+    const pendingCoursesSwr = useSWR<FindManyPublishedCoursesOutputData | undefined, ErrorResponse>(
+        [page, "PUBLISH_COURSES"],
         fetchPendingCourses,
         {
             revalidateOnFocus: true,

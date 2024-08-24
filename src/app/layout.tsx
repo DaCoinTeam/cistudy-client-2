@@ -37,7 +37,7 @@ const WrappedLayout = ({ children }: { children: ReactNode }) => {
                                 }}
                             >
                                 <Navbar />
-                                <div className="min-h-[56vh]">
+                                <div className="min-h-[calc(100vh-285px)]">
                                     {children}
                                 </div>
                                 <Footer />

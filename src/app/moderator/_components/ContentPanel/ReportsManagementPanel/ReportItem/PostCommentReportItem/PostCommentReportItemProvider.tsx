@@ -17,7 +17,7 @@ export interface PostCommentReportItemContextValue {
     },
 }
 
-export const ROWS_PER_PAGE = 5
+export const ROWS_PER_PAGE = 10
 
 export const PostCommentReportItemContext = createContext<PostCommentReportItemContextValue | null>(null)
 

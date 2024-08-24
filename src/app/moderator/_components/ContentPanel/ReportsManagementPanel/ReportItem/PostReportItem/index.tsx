@@ -1,11 +1,10 @@
 import { ReportPostEntity } from "@common"
-import { Avatar, Chip, ChipProps, Link, Pagination, Spacer, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
-import { getAvatarUrl } from "@services"
+import { Chip, ChipProps, Link, Pagination, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
 import dayjs from "dayjs"
+import { PencilRulerIcon } from "lucide-react"
 import React, { useCallback, useContext } from "react"
 import { PostReportItemContext, PostReportItemProvider, ROWS_PER_PAGE } from "./PostReportItemProvider"
 import { ResolveModalRef, ResolveModalRefSelectors } from "./ResolveModal"
-import { PencilRulerIcon } from "lucide-react"
 
 const WrappedPostReportItem = () => {
     const { swrs, reducer } = useContext(PostReportItemContext)!
@@ -42,17 +41,7 @@ const WrappedPostReportItem = () => {
             </div>
         case "reporter":
             return <div className="flex items-center">
-                <Avatar
-                    name='avatar'
-                    className='w-8 h-8'
-                    src={getAvatarUrl({
-                        avatarId: reporterAccount.avatarId,
-                        avatarUrl: reporterAccount.avatarUrl,
-                        kind: reporterAccount.kind,
-                    })}
-                />
-                <Spacer x={2} />
-                <div className="font-normal">{report.reporterAccount.username}</div>
+                <div className="font-normal">{reporterAccount.username}</div>
             </div>
         case "post": 
             return <div className="line-clamp-1">
@@ -84,14 +73,21 @@ const WrappedPostReportItem = () => {
             return dayjs(createdAt).format("hh:mm:ss A DD/MM/YYYY")
         case "actions":
             return (
-                <div className="flex justify-center">
-                    {
+                <div className="flex justify-center w-20">
+                    {processStatus == "processing" ? (
                         <Link as="button" className="flex flex-row gap-2" onClick={() => handleResolve(report)}>
                             <Tooltip content={"Resolve"}>
                                 <PencilRulerIcon className="w-5 h-5" strokeWidth={3/2}/> 
                             </Tooltip>             
                         </Link>
+                    )
+                        : (
+                            <div className="text-foreground-400 text-sm">
+                                 No action
+                            </div>
+                        )
                     }
+
                 </div>
             )
         }
