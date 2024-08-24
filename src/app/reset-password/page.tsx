@@ -9,10 +9,10 @@ import { RESET_PASSWORD } from "@config"
 const Page = () => {
     const searchParams = useSearchParams()
 
-    const ResetPasswordSwrMutation = useSWRMutation(
+    const resetPasswordSwrMutation = useSWRMutation(
         "RESET_PASSWORD",
         async () => {
-            return await resetPassword({
+            await resetPassword({
                 token: searchParams.get("token") ?? "",
             })
         }
@@ -20,10 +20,10 @@ const Page = () => {
 
     useEffect(() => {
         const handleEffect = async () => {
-            await ResetPasswordSwrMutation.trigger()
+            await resetPasswordSwrMutation.trigger()
         }
         handleEffect()
-    }, [])
+    }, [searchParams])
 
     return (
         <div className="w-screen h-screen grid place-items-center">
