@@ -28,16 +28,16 @@ import { PostReportItemContext } from "../PostReportItemProvider"
 import useSWRMutation from "swr/mutation"
 
 export interface ResolveModalRefProps {
-  report: ReportPostEntity;
+    report: ReportPostEntity;
 }
 
 export interface ResolveModalRefSelectors {
-  onOpen: () => void;
+    onOpen: () => void;
 }
 
 export const ResolveModalRef = forwardRef<
-  ResolveModalRefSelectors | null,
-  ResolveModalRefProps
+    ResolveModalRefSelectors | null,
+    ResolveModalRefProps
 >((props, ref) => {
     const { reducer, swrs } = useContext(PostReportItemContext)!
     const { postReportsSwr } = swrs
@@ -65,13 +65,13 @@ export const ResolveModalRef = forwardRef<
         async (_, { arg }: { arg: ResolvePostReportInput }) => {
             const { message } = await resolvePostReport(arg)
             await mutate()
-      notify!({
-          data: {
-              message,
-          },
-          type: ToastType.Success,
-      })
-      onClose()
+            notify!({
+                data: {
+                    message,
+                },
+                type: ToastType.Success,
+            })
+            onClose()
         }
     )
 
@@ -80,13 +80,13 @@ export const ResolveModalRef = forwardRef<
         async (_, { arg }: { arg: ResolvePostReportInput }) => {
             const { message } = await resolvePostReport(arg)
             await mutate()
-      notify!({
-          data: {
-              message,
-          },
-          type: ToastType.Success,
-      })
-      onClose()
+            notify!({
+                data: {
+                    message,
+                },
+                type: ToastType.Success,
+            })
+            onClose()
         }
     )
 
@@ -139,7 +139,7 @@ export const ResolveModalRef = forwardRef<
                                 <div>
                                     <div>
                                         <div className="font-semibold w-[100px] text-sm">
-                      Content
+                                            Content
                                         </div>
                                         <Spacer y={1.5} />
                                         <div className="border border-divider p-4 rounded-lg">
@@ -168,12 +168,14 @@ export const ResolveModalRef = forwardRef<
                             <div className="text-primary">Moderator Note</div>
                             <Spacer y={4} />
                             <Textarea
+                                isInvalid={state.note.length < 20}
                                 classNames={{
                                     inputWrapper: "input-input-wrapper shadow-lg rounded-md",
                                 }}
                                 id="progressNote"
                                 type="string"
                                 value={state.note}
+                                minLength={20}
                                 isRequired
                                 labelPlacement="outside"
                                 placeholder="Take note here"
@@ -187,6 +189,7 @@ export const ResolveModalRef = forwardRef<
                 </ModalBody>
                 <ModalFooter className="p-4 pt-2">
                     <Button
+                        isDisabled={state.note.length < 20}
                         isLoading={isMutating}
                         variant="bordered"
                         color="primary"
@@ -200,9 +203,10 @@ export const ResolveModalRef = forwardRef<
                             })
                         }}
                     >
-            Reject
+                        Reject
                     </Button>
                     <Button
+                        isDisabled={state.note.length < 20}
                         isLoading={isMutating2}
                         color="primary"
                         onClick={async () => {
@@ -215,7 +219,7 @@ export const ResolveModalRef = forwardRef<
                             })
                         }}
                     >
-            Approve
+                        Approve
                     </Button>
                 </ModalFooter>
             </ModalContent>

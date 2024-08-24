@@ -56,7 +56,6 @@ const WrappedEnrolledCoursesSectionProvider = ({
                         description: true,
                         creator: {
                             username: true,
-                            numberOfFollowers: true,
                             avatarId: true
                         }
                     },

@@ -41,9 +41,6 @@ export const verifyCourse = async (
 
 export interface CreateConfigurationInput {
     data: {
-        instructor: number
-        earn: number
-        completed: number
         foundation: number
     }
 }

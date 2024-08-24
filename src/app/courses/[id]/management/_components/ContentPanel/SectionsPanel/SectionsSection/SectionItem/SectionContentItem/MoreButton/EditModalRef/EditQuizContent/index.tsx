@@ -135,6 +135,8 @@ export const EditQuizContent = () => {
     const { sectionContent } = props
     const { quiz } = sectionContent
     const { quizId, questions } = quiz
+    
+    const totalPoints = questions?.reduce((acc, question) => acc + question.point, 0)
 
     const createQuizQuestionSwrMutation = useSWRMutation(
         "CREATE_QUIZ_QUESTION",
@@ -174,6 +176,22 @@ export const EditQuizContent = () => {
                     </EditQuizContentProvider>
                 </Tab>
                 <Tab key="questions" title="Questions">
+                    <div className="text-xl font-semibold">
+                        Total Points: {totalPoints}
+                    </div>
+                    {
+                        totalPoints !== 100 && (
+                            <>
+                                <Spacer y={2} />
+                                <div>
+                                    <div className="bg-danger/20 rounded-medium p-3">
+                                The total points for this quiz do not equal 100. Please update the points for each question; otherwise, the quiz will be hidden from learners.
+                                    </div>
+                                </div>
+                            </>
+                        )
+                    }
+                    <Spacer y={4} />
                     <div className="border border-divider rounded-medium overflow-hidden">
                         <ScrollShadow className="h-[400px]">
                             <div

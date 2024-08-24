@@ -67,9 +67,13 @@ export interface resolvePostCommentReportInput {
   };
 }
 
+export interface resolvePostCommentReportOutput {
+  message: string;
+}
+
 export const resolvePostCommentReport = async (
     input: resolvePostCommentReportInput
-): Promise<string> => {
+): Promise<resolvePostCommentReportOutput> => {
     const { data } = input
     const url = `${BASE_URL}/posts/resolve-post-comment-report`
 

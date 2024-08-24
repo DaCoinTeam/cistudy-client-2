@@ -156,7 +156,14 @@ const WrappedManagementProvider = ({ children }: { children: ReactNode }) => {
                 },
                 numberOfLessons: true,
                 numberOfQuizzes: true,
-                numberOfResources: true
+                numberOfResources: true,
+                courseConfiguration: {
+                    completed: true,
+                    courseConfigurationId: true,
+                    createdAt: true,
+                    earn: true,
+                    updatedAt: true
+                }
             }
         )
     }, [courseId])

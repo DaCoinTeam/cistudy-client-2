@@ -43,3 +43,29 @@ export const verifyRegistration = async (input: VerifyRegistrationInput): Promis
     const url = `${BASE_URL}/verify-registration`
     return await baseAxios.patch(url, input)
 }
+
+export interface ForgotPasswordInput {
+    email: string
+}
+
+export interface ForgotPasswordOutput {
+    message: string
+}
+
+export const forgotPassword = async(input: ForgotPasswordInput): Promise<ForgotPasswordOutput> => {
+    const url = `${BASE_URL}/forgot-password`
+    return await baseAxios.post(url, input)
+}
+
+export interface ResetPasswordInput {
+    token: string
+}
+
+export interface ResetPasswordOutput {
+    message: string
+}
+
+export const resetPassword = async (input: ResetPasswordInput): Promise<ResetPasswordOutput> => {
+    const url = `${BASE_URL}/reset-password`
+    return await baseAxios.patch(url, input)
+}

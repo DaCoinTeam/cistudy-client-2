@@ -70,6 +70,8 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
         { description, passingPercent, questions }: QuizEntity,
         { title, position }: SectionContentEntity
     ) => {
+        const totalPoints = questions?.reduce((acc, question) => acc + question.point, 0)
+
         return (
             <div className="flex gap-3 items-center w-full">
                 <MoreButton/>
@@ -78,9 +80,13 @@ export const SectionContentItem = (props: SectionContentItemProps) => {
                         <FileQuestionIcon className="w-10 h-10 text-foreground-400" strokeWidth={3 / 2} />
                     </div>
                     <div>
-                        <div>
+                        <div className={
+                            (totalPoints !== 100 ? "text-danger" : "")
+                        }>
                             <span className="font-semibold">{position}. Quiz: </span>
-                            <span>{title}</span>
+                            <span>{
+                                totalPoints !== 100 ? `${title} (The total points for this quiz must be 100)` : title 
+                            }</span>
                         </div>
                         <div className="text-xs text-foreground-400 line-clamp-1">{description}</div>
                         <Spacer y={1}/>

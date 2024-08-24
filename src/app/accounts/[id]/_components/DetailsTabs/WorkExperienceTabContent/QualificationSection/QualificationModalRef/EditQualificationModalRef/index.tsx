@@ -4,7 +4,7 @@ import { forwardRef, useContext, useEffect, useImperativeHandle } from "react"
 import { useDropzone } from "react-dropzone"
 import { EditQualificationModalRefContext, EditQualificationModalRefProvider } from "./EditQualificationModalRefProvider"
 import { FolderClosedIcon, FolderOpenIcon } from "lucide-react"
-import { getLocalTimeZone, parseDate } from "@internationalized/date"
+import { getLocalTimeZone, parseDate, today } from "@internationalized/date"
 import { getAssetUrl } from "@services"
 
 export interface EditQualificationModalRefProps {
@@ -113,6 +113,7 @@ const WrappedEditQualificationModalRef = forwardRef<
                     <Spacer y={4} />
                     <DatePicker
                         label="Issued At" value={parseDate(formik.values.issuedAt)} className="w-full"
+                        maxValue={today(getLocalTimeZone())}
                         labelPlacement="outside" onChange={(value) => {
                             formik.setFieldValue("issuedAt", parseISODateString(value.toDate(getLocalTimeZone())))
                         }}

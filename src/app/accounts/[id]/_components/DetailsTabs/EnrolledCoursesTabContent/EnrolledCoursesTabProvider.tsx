@@ -56,7 +56,6 @@ const WrappedEnrolledCoursesTabContentProvider = ({
                         description: true,
                         creator: {
                             username: true,
-                            numberOfFollowers: true,
                             avatarId: true
                         }
                     },
