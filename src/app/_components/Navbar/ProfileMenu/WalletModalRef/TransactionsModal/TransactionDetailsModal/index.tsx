@@ -148,7 +148,7 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                                         <div>You will receive reward earning after </div>
                                         <Spacer y={1}/>
                                         <div className=" bg-warning/50 p-3 rounded-medium w-fit">
-                                            {countDayHoursMinutesLeft(transaction.createdAt, 1)}
+                                            {countDayHoursMinutesLeft(transaction.createdAt, 3)}
                                         </div>
                                     </div>
                                     <Spacer y={4}/>
