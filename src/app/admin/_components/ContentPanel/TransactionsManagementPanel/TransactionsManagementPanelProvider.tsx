@@ -61,6 +61,7 @@ const WrappedTransactionsManagementPanelProvider = ({
                         },
                         type: true,
                         status: true,
+                        preTextEarn: true,
                         transactionDetails: {
                             account: {
                                 accountId: true,
