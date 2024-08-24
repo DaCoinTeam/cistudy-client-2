@@ -46,32 +46,34 @@ export const UserTooltip = ({className, children, accountId}: UserTooltipProps) 
     const { avatarId, avatarUrl, kind, username, numberOfFollowers } = { ...data }
 
     return (
-        <Tooltip classNames={{
-            content: "p-0"
-        }} className={className} content={
-            <div className="p-4">
-                {
-                    isValidating ? <></> : (
-                        <div>
-                            <User avatarProps={
-                                {   
-                                    size: "lg",
-                                    src: getAvatarUrl({
-                                        avatarId,
-                                        avatarUrl,
-                                        kind,
-                                    })
-                                }
-                            } classNames={{
-                                name: "text-base font-semibold"
-                            }} name={username} description={`${numberOfFollowers} followers`}/>
-                            <Spacer y={6}/>
-                            <Button color="primary" fullWidth onPress={() => router.push(`/accounts/${accountId}`)}>View Details</Button>
-                        </div>
-                    )
-                }
-            </div>
-        }>
+        <Tooltip 
+            placement="right-end"
+            classNames={{
+                content: "p-0"
+            }} className={className} content={
+                <div className="p-4">
+                    {
+                        isValidating ? <></> : (
+                            <div>
+                                <User avatarProps={
+                                    {   
+                                        size: "lg",
+                                        src: getAvatarUrl({
+                                            avatarId,
+                                            avatarUrl,
+                                            kind,
+                                        })
+                                    }
+                                } classNames={{
+                                    name: "text-base font-semibold"
+                                }} name={username} description={`${numberOfFollowers} followers`}/>
+                                <Spacer y={6}/>
+                                <Button color="primary" fullWidth onPress={() => router.push(`/accounts/${accountId}`)}>View Details</Button>
+                            </div>
+                        )
+                    }
+                </div>
+            }>
             {children}
         </Tooltip>
     )

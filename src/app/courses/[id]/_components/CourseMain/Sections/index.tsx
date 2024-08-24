@@ -69,7 +69,7 @@ export const Sections = () => {
                                     <TrophyIcon className="w-3 h-3" strokeWidth={3 / 2} />
                                 }
                             >
-                                {passingPercent}% or higer
+                                {passingPercent}% or higher
                             </Chip>
                             <Chip
                                 classNames={{

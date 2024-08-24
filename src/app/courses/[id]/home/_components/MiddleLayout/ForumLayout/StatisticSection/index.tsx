@@ -301,7 +301,7 @@ export const StatisticSection = () => {
                             }
                         </div>
                     </Tab>
-                    <Tab key="solution" title="Gaven solution">
+                    <Tab key="solution" title="Given solution">
                         <div className="gap-4 grid grid-cols-2">
                             {
                                 data?.markedPosts?.map((post) => (

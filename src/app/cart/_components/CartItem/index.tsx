@@ -69,7 +69,7 @@ export const CartItem = (props: CartItemProps) => {
                                 <VideoIcon size={20} strokeWidth={3 / 2} />
                                 <div className="text-sm">
                                     {numberOfLessons} lesson
-                                    {numberOfQuizzes ?? 0 > 1 ? "s" : ""}
+                                    {numberOfLessons ?? 0 > 1 ? "s" : ""}
                                 </div>
                             </div>
                             <div className="flex gap-2">
@@ -128,17 +128,21 @@ export const CartItem = (props: CartItemProps) => {
                 <div className="col-span-1 ">
                     <div className="h-full grid grid-rows-5 justify-end ">
                         <div className="row-span-4">
-                            <div className="">
+                            {enableDiscount ? (
+                                <div className="flex flex-col items-end">
+                                    <div className="text-base font-semibold p-0 ms-1">
+                                        {discountPrice} STARCI
+                                    </div>
+                                    <div className="text-sm text-foreground-400 line-through ms-1">
+                                        {price} STARCI
+                                    </div>
+                                </div>
+                                   
+                            ):(
                                 <div className="text-base font-semibold p-0 ms-1">
                                     {price} STARCI
                                 </div>
-                                
-                                {enableDiscount && (
-                                    <div className="text-sm text-foreground-400 line-through ms-1">
-                                        {discountPrice} STARCI
-                                    </div>
-                                )}
-                            </div>
+                            )}
                         </div>
                         {handleDelete  && (
                             <div className="row-span-1">
@@ -158,8 +162,8 @@ export const CartItem = (props: CartItemProps) => {
             </div>
             <ConfirmDeleteModalRef
                 ref={confirmDeleteModalRef}
-                title="You are going to delete a course in cart ?"
-                content={`Are you sure delete the course '${title}' in cart`}
+                title="You are going to delete a course in cart?"
+                content={`Are you sure deleting the course '${title}' in cart`}
                 onDeletePress={() => {if(handleDelete){handleDelete(cartCourseId ?? "")}}}
             />
         </div>
