@@ -53,3 +53,15 @@ export const parseMillisecondsTime = (milliseconds : number) => {
     return `${hours}:${minutes}:${seconds}`
 }
 export const parseDateToString = (date: Date) => dayjs(date).format("DD MMM, YYYY")
+
+export const countDayHoursMinutesLeft = (date: Date, additionalDays: number) => {
+    const startDate = dayjs(date)
+    const today = dayjs(new Date())
+    const endDate = startDate.add(additionalDays, "day")
+    const diffMilliseconds = endDate.diff(today)
+    const remainingDuration = dayjs.duration(diffMilliseconds)
+    const remainingDays = Math.floor(remainingDuration.asDays())
+    const remainingHours = remainingDuration.hours()
+    const remainingMinutes = remainingDuration.minutes()
+    return `${remainingDays >= 0 ? remainingDays : 0} ${remainingDays > 1 ? "days" : "day"} ${remainingHours >= 0 ? remainingHours : 0} ${remainingHours > 1 ? "hours" : "hour"} ${remainingMinutes >= 0 ? remainingMinutes : 0} ${remainingMinutes > 1 ? "minutes" : "minute"} `
+}

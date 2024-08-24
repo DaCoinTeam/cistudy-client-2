@@ -83,7 +83,7 @@ export const ConfirmOrderModalRef = forwardRef<
                                                 <div className=""> {course?.title} </div>
                                             </div>
                                             <div className="flex flex-col items-end">
-                                                <div className="text-primary">{course?.enableDiscount ? discountPrice : course?.price} STARCI</div>
+                                                <div className="text-primary">{course?.enableDiscount ? course?.discountPrice : course?.price} STARCI</div>
                                                 {course?.enableDiscount && <div className="text-sm text-foreground-400 line-through ms-1">{course?.price} STARCI</div>}
                                             </div>
                                            

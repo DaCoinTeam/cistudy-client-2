@@ -115,7 +115,7 @@ export const CoursesTable = () => {
             >
                 <TableHeader>
                     <TableColumn key="infomation" width={750}>
-          Infomation
+          Information
                     </TableColumn>
                     <TableColumn key="enrollments">Enrollments</TableColumn>
                     <TableColumn key="status">Price</TableColumn>
