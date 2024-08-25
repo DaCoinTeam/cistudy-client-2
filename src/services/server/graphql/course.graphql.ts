@@ -333,29 +333,29 @@ ${payload}
     })
 }
 
-export interface FindManyPendingCoursesInputData {
+export interface FindManyPublishedCoursesInputData {
   options?: {
     take?: number;
     skip?: number;
   };
 }
 
-export interface FindManyPendingCoursesOutputData {
+export interface FindManyPublishedCoursesOutputData {
   results: Array<CourseEntity>;
   metadata: {
     count: number;
   };
 }
 
-export const findManyPendingCourses = async (
-    data: FindManyPendingCoursesInputData,
-    schema: Schema<DeepPartial<FindManyPendingCoursesOutputData>>
-): Promise<FindManyPendingCoursesOutputData> => {
+export const findManyPublishedCourses = async (
+    data: FindManyPublishedCoursesInputData,
+    schema: Schema<DeepPartial<FindManyPublishedCoursesOutputData>>
+): Promise<FindManyPublishedCoursesOutputData> => {
     const payload = buildAuthPayloadString(schema)
     const { data: graphqlData } = await authClient.query({
         query: gql`
-      query findManyPendingCourses($data: FindManyPendingCourseInputData!) {
-        findManyPendingCourses(data: $data) {
+      query findManyPublishedCourses($data: FindManyPublishedCoursesInputData!) {
+        findManyPublishedCourses(data: $data) {
 ${payload}
 }
 }

@@ -10,7 +10,6 @@ const WrappedCourseApprovalItem = () => {
     const [state, dispatch] = reducer
     const { pendingCoursesSwr } = swrs
     const { data: pendingCourseData, isLoading } = pendingCoursesSwr
-
     const sortByNewestCreatedDate = () => {
         return pendingCourseData?.results.sort((a, b) => {
             return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -28,15 +27,23 @@ const WrappedCourseApprovalItem = () => {
     }
 
     const columns = [
+        { key: "no", label: "No" },
         { key: "title", label: "Title" },
         { key: "author", label: "Author" },
         { key: "createdAt", label: "Created At" },
         { key: "status", label: "Status" },
         { key: "actions", label: "Actions" }
     ]
+    const indexOfItem = (item: CourseEntity) => pendingCourseData?.results.indexOf(item) || 0
 
-    const renderCell = useCallback((course: CourseEntity, columnKey: React.Key) => {
+    const renderCell = useCallback((course: CourseEntity, columnKey: React.Key, page: number) => {
         switch (columnKey) {
+        case "no":
+            return (
+                <div>
+                    {(page - 1) * ROWS_PER_PAGE + indexOfItem(course)  + 1}
+                </div>
+            )
         case "title":
             return (
                 <div className="w-60">
@@ -63,7 +70,7 @@ const WrappedCourseApprovalItem = () => {
             return (
                 <div className="flex justify-center">
                     {
-                        course.verifyStatus === "pending" && (
+                        course.verifyStatus === "pending" ?  (
                             <div className="flex flex-row gap-2">
                                 <Tooltip content="Preview" color="primary">
                                     <EyeIcon
@@ -71,6 +78,10 @@ const WrappedCourseApprovalItem = () => {
                                         onClick={() => window.open(`/moderator/course-preview/${course.courseId}`)}
                                     />
                                 </Tooltip>
+                            </div>
+                        ) : (
+                            <div className="text-foreground-400 text-sm">
+                                 No action
                             </div>
                         )
                     }
@@ -145,7 +156,7 @@ const WrappedCourseApprovalItem = () => {
                     {(item) => (
                         <TableRow key={item.courseId}>
                             {
-                                (columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>
+                                (columnKey) => <TableCell>{renderCell(item, columnKey, state.page)}</TableCell>
                             }
                         </TableRow>
                     )}

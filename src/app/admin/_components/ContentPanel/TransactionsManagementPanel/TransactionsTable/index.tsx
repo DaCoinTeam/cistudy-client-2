@@ -1,31 +1,26 @@
 "use client"
-import React, { useContext } from "react"
+import { TransactionStatus, TransactionType, truncate } from "@common"
 import {
-    Table,
-    TableHeader,
-    TableColumn,
-    TableBody,
-    TableRow,
-    TableCell,
-    Pagination,
-    Spinner,
     Chip,
-    Link,
+    Pagination,
     Snippet,
-    User,
+    Spinner,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow
 } from "@nextui-org/react"
-import {
-    TransactionsManagementPanelContext,
-    ROWS_PER_PAGE,
-} from "../TransactionsManagementPanelProvider"
-import { useRouter } from "next/navigation"
-import { TransactionType, truncate } from "@common"
 import dayjs from "dayjs"
+import { useContext } from "react"
+import {
+    ROWS_PER_PAGE,
+    TransactionsManagementPanelContext,
+} from "../TransactionsManagementPanelProvider"
 import { TransactionDetailsModal } from "./TransactionDetailsModal"
-import { getAvatarUrl } from "../../../../../../services/server"
 
 export const TransactionsTable = () => {
-    const router = useRouter()
     const { reducer, swrs } = useContext(TransactionsManagementPanelContext)!
     const [state, dispatch] = reducer
     const { page } = state
@@ -82,6 +77,26 @@ export const TransactionsTable = () => {
         }
         return typeToComponent[type]
     }
+    const renderStatus = (status: TransactionStatus) => {
+        const typeToComponent: Record<TransactionStatus, JSX.Element> = {
+            [TransactionStatus.Failed]: (
+                <Chip color="danger" variant="flat">
+          Failed
+                </Chip>
+            ),
+            [TransactionStatus.Pending]: (
+                <Chip color="warning" variant="flat">
+          Pending
+                </Chip>
+            ),
+            [TransactionStatus.Success]: (
+                <Chip color="success" variant="flat">
+          Success
+                </Chip>
+            ),
+        }
+        return typeToComponent[status]
+    }
 
     return (
         <Table
@@ -127,7 +142,7 @@ export const TransactionsTable = () => {
                 <TableColumn key="type">Type</TableColumn>
                 <TableColumn key="to">To</TableColumn>
                 <TableColumn width={"15%"} key="balanceChange">Balance Change</TableColumn>
-                <TableColumn key="IDs">Details</TableColumn>
+                <TableColumn key="IDs">Status</TableColumn>
                 <TableColumn key="createdAt">Created At</TableColumn>
                 <TableColumn key="details">Actions</TableColumn>
             </TableHeader>
@@ -151,7 +166,8 @@ export const TransactionsTable = () => {
                             </Snippet>
                         </TableCell>
                         <TableCell>{renderType(transaction.type)}</TableCell>
-                        <TableCell><User avatarProps={{
+                        <TableCell>
+                            {/* <User avatarProps={{
                             src : getAvatarUrl({
                                 avatarId: transaction.account.avatarId,
                                 avatarUrl: transaction.account.avatarUrl,
@@ -164,11 +180,13 @@ export const TransactionsTable = () => {
                         }}
                         name={transaction.account.username ?? "Unnamed"}
                         description={"0 followers"}
-                        /></TableCell>
+                        /> */}
+                            {transaction.account.username ?? "Unnamed"}
+                        </TableCell>
                         <TableCell>
                             {transaction.amountOnChainChange ? (
                                 <div className="grid gap-1">
-                                    <div className="flex gap-2 items-center">
+                                    <div className="items-center text-sm">
                                         <div>Deposited: </div>
                                         {transaction.amountDepositedChange >= 0 ? (
                                             <div className="text-success">
@@ -180,7 +198,7 @@ export const TransactionsTable = () => {
                                             </div>
                                         )}
                                     </div>
-                                    <div className="flex gap-2 items-center">
+                                    <div className="items-center  text-sm">
                                         <div>On-chain: </div>
                                         {transaction.amountOnChainChange >= 0 ? (
                                             <div className="text-success">
@@ -206,97 +224,8 @@ export const TransactionsTable = () => {
                                 </div>
                             )}
                         </TableCell>
-                        <TableCell>
-                            {transaction.transactionDetails.length > 0 ? (
-                                <div className="grid gap-1">
-                                    {transaction.transactionDetails.map(
-                                        ({
-                                            transactionDetailId,
-                                            account,
-                                            course,
-                                            directIn,
-                                        }) => {
-                                            if (!directIn) {
-                                                return (
-                                                    <div
-                                                        key={transactionDetailId}
-                                                        className="text-sm"
-                                                    >
-                                                        {" "}
-                                    Enroll to{" "}
-                                                        <Link
-                                                            className="inline"
-                                                            as="button"
-                                                            onPress={() =>
-                                                                router.push(
-                                                                    `/courses/${course?.courseId}`
-                                                                )
-                                                            }
-                                                            size="sm"
-                                                        >
-                                                            {course?.title.slice(0, 15)}...
-                                                        </Link>
-                                                    </div>
-                                                )
-                                            }
-                                            return (
-                                                <div
-                                                    key={transactionDetailId}
-                                                    className="text-sm"
-                                                >
-                                                    {" "}
-                                  User{" "}
-                                                    <Link
-                                                        as="button"
-                                                        onPress={() =>
-                                                            router.push(
-                                                                `/accounts/${account?.accountId}`
-                                                            )
-                                                        }
-                                                        size="sm"
-                                                    >
-                                                        {account?.username.slice(0, 10)}...
-                                                    </Link>
-                                                    {" "}enrolled to{" "}
-                                                    <Link
-                                                        as="button"
-                                                        onPress={() =>
-                                                            router.push(
-                                                                `/courses/${course?.courseId}`
-                                                            )
-                                                        }
-                                                        size="sm"
-                                                    >
-                                                        {course?.title.slice(0, 15)}...
-                                                    </Link>
-                                                </div>
-                                            )
-                                        }
-                                    )}
-                                </div>
-                            ) : (
-                                <>
-                                    {transaction.payPalOrderId ? (
-                                        <div className="flex gap-1 items-center">
-                                            <div>Paypal Order Id:</div>
-                                            <Link as="button">{truncate(transaction.payPalOrderId)}</Link>
-                                        </div>
-                                    ) : null}
-                                    {transaction.transactionHash ? (
-                                        <div className="flex gap-1 items-center">
-                                            <div>Transaction Hash:</div>
-                                            {transaction.transactionHash ? (
-                                                <Link as="button">
-                                                    {truncate(transaction.transactionHash)}
-                                                </Link>
-                                            ) : (
-                                                "N/A"
-                                            )}
-                                        </div>
-                                    ) : null}
-                                </>
-                            )}
-                        </TableCell>
+                        <TableCell>{renderStatus(transaction.status)}</TableCell>
+
                         <TableCell>
                             {dayjs(transaction.createdAt).format("HH:mm:ss DD/MM/YYYY")}
                         </TableCell>

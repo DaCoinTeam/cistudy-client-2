@@ -155,7 +155,7 @@ export const LearningSteps = () => (
                 </div>
             </div>
             <div className='col-span-2  h-full flex flex-col justify-center items-center '>
-                <div className='text-4xl tracking-tight font-semibold text-gray-900 dark:text-white  mb-4'>
+                <div className='text-4xl tracking-tight font-bold text-gray-900 dark:text-white  mb-4'>
           Easy steps to learn and earn
                 </div>
                 <div className='font-normal text-gray-600  dark:text-gray-400 text-pretty'>

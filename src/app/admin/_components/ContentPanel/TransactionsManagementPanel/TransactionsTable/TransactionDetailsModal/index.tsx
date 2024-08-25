@@ -1,6 +1,7 @@
 import { EyeIcon } from "@heroicons/react/24/outline"
 import {
     Button,
+    Chip,
     Link,
     Modal,
     ModalBody,
@@ -12,7 +13,7 @@ import {
     User,
     useDisclosure,
 } from "@nextui-org/react"
-import { TransactionEntity, truncate } from "@common"
+import { countDayHoursMinutesLeft, TransactionEntity, TransactionStatus, TransactionType, truncate } from "@common"
 import { useRouter } from "next/navigation"
 import dayjs from "dayjs"
 import { getAvatarUrl } from "../../../../../../../services/server"
@@ -24,7 +25,61 @@ interface TransactionDetailsModalProps {
 export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModalProps) => {
     const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure()
     const router = useRouter()
-
+    const renderStatus = (status: TransactionStatus) => {
+        const typeToComponent: Record<TransactionStatus, JSX.Element> = {
+            [TransactionStatus.Failed]: (
+                <Chip color="danger" variant="flat">
+          Failed
+                </Chip>
+            ),
+            [TransactionStatus.Pending]: (
+                <Chip color="warning" variant="flat">
+          Pending
+                </Chip>
+            ),
+            [TransactionStatus.Success]: (
+                <Chip color="success" variant="flat">
+          Success
+                </Chip>
+            ),
+        }
+        return typeToComponent[status]
+    }
+    const renderType = (type: TransactionType) => {
+        const typeToComponent: Record<TransactionType, JSX.Element> = {
+            [TransactionType.Buy]: (
+                <Chip color="warning" variant="flat">
+          Buy
+                </Chip>
+            ),
+            [TransactionType.Deposit]: (
+                <Chip color="primary" variant="flat">
+          Deposit
+                </Chip>
+            ),
+            [TransactionType.Withdraw]: (
+                <Chip color="secondary" variant="flat">
+          Withdraw
+                </Chip>
+            ),
+            [TransactionType.Earn]: (
+                <Chip color="success" variant="flat">
+          Earn
+                </Chip>
+            ),
+            [TransactionType.CheckOut]: (
+                <Chip color="danger" variant="flat">
+          Check Out
+                </Chip>
+            ),
+            [TransactionType.Received]: (
+                <Chip color="default" variant="flat">
+          Received
+                </Chip>
+            ),
+        }
+        return typeToComponent[type]
+    }
     return (
         <>
             <Link size="sm" as="button" onPress={onOpen}>
@@ -96,6 +151,24 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                                 )}
                             </div>
                             <Spacer y={4}/>
+                            <div className="text-sm">Status &ensp;{renderStatus(transaction.status)}</div>
+                            <Spacer y={2}/>
+                            <div className="text-sm">Type &ensp;  &ensp;{renderType(transaction.type)}</div>
+                            <Spacer y={4}/>
+
+                            {transaction.status == TransactionStatus.Pending && (
+                                <>
+                                    <div className="text-sm">
+                                        <div>Account {transaction.account.username ?? "Unnamed"} will receive reward earning after </div>
+                                        <Spacer y={1}/>
+                                        <div className=" bg-warning/50 p-3 rounded-medium w-fit">
+                                            {countDayHoursMinutesLeft(transaction.createdAt, 3)}
+                                        </div>
+                                    </div>
+                                    <Spacer y={4}/>
+                                </>
+                            )}
+
                             <div className="text-primary font-semibold">Details</div>
                             <Spacer y={1}/>
                             <div className="text-sm">
@@ -107,18 +180,53 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                                                 account,
                                                 course,
                                                 directIn,
+                                                post
                                             }) => {
-                                                if (!directIn) {
+                                                if(course) {
+                                                    if (!directIn) {
+                                                        return (
+                                                            <div
+                                                                key={transactionDetailId}
+                                                                className="text-sm"
+                                                            >
+                                                                {" "}
+                                        Enroll to{" "}
+                                                                <Link
+                                                                    className="inline"
+                                                                    // as="button"
+                                                                    onPress={() =>
+                                                                        router.push(
+                                                                            `/courses/${course?.courseId}`
+                                                                        )
+                                                                    }
+                                                                    size="sm"
+                                                                >
+                                                                    {course?.title}
+                                                                </Link>
+                                                            </div>
+                                                        )
+                                                    }
                                                     return (
                                                         <div
                                                             key={transactionDetailId}
                                                             className="text-sm"
                                                         >
                                                             {" "}
-                                    Enroll to{" "}
+                                      User{" "}
                                                             <Link
-                                                                className="inline"
-                                                                as="button"
+                                                                // as="button"
+                                                                onPress={() =>
+                                                                    router.push(
+                                                                        `/accounts/${account?.accountId}`
+                                                                    )
+                                                                }
+                                                                size="sm"
+                                                            >
+                                                                {account?.username}
+                                                            </Link>
+                                                            {" "}enrolled to{" "}
+                                                            <Link
+                                                                // as="button"
                                                                 onPress={() =>
                                                                     router.push(
                                                                         `/courses/${course?.courseId}`
@@ -131,38 +239,26 @@ export const TransactionDetailsModal = ({ transaction }: TransactionDetailsModal
                                                         </div>
                                                     )
                                                 }
-                                                return (
-                                                    <div
-                                                        key={transactionDetailId}
-                                                        className="text-sm"
-                                                    >
-                                                        {" "}
-                                  User{" "}
-                                                        <Link
-                                                            as="button"
-                                                            onPress={() =>
-                                                                router.push(
-                                                                    `/accounts/${account?.accountId}`
-                                                                )
-                                                            }
-                                                            size="sm"
-                                                        >
-                                                            {account?.username}
-                                                        </Link>
-                                                        {" "}enrolled to{" "}
-                                                        <Link
-                                                            as="button"
-                                                            onPress={() =>
-                                                                router.push(
-                                                                    `/courses/${course?.courseId}`
-                                                                )
-                                                            }
-                                                            size="sm"
-                                                        >
-                                                            {course?.title}
-                                                        </Link>
-                                                    </div>
-                                                )
+                                                if (transaction.type === TransactionType.Earn) {
+                                                    if (post) {
+                                                        return (
+                                                            <div className="text-sm" key={transactionDetailId}>
+                                                                {transaction.preTextEarn}  <Link
+                                                                    as="button"
+                                                                    onPress={() =>
+                                                                        router.push(
+                                                                            `/posts/${post.postId}`
+                                                                        )
+                                                                    }
+                                                                    size="sm"
+                                                                >
+                                                                    {post?.title.slice(0, 40)}
+                                                                </Link>
+                                                            </div>
+                                                        )
+                                                    }
+                                                }
+                                               
                                             }
                                         )}
                                     </div>
