@@ -33,11 +33,17 @@ export const CourseCertificateImage = (props: CourseCertificateImageProps) => {
     const addTolinkedIn = () => {
         const issueYear = dayjs(createdAt).format("YYYY")
         const issueMonth = dayjs(createdAt).format("MM")
+        const expirationYear = dayjs(expiredDate).format("YYYY")
+        const expirationMonth = dayjs(expiredDate).format("MM")
+        const certUrl = `https://cistudy-client-2.vercel.app/certificate/${certificateId ?? ""}`
         const linkedIn = generateLinkedinLink({
             certId: certificateId ?? "",
             courseTitle: course?.title ?? "",
             issueYear,
             issueMonth,
+            expirationYear,
+            expirationMonth,
+            certUrl
         })
         window.open(linkedIn)
     }

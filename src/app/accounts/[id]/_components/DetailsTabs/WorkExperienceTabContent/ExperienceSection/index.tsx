@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, Divider, Image } from "@nextui-org/react"
+import { Card, CardHeader, CardBody, Divider, Image, Spacer } from "@nextui-org/react"
 import { Edit3, PlusIcon, Trash2 } from "lucide-react"
 import { AddExperienceModalRefSelectors, AddExperiencesModalRef, EditExperienceModalRef, EditExperienceModalRefSelectors } from "./ExperienceModalRef"
 import { useContext, useRef, useState } from "react"
@@ -93,12 +93,12 @@ export const ExperienceSection = () => {
                                             {job.role}
                                         </div>
 
-                                        <div className="text-base opacity-50">
+                                        <div className="text-sm opacity-50">
                                             {dayjs(job.startDate).format("MMM YYYY")} - {job.endDate ? dayjs(job.endDate).format("MMM YYYY") : "Present"} · {job.endDate ? dayjs(job.endDate).diff(dayjs(job.startDate), "year") : dayjs().diff(dayjs(job.startDate), "year")} years
                                         </div>
-
+                                        <Spacer y={4}/>
                                         <div>
-                                            <Image className="w-44" src={getAssetUrl(job.companyThumbnailId)} alt="company" />
+                                            <Image className="w-[300px]" src={getAssetUrl(job.companyThumbnailId)} alt="company" />
                                         </div>
                                     </div>
 

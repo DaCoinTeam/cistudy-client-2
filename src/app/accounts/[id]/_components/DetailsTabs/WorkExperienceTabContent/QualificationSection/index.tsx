@@ -118,7 +118,11 @@ export const QualificationSection = () => {
                                             {
                                                 currentAccountId === accountIdParam && (
                                                     <div className="flex flex-row gap-4">
-                                                        <Trash2 className="w-5 h-5 cursor-pointer text-danger" strokeWidth={3 / 2} onClick={() => handleOpenDeleteQualificationModal(qualification)} />
+                                                        {
+                                                            accountQualifications && accountQualifications.length > 1 && (
+                                                                <Trash2 className="w-5 h-5 cursor-pointer text-danger" strokeWidth={3 / 2} onClick={() => handleOpenDeleteQualificationModal(qualification)} />
+                                                            )
+                                                        }
                                                         <Edit3 className="w-5 h-5 cursor-pointer text-primary" strokeWidth={3 / 2} onClick={() => handleOpenEditQualificationModal(qualification)} />
                                                     </div>
                                                 )

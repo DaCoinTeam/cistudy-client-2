@@ -4,7 +4,6 @@ import { useReducer } from "react"
 export interface PostReportItemState {
     page: number
     report: ReportPostEntity
-    note: string
 }
 
 export interface SetPageAction {
@@ -17,17 +16,11 @@ export interface SetReportAction {
     payload: ReportPostEntity
 }
 
-export interface SetNoteAction {
-    type: "SET_NOTE"
-    payload: string
-}
-
-export type PostReportItemAction = SetPageAction | SetReportAction | SetNoteAction
+export type PostReportItemAction = SetPageAction | SetReportAction
 
 export const state: PostReportItemState = {
     page: 1,
     report: {} as ReportPostEntity,
-    note: ""
 }
 
 export const reducer = (
@@ -39,8 +32,6 @@ export const reducer = (
         return { ...state, page: action.payload }
     case "SET_REPORT":
         return { ...state, report: action.payload }
-    case "SET_NOTE":
-        return { ...state, note: action.payload }
     default:
         return state
     }

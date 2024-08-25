@@ -113,7 +113,7 @@ export const WrappedCreateCommentModal = () => {
                         onPress={onPress}
                         color="primary"
                         isLoading={formik.isSubmitting}
-                        isDisabled={formik.isSubmitting}
+                        isDisabled={!(data?.result === false) || formik.isSubmitting || isMutating}
                         startContent={formik.isSubmitting? <></> : <PlusIcon height={20} width={20}/>}
                     >
                         {
