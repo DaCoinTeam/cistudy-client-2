@@ -70,61 +70,61 @@ export const SettingsPanel = (props: SettingsPanelProps) => {
             If your course is not accepted upon initial review, you have the opportunity to make necessary revisions and resubmit it for consideration.
                     </div>
                     <div>Your course must meet these requirements before publishing:</div>
-                    <div>
+                    <div className="grid border border-divider rounded-medium p-4 gap-2 text-sm">
                         <div className="flex flex-row gap-2">
                             {
-                                title && title?.length > 20 ? <Check size={24} className="text-success" /> : <X size={24} className="text-danger" />
+                                title && title?.length > 20 ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
                             }
-                            <div>Title is longer than 20 characters</div>
+                            <div className={`${title && title?.length > 20? "text-success" : "text-danger"}`}>Title is longer than 20 characters</div>
                         </div>
 
                         <div className="flex flex-row gap-2">
                             {
-                                description && description?.length > 100 ? <Check size={24} className="text-success" /> : <X size={24} className="text-danger" />
+                                description && description?.length > 100 ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
                             }
-                            <div>Description is longer than 100 characters</div>
+                            <div className={`${description && description?.length > 100 ? "text-success" : "text-danger"}`}>Description is longer than 100 characters</div>
                         </div>
 
                         <div className="flex flex-row gap-2">
                             {
-                                checkCategoryLevels() ? <Check size={24} className="text-success" /> : <X size={24} className="text-danger" />
+                                checkCategoryLevels() ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
                             }
-                            <div>Have at least 1 category, 1 subcategory, 1 topic</div>
+                            <div className={`${checkCategoryLevels()? "text-success" : "text-danger"}`}>Have at least 1 category, 1 subcategory, 1 topic</div>
                         </div>
 
                         <div className="flex flex-row gap-2">
                             {
-                                thumbnailId && previewVideoId ? <Check size={24} className="text-success" /> : <X size={24} className="text-danger" />
+                                thumbnailId && previewVideoId ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
                             }
-                            <div>Must have thumbnail and video preview</div>
+                            <div className={`${thumbnailId && previewVideoId ? "text-success" : "text-danger"}`}>Must have thumbnail and video preview</div>
                         </div>
 
                         <div className="flex flex-row gap-2">
                             {
-                                courseTargets && courseTargets?.length > 1 ? <Check size={24} className="text-success" /> : <X size={24} className="text-danger" />
+                                courseTargets && courseTargets?.length > 1 ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
                             }
-                            <div>Have at least 2 targets</div>
+                            <div className={`${courseTargets && courseTargets?.length > 1 ? "text-success" : "text-danger"}`}>Have at least 2 targets</div>
                         </div>
 
                         <div className="flex flex-row gap-2">
                             {
-                                sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0) ? <Check size={24} className="text-success" /> : <X size={24} className="text-danger" />
+                                sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0) ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
                             }
-                            <div>Have at least 1 section and 1 content in each section</div>
+                            <div className={`${sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0)? "text-success" : "text-danger"}`}>Have at least 1 section and 1 content in each section</div>
                         </div>
 
                         <div className="flex flex-row gap-2">
                             {
-                                sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0 && section.contents.every((content) => content.lesson?.lessonVideoId)) ? <Check size={24} className="text-success" /> : <X size={24} className="text-danger" />
+                                sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0 && section.contents.every((content) => content.lesson?.lessonVideoId)) ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
                             }
-                            <div>Lesson in each section must have a video</div>
+                            <div className={`${sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0 && section.contents.every((content) => content.lesson?.lessonVideoId)) ? "text-success" : "text-danger"}`}>Lesson in each section must have a video</div>
                         </div>
 
                         <div className="flex flex-row gap-2">
                             {
-                                price ? <Check size={24} className="text-success" /> : <X size={24} className="text-danger" />
+                                price ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
                             }
-                            <div>Have price</div>
+                            <div className={`${price? "text-success" : "text-danger"}`}>Have price</div>
                         </div>
                     </div>
                     <PublishButton />
