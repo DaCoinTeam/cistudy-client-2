@@ -10,6 +10,8 @@ import React, {
 } from "react"
 import { updateCourse } from "@services"
 import { ManagementContext } from "../../../../_hooks"
+import { RootContext } from "../../../../../../../_hooks"
+import { ToastType } from "../../../../../../../_components"
 
 interface ManagePriceContextValue {
   formik: FormikProps<FormikValues>;
@@ -119,6 +121,7 @@ export const ManagePriceProvider = ({
 }: {
   children: ReactNode;
 }) => {
+    const {notify} = useContext(RootContext)!
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data: courseManagement, mutate } = courseManagementSwr
@@ -132,13 +135,19 @@ export const ManagePriceProvider = ({
                 { setFieldValue }
             ) => {
                 if (!courseId) return
-                await updateCourse({
+                const {message} = await updateCourse({
                     data: {
                         courseId,
                         price: Number.parseFloat(price),
                         discountPrice: Number.parseFloat(discountPrice),
                         enableDiscount,
                     },
+                })
+                notify!({
+                    data: {
+                        message,
+                    },
+                    type: ToastType.Success,
                 })
                 setFieldValue("pricePrevious", price)
                 setFieldValue("discountPricePrevious", discountPrice)

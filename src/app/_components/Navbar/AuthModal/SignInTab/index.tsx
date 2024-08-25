@@ -65,7 +65,7 @@ const WrappedSignInTab = () => {
                         errorMessage={formik.touched.password && formik.errors.password}
                     />
                     <Spacer y={1} />
-                    <div className="text-right pt-2">
+                    <div className="text-left pt-2">
                         <div className="text-xs text-primary cursor-pointer underline" onClick={() => forgetPasswordModalRef.current?.onOpen()}>
                             Forgot password?
                         </div>

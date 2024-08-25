@@ -5,6 +5,7 @@ import { PublishButton } from "./PublishButton"
 import { VerifyStatus } from "@common"
 import { ManagementContext } from "../../../_hooks"
 import { RemoveButton } from "./RemoveButton"
+import { Check, X } from "lucide-react"
 
 interface SettingsPanelProps {
   className?: string;
@@ -14,7 +15,7 @@ export const SettingsPanel = (props: SettingsPanelProps) => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data } = courseManagementSwr
-    const { verifyStatus } = { ...data }
+    const { verifyStatus, title, description, thumbnailId, previewVideoId, sections, courseCategories, courseTargets, price } = { ...data }
 
     const renderStatus = () => {
         const map: Record<VerifyStatus, JSX.Element> = {
@@ -43,6 +44,15 @@ export const SettingsPanel = (props: SettingsPanelProps) => {
         return map[verifyStatus ?? VerifyStatus.Draft]
     }
 
+    const checkCategoryLevels = () => {
+        if (!courseCategories) return false
+        const hasLevel0 = courseCategories.some(item => item.category.level === 0)
+        const hasLevel1 = courseCategories.some(item => item.category.level === 1)
+        const hasLevel2 = courseCategories.some(item => item.category.level === 2)
+        
+        return hasLevel0 && hasLevel1 && hasLevel2
+    }
+
     return (
         <div className={`${className}`}>
             <div className="text-2xl font-semibold"> Actions </div>
@@ -58,6 +68,64 @@ export const SettingsPanel = (props: SettingsPanelProps) => {
             accordingly. 
                         <br/>
             If your course is not accepted upon initial review, you have the opportunity to make necessary revisions and resubmit it for consideration.
+                    </div>
+                    <div>Your course must meet these requirements before publishing:</div>
+                    <div className="grid border border-divider rounded-medium p-4 gap-2 text-sm">
+                        <div className="flex flex-row gap-2">
+                            {
+                                title && title?.length > 20 ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
+                            }
+                            <div className={`${title && title?.length > 20? "text-success" : "text-danger"}`}>Title is longer than 20 characters</div>
+                        </div>
+
+                        <div className="flex flex-row gap-2">
+                            {
+                                description && description?.length > 100 ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
+                            }
+                            <div className={`${description && description?.length > 100 ? "text-success" : "text-danger"}`}>Description is longer than 100 characters</div>
+                        </div>
+
+                        <div className="flex flex-row gap-2">
+                            {
+                                checkCategoryLevels() ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
+                            }
+                            <div className={`${checkCategoryLevels()? "text-success" : "text-danger"}`}>Have at least 1 category, 1 subcategory, 1 topic</div>
+                        </div>
+
+                        <div className="flex flex-row gap-2">
+                            {
+                                thumbnailId && previewVideoId ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
+                            }
+                            <div className={`${thumbnailId && previewVideoId ? "text-success" : "text-danger"}`}>Must have thumbnail and video preview</div>
+                        </div>
+
+                        <div className="flex flex-row gap-2">
+                            {
+                                courseTargets && courseTargets?.length > 1 ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
+                            }
+                            <div className={`${courseTargets && courseTargets?.length > 1 ? "text-success" : "text-danger"}`}>Have at least 2 targets</div>
+                        </div>
+
+                        <div className="flex flex-row gap-2">
+                            {
+                                sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0) ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
+                            }
+                            <div className={`${sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0)? "text-success" : "text-danger"}`}>Have at least 1 section and 1 content in each section</div>
+                        </div>
+
+                        <div className="flex flex-row gap-2">
+                            {
+                                sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0 && section.contents.every((content) => content.lesson?.lessonVideoId)) ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
+                            }
+                            <div className={`${sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0 && section.contents.every((content) => content.lesson?.lessonVideoId)) ? "text-success" : "text-danger"}`}>Lesson in each section must have a video</div>
+                        </div>
+
+                        <div className="flex flex-row gap-2">
+                            {
+                                price ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
+                            }
+                            <div className={`${price? "text-success" : "text-danger"}`}>Have price</div>
+                        </div>
                     </div>
                     <PublishButton />
                 </div>

@@ -26,17 +26,17 @@ export const ConfigurationPanelContext =
   createContext<ConfigurationPanelContextValue | null>(null)
 
 interface FormikValues {
-  earn: number;
-  completed: number;
-  instructor: number;
-  foundation: number;
+    earn: number;
+    completed: number;
+    instructor: number
+    foundation: number;
 }
 
 const initialValues: FormikValues = {
     earn: 30,
     completed: 10,
     instructor: 50,
-    foundation: 10,
+    foundation: 10
 }
 
 const WrappedFormikProvider = ({
@@ -48,41 +48,40 @@ const WrappedFormikProvider = ({
   children: ReactNode;
   configurationSwr: SWRResponse<ConfigurationEntity, ErrorResponse>;
 }) => {
-    const {
-        swrs: {
-            courseManagementSwr: { data },
-        },
-    } = useContext(ManagementContext)!
+    const { swrs: { courseManagementSwr: { data }}} = useContext(ManagementContext)!
     const { courseConfiguration } = { ...data }
 
     useEffect(() => {
         if (!configurationSwr.data?.foundation) return
-        formik.setFieldValue("foundation", configurationSwr.data?.foundation)
+        formik.setFieldValue(
+            "foundation",
+            configurationSwr.data?.foundation
+        )
     }, [configurationSwr.data?.foundation])
 
     useEffect(() => {
         if (!courseConfiguration?.completed) return
-        formik.setFieldValue("completed", courseConfiguration?.completed)
+        formik.setFieldValue(
+            "completed",
+            courseConfiguration?.completed
+        )
     }, [courseConfiguration?.completed])
 
     useEffect(() => {
         if (!courseConfiguration?.earn) return
-        formik.setFieldValue("earn", courseConfiguration?.earn)
+        formik.setFieldValue(
+            "earn",
+            courseConfiguration?.earn
+        )
     }, [courseConfiguration?.earn])
 
+    
     useEffect(() => {
         formik.setFieldValue(
             "instructor",
-            100 -
-        formik.values.completed -
-        formik.values.earn -
-        (configurationSwr.data?.foundation ?? 10)
+            100 - formik.values.completed - formik.values.earn - (configurationSwr.data?.foundation ?? 0)
         )
-    }, [
-        formik.values.completed,
-        formik.values.earn,
-        configurationSwr.data?.foundation,
-    ])
+    }, [formik.values.completed, formik.values.earn, configurationSwr.data?.foundation])
 
     const configurationPanelContextValue: ConfigurationPanelContextValue =
     useMemo(
@@ -109,11 +108,7 @@ export const ConfigurationPanelProvider = ({
 }: {
   children: ReactNode;
 }) => {
-    const {
-        swrs: {
-            courseManagementSwr: { data },
-        },
-    } = useContext(ManagementContext)!
+    const { swrs: { courseManagementSwr: { data }}} = useContext(ManagementContext)!
     const { courseId } = { ...data }
 
     const configurationSwr = useSWR("CONFIGURATION", async () => {
@@ -126,11 +121,6 @@ export const ConfigurationPanelProvider = ({
     })
 
     const { notify } = useContext(RootContext)!
-    const {
-        swrs: {
-            courseManagementSwr: { mutate },
-        },
-    } = useContext(ManagementContext)!
 
     return (
         <Formik
@@ -149,11 +139,10 @@ export const ConfigurationPanelProvider = ({
                 const { message } = await createCourseConfiguration({
                     data: {
                         ...data,
-                        courseId,
-                    },
+                        courseId
+                    }
                 })
-                await mutate()
-
+                await configurationSwr.mutate()
         notify!({
             data: {
                 message,

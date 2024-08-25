@@ -59,7 +59,7 @@ export const resolvePostReport = async (
     return await authAxios.patch(url, data)
 }
 
-export interface resolvePostCommentReportInput {
+export interface ResolvePostCommentReportInput {
   data: {
     reportPostCommentId: string;
     processStatus: string;
@@ -67,13 +67,13 @@ export interface resolvePostCommentReportInput {
   };
 }
 
-export interface resolvePostCommentReportOutput {
+export interface ResolvePostCommentReportOutput {
   message: string;
 }
 
 export const resolvePostCommentReport = async (
-    input: resolvePostCommentReportInput
-): Promise<resolvePostCommentReportOutput> => {
+    input: ResolvePostCommentReportInput
+): Promise<ResolvePostCommentReportOutput> => {
     const { data } = input
     const url = `${BASE_URL}/posts/resolve-post-comment-report`
 

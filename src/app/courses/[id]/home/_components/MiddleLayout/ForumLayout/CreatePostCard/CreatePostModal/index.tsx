@@ -129,12 +129,15 @@ export const WrappedCreatePostModal = () => {
           Reset
                 </Button>
                 <Button
-                    isDisabled={!(data?.result === false)}
+                    isDisabled={!(data?.result === false) || formik.isSubmitting || isMutating}
+                    isLoading={formik.isSubmitting}
                     onPress={onPress}
                     startContent={<PlusIcon height={20} width={20} />}
                     color="primary"
                 >
-          Create
+                    {
+                        formik.isSubmitting ? "Creating..." : "Create"
+                    }
                 </Button>
             </ModalFooter>
         </>
