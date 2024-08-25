@@ -49,12 +49,18 @@ export const WrappedDepositModal = () => {
                                 <div className="text-sm text-foreground-400">STARCI</div>
                             }
                         />
+                        <div className="text-sm text-warning">
+                            <div>You will need to confirm the transaction in MetaMask. 
+                            </div>
+                            <div>Make sure to finish this step for the transaction to proceed.
+                            </div>
+                        </div>
                     </ModalBody>
                     <ModalFooter className="p-4 pt-2">
                         <Button
                             fullWidth
                             color="primary"
-                            isDisabled={formik.isSubmitting}
+                            isDisabled={formik.isSubmitting ||formik.values.depositAmount <= 0}
                             isLoading={formik.isSubmitting}
                             onPress={formik.submitForm}
                         >
