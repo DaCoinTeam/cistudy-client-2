@@ -199,12 +199,12 @@ export const Notifications = () => {
             content: "p-0"
         }}>
             <PopoverTrigger>
-                <Button isIconOnly variant="light" className="p-6">
-                    {getNotification.length === 0 || getNotViewed == 0 ? (
-                        <div>
-                            <BellAlertIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
-                        </div>
-                    ) : (
+                {getNotification.length === 0 || getNotViewed == 0 ? (
+                    <Link className="cursor-pointer items-center flex hover:bg-foreground-400/20 p-2 rounded-full" role="button">
+                        <BellAlertIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
+                    </Link>
+                ) : (
+                    <Link className="cursor-pointer items-center flex hover:bg-foreground-400/20 p-2 rounded-full" role="button">
                         <Badge
                             color="danger"
                             content={getNotViewed}
@@ -212,8 +212,9 @@ export const Notifications = () => {
                         >
                             <BellAlertIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
                         </Badge>
-                    )}
-                </Button>
+                    </Link>
+                ) }
+
             </PopoverTrigger>
             <PopoverContent>
                 {getNotification.length === 0 ? (

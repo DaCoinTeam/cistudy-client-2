@@ -60,7 +60,7 @@ export const WrappedDepositModal = () => {
                         <Button
                             fullWidth
                             color="primary"
-                            isDisabled={formik.isSubmitting ||formik.values.depositAmount <= 0}
+                            isDisabled={formik.isSubmitting}
                             isLoading={formik.isSubmitting}
                             onPress={formik.submitForm}
                         >

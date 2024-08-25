@@ -6,6 +6,9 @@ import {
     NavbarBrand,
     NavbarContent,
     NavbarItem,
+    NavbarMenu,
+    NavbarMenuItem,
+    NavbarMenuToggle,
     Navbar as NextUINavbar
 } from "@nextui-org/react"
 import { useRouter } from "next/navigation"
@@ -68,53 +71,102 @@ const WrappedNavbar = (props: NavbarProps) => {
                     wrapper: "!max-w-full px-12",
                 }}
             >
-                <NavbarBrand>
-                    <div
-                        className='font-semibold text-primary cursor-pointer'
-                        role='button'
-                        onClick={() => router.push("/")}
-                    >
-                        <span className='text-lg  text-blue-400'>Ci</span>
-                        <span className='text-lg text-primary '>Study</span>
-                    </div>
-                </NavbarBrand>
-                <NavbarContent justify='start' className="space-x-6 -ml-32">
-                    <Link className="font-medium text-base leading-8 text-gray-700 dark:text-gray-200 hover:text-primary cursor-pointer" onPress={handleCoursesPress}>Courses</Link>
-                    <Categories/>
-                    <SearchInput className='w-[500px]' />
+                <NavbarContent className="lg:hidden"  >
+                    <NavbarMenuToggle className="pr-6 " />
+                    <NavbarItem  className="hidden md:flex lg:hidden">
+                        <NavbarBrand>
+                            <div
+                                className='font-semibold text-primary cursor-pointer'
+                                role='button'
+                                onClick={() => router.push("/")}
+                            >
+                                <span className='text-lg  text-blue-400'>Ci</span>
+                                <span className='text-lg text-primary '>Study</span>
+                            </div>
+                        </NavbarBrand>
+                    </NavbarItem>
                 </NavbarContent>
-                <NavbarContent justify='end'>
-                    {profile && profile?.accountId ? (<NavbarItem className="mr-2 justify-center">
-                        <Button isIconOnly variant="light" className="p-6" onPress={handleCartPress}>
-                            {cart && cart?.cartCourses?.length > 0 ? (
-                                <Badge color="danger" content={cart?.cartCourses?.length}  shape="circle">
-                                    <ShoppingCartIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
-                                </Badge>
-                            ) : (
-                                <div>
-                                    <ShoppingCartIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
-                                </div>
-                            )}
-                            
-                        </Button>
-                    </NavbarItem>) : (<NavbarItem></NavbarItem>)}
-                    {profile && profile?.accountId ? (
-                        <NavbarItem className="mr-2 justify-center">
-                            <Notifications/>
-                        </NavbarItem>
-                    ) : (
-                        <NavbarItem></NavbarItem>
-                    ) }
+                <NavbarContent justify="center" className="hidden md:flex lg:hidden">
                     <NavbarItem>
+                        
+                    </NavbarItem>
+                    <NavbarItem>
+                        <SearchInput className='md:w-[320px] lg:w-[380px] xl:w-[500px]' />
+                    </NavbarItem>
+                   
+                </NavbarContent>
+                <NavbarContent justify="center" className="flex md:hidden">
+                    <NavbarBrand>
+                        <div
+                            className='font-semibold text-primary cursor-pointer'
+                            role='button'
+                            onClick={() => router.push("/")}
+                        >
+                            <span className='text-lg  text-blue-400'>Ci</span>
+                            <span className='text-lg text-primary '>Study</span>
+                        </div>
+                    </NavbarBrand>
+                </NavbarContent>
+                
+                <NavbarContent justify="start" className="hidden lg:flex w-full gap-6">
+                    <NavbarItem className="mr-32">
+                        <NavbarBrand>
+                            <div
+                                className='font-semibold text-primary cursor-pointer'
+                                role='button'
+                                onClick={() => router.push("/")}
+                            >
+                                <span className='text-lg  text-blue-400'>Ci</span>
+                                <span className='text-lg text-primary '>Study</span>
+                            </div>
+                        </NavbarBrand>
+                    </NavbarItem>
+                    <NavbarItem>
+                        <Link className=" font-medium text-base leading-8 text-gray-700 dark:text-gray-200 hover:text-primary cursor-pointer" onPress={handleCoursesPress}>Courses</Link>
+                    </NavbarItem>
+                    <NavbarItem>
+                        <Categories/>
+                    </NavbarItem>
+                    <NavbarItem>
+                        <SearchInput className='md:w-[320px] lg:w-[380px] xl:w-[500px]' />
+                    </NavbarItem>
+                </NavbarContent>
+
+
+                <NavbarContent justify='end' className="gap-4 lg:gap-6 flex">
+                    <NavbarItem className="hidden md:flex">
+                        {profile && profile?.accountId ? (
+                            cart && cart?.cartCourses?.length > 0 ? (
+                                <Link onPress={handleCartPress} className="cursor-pointer items-center flex hover:bg-foreground-400/20 p-2 rounded-full" role="button">
+                                    <Badge content={cart?.cartCourses?.length} shape="circle" color="danger">
+                                        <ShoppingCartIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
+                                    </Badge>
+                                </Link>
+                                
+                            ) : (
+                                <Link onPress={handleCartPress} className="cursor-pointer items-center flex hover:bg-foreground-400/20 p-2 rounded-full" role="button">
+                                    <ShoppingCartIcon className="w-7 h-7 text-gray-700 dark:text-gray-200" />
+                                </Link>
+                            
+                            )
+                        ) : (<></>)}
+                    </NavbarItem>
+                    <NavbarItem className="hidden md:flex">
+                        {profile && profile?.accountId ? (
+                            <Notifications/>
+                        ) : (<></>)
+                        }
+                    </NavbarItem>
+                    <NavbarItem className="hidden lg:flex">
                         <DarkModeSwitch />
                     </NavbarItem>
-                    {profile && profile ? (
-                        <NavbarItem>
+
+                    <NavbarItem>
+                        {profile && profile ? (                            
                             <ProfileMenu />
-                        </NavbarItem>
-                    ) : (
-                        <>
-                            <NavbarItem className='hidden lg:flex'>
+
+                        ) : (
+                            <>
                                 <Button
                                     color='primary'
                                     onPress={onSignUpPress}
@@ -126,10 +178,22 @@ const WrappedNavbar = (props: NavbarProps) => {
                                 <Button color="primary" variant="solid" onPress={onSignInPress}>
                   Sign In
                                 </Button>
-                            </NavbarItem>
-                        </>
-                    )}
+                            </>
+                        )}
+                    </NavbarItem>
                 </NavbarContent>
+                
+                <NavbarMenu>
+                    <NavbarMenuItem>
+                        <Link className="text-lg font-medium leading-8 text-gray-700 dark:text-gray-200 hover:text-primary cursor-pointer" onPress={handleCoursesPress}>Courses</Link>
+                    </NavbarMenuItem>
+                    <NavbarItem className="flex md:hidden">
+                        <Link className="text-lg font-medium leading-8 text-gray-700 dark:text-gray-200 hover:text-primary cursor-pointer" onPress={handleCartPress}>Go to cart</Link>
+                    </NavbarItem>
+                    <NavbarItem >
+                        <DarkModeSwitch />
+                    </NavbarItem>
+                </NavbarMenu>
             </NextUINavbar>
             <AuthModal />
         </>
