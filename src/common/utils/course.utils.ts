@@ -40,10 +40,13 @@ export interface CertificateProps {
     courseTitle: string
     issueYear: string
     issueMonth: string
+    expirationYear?: string
+    expirationMonth?: string
+    certUrl?: string
 }
 
 export const generateLinkedinLink = (props : CertificateProps) => {
-    const {certId, courseTitle, issueYear, issueMonth} = props
-    const linkedinLink = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${courseTitle}&certId=${certId}&issueYear=${issueYear}&issueMonth=${issueMonth}&organizationName=CiStudy`
+    const {certId, courseTitle, issueYear, issueMonth, expirationYear, expirationMonth, certUrl} = props
+    const linkedinLink = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${courseTitle}&certId=${certId}&issueYear=${issueYear}&issueMonth=${issueMonth}&expirationYear=${expirationYear}&expirationMonth=${expirationMonth}&certUrl=${certUrl}&organizationName=CiStudy`
     return linkedinLink
 }

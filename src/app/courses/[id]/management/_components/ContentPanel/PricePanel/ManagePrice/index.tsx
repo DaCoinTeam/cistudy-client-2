@@ -136,6 +136,7 @@ const WrappedManagePrice = () => {
               Cancel
                 </Button>
                 <Button
+                    isLoading={formik.isSubmitting}
                     isDisabled={!hasChanged()}
                     onPress={onSubmit}
                     color="primary"

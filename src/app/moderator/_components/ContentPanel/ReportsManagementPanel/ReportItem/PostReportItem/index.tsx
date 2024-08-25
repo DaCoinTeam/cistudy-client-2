@@ -86,11 +86,13 @@ const WrappedPostReportItem = () => {
             return (
                 <div className="flex justify-center">
                     {
-                        <Link as="button" className="flex flex-row gap-2" onClick={() => handleResolve(report)}>
-                            <Tooltip content={"Resolve"}>
-                                <PencilRulerIcon className="w-5 h-5" strokeWidth={3/2}/> 
-                            </Tooltip>             
-                        </Link>
+                        processStatus === "processing" && (
+                            <Link as="button" className="flex flex-row gap-2" onClick={() => handleResolve(report)}>
+                                <Tooltip content={"Resolve"}>
+                                    <PencilRulerIcon className="w-5 h-5" strokeWidth={3/2}/> 
+                                </Tooltip>             
+                            </Link>
+                        )
                     }
                 </div>
             )

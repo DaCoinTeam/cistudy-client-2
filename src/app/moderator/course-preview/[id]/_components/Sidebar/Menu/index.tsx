@@ -63,6 +63,12 @@ export const Menu = (props: MenuProps) => {
             panelSelected: PanelSelected.Sections,
         },
         {
+            startContent: <Cog6ToothIcon  width={24} height={24} />,
+            key: "configuration",
+            content: "Configuration",
+            panelSelected: PanelSelected.Configuration,
+        },
+        {
             startContent: <CurrencyDollarIcon width={24} height={24} />,
             key: "price",
             content: "Price",
