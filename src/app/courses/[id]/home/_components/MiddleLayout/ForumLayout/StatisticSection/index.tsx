@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import useSWR from "swr"
 import { HomeContext } from "../../../../_hooks"
 import { Card, CardBody, Chip, Spacer, Tab, Tabs, User } from "@nextui-org/react"
-import { CheckIcon, GiftIcon } from "lucide-react"
+import { CheckIcon, Clock, GiftIcon } from "lucide-react"
 import { parseTimeAgo } from "../../../../../../../../common/utils"
 import { useRouter } from "next/navigation"
 
@@ -84,7 +84,8 @@ export const StatisticSection = () => {
                 }
             },
             totalEarning: true,
-            numberOfRewardablePostsLeft: true
+            numberOfRewardablePostsLeft: true,
+            pendingEarning: true
         })
     })
 
@@ -98,6 +99,10 @@ export const StatisticSection = () => {
                         <div>Total Earning </div>
                         <Spacer y={2} />
                         <div className="text-4xl font-semibold text-success">  {data?.totalEarning?.toFixed(2)} STARCI </div>
+                        <div className="flex gap-1 items-center">
+                            <Clock className="text-warning" size={18} />
+                            <div className="text-1xl font-semibold text-warning">  {data?.pendingEarning?.toFixed(2)} STARCI </div>
+                        </div>  
                     </div>
                 </div>
                 <Spacer y={6} />
