@@ -27,7 +27,7 @@ interface FormikValues {
 }
 
 const initialValues: FormikValues = {
-    depositAmount: 0
+    depositAmount: 1
 }
 
 const WrappedFormikProvider = ({
@@ -50,7 +50,7 @@ const WrappedFormikProvider = ({
 
 export const DepositModalProvider = ({ children }: { children: ReactNode }) => {
     const baseDisclosure = useDisclosure()
-
+    const {onClose} = baseDisclosure
     const { provider } = useSDK()
 
     const { reducer } = useContext(RootContext)!
@@ -70,7 +70,7 @@ export const DepositModalProvider = ({ children }: { children: ReactNode }) => {
             initialValues={initialValues}
             validationSchema={Yup.object({
                 depositAmount: Yup.number()
-                    .min(0)
+                    .min(1, "The deposit amount must be at least 1")
                     .required("Deposit amount is required"),
             })}
             onSubmit={async ({ depositAmount }, {
@@ -100,7 +100,10 @@ export const DepositModalProvider = ({ children }: { children: ReactNode }) => {
                 dispatch({
                     type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
                 })
-
+                dispatch({
+                    type: "TRIGGER_REFRESH_BALANCE_KEY"
+                })
+                onClose()
                 notify!({
                     data: {
                         message

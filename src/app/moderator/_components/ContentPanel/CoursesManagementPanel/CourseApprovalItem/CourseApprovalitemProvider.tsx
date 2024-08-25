@@ -13,11 +13,11 @@ import useSWR, { SWRResponse } from "swr"
 export interface CourseApprovalItemContextValue {
     reducer: [CourseApprovalItemState, React.Dispatch<CourseApprovalItemAction>],
     swrs: {
-        pendingCoursesSwr: SWRResponse<FindManyPublishedCoursesOutputData | undefined, ErrorResponse>
+        publishCoursesSwr: SWRResponse<FindManyPublishedCoursesOutputData | undefined, ErrorResponse>
     },
 }
 
-export const ROWS_PER_PAGE = 5
+export const ROWS_PER_PAGE = 10
 
 export const CourseApprovalItemContext = createContext<CourseApprovalItemContextValue | null>(null)
 
@@ -58,7 +58,7 @@ const WrappedCourseApprovalItem = ({ children }: {
     const [state] = reducer
     const { page } = state
 
-    const pendingCoursesSwr = useSWR<FindManyPublishedCoursesOutputData | undefined, ErrorResponse>(
+    const publishCoursesSwr = useSWR<FindManyPublishedCoursesOutputData | undefined, ErrorResponse>(
         [page, "PUBLISH_COURSES"],
         fetchPendingCourses,
         {
@@ -70,10 +70,10 @@ const WrappedCourseApprovalItem = ({ children }: {
         () => ({
             reducer,
             swrs: {
-                pendingCoursesSwr,
+                publishCoursesSwr,
             },
         }),
-        [reducer, pendingCoursesSwr]
+        [reducer, publishCoursesSwr]
     )
 
     return (
