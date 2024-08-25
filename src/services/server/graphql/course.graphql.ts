@@ -478,6 +478,7 @@ export interface GetCourseStatisticInputData {
 export interface GetCourseStatisticOutputData {
   numberOfRewardablePostsLeft?: number;
   totalEarning?: number;
+  pendingEarning?: number;
   likePosts?: Array<PostEntity>;
   commentPosts?: Array<PostEntity>;
   markedPosts?: Array<PostEntity>;
