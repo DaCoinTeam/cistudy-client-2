@@ -109,7 +109,7 @@ const WrappedNavbar = (props: NavbarProps) => {
                 </NavbarContent>
                 
                 <NavbarContent justify="start" className="hidden lg:flex w-full gap-6">
-                    <NavbarItem className="mr-32">
+                    <NavbarItem >
                         <NavbarBrand>
                             <div
                                 className='font-semibold text-primary cursor-pointer'
@@ -121,19 +121,22 @@ const WrappedNavbar = (props: NavbarProps) => {
                             </div>
                         </NavbarBrand>
                     </NavbarItem>
-                    <NavbarItem>
-                        <Link className=" font-medium text-base leading-8 text-gray-700 dark:text-gray-200 hover:text-primary cursor-pointer" onPress={handleCoursesPress}>Courses</Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Categories/>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <SearchInput className='md:w-[320px] lg:w-[380px] xl:w-[500px]' />
-                    </NavbarItem>
+                    <NavbarContent justify="center" className="grow gap-4 xl:gap-6" >
+                        <NavbarItem>
+                            <Link className=" font-medium text-base leading-8 text-gray-700 dark:text-gray-200 hover:text-primary cursor-pointer" onPress={handleCoursesPress}>Courses</Link>
+                        </NavbarItem>
+                        <NavbarItem className="h-full">
+                            <Categories/>
+                        </NavbarItem>
+                        <NavbarItem>
+                            <SearchInput className='md:w-[320px] lg:w-[380px] xl:w-[500px]' />
+                        </NavbarItem>
+                    </NavbarContent>
+                    
                 </NavbarContent>
 
 
-                <NavbarContent justify='end' className="gap-4 lg:gap-6 flex">
+                <NavbarContent justify='end' className="gap-4 lg:gap-6 flex min-w-40" style={{flexGrow: 0}}>
                     <NavbarItem className="hidden md:flex">
                         {profile && profile?.accountId ? (
                             cart && cart?.cartCourses?.length > 0 ? (
