@@ -15,7 +15,7 @@ export const SettingsPanel = (props: SettingsPanelProps) => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data } = courseManagementSwr
-    const { verifyStatus, title, description, thumbnailId, previewVideoId, sections, courseCategories, courseTargets, price } = { ...data }
+    const { verifyStatus, previousFeedback, title, description, thumbnailId, previewVideoId, sections, courseCategories, courseTargets, price } = { ...data }
 
     const renderStatus = () => {
         const map: Record<VerifyStatus, JSX.Element> = {
@@ -58,6 +58,12 @@ export const SettingsPanel = (props: SettingsPanelProps) => {
             <div className="text-2xl font-semibold"> Actions </div>
             <Spacer y={6} />
             <div>{renderStatus()}</div>
+            <Spacer y={6} />
+            <div className="grid border border-divider rounded-medium p-4 gap-2 text-sm bg-danger/20">
+                {
+                    previousFeedback? <div className="text-danger">Reason: {previousFeedback}</div> : <></>
+                }
+            </div>
             <Spacer y={6} />
             <div>
                 <div className="grid gap-4">
