@@ -1,4 +1,4 @@
-import { Divider, Input, Spacer } from "@nextui-org/react"
+import { Input, Spacer } from "@nextui-org/react"
 import React, { useContext } from "react"
 import {
     ConfigurationPanelContext,
@@ -24,7 +24,60 @@ const WrappedConfigurationPanel = ({ className }: ConfigurationPanelProps) => {
     return (
         <div className={`${className} col-span-3`}>
             <div className="text-2xl">Configuration</div>
-            <Spacer y={6} />
+            <div className="p-4 h-[500px]">
+                <div className="grid grid-cols-2 gap-4">
+                    <PieChart width={400} height={400}>
+                        <Pie
+                            label
+                            data={pieData}
+                            cx={120}
+                            cy={200}
+                            innerRadius={60}
+                            outerRadius={80}
+                            fill="#8884d8"
+                            paddingAngle={5}
+                            dataKey="value"
+                        >
+                            {pieData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            ))}
+                        </Pie>
+                        <ChartTooltip formatter={(value, name) => [`${value}%`, name]}/>
+                        <Legend/>
+                    </PieChart>
+                    <div>
+                        <div className="font-semibold">Distribution</div>
+                        <Spacer y={2}/>
+                        <div>
+                                Instructor: {formik.values.instructor}%
+                        </div>
+                        <div className="text-sm text-foreground-400">
+                                This is the amount of STARCI allocated to instructors when a course is created.
+                        </div>
+                        <Spacer y={1}/>
+                        <div>
+                                Earn: {formik.values.earn}%
+                        </div>
+                        <div className="text-sm text-foreground-400">
+                                This is the amount of STARCI awarded to students when they create posts, like, comment, and engage in other activities.
+                        </div>
+                        <Spacer y={1}/>
+                        <div>
+                                Completed: {formik.values.completed}%
+                        </div>
+                        <div className="text-sm text-foreground-400">
+                                This is the amount of STARCI granted upon the completion of the course.
+                        </div>
+                        <Spacer y={1}/>
+                        <div>
+                                Foundation: {formik.values.foundation}%
+                        </div>
+                        <div className="text-sm text-foreground-400">
+                                This is the amount of STARCI allocated to us, the founders, for the application foundation.
+                        </div>
+                    </div>
+                </div>    
+            </div>
             <div className="grid gap-4 w-full">
                 <Input
                     label="Earn Percent"
@@ -83,7 +136,6 @@ const WrappedConfigurationPanel = ({ className }: ConfigurationPanelProps) => {
                     classNames={{
                         inputWrapper: "input-input-wrapper",
                     }}
-                    isReadOnly
                     labelPlacement="outside"
                     placeholder="Input foundation percent here"
                     value={formik.values.foundation.toString()}
@@ -93,69 +145,10 @@ const WrappedConfigurationPanel = ({ className }: ConfigurationPanelProps) => {
                     errorMessage={formik.errors.foundation}
                     endContent={<div className="text-foreground-400">%</div>}
                     description="Only administrator can only configure foundation percent"
+                    isReadOnly
                 />
             </div>
-            <Spacer y={12}/>
-            <div className="border border-divider rounded-medium">
-                <div className="p-4">
-                    <div className="font-semibold text-primary">Configuration</div>
-                </div>
-                <Divider/>
-                <div className="p-4 h-[500px]">
-                    <div className="grid grid-cols-2 gap-4">
-                        <PieChart width={400} height={400}>
-                            <Pie
-                                label
-                                data={pieData}
-                                cx={120}
-                                cy={200}
-                                innerRadius={60}
-                                outerRadius={80}
-                                fill="#8884d8"
-                                paddingAngle={5}
-                                dataKey="value"
-                            >
-                                {pieData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                ))}
-                            </Pie>
-                            <ChartTooltip formatter={(value, name) => [`${value}%`, name]}/>
-                            <Legend/>
-                        </PieChart>
-                        <div>
-                            <div className="font-semibold">Distribution</div>
-                            <Spacer y={2}/>
-                            <div>
-                                Instructor: {formik.values.instructor}%
-                            </div>
-                            <div className="text-sm text-foreground-400">
-                                This is the amount of STARCI allocated to instructors when a course is created.
-                            </div>
-                            <Spacer y={1}/>
-                            <div>
-                                Earn: {formik.values.earn}%
-                            </div>
-                            <div className="text-sm text-foreground-400">
-                                This is the amount of STARCI awarded to students when they create posts, like, comment, and engage in other activities.
-                            </div>
-                            <Spacer y={1}/>
-                            <div>
-                                Completed: {formik.values.completed}%
-                            </div>
-                            <div className="text-sm text-foreground-400">
-                                This is the amount of STARCI granted upon the completion of the course.
-                            </div>
-                            <Spacer y={1}/>
-                            <div>
-                                Foundation: {formik.values.foundation}%
-                            </div>
-                            <div className="text-sm text-foreground-400">
-                                This is the amount of STARCI allocated to us, the founders, for the application foundation.
-                            </div>
-                        </div>
-                    </div>    
-                </div>
-            </div>
+            <Spacer y={6} />
         </div>
     )
 }

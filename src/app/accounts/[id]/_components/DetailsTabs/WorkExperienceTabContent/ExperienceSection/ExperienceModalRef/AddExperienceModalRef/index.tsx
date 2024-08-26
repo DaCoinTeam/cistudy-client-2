@@ -20,7 +20,7 @@ const WrappedAddExperienceModalRef = forwardRef<
 >((_, ref) => {
     const {formik, reducer} = useContext(AddExperienceModalRefContext)!
     const [state, dispatch] = reducer
-    const { onOpenChange, onOpen, isOpen } = useDisclosure()
+    const { onOpenChange, onOpen, onClose, isOpen } = useDisclosure()
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop: async (files: Array<File>) => {
@@ -48,6 +48,7 @@ const WrappedAddExperienceModalRef = forwardRef<
 
     useEffect(() => {
         if (formik.isSubmitting === false && formik.submitCount > 0 && !formik.errors.companyName && !formik.errors.role && !formik.errors.startDate) {
+            onClose()
             formik.resetForm()
         }
     }, [formik.isSubmitting])

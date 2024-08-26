@@ -132,7 +132,7 @@ export const WrappedCreatePostModal = () => {
                     isDisabled={!(data?.result === false) || formik.isSubmitting || isMutating}
                     isLoading={formik.isSubmitting}
                     onPress={onPress}
-                    startContent={<PlusIcon height={20} width={20} />}
+                    startContent={formik.isSubmitting? <></> : <PlusIcon height={20} width={20} />}
                     color="primary"
                 >
                     {

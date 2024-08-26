@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, Divider, Image, Spacer } from "@nextui-org/react"
+import { Card, CardHeader, CardBody, Image, Spacer } from "@nextui-org/react"
 import { Edit3, PlusIcon, Trash2 } from "lucide-react"
 import { AddExperienceModalRefSelectors, AddExperiencesModalRef, EditExperienceModalRef, EditExperienceModalRefSelectors } from "./ExperienceModalRef"
 import { useContext, useRef, useState } from "react"
@@ -79,9 +79,9 @@ export const ExperienceSection = () => {
                         )
                     }
                 </CardHeader>
-                <CardBody className="p-4">
+                <CardBody className="grid p-4 gap-4">
                     {
-                        accountJobs && accountJobs.length > 0? accountJobs?.map((job, index) => (
+                        accountJobs && accountJobs.length > 0? accountJobs?.map((job) => (
                             <div key={job.accountJobId} className="border border-divider rounded-medium p-4">
                                 <div className="flex flex-row items-center justify-between">
                                     <div className="gap-2">
@@ -113,9 +113,6 @@ export const ExperienceSection = () => {
                                         }
                                     </div>
                                 </div>
-                                {
-                                    index < accountJobs.length-1 && (<Divider />)
-                                }
                             </div>
                         )) : (
                             <div className="flex items-center">
