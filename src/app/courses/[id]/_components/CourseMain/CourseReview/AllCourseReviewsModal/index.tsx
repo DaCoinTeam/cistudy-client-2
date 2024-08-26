@@ -34,8 +34,9 @@ export const AllCourseReviewsModal = () => {
                 onClick={onOpen}
                 className=' text-primary hover:cursor-pointer flex items-center'
             >
-                <PlusIcon width={24} height={24} strokeWidth={3}/>
-                <div className=" text-base font-semibold ms-2">
+                <PlusIcon width={20} height={20} strokeWidth={3}/>
+                <Spacer x={2}/>
+                <div className=" text-sm ">
                 Read All Reviews
                 </div>
             </div>

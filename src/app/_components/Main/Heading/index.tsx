@@ -37,19 +37,13 @@ export const Heading = () => {
                     >
             Explore Courses
                     </Button>
-                    {/* <Button
-                        color='primary'
-                        variant='bordered'
-                        className='ms-4 px-8 py-6 box-border font-medium text-base'
-                    >
-            More
-                    </Button> */}
                 </div>
                 <div className='mt-12'>
                     <div className='text-base text-slate-500 mb-3 tracking-tight leading-8'>
             From 99+ Reviews
                     </div>
                     <AvatarGroup isBordered max={4} total={99}>
+
                         <Avatar src='https://i.pravatar.cc/150?u=a042581f4e29026024d' />
                         <Avatar src='https://i.pravatar.cc/150?u=a04258a2462d826712d' />
                         <Avatar src='https://i.pravatar.cc/150?u=a042581f4e29026704d' />

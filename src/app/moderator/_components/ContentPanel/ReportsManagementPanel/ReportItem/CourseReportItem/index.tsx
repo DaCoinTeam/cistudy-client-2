@@ -1,10 +1,12 @@
-import { parseISODateString, ReportCourseEntity } from "@common"
-import { Avatar, Chip, ChipProps, Link, Pagination, Spacer, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react"
+import { ReportCourseEntity } from "@common"
+import { Avatar, Chip, ChipProps, Link, Pagination, Spacer, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
 import { getAvatarUrl } from "@services"
+import dayjs from "dayjs"
 import React, { useCallback, useContext } from "react"
 import { CourseReportItemContext, CourseReportItemProvider, ROWS_PER_PAGE } from "./CourseReportItemProvider"
 import { ResolveModalRef, ResolveModalRefSelectors } from "./ResolveModal"
-import dayjs from "dayjs"
+import { EyeIcon } from "@heroicons/react/24/outline"
+import { PencilRulerIcon } from "lucide-react"
 
 const WrappedCourseReportItem = () => {
     const { swrs, reducer } = useContext(CourseReportItemContext)!
@@ -54,7 +56,7 @@ const WrappedCourseReportItem = () => {
             </div>
         case "course":
             return (
-                <div className="font-normal">
+                <div className="font-normal line-clamp-2">
                     {report.reportedCourse.title}
                 </div>
             )
@@ -66,7 +68,7 @@ const WrappedCourseReportItem = () => {
             )
         case "reportTitle":
             return (
-                <div className="line-clamp-3">
+                <div className="line-clamp-2">
                     {report.title}
                 </div>
             )
@@ -77,12 +79,16 @@ const WrappedCourseReportItem = () => {
                 <div className="flex justify-center">
                     {
                         report.processStatus === "processing" ? (
-                            <Link className="flex flex-row gap-2" onPress={() => handleResolve(report)}>
-                                Resolve 
+                            <Link className="cursor-pointer flex flex-row gap-2" onPress={() => handleResolve(report)}>
+                                <Tooltip content="Resolve" color="primary">
+                                    <PencilRulerIcon className="w-5 h-5" strokeWidth={3/2}/> 
+                                </Tooltip>
                             </Link>
                         ) : (
                             <Link onPress={() => handleResolve(report)}>
-                                View
+                                <Tooltip content="View" color="primary">
+                                    <EyeIcon className="w-5 h-5" strokeWidth={3/2}/>
+                                </Tooltip>
                             </Link>
                         )
                     }
@@ -152,7 +158,7 @@ const WrappedCourseReportItem = () => {
                 }
             >
                 <TableHeader columns={columns}>
-                    {(columns) => <TableColumn className="uppercase text-sm text-slate-700 dark:text-slate-300" key={columns.key} align={columns.key === "actions" ? "center" : "start"}>{columns.label}</TableColumn>}
+                    {(columns) => <TableColumn className="" key={columns.key} align={columns.key === "actions" ? "center" : "start"}>{columns.label}</TableColumn>}
                 </TableHeader>
                 <TableBody
                     items={reportData.results}
