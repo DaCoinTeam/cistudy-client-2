@@ -59,7 +59,7 @@ export const SettingsPanel = (props: SettingsPanelProps) => {
             <Spacer y={6} />
             <div>{renderStatus()}</div>
             <Spacer y={6} />
-            <Textarea color="danger" value={`Reason: ${previousFeedback}`} fullWidth />
+            <Textarea color="danger" value={`Reason: ${previousFeedback}`} fullWidth isReadOnly />
             <Spacer y={6} />
             <div>
                 <div className="grid gap-4">
