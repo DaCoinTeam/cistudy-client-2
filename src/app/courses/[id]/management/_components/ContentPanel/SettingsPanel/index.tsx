@@ -1,8 +1,8 @@
 "use client"
-import { Chip, Spacer } from "@nextui-org/react"
+import { Chip, Spacer, Textarea } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { PublishButton } from "./PublishButton"
-import { VerifyStatus } from "@common"
+import { SectionContentType, VerifyStatus } from "@common"
 import { ManagementContext } from "../../../_hooks"
 import { RemoveButton } from "./RemoveButton"
 import { Check, X } from "lucide-react"
@@ -15,7 +15,7 @@ export const SettingsPanel = (props: SettingsPanelProps) => {
     const { swrs } = useContext(ManagementContext)!
     const { courseManagementSwr } = swrs
     const { data } = courseManagementSwr
-    const { verifyStatus, title, description, thumbnailId, previewVideoId, sections, courseCategories, courseTargets, price } = { ...data }
+    const { verifyStatus, previousFeedback, title, description, thumbnailId, previewVideoId, sections, courseCategories, courseTargets, price } = { ...data }
 
     const renderStatus = () => {
         const map: Record<VerifyStatus, JSX.Element> = {
@@ -58,6 +58,8 @@ export const SettingsPanel = (props: SettingsPanelProps) => {
             <div className="text-2xl font-semibold"> Actions </div>
             <Spacer y={6} />
             <div>{renderStatus()}</div>
+            <Spacer y={6} />
+            <Textarea color="danger" value={`Reason: ${previousFeedback}`} fullWidth />
             <Spacer y={6} />
             <div>
                 <div className="grid gap-4">
@@ -115,9 +117,15 @@ export const SettingsPanel = (props: SettingsPanelProps) => {
 
                         <div className="flex flex-row gap-2">
                             {
-                                sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0 && section.contents.every((content) => content.lesson?.lessonVideoId)) ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
+                                sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0 && section.contents.every((content) => {
+                                    if (content.type !== SectionContentType.Lesson) return true
+                                    return content.lesson?.lessonVideoId
+                                })) ? <Check size={20} className="text-success" /> : <X size={20} className="text-danger" />
                             }
-                            <div className={`${sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0 && section.contents.every((content) => content.lesson?.lessonVideoId)) ? "text-success" : "text-danger"}`}>Lesson in each section must have a video</div>
+                            <div className={`${sections && sections?.length > 0 && sections.every((section) => section.contents.length > 0 && section.contents.every((content) => {
+                                if (content.type !== SectionContentType.Lesson) return true
+                                return content.lesson?.lessonVideoId
+                            })) ? "text-success" : "text-danger"}`}>Lesson in each section must have a video</div>
                         </div>
 
                         <div className="flex flex-row gap-2">
