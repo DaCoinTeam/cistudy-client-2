@@ -36,7 +36,7 @@ const Page = () => {
                 </div>
             </div>
             <Spacer y={6}/>
-            <div className="grid grid-cols-4 gap-12 flex">
+            <div className="grid grid-cols-4 gap-12">
                 <Sidebar className="col-span-1 h-fit"/>
                 <ContentPanel className="col-start-2 col-span-3"/>
             </div>

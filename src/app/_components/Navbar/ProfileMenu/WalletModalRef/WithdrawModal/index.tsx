@@ -53,13 +53,19 @@ export const WrappedWithdrawModal = () => {
                                 <div className="text-sm text-foreground-400">STARCI</div>
                             }
                         />
+                        <div className="text-sm text-warning">
+                            <div>Transaction processing times may vary. 
+                            </div>
+                            <div>Please be patient and check the transaction status.
+                            </div>
+                        </div>
                     </ModalBody>
                     <ModalFooter className="p-4 pt-2">
                         <Button
                             fullWidth
                             color="primary"
                             onPress={formik.submitForm}
-                            isDisabled={withdrawSwrMutation.isMutating}
+                            isDisabled={withdrawSwrMutation.isMutating || formik.values.withdrawAmount <= 0}
                             endContent={
                                 withdrawSwrMutation.isMutating ? <Spinner color="current" size="sm" /> : null
                             }

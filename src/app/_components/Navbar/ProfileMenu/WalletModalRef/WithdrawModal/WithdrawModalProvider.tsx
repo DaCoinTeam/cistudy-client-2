@@ -35,7 +35,7 @@ interface FormikValues {
 }
 
 const initialValues: FormikValues = {
-    withdrawAmount: 0,
+    withdrawAmount: 1,
 }
 
 const WrappedFormikProvider = ({
@@ -71,6 +71,7 @@ export const WithdrawModalProvider = ({
   children: ReactNode;
 }) => {
     const baseDisclosure = useDisclosure()
+    const {onClose}  = baseDisclosure
     const { notify } = useContext(RootContext)!
     
     const { reducer : walletReducer } = useContext(WalletModalRefContext)!
@@ -94,7 +95,7 @@ export const WithdrawModalProvider = ({
             initialValues={initialValues}
             validationSchema={Yup.object({
                 withdrawAmount: Yup.number()
-                    .min(0)
+                    .min(1, "The withdrawal amount must be at least 1")
                     .required("Withdraw amount is required"),
             })}
             onSubmit={async ({ withdrawAmount }) => {
@@ -107,6 +108,10 @@ export const WithdrawModalProvider = ({
                 dispatch({
                     type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
                 })
+                dispatch({
+                    type: "TRIGGER_REFRESH_BALANCE_KEY"
+                })
+                onClose()
 
                 notify!({
                     data: {

@@ -24,7 +24,7 @@ interface FormikValues {
 }
 
 const initialValues: FormikValues = {
-    buyAmount: 0,
+    buyAmount: 1,
 }
 
 const WrappedFormikProvider = ({
@@ -66,7 +66,9 @@ export const BuyOutsideModalProvider = ({ children }: { children: ReactNode }) =
         <Formik
             initialValues={initialValues}
             validationSchema={Yup.object({
-                buyAmount: Yup.number().min(0).required("Buy amount is required."),
+                buyAmount: Yup.number()
+                    .min(1, "The buy amount must be at least 1")
+                    .required("Buy amount is required."),
             })}
             onSubmit={() => {}}
         >

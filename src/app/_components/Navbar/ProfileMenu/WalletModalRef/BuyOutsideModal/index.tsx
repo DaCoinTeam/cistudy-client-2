@@ -116,7 +116,9 @@ const WrappedBuyOutsideModal = () => {
                                         dispatch({
                                             type: "TRIGGER_REFRESH_TRANSACTIONS_KEY"
                                         })
-                                        
+                                        dispatch({
+                                            type: "TRIGGER_REFRESH_BALANCE_KEY"
+                                        })
                                         notify!({
                                             data: {
                                                 message

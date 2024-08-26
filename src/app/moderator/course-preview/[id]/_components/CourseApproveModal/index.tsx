@@ -79,6 +79,22 @@ const WrappedCourseApproveModalRef = forwardRef<
                                     </div>
                                 ) : <></>
                             }
+                            {/* <div className="text-sm text-warning">
+                            When you reject a course, the course creator will receive an email notification detailing the reason for the rejection.
+                            <Spacer y={2}/>
+
+                            When you approve a course, the course creator will receive a notification, and the course will be published on the platform.
+                            </div> */}
+                            <div className="text-sm text-gray-600 p-3 bg-primary-50 rounded-medium border border-gray-200">
+                                <p className="mb-2">
+                                    <strong className="text-gray-800">Reject:</strong> When you reject a course, the course creator will receive 
+    an email notification with the reason for the rejection.
+                                </p>
+                                <p>
+                                    <strong className="text-gray-800">Approve:</strong> When you approve a course, the course creator will be notified, 
+    and the course will be published on the platform.
+                                </p>
+                            </div>
                         </ModalBody>
                         <ModalFooter>
                             <Button
