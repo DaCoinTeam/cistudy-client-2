@@ -58,8 +58,7 @@ export const SettingsPanel = (props: SettingsPanelProps) => {
             <div className="text-2xl font-semibold"> Actions </div>
             <Spacer y={6} />
             <div>{renderStatus()}</div>
-            <Spacer y={6} />
-            <Textarea color="danger" value={`Reason: ${previousFeedback}`} fullWidth isReadOnly />
+            {verifyStatus === VerifyStatus.Rejected && <div><Spacer y={6} /> <Textarea color="danger" value={`Reason: ${previousFeedback}`} fullWidth isReadOnly /></div>}
             <Spacer y={6} />
             <div>
                 <div className="grid gap-4">
