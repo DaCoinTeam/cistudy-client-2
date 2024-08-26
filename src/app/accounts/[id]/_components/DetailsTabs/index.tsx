@@ -12,14 +12,7 @@ export const DetailsTabs = () => {
             <Tabs aria-label="Options" variant="underlined" color="primary" classNames={{
                 panel: "!px-0 !pt-6",
             }}>
-                <Tab key="followers"  title={
-                    <div className="flex items-center gap-2">
-                        <RssIcon size={20} strokeWidth={3/2}/>
-                        <div> Followers </div>
-                    </div>
-                }>
-                    <FollowersTabContent/>
-                </Tab>
+                
                 <Tab key="courses" title={
                     <div className="flex items-center gap-2">
                         <BriefcaseIcon className="w-5 h-5" strokeWidth={3/2}/>
@@ -28,6 +21,14 @@ export const DetailsTabs = () => {
                 }>
                     <WorkExperienceTabContent />
                     <div/>
+                </Tab>
+                <Tab key="followers"  title={
+                    <div className="flex items-center gap-2">
+                        <RssIcon size={20} strokeWidth={3/2}/>
+                        <div> Followers </div>
+                    </div>
+                }>
+                    <FollowersTabContent/>
                 </Tab>
                 <Tab key="enrolledCourses" title={
                     <div className="flex items-center gap-2">
