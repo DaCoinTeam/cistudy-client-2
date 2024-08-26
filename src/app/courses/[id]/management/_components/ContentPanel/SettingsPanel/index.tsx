@@ -1,5 +1,5 @@
 "use client"
-import { Chip, Spacer } from "@nextui-org/react"
+import { Chip, Spacer, Textarea } from "@nextui-org/react"
 import React, { useContext } from "react"
 import { PublishButton } from "./PublishButton"
 import { SectionContentType, VerifyStatus } from "@common"
@@ -59,11 +59,7 @@ export const SettingsPanel = (props: SettingsPanelProps) => {
             <Spacer y={6} />
             <div>{renderStatus()}</div>
             <Spacer y={6} />
-            <div className="grid border border-divider rounded-medium p-4 gap-2 text-sm bg-danger/20">
-                {
-                    previousFeedback? <div className="text-danger">Reason: {previousFeedback}</div> : <></>
-                }
-            </div>
+            <Textarea color="danger" value={`Reason: ${previousFeedback}`} fullWidth />
             <Spacer y={6} />
             <div>
                 <div className="grid gap-4">
