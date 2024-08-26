@@ -143,7 +143,7 @@ const WrappedConfigurationPanel = ({ className }: ConfigurationPanelProps) => {
                     isInvalid={!!(formik.errors.foundation)}
                     errorMessage={formik.errors.foundation}
                     endContent={<div className="text-foreground-400">%</div>}
-                    description="Only administrator can only configure foundation percent"
+                    description="Only administrator can configure foundation percent"
                 />
             </div>
             <Spacer y={6} />
