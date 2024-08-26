@@ -5,16 +5,16 @@ import * as Yup from "yup"
 import useSWRMutation, { SWRMutationResponse } from "swr/mutation"
 import { ErrorResponse } from "@common"
 import { RootContext } from "../../../../../../../_hooks"
-import { resolvePostCommentReport, ResolvePostCommentReportInput, ResolvePostCommentReportOutput } from "@services"
 import { ToastType } from "../../../../../../../_components"
 import { ResolveModalAction, ResolveModalState, useResolveModalReducer } from "./useResolveModalReducer"
-import { PostCommentReportItemContext } from "../PostCommentReportItemProvider"
+import { CourseReportItemContext } from "../CourseReportItemProvider"
+import { resolveCourseReport, ResolveCourseReportInput, ResolveCourseReportOutput } from "@services"
 
 interface ResolveModalContextValue {
     formik: FormikProps<FormikValues>
     reducer: [ResolveModalState, React.Dispatch<ResolveModalAction>]
     swrs: {
-        resolveModalSwrMutation: SWRMutationResponse<ResolvePostCommentReportOutput, ErrorResponse, "RESOLVE_POST_COMMENT_REPORT", ResolvePostCommentReportInput>
+        resolveModalSwrMutation: SWRMutationResponse<ResolveCourseReportOutput, ErrorResponse, "RESOLVE_COURSE_REPORT", ResolveCourseReportInput>
     }
 }
 
@@ -35,7 +35,7 @@ const WrappedFormikProvider = ({ formik, reducer, children, swrs }: {
     reducer: [ResolveModalState, React.Dispatch<ResolveModalAction>];
     children: ReactNode;
     swrs: {
-        resolveModalSwrMutation: SWRMutationResponse<ResolvePostCommentReportOutput, ErrorResponse, "RESOLVE_POST_COMMENT_REPORT", ResolvePostCommentReportInput>
+        resolveModalSwrMutation: SWRMutationResponse<ResolveCourseReportOutput, ErrorResponse, "RESOLVE_COURSE_REPORT", ResolveCourseReportInput>
     }
 }) => {
 
@@ -60,14 +60,14 @@ export const ResolveModalProvider = ({ children }: { children: ReactNode }) => {
     const reducer = useResolveModalReducer()
     const [state] = reducer
 
-    const { swrs } = useContext(PostCommentReportItemContext)!
-    const { postCommentReportsSwr } = swrs
-    const { mutate } = postCommentReportsSwr
+    const { swrs } = useContext(CourseReportItemContext)!
+    const { courseReportsSwr } = swrs
+    const { mutate } = courseReportsSwr
 
     const resolveModalSwrMutation = useSWRMutation(
-        "RESOLVE_POST_COMMENT_REPORT",
-        async (_, { arg }: { arg: ResolvePostCommentReportInput }) => {
-            return await resolvePostCommentReport(arg)
+        "RESOLVE_COURSE_REPORT",
+        async (_, { arg }: { arg: ResolveCourseReportInput }) => {
+            return await resolveCourseReport(arg)
         }
     )
 
@@ -82,7 +82,7 @@ export const ResolveModalProvider = ({ children }: { children: ReactNode }) => {
         onSubmit={async ({ note }) => {
             const {message} = await trigger({
                 data: {
-                    reportPostCommentId: state.postCommentReportId,
+                    reportCourseId: state.reportCourseId,
                     processNote: note,
                     processStatus: state.verifyStatus
                 }

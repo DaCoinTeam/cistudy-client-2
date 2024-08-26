@@ -87,7 +87,7 @@ export const ResolveModalProvider = ({ children }: { children: ReactNode }) => {
                     processStatus: state.verifyStatus
                 }
             })
-            mutate()
+            await mutate()
             notify!({
                 data: {
                     message
