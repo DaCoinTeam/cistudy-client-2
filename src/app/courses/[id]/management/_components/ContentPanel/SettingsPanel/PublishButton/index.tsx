@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/react"
 import React, { useContext } from "react"
 import useSWRMutation from "swr/mutation"
-import { VerifyStatus } from "@common"
+import { SectionContentType, VerifyStatus } from "@common"
 import { publishCourse } from "@services"
 import { ManagementContext } from "../../../../_hooks"
 import { RootContext } from "../../../../../../../_hooks"
@@ -75,7 +75,10 @@ export const PublishButton = () => {
                 sections.length > 0 &&
                 sections.every(section =>
                     section.contents.length > 0 &&
-                    section.contents.every(content => content.lesson?.lessonVideoId)
+                    section.contents.every(content => {
+                        if (content.type !== SectionContentType.Lesson) return true
+                        return content.lesson?.lessonVideoId
+                    })
                 )) &&
 
             // Have price
