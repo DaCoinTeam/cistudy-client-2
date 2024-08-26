@@ -4,11 +4,10 @@ import {
     BreadcrumbItem,
     Breadcrumbs,
     Chip,
-    Image,
     Spacer,
-    User,
+    User
 } from "@nextui-org/react"
-import { getAssetUrl, getAvatarUrl } from "@services"
+import { getAvatarUrl } from "@services"
 import { CalendarDays, FileBadge, MonitorSmartphone } from "lucide-react"
 import { useCallback, useContext, useMemo } from "react"
 import { Stars } from "../../../../_shared"
@@ -114,18 +113,10 @@ export const CourseBanner = (props: CourseBannerProps) => {
                     </div>
                                        
                     <div className='flex gap-2 items-center'>
-                        {categories.categoryLevel2?.map(({ categoryId, name, imageId }) => (
+                        {categories.categoryLevel2?.map(({ categoryId, name }) => (
                             <Chip
                                 className='bg-content2'
                                 key={categoryId}
-                                startContent={
-                                    <Image
-                                        alt='topicSvg'
-                                        src={getAssetUrl(imageId)}
-                                        height={20}
-                                        width={20}
-                                    />
-                                }
                             >
                                 {name}
                             </Chip>

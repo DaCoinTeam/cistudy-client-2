@@ -21,17 +21,19 @@ export const resolveAccountReport = async (
     return await authAxios.patch(url, data)
 }
 
-export interface resolveCourseReportInput {
+export interface ResolveCourseReportInput {
   data: {
     reportCourseId: string;
     processStatus: string;
     processNote: string;
   };
 }
-
+export interface ResolveCourseReportOutput {
+  message: string;
+}
 export const resolveCourseReport = async (
-    input: resolveCourseReportInput
-): Promise<string> => {
+    input: ResolveCourseReportInput
+): Promise<ResolveCourseReportOutput> => {
     const { data } = input
     const url = `${BASE_URL}/courses/resolve-course-report`
 
@@ -101,7 +103,27 @@ export const createAccountReport = async (
     const url = `${BASE_URL}/accounts/create-account-report`
     return await authAxios.post(url, data)
 }
+export interface CreateCourseReportInputData {
+  data: {
+    courseId: string;
+    title: string;
+    description: string;
+  };
+}
+export interface CreateCourseReportOutputData {
+  message: string;
+  others: {
+    reportCourseId: string;
+  };
+}
 
+export const createCourseReport = async (
+    input: CreateCourseReportInputData
+): Promise<CreateCourseReportOutputData> => {
+    const { data } = input
+    const url = `${BASE_URL}/courses/create-course-report`
+    return await authAxios.post(url, data)
+}
 export interface CreatePostReportInputData {
   data: {
     postId: string;

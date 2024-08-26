@@ -2,6 +2,7 @@ import React from "react"
 import {Tabs, Tab} from "@nextui-org/tabs"
 import { PostReportItem } from "./PostReportItem"
 import { PostCommentReportItem } from "./PostCommentReportItem"
+import { CourseReportItem } from "./CourseReportItem"
 
 export const ReportItem = () => {
 
@@ -15,6 +16,9 @@ export const ReportItem = () => {
                 </Tab>
                 <Tab key="comment" title="Post Comment">
                     <PostCommentReportItem />
+                </Tab>
+                <Tab key="course" title="Course">
+                    <CourseReportItem />
                 </Tab>
             </Tabs>
         </div>
