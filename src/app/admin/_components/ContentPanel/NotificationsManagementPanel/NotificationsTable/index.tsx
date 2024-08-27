@@ -1,7 +1,6 @@
 "use client"
 import {
     Chip,
-    Link,
     Pagination,
     Spinner,
     Table,
@@ -17,7 +16,6 @@ import {
     NotificationsManagementPanelContext,
     ROWS_PER_PAGE,
 } from "../NotificationsManagementPanelProvider"
-import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline"
 import { getAvatarUrl } from "../../../../../../services/server"
 import dayjs from "dayjs"
 
@@ -89,7 +87,6 @@ export const NotificationsTable = () => {
                 <TableColumn key="createdAt22" width={"15%"}>Receiver</TableColumn>
                 <TableColumn key="status">Viewed</TableColumn>
                 <TableColumn key="createdAt"  width={"10%"}>Created At</TableColumn>
-                <TableColumn key="actions">Actions</TableColumn>
             </TableHeader>
             <TableBody
                 items={results ?? []}
@@ -118,19 +115,6 @@ export const NotificationsTable = () => {
                         /></TableCell>
                         <TableCell>{viewed ? <Chip variant="flat" color="success">Yes</Chip> : <Chip variant="flat" color="default">No</Chip>}</TableCell>
                         <TableCell>{dayjs(createdAt).format("HH:mm:ss DD/MM/YYYY")}</TableCell>
-                        <TableCell>
-                            <div className="gap-2 flex items-center">
-                                <Link as="button" className="w-5 h-5">
-                                    <EyeIcon/>
-                                </Link>
-                                <Link as="button" className="w-5 h-5">
-                                    <PencilIcon/>
-                                </Link>
-                                <Link as="button" className="w-5 h-5" color="danger">
-                                    <TrashIcon/>
-                                </Link>
-                            </div>    
-                        </TableCell>
                     </TableRow>
                 )}
             </TableBody>
