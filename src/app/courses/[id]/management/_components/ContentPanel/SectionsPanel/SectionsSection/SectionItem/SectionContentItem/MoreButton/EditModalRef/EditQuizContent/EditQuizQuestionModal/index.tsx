@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react"
+import React, { createContext, useContext, useRef } from "react"
 import {
     Modal,
     ModalContent,
@@ -20,8 +20,8 @@ import {
     Input,
 } from "@nextui-org/react"
 import { MediaType, QuizQuestionAnswerEntity, QuizQuestionEntity, sortByPosition } from "@common"
-import { CreateQuizQuestionAnswerInput, createQuizQuestionAnswer, getAssetUrl } from "@services"
-import { VideoPlayer } from "../../../../../../../../../../../../../_shared"
+import { CreateQuizQuestionAnswerInput, DeleteQuizQuestionInput, createQuizQuestionAnswer, deleteQuizQuestion, getAssetUrl } from "@services"
+import { ConfirmDeleteModalRef, ConfirmDeleteModalRefSelectors, VideoPlayer } from "../../../../../../../../../../../../../_shared"
 import { EditQuizQuestionContext, EditQuizQuestionProvider } from "./EditQuizQuesitonModalProvider"
 import { DropzonePreview } from "./DropzonePreview"
 import { AnswerMoreButton } from "../AnswerMoreButton"
@@ -32,7 +32,7 @@ import { ManagementContext } from "../../../../../../../../../../_hooks"
 import { ArrowRightIcon, PlusIcon } from "@heroicons/react/24/outline"
 
 interface EditQuizQuesitonModalProps {
-  question: QuizQuestionEntity;
+    question: QuizQuestionEntity;
 }
 
 interface EditQuizQuesitonModal {
@@ -43,7 +43,7 @@ export const WrappedEditQuizQuesitonModal = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     const { formik } = useContext(EditQuizQuestionContext)!
-    const { swrs : { courseManagementSwr : { mutate } } } = useContext(ManagementContext)!
+    const { swrs: { courseManagementSwr: { mutate } } } = useContext(ManagementContext)!
 
     const { props: { question } } = useContext(EditQuizQuestionModalContext)!
 
@@ -61,6 +61,19 @@ export const WrappedEditQuizQuesitonModal = () => {
                 type: ToastType.Success
             })
             return res
+        }
+    )
+
+    const confirmDeleteModalRef = useRef<ConfirmDeleteModalRefSelectors | null>(
+        null
+    )
+    const onConfirmDeleteModalOpen = () =>
+        confirmDeleteModalRef.current?.onOpen()
+
+    const deleteQuizQuestionSwrMutation = useSWRMutation(
+        "DELETE_QUIZ_QUESTION",
+        async(_: string, {arg} : {arg : DeleteQuizQuestionInput}) => {
+            return await deleteQuizQuestion(arg)
         }
     )
 
@@ -107,7 +120,7 @@ export const WrappedEditQuizQuesitonModal = () => {
             <Modal size="3xl" isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <ModalHeader className="p-4 pb-2">
-                Question {question.position}
+                        Question {question.position}
                     </ModalHeader>
                     <ModalBody className="p-4">
                         <div>
@@ -132,7 +145,7 @@ export const WrappedEditQuizQuesitonModal = () => {
                                         isInvalid={!!(formik.touched.question && formik.errors.question)}
                                         errorMessage={formik.touched.question && formik.errors.question}
                                     />
-                                    <Spacer y={4}/>
+                                    <Spacer y={4} />
                                     <div className="flex items-center justify-between">
                                         <div className="text-sm">Point</div>
                                         <Input
@@ -150,13 +163,13 @@ export const WrappedEditQuizQuesitonModal = () => {
                                             errorMessage={formik.touched.point && formik.errors.point}
                                         />
                                     </div>
-                                    <Spacer y={4}/>
+                                    <Spacer y={4} />
                                     <div className="flex items-center justify-between">
                                         <div className="text-sm">Position</div>
                                         <div className="justify-between flex items-center">
                                             <div className="text-sm flex gap-4 items-center">
                                                 <div>{question.position}</div>
-                                                <ArrowRightIcon  className="w-5 h-5"/>
+                                                <ArrowRightIcon className="w-5 h-5" />
                                                 <Input
                                                     id="swapPosition"
                                                     className="w-[50px]"
@@ -174,11 +187,11 @@ export const WrappedEditQuizQuesitonModal = () => {
                                                 />
                                             </div>
                                         </div>
-                                    </div>    
+                                    </div>
                                 </Tab>
                                 <Tab key="media" title="Media">
-                                    <DropzonePreview/>      
-                                </Tab>   
+                                    <DropzonePreview />
+                                </Tab>
                                 <Tab key="answers" title="Answers">
                                     <div className="border border-divider rounded-medium overflow-hidden">
                                         {sortByPosition(question.answers ?? [])?.map((answer) => {
@@ -187,10 +200,9 @@ export const WrappedEditQuizQuesitonModal = () => {
                                                     <div className="flex items-center w-full justify-between gap-2">
                                                         <div className="flex gap-3 items-center">
                                                             <div
-                                                                className={`text-sm ${
-                                                                    answer.isCorrect
-                                                                        ? "text-success"
-                                                                        : "text-foreground-400"
+                                                                className={`text-sm ${answer.isCorrect
+                                                                    ? "text-success"
+                                                                    : "text-foreground-400"
                                                                 }`}
                                                             >
                                                                 <span className="font-semibold">
@@ -210,7 +222,7 @@ export const WrappedEditQuizQuesitonModal = () => {
                                                                         }
                                                                     >
                                                                         <Chip variant="flat" color="warning">
-Last
+                                                                            Last
                                                                         </Chip>
                                                                     </Tooltip>
                                                                 ) : null}
@@ -240,16 +252,40 @@ Last
                                             </Link>
                                         </div>
                                     </div>
-                                </Tab>  
+                                </Tab>
                             </Tabs>
                         </div>
                     </ModalBody>
-                    <ModalFooter className="p-4 pt-2">
+                    <ModalFooter className="flex justify-between p-4 pt-2">
+                        <Button color="primary" variant="bordered" onPress={() => onConfirmDeleteModalOpen()}>
+                            Delete
+                        </Button>
                         <Button color="primary" isLoading={formik.isSubmitting} onPress={() => formik.submitForm()}>
-                  Save
+                            Save
                         </Button>
                     </ModalFooter>
                 </ModalContent>
+                <ConfirmDeleteModalRef
+                    ref={confirmDeleteModalRef}
+                    onDeletePress={async () => {
+                        const {message} = await deleteQuizQuestionSwrMutation.trigger({
+                            data: {
+                                quizQuestionId: question.quizQuestionId
+                            }
+                        })
+                        mutate()
+                        notify!({
+                            data: {
+                                message
+                            },
+                            type: ToastType.Success
+                        })
+                        onOpenChange()
+                    }}
+                    isLoading={deleteQuizQuestionSwrMutation.isMutating}
+                    title="Delete Question"
+                    content="Are you sure you want to delete this question? All references will be lost, and you cannot undo this action."
+                />
             </Modal>
         </>
     )
@@ -257,12 +293,12 @@ Last
 
 export const EditQuizQuestionModalContext = createContext<EditQuizQuesitonModal | null>(null)
 
-export const EditQuizQuesitonModal = (props : EditQuizQuesitonModalProps) => {
+export const EditQuizQuesitonModal = (props: EditQuizQuesitonModalProps) => {
 
     return (
-        <EditQuizQuestionModalContext.Provider value={{props}}>
+        <EditQuizQuestionModalContext.Provider value={{ props }}>
             <EditQuizQuestionProvider>
-                <WrappedEditQuizQuesitonModal/>
+                <WrappedEditQuizQuesitonModal />
             </EditQuizQuestionProvider>
         </EditQuizQuestionModalContext.Provider>
     )
