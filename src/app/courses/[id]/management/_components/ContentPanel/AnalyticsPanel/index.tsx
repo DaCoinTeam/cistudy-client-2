@@ -48,7 +48,7 @@ export const AnalyticsPanel = (props: GeneralPanelProps) => {
 
     return (
         <div className={`${className}`}>
-            <div className="text-2xl font-semibold"> Analytics </div>
+            <div className="text-2xl font-semibold"> Statistics </div>
             <Spacer y={6} />
             <div>
                 <div className=" flex gap-4">

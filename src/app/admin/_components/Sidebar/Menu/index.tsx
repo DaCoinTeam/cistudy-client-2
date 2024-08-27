@@ -42,7 +42,7 @@ export const Menu = (props: MenuProps) => {
                 <ChartBarIcon className="w-5 h-5" strokeWidth={3/2} />
             ),
             key: "analytics",
-            content: "Analytics",
+            content: "Statistics",
             panelSelected: PanelSelected.Analytics,
         },
         {
