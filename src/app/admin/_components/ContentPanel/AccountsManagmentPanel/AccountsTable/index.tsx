@@ -89,7 +89,7 @@ export const AccountsTable = () => {
             }
         >
             <TableHeader>
-                <TableColumn key="infomation">Infomation</TableColumn>
+                <TableColumn key="infomation">Information</TableColumn>
                 <TableColumn key="email">Email</TableColumn>
                 <TableColumn key="birthdate">Birthdate</TableColumn>
                 <TableColumn key="createdAt">Created At</TableColumn>

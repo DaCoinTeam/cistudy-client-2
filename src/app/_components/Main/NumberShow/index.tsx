@@ -14,6 +14,12 @@ export const NumberShow = () => {
         totalNumberOfPosts,
         totalNumberOfVerifiedAccounts
     } = { ...data }
+    const roundDownToNearestTen = (num : number | undefined) => {
+        if(num && num > 10) {
+            return Math.floor(num / 10) * 10
+        }else return 10
+    }
+    
     return (
         <div className='flex justify-center bg-blue-700 mx-auto  max-w-[1600px] dark:bg-opacity-80 mb-20 py-12 px-6 z-10'>
             <div className=' w-full '>
@@ -32,7 +38,8 @@ CiStudy.
                             <UserIcon size={25} className='text-primary' />
                         </div>
                         <div className='text-4xl pt-4 pb-2 font-medium text-white dark:text-black'>
-                            {totalNumberOfVerifiedAccounts}+
+                            {roundDownToNearestTen(totalNumberOfVerifiedAccounts)}+
+
                         </div>
                         <div className='dark:text-gray-900 sm:text-xl text-gray-300 font-medium'>
   Active Accounts
@@ -44,7 +51,7 @@ CiStudy.
                             <TrophyIcon size={25} className='text-primary' />
                         </div>
                         <div className='text-4xl pt-4 pb-2 font-medium text-white dark:text-black'>
-                            {totalNumberOfPosts}+
+                            {roundDownToNearestTen(totalNumberOfPosts)}+
                         </div>
                         <div className='dark:text-gray-900 sm:text-xl text-gray-300 font-medium'>
   Rewardable Posts
@@ -56,7 +63,7 @@ CiStudy.
                             <PresentationIcon size={25} className='text-primary' />
                         </div>
                         <div className='text-4xl pt-4 pb-2 font-medium text-white dark:text-black'>
-                            {totalNumberOfAvailableCourses}+
+                            {roundDownToNearestTen(totalNumberOfAvailableCourses)}+                        
                         </div>
                         <div className='dark:text-gray-900 sm:text-xl text-gray-300 font-medium'>
   Diverse Courses

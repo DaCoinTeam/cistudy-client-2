@@ -132,7 +132,7 @@ export const CommentItem = (props: CommentItemProps) => {
                             <div className='mr-4'>
                                 {!isSolution && (
                                     <>
-                                        {postCreatorAccountId === profileAccountId && (
+                                        {postCreatorAccountId === profileAccountId && (commentCreatorAccountId !== postCreatorAccountId) && (
                                             <MarkAsSolutionButton postCommentId={postCommentId} />
                                         )}
                                     </>

@@ -62,16 +62,16 @@ export const Menu = (props: MenuProps) => {
             panelSelected: PanelSelected.Sections,
         },
         {
-            startContent: <CurrencyDollarIcon  width={24} height={24} />,
-            key: "price",
-            content: "Price",
-            panelSelected: PanelSelected.Price,
-        },
-        {
             startContent: <Cog6ToothIcon  width={24} height={24} />,
             key: "configuration",
             content: "Configuration",
             panelSelected: PanelSelected.Configuration,
+        },
+        {
+            startContent: <CurrencyDollarIcon  width={24} height={24} />,
+            key: "price",
+            content: "Price",
+            panelSelected: PanelSelected.Price,
         },
         {
             startContent: <ActivityIcon width={24} height={24} strokeWidth={3/2}/>,
@@ -82,7 +82,7 @@ export const Menu = (props: MenuProps) => {
         {
             startContent: <BarChart3Icon width={24} height={24} />,
             key: "analytics",
-            content: "Analytics",
+            content: "Statistics",
             panelSelected: PanelSelected.Analytics,
         },
     ]

@@ -96,11 +96,11 @@ export const CourseFloat = () => {
                     <div className="flex text-foreground-500 flex-col gap-2">
                         <div className="flex gap-2">
                             <ListVideo size={20} strokeWidth={3 / 2} />
-                            <div className="text-sm"> {sections?.length} sections</div>
+                            <div className="text-sm">{sections?.length} section{sections?.length ?? 0 > 1 ? "s" : ""} </div>
                         </div>
                         <div className="flex gap-2">
                             <VideoIcon size={20} strokeWidth={3 / 2} />
-                            <div className="text-sm"> {numberOfLessons} lesson{numberOfQuizzes ?? 0 > 1 ? "s" : ""}</div>
+                            <div className="text-sm"> {numberOfLessons} lesson{numberOfLessons ?? 0 > 1 ? "s" : ""} </div>
                         </div>
                         <div className="flex gap-2">
                             <FileQuestionIcon size={20} strokeWidth={3 / 2} />

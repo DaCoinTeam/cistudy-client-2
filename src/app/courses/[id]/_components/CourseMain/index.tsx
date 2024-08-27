@@ -4,6 +4,7 @@ import { Sections } from "./Sections"
 import { Instructor } from "./Instructor"
 import { CourseTargets } from "./CourseTargets"
 import { CourseReview } from "./CourseReview"
+import { CourseReport } from "./CourseReport"
 export const CourseMain = () => {
     return (
         <div className='max-w-[1920px] mx-auto w-full px-6 md:px-12 lg:px-16'>
@@ -15,7 +16,8 @@ export const CourseMain = () => {
                 <Instructor />
                 <Spacer y={12} />
                 <CourseReview />
-               
+                <Spacer y={12} />
+                <CourseReport/>
             </div>
         </div>
     )

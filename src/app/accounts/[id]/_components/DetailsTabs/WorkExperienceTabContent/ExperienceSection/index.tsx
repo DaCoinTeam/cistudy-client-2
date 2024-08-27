@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, Divider, Image } from "@nextui-org/react"
+import { Card, CardHeader, CardBody, Image, Spacer } from "@nextui-org/react"
 import { Edit3, PlusIcon, Trash2 } from "lucide-react"
 import { AddExperienceModalRefSelectors, AddExperiencesModalRef, EditExperienceModalRef, EditExperienceModalRefSelectors } from "./ExperienceModalRef"
 import { useContext, useRef, useState } from "react"
@@ -72,16 +72,16 @@ export const ExperienceSection = () => {
         <div>
             <Card shadow="none" className="w-full border border-divider">
                 <CardHeader className="flex flex-row justify-between p-4">
-                    <div className="text-xl font-semibold">Experience</div>
+                    <div className="text-xl font-semibold">Work Experience</div>
                     {
                         currentAccountId === accountIdParam && (
                             <PlusIcon className="w-5 h-5 cursor-pointer" strokeWidth={3 / 2} onClick={() => addExperienceModalRef.current?.onOpen()} />
                         )
                     }
                 </CardHeader>
-                <CardBody className="p-4">
+                <CardBody className="grid p-4 gap-4">
                     {
-                        accountJobs && accountJobs.length > 0? accountJobs?.map((job, index) => (
+                        accountJobs && accountJobs.length > 0? accountJobs?.map((job) => (
                             <div key={job.accountJobId} className="border border-divider rounded-medium p-4">
                                 <div className="flex flex-row items-center justify-between">
                                     <div className="gap-2">
@@ -93,12 +93,12 @@ export const ExperienceSection = () => {
                                             {job.role}
                                         </div>
 
-                                        <div className="text-base opacity-50">
+                                        <div className="text-sm opacity-50">
                                             {dayjs(job.startDate).format("MMM YYYY")} - {job.endDate ? dayjs(job.endDate).format("MMM YYYY") : "Present"} · {job.endDate ? dayjs(job.endDate).diff(dayjs(job.startDate), "year") : dayjs().diff(dayjs(job.startDate), "year")} years
                                         </div>
-
+                                        <Spacer y={4}/>
                                         <div>
-                                            <Image className="w-44" src={getAssetUrl(job.companyThumbnailId)} alt="company" />
+                                            <Image className="w-[300px]" src={getAssetUrl(job.companyThumbnailId)} alt="company" />
                                         </div>
                                     </div>
 
@@ -113,9 +113,6 @@ export const ExperienceSection = () => {
                                         }
                                     </div>
                                 </div>
-                                {
-                                    index < accountJobs.length-1 && (<Divider />)
-                                }
                             </div>
                         )) : (
                             <div className="flex items-center">

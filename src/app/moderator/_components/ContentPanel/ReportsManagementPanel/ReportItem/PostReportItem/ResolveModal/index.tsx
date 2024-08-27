@@ -9,23 +9,19 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
+    ScrollShadow,
     Spacer,
     Textarea,
     useDisclosure,
 } from "@nextui-org/react"
 
 import {
-    ResolvePostReportInput,
     getAvatarUrl,
-    resolvePostReport,
 } from "@services"
 import dayjs from "dayjs"
-import { forwardRef, useContext, useImperativeHandle } from "react"
-import { ToastType } from "../../../../../../../_components"
-import { RootContext } from "../../../../../../../_hooks"
+import { forwardRef, useContext, useEffect, useImperativeHandle } from "react"
 import { TextRenderer } from "../../../../../../../_shared"
-import { PostReportItemContext } from "../PostReportItemProvider"
-import useSWRMutation from "swr/mutation"
+import { ResolveModalContext, ResolveModalProvider } from "./ResolveModalProvider"
 
 export interface ResolveModalRefProps {
     report: ReportPostEntity;
@@ -35,15 +31,10 @@ export interface ResolveModalRefSelectors {
     onOpen: () => void;
 }
 
-export const ResolveModalRef = forwardRef<
+const WrappedResolveModalRef = forwardRef<
     ResolveModalRefSelectors | null,
     ResolveModalRefProps
 >((props, ref) => {
-    const { reducer, swrs } = useContext(PostReportItemContext)!
-    const { postReportsSwr } = swrs
-    const { mutate } = postReportsSwr
-    const [state, dispatch] = reducer
-    const { notify } = useContext(RootContext)!
     const { report } = props
     const {
         title,
@@ -51,8 +42,11 @@ export const ResolveModalRef = forwardRef<
         reportedPost,
         reporterAccount,
         createdAt,
-        reportPostId,
     } = { ...report }
+    const {formik, reducer, swrs} = useContext(ResolveModalContext)!
+    const [state, dispatch] = reducer
+    const { resolveModalSwrMutation } = swrs
+    const {isMutating} = resolveModalSwrMutation
     const { html } = { ...reportedPost }
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
@@ -60,36 +54,36 @@ export const ResolveModalRef = forwardRef<
         onOpen,
     }))
 
-    const { trigger, isMutating } = useSWRMutation(
-        "RESOLVE_REPORT_POST",
-        async (_, { arg }: { arg: ResolvePostReportInput }) => {
-            const { message } = await resolvePostReport(arg)
-            await mutate()
-            notify!({
-                data: {
-                    message,
-                },
-                type: ToastType.Success,
-            })
+    const handleReject = () => {
+        dispatch({
+            payload: ReportProcessStatus.Rejected,
+            type: "SET_VERIFY_STATUS",
+        })
+        dispatch({
+            payload: report.reportPostId,
+            type: "SET_POST_REPORT_ID",
+        })
+        formik.handleSubmit()
+    }
+
+    const handleApprove = () => {
+        dispatch({
+            payload: ReportProcessStatus.Approved,
+            type: "SET_VERIFY_STATUS",
+        })
+        dispatch({
+            payload: report.reportPostId,
+            type: "SET_POST_REPORT_ID",
+        })
+        formik.handleSubmit()
+    }
+
+    useEffect(() => {
+        if (isMutating === false && formik.submitCount > 0 && !formik.errors.note) {
             onClose()
         }
-    )
-
-    const { trigger: trigger2, isMutating: isMutating2 } = useSWRMutation(
-        "RESOLVE_REPORT_POST2",
-        async (_, { arg }: { arg: ResolvePostReportInput }) => {
-            const { message } = await resolvePostReport(arg)
-            await mutate()
-            notify!({
-                data: {
-                    message,
-                },
-                type: ToastType.Success,
-            })
-            onClose()
-        }
-    )
-
+    }, [isMutating])
+    
     return (
         <Modal
             scrollBehavior="outside"
@@ -102,127 +96,122 @@ export const ResolveModalRef = forwardRef<
                     <div>Post Report Detail </div>
                 </ModalHeader>
                 <ModalBody className="p-4">
-                    <div>
-                        <div className="text-primary">Reporter Information</div>
-                        <Spacer y={4} />
-                        <div className="flex items-center gap-2">
-                            <Avatar
-                                name="avatar"
-                                className="w-12 h-12 rounded-full"
-                                src={getAvatarUrl({
-                                    avatarId: reporterAccount?.avatarId,
-                                    avatarUrl: reporterAccount?.avatarUrl,
-                                    kind: reporterAccount?.kind,
-                                })}
-                            />
-                            <div>
-                                <div className="text-sm flex items-center">
-                                    <div className="min-w-[100px] font-semibold">Username </div>
-                                    {reporterAccount?.username}
-                                </div>
-                                <div className="text-sm flex items-center">
-                                    <div className="min-w-[100px] font-semibold">Report time</div>
-                                    {dayjs(createdAt).format("hh:mm:ss A DD/MM/YYYY")}
-                                </div>
-                            </div>
-                        </div>
-                        <Spacer y={6} />
+                    <ScrollShadow className="h-[480px]" hideScrollBar>
                         <div>
-                            <div className="text-primary">Post Information</div>
+                            <div className="text-primary">Reporter Information</div>
                             <Spacer y={4} />
-                            <div>
-                                <div className="flex gap-2">
-                                    <div className="font-semibold w-[100px] text-sm">Title</div>
-                                    {reportedPost?.title}
-                                </div>
-                                <Spacer y={2} />
+                            <div className="flex items-center gap-2">
+                                <Avatar
+                                    name="avatar"
+                                    className="w-12 h-12 rounded-full"
+                                    src={getAvatarUrl({
+                                        avatarId: reporterAccount?.avatarId,
+                                        avatarUrl: reporterAccount?.avatarUrl,
+                                        kind: reporterAccount?.kind,
+                                    })}
+                                />
                                 <div>
-                                    <div>
-                                        <div className="font-semibold w-[100px] text-sm">
-                                            Content
-                                        </div>
-                                        <Spacer y={1.5} />
-                                        <div className="border border-divider p-4 rounded-lg">
-                                            <TextRenderer html={html} />
-                                        </div>
+                                    <div className="text-sm flex items-center">
+                                        <div className="min-w-[100px] font-semibold">Username </div>
+                                        {reporterAccount?.username}
+                                    </div>
+                                    <div className="text-sm flex items-center">
+                                        <div className="min-w-[100px] font-semibold">Report time</div>
+                                        {dayjs(createdAt).format("hh:mm:ss A DD/MM/YYYY")}
                                     </div>
                                 </div>
+                            </div>
+                            <Spacer y={6} />
+                            <div>
+                                <div className="text-primary">Post Information</div>
+                                <Spacer y={4} />
+                                <div>
+                                    <div className="flex gap-2">
+                                        <div className="font-semibold w-[100px] text-sm">Title</div>
+                                        {reportedPost?.title}
+                                    </div>
+                                    <Spacer y={2} />
+                                    <div>
+                                        <div>
+                                            <div className="font-semibold w-[100px] text-sm">
+                                            Content
+                                            </div>
+                                            <Spacer y={1.5} />
+                                            <div className="border border-divider p-4 rounded-lg">
+                                                <TextRenderer html={html} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <Spacer y={2} />
+                                    <Link size="sm">Post link</Link>
+                                </div>
+                                <Spacer y={6} />
+                            </div>
+                            <div>
+                                <div className="text-primary">Content</div>
+                                <Spacer y={4} />
+                                <div className="text-sm flex items-center">
+                                    <div className="font-semibold w-[100px]">Title</div>
+                                    {title}
+                                </div>
                                 <Spacer y={2} />
-                                <Link size="sm">Post link</Link>
+                                <div className="text-sm flex items-center">
+                                    <div className="font-semibold w-[100px]">Description</div>
+                                    {description}
+                                </div>
+                                <Spacer y={6} />
+                                <div className="text-primary">Moderator Note</div>
+                                <Spacer y={4} />
+                                <Textarea
+                                    classNames={{
+                                        inputWrapper: "input-input-wrapper shadow-lg rounded-md",
+                                    }}
+                                    id="note"
+                                    type="string"
+                                    value={formik.values.note}
+                                    labelPlacement="outside"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    isInvalid={!!(formik.touched.note && formik.errors.note)}
+                                    errorMessage={formik.touched.note && formik.errors.note}
+                                />
                             </div>
-                            <Spacer y={6} />
                         </div>
-                        <div>
-                            <div className="text-primary">Content</div>
-                            <Spacer y={4} />
-                            <div className="text-sm flex items-center">
-                                <div className="font-semibold w-[100px]">Title</div>
-                                {title}
-                            </div>
-                            <Spacer y={2} />
-                            <div className="text-sm flex items-center">
-                                <div className="font-semibold w-[100px]">Description</div>
-                                {description}
-                            </div>
-                            <Spacer y={6} />
-                            <div className="text-primary">Moderator Note</div>
-                            <Spacer y={4} />
-                            <Textarea
-                                isInvalid={state.note.length < 20}
-                                classNames={{
-                                    inputWrapper: "input-input-wrapper shadow-lg rounded-md",
-                                }}
-                                id="progressNote"
-                                type="string"
-                                value={state.note}
-                                minLength={20}
-                                isRequired
-                                labelPlacement="outside"
-                                placeholder="Take note here"
-                                errorMessage="The note should be at least 20 characters long."
-                                onValueChange={(value) =>
-                                    dispatch({ type: "SET_NOTE", payload: value })
-                                }
-                            />
-                        </div>
-                    </div>
+                    </ScrollShadow>
                 </ModalBody>
                 <ModalFooter className="p-4 pt-2">
                     <Button
-                        isDisabled={state.note.length < 20}
-                        isLoading={isMutating}
+                        isDisabled={isMutating && state.verifyStatus === ReportProcessStatus.Rejected}
+                        isLoading={isMutating && state.verifyStatus === ReportProcessStatus.Rejected}
                         variant="bordered"
                         color="primary"
-                        onClick={async () => {
-                            await trigger({
-                                data: {
-                                    processNote: state.note,
-                                    processStatus: ReportProcessStatus.Rejected,
-                                    reportPostId,
-                                },
-                            })
-                        }}
+                        onClick={handleReject}
                     >
                         Reject
                     </Button>
                     <Button
-                        isDisabled={state.note.length < 20}
-                        isLoading={isMutating2}
+                        isDisabled={isMutating && state.verifyStatus === ReportProcessStatus.Approved}
+                        isLoading={isMutating && state.verifyStatus === ReportProcessStatus.Approved}
                         color="primary"
-                        onClick={async () => {
-                            await trigger2({
-                                data: {
-                                    processNote: state.note,
-                                    processStatus: ReportProcessStatus.Approved,
-                                    reportPostId,
-                                },
-                            })
-                        }}
+                        onClick={handleApprove}
                     >
                         Approve
                     </Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>
+    )
+})
+
+export const ResolveModalRef = forwardRef<
+    ResolveModalRefSelectors,
+    ResolveModalRefProps
+>((props, ref) => {
+    const {report} = props
+
+    return (
+        <ResolveModalProvider>
+            <WrappedResolveModalRef report={report} ref={ref} />
+        </ResolveModalProvider>
     )
 })

@@ -333,29 +333,29 @@ ${payload}
     })
 }
 
-export interface FindManyPendingCoursesInputData {
+export interface FindManyPublishedCoursesInputData {
   options?: {
     take?: number;
     skip?: number;
   };
 }
 
-export interface FindManyPendingCoursesOutputData {
+export interface FindManyPublishedCoursesOutputData {
   results: Array<CourseEntity>;
   metadata: {
     count: number;
   };
 }
 
-export const findManyPendingCourses = async (
-    data: FindManyPendingCoursesInputData,
-    schema: Schema<DeepPartial<FindManyPendingCoursesOutputData>>
-): Promise<FindManyPendingCoursesOutputData> => {
+export const findManyPublishedCourses = async (
+    data: FindManyPublishedCoursesInputData,
+    schema: Schema<DeepPartial<FindManyPublishedCoursesOutputData>>
+): Promise<FindManyPublishedCoursesOutputData> => {
     const payload = buildAuthPayloadString(schema)
     const { data: graphqlData } = await authClient.query({
         query: gql`
-      query findManyPendingCourses($data: FindManyPendingCourseInputData!) {
-        findManyPendingCourses(data: $data) {
+      query findManyPublishedCourses($data: FindManyPublishedCoursesInputData!) {
+        findManyPublishedCourses(data: $data) {
 ${payload}
 }
 }
@@ -408,8 +408,8 @@ export const findOneCertificate = async (
     data: FindOneCertificateInputData,
     schema: Schema<DeepPartial<CertificateEntity>>
 ): Promise<CertificateEntity> => {
-    const payload = buildAuthPayloadString(schema)
-    const { data: graphqlData } = await authClient.query({
+    const payload = buildPayloadString(schema)
+    const {data: graphqlData} = await client.query({
         query: gql`
           query FindOneCertificate($data: FindOneCertificateInputData!) {
   findOneCertificate(data: $data) {
@@ -423,7 +423,7 @@ export const findOneCertificate = async (
     })
     return getGraphqlResponseData({
         data: graphqlData,
-        isAuth: true,
+        isAuth: false,
     })
 }
 
@@ -478,6 +478,7 @@ export interface GetCourseStatisticInputData {
 export interface GetCourseStatisticOutputData {
   numberOfRewardablePostsLeft?: number;
   totalEarning?: number;
+  pendingEarning?: number;
   likePosts?: Array<PostEntity>;
   commentPosts?: Array<PostEntity>;
   markedPosts?: Array<PostEntity>;

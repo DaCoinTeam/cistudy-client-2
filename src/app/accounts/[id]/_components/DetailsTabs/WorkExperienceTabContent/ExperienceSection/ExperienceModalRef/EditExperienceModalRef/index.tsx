@@ -1,6 +1,6 @@
 import React, { forwardRef, useContext, useEffect, useImperativeHandle } from "react"
 import { EditExperienceModalRefContext, EditExperienceModalRefProvider } from "./EditExperienceModalRefProvider"
-import { Button, Checkbox, DatePicker, Image, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, useDisclosure } from "@nextui-org/react"
+import { Button, Checkbox, DatePicker, Image, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ScrollShadow, Spacer, useDisclosure } from "@nextui-org/react"
 import { AccountJobEntity, convertUrlToFile, parseISODateString } from "@common"
 import { getLocalTimeZone, parseDate, today } from "@internationalized/date"
 import { FolderClosedIcon, FolderOpenIcon} from "lucide-react"
@@ -79,88 +79,92 @@ const WrappedEditExperienceModalRef = forwardRef<
             <ModalContent>
                 <ModalHeader>Edit Experience</ModalHeader>
                 <ModalBody>
-                    <Input
-                        label="Company Name"
-                        id="companyName"
-                        isRequired
-                        classNames={{
-                            inputWrapper: "input-input-wrapper"
-                        }} 
-                        labelPlacement="outside"
-                        placeholder="Input company name here"
-                        value={formik.values.companyName}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        isInvalid={!!(formik.touched.companyName && formik.errors.companyName)}
-                        errorMessage={formik.touched.companyName && formik.errors.companyName}
-                    />
-                    <Input
-                        label="Role"
-                        id="role"
-                        isRequired
-                        classNames={{
-                            inputWrapper: "input-input-wrapper"
-                        }} 
-                        labelPlacement="outside"
-                        placeholder="Input role here"
-                        value={formik.values.role}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        isInvalid={!!(formik.touched.role && formik.errors.role)}
-                        errorMessage={formik.touched.role && formik.errors.role}
-                    />
-                    <div {...getRootProps()}>
-                        <div className="text-sm">Company Image</div>
-                        <Spacer y={2} />
-                        <input {...getInputProps()} />
-                        <div className="border border-dashed text-primary rounded-medium p-6 grid place-items-center">
-                            <div className="flex gap-3 items-center">
-                                {isDragActive ? (
-                                    <FolderOpenIcon
-                                        className="w-5 h-5 text-foreground-400"
-                                        strokeWidth={3 / 2}
-                                    />
-                                ) : (
-                                    <FolderClosedIcon
-                                        className="w-5 h-5 text-foreground-400"
-                                        strokeWidth={3 / 2}
-                                    />
-                                )
-                                }
-                                <div className="text-foreground-400 text-sm">
-                                    {isDragActive ? "Dragging..." : "Drag company image here"}
+                    <ScrollShadow className="h-80" hideScrollBar>
+                        <div className="grid gap-4">
+                            <Input
+                                label="Company Name"
+                                id="companyName"
+                                isRequired
+                                classNames={{
+                                    inputWrapper: "input-input-wrapper"
+                                }} 
+                                labelPlacement="outside"
+                                placeholder="Input company name here"
+                                value={formik.values.companyName}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                isInvalid={!!(formik.touched.companyName && formik.errors.companyName)}
+                                errorMessage={formik.touched.companyName && formik.errors.companyName}
+                            />
+                            <Input
+                                label="Role"
+                                id="role"
+                                isRequired
+                                classNames={{
+                                    inputWrapper: "input-input-wrapper"
+                                }} 
+                                labelPlacement="outside"
+                                placeholder="Input role here"
+                                value={formik.values.role}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                isInvalid={!!(formik.touched.role && formik.errors.role)}
+                                errorMessage={formik.touched.role && formik.errors.role}
+                            />
+                            <div {...getRootProps()}>
+                                <div className="text-sm">Company Image</div>
+                                <Spacer y={2} />
+                                <input {...getInputProps()} />
+                                <div className="border border-dashed text-primary rounded-medium p-6 grid place-items-center">
+                                    <div className="flex gap-3 items-center">
+                                        {isDragActive ? (
+                                            <FolderOpenIcon
+                                                className="w-5 h-5 text-foreground-400"
+                                                strokeWidth={3 / 2}
+                                            />
+                                        ) : (
+                                            <FolderClosedIcon
+                                                className="w-5 h-5 text-foreground-400"
+                                                strokeWidth={3 / 2}
+                                            />
+                                        )
+                                        }
+                                        <div className="text-foreground-400 text-sm">
+                                            {isDragActive ? "Dragging..." : "Drag company image here"}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            {
+                                formik.values.companyImage.at(0)? (
+                                    <>
+                                        <Spacer y={4} />
+                                        <Image alt="thumbnail" src={URL.createObjectURL(formik.values.companyImage.at(0) as unknown as Blob)} className="h-40" />
+                                    </>
+                                ) : <></>
+                            }
+                            <Checkbox isSelected={state.isCurrentWorking} onValueChange={(isSelected) => dispatch({type: "SET_IS_CURRENT_WORKING", payload: isSelected})}>I am currently working in this role</Checkbox>
+                            <DatePicker
+                                label="Start Date" value={parseDate(formik.values.startDate)} className="w-full"
+                                maxValue={
+                                    state.isCurrentWorking? today(getLocalTimeZone()) : parseDate(formik.values.endDate)
+                                }
+                                labelPlacement="outside" onChange={(value) => {
+                                    formik.setFieldValue("startDate", parseISODateString(value.toDate(getLocalTimeZone())))
+                                }}
+                            />
+                            <DatePicker
+                                label="End Date" value={
+                                    state.isCurrentWorking? today(getLocalTimeZone()) : parseDate(formik.values.endDate)
+                                } className="w-full"
+                                isDisabled={state.isCurrentWorking}
+                                maxValue={today(getLocalTimeZone())}
+                                labelPlacement="outside" onChange={(value) => {
+                                    formik.setFieldValue("endDate", parseISODateString(value.toDate(getLocalTimeZone())))
+                                }}
+                            />
                         </div>
-                    </div>
-                    {
-                        formik.values.companyImage.at(0)? (
-                            <>
-                                <Spacer y={4} />
-                                <Image alt="thumbnail" src={URL.createObjectURL(formik.values.companyImage.at(0) as unknown as Blob)} className="h-40" />
-                            </>
-                        ) : <></>
-                    }
-                    <Checkbox isSelected={state.isCurrentWorking} onValueChange={(isSelected) => dispatch({type: "SET_IS_CURRENT_WORKING", payload: isSelected})}>I am currently working in this role</Checkbox>
-                    <DatePicker
-                        label="Start Date" value={parseDate(formik.values.startDate)} className="w-full"
-                        maxValue={
-                            state.isCurrentWorking? today(getLocalTimeZone()) : parseDate(formik.values.endDate)
-                        }
-                        labelPlacement="outside" onChange={(value) => {
-                            formik.setFieldValue("startDate", parseISODateString(value.toDate(getLocalTimeZone())))
-                        }}
-                    />
-                    <DatePicker
-                        label="End Date" value={
-                            state.isCurrentWorking? today(getLocalTimeZone()) : parseDate(formik.values.endDate)
-                        } className="w-full"
-                        isDisabled={state.isCurrentWorking}
-                        maxValue={today(getLocalTimeZone())}
-                        labelPlacement="outside" onChange={(value) => {
-                            formik.setFieldValue("endDate", parseISODateString(value.toDate(getLocalTimeZone())))
-                        }}
-                    />
+                    </ScrollShadow>
                 </ModalBody>
                 <ModalFooter className="gap-4">
                     <Button 

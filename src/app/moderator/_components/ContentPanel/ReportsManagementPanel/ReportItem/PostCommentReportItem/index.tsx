@@ -1,6 +1,5 @@
 import { ReportPostCommentEntity } from "@common"
-import { Avatar, Chip, ChipProps, Link, Pagination, Spacer, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
-import { getAvatarUrl } from "@services"
+import { Chip, ChipProps, Link, Pagination, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
 import dayjs from "dayjs"
 import { PencilRulerIcon } from "lucide-react"
 import React, { useCallback, useContext } from "react"
@@ -44,16 +43,6 @@ const WrappedPostCommentReportItem = () => {
             </div>
         case "reporter":
             return <div className="flex items-center justify-center">
-                <Avatar
-                    name='avatar'
-                    className='w-8 h-8'
-                    src={getAvatarUrl({
-                        avatarId: reporterAccount.avatarId,
-                        avatarUrl: reporterAccount.avatarUrl,
-                        kind: reporterAccount.kind,
-                    })}
-                />
-                <Spacer x={2} />
                 <div className="font-normal">{reporterAccount.username}</div>
             </div>
         case "comment":
@@ -83,15 +72,20 @@ const WrappedPostCommentReportItem = () => {
         
         case "actions":
             return (
-                <div className="flex justify-center">
+                <div className="flex justify-center w-20">
                     {
-                        report.processStatus === "processing" && (
+                        report.processStatus === "processing" ? (
                             <Link className="cursor-pointer flex flex-row gap-2" onClick={() => handleResolve(report)}>
                                 <Tooltip content="Resolve" color="primary">
                                     <PencilRulerIcon className="w-5 h-5" strokeWidth={3/2}/> 
                                 </Tooltip>
                             </Link>
                         )
+                            : (
+                                <div className="text-foreground-400 text-sm">
+                                 No action
+                                </div>
+                            )
                     }
                 </div>
             )

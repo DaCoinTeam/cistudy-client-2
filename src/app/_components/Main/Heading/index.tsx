@@ -37,19 +37,13 @@ export const Heading = () => {
                     >
             Explore Courses
                     </Button>
-                    <Button
-                        color='primary'
-                        variant='bordered'
-                        className='ms-4 px-8 py-6 box-border font-medium text-base'
-                    >
-            More
-                    </Button>
                 </div>
-                <div className='mt-12'>
+                {/* <div className='mt-12'>
                     <div className='text-base text-slate-500 mb-3 tracking-tight leading-8'>
             From 99+ Reviews
                     </div>
                     <AvatarGroup isBordered max={4} total={99}>
+
                         <Avatar src='https://i.pravatar.cc/150?u=a042581f4e29026024d' />
                         <Avatar src='https://i.pravatar.cc/150?u=a04258a2462d826712d' />
                         <Avatar src='https://i.pravatar.cc/150?u=a042581f4e29026704d' />
@@ -57,7 +51,7 @@ export const Heading = () => {
                         <Avatar src='https://i.pravatar.cc/150?u=a04258114e29026702d' />
                         <Avatar src='https://i.pravatar.cc/150?u=a04258114e29026708c' />
                     </AvatarGroup>
-                </div>
+                </div> */}
             </div>
             <div className='col-span-2'>
                 <div className='relative  w-[86.0084%]  ml-auto overflow-hidden border border-gray-300/60 rounded-t-full p-2 z-10'>

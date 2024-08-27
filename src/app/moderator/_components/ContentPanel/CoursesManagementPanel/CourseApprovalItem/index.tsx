@@ -8,14 +8,13 @@ import dayjs from "dayjs"
 const WrappedCourseApprovalItem = () => {
     const { reducer, swrs } = useContext(CourseApprovalItemContext)!
     const [state, dispatch] = reducer
-    const { pendingCoursesSwr } = swrs
-    const { data: pendingCourseData, isLoading } = pendingCoursesSwr
-
-    const sortByNewestCreatedDate = () => {
-        return pendingCourseData?.results.sort((a, b) => {
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        })
-    }
+    const { publishCoursesSwr } = swrs
+    const { data: pendingCourseData, isLoading } = publishCoursesSwr
+    // const sortByNewestCreatedDate = () => {
+    //     return pendingCourseData?.results.sort((a, b) => {
+    //         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    //     })
+    // }
 
     const renderStatus = (verifyStatus: VerifyStatus) => {
         const map: Record<VerifyStatus, JSX.Element> = {
@@ -28,15 +27,24 @@ const WrappedCourseApprovalItem = () => {
     }
 
     const columns = [
+        { key: "no", label: "No" },
         { key: "title", label: "Title" },
         { key: "author", label: "Author" },
         { key: "createdAt", label: "Created At" },
         { key: "status", label: "Status" },
         { key: "actions", label: "Actions" }
     ]
+    // const indexOfItem = (item: CourseEntity) => pendingCourseData?.results.indexOf(item) || 0
 
-    const renderCell = useCallback((course: CourseEntity, columnKey: React.Key) => {
+    const renderCell = useCallback((course: CourseEntity, columnKey: React.Key, page: number, index: number) => {
+      
         switch (columnKey) {
+        case "no":
+            return (
+                <div>
+                    {(page - 1) * ROWS_PER_PAGE + index  + 1}
+                </div>
+            )
         case "title":
             return (
                 <div className="w-60">
@@ -63,7 +71,7 @@ const WrappedCourseApprovalItem = () => {
             return (
                 <div className="flex justify-center">
                     {
-                        course.verifyStatus === "pending" && (
+                        course.verifyStatus === "pending" ?  (
                             <div className="flex flex-row gap-2">
                                 <Tooltip content="Preview" color="primary">
                                     <EyeIcon
@@ -72,6 +80,21 @@ const WrappedCourseApprovalItem = () => {
                                     />
                                 </Tooltip>
                             </div>
+                        ) : (
+                            course.verifyStatus === VerifyStatus.Approved ? (
+                                <div className="flex flex-row gap-2">
+                                    <Tooltip content="View Detail" color="primary">
+                                        <EyeIcon
+                                            className="cursor-pointer text-primary w-6 h-6"
+                                            onClick={() => window.open(`/courses/${course.courseId}`)}
+                                        />
+                                    </Tooltip>
+                                </div>
+                            ): (
+                                <div className="text-foreground-400 text-sm">
+                                        No action
+                                </div>
+                            )
                         )
                     }
                 </div>
@@ -137,7 +160,24 @@ const WrappedCourseApprovalItem = () => {
                     {(columns) => <TableColumn key={columns.key} align={columns.key === "actions" ? "center" : "start"}>{columns.label}</TableColumn>}
                 </TableHeader>
                 <TableBody
-                    items={sortByNewestCreatedDate()}
+                    loadingState={loadingState()}
+                    loadingContent={<Spinner />}
+                    emptyContent="No course publish request yet"
+                >
+                    {pendingCourseData?.results.length > 0 ? (
+                        pendingCourseData?.results?.map((item, index) => (
+                            <TableRow key={item.courseId}>
+                                {
+                                    (columnKey) => <TableCell>{renderCell(item, columnKey, state.page, index)}</TableCell>
+                                }
+                            </TableRow>
+                        ))
+                    ): <TableRow>
+                        <TableCell colSpan={6} className="text-center">
+                        No data available
+                        </TableCell>
+                    </TableRow>}
+                    {/* items={sortByNewestCreatedDate()}
                     loadingContent={<Spinner />}
                     loadingState={loadingState()}
                     emptyContent="No pending courses yet"
@@ -145,10 +185,10 @@ const WrappedCourseApprovalItem = () => {
                     {(item) => (
                         <TableRow key={item.courseId}>
                             {
-                                (columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>
+                                (columnKey) => <TableCell>{renderCell(item, columnKey, state.page)}</TableCell>
                             }
                         </TableRow>
-                    )}
+                    )} */}
                 </TableBody>
             </Table>
         </div>

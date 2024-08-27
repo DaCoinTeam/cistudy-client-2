@@ -183,7 +183,7 @@ export const updateAccountJob = async (
     input: UpdateAccountJobInput
 ): Promise<UpdateAccountJobOutput> => {
     const { data, files } = input
-    const url = `${BASE_URL}/update-account-job`
+    const url = `${BASE_URL}/update-job`
     const formData = new FormData()
 
     formData.append("data", JSON.stringify(data))

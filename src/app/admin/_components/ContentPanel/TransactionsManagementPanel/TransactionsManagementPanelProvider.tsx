@@ -60,6 +60,8 @@ const WrappedTransactionsManagementPanelProvider = ({
                             kind: true
                         },
                         type: true,
+                        status: true,
+                        preTextEarn: true,
                         transactionDetails: {
                             account: {
                                 accountId: true,
@@ -75,7 +77,18 @@ const WrappedTransactionsManagementPanelProvider = ({
                             },
                             transactionDetailId: true,
                             payAmount: true,
-                            directIn: true
+                            directIn: true,
+                            post: {
+                                postId: true,
+                                title: true,
+                            },
+                            postComment: {
+                                postCommentId: true,
+                                post: {
+                                    postId: true,
+                                    title: true,
+                                }
+                            },
                         }
                     },
                     metadata: {

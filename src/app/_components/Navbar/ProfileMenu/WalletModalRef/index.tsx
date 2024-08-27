@@ -102,7 +102,7 @@ export const WrappedWalletModalRef = () => {
                         </div>
                     </div>
                     <Spacer y={4}/>
-                    <div className="flex gap-2 items-center">
+                    <div className="flex gap-6 items-center">
                         <BuyOutsideModal/>
                         <TransactionsModal/>
                     </div>

@@ -55,10 +55,10 @@ const Page = () => {
         if (cartCourses) {
             cartCourses.forEach((cartCourse) => {
                 if (!selectedItems.includes(cartCourse.cartCourseId)) return
-                if (!cartCourse.course.enableDiscount) {
-                    discountPrice += cartCourse.course.price
-                } else {
+                if (cartCourse.course.enableDiscount) {
                     discountPrice += cartCourse.course.discountPrice
+                } else {
+                    discountPrice += cartCourse.course.price
                 }
                 price += cartCourse.course.price
             })
@@ -247,10 +247,10 @@ const Page = () => {
                             </div>
 
                             <dl className='flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700'>
-                                <dt className='text-base font-bold text-gray-900 dark:text-white'>
+                                <dt className='text-lg font-bold text-gray-900 dark:text-white'>
                   Total
                                 </dt>
-                                <dd className='text-base font-bold text-gray-900 dark:text-white'>
+                                <dd className='text-lg font-bold text-gray-900 dark:text-white'>
                                     {getTotalPrice.discountPrice} STARCI
                                 </dd>
                             </dl>
@@ -318,7 +318,7 @@ const Page = () => {
                     <ConfirmDeleteModalRef
                         ref={confirmDeleteModalRef}
                         title='You are going to delete course(courses) in cart ? '
-                        content='Are you sure delete course(courses) in cart'
+                        content='Are you sure deleting course(courses) in cart'
                         onDeletePress={() => handleDelete()}
                     />
                     <ConfirmOrderModalRef

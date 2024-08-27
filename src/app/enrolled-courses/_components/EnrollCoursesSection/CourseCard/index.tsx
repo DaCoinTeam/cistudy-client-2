@@ -1,4 +1,4 @@
-import { CourseEntity, formatNouns } from "@common"
+import { CourseEntity } from "@common"
 import { Button, Card, CardBody, CardFooter, Image, User } from "@nextui-org/react"
 import { getAssetUrl, getAvatarUrl } from "@services"
 import { useRouter } from "next/navigation"
@@ -11,7 +11,7 @@ interface CourseCardProps {
 export const CourseCard = (props: CourseCardProps) => {
     const { course } = props
     const { thumbnailId, title, description, creator, courseId } = course
-    const { avatarId, username, numberOfFollowers, avatarUrl, kind } = { ...creator }
+    const { avatarId, username, avatarUrl, kind } = { ...creator }
 
     const router = useRouter()
     const onPress = () => router.push(`/courses/${courseId}/home`)
@@ -44,7 +44,7 @@ export const CourseCard = (props: CourseCardProps) => {
                                 avatarId: avatarId,
                                 kind: kind
                             })
-                        }} name={username} description={formatNouns(numberOfFollowers, "follower")}
+                        }} name={username}
                         />
                     </div> 
                 </div>
