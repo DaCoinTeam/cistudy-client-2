@@ -78,7 +78,7 @@ export const AddToCartButton = () => {
                     onPress={() => {
                         handleAddToCart(course?.courseId ?? "")
                     }}
-                    startContent={<ShoppingCartIcon height={20} width={20} />}
+                    startContent={isMutating ? null : <ShoppingCartIcon height={20} width={20} />}
                     fullWidth
                 >
           Add to cart

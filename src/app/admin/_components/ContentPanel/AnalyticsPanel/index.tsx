@@ -153,7 +153,7 @@ const WrappedAnalyticsPanel = (props: AnalyticsManagementPanelProps) => {
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart
                                 data={sevenDaysEnrollmentsChartData}
-                                margin={{ top: 10, right: 0, left: -40, bottom: 0 }}
+                                margin={{ top: 10, right: 20, left: -40, bottom: 0 }}
                             >
                                 <XAxis dataKey="name" name="Time" />
                                 <YAxis dataKey="starci" name="Earned" />

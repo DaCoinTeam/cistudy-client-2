@@ -127,12 +127,9 @@ export const ConfigurationPanelProvider = ({
             initialValues={initialValues}
             validationSchema={Yup.object({
                 instructor: Yup.number(),
-                earn: Yup.number()
-                    .min(24, "Earn percent cannot drop below 24%")
-                    .max(36, "Earn percent cannot exceed over 24%"),
-                completed: Yup.number()
-                    .min(8, "Completed percent cannot drop below 8%")
-                    .max(12, "Completed percent cannot exceed over 12%"),
+                foundation: Yup.number()
+                    .min(8, "Foundation percent cannot drop below 8%")
+                    .max(12, "Foundation percent cannot exceed over 12%"),
             })}
             onSubmit={async (data) => {
                 if (!courseId) return
