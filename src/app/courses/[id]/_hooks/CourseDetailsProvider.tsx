@@ -150,7 +150,7 @@ export const WrappedCourseDetailsProvider = ({
         )
     }, [accountId])
 
-    const courseSwr = useSWR(["COURSE", accountId], fetchCourse, {
+    const courseSwr = useSWR(["COURSE", accountId, courseId], fetchCourse, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
     })
