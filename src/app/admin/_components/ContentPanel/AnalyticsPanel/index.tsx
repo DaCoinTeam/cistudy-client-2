@@ -51,7 +51,7 @@ const WrappedAnalyticsPanel = (props: AnalyticsManagementPanelProps) => {
 
     return (
         <div className={`${className}`}>
-            <div className="text-2xl">Analytics</div>
+            <div className="text-2xl">Statistics</div>
             <Spacer y={6} />
             <div className="grid grid-cols-4 gap-4">
                 <Card shadow="none" className="border border-divider">
