@@ -1,8 +1,7 @@
 import { Tab, Tabs } from "@nextui-org/react"
 import React from "react"
 import { FollowersTabContent } from "./FollowersTabContent"
-import {  MessagesSquareIcon, MonitorPlay, RssIcon } from "lucide-react"
-import { EnrolledCoursesTabContent } from "./EnrolledCoursesTabContent"
+import {  MessagesSquareIcon, RssIcon } from "lucide-react"
 import { BriefcaseIcon } from "@heroicons/react/24/outline"
 import { WorkExperienceTabContent } from "./WorkExperienceTabContent"
 
@@ -29,14 +28,6 @@ export const DetailsTabs = () => {
                     </div>
                 }>
                     <FollowersTabContent/>
-                </Tab>
-                <Tab key="enrolledCourses" title={
-                    <div className="flex items-center gap-2">
-                        <MonitorPlay size={20} strokeWidth={3/2}/>
-                        <div> Enrolled Courses </div>
-                    </div>
-                }>
-                    <EnrolledCoursesTabContent />
                 </Tab>
                 <Tab key="feedback" title={
                     <div className="flex items-center gap-2">
