@@ -38,7 +38,7 @@ export const Heading = () => {
             Explore Courses
                     </Button>
                 </div>
-                <div className='mt-12'>
+                {/* <div className='mt-12'>
                     <div className='text-base text-slate-500 mb-3 tracking-tight leading-8'>
             From 99+ Reviews
                     </div>
@@ -51,7 +51,7 @@ export const Heading = () => {
                         <Avatar src='https://i.pravatar.cc/150?u=a04258114e29026702d' />
                         <Avatar src='https://i.pravatar.cc/150?u=a04258114e29026708c' />
                     </AvatarGroup>
-                </div>
+                </div> */}
             </div>
             <div className='col-span-2'>
                 <div className='relative  w-[86.0084%]  ml-auto overflow-hidden border border-gray-300/60 rounded-t-full p-2 z-10'>
